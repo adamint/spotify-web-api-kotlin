@@ -21,6 +21,8 @@ enum class Market(var code: String) {
     US("US")
 }
 
+data class LinkedResult<out T>(val href: String, val items: List<T>)
+
 data class MessageResult<out T>(val message: String?, val playlists: PagingObject<T>)
 
 data class PagingObject<out E>(val href: String, val items: List<E>, val limit: Int, val next: String?, val offset: Int, val previous: String?, val total: Int)

@@ -2,8 +2,12 @@ package main
 
 import com.google.gson.Gson
 import endpoints.album.AlbumAPI
+import endpoints.artists.ArtistsAPI
 import endpoints.browse.BrowseAPI
+import endpoints.playlists.PlaylistsAPI
+import endpoints.profiles.ProfilesAPI
 import endpoints.search.SearchAPI
+import endpoints.tracks.TracksAPI
 import obj.Token
 import org.jsoup.Jsoup
 import java.io.IOException
@@ -15,6 +19,10 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
     val search = SearchAPI(this)
     val albums = AlbumAPI(this)
     val browse = BrowseAPI(this)
+    val artists = ArtistsAPI(this)
+    val playlists = PlaylistsAPI(this)
+    val profiles = ProfilesAPI(this)
+    val tracks = TracksAPI(this)
     init {
         if (token == null) println("No token provided, the vast majority of available methods will not work without OAuth!")
     }
