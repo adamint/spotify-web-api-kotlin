@@ -21,6 +21,14 @@ enum class Market(var code: String) {
     US("US")
 }
 
+data class TrackQNList(val artists: List<Track?>)
+data class AudioFeaturesList(val artists: List<AudioFeatures>)
+
+data class AlbumQNList(val artists: List<Album?>)
+data class ArtistList(val artists: List<Artist>)
+data class ArtistPNList(val artists: List<Artist?>)
+data class TrackList(val tracks: List<Track>)
+
 data class SimpleTrackLinkedResult(val href: String, val items: List<SimpleTrack>)
 data class SimpleAlbumLinkedResult(val href: String, val items: List<SimpleAlbum>)
 data class PlaylistTrackLinkedResult(val href: String, val items: List<PlaylistTrack>)

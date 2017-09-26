@@ -19,9 +19,8 @@ class SearchAPI(api: SpotifyAPI) : Endpoint(api) {
     }
 
     fun searchArtist(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): ArtistPagingObject {
-        val type = TypeToken.get(ArtistPagingObject("", listOf(), 0, total = 0).javaClass)
-        return gson.fromJson(get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.ARTIST.id}&market=${market.code}&limit=$limit&offset=$offset")
-                .removePrefix("{\n  \"${SearchType.ARTIST.id}s\" : ").removeSuffix("}"), type.type)
+        return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.ARTIST.id}&market=${market.code}&limit=$limit&offset=$offset")
+                .removePrefix("{\n  \"${SearchType.ARTIST.id}s\" : ").removeSuffix("}").toObject()
     }
 
     fun searchAlbum(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): SimpleAlbumPagingObject {

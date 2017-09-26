@@ -10,7 +10,7 @@ class AlbumAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/albums/$albumId${if (market != null) "?market=$market" else ""}").toObject()
     }
 
-    fun getAlbums(market: String? = null, vararg albumIds: String): List<Album?> {
+    fun getAlbums(market: String? = null, vararg albumIds: String): AlbumQNList {
         if (albumIds.isEmpty()) throw BadRequestException(ErrorObject(404, "You cannot send a request with no album ids!"))
         return get("https://api.spotify.com/v1/albums?ids=${albumIds.toList().stream().collect(Collectors.joining(","))}${if (market != null) "&market=$market" else ""}")
                 .removePrefix("{\n  \"albums\" : ").removeSuffix("}").toObject()
