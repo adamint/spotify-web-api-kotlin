@@ -15,7 +15,7 @@ class SearchAPI(api: SpotifyAPI) : Endpoint(api) {
                 .removePrefix("{\n  \"${SearchType.PLAYLIST.id}s\" : ").removeSuffix("}").toObject()
     }
 
-    fun searchArtist(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<SimpleArtist> {
+    fun searchArtist(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<Artist> {
         return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.ARTIST.id}&market=${market.code}&limit=$limit&offset=$offset")
                 .removePrefix("{\n  \"${SearchType.ARTIST.id}s\" : ").removeSuffix("}").toObject()
     }
