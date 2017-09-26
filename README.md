@@ -1,5 +1,6 @@
 # Spotify Kotlin Wrapper
- [ ![Download](https://api.bintray.com/packages/adamint/Spotify-Wrapper-Kotlin/spotify-web-api-kotlin/images/download.svg?version=1.0) ](https://bintray.com/adamint/Spotify-Wrapper-Kotlin/spotify-web-api-kotlin/1.0/link)
+Until we get the JCenter repository running, here's the link to jitpack to get it [![](https://jitpack.io/v/adamint/spotify-web-api-kotlin.svg)](https://jitpack.io/#adamint/spotify-web-api-kotlin)
+
  
 This library represents an updated and more intuitive version of jonasfugedi's Spotify Wrapper, which was created in Java. This is built using Kotlin to take advantage of stlib functionality and Kotlin syntax.
 
@@ -9,6 +10,21 @@ This library represents an updated and more intuitive version of jonasfugedi's S
 ### What this library does NOT do
   - Handle client OAuth, scopes, or provide wrappers for client endpoints
   - **It currently requires Client ID and Secret to use any method**
+
+# How do I get it?
+You **must** have Jitpack in your repositories. An example for gradle is shown below
+```
+repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+```
+Then, you can use the following (if you're using gradle - if not, click on the Jitpack link above)
+```
+dependencies {
+	        compile 'com.github.adamint:spotify-web-api-kotlin:-SNAPSHOT'
+	}
+```
 
 # How do I use this?
 You must first create a `SpotifyAPI` object by using the exposed `Builder`, as shown below. Keep in mind, you only need to create one of these!
