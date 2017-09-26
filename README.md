@@ -17,15 +17,14 @@ This library represents an updated and more intuitive version of thelinmichael's
 You **must** have Jitpack in your repositories. An example for gradle is shown below
 ```
 repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	maven { url 'https://jitpack.io' }
+}
 ```
 Then, you can use the following (if you're using gradle - if not, click on the Jitpack link above)
 ```
 dependencies {
-	        compile 'com.github.adamint:spotify-web-api-kotlin:-SNAPSHOT'
-	}
+	compile 'com.github.adamint:spotify-web-api-kotlin:1.0'
+}
 ```
 
 # How do I use this?
