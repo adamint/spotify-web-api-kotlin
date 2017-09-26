@@ -1,5 +1,5 @@
 # Spotify Kotlin Wrapper
-
+ [ ![Download](https://api.bintray.com/packages/adamint/Spotify-Wrapper-Kotlin/spotify-web-api-kotlin/images/download.svg?version=1.0) ](https://bintray.com/adamint/Spotify-Wrapper-Kotlin/spotify-web-api-kotlin/1.0/link)
 This library represents an updated and more intuitive version of jonasfugedi's Spotify Wrapper, which was created in Java. This is built using Kotlin to take advantage of stlib functionality and Kotlin syntax.
 
 ### What this library does
