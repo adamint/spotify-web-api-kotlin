@@ -4,7 +4,7 @@ Until we get the JCenter repository running, the repository will be available on
 [![](https://jitpack.io/v/adamint/spotify-web-api-kotlin.svg)](https://jitpack.io/#adamint/spotify-web-api-kotlin)
 
  
-This library represents an updated and more intuitive version of jonasfugedi's Spotify Wrapper, which was created in Java. This is built using Kotlin to take advantage of stlib functionality and Kotlin syntax.
+This library represents an updated and more intuitive version of thelinmichael's Spotify Wrapper, which was created in Java. This is built using Kotlin to take advantage of stlib functionality and Kotlin syntax.
 
 ### What this library does
   - Uses the **Client Credentials** authorization type for the Spotify Web API
