@@ -1,5 +1,6 @@
 # Spotify Kotlin Wrapper
 Until we get the JCenter repository running, the repository will be available on Jitpack. Link is below
+
 [![](https://jitpack.io/v/adamint/spotify-web-api-kotlin.svg)](https://jitpack.io/#adamint/spotify-web-api-kotlin)
 
  
