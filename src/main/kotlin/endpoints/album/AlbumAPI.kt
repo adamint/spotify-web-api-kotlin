@@ -16,7 +16,7 @@ class AlbumAPI(api: SpotifyAPI) : Endpoint(api) {
                 .removePrefix("{\n  \"albums\" : ").removeSuffix("}").toObject()
     }
 
-    fun getAlbumTracks(albumId: String, limit: Int = 20, offset: Int = 0, market: String? = null): LinkedResult<SimpleTrack> {
+    fun getAlbumTracks(albumId: String, limit: Int = 20, offset: Int = 0, market: String? = null): SimpleTrackLinkedResult {
         return get("https://api.spotify.com/v1/albums/$albumId/tracks?limit=$limit&offset=$offset${if (market != null) "&market=$market" else ""}").toObject()
     }
 }

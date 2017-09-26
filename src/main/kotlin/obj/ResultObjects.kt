@@ -43,7 +43,7 @@ data class SimpleAlbum(val album_type: String, val artists: List<SimpleArtist>, 
 data class Album(val album_type: String, val artists: List<SimpleArtist>, val available_markets: List<String>, val copyrights: List<SpotifyCopyright>,
                  val external_ids: HashMap<String, String>, val external_urls: HashMap<String, String>, val genres: List<String>, val href: String,
                  val id: String, val images: List<SpotifyImage>, val label: String, val name: String, val popularity: Int, val release_date: String,
-                 val release_date_precision: String, val tracks: PagingObject<SimpleTrack>, val type: String, val uri: String)
+                 val release_date_precision: String, val tracks: SimpleTrackPagingObject, val type: String, val uri: String)
 
 data class SimplePlaylist(val collaborative: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
                           val images: List<SpotifyImage>, val name: String, val owner: SpotifyPublicUser, val public: Boolean?,
@@ -57,7 +57,7 @@ data class PlaylistTrack(val added_at: String, val added_by: SpotifyPublicUser, 
 
 data class Playlist(val collaborative: Boolean, val description: String, val external_urls: HashMap<String, String>, val followers: Followers,
                     val href: String, val id: String, val images: List<SpotifyImage>, val name: String, val owner: SpotifyPublicUser, val public: Boolean?,
-                    val snapshot_id: String, val tracks: PagingObject<PlaylistTrack>, val type: String, val uri: String)
+                    val snapshot_id: String, val tracks: PlaylistTrackPagingObject, val type: String, val uri: String)
 
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
 

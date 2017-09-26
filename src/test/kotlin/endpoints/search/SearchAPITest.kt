@@ -1,6 +1,8 @@
 package endpoints.search
 
 import main.SpotifyAPI
+import obj.Artist
+import obj.Playlist
 import org.junit.Test
 
 internal class SearchAPITest {
@@ -11,12 +13,12 @@ internal class SearchAPITest {
     }
     @Test
     fun searchAlbums() {
-        println(api.search.searchAlbum("Meant to be"))
+        println(api.search.searchAlbum("Meant to be").items.sortedByDescending { it.id })
     }
 
     @Test
     fun searchArtists() {
-        println(api.search.searchArtist("Meant to be"))
+        println((api.search.searchArtist("amir", limit = 7).items.sortedByDescending { it.popularity }))
     }
 
     @Test

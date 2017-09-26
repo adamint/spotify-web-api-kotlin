@@ -23,6 +23,7 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
     val playlists = PlaylistsAPI(this)
     val profiles = ProfilesAPI(this)
     val tracks = TracksAPI(this)
+
     init {
         if (token == null) println("No token provided, the vast majority of available methods will not work without OAuth!")
     }
@@ -57,6 +58,10 @@ fun encode(str: String): String {
     return String(Base64.getEncoder().encode(str.toByteArray()))
 }
 
+inline fun <reified T> retrieveSomething(): Class<T> {
+    return T::class.java
+}
+
 inline fun <reified T> Any.toObject(): T {
-    return gson.fromJson(this as String, T::class.java)
+    return gson.fromJson(this as String, retrieveSomething<T>()) as T
 }

@@ -21,8 +21,17 @@ enum class Market(var code: String) {
     US("US")
 }
 
-data class LinkedResult<out T>(val href: String, val items: List<T>)
+data class SimpleTrackLinkedResult(val href: String, val items: List<SimpleTrack>)
+data class SimpleAlbumLinkedResult(val href: String, val items: List<SimpleAlbum>)
+data class PlaylistTrackLinkedResult(val href: String, val items: List<PlaylistTrack>)
 
-data class MessageResult<out T>(val message: String?, val playlists: PagingObject<T>)
+data class MessageResult<out T>(val message: String?, val playlists: PlaylistPagingObject)
 
-data class PagingObject<out E>(val href: String, val items: List<E>, val limit: Int, val next: String?, val offset: Int, val previous: String?, val total: Int)
+data class PlaylistPagingObject(val href: String, val items: List<Playlist>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class PlaylistTrackPagingObject(val href: String, val items: List<PlaylistTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class SimpleTrackPagingObject(val href: String, val items: List<SimpleTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class ArtistPagingObject(val href: String, val items: List<Artist>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class SimpleAlbumPagingObject(val href: String, val items: List<SimpleAlbum>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class SpotifyCategoryPagingObject(val href: String, val items: List<SpotifyCategory>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class AlbumPagingObject(val href: String, val items: List<Album>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class SimplePlaylistPagingObject(val href: String, val items: List<SimplePlaylist>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)

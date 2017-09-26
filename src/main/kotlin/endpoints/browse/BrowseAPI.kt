@@ -7,7 +7,7 @@ import java.net.URLEncoder
 import java.util.stream.Collectors
 
 class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
-    fun getNewReleases(limit: Int = 20, offset: Int = 0, country: String? = null): PagingObject<SimpleAlbum> {
+    fun getNewReleases(limit: Int = 20, offset: Int = 0, country: String? = null): AlbumPagingObject {
         return get("https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
                 .removePrefix("{\n  \"albums\" : ").removeSuffix("}").toObject()
     }
@@ -16,7 +16,7 @@ class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/browse/featured-playlists?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}").toObject()
     }
 
-    fun getCategoryList(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): PagingObject<SpotifyCategory> {
+    fun getCategoryList(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): SpotifyCategoryPagingObject {
         return get("https://api.spotify.com/v1/browse/categories?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}")
                 .removePrefix("{\n  \"categories\" : ").removeSuffix("}").toObject()
     }
@@ -25,7 +25,7 @@ class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/browse/categories/${URLEncoder.encode(categoryId, "UTF-8")}${if (country != null) "?country=$country" else ""}").toObject()
     }
 
-    fun getPlaylistsForCategory(categoryId: String, country: String? = null, limit: Int = 20, offset: Int = 0): PagingObject<SimplePlaylist> {
+    fun getPlaylistsForCategory(categoryId: String, country: String? = null, limit: Int = 20, offset: Int = 0): SimplePlaylistPagingObject {
         return get("https://api.spotify.com/v1/browse/categories/$categoryId/playlists?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
                 .removePrefix("{\n  \"playlists\" : ").removeSuffix("}").toObject()
     }

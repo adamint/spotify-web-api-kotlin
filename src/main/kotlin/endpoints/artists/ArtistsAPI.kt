@@ -15,7 +15,7 @@ class ArtistsAPI(api: SpotifyAPI) : Endpoint(api) {
                 .removePrefix("{\n  \"artists\" :").removeSuffix("}").toObject()
     }
 
-    fun getArtistAlbums(artistId: String): LinkedResult<SimpleAlbum> {
+    fun getArtistAlbums(artistId: String): SimpleAlbumLinkedResult {
         return get("https://api.spotify.com/v1/artists/$artistId/albums").toObject()
     }
 

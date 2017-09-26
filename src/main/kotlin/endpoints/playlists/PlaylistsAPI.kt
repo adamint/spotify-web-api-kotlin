@@ -5,7 +5,7 @@ import main.toObject
 import obj.*
 
 class PlaylistsAPI(api: SpotifyAPI) : Endpoint(api) {
-    fun getPlaylists(userId: String, limit: Int = 20, offset: Int = 0): PagingObject<SimplePlaylist> {
+    fun getPlaylists(userId: String, limit: Int = 20, offset: Int = 0): SimplePlaylistPagingObject {
         return get("https://api.spotify.com/v1/users/$userId/playlists?limit=$limit&offset=$offset").toObject()
     }
 
@@ -13,7 +13,7 @@ class PlaylistsAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/users/$userId/playlists/$playlistId${if (market != null) "?market=$market" else ""}").toObject()
     }
 
-    fun getPlaylistTracks(userId: String, playlistId: String, limit: Int = 20, offset: Int = 0, market: String? = null): LinkedResult<PlaylistTrack> {
+    fun getPlaylistTracks(userId: String, playlistId: String, limit: Int = 20, offset: Int = 0, market: String? = null): PlaylistTrackLinkedResult {
         return get("https://api.spotify.com/v1/users/$userId/playlists/$playlistId/tracks?limit=$limit&offset=$offset${if (market != null) "&market=$market" else ""}").toObject()
     }
 }
