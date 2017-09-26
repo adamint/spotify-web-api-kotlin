@@ -7,7 +7,7 @@ import obj.Playlist
 import org.junit.Test
 
 internal class SearchAPITest {
-    val api = SpotifyAPI.Builder("79d455af5aea45c094c5cea04d167ac1", "b81441a80aeb435aa545949c880853dd").build()
+    val api = SpotifyAPI.Builder().build()
     @Test
     fun searchTrack() {
         println(api.search.searchTrack("Meant to be"))
