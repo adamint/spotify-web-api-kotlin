@@ -24,6 +24,9 @@ data class LinkedTrack(val external_urls: HashMap<String, String>, val href: Str
 data class SimpleArtist(val external_urls: HashMap<String, String>, val href: String, val id: String, val name: String,
                         val type: String, val uri: String)
 
+data class Artist(val external_urls: HashMap<String, String>, val followers: Followers, val genres: List<String>, val href: String,
+                  val id: String, val images: List<SpotifyImage>, val name: String, val popularity: Int, val type: String, val uri: String)
+
 data class SimpleTrack(val artists: List<SimpleArtist>, val available_markets: List<String>, val disc_number: Int, val duration_ms: Int,
                        val explicit: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
                        val is_playable: Boolean?, val linked_from: LinkedTrack?, val name: String, val preview_url: String,
@@ -57,3 +60,30 @@ data class Playlist(val collaborative: Boolean, val description: String, val ext
                     val snapshot_id: String, val tracks: PagingObject<PlaylistTrack>, val type: String, val uri: String)
 
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
+
+data class AudioAnalysis(val bars: List<AudioBar>, val beats: List<AudioBeat>, val meta: AudioAnalysisMeta, val sections: List<AudioSection>,
+                         val segments: List<AudioSegment>, val tatums: List<AudioTatum>, val track: TrackAnalysis)
+
+data class AudioBar(val start: Float, val duration: Float, val confidence: Float)
+data class AudioBeat(val start: Float, val duration: Float, val confidence: Float)
+data class AudioTatum(val start: Float, val duration: Float, val confidence: Float)
+data class AudioAnalysisMeta(val analyzer_version: String, val platform: String, val detailed_status: String, val status_code: String,
+                             val timestamp: Long, val analysis_time: Float, val input_process: String)
+
+data class AudioSection(val start: Float, val duration: Float, val confidence: Float, val loudness: Float, val tempo: Float, val tempo_confidence: Float,
+                        val key: Int, val key_confidence: Float, val mode: Int, val mode_confidence: Float, val time_signature: Int, val time_signature_confidence: Float)
+
+data class AudioSegment(val start: Float, val duration: Float, val confidence: Float, val loudness_start: Float, val loudness_max_time: Float,
+                        val loudness_max: Float, val loudness_end: Float, val pitches: List<Float>, val timbre: List<Float>)
+
+data class TrackAnalysis(val num_samples: Int, val duration: Float, val sample_md5: String, val offset_seconds: Int, val window_seconds: Int,
+                         val analysis_sample_rate: Int, val analysis_channels: Int, val end_of_fade_in: Float, val start_of_fade_out: Float,
+                         val loudness: Float, val tempo: Float, val tempo_confidence: Float, val time_signature: Int, val time_signature_confidence: Float,
+                         val key: Int, val key_confidence: Float, val mode: Int, val mode_confidence: Float, val codestring: String, val code_version: Float,
+                         val echoprintstring: String, val echoprint_version: Float, val synchstring: String, val synch_version: Int,
+                         val rhythmstring: String, val rhythm_version: Int)
+
+data class AudioFeatures(val acousticness: Float, val analysis_url: String, val danceability: Float, val duration_ms: Int, val energy: Float,
+                         val id: String, val instrumentalness: Float, val key: Int, val liveness: Float, val loudness: Float, val mode: Int,
+                         val speechiness: Float, val tempo: Float, val time_signature: Int, val track_href: String, val type: String,
+                         val uri: String, val valence: Float)
