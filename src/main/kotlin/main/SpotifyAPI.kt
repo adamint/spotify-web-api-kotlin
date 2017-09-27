@@ -46,7 +46,7 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
             return if (clientId != null && clientSecret != null) {
                 SpotifyAPI(clientId, clientSecret, gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                         .data("grant_type", "client_credentials")
-                        .header("Authorization", "Basic " + encode(clientId + ":" + clientSecret))
+                        .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
                         .ignoreContentType(true).post().body().text(), Token::class.java))
             } else
                 SpotifyAPI(null, null, null)
@@ -54,14 +54,10 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
     }
 }
 
-fun encode(str: String): String {
-    return String(Base64.getEncoder().encode(str.toByteArray()))
-}
-
-inline fun <reified T> retrieveSomething(): Class<T> {
-    return T::class.java
+fun String.encode(): String {
+    return String(Base64.getEncoder().encode(toByteArray()))
 }
 
 inline fun <reified T> Any.toObject(): T {
-    return gson.fromJson(this as String, retrieveSomething<T>()) as T
+    return gson.fromJson(this as String, T::class.java)
 }

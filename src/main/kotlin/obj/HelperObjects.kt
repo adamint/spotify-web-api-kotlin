@@ -10,7 +10,7 @@ abstract class Endpoint(val api: SpotifyAPI) {
         if (api.token != null) connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
         val document = connection.ignoreHttpErrors(true).execute()
         if (document.statusCode() != 200) {
-            throw BadRequestException(gson.fromJson(document.body().removePrefix("{\n  \"error\" : ").removeSuffix("}"), ErrorObject::class.java))
+            throw BadRequestException(gson.fromJson(document.body(), ErrorResponse::class.java).error)
         }
         return document.body()
     }

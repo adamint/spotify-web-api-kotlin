@@ -1,9 +1,6 @@
 package endpoints.search
 
-import com.google.gson.reflect.TypeToken
 import main.SpotifyAPI
-import main.gson
-import main.retrieveSomething
 import main.toObject
 import obj.*
 import java.net.URLEncoder
