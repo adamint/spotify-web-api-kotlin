@@ -10,9 +10,9 @@ class TracksAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/tracks/$trackId${if (market != null) "?market=$market" else ""}").toObject()
     }
 
-    fun getTracks(market: String? = null, vararg trackIds: String): TrackQNList {
+    fun getTracks(market: String? = null, vararg trackIds: String): List<Track?> {
         return get("https://api.spotify.com/v1/tracks?ids=${trackIds.toList().stream().collect(Collectors.joining(","))}${if (market != null) "&market=$market" else ""}")
-                .removePrefix("{\n  \"tracks\" : ").removeSuffix("}").toObject()
+                .toObject<TracksResponse>().tracks
     }
 
     fun getAudioAnalysis(trackId: String): AudioAnalysis {
@@ -23,9 +23,9 @@ class TracksAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/audio-features/$trackId").toObject()
     }
 
-    fun getAudioFeatures(vararg trackIds: String): AudioFeaturesList {
+    fun getAudioFeatures(vararg trackIds: String): List<AudioFeatures> {
         return get("https://api.spotify.com/v1/audio-features?ids=${trackIds.toList().stream().collect(Collectors.joining(","))}")
-                .removePrefix("{\n  \"audio_features\" :").removeSuffix("}").toObject()
+                .toObject<AudioFeaturesResponse>().audio_features
     }
 
 }

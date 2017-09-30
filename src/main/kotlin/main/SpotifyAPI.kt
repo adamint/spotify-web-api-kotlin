@@ -12,10 +12,12 @@ import obj.Token
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 val gson = Gson()
 
-class SpotifyAPI private constructor(val clientId: String?, val clientSecret: String?, val token: Token?) {
+class SpotifyAPI private constructor(val clientId: String?, val clientSecret: String?, var token: Token?, automaticRefresh: Boolean = true) {
     val search = SearchAPI(this)
     val albums = AlbumAPI(this)
     val browse = BrowseAPI(this)
@@ -26,20 +28,27 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
 
     init {
         if (token == null) println("No token provided, the vast majority of available methods will not work without OAuth!")
+        else if (automaticRefresh) {
+            println("Automatic token refresh is enabled")
+            val executor = Executors.newSingleThreadScheduledExecutor()
+            executor.scheduleAtFixedRate({
+                val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
+                        .data("grant_type", "client_credentials")
+                        .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
+                        .ignoreContentType(true).post().body().text(), Token::class.java)
+                if (tempToken == null) {
+                    println("WARNING: Spotify Token refresh failed")
+                    executor.shutdown()
+                } else {
+                    token = tempToken
+                    println("INFO: Successfully refreshed token")
+                }
+            }, 5, 5, TimeUnit.SECONDS)
+        }
     }
 
-    class Builder {
-        private var clientId: String? = null
-        private var clientSecret: String? = null
-        private var automaticRefresh = false
-
-        constructor(clientId: String, clientSecret: String) {
-            this.clientId = clientId
-            this.clientSecret = clientSecret
-            this.automaticRefresh = automaticRefresh
-        }
-
-        constructor() {}
+    class Builder(private var clientId: String?, private var clientSecret: String?, var automaticRefresh: Boolean = true) {
+        constructor() : this(null, null) {}
 
         @Throws(IOException::class)
         fun build(): SpotifyAPI {
@@ -47,9 +56,9 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
                 SpotifyAPI(clientId, clientSecret, gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                         .data("grant_type", "client_credentials")
                         .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
-                        .ignoreContentType(true).post().body().text(), Token::class.java))
+                        .ignoreContentType(true).post().body().text(), Token::class.java), automaticRefresh)
             } else
-                SpotifyAPI(null, null, null)
+                SpotifyAPI(null, null, null, false)
         }
     }
 }

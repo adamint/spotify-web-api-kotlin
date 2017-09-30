@@ -7,22 +7,24 @@ import obj.Playlist
 import org.junit.Test
 
 internal class SearchAPITest {
-    val api = SpotifyAPI.Builder().build()
+    val api = SpotifyAPI.Builder("79d455af5aea45c094c5cea04d167ac1", "b81441a80aeb435aa545949c880853dd").build()
     @Test
     fun searchTrack() {
         println(api.search.searchTrack("Meant to be"))
     }
     @Test
     fun searchAlbums() {
+        println(api.search.searchAlbum("Meant to be"))
     }
 
     @Test
     fun searchArtists() {
-        println((api.artists.getArtistTopTracks(api.search.searchArtist("amir", limit = 7).items[0].id, Market.US).tracks.sortedByDescending { it.disc_number }))
+        println((api.artists.getArtist("amir")))
     }
 
     @Test
     fun searchPlaylists() {
+        Thread.sleep(5000)
         println(api.search.searchPlaylist("Meant to be"))
     }
 }

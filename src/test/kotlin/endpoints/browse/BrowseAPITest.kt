@@ -4,7 +4,7 @@ import junit.framework.TestCase
 import main.SpotifyAPI
 
 class BrowseAPITest : TestCase() {
-    val api = SpotifyAPI.Builder().build()
+    val api = SpotifyAPI.Builder("79d455af5aea45c094c5cea04d167ac1", "").build()
     fun testGetNewReleases() {
         println(api.browse.getNewReleases())
     }

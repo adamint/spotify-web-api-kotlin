@@ -9,7 +9,7 @@ import java.util.stream.Collectors
 class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
     fun getNewReleases(limit: Int = 20, offset: Int = 0, country: String? = null): AlbumPagingObject {
         return get("https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
-                .removePrefix("{\n  \"albums\" : ").removeSuffix("}").toObject()
+                .toObject<AlbumPagingResponse>().albums
     }
 
     fun getFeaturedPlaylists(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): MessageResult<SimplePlaylist> {
@@ -18,7 +18,7 @@ class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
 
     fun getCategoryList(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): SpotifyCategoryPagingObject {
         return get("https://api.spotify.com/v1/browse/categories?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}")
-                .removePrefix("{\n  \"categories\" : ").removeSuffix("}").toObject()
+                .toObject<SpotifyCategoryPagingResponse>().categories
     }
 
     fun getCategory(categoryId: String, country: String? = null): SpotifyCategory {
@@ -27,7 +27,7 @@ class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
 
     fun getPlaylistsForCategory(categoryId: String, country: String? = null, limit: Int = 20, offset: Int = 0): SimplePlaylistPagingObject {
         return get("https://api.spotify.com/v1/browse/categories/$categoryId/playlists?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
-                .removePrefix("{\n  \"playlists\" : ").removeSuffix("}").toObject()
+                .toObject<SimplePlaylistPagingResponse>().playlists
     }
 
     /**
@@ -41,10 +41,7 @@ class BrowseAPI(api: SpotifyAPI) : Endpoint(api) {
         if (seedArtists != null) url.append("&seed_artists=${seedArtists.stream().collect(Collectors.joining(","))}")
         if (seedGenres != null) url.append("&seed_genres=${seedGenres.stream().collect(Collectors.joining(","))}")
         if (seedTracks != null) url.append("&seed_tracks=${seedTracks.stream().collect(Collectors.joining(","))}")
-        if (targets.size > 0) {
-            targets.forEach { url.append("&target_${it.key}=${it.value}") }
-        }
-        println(url)
+        if (targets.size > 0) targets.forEach { url.append("&target_${it.key}=${it.value}") }
         return get(url.toString()).toObject()
     }
 }
