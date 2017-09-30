@@ -43,7 +43,7 @@ class SpotifyAPI private constructor(val clientId: String?, val clientSecret: St
                     token = tempToken
                     println("INFO: Successfully refreshed token")
                 }
-            }, 5, 5, TimeUnit.SECONDS)
+            }, (token!!.expires_in - 30).toLong(), (token!!.expires_in - 30).toLong(), TimeUnit.SECONDS)
         }
     }
 
