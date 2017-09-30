@@ -23,7 +23,7 @@ repositories {
 Then, you can use the following (if you're using gradle - if not, click on the Jitpack link above)
 ```
 dependencies {
-	compile 'com.github.adamint:spotify-web-api-kotlin:1.0'
+	compile 'com.github.adamint:spotify-web-api-kotlin:-SNAPSHOT'
 }
 ```
 
