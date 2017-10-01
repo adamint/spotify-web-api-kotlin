@@ -6,7 +6,7 @@ import obj.*
 import java.util.stream.Collectors
 
 class AlbumAPI(api: SpotifyAPI) : Endpoint(api) {
-    fun getAlbum(albumId: String, market: String? = null): Album {
+    fun getAlbum(albumId: String, market: String? = null): Album? {
         return get("https://api.spotify.com/v1/albums/$albumId${if (market != null) "?market=$market" else ""}").toObject()
     }
 
@@ -15,7 +15,7 @@ class AlbumAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/albums?ids=${albumIds.toList().stream().collect(Collectors.joining(","))}${if (market != null) "&market=$market" else ""}").toObject<AlbumsResponse>().albums
     }
 
-    fun getAlbumTracks(albumId: String, limit: Int = 20, offset: Int = 0, market: String? = null): SimpleTrackLinkedResult {
+    fun getAlbumTracks(albumId: String, limit: Int = 20, offset: Int = 0, market: String? = null): SimpleTrackLinkedResult? {
         return get("https://api.spotify.com/v1/albums/$albumId/tracks?limit=$limit&offset=$offset${if (market != null) "&market=$market" else ""}").toObject()
     }
 }

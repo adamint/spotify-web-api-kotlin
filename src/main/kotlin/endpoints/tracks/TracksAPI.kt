@@ -6,7 +6,7 @@ import obj.*
 import java.util.stream.Collectors
 
 class TracksAPI(api: SpotifyAPI) : Endpoint(api) {
-    fun getTrack(trackId: String, market: String? = null): Track {
+    fun getTrack(trackId: String, market: String? = null): Track? {
         return get("https://api.spotify.com/v1/tracks/$trackId${if (market != null) "?market=$market" else ""}").toObject()
     }
 

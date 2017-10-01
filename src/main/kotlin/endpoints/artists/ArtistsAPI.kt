@@ -6,7 +6,7 @@ import obj.*
 import java.util.stream.Collectors
 
 class ArtistsAPI(api: SpotifyAPI) : Endpoint(api) {
-    fun getArtist(artistId: String): Artist {
+    fun getArtist(artistId: String): Artist? {
         return get("https://api.spotify.com/v1/artists/$artistId").toObject()
     }
 

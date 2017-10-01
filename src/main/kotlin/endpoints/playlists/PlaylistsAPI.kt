@@ -9,7 +9,7 @@ class PlaylistsAPI(api: SpotifyAPI) : Endpoint(api) {
         return get("https://api.spotify.com/v1/users/$userId/playlists?limit=$limit&offset=$offset").toObject()
     }
 
-    fun getPlaylist(userId: String, playlistId: String, market: String? = null): Playlist {
+    fun getPlaylist(userId: String, playlistId: String, market: String? = null): Playlist? {
         return get("https://api.spotify.com/v1/users/$userId/playlists/$playlistId${if (market != null) "?market=$market" else ""}").toObject()
     }
 
