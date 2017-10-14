@@ -8,8 +8,8 @@ import com.adamratzman.endpoints.public.playlists.PlaylistsAPI
 import com.adamratzman.endpoints.public.profiles.ProfilesAPI
 import com.adamratzman.endpoints.public.search.SearchAPI
 import com.adamratzman.endpoints.public.tracks.TracksAPI
-import com.google.gson.Gson
 import com.adamratzman.obj.Token
+import com.google.gson.Gson
 import org.jsoup.Jsoup
 import java.util.*
 import java.util.concurrent.Executors
@@ -18,11 +18,27 @@ import java.util.stream.Collectors
 
 val gson = Gson()
 
-class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = true) : SpotifyAPI(clientId, clientSecret, token, false) {
+class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token?, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
     val clientLibrary = ClientLibraryAPI(this)
+
     init {
         if (automaticRefresh) {
-            // TODO("add automatic refreshing of client tokens")
+            println("Automatic token refresh is enabled")
+            val executor = Executors.newSingleThreadScheduledExecutor()
+            executor.scheduleAtFixedRate({
+                val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
+                        .data("grant_type", "client_credentials")
+                        .data("refresh_token", token?.refresh_token)
+                        .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
+                        .ignoreContentType(true).post().body().text(), Token::class.java)
+                if (tempToken == null) {
+                    println("WARNING: Spotify Token refresh failed")
+                    executor.shutdown()
+                } else {
+                    this.token = tempToken
+                    println("INFO: Successfully refreshed Spotify token")
+                }
+            }, (token!!.expires_in - 30).toLong(), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
         }
     }
 
@@ -35,6 +51,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                     .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
                     .ignoreContentType(true).post().body().text().toObject(), automaticRefresh)
         }
+
         fun getAuthUrl(vararg scopes: Scope): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
                     "&response_type=code" +
@@ -42,6 +59,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                     if (scopes.isEmpty()) "" else "&scope=${scopes.map { it.uri }.stream().collect(Collectors.joining("%20"))}"
         }
     }
+
     enum class Scope(val uri: String) {
         PLAYLIST_READ_PRIVATE("playlist-read-private"),
         PLAYLIST_READ_COLLABORATIVE("playlist-read-collaborative"),
@@ -62,7 +80,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     }
 }
 
-open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token?, automaticRefresh: Boolean = true) {
+open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token?) {
     val search = SearchAPI(this)
     val albums = AlbumAPI(this)
     val browse = BrowseAPI(this)
@@ -72,27 +90,10 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
     val tracks = TracksAPI(this)
 
     init {
-        if (token == null) println("No token provided, the vast majority of available methods will not work without OAuth!")
-        else if (automaticRefresh) {
-            println("Automatic token refresh is enabled")
-            val executor = Executors.newSingleThreadScheduledExecutor()
-            executor.scheduleAtFixedRate({
-                val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                        .data("grant_type", "client_credentials")
-                        .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
-                        .ignoreContentType(true).post().body().text(), Token::class.java)
-                if (tempToken == null) {
-                    println("WARNING: Spotify Token refresh failed")
-                    executor.shutdown()
-                } else {
-                    token = tempToken
-                    println("INFO: Successfully refreshed token")
-                }
-            }, (token!!.expires_in - 30).toLong(), (token!!.expires_in - 30).toLong(), TimeUnit.SECONDS)
-        }
+        if (token == null) println("No token provided, this library will not work!")
     }
 
-    class Builder(private var clientId: String?, private var clientSecret: String?, var automaticRefresh: Boolean = true) {
+    class Builder(private var clientId: String?, private var clientSecret: String?) {
         constructor() : this(null, null)
 
         fun build(): SpotifyAPI {
@@ -100,9 +101,8 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
                 SpotifyAPI(clientId, clientSecret, gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                         .data("grant_type", "client_credentials")
                         .header("Authorization", "Basic " + (clientId + ":" + clientSecret).encode())
-                        .ignoreContentType(true).post().body().text(), Token::class.java), automaticRefresh)
-            } else
-                SpotifyAPI(null, null, null, false)
+                        .ignoreContentType(true).post().body().text(), Token::class.java))
+            } else SpotifyAPI(null, null, null)
         }
     }
 }

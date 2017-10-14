@@ -1,6 +1,16 @@
 package com.adamratzman.obj
 
-data class Token(val access_token: String, val token_type: String, val expires_in: Int, val refresh_token: String?, val scope: String?)
+import com.adamratzman.main.SpotifyClientAPI
+
+data class Token(val access_token: String, val token_type: String, val expires_in: Int, val refresh_token: String?, val scope: String?) {
+    fun getScopes(): List<SpotifyClientAPI.Scope> {
+        val scopes = mutableListOf<SpotifyClientAPI.Scope>()
+        scope?.split(" ")?.forEach { split ->
+            SpotifyClientAPI.Scope.values().forEach { if (split == it.uri) scopes.add(it) }
+        }
+        return scopes
+    }
+}
 
 data class ErrorResponse(val error: ErrorObject)
 
