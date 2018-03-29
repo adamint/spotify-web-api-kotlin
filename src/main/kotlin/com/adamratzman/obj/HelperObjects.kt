@@ -23,7 +23,6 @@ abstract class Endpoint(val api: SpotifyAPI) {
         if (api.token != null) connection = connection.header("Authorization", "Bearer ${api.token?.access_token}")
         val document = connection.ignoreHttpErrors(true).method(method).execute()
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) throw BadRequestException(gson.fromJson(document.body(), ErrorResponse::class.java).error)
-        println(document.body())
         return document.body()
     }
 }
@@ -32,6 +31,9 @@ abstract class Endpoint(val api: SpotifyAPI) {
 enum class Market(var code: String) {
     US("US")
 }
+
+data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class LinkedResult<out T>(val href: String, val items: List<T>)
 
 data class AlbumQNList(val artists: List<Album?>)
 data class ArtistList(val artists: List<Artist>)

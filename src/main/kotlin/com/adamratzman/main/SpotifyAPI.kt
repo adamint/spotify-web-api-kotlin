@@ -1,6 +1,5 @@
 package com.adamratzman.main
 
-import com.adamratzman.endpoints.client.library.ClientLibraryAPI
 import com.adamratzman.endpoints.public.album.AlbumAPI
 import com.adamratzman.endpoints.public.artists.ArtistsAPI
 import com.adamratzman.endpoints.public.browse.BrowseAPI
@@ -8,8 +7,11 @@ import com.adamratzman.endpoints.public.playlists.PlaylistsAPI
 import com.adamratzman.endpoints.public.profiles.ProfilesAPI
 import com.adamratzman.endpoints.public.search.SearchAPI
 import com.adamratzman.endpoints.public.tracks.TracksAPI
+import com.adamratzman.obj.LinkedResult
+import com.adamratzman.obj.PagingObject
 import com.adamratzman.obj.Token
 import com.google.gson.Gson
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import java.util.*
 import java.util.concurrent.Executors
@@ -19,7 +21,7 @@ import java.util.stream.Collectors
 val gson = Gson()
 
 class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token?, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
-    val clientLibrary = ClientLibraryAPI(this)
+    // val clientLibrary = ClientLibraryAPI(this)
 
     init {
         if (automaticRefresh) {
@@ -113,4 +115,23 @@ fun String.encode(): String {
 
 inline fun <reified T> Any.toObject(): T {
     return gson.fromJson(this as String, T::class.java)
+}
+
+inline fun <reified T> String.toPagingObject(innerObjectName: String? = null): PagingObject<T> {
+    val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
+    return PagingObject(
+            jsonObject.getString("href"),
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>() },
+            jsonObject.getInt("limit"),
+            jsonObject.get("next") as? String,
+            jsonObject.get("offset") as Int,
+            jsonObject.get("previous") as? String,
+            jsonObject.getInt("total"))
+}
+
+inline fun <reified T> String.toLinkedResult(): LinkedResult<T> {
+    val jsonObject = JSONObject(this)
+    return LinkedResult(
+            jsonObject.getString("href"),
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>() })
 }

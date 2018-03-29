@@ -6,6 +6,6 @@ import junit.framework.TestCase
 
 class ClientLibraryAPITest : TestCase() {
     fun testMyTracks() {
-        println(api.clientLibrary.getMyTracks(50))
+        //println(api.clientLibrary.getMyTracks(50))
     }
 }
