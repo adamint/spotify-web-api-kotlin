@@ -4,7 +4,8 @@ import com.adamratzman.endpoints.priv.follow.FollowingAPI
 import com.adamratzman.endpoints.priv.library.UserLibraryAPI
 import com.adamratzman.endpoints.priv.personalization.PersonalizationAPI
 import com.adamratzman.endpoints.priv.player.PlayerAPI
-import com.adamratzman.endpoints.priv.users.PrivateUserAPI
+import com.adamratzman.endpoints.priv.playlists.ClientPlaylistsAPI
+import com.adamratzman.endpoints.priv.users.ClientUserAPI
 import com.adamratzman.endpoints.pub.album.AlbumAPI
 import com.adamratzman.endpoints.pub.artists.ArtistsAPI
 import com.adamratzman.endpoints.pub.browse.BrowseAPI
@@ -25,11 +26,21 @@ import java.util.stream.Collectors
 val gson = Gson()
 
 class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token?, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
+    private val executor = Executors.newSingleThreadScheduledExecutor()
     val personalization = PersonalizationAPI(this)
-    val userProfile = PrivateUserAPI(this)
+    val userProfile = ClientUserAPI(this)
     val userLibrary = UserLibraryAPI(this)
     val userFollowing = FollowingAPI(this)
     val player = PlayerAPI(this)
+    val clientPlaylists = ClientPlaylistsAPI(this)
+
+    init {
+        if (automaticRefresh && token != null) {
+            executor.scheduleAtFixedRate({ refreshToken() }, ((token.expires_in - 30).toLong()), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
+        }
+    }
+
+    fun cancelRefresh() = executor.shutdown()
 
     private fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
@@ -52,7 +63,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                     .data("code", authorizationCode)
                     .data("redirect_uri", redirectUri)
                     .header("Authorization", "Basic " + ("$clientId:$clientSecret").encode())
-                    .ignoreContentType(true).post().body().text().toObject(), false)
+                    .ignoreContentType(true).post().body().text().toObject(), true)
         }
 
         fun buildToken(oauthToken: String): SpotifyClientAPI {
