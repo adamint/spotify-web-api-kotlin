@@ -32,19 +32,25 @@ An example for creating the API object without client credentials:
     val api = SpotifyAPI.Builder("clientId","clientSecret").build()
 ```
 After you've done this, you have access to the following objects:
-###Public:
-  - `SpotifyAPI#search` returns a `SearchAPI` object, allowing you to search for tracks, albums, playlists, and artists
-  - `SpotifyAPI#albums` returns an `AlbumAPI` object, allowing you to retrieve albums and their tracks
-  - `SpotifyAPI#artists` returns an `ArtistsAPI` object, allowing you to retrieve artists by their ids, get their albums and top tracks, and see related artists.
-  - `SpotifyAPI#browse` returns a `BrowseAPI` object, allowing you to get new album releases, get featured playlists, get playlists for specific categories, and generate recommendations. The `getRecommendations` method is documented by parameter to avoid confusion.
-  - `SpotifyAPI#playlists` returns a `PlaylistsAPI` object,  allowing you to retrieve playlists and their tracks
-  - `SpotifyAPI#profiles` returns a `ProfilesAPI` object,  allowing you to retrieve the public user object by a user's id
-  - `SpotifyAPI#tracks` returns a `TracksAPI` object,  allowing you to retrieve tracks or get an audio analysis or overview of the track's audio features.
-  - `SpotifyAPI#publicFollowing` returns a `PublicFollowingAPI` object, allowing you to check if users are following a specified user/artist
-###Private
-  `Undocumented at the moment`
+###Public (SpotifyAPI):
+  - `SpotifyAPI.search` returns a `SearchAPI` object, allowing you to search for tracks, albums, playlists, and artists
+  - `SpotifyAPI.albums` returns an `AlbumAPI` object, allowing you to retrieve albums and their tracks
+  - `SpotifyAPI.artists` returns an `ArtistsAPI` object, allowing you to retrieve artists by their ids, get their albums and top tracks, and see related artists.
+  - `SpotifyAPI.browse` returns a `BrowseAPI` object, allowing you to get new album releases, get featured playlists, get playlists for specific categories, and generate recommendations. The `getRecommendations` method is documented by parameter to avoid confusion.
+  - `SpotifyAPI.playlists` returns a `PlaylistsAPI` object,  allowing you to retrieve playlists and their tracks
+  - `SpotifyAPI.profiles` returns a `ProfilesAPI` object,  allowing you to retrieve the public user object by a user's id
+  - `SpotifyAPI.tracks` returns a `TracksAPI` object,  allowing you to retrieve tracks or get an audio analysis or overview of the track's audio features.
+  - `SpotifyAPI.publicFollowing` returns a `PublicFollowingAPI` object, allowing you to check if users are following a specified user/artist
+  
+###Private (SpotifyClientAPI)
+  - `SpotifyClientAPI.personalization` gives access to the user's top tracks and artists
+  - `SpotifyClientAPI.userProfile` lets you see and manage the user's profile
+  - `SpotifyClientAPI.userLibrary` lets you see and manage the user's library
+  - `SpotifyClientAPI.userFollowing` lets you see and manage artists and users that the current user is following
+  - `SpotifyClientAPI.clientPlaylists` lets you create and manage user playlists
+  - `SpotifyClientAPI.player` lets you see the user's devices and manage their playback state. This is in *beta* per Spotify documentation and methods could stop working at any time. All management endpoints only work for Premium users.
 
-### Example using Recommendations
+### Example using Recommendations (BrowseAPI)
 
 ```kotlin
     val api = SpotifyAPI.Builder("yourClientId","yourClientSecret").build()
