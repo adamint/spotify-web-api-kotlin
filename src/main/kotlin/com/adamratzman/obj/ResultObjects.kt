@@ -14,6 +14,11 @@ data class PlaylistTrackInfo(val href: String, val total: Int)
  */
 data class Followers(val href: String?, val total: Int)
 
+data class SpotifyUserInformation(val birthdate: String, val country: String, val display_name: String?, val email: String,
+                                  val external_urls: HashMap<String, String>, val followers: Followers, val href: String,
+                                  val id: String, val images: List<SpotifyImage>, val product: String, val type: String,
+                                  val uri: String)
+
 data class SpotifyPublicUser(val display_name: String, val external_urls: HashMap<String, String>, val followers: Followers, val href: String,
                              val id: String, val images: List<SpotifyImage>, val type: String, val uri: String)
 
@@ -90,3 +95,15 @@ data class AudioFeatures(val acousticness: Float, val analysis_url: String, val 
 
 data class SavedAlbum(val added_at: String, val album: Album)
 data class SavedTrack(val added_at: String, val track: Track)
+data class Device(val id: String, val is_active: Boolean, val is_restricted: Boolean, val name: String, val type: String,
+                  val volume_percent: Int)
+
+data class CurrentlyPlayingContext(val timestamp: Long?, val device: Device, val progress_ms: String, val is_playing: Boolean,
+                                   val item: Track?, val shuffle_state: Boolean, val repeat_state: String, val context: Context)
+
+data class Context(val external_urls: HashMap<String, String>)
+data class CurrentlyPlayingObject(val context: PlayHistoryContext?, val timestamp: Long, val progress_ms: Int, val is_playing: Boolean,
+                                  val item: Track)
+
+data class PlayHistoryContext(val type: String, val href: String, val external_urls: HashMap<String, String>, val uri: String)
+data class PlayHistory(val track: SimpleTrack, val played_at: String, val context: PlayHistoryContext)
