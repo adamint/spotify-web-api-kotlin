@@ -30,13 +30,6 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     val userLibrary = UserLibraryAPI(this)
     val userFollowing = FollowingAPI(this)
     val player = PlayerAPI(this)
-    init {
-        if (automaticRefresh) {
-            println("Automatic token refresh is enabled")
-            val executor = Executors.newSingleThreadScheduledExecutor()
-            executor.scheduleAtFixedRate({ refreshToken() }, (token!!.expires_in - 30).toLong(), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
-        }
-    }
 
     private fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")

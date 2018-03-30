@@ -10,9 +10,7 @@ This library represents an updated and more intuitive version of thelinmichael's
   - Uses the **Client Credentials** authorization type for the Spotify Web API
   - Allows developers to use all non-client endpoints
 ### What this library does NOT do
-  - Handle client OAuth, scopes, or provide wrappers for client endpoints
-  - **It currently requires Client ID and Secret to use any method**
-
+  - Handle client OAuth (however, it does provide a method to obtain the OAuth URL for provided scopes)
 # How do I get it?
 You **must** have Jitpack in your repositories. An example for gradle is shown below
 ```
@@ -28,11 +26,13 @@ dependencies {
 ```
 
 # How do I use this?
-You must first create a `SpotifyAPI` object by using the exposed `Builder`, as shown below. Keep in mind, you only need to create one of these!
+You must first create a `SpotifyAPI` or `SpotifyClientAPI` object by using the exposed `Builder`, as shown below. Keep in mind, you only need to create one of these!
+An example for creating the API object without client credentials:
 ```kotlin
     val api = SpotifyAPI.Builder("clientId","clientSecret").build()
 ```
 After you've done this, you have access to the following objects:
+###Public:
   - `SpotifyAPI#search` returns a `SearchAPI` object, allowing you to search for tracks, albums, playlists, and artists
   - `SpotifyAPI#albums` returns an `AlbumAPI` object, allowing you to retrieve albums and their tracks
   - `SpotifyAPI#artists` returns an `ArtistsAPI` object, allowing you to retrieve artists by their ids, get their albums and top tracks, and see related artists.
@@ -40,7 +40,9 @@ After you've done this, you have access to the following objects:
   - `SpotifyAPI#playlists` returns a `PlaylistsAPI` object,  allowing you to retrieve playlists and their tracks
   - `SpotifyAPI#profiles` returns a `ProfilesAPI` object,  allowing you to retrieve the public user object by a user's id
   - `SpotifyAPI#tracks` returns a `TracksAPI` object,  allowing you to retrieve tracks or get an audio analysis or overview of the track's audio features.
-  
+  - `SpotifyAPI#publicFollowing` returns a `PublicFollowingAPI` object, allowing you to check if users are following a specified user/artist
+###Private
+  `Undocumented at the moment`
 
 ### Example using Recommendations
 
