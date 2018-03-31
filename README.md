@@ -32,6 +32,7 @@ An example for creating the API object without client credentials:
     val api = SpotifyAPI.Builder("clientId","clientSecret").build()
 ```
 After you've done this, you have access to the following objects:
+
 ###Public (SpotifyAPI):
   - `SpotifyAPI.search` returns a `SearchAPI` object, allowing you to search for tracks, albums, playlists, and artists
   - `SpotifyAPI.albums` returns an `AlbumAPI` object, allowing you to retrieve albums and their tracks
