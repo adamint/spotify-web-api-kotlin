@@ -33,7 +33,7 @@ An example for creating the API object without client credentials:
 ```
 After you've done this, you have access to the following objects:
 
-###Public (SpotifyAPI):
+### Public (SpotifyAPI):
   - `SpotifyAPI.search` returns a `SearchAPI` object, allowing you to search for tracks, albums, playlists, and artists
   - `SpotifyAPI.albums` returns an `AlbumAPI` object, allowing you to retrieve albums and their tracks
   - `SpotifyAPI.artists` returns an `ArtistsAPI` object, allowing you to retrieve artists by their ids, get their albums and top tracks, and see related artists.
@@ -43,7 +43,7 @@ After you've done this, you have access to the following objects:
   - `SpotifyAPI.tracks` returns a `TracksAPI` object,  allowing you to retrieve tracks or get an audio analysis or overview of the track's audio features.
   - `SpotifyAPI.publicFollowing` returns a `PublicFollowingAPI` object, allowing you to check if users are following a specified user/artist
   
-###Private (SpotifyClientAPI)
+### Private (SpotifyClientAPI)
   - `SpotifyClientAPI.personalization` gives access to the user's top tracks and artists
   - `SpotifyClientAPI.userProfile` lets you see and manage the user's profile
   - `SpotifyClientAPI.userLibrary` lets you see and manage the user's library
