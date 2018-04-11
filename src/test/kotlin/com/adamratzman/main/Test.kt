@@ -1,8 +1,11 @@
 package com.adamratzman.main
 
-val api = SpotifyAPI.Builder("79d455af5aea45c094c5cea04d167ac1",
-        "SECRET")
+val clientId = ""
+val clientSecret = ""
+
+val api = SpotifyAPI.Builder(clientId,
+        clientSecret)
         .build()
-val clientApi = SpotifyClientAPI.Builder("79d455af5aea45c094c5cea04d167ac1",
-        "SECRET", "REDIRECT")
+val clientApi = SpotifyClientAPI.Builder(clientId,
+        clientSecret, "REDIRECT")
         .buildToken("TOKEN")
