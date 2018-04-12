@@ -1,5 +1,6 @@
 package com.adamratzman.spotify.kotlin.endpoints.priv.player
 
+import com.adamratzman.spotify.endpoints.priv.player.PlayerAPI
 import com.adamratzman.spotify.main.clientApi
 import org.junit.Test
 

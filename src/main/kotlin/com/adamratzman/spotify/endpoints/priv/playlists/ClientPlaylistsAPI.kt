@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.kotlin.endpoints.priv.playlists
+package com.adamratzman.spotify.endpoints.priv.playlists
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.obj.*
@@ -11,7 +11,7 @@ class ClientPlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                         "\"name\": \"$name\"," +
                         "\"description\": \"$description\"," +
                         "\"public\": $public" +
-                        "}").toObject()
+                        "}").toObject(api)
     }
 
     /**
@@ -37,7 +37,7 @@ class ClientPlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getClientPlaylists(limit: Int = 20, offset: Int = 0): PagingObject<SimplePlaylist> {
         if (limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
         if (offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
-        return get("https://api.spotify.com/v1/me/playlists?limit=$limit&offset=$offset").toPagingObject()
+        return get("https://api.spotify.com/v1/me/playlists?limit=$limit&offset=$offset").toPagingObject(api = api)
     }
 
     fun reorderTracks(userId: String, playlistId: String, reorderRangeStart: Int, reorderRangeLength: Int = 1, insertionPoint: Int, snapshotId: String? = null): Snapshot {
@@ -46,7 +46,7 @@ class ClientPlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 "\"range_length\": $reorderRangeLength," +
                 "\"insert_before\": $insertionPoint" +
                 if (snapshotId != null) ",\"snapshot_id\": \"$snapshotId\"" else "" +
-                        "}").toObject()
+                        "}").toObject(api)
     }
 
     fun replaceTracks(userId: String, playlistId: String, vararg trackIds: String) {

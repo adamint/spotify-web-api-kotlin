@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.kotlin.endpoints.priv.player
+package com.adamratzman.spotify.endpoints.priv.player
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.obj.*
@@ -8,20 +8,20 @@ import com.adamratzman.spotify.obj.*
  */
 class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): List<Device> {
-        return get("https://api.spotify.com/v1/me/player/devices").toInnerObject("devices")
+        return get("https://api.spotify.com/v1/me/player/devices").toInnerObject("devices", api)
     }
 
     fun getCurrentContext(): CurrentlyPlayingContext? {
-        val obj: CurrentlyPlayingContext? = get("https://api.spotify.com/v1/me/player").toObject<CurrentlyPlayingContext>()
+        val obj: CurrentlyPlayingContext? = get("https://api.spotify.com/v1/me/player").toObject<CurrentlyPlayingContext>(api)
         return if (obj?.timestamp == null) null else obj
     }
 
     fun getRecentlyPlayed(): CursorBasedPagingObject<PlayHistory> {
-        return get("https://api.spotify.com/v1/me/player/recently-played").toCursorBasedPagingObject()
+        return get("https://api.spotify.com/v1/me/player/recently-played").toCursorBasedPagingObject(api = api)
     }
 
     fun getCurrentlyPlaying(): CurrentlyPlayingObject? {
-        val obj: CurrentlyPlayingObject? = get("https://api.spotify.com/v1/me/player/currently-playing").toObject<CurrentlyPlayingObject>()
+        val obj: CurrentlyPlayingObject? = get("https://api.spotify.com/v1/me/player/currently-playing").toObject<CurrentlyPlayingObject>(api)
         return if (obj?.timestamp == null) null else obj
     }
 

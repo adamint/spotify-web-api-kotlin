@@ -1,8 +1,7 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.tracks
 
-import junit.framework.TestCase
 import com.adamratzman.spotify.main.api
-import com.adamratzman.spotify.main.gson
+import junit.framework.TestCase
 
 class TracksAPITest : TestCase() {
     fun testGetTracks() {
@@ -10,7 +9,7 @@ class TracksAPITest : TestCase() {
     }
 
     fun testGetAudioAnalysis() {
-        println(gson.toJson(api.tracks.getAudioAnalysis("4o4sj7dVrT51NKMyeG8T5y")))
+        println(api.tracks.getAudioAnalysis("4o4sj7dVrT51NKMyeG8T5y"))
         println(api.tracks.getAudioAnalysis("7cU84qjHFxJ39COxWltHyY"))
     }
 
