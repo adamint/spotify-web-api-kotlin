@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.kotlin.endpoints.pub.search
+package com.adamratzman.spotify.endpoints.pub.search
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.obj.*
@@ -11,22 +11,22 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     fun searchPlaylist(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<Playlist> {
         return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.PLAYLIST.id}&market=${market.code}&limit=$limit&offset=$offset")
-                .toPagingObject("playlists")
+                .toPagingObject("playlists", api)
 
     }
 
     fun searchArtist(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<Artist> {
         return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.ARTIST.id}&market=${market.code}&limit=$limit&offset=$offset")
-                .toPagingObject("artists")
+                .toPagingObject("artists", api)
     }
 
     fun searchAlbum(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<SimpleAlbum> {
         return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.ALBUM.id}&market=${market.code}&limit=$limit&offset=$offset")
-                .toPagingObject("albums")
+                .toPagingObject("albums", api)
     }
 
     fun searchTrack(query: String, limit: Int = 20, offset: Int = 0, market: Market = Market.US): PagingObject<SimpleTrack> {
         return get("https://api.spotify.com/v1/search?q=${URLEncoder.encode(query, "UTF-8")}&type=${SearchType.TRACK.id}&market=${market.code}&limit=$limit&offset=$offset")
-                .toPagingObject("tracks")
+                .toPagingObject("tracks", api)
     }
 }

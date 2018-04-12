@@ -1,7 +1,7 @@
 package com.adamratzman.spotify.obj
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.gson
+import com.google.gson.Gson
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -27,15 +27,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET, retry202: Boolean = true): String {
         var connection = Jsoup.connect(url).ignoreContentType(true)
         if (body != null) {
-            if (method == Connection.Method.DELETE){
+            if (method == Connection.Method.DELETE) {
                 val key = JSONObject(body).keySet().toList()[0]
                 connection = connection.data(key, JSONObject(body).getJSONArray(key).toString())
-            }
-            else connection = connection.requestBody(body)
+            } else connection = connection.requestBody(body)
         }
         if (api.token != null) connection = connection.header("Authorization", "Bearer ${api.token?.access_token}")
         val document = connection.ignoreHttpErrors(true).method(method).execute()
-        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) api.logger.logError(false, null, BadRequestException(gson.fromJson(document.body(), ErrorResponse::class.java).error))
+        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) api.logger.logError(false, null, BadRequestException(api.gson.fromJson(document.body(), ErrorResponse::class.java).error))
         else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
         return document.body()
     }
@@ -68,15 +67,17 @@ fun String.encode(): String {
     return String(Base64.getEncoder().encode(toByteArray()))
 }
 
-inline fun <reified T> Any.toObject(): T {
-    return gson.fromJson(this as String, T::class.java)
+inline fun <reified T> Any.toObject(o: Any): T {
+    return ((o as? SpotifyAPI)?.gson ?: (o as? Gson)
+    ?: throw IllegalArgumentException("Parameter must be a SpotifyAPI or Gson instance"))
+            .fromJson(this as String, T::class.java)
 }
 
-inline fun <reified T> String.toPagingObject(innerObjectName: String? = null): PagingObject<T> {
+inline fun <reified T> String.toPagingObject(innerObjectName: String? = null, api: SpotifyAPI): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     return PagingObject(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>() },
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) },
             jsonObject.getInt("limit"),
             jsonObject.get("next") as? String,
             jsonObject.get("offset") as Int,
@@ -84,24 +85,24 @@ inline fun <reified T> String.toPagingObject(innerObjectName: String? = null): P
             jsonObject.getInt("total"))
 }
 
-inline fun <reified T> String.toCursorBasedPagingObject(innerObjectName: String? = null): CursorBasedPagingObject<T> {
+inline fun <reified T> String.toCursorBasedPagingObject(innerObjectName: String? = null, api: SpotifyAPI): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     return CursorBasedPagingObject(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>() },
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) },
             jsonObject.getInt("limit"),
             jsonObject.get("next") as? String,
-            gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),
+            api.gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),
             if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1)
 }
 
-inline fun <reified T> String.toLinkedResult(): LinkedResult<T> {
+inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {
     val jsonObject = JSONObject(this)
     return LinkedResult(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>() })
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) })
 }
 
-inline fun <reified T> String.toInnerObject(innerName: String): List<T> {
-    return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject<T>() }
+inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): List<T> {
+    return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject<T>(api) }
 }

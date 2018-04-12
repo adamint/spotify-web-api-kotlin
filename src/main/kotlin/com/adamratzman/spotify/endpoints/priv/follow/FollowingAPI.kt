@@ -1,19 +1,19 @@
-package com.adamratzman.spotify.kotlin.endpoints.priv.follow
+package com.adamratzman.spotify.endpoints.priv.follow
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.obj.*
 
 class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun followingUsers(vararg userIds: String): List<Boolean> {
-        return get("https://api.spotify.com/v1/me/following/contains?type=user&ids=${userIds.joinToString(",")}").toObject()
+        return get("https://api.spotify.com/v1/me/following/contains?type=user&ids=${userIds.joinToString(",")}").toObject(api)
     }
 
     fun followingArtists(vararg userIds: String): List<Boolean> {
-        return get("https://api.spotify.com/v1/me/following/contains?type=artist&ids=${userIds.joinToString(",")}").toObject()
+        return get("https://api.spotify.com/v1/me/following/contains?type=artist&ids=${userIds.joinToString(",")}").toObject(api)
     }
 
     fun getFollowedArtists(): CursorBasedPagingObject<Artist> {
-        return get("https://api.spotify.com/v1/me/following?type=artist").toCursorBasedPagingObject("artists")
+        return get("https://api.spotify.com/v1/me/following?type=artist").toCursorBasedPagingObject("artists",api)
     }
 
     fun followUsers(vararg userIds: String) {
