@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.kotlin.endpoints.pub.browse
+package com.adamratzman.spotify.endpoints.pub.browse
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.obj.*
@@ -8,25 +8,25 @@ import java.util.stream.Collectors
 class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getNewReleases(limit: Int = 20, offset: Int = 0, country: String? = null): PagingObject<Album> {
         return get("https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
-                .toPagingObject("albums")
+                .toPagingObject("albums", api)
     }
 
     fun getFeaturedPlaylists(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): FeaturedPlaylists {
-        return get("https://api.spotify.com/v1/browse/featured-playlists?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}").toObject()
+        return get("https://api.spotify.com/v1/browse/featured-playlists?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}").toObject(api)
     }
 
     fun getCategoryList(limit: Int = 20, offset: Int = 0, locale: String? = null, country: String? = null): PagingObject<SpotifyCategory> {
         return get("https://api.spotify.com/v1/browse/categories?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (country != null) "&country=$country" else ""}")
-                .toPagingObject("categories")
+                .toPagingObject("categories", api)
     }
 
     fun getCategory(categoryId: String, country: String? = null): SpotifyCategory {
-        return get("https://api.spotify.com/v1/browse/categories/${URLEncoder.encode(categoryId, "UTF-8")}${if (country != null) "?country=$country" else ""}").toObject()
+        return get("https://api.spotify.com/v1/browse/categories/${URLEncoder.encode(categoryId, "UTF-8")}${if (country != null) "?country=$country" else ""}").toObject(api)
     }
 
     fun getPlaylistsForCategory(categoryId: String, country: String? = null, limit: Int = 20, offset: Int = 0): PagingObject<SimplePlaylist> {
         return get("https://api.spotify.com/v1/browse/categories/$categoryId/playlists?limit=$limit&offset=$offset${if (country != null) "&country=$country" else ""}")
-                .toPagingObject("playlists")
+                .toPagingObject("playlists", api)
     }
 
     /**
@@ -41,6 +41,6 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         if (seedGenres != null) url.append("&seed_genres=${seedGenres.stream().collect(Collectors.joining(","))}")
         if (seedTracks != null) url.append("&seed_tracks=${seedTracks.stream().collect(Collectors.joining(","))}")
         if (targets.size > 0) targets.forEach { url.append("&target_${it.key}=${it.value}") }
-        return get(url.toString()).toObject()
+        return get(url.toString()).toObject(api)
     }
 }
