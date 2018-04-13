@@ -8,5 +8,4 @@ class PublicUsersAPI : TestCase() {
         println(api.users.getProfile("adamratzman1").complete())
         println(api.users.getProfile("adamratzman66").complete())
     }
-
 }
