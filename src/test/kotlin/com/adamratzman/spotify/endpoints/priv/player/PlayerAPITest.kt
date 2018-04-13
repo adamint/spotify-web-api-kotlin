@@ -27,12 +27,12 @@ class PlayerAPITest {
 
     @Test
     fun pausePlayback() {
-        println(clientApi.player.pausePlayback())
+        println(clientApi.player.pausePlayback().complete())
     }
 
     @Test
     fun seekPosition() {
-        println(clientApi.player.seekPosition(2))
+        println(clientApi.player.seekPosition(2).complete())
     }
 
     @Test
@@ -57,7 +57,7 @@ class PlayerAPITest {
 
     @Test
     fun startPlayback() {
-        println(clientApi.player.startPlayback())
+        println(clientApi.player.startPlayback().complete())
     }
 
     @Test

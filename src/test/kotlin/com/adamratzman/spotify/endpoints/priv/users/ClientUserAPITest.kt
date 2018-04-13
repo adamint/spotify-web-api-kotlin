@@ -7,7 +7,7 @@ import org.junit.Test
 internal class ClientUserAPITest {
     @Test
     fun getUserProfile() {
-        println(clientApi.userProfile.getUserProfile())
+        println(clientApi.userProfile.getUserProfile().complete())
     }
 
 }

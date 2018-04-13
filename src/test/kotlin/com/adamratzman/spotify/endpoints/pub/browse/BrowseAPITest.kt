@@ -1,30 +1,32 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.browse
 
-import junit.framework.TestCase
 import com.adamratzman.spotify.main.api
+import junit.framework.TestCase
 
 class BrowseAPITest : TestCase() {
     fun testGetNewReleases() {
-        println(api.browse.getNewReleases())
+        val action = api.browse.getNewReleases()
+        println(action.complete())
     }
 
     fun testGetFeaturedPlaylists() {
-        println(api.browse.getFeaturedPlaylists())
+        println(api.browse.getFeaturedPlaylists().complete())
     }
 
     fun testGetCategoryList() {
-        println(api.browse.getCategoryList())
+        println(api.browse.getCategoryList().complete())
     }
+
     fun testGetCategory() {
-        println(api.browse.getCategory("pop"))
+        println(api.browse.getCategory("pop").complete())
     }
 
     fun testGetPlaylistsForCategory() {
-        println(api.browse.getPlaylistsForCategory("party"))
+        println(api.browse.getPlaylistsForCategory("party").complete())
     }
 
     fun testGetRecommendations() {
-        println(api.browse.getRecommendations(seedArtists = listOf("3TVXtAsR1Inumwj472S9r4"), seedGenres = listOf("pop", "country"), targets = hashMapOf(Pair("speechiness", 1.0), Pair("danceability", 1.0))))
+        println(api.browse.getRecommendations(seedArtists = listOf("3TVXtAsR1Inumwj472S9r4"), seedGenres = listOf("pop", "country"), targets = hashMapOf(Pair("speechiness", 1.0), Pair("danceability", 1.0))).complete())
     }
 
 }
