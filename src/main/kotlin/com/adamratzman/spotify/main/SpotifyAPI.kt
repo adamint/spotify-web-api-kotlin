@@ -14,17 +14,19 @@ import com.adamratzman.spotify.endpoints.pub.playlists.PlaylistsAPI
 import com.adamratzman.spotify.endpoints.pub.search.SearchAPI
 import com.adamratzman.spotify.endpoints.pub.tracks.TracksAPI
 import com.adamratzman.spotify.endpoints.pub.users.PublicUserAPI
-import com.adamratzman.spotify.obj.Token
-import com.adamratzman.spotify.obj.encode
-import com.adamratzman.spotify.obj.toObject
+import com.adamratzman.spotify.utils.Token
+import com.adamratzman.spotify.utils.byteEncode
+import com.adamratzman.spotify.utils.toObject
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.jsoup.Jsoup
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
 open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token?) {
-    val gson = Gson()
+    internal val executor = Executors.newSingleThreadScheduledExecutor()
+    val gson = GsonBuilder().setLenient().create()
     val search = SearchAPI(this)
     val albums = AlbumAPI(this)
     val browse = BrowseAPI(this)
@@ -36,7 +38,7 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
     val logger = SpotifyLogger(true)
 
     init {
-        if (token == null) println("No token provided, this library will not work!")
+        if (token == null) logger.logError(true, "No token provided, this library will not work!", null)
     }
 
     class Builder(private var clientId: String?, private var clientSecret: String?) {
@@ -45,7 +47,7 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
                 if (clientId != null && clientSecret != null) {
                     SpotifyAPI(clientId, clientSecret, Gson().fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                             .data("grant_type", "client_credentials")
-                            .header("Authorization", "Basic $clientId:$clientSecret".encode())
+                            .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
                             .ignoreContentType(true).post().body().text(), Token::class.java))
                 } else SpotifyAPI(null, null, null)
             } catch (e: Exception) {
@@ -61,7 +63,6 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
 }
 
 class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token?, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
-    private val executor = Executors.newSingleThreadScheduledExecutor()
     val personalization = PersonalizationAPI(this)
     val userProfile = ClientUserAPI(this)
     val userLibrary = UserLibraryAPI(this)
@@ -81,7 +82,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                 .data("grant_type", "client_credentials")
                 .data("refresh_token", token?.refresh_token ?: "")
-                .header("Authorization", "Basic " + ("$clientId:$clientSecret").encode())
+                .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
                 .ignoreContentType(true).post().body().text(), Token::class.java)
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
@@ -98,7 +99,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                         .data("grant_type", "authorization_code")
                         .data("code", authorizationCode)
                         .data("redirect_uri", redirectUri)
-                        .header("Authorization", "Basic " + ("$clientId:$clientSecret").encode())
+                        .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
                         .ignoreContentType(true).post().body().text().toObject(Gson()), automaticRefresh)
             } catch (e: Exception) {
                 println("Invalid credentials provided")

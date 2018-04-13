@@ -1,14 +1,20 @@
 package com.adamratzman.spotify.endpoints.priv.personalization
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.obj.*
+import com.adamratzman.spotify.utils.*
+import java.util.function.Supplier
 
 class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
-    fun getTopArtists(): PagingObject<Artist> {
-        return get("https://api.spotify.com/v1/me/top/artists").toPagingObject(api = api)
+    fun getTopArtists(): SpotifyRestAction<PagingObject<Artist>> {
+        return toAction(Supplier {
+            get("https://api.spotify.com/v1/me/top/artists").toPagingObject<Artist>(api = api)
+        })
     }
 
-    fun getTopTracks(): PagingObject<Track> {
-        return get("https://api.spotify.com/v1/me/top/tracks").toPagingObject(api = api)
+    fun getTopTracks(): SpotifyRestAction<PagingObject<Track>> {
+        return toAction(Supplier {
+            get("https://api.spotify.com/v1/me/top/tracks").toPagingObject<Track>(api = api)
+        })
     }
+
 }
