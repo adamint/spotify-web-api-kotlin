@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.obj
+package com.adamratzman.spotify.utils
 
 data class RecommendationSeed(val initialPoolSize: Int, val afterFilteringSize: Int, val afterRelinkingSize: Int?, val href: String, val id: String,
                               val type: String)

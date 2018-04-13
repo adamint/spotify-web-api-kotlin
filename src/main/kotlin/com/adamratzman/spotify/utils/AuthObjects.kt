@@ -1,4 +1,4 @@
-package com.adamratzman.spotify.obj
+package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyClientAPI
 
