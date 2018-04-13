@@ -27,10 +27,10 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../SpotifyKotlinExamples/out/production/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../SpotifyKotlinExamples/src/main">
+    <content url="file://$MODULE_DIR$/../../examples/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../SpotifyKotlinExamples/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../SpotifyKotlinExamples/src/main/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../SpotifyKotlinExamples/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../examples/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../examples/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -38,5 +38,6 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.31" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="module" module-name="SpotifyKotlinWrapper_main" />
   </component>
 </module>

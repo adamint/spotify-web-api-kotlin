@@ -1,6 +1,5 @@
 package examples.api
 
-
 import api
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
