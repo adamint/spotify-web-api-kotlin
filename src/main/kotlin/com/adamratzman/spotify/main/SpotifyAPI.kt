@@ -26,8 +26,8 @@ import java.util.stream.Collectors
 
 open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
-    internal val executor = Executors.newSingleThreadScheduledExecutor()
-    val gson = GsonBuilder().setLenient().create()
+    internal val executor = Executors.newScheduledThreadPool(1)
+    val gson = GsonBuilder().setLenient().create()!!
     val search = SearchAPI(this)
     val albums = AlbumAPI(this)
     val browse = BrowseAPI(this)

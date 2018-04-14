@@ -2,10 +2,10 @@
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
 ## Contents
-  1. **[Downloading](#Downloading)**
-  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#Creating-a-SpotifyAPI-or-SpotifyClientAPI-object)**
-  3. **[What is the SpotifyRestAction class?](#What-is-the-SpotifyRestAction-class?)**
-  4. **[Using the Library](#Using-the-Library)**
+  1. **[Downloading](#downloading)**
+  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyAPI-or-spotifyClientAPI-object)**
+  3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyRestAction-class?)**
+  4. **[Using the Library](#using-the-library)**
 
 ## Downloading
 This library is available via Maven Central. 
@@ -99,8 +99,26 @@ time, this will likely be accurate within a few milliseconds.
 #### SpotifyAPI:
    - **[AlbumAPI (SpotifyAPI.albums)](https://developer.spotify.com/web-api/album-endpoints/)**
         1. `getAlbum` returns found Album
-        2. `getAlbums` returns found Albums
+        2. `getAlbums` returns found Albums. Use for multiple
         3. `getAlbumTracks` returns a `LinkedResult` (with href to album) of SimpleTracks
-  
-  
+   - **[ArtistAPI (SpotifyAPI.artists)](https://developer.spotify.com/web-api/artist-endpoints/)**
+        1. `getArtist` returns the found artist
+        2. `getArtists` returns a list of Artist objects. Use for multiple.
+        3. `getArtistAlbums` returns a `LinkedResult` of SimpleAlbums representing the Artist's albums
+        4. `getArtistTopTracks` returns a List of full Track objects
+        5. `getRelatedArtists` returns a List of Artist objects relating to the searched artist
+   - **[BrowseAPI (SpotifyAPI.browse)]()**
+        1. `getNewReleases` returns a `PagingObject` of recent Albums
+        2. `getFeaturedPlaylists` returns a FeaturedPlaylists object of playlists featured by Spotify
+        3. `getCategoryList` returns a `PagingObject` of official Spotify categories
+        4. `getCategory` returns a singular SpotifyCategory object by id
+        5. `getPlaylistsForCategory` returns a `PagingObject` of top simple playlists for the specified category id
+        6. `getRecommendations` returns a RecommendationResponse. Parameters include seed artists, genres, tracks, and 
+        tuneable track attributes listed [here](https://developer.spotify.com/web-api/complete-recommendations/)
+   - **[PublicFollowingAPI (SpotifyAPI.publicFollowing)]()**
+        1. 
+   - **[PlaylistsAPI (SpotifyAPI.playlists)]()**
+   - **[SearchAPI (SpotifyAPI.search)]()**
+   - **[TracksAPI (SpotifyAPI.tracks)]()**
+   - **[PublicUserAPI (SpotifyAPI.users)]()**
    to be continued..
