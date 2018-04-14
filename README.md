@@ -3,9 +3,9 @@ This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web
 
 ## Contents
   1. **[Downloading](#Downloading)**
-  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#Creating a SpotifyAPI or SpotifyClientAPI object)**
-  3. **[What is the SpotifyRestAction class?](#What is the SpotifyRestAction class?)**
-  4. **[Using the Library](#Using the Library)**
+  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#Creating-a-SpotifyAPI-or-SpotifyClientAPI-object)**
+  3. **[What is the SpotifyRestAction class?](#What-is-the-SpotifyRestAction-class?)**
+  4. **[Using the Library](#Using-the-Library)**
 
 ## Downloading
 This library is available via Maven Central. 
