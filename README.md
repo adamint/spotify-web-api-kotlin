@@ -107,7 +107,7 @@ time, this will likely be accurate within a few milliseconds.
         3. `getArtistAlbums` returns a `LinkedResult` of SimpleAlbums representing the Artist's albums
         4. `getArtistTopTracks` returns a List of full Track objects
         5. `getRelatedArtists` returns a List of Artist objects relating to the searched artist
-   - **[BrowseAPI (SpotifyAPI.browse)]()**
+   - **[BrowseAPI (SpotifyAPI.browse)](https://developer.spotify.com/web-api/browse-endpoints/)**
         1. `getNewReleases` returns a `PagingObject` of recent Albums
         2. `getFeaturedPlaylists` returns a FeaturedPlaylists object of playlists featured by Spotify
         3. `getCategoryList` returns a `PagingObject` of official Spotify categories
@@ -115,10 +115,25 @@ time, this will likely be accurate within a few milliseconds.
         5. `getPlaylistsForCategory` returns a `PagingObject` of top simple playlists for the specified category id
         6. `getRecommendations` returns a RecommendationResponse. Parameters include seed artists, genres, tracks, and 
         tuneable track attributes listed [here](https://developer.spotify.com/web-api/complete-recommendations/)
-   - **[PublicFollowingAPI (SpotifyAPI.publicFollowing)]()**
-        1. 
-   - **[PlaylistsAPI (SpotifyAPI.playlists)]()**
-   - **[SearchAPI (SpotifyAPI.search)]()**
-   - **[TracksAPI (SpotifyAPI.tracks)]()**
-   - **[PublicUserAPI (SpotifyAPI.users)]()**
+   - **[PublicFollowingAPI (SpotifyAPI.publicFollowing)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
+        1. `doUsersFollowPlaylist` returns a List of Booleans corresponding to the order in which ids were specified
+   - **[PlaylistsAPI (SpotifyAPI.playlists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
+        1. `getPlaylists` returns a `PagingObject` of SimplePlaylists the user has
+        2. `getPlaylist` returns a full Playlist object of the specified user and playlist id
+        3. `getPlaylistTracks` returns a `LinkedResult` (linked with the playlist url) of **PlaylistTrack**s
+        4. `getPlaylistCovers` returns an ordered list of SpotifyImages for the specified playlist.
+   - **[SearchAPI (SpotifyAPI.search)](https://developer.spotify.com/web-api/search-item/)**
+   It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.
+        1. `searchPlaylist` returns a `PagingObject` of Playlists ordered by likelihood of correct match
+        2. `searchTrack` returns a `PagingObject` of **SimpleTrack**s (not tracks!) ordered by likelihood of correct match
+        3. `searchArtist` returns a `PagingObject` of Artists ordered by likelihood of correct match.
+        4. `searchAlbum` returns a `PagingObject` of **SimpleAlbum**s (not albums!) ordered by likelihood of correct match
+   - **[TracksAPI (SpotifyAPI.tracks)](https://developer.spotify.com/web-api/track-endpoints/)**
+        1. `getTrack` returns the full Track object of the id searched.
+        2. `getTracks` returns an ordered list of Tracks
+        3. `getAudioAnalysis` returns the corresponding track analysis. This takes up to a few seconds to process.
+        4. `getAudioFeatures` returns the AudioFeatures for the track
+        5. `getAudioFeatures(vararg trackIds: String)` returns an ordered list of AudioFeatures. Time is *not* linear by track amount
+   - **[PublicUserAPI (SpotifyAPI.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
+        1. `getProfile` returns the corresponding SpotifyPublicUser object. Pay attention to nullable parameters.
    to be continued..
