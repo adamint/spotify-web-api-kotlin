@@ -24,7 +24,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
-open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token?) {
+open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token) {
+    internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newSingleThreadScheduledExecutor()
     val gson = GsonBuilder().setLenient().create()
     val search = SearchAPI(this)
@@ -37,19 +38,17 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
     val publicFollowing = PublicFollowingAPI(this)
     val logger = SpotifyLogger(true)
 
-    init {
-        if (token == null) logger.logError(true, "No token provided, this library will not work!", null)
-    }
-
     class Builder(private var clientId: String?, private var clientSecret: String?) {
         fun build(): SpotifyAPI {
             return try {
+                val token = Gson().fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
+                        .data("grant_type", "client_credentials")
+                        .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
+                        .ignoreContentType(true).post().body().text(), Token::class.java)
+                        ?: throw IllegalArgumentException("Invalid credentials provided")
                 if (clientId != null && clientSecret != null) {
-                    SpotifyAPI(clientId, clientSecret, Gson().fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                            .data("grant_type", "client_credentials")
-                            .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                            .ignoreContentType(true).post().body().text(), Token::class.java))
-                } else SpotifyAPI(null, null, null)
+                    SpotifyAPI(clientId, clientSecret, token)
+                } else throw IllegalArgumentException("ID and Secret must not be null!")
             } catch (e: Exception) {
                 println("Invalid credentials provided")
                 throw e
@@ -57,12 +56,19 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
         }
     }
 
+    internal fun refreshClient() {
+        token = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
+                .data("grant_type", "client_credentials")
+                .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
+                .ignoreContentType(true).post().body().text(), Token::class.java)
+    }
+
     fun useLogger(enable: Boolean) {
         logger.enabled = enable
     }
 }
 
-class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token?, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
     val personalization = PersonalizationAPI(this)
     val userProfile = ClientUserAPI(this)
     val userLibrary = UserLibraryAPI(this)
@@ -71,7 +77,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     val clientPlaylists = ClientPlaylistsAPI(this)
 
     init {
-        if (automaticRefresh && token != null) {
+        if (automaticRefresh) {
             executor.scheduleAtFixedRate({ refreshToken() }, ((token.expires_in - 30).toLong()), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
         }
     }
@@ -81,7 +87,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                 .data("grant_type", "client_credentials")
-                .data("refresh_token", token?.refresh_token ?: "")
+                .data("refresh_token", token.refresh_token ?: "")
                 .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
                 .ignoreContentType(true).post().body().text(), Token::class.java)
         if (tempToken == null) {

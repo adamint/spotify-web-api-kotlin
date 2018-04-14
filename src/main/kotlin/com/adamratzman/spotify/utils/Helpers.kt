@@ -1,6 +1,7 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.google.gson.Gson
 import org.json.JSONObject
 import org.jsoup.Connection
@@ -27,14 +28,18 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET, retry202: Boolean = true): String {
+        if (api !is SpotifyClientAPI && System.currentTimeMillis() >= api.expireTime) {
+            api.refreshClient()
+            api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
+        }
         var connection = Jsoup.connect(url).ignoreContentType(true)
         if (body != null) {
-            if (method == Connection.Method.DELETE) {
+            connection = if (method == Connection.Method.DELETE) {
                 val key = JSONObject(body).keySet().toList()[0]
-                connection = connection.data(key, JSONObject(body).getJSONArray(key).toString())
-            } else connection = connection.requestBody(body)
+                connection.data(key, JSONObject(body).getJSONArray(key).toString())
+            } else connection.requestBody(body)
         }
-        if (api.token != null) connection = connection.header("Authorization", "Bearer ${api.token?.access_token}")
+        connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
         val document = connection.ignoreHttpErrors(true).method(method).execute()
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) throw BadRequestException(api.gson.fromJson(document.body(), ErrorResponse::class.java).error)
         else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
