@@ -18,7 +18,8 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
     fun asFuture() = CompletableFuture.supplyAsync(supplier)
     fun queueAfter(quantity: Int, timeUnit: TimeUnit = TimeUnit.SECONDS, consumer: (T) -> Unit) {
         val runAt = System.currentTimeMillis() + timeUnit.toMillis(quantity.toLong())
-        val result = complete()
-        api.executor.schedule({ consumer(result) }, runAt - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+        queue { result ->
+            api.executor.schedule({ consumer(result) }, runAt - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+        }
     }
 }
