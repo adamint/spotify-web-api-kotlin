@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples_main.iml" group="SpotifyKotlinExamples" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinExamples_test.iml" group="SpotifyKotlinExamples" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_main.iml" group="SpotifyKotlinWrapper" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_test.iml" group="SpotifyKotlinWrapper" />
