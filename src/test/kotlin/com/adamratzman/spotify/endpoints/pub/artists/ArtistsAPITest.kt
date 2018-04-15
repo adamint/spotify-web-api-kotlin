@@ -1,5 +1,6 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.artists
 
+import com.adamratzman.spotify.endpoints.pub.artists.ArtistsAPI
 import com.adamratzman.spotify.main.api
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
@@ -15,7 +16,8 @@ class ArtistsAPITest : TestCase() {
     }
 
     fun testGetArtistAlbums() {
-        println(api.artists.getArtistAlbums("0C8ZW7ezQVs4URX5aX7Kqx").complete())
+        println(api.artists.getArtistAlbums("0C8ZW7ezQVs4URX5aX7Kqx",
+                include = listOf(ArtistsAPI.AlbumInclusionStrategy.ALBUM, ArtistsAPI.AlbumInclusionStrategy.SINGLE)).complete())
     }
 
     fun testGetArtistTopTracks() {
