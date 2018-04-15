@@ -5,7 +5,10 @@ import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
 import java.util.function.Supplier
 
-class ClientPlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+/**
+ * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
+ */
+class UserPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun createPlaylist(userId: String, name: String, description: String, public: Boolean = true): SpotifyRestAction<Playlist> {
         return toAction(Supplier {
             post("https://api.spotify.com/v1/users/${userId.encode()}/playlists",

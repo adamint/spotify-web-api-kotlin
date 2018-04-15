@@ -4,6 +4,9 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
+/**
+ * Endpoints for retrieving information about a user’s profile.
+ */
 class PublicUserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser> {
         return toAction(Supplier {

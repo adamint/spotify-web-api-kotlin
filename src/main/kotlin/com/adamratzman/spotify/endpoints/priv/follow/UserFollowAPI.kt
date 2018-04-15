@@ -4,7 +4,10 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
-class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+/**
+ * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
+ */
+class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun followingUsers(vararg userIds: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get("https://api.spotify.com/v1/me/following/contains?type=user&ids=${userIds.joinToString(",") { it.encode() }} { it.encode() }}").toObject<List<Boolean>>(api)

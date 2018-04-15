@@ -16,7 +16,7 @@ internal class PlaylistsAPITest {
 
     @Test
     fun getPlaylistTracks() {
-        println(api.playlists.getPlaylistTracks("adamratzman1", "53Sr94VRrDgvLCh86lbMVx").complete())
+        println(api.playlists.getPlaylistTracks("adamratzman1", "53Sr94VRrDgvLCh86lbMVx").complete().toPlaylistParams())
     }
 
     @Test

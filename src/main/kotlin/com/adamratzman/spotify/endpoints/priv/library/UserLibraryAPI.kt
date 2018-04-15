@@ -4,6 +4,9 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
+/**
+ * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
+ */
 class UserLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getSavedTracks(): SpotifyRestAction<PagingObject<SavedTrack>> {
         return toAction(Supplier {

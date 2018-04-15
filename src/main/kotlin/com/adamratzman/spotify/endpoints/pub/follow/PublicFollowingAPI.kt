@@ -7,6 +7,9 @@ import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.encode
 import java.util.function.Supplier
 
+/**
+ * This endpoint allow you check the playlists that a Spotify user follows.
+ */
 class PublicFollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun doUsersFollowPlaylist(playlistOwner: String, playlistId: String, vararg userIds: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {

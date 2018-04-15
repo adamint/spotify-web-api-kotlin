@@ -5,6 +5,9 @@ import com.adamratzman.spotify.utils.*
 import java.net.URLEncoder
 import java.util.function.Supplier
 
+/**
+ * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+ */
 class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     enum class SearchType(val id: String) {
         ALBUM("album"), TRACK("track"), ARTIST("artist"), PLAYLIST("playlist")

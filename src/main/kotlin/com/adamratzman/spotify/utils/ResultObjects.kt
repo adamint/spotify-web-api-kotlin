@@ -1,5 +1,11 @@
 package com.adamratzman.spotify.utils
 
+data class FeaturedPlaylists(val message: String?, val playlists: PagingObject<Playlist>)
+data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
+data class AlbumsResponse(val albums: List<Album?>)
+data class ArtistList(val artists: List<Artist?>)
+data class TrackList(val tracks: List<Track?>)
+
 data class RecommendationSeed(val initialPoolSize: Int, val afterFilteringSize: Int, val afterRelinkingSize: Int?, val href: String, val id: String,
                               val type: String)
 
@@ -24,6 +30,10 @@ data class SpotifyPublicUser(val display_name: String, val external_urls: HashMa
 
 data class SpotifyImage(val height: Int, val url: String, val width: Int)
 
+/**
+ * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
+ * searched market. If null, the API result is playable in the market.
+ */
 data class LinkedTrack(val external_urls: HashMap<String, String>, val href: String, val id: String, val type: String, val uri: String)
 
 data class SimpleArtist(val external_urls: HashMap<String, String>, val href: String, val id: String, val name: String,
@@ -34,13 +44,13 @@ data class Artist(val external_urls: HashMap<String, String>, val followers: Fol
 
 data class SimpleTrack(val artists: List<SimpleArtist>, val available_markets: List<String>, val disc_number: Int, val duration_ms: Int,
                        val explicit: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
-                       val is_playable: Boolean?, val linked_from: LinkedTrack?, val name: String, val preview_url: String,
-                       val track_number: Int, val type: String, val uri: String)
+                       val is_playable: Boolean?, private val linked_from: LinkedTrack?, val name: String, val preview_url: String,
+                       val track_number: Int, val type: String, val uri: String):RelinkingAvailableResponse(linked_from)
 
 data class Track(val album: SimpleAlbum, val artists: List<SimpleArtist>, val available_markets: List<String>, val disc_number: Int,
                  val duration_ms: Int, val explicit: Boolean, val external_ids: HashMap<String, String>, val external_urls: HashMap<String, String>,
-                 val href: String, val id: String, val is_playable: Boolean?, val linked_from: LinkedTrack?, val name: String, val popularity: Int,
-                 val preview_url: String, val track_number: Int, val type: String, val uri: String)
+                 val href: String, val id: String, val is_playable: Boolean?, private val linked_from: LinkedTrack?, val name: String, val popularity: Int,
+                 val preview_url: String, val track_number: Int, val type: String, val uri: String): RelinkingAvailableResponse(linked_from)
 
 data class SimpleAlbum(val album_type: String, val artists: List<SimpleArtist>, val available_markets: List<String>, val external_urls: HashMap<String, String>,
                        val href: String, val id: String, val images: List<SpotifyImage>, val name: String, val type: String, val uri: String)

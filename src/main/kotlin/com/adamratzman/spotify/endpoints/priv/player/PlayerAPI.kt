@@ -5,7 +5,8 @@ import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
 /**
- * This endpoint is in beta per the spotify documentation. These methods may or may not work
+ * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.spotify.com/web-api/working-with-connect/)
+ * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work
  */
 class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
