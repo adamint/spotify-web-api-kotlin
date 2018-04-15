@@ -43,7 +43,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [artistId] is not found, or filter parameters are illegal
      */
-    fun getArtistAlbums(artistId: String, market: Market?, limit: Int = 20, offset: Int = 0, vararg include: AlbumInclusionStrategy): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
+    fun getArtistAlbums(artistId: String, market: Market? = null, limit: Int = 20, offset: Int = 0, vararg include: AlbumInclusionStrategy): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
             get("https://api.spotify.com/v1/artists/${artistId.encode()}/albums?limit=$limit&offset=$offset" +
                     if (market != null) "&market=${market.code}" else "" +
