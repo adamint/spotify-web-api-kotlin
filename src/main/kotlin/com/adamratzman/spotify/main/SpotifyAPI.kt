@@ -1,11 +1,11 @@
 package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.endpoints.priv.follow.FollowingAPI
+import com.adamratzman.spotify.endpoints.priv.follow.UserFollowAPI
 import com.adamratzman.spotify.endpoints.priv.library.UserLibraryAPI
 import com.adamratzman.spotify.endpoints.priv.personalization.PersonalizationAPI
 import com.adamratzman.spotify.endpoints.priv.player.PlayerAPI
-import com.adamratzman.spotify.endpoints.priv.playlists.ClientPlaylistsAPI
-import com.adamratzman.spotify.endpoints.priv.users.ClientUserAPI
+import com.adamratzman.spotify.endpoints.priv.playlists.UserPlaylistAPI
+import com.adamratzman.spotify.endpoints.priv.users.UserAPI
 import com.adamratzman.spotify.endpoints.pub.album.AlbumAPI
 import com.adamratzman.spotify.endpoints.pub.artists.ArtistsAPI
 import com.adamratzman.spotify.endpoints.pub.browse.BrowseAPI
@@ -70,11 +70,11 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
 
 class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
     val personalization = PersonalizationAPI(this)
-    val userProfile = ClientUserAPI(this)
+    val userProfile = UserAPI(this)
     val userLibrary = UserLibraryAPI(this)
-    val userFollowing = FollowingAPI(this)
+    val userFollowing = UserFollowAPI(this)
     val player = PlayerAPI(this)
-    val clientPlaylists = ClientPlaylistsAPI(this)
+    val userPlaylists = UserPlaylistAPI(this)
 
     init {
         if (automaticRefresh) {

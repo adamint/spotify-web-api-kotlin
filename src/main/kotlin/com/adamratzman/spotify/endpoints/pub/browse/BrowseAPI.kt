@@ -5,6 +5,9 @@ import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
+/**
+ * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
+ */
 class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getNewReleases(limit: Int = 20, offset: Int = 0, market: Market? = null): SpotifyRestAction<PagingObject<Album>> {
         return toAction(Supplier {

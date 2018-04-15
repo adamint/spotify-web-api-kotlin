@@ -4,6 +4,9 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
+/**
+ * Endpoints for retrieving information about the user’s listening habits.
+ */
 class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTopArtists(): SpotifyRestAction<PagingObject<Artist>> {
         return toAction(Supplier {

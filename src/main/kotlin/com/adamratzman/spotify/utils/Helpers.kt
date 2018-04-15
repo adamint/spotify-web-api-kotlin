@@ -9,6 +9,7 @@ import org.jsoup.Jsoup
 import java.net.URLEncoder
 import java.util.*
 import java.util.function.Supplier
+import kotlin.collections.HashMap
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     fun get(url: String): String {
@@ -51,27 +52,44 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
 data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String?, val cursors: Cursor,
                                           val total: Int)
-
 data class Cursor(val after: String)
 data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
-data class LinkedResult<out T>(val href: String, val items: List<T>)
-data class ArtistList(val artists: List<Artist>)
-data class ArtistPNList(val artists: List<Artist>)
-data class TrackList(val tracks: List<Track>)
-
-data class FeaturedPlaylists(val message: String?, val playlists: PagingObject<Playlist>)
 data class PlaylistTrackPagingObject(val href: String, val items: List<PlaylistTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
 data class SimpleTrackPagingObject(val href: String, val items: List<SimpleTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
-data class AudioFeaturesResponse(val audio_features: List<AudioFeatures>)
-data class TracksResponse(val tracks: List<Track>)
-data class AlbumsResponse(val albums: List<Album>)
 
+data class LinkedResult<out T>(val href: String, val items: List<T>) {
+    fun toPlaylistParams(): PlaylistParams? {
+        if (href.startsWith("https://api.spotify.com/v1/users/")) {
+            val split = href.removePrefix("https://api.spotify.com/v1/users/").split("/playlists/")
+            if (split.size == 2) return PlaylistParams(split[0], split[1].split("/")[0])
+        }
+        return null
+    }
+    fun getArtistId(): String? {
+        if (href.startsWith("https://api.spotify.com/v1/artists/")) {
+            return href.removePrefix("https://api.spotify.com/v1/artists/").split("/")[0]
+        }
+        return null
+    }
+    fun getAlbumId(): String? {
+        if (href.startsWith("https://api.spotify.com/v1/albums/")) {
+            return href.removePrefix("https://api.spotify.com/v1/albums/").split("/")[0]
+        }
+        return null
+    }
+}
 
-fun String.byteEncode(): String {
+data class PlaylistParams(val author: String, val id: String)
+
+abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) {
+    fun isRelinked() = linkedTrack != null
+}
+
+internal fun String.byteEncode(): String {
     return String(Base64.getEncoder().encode(toByteArray()))
 }
 
-fun String.encode() = URLEncoder.encode(this, "UTF-8")
+internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
 
 inline fun <reified T> Any.toObject(o: Any): T {
     return ((o as? SpotifyAPI)?.gson ?: (o as? Gson)

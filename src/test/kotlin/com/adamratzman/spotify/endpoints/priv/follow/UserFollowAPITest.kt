@@ -3,7 +3,7 @@ package com.adamratzman.spotify.kotlin.endpoints.priv.follow
 import com.adamratzman.spotify.main.clientApi
 import org.junit.Test
 
-class FollowingAPITest {
+class UserFollowAPITest {
     @Test
     fun followingUsers() {
         println(clientApi.userFollowing.followingUsers("adamratzman").complete())

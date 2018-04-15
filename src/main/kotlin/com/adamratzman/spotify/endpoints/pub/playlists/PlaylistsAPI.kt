@@ -4,6 +4,9 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
+/**
+ * Endpoints for retrieving information about a user’s playlists
+ */
 class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylists(userId: String, limit: Int = 20, offset: Int = 0): SpotifyRestAction<PagingObject<SimplePlaylist>> {
         return toAction(Supplier {

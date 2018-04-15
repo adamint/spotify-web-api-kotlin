@@ -4,7 +4,7 @@ import com.adamratzman.spotify.main.clientApi
 import org.junit.Test
 
 
-internal class ClientUserAPITest {
+internal class UserAPITest {
     @Test
     fun getUserProfile() {
         println(clientApi.userProfile.getUserProfile().complete())

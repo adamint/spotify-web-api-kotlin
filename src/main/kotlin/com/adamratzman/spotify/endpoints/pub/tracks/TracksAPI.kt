@@ -5,6 +5,9 @@ import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
+/**
+ * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
+ */
 class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTrack(trackId: String, market: Market? = null): SpotifyRestAction<Track> {
         return toAction(Supplier {
@@ -12,10 +15,10 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun getTracks(market: Market? = null, vararg trackIds: String): SpotifyRestAction<List<Track>> {
+    fun getTracks(market: Market? = null, vararg trackIds: String): SpotifyRestAction<List<Track?>> {
         return toAction(Supplier {
             get("https://api.spotify.com/v1/tracks?ids=${trackIds.map { it.encode() }.stream().collect(Collectors.joining(","))}${if (market != null) "&market=${market.code}" else ""}")
-                    .toObject<TracksResponse>(api).tracks
+                    .toObject<TrackList>(api).tracks
         })
     }
 
@@ -31,7 +34,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun getAudioFeatures(vararg trackIds: String): SpotifyRestAction<List<AudioFeatures>> {
+    fun getAudioFeatures(vararg trackIds: String): SpotifyRestAction<List<AudioFeatures?>> {
         return toAction(Supplier {
             get("https://api.spotify.com/v1/audio-features?ids=${trackIds.map { it.encode() }.stream().collect(Collectors.joining(","))}")
                     .toObject<AudioFeaturesResponse>(api).audio_features

@@ -3,8 +3,8 @@ This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web
 
 ## Contents
   1. **[Downloading](#downloading)**
-  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyAPI-or-spotifyClientAPI-object)**
-  3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyRestAction-class?)**
+  2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyapi-or-spotifyclientapi-object)**
+  3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class?)**
   4. **[Using the Library](#using-the-library)**
 
 ## Downloading
@@ -76,6 +76,9 @@ time, this will likely be accurate within a few milliseconds.
 - `asFuture()` transforms the supplier into a `CompletableFuture` 
 
 ## Using the Library
+### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
+tbd
+
 ### Generic Request
 ```kotlin
     val api = SpotifyAPI.Builder("appId", "appSecret").build()
@@ -94,6 +97,9 @@ time, this will likely be accurate within a few milliseconds.
         })
     }
 ```
+
+### Track Relinking
+tbd
 
 ### Endpoint List
 #### SpotifyAPI:
@@ -136,4 +142,44 @@ time, this will likely be accurate within a few milliseconds.
         5. `getAudioFeatures(vararg trackIds: String)` returns an ordered list of AudioFeatures. Time is *not* linear by track amount
    - **[PublicUserAPI (SpotifyAPI.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
         1. `getProfile` returns the corresponding SpotifyPublicUser object. Pay attention to nullable parameters.
-   to be continued..
+#### SpotifyClientAPI:
+Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-scopes/) in order to 
+ensure proper function of this library.
+
+Check to see which Scope is necessary with the corresponding endpoint using the 
+links provided for each API below
+   - **[PersonalizationAPI (SpotifyClientAPI.personalization)](https://developer.spotify.com/web-api/web-api-personalization-endpoints/)**
+        1. `getTopArtists` returns an Artist `PagingObject` representing the most played Artists by the user
+        2. `getTopTracks` returns a Track `PagingObject` representing the most played Tracks by the user
+   - **[ClientUserAPI (SpotifyClientAPI.userProfile)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
+        1. `getUserInformation` returns SpotifyUserInformation object, a much more detailed version of the public user object.
+   - **[UserLibraryAPI (SpotifyClientAPI.userLibrary)](https://developer.spotify.com/web-api/library-endpoints/)**
+        1. `getSavedTracks` returns a `PagingObject` of saved tracks in the user's library
+        2. `getSavedAlbums` returns a `PagingObject` of saved albums in the user's library
+        3. `savedTracksContains` returns an ordered List of Booleans of whether the track exists in the user's library 
+        corresponding to entered ids
+        4. `savedAlbumsContains` returns an ordered List of Booleans of whether the album exists in the user's library 
+        corresponding to entered ids.
+        5. `saveTracks` saves the entered tracks to the user's library. Returns nothing
+        6. `saveAlbums` saves the entered albums to the user's library. Returns nothing
+        7. `removeSavedTracks` removes the entered tracks from the user's library. Nothing happens if the track is not found. Returns nothing
+        8. `removeSavedAlbums` removes the entered albums from the user's library. Nothing happens if the album is not found in the library. Returns nothing
+   - **[FollowingAPI (SpotifyClientAPI.userFollowing)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
+        1. `followingUsers` returns an ordered List of Booleans representing if the user follows the specified users
+        2. `followingArtists` returns an ordered List of Booleans representing if the user follows the specified artists
+        3. `getFollowedArtists` returns a [Cursor-Based Paging Object](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object) of followed Artists.
+        4. `followUsers` follows the specified users. Cannot be used with artists. Returns nothing
+        5. `followArtists` follows the specified artists. Cannot be mixed with users. Returns nothing
+        6. `followPlaylist` follows the specified playlist. Returns nothing
+        7. `unfollowUsers` unfollows the specified users. Cannot be used with artists. Returns nothing
+        8. `unfollowArtists` unfollows the specified artists. Cannot be mixed with users. Returns nothing
+        9. `unfollowPlaylist` unfollows the specified playlist. Returns nothing
+   - **[PlayerAPI (SpotifyClientAPI.player)](https://developer.spotify.com/web-api/web-api-connect-endpoint-reference/)**
+        The methods in this API are in beta and in flux as per Spotify. They will be documented in the near future.
+   - **[ClientPlaylistsAPI (SpotifyClientAPI.clientPlaylists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
+        1. `createPlaylist` creates the playlist and returns its full Playlist representation
+        2. `addTrackToPlaylist` adds the entered tracks to the playlist. Returns nothing
+        3. `changePlaylistDescription` changes the description of the playlist. Returns nothing
+        4. `getUserPlaylists` returns a `PagingObject` of SimplePlaylists the user has created
+        5. `reorderTracks` reorders the tracks in the playlist and returns the current Snapshot
+        6. `replaceTracks` replaces tracks in the playlist and returns the current Snapshot
