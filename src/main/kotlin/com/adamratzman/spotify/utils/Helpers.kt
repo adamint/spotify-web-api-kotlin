@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import java.io.InvalidObjectException
 import java.net.URLEncoder
 import java.util.*
 import java.util.function.Supplier
@@ -58,24 +59,24 @@ data class PlaylistTrackPagingObject(val href: String, val items: List<PlaylistT
 data class SimpleTrackPagingObject(val href: String, val items: List<SimpleTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
-    fun toPlaylistParams(): PlaylistParams? {
+    fun toPlaylistParams(): PlaylistParams {
         if (href.startsWith("https://api.spotify.com/v1/users/")) {
             val split = href.removePrefix("https://api.spotify.com/v1/users/").split("/playlists/")
             if (split.size == 2) return PlaylistParams(split[0], split[1].split("/")[0])
         }
-        return null
+        throw InvalidObjectException("This object is not linked to a playlist")
     }
-    fun getArtistId(): String? {
+    fun getArtistId(): String {
         if (href.startsWith("https://api.spotify.com/v1/artists/")) {
             return href.removePrefix("https://api.spotify.com/v1/artists/").split("/")[0]
         }
-        return null
+        throw InvalidObjectException("This object is not linked to an artist")
     }
-    fun getAlbumId(): String? {
+    fun getAlbumId(): String {
         if (href.startsWith("https://api.spotify.com/v1/albums/")) {
             return href.removePrefix("https://api.spotify.com/v1/albums/").split("/")[0]
         }
-        return null
+        throw InvalidObjectException("This object is not linked to an album")
     }
 }
 

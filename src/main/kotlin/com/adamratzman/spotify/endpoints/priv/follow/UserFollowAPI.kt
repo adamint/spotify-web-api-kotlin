@@ -121,7 +121,17 @@ class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-
+    /**
+     * Add the current user as a follower of a playlist.
+     *
+     * @param ownerId The Spotify user ID of the person who owns the playlist.
+     * @param playlistId The Spotify ID of the playlist. Any playlist can be followed, regardless of its
+     * public/private status, as long as you know its playlist ID.
+     * @param followPublicly Defaults to true. If true the playlist will be included in user’s public playlists,
+     * if false it will remain private. To be able to follow playlists privately, the user must have granted the playlist-modify-private scope.
+     *
+     * @throws BadRequestException if the playlist is not found
+     */
     fun followPlaylist(ownerId: String, playlistId: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put("https://api.spotify.com/v1/users/$ownerId/playlists/$playlistId/followers", "{\"public\": $followPublicly}")
@@ -130,6 +140,26 @@ class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     }
 
+    /**
+     * Remove the current user as a follower of another user
+     *
+     * @param userId The user to be unfollowed from
+     *
+     * @throws BadRequestException if [userId] is not found
+     */
+    fun unfollowUser(userId: String): SpotifyRestAction<Unit> {
+        return toAction(Supplier {
+            unfollowUsers(userId).complete()
+        })
+    }
+
+    /**
+     * Remove the current user as a follower of other users
+     *
+     * @param userIds The users to be unfollowed from
+     *
+     * @throws BadRequestException if an invalid id is provided
+     */
     fun unfollowUsers(vararg userIds: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete("https://api.spotify.com/v1/me/following?type=user&ids=${userIds.joinToString(",") { it.encode() }}")
@@ -137,6 +167,26 @@ class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
+    /**
+     * Remove the current user as a follower of an artist
+     *
+     * @param artistId The artist to be unfollowed from
+     *
+     * @throws BadRequestException if an invalid id is provided
+     */
+    fun unfollowArtist(artistId: String): SpotifyRestAction<Unit> {
+        return toAction(Supplier {
+            unfollowArtists(artistId).complete()
+        })
+    }
+
+    /**
+     * Remove the current user as a follower of artists
+     *
+     * @param artistIds The artists to be unfollowed from
+     *
+     * @throws BadRequestException if an invalid id is provided
+     */
     fun unfollowArtists(vararg artistIds: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete("https://api.spotify.com/v1/me/following?type=artist&ids=${artistIds.joinToString(",")}")
@@ -144,6 +194,14 @@ class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
+    /**
+     * Remove the current user as a follower of a playlist.
+     *
+     * @param ownerId The Spotify user ID of the person who owns the playlist.
+     * @param playlistId The Spotify ID of the playlist that is to be no longer followed.
+     *
+     * @throws BadRequestException if the playlist is not found
+     */
     fun unfollowPlaylist(ownerId: String, playlistId: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete("https://api.spotify.com/v1/users/$ownerId/playlists/$playlistId/followers")

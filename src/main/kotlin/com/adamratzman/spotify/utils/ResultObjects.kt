@@ -20,9 +20,9 @@ data class PlaylistTrackInfo(val href: String, val total: Int)
  */
 data class Followers(val href: String?, val total: Int)
 
-data class SpotifyUserInformation(val birthdate: String, val country: String, val display_name: String?, val email: String,
+data class SpotifyUserInformation(val birthdate: String?, val country: String?, val display_name: String?, val email: String?,
                                   val external_urls: HashMap<String, String>, val followers: Followers, val href: String,
-                                  val id: String, val images: List<SpotifyImage>, val product: String, val type: String,
+                                  val id: String, val images: List<SpotifyImage>, val product: String?, val type: String,
                                   val uri: String)
 
 data class SpotifyPublicUser(val display_name: String, val external_urls: HashMap<String, String>, val followers: Followers, val href: String,
