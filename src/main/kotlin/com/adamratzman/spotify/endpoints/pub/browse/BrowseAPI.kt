@@ -153,7 +153,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getRecommendations(seedArtists: List<String>? = null, seedGenres: List<String>? = null, seedTracks: List<String>? = null, limit: Int = 20,
                            market: Market? = null, targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
-                           minAttributes: HashMap<TuneableTrackAttribute, Number>, maxAttributes: HashMap<TuneableTrackAttribute, Number>)
+                           minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(), maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf())
             : SpotifyRestAction<RecommendationResponse> {
         return toAction(Supplier {
             val url = StringBuilder("https://api.spotify.com/v1/recommendations?limit=$limit")

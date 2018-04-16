@@ -5,8 +5,18 @@ import org.junit.Test
 
 class UserFollowAPITest {
     @Test
+    fun isFollowingUser() {
+        clientApi.userFollowing.isFollowingUser("asdfasdfasdfsfasdfasdf").complete().let { println(it) }
+    }
+
+    @Test
+    fun isFollowingArtist() {
+        println(clientApi.userFollowing.isFollowingArtist("4IS4EyXNmiI2w5SRCjMtEF").complete())
+    }
+
+    @Test
     fun followingUsers() {
-        println(clientApi.userFollowing.followingUsers("adamratzman").complete())
+        println(clientApi.userFollowing.isFollowingUsers("adamratzman").complete())
     }
 
     @Test
@@ -16,7 +26,7 @@ class UserFollowAPITest {
 
     @Test
     fun followingArtists() {
-        println(clientApi.userFollowing.followingArtists("7wjeXCtRND2ZdKfMJFu6JC").complete())
+        println(clientApi.userFollowing.isFollowingArtists("7wjeXCtRND2ZdKfMJFu6JC").complete())
     }
 
     @Test
@@ -26,7 +36,7 @@ class UserFollowAPITest {
 
     @Test
     fun followArtists() {
-        println(clientApi.userFollowing.followArtists("6rl53MP8HSoiugpqzA50Zh").complete())
+        println(clientApi.userFollowing.followArtists("6rfl53MP8HSoiugpqzA50Zh").complete())
     }
 
     @Test

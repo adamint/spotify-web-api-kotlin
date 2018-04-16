@@ -1,6 +1,8 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.browse
 
+import com.adamratzman.spotify.endpoints.pub.browse.TuneableTrackAttribute
 import com.adamratzman.spotify.main.api
+import com.adamratzman.spotify.main.clientApi
 import com.adamratzman.spotify.utils.Market
 import junit.framework.TestCase
 
@@ -31,7 +33,12 @@ class BrowseAPITest : TestCase() {
     }
 
     fun testGetRecommendations() {
-    //    println(api.browse.getRecommendations(seedArtists = listOf("3TVXtAsR1Inumwj472S9r4"), seedGenres = listOf("pop", "country"), targets = hashMapOf(Pair("speechiness", 1.0), Pair("danceability", 1.0))).complete())
+        api.browse.getRecommendations(seedTracks = listOf("43ehiuXyqIdLyZ4eEH47nw"),
+                targetAttributes = hashMapOf(Pair(TuneableTrackAttribute.DANCEABILITY, 1.0)),
+                market = Market.FR)
+                .complete().tracks.let {
+                    println(it.map { it.name })
+            clientApi.player.startPlayback(tracksToPlay = *it.map { it.id }.toTypedArray()).complete() }
     }
 
 }
