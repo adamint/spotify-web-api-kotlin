@@ -5,7 +5,7 @@ import junit.framework.TestCase
 
 class TracksAPITest : TestCase() {
     fun testGetTracks() {
-        println(api.tracks.getTracks(null, "7cU84qjHFxJ39COxWltHyY", "4o4sj7dVrT51NKMyeG8T5y").complete())
+        println(api.tracks.getTracks( "43ehiuXyqIdLyZ4eEH47nw", "4o4sj7dVrT51NKMyeG8T5y").complete().map { it?.name })
     }
 
     fun testGetAudioAnalysis() {

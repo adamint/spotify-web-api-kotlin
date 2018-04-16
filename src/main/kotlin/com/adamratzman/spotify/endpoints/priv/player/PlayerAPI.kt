@@ -2,6 +2,7 @@ package com.adamratzman.spotify.endpoints.priv.player
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
+import org.json.JSONObject
 import java.util.function.Supplier
 
 /**
@@ -79,14 +80,53 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun startPlayback(deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Start or resume playback.
+     * **Note:** Only one of the following can be used: [albumId], [artistId], [playlist], or [tracksToPlay]. Else, you will
+     * not see expected results.
+     *
+     * **Note also:** You can only use one of the following: [offsetNum] or [offsetTrackId]
+     *
+     * **Specify nothing to play to simply resume playback**
+     *
+     * @param albumId an album id to play
+     * @param artistId an artist id for whom to play
+     * @param playlist a playlist id from which to play
+     * @param tracksToPlay track ids to play. these are converted into URIs. Max 100
+     * @param offsetNum Indicates from where in the context playback should start. Only available with use of [albumId] or [playlist]
+     * or when [tracksToPlay] is used.
+     * @param offsetTrackId Does the same as [offsetNum] but with a track id instead of place number
+     * @param deviceId the device to play on
+     *
+     * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
+     */
+    fun startPlayback(albumId: String? = null, artistId: String? = null, playlist: PlaylistParams? = null,
+                      offsetNum: Int? = null, offsetTrackId: String? = null, deviceId: String? = null, vararg tracksToPlay: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player/play${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}")
+            val url = "https://api.spotify.com/v1/me/player/play${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}"
+            val body = JSONObject()
+            when {
+                albumId != null -> body.put("context_uri", "spotify:album:$albumId")
+                artistId != null -> body.put("context_uri", "spotify:artist:$artistId")
+                playlist != null -> body.put("context_uri", "spotify:user:${playlist.author}:playlist:${playlist.id}")
+                tracksToPlay.isNotEmpty() -> body.put("uris", tracksToPlay.map { "spotify:track:$it" })
+            }
+            if (body.keySet().isNotEmpty()) {
+                if (offsetNum != null) body.put("offset", JSONObject().put("position", offsetNum))
+                else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", "spotify:track:$offsetTrackId"))
+                put(url, body.toString())
+            }
+            else put(url)
             Unit
         })
     }
 
-    fun resumePlayback(deviceId: String? = null) = startPlayback(deviceId)
+    /**
+     * Resumes playback on the current device, if [deviceId] is not specified.
+     *
+     * @param deviceId the device to play on
+     */
+    fun resumePlayback(deviceId: String? = null) = startPlayback(deviceId = deviceId)
 
     fun shufflePlayback(shuffle: Boolean = true, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
