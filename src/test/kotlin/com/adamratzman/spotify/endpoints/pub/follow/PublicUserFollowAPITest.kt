@@ -6,7 +6,7 @@ import org.junit.Test
 class PublicUserFollowAPITest {
     @Test
     fun doUsersFollowPlaylist() {
-        println(api.publicFollowing.doUsersFollowPlaylist("jmperezperez", "3cEYpjA9oz9GiPac4AsH4n", "jmperezperez", "elogain").complete())
+        println(api.publicFollowing.doUsersFollowPlaylist("jmperezperez", "3cEYpjA9oz9GiPac4AsH4n", "jmperezperez", "elogasdfjjadsfain").complete())
     }
 
 }
