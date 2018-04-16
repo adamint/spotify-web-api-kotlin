@@ -77,7 +77,22 @@ time, this will likely be accurate within a few milliseconds.
 
 ## Using the Library
 ### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
-tbd
+Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
+can do with them!
+
+#### PagingObjects
+PagingObjects are a container for the requested objects (`items`), but also include 
+important information useful in future calls. It contains the request's `limit` and `offset`, along with 
+(sometimes) a link to the next and last page of items and the total number of items returned.
+
+#### Cursor-Based Paging Objects
+A cursor-based paging object is a PagingObject with a cursor added on that can be used as a key to find the next 
+page of items
+
+#### LinkedResults
+Some endpoints, like `PlaylistsAPI.getPlaylistTracks`, return a LinkedResult, which is a simple wrapper around the 
+list of objects. With this, we have access to its Spotify API url (with `href`), and we provide simple methods to parse 
+that url.
 
 ### Generic Request
 ```kotlin
@@ -99,7 +114,16 @@ tbd
 ```
 
 ### Track Relinking
-tbd
+Spotify keeps many instances of most tracks on their servers, available in different markets. As such, if we use endpoints 
+that return tracks, we do not know if these tracks are playable in our market. That's where track relinking comes in.
+
+To relink in a specified market, we must supply a `market` parameter for endpoints where available. 
+In both Track and SimpleTrack objects in an endpoint response, there is a nullable field called `linked_from`. 
+If the track is unable to be played in the specified market and there is an alternative that *is* playable, this 
+will be populated with the href, uri, and, most importantly, the id of the track.
+
+You can then use this track in client actions such as playing or saving the track, knowing that it will be playable 
+in your market!
 
 ### Endpoint List
 #### SpotifyAPI:
