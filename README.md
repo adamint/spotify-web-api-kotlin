@@ -15,13 +15,13 @@ This library is available via Maven Central.
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-web-api-kotlin</artifactId>
-    <version>3.1.01</version>
+    <version>3.1.1</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-web-api-kotlin', version: '3.1.01'
+compile group: 'com.adamratzman', name: 'spotify-web-api-kotlin', version: '3.1.1'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
