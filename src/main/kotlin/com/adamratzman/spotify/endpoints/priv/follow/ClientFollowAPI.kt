@@ -7,7 +7,7 @@ import java.util.function.Supplier
 /**
  * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
  */
-class UserFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Check to see if the current user is following another Spotify users.
      *

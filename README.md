@@ -204,6 +204,6 @@ links provided for each API below
         1. `createPlaylist` creates the playlist and returns its full Playlist representation
         2. `addTrackToPlaylist` adds the entered tracks to the playlist. Returns nothing
         3. `changePlaylistDescription` changes the description of the playlist. Returns nothing
-        4. `getUserPlaylists` returns a `PagingObject` of SimplePlaylists the user has created
+        4. `getClientPlaylists` returns a `PagingObject` of SimplePlaylists the user has created
         5. `reorderTracks` reorders the tracks in the playlist and returns the current Snapshot
         6. `replaceTracks` replaces tracks in the playlist and returns the current Snapshot

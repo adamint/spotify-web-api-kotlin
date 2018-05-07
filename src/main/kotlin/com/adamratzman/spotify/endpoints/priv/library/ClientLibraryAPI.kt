@@ -8,7 +8,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
  */
-class UserLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
