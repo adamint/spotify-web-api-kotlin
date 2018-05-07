@@ -42,7 +42,7 @@ internal class ClientPlaylistAPITest {
                 .complete()
         clientApi.playlists.getPlaylist("adamratzman1", "53Sr94VRrDgvLCh86lbMVx").complete()
                 .tracks.items.map { it.track.id }.let { println(it) }
-        clientApi.clientPlaylists.removeAllOccurances("adamratzman1", "53Sr94VRrDgvLCh86lbMVx",
-                "3ghmFXEXTP6DdVOyvuPHpr").complete()
+        //clientApi.clientPlaylists.removeAllOccurances("adamratzman1", "53Sr94VRrDgvLCh86lbMVx",
+          //      "3ghmFXEXTP6DdVOyvuPHpr").complete()
     }
 }

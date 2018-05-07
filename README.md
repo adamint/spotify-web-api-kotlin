@@ -15,7 +15,7 @@ This library is available via Maven Central.
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-web-api-kotlin</artifactId>
-    <version>3.1.1</version>
+    <version>3.1.2</version>
 </dependency>
 ```
 
