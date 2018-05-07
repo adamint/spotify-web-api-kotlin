@@ -1,6 +1,6 @@
 package com.adamratzman.spotify.kotlin.endpoints.priv.personalization
 
-import com.adamratzman.spotify.main.clientApi
+import clientApi
 import org.junit.Test
 
 internal class PersonalizationAPITest {

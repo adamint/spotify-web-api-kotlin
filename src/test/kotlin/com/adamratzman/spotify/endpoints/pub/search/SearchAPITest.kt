@@ -1,6 +1,6 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.search
 
-import com.adamratzman.spotify.main.api
+import api
 import com.adamratzman.spotify.utils.Market
 import org.junit.Test
 

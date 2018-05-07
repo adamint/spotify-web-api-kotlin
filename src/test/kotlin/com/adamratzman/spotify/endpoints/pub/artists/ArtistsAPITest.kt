@@ -1,8 +1,7 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.artists
 
+import api
 import com.adamratzman.spotify.endpoints.pub.artists.ArtistsAPI
-import com.adamratzman.spotify.main.api
-import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import junit.framework.TestCase
 
