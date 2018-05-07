@@ -1,6 +1,6 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.follow
 
-import com.adamratzman.spotify.main.api
+import api
 import org.junit.Test
 
 class PublicUserFollowAPITest {

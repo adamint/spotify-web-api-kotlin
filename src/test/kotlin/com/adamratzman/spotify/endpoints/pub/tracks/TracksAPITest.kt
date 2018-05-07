@@ -1,11 +1,11 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.tracks
 
-import com.adamratzman.spotify.main.api
+import api
 import junit.framework.TestCase
 
 class TracksAPITest : TestCase() {
     fun testGetTracks() {
-        println(api.tracks.getTracks( "43ehiuXyqIdLyZ4eEH47nw", "4o4sj7dVrT51NKMyeG8T5y").complete().map { it?.name })
+        println(api.tracks.getTracks("43ehiuXyqIdLyZ4eEH47nw", "4o4sj7dVrT51NKMyeG8T5y").complete().map { it?.name })
     }
 
     fun testGetAudioAnalysis() {

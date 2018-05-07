@@ -46,7 +46,7 @@ To build it, you must pass the application id and secret.
 ```kotlin
     val api = SpotifyAPI.Builder("application id", "application secret").build()
 ```
-*Note:* You are **unable** to use any client endpoint. 
+*Note:* You are **unable** to use any clientApi endpoint. 
 
 ### SpotifyClientAPI
 All endpoints inside SpotifyAPI can be accessed within SpotifyClientAPI.
@@ -122,7 +122,7 @@ In both Track and SimpleTrack objects in an endpoint response, there is a nullab
 If the track is unable to be played in the specified market and there is an alternative that *is* playable, this 
 will be populated with the href, uri, and, most importantly, the id of the track.
 
-You can then use this track in client actions such as playing or saving the track, knowing that it will be playable 
+You can then use this track in clientApi actions such as playing or saving the track, knowing that it will be playable 
 in your market!
 
 ### Endpoint List

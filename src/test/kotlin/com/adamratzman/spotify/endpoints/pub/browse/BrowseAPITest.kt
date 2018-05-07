@@ -1,8 +1,8 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.browse
 
+import api
+import clientApi
 import com.adamratzman.spotify.endpoints.pub.browse.TuneableTrackAttribute
-import com.adamratzman.spotify.main.api
-import com.adamratzman.spotify.main.clientApi
 import com.adamratzman.spotify.utils.Market
 import junit.framework.TestCase
 
@@ -37,8 +37,9 @@ class BrowseAPITest : TestCase() {
                 targetAttributes = hashMapOf(Pair(TuneableTrackAttribute.DANCEABILITY, 1.0)),
                 market = Market.FR)
                 .complete().tracks.let {
-                    println(it.map { it.name })
-            clientApi.player.startPlayback(tracksToPlay = *it.map { it.id }.toTypedArray()).complete() }
+            println(it.map { it.name })
+            clientApi.player.startPlayback(tracksToPlay = *it.map { it.id }.toTypedArray()).complete()
+        }
     }
 
 }

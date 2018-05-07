@@ -129,7 +129,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     enum class Scope(val uri: String) {
         PLAYLIST_READ_PRIVATE("playlist-read-private"),
         PLAYLIST_READ_COLLABORATIVE("playlist-read-collaborative"),
-        PLAYLIST_MODIFY_PUBLIC("playlist-modify-pub"),
+        PLAYLIST_MODIFY_PUBLIC("playlist-modify-public"),
         PLAYLIST_MODIFY_PRIVATE("playlist-modify-private"),
         UGC_IMAGE_UPLOAD("ugc-image-upload"),
         USER_FOLLOW_MODIFY("user-follow-modify"),

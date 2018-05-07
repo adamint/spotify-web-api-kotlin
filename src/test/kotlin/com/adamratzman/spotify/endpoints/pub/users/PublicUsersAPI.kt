@@ -1,7 +1,7 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.users
 
+import api
 import junit.framework.TestCase
-import com.adamratzman.spotify.main.api
 
 class PublicUsersAPI : TestCase() {
     fun testGetProfile() {

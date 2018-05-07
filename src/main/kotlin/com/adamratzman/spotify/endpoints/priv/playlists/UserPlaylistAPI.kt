@@ -3,7 +3,15 @@ package com.adamratzman.spotify.endpoints.priv.playlists
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.net.URL
 import java.util.function.Supplier
+import javax.imageio.IIOException
+import javax.imageio.ImageIO
+import javax.xml.bind.DatatypeConverter
+
 
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
@@ -144,6 +152,47 @@ class UserPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     json.toString())
             Unit
         })
+    }
+
+    /**
+     * Replace the image used to represent a specific playlist. Image type **must** be jpeg.
+     *
+     * Must specify a JPEG image path or image data, maximum payload size is 256 KB
+     *
+     * @param userId The user’s Spotify user ID.
+     * @param playlistId The Spotify ID for the playlist.
+     * @param imagePath Optionally specify the full local path to the image
+     * @param imageUrl Optionally specify a URL to the image
+     * @param imageFile Optionally specify the image [File]
+     * @param image Optionally specify the image's [BufferedImage] object
+     * @param imageData Optionally specify the Base64-encoded image data yourself
+     *
+     * @throws IIOException if the image is not found
+     * @throws BadRequestException if invalid data is provided
+     */
+    fun uploadPlaylistCover(userId: String, playlistId: String, imagePath: String? = null,
+                            imageFile: File? = null, image: BufferedImage? = null, imageData: String? = null,
+                            imageUrl: String? = null): SpotifyRestAction<Unit> {
+        return toAction(Supplier {
+            val data = imageData ?: when {
+                image != null -> encode(image)
+                imageFile != null -> encode(ImageIO.read(imageFile))
+                imageUrl != null -> encode(ImageIO.read(URL(imageUrl)))
+                imagePath != null -> encode(ImageIO.read(URL("file:///$imagePath")))
+                else -> throw IllegalArgumentException("No cover image was specified")
+            }
+            println(data)
+            put("https://api.spotify.com/v1/users/$userId/playlists/$playlistId/images",
+                    data, contentType = "image/jpeg")
+            Unit
+        })
+    }
+
+    private fun encode(image: BufferedImage): String {
+        val bos = ByteArrayOutputStream()
+        ImageIO.write(image, "jpg", bos)
+        bos.close()
+        return DatatypeConverter.printBase64Binary(bos.toByteArray())
     }
 
     data class Snapshot(val snapshot_id: String)
