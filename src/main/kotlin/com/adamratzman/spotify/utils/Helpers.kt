@@ -24,16 +24,18 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         return execute(url, body, Connection.Method.PUT, contentType = contentType)
     }
 
-    fun delete(url: String, body: String? = null): String {
-        return execute(url, body, Connection.Method.DELETE)
+    fun delete(url: String, body: String? = null, data: List<Pair<String, String>>? = null, contentType: String? = null): String {
+        return execute(url, body, Connection.Method.DELETE, data = data, contentType = contentType)
     }
 
-    private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET, retry202: Boolean = true, contentType: String? = null): String {
+    private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET,
+                        retry202: Boolean = true, contentType: String? = null, data: List<Pair<String, String>>? = null): String {
         if (api !is SpotifyClientAPI && System.currentTimeMillis() >= api.expireTime) {
             api.refreshClient()
             api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
         }
         var connection = Jsoup.connect(url).ignoreContentType(true)
+        if (data != null) data.forEach { connection.data(it.first, it.second) }
         if (contentType != null) connection.header("Content-Type", contentType)
         if (body != null) {
             if (contentType != null) connection.requestBody(body)

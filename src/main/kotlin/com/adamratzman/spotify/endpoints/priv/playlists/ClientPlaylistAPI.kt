@@ -16,7 +16,7 @@ import javax.xml.bind.DatatypeConverter
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  */
-class UserPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *
@@ -187,7 +187,19 @@ class UserPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             Unit
         })
     }
-
+    /*
+    fun removeAllOccurances(userId: String, playlistId: String, vararg trackIds: String): SpotifyRestAction<Unit> {
+        if (trackIds.isEmpty()) throw IllegalArgumentException("Tracks to remove must not be empty")
+        return toAction(Supplier {
+            val json = JSONObject()
+            json.put("tracks", trackIds.map { JSONObject().put("uri", "spotify:track:$it") })
+            println(json.toString())
+            delete("https://api.spotify.com/v1/users/$userId/playlists/$playlistId/tracks",
+                    body =  json.toString(), contentType = "application/json")
+            Unit
+        })
+    }
+*/
     private fun encode(image: BufferedImage): String {
         val bos = ByteArrayOutputStream()
         ImageIO.write(image, "jpg", bos)

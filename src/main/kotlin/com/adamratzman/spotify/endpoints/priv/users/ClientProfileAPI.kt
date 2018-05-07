@@ -10,7 +10,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about a user’s profile.
  */
-class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientProfileAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get detailed profile information about the current user (including the current user’s username).
      *

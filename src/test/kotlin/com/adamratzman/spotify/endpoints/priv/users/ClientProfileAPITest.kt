@@ -4,10 +4,10 @@ import clientApi
 import org.junit.Test
 
 
-internal class UserAPITest {
+internal class ClientProfileAPITest {
     @Test
     fun getUserProfile() {
-        println(clientApi.userProfile.getUserProfile().complete())
+        println(clientApi.clientProfile.getUserProfile().complete())
     }
 
 }
