@@ -1,5 +1,5 @@
 group 'com.adamratzman'
-version '3.1.2'
+version '1.0'
 
 buildscript {
     ext.kotlin_version = '1.2.31'
@@ -40,11 +40,11 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-archivesBaseName = 'spotify-web-api-kotlin'
+archivesBaseName = 'spotify-api-kotlin'
 
 modifyPom {
     project {
-        name 'spotify-web-api-kotlin'
+        name 'spotify-api-kotlin'
         description 'A Kotlin wrapper for the Spotify Web API.'
         url 'https://github.com/adamint/spotify-web-api-kotlin'
         inceptionYear '2018'
