@@ -22,9 +22,8 @@ import com.google.gson.GsonBuilder
 import org.jsoup.Jsoup
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors
 
-open class SpotifyAPI internal constructor(val clientId: String?, val clientSecret: String?, var token: Token) {
+open class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(1)
     val gson = GsonBuilder().setLenient().create()!!
@@ -38,7 +37,7 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
     val publicFollowing = PublicFollowingAPI(this)
     val logger = SpotifyLogger(true)
 
-    class Builder(private var clientId: String?, private var clientSecret: String?) {
+    class Builder(private var clientId: String, private var clientSecret: String) {
         fun build(): SpotifyAPI {
             return try {
                 val token = Gson().fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
@@ -46,9 +45,7 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
                         .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
                         .ignoreContentType(true).post().body().text(), Token::class.java)
                         ?: throw IllegalArgumentException("Invalid credentials provided")
-                if (clientId != null && clientSecret != null) {
-                    SpotifyAPI(clientId, clientSecret, token)
-                } else throw IllegalArgumentException("ID and Secret must not be null!")
+                SpotifyAPI(clientId, clientSecret, token)
             } catch (e: Exception) {
                 println("Invalid credentials provided")
                 throw e
@@ -66,9 +63,19 @@ open class SpotifyAPI internal constructor(val clientId: String?, val clientSecr
     fun useLogger(enable: Boolean) {
         logger.enabled = enable
     }
+
+    fun authorizeUser(authorizationCode: String, redirectUri: String, automaticRefresh: Boolean = true): SpotifyClientAPI {
+        return SpotifyClientAPI.Builder(clientId, clientSecret, redirectUri).buildAuthCode(authorizationCode, automaticRefresh)
+    }
+
+    fun authorizeUserToken(oauthToken: String, redirectUri: String): SpotifyClientAPI {
+        return SpotifyClientAPI.Builder(clientId, clientSecret, redirectUri).buildToken(oauthToken)
+    }
+
+    fun getAuthUrl(vararg scopes: SpotifyClientAPI.Scope, redirectUri: String): String = getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
 }
 
-class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false) : SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false, var redirectUri: String) : SpotifyAPI(clientId, clientSecret, token) {
     val personalization = PersonalizationAPI(this)
     val clientProfile = ClientProfileAPI(this)
     val clientLibrary = ClientLibraryAPI(this)
@@ -84,7 +91,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
 
     fun cancelRefresh() = executor.shutdown()
 
-    fun refreshToken() {
+    private fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                 .data("grant_type", "client_credentials")
                 .data("refresh_token", token.refresh_token ?: "")
@@ -98,6 +105,8 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
         }
     }
 
+    fun getAuthUrl(vararg scopes: Scope): String = getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
+
     class Builder(val clientId: String, val clientSecret: String, val redirectUri: String) {
         fun buildAuthCode(authorizationCode: String, automaticRefresh: Boolean = true): SpotifyClientAPI {
             return try {
@@ -106,7 +115,7 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                         .data("code", authorizationCode)
                         .data("redirect_uri", redirectUri)
                         .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                        .ignoreContentType(true).post().body().text().toObject(Gson()), automaticRefresh)
+                        .ignoreContentType(true).post().body().text().toObject(Gson()), automaticRefresh, redirectUri)
             } catch (e: Exception) {
                 println("Invalid credentials provided")
                 throw e
@@ -115,15 +124,10 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
 
         fun buildToken(oauthToken: String): SpotifyClientAPI {
             return SpotifyClientAPI(clientId, clientSecret, Token(oauthToken, "client_credentials", 1000,
-                    null, null), false)
+                    null, null), false, redirectUri)
         }
 
-        fun getAuthUrl(vararg scopes: Scope): String {
-            return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                    "&response_type=code" +
-                    "&redirect_uri=$redirectUri" +
-                    if (scopes.isEmpty()) "" else "&scope=${scopes.map { it.uri }.stream().collect(Collectors.joining("%20"))}"
-        }
+        fun getAuthUrl(vararg scopes: Scope): String = getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
 
     enum class Scope(val uri: String) {
@@ -144,4 +148,11 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
         USER_READ_CURRENTLY_PLAYING("user-read-currently-playing"),
         USER_READ_RECENTLY_PLAYED("user-read-recently-played");
     }
+}
+
+private fun getAuthUrlFull(vararg scopes: SpotifyClientAPI.Scope, clientId: String, redirectUri: String): String {
+    return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
+            "&response_type=code" +
+            "&redirect_uri=$redirectUri" +
+            if (scopes.isEmpty()) "" else "&scope=${scopes.map { it.uri }.joinToString("%20")}"
 }
