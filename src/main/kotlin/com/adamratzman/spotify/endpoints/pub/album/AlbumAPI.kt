@@ -16,9 +16,9 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the [albumId] is not found
      */
-    fun getAlbum(albumId: String, market: Market? = null): SpotifyRestAction<Album> {
+    fun getAlbum(albumId: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/albums/$albumId${if (market != null) "?market=${market.code}" else ""}").toObject<Album>(api)
+            catch { get("https://api.spotify.com/v1/albums/$albumId${if (market != null) "?market=${market.code}" else ""}").toObject<Album>(api) }
         })
     }
 

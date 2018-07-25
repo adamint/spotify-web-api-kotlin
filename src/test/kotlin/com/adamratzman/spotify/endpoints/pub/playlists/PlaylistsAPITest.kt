@@ -11,7 +11,7 @@ internal class PlaylistsAPITest {
 
     @Test
     fun getPlaylist() {
-        println(api.playlists.getPlaylist("spotify", "59ZbFPES4DQwEjBpWHzrtC").complete())
+        println(api.playlists.getPlaylist("spotify", "5dsaf9ZbFPES4DQwEjBpWHzrtC").complete())
     }
 
     @Test

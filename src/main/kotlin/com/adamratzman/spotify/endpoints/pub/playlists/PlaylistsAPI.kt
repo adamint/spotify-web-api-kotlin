@@ -34,9 +34,9 @@ class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun getPlaylist(userId: String, playlistId: String, market: Market? = null): SpotifyRestAction<Playlist> {
+    fun getPlaylist(userId: String, playlistId: String, market: Market? = null): SpotifyRestAction<Playlist?> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/users/${userId.encode()}/playlists/${playlistId.encode()}${if (market != null) "?market=${market.code}" else ""}").toObject<Playlist>(api)
+            catch {get ("https://api.spotify.com/v1/users/${userId.encode()}/playlists/${playlistId.encode()}${if (market != null) "?market=${market.code}" else ""}").toObject<Playlist>(api)}
         })
     }
 

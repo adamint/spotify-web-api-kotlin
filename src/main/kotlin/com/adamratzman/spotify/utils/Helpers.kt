@@ -138,3 +138,11 @@ inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {
 inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): List<T> {
     return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject<T>(api) }
 }
+
+fun <T> catch(function: () -> T):T? {
+    return try{
+       function()
+    } catch (e:BadRequestException) {
+        null
+    }
+}
