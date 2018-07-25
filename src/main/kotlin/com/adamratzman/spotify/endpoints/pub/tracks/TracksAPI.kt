@@ -17,9 +17,9 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [trackId] cannot be found
      */
-    fun getTrack(trackId: String, market: Market? = null): SpotifyRestAction<Track> {
+    fun getTrack(trackId: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/tracks/${trackId.encode()}${if (market != null) "?market=${market.code}" else ""}").toObject<Track>(api)
+            catch { get("https://api.spotify.com/v1/tracks/${trackId.encode()}${if (market != null) "?market=${market.code}" else ""}").toObject<Track>(api) }
         })
     }
 
