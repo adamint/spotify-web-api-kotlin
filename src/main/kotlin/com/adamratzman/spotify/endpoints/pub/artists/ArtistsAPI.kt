@@ -42,7 +42,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [artistId] is not found, or filter parameters are illegal
      */
-    fun getArtistAlbums(artistId: String, limit: Int = 20, offset: Int = 0, market: Market? = null, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
+    fun getArtistAlbums(artistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${artistId.encode()}/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .with("include_groups", include.joinToString(",") { it.keyword }).build()).toLinkedResult<SimpleAlbum>(api)
@@ -60,7 +60,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if tracks are not available in the specified [Market] or the [artistId] is not found
      */
-    fun getArtistTopTracks(artistId: String, market: Market): SpotifyRestAction<List<Track>> {
+    fun getArtistTopTracks(artistId: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${artistId.encode()}/top-tracks").with("country", market.code).build())
                     .toObject<TrackList>(api).tracks.map { it!! }
