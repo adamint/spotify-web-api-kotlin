@@ -57,12 +57,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 }
 
 internal class EndpointBuilder(val path: String) {
-    private val builder = StringBuilder(base)
+    val builder = StringBuilder(base)
+
     init {
         builder.append(path)
     }
-    fun with(key: String, value: Any?):EndpointBuilder {
-        if (value != null && (value !is String || value.isNotEmpty()) ) {
+
+    fun with(key: String, value: Any?): EndpointBuilder {
+        if (value != null && (value !is String || value.isNotEmpty())) {
             if (builder.toString() == base + path) builder.append("?")
             else builder.append("&")
             builder.append(key).append("=").append(value.toString())
@@ -74,11 +76,29 @@ internal class EndpointBuilder(val path: String) {
 }
 
 data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String?, val cursors: Cursor,
-                                          val total: Int, val endpoint: SpotifyEndpoint)
+                                          val total: Int, val endpoint: SpotifyEndpoint) {
+    inline fun <reified T> getNext(): SpotifyRestAction<CursorBasedPagingObject<T>> = endpoint.toAction(
+            Supplier {
+                next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#next is null!")
+            })
+}
 
 data class Cursor(val after: String)
 data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
-                               val previous: String? = null, val total: Int, val endpoint: SpotifyEndpoint)
+                               val previous: String? = null, val total: Int, val endpoint: SpotifyEndpoint) {
+    inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+            Supplier {
+                next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#next is null!")
+            })
+
+    inline fun <reified T> getPrevious(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+            Supplier {
+                previous?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#previous is null!")
+            })
+}
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
     fun toPlaylistParams(): PlaylistParams {
