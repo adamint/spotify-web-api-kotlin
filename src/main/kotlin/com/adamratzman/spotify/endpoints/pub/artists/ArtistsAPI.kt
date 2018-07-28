@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.pub.artists
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
-import java.util.stream.Collectors
 
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
@@ -17,7 +16,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtist(artistId: String): SpotifyRestAction<Artist> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/artists/${artistId.encode()}").toObject<Artist>(api)
+            get(EndpointBuilder("/artists/${artistId.encode()}").build()).toObject<Artist>(api)
         })
 
     }
@@ -28,7 +27,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtists(vararg artistIds: String): SpotifyRestAction<List<Artist?>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/artists?ids=${artistIds.map { it.encode() }.toList().stream().collect(Collectors.joining(","))}")
+            get(EndpointBuilder("/artists").with("ids", artistIds.joinToString(",") { it.encode() }).build())
                     .toObject<ArtistList>(api).artists
         })
     }
@@ -43,12 +42,10 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [artistId] is not found, or filter parameters are illegal
      */
-    fun getArtistAlbums(artistId: String, market: Market? = null, limit: Int = 20, offset: Int = 0, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
+    fun getArtistAlbums(artistId: String, limit: Int = 20, offset: Int = 0, market: Market? = null, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/artists/${artistId.encode()}/albums?limit=$limit&offset=$offset" +
-                    if (market != null) "&market=${market.code}" else "" +
-                            if (include.isNotEmpty()) "&include_groups=${include.joinToString(",") { it.keyword }}" else "")
-                    .toLinkedResult<SimpleAlbum>(api)
+            get(EndpointBuilder("/artists/${artistId.encode()}/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .with("include_groups", include.joinToString(",") { it.keyword }).build()).toLinkedResult<SimpleAlbum>(api)
         })
     }
 
@@ -58,14 +55,15 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get Spotify catalog information about an artist’s top tracks **by country**.
-     * @param artistId 	The Spotify ID for the artist.
+     * @param artistId    The Spotify ID for the artist.
      * @param market The country ([Market]) to search. Unlike endpoints with optional Track Relinking, the Market is **not** optional.
      *
      * @throws BadRequestException if tracks are not available in the specified [Market] or the [artistId] is not found
      */
     fun getArtistTopTracks(artistId: String, market: Market): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/artists/${artistId.encode()}/top-tracks?country=${market.code}").toObject<TrackList>(api).tracks.map { it!! }
+            get(EndpointBuilder("/artists/${artistId.encode()}/top-tracks").with("country", market.code).build())
+                    .toObject<TrackList>(api).tracks.map { it!! }
         })
 
     }
@@ -81,7 +79,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getRelatedArtists(artistId: String): SpotifyRestAction<List<Artist>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/artists/${artistId.encode()}/related-artists").toObject<ArtistList>(api).artists.map { it!! }
+            get(EndpointBuilder("/artists/${artistId.encode()}/related-artists").build()).toObject<ArtistList>(api).artists.map { it!! }
         })
 
     }

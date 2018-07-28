@@ -2,7 +2,6 @@ package com.adamratzman.spotify.endpoints.priv.library
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.*
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.util.function.Supplier
 
 /**
@@ -14,9 +13,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return Paging Object of [SavedTrack] ordered by position in library
      */
-    fun getSavedTracks(): SpotifyRestAction<PagingObject<SavedTrack>> {
+    fun getSavedTracks(limit: Int = 20, offset: Int = 0, market: Market? = null): SpotifyRestAction<PagingObject<SavedTrack>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/tracks").toPagingObject<SavedTrack>(api = api)
+            get(EndpointBuilder("/me/tracks").build()).toPagingObject<SavedTrack>(endpoint = this)
         })
     }
 
@@ -27,7 +26,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getSavedAlbums(): SpotifyRestAction<PagingObject<SavedAlbum>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/albums").toPagingObject<SavedAlbum>(api = api)
+            get(EndpointBuilder("/me/albums").build()).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
@@ -49,7 +48,8 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun doesLibraryContainTracks(vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/tracks/contains?ids=${ids.joinToString(",") { it.encode() }}").toObject<List<Boolean>>(api)
+            get(EndpointBuilder("/me/tracks/contains").with("ids", ids.joinToString(",") { it.encode() })
+                    .build()).toObject<List<Boolean>>(api)
         })
     }
 
@@ -71,7 +71,8 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun doesLibraryContainAlbums(vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/albums/contains?ids=${ids.joinToString(",") { it.encode() }}").toObject<List<Boolean>>(api)
+            get(EndpointBuilder("/me/albums/contains").with("ids", ids.joinToString(",") { it.encode() })
+                    .build()).toObject<List<Boolean>>(api)
         })
     }
 
@@ -93,7 +94,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun addTracksToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/tracks?ids=${ids.joinToString(",") { it.encode() }}")
+            put(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).build())
             Unit
         })
     }
@@ -116,7 +117,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun addAlbumsToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/albums?ids=${ids.joinToString(",") { it.encode() }}")
+            put(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).build())
             Unit
         })
     }
@@ -139,7 +140,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun removeTracksFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete("https://api.spotify.com/v1/me/tracks?ids=${ids.joinToString(",") { it.encode() }}")
+            delete(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).build())
             Unit
         })
     }
@@ -162,7 +163,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun removeAlbumsFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete("https://api.spotify.com/v1/me/albums?ids=${ids.joinToString(",") { it.encode() }}")
+            delete(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).build())
             Unit
         })
     }

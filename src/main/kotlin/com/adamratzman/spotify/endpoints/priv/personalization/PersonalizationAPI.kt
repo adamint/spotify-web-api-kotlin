@@ -22,7 +22,7 @@ class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getTopArtists(): SpotifyRestAction<PagingObject<Artist>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/top/artists").toPagingObject<Artist>(api = api)
+            get(EndpointBuilder("/me/top/artists").build()).toPagingObject<Artist>(endpoint = this)
         })
     }
 
@@ -40,7 +40,7 @@ class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getTopTracks(): SpotifyRestAction<PagingObject<Track>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/top/tracks").toPagingObject<Track>(api = api)
+            get(EndpointBuilder("/me/top/tracks").build()).toPagingObject<Track>(endpoint = this)
         })
     }
 
