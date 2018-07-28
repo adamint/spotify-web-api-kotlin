@@ -16,4 +16,4 @@ data class ErrorResponse(val error: ErrorObject)
 
 data class ErrorObject(val status: Int, val message: String)
 
-class BadRequestException(error: ErrorObject) : Exception("Received Status Code ${error.status}. Error cause: ${error.message}")
+class BadRequestException(val error: ErrorObject) : Exception("Received Status Code ${error.status}. Error cause: ${error.message}")

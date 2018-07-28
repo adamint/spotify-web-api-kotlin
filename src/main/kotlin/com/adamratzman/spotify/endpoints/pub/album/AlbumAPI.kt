@@ -18,7 +18,9 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAlbum(albumId: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
-            catch { get("https://api.spotify.com/v1/albums/$albumId${if (market != null) "?market=${market.code}" else ""}").toObject<Album>(api) }
+            catch {
+                get(EndpointBuilder("/albums/$albumId").with("market", market?.code).build()).toObject<Album>(api)
+            }
         })
     }
 
@@ -30,8 +32,8 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbums(vararg albumIds: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
         if (albumIds.isEmpty()) throw BadRequestException(ErrorObject(404, "You cannot send a request with no album ids!"))
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/albums?ids=${albumIds.map { it.encode() }.toList().stream().collect(Collectors.joining(","))}${if (market != null) "&market=${market.code}" else ""}")
-                    .toObject<AlbumsResponse>(api).albums
+            get(EndpointBuilder("/albums").with("ids", albumIds.joinToString(",") { it.encode() })
+                    .with("market", market?.code).build()).toObject<AlbumsResponse>(api).albums
         })
     }
 
@@ -44,9 +46,10 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the [albumId] is not found, or positioning of [limit] or [offset] is illegal.
      */
-    fun getAlbumTracks(albumId: String, limit: Int = 20, offset: Int = 0, market: Market? = null): SpotifyRestAction<LinkedResult<SimpleTrack>> {
+    fun getAlbumTracks(albumId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<SimpleTrack>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/albums/${albumId.encode()}/tracks?limit=$limit&offset=$offset${if (market != null) "&market=${market.code}" else ""}").toLinkedResult<SimpleTrack>(api)
+            get(EndpointBuilder("/albums/${albumId.encode()}/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .build()).toLinkedResult<SimpleTrack>(api)
         })
     }
 }

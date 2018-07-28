@@ -17,9 +17,11 @@ class PublicUserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the user cannot be found
      */
-    fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser> {
+    fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/users/${userId.encode()}").toObject<SpotifyPublicUser>(api)
+            catch {
+                get(EndpointBuilder("/users/${userId.encode()}").build()).toObject<SpotifyPublicUser>(api)
+            }
         })
     }
 }
