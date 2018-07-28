@@ -12,33 +12,33 @@ import java.util.function.Supplier
 class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/player/devices").toInnerObject<Device>("devices", api)
+            get(EndpointBuilder("/me/player/devices").build()).toInnerObject<Device>("devices", api)
         })
     }
 
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingContext? = get("https://api.spotify.com/v1/me/player").toObject<CurrentlyPlayingContext>(api)
+            val obj: CurrentlyPlayingContext? = get(EndpointBuilder("/me/player").build()).toObject<CurrentlyPlayingContext>(api)
             if (obj?.timestamp == null) null else obj
         })
     }
 
     fun getRecentlyPlayed(): SpotifyRestAction<CursorBasedPagingObject<PlayHistory>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/me/player/recently-played").toCursorBasedPagingObject<PlayHistory>(api = api)
+            get(EndpointBuilder("/me/player/recently-played").build()).toCursorBasedPagingObject<PlayHistory>(endpoint = this)
         })
     }
 
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingObject? = get("https://api.spotify.com/v1/me/player/currently-playing").toObject<CurrentlyPlayingObject>(api)
+            val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").build()).toObject<CurrentlyPlayingObject>(api)
             if (obj?.timestamp == null) null else obj
         })
     }
 
     fun pausePlayback(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player/pause${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}")
+            put(EndpointBuilder("/me/player/pause").with("device_id", deviceId).build())
             Unit
         })
     }
@@ -46,14 +46,14 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun seekPosition(positionMs: Long, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             if (positionMs < 0) throw IllegalArgumentException("Position must not be negative!")
-            put("https://api.spotify.com/v1/me/player/seek?position_ms=$positionMs${if (deviceId != null) "&device_id=${deviceId.encode()}" else ""}")
+            put(EndpointBuilder("/me/player/seek").with("position_ms", positionMs).with("device_id", deviceId).build())
             Unit
         })
     }
 
     fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player/repeat?state=${state.toString().toLowerCase()}${if (deviceId != null) "&device_id=${deviceId.encode()}" else ""}")
+            put(EndpointBuilder("/me/player/repeat").with("state", state.toString().toLowerCase()).with("device_id", deviceId).build())
             Unit
         })
     }
@@ -61,21 +61,21 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun setVolume(volume: Int, deviceId: String? = null): SpotifyRestAction<Unit> {
         if (volume !in 0..100) throw IllegalArgumentException("Volume must be within 0 to 100 inclusive. Provided: $volume")
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player/volume?volume_percent=$volume${if (deviceId != null) "&device_id=${deviceId.encode()}" else ""}")
+            put(EndpointBuilder("/me/player/volume").with("volume_percent", volume).with("device_id", deviceId).build())
             Unit
         })
     }
 
     fun skipToNextTrack(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            post("https://api.spotify.com/v1/me/player/next${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}")
+            post(EndpointBuilder("/me/player/next").with("device_id", deviceId).build())
             Unit
         })
     }
 
     fun rewindToLastTrack(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            post("https://api.spotify.com/v1/me/player/previous${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}")
+            post(EndpointBuilder("/me/player/previous").with("device_id", deviceId).build())
             Unit
         })
     }
@@ -103,7 +103,7 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun startPlayback(albumId: String? = null, artistId: String? = null, playlist: PlaylistParams? = null,
                       offsetNum: Int? = null, offsetTrackId: String? = null, deviceId: String? = null, vararg tracksToPlay: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            val url = "https://api.spotify.com/v1/me/player/play${if (deviceId != null) "?device_id=${deviceId.encode()}" else ""}"
+            val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).build()
             val body = JSONObject()
             when {
                 albumId != null -> body.put("context_uri", "spotify:album:$albumId")
@@ -130,7 +130,7 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     fun shufflePlayback(shuffle: Boolean = true, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player/shuffle?state=$shuffle${if (deviceId != null) "&device_id=${deviceId.encode()}" else ""}")
+            put(EndpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).build())
             Unit
         })
     }
@@ -138,7 +138,8 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun transferPlayback(vararg deviceId: String, play: Boolean = true): SpotifyRestAction<Unit> {
         if (deviceId.size > 1) throw IllegalArgumentException("Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request")
         return toAction(Supplier {
-            put("https://api.spotify.com/v1/me/player?deviceId=${deviceId.map { it.encode() }.joinToString(",")}&play=$play")
+            put(EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") {it.encode()})
+                    .with("play", play).build())
             Unit
         })
     }
