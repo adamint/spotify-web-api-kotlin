@@ -85,9 +85,15 @@ PagingObjects are a container for the requested objects (`items`), but also incl
 important information useful in future calls. It contains the request's `limit` and `offset`, along with 
 (sometimes) a link to the next and last page of items and the total number of items returned.
 
+If a link to the next or previous page is provided, we can use the `getNext` and `getPrevious` methods to retrieve 
+the respective PagingObjects 
+
 #### Cursor-Based Paging Objects
 A cursor-based paging object is a PagingObject with a cursor added on that can be used as a key to find the next 
-page of items
+page of items. The value in the cursor, `after`, describes after what object to begin the query.
+
+Just like with PagingObjects, you can get the next page of items with `getNext`. *However*, there is no 
+provided implementation of `after` in this library. You will need to do it yourself, if necessary.
 
 #### LinkedResults
 Some endpoints, like `PlaylistsAPI.getPlaylistTracks`, return a LinkedResult, which is a simple wrapper around the 
@@ -95,6 +101,9 @@ list of objects. With this, we have access to its Spotify API url (with `href`),
 that url.
 
 ### Generic Request
+For obvious reasons, in most cases, asynchronous requests via `queue` or `queueAfter` are preferred. However, 
+the synchronous format is also shown.
+
 ```kotlin
     val api = SpotifyAPI.Builder("appId", "appSecret").build()
     val trackSearch = api.search.searchTrack("Si t'étais là", market = Market.FR)
@@ -102,13 +111,14 @@ that url.
     
     fun blocking() {
         val trackPaging = trackSearch.complete()
+        println(trackPaging.items.map { it.name })
         // iterate through, see total found, etc. with the paging object..
     }
     
     fun async() {
         trackSearch.queueAfter(2, TimeUnit.SECONDS, { result ->
-            // do whatever with the result
-            // this will be executed 2000 += ~2 ms after invocation
+            // do whatever with the result.
+            // this will be executed 2000 +- approximately 5 ms after invocation
         })
     }
 ```
