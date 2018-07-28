@@ -19,9 +19,10 @@ class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the [userId] cannot be found
      */
-    fun getPlaylists(userId: String, limit: Int = 20, offset: Int = 0): SpotifyRestAction<PagingObject<SimplePlaylist>> {
+    fun getPlaylists(userId: String, limit: Int? = null, offset: Int? = null): SpotifyRestAction<PagingObject<SimplePlaylist>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/users/${userId.encode()}/playlists?limit=$limit&offset=$offset").toPagingObject<SimplePlaylist>(api = api)
+            get(EndpointBuilder("/users/${userId.encode()}/playlists").with("limit", limit).with("offset", offset)
+                    .build()).toPagingObject<SimplePlaylist>(endpoint = this)
         })
     }
 
@@ -36,7 +37,10 @@ class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getPlaylist(userId: String, playlistId: String, market: Market? = null): SpotifyRestAction<Playlist?> {
         return toAction(Supplier {
-            catch {get ("https://api.spotify.com/v1/users/${userId.encode()}/playlists/${playlistId.encode()}${if (market != null) "?market=${market.code}" else ""}").toObject<Playlist>(api)}
+            catch {
+                get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}")
+                        .with("market", market?.code).build()).toObject<Playlist>(api)
+            }
         })
     }
 
@@ -51,10 +55,10 @@ class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistTracks(userId: String, playlistId: String, limit: Int = 20, offset: Int = 0, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
+    fun getPlaylistTracks(userId: String, playlistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks?limit=$limit&offset=$offset${if (market != null) "&market=${market.code}" else ""}")
-                    .toLinkedResult<PlaylistTrack>(api)
+            get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").with("limit", limit)
+                    .with("offset", offset).with("market", market?.code).build()).toLinkedResult<PlaylistTrack>(api)
         })
 
     }
@@ -68,7 +72,7 @@ class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getPlaylistCovers(userId: String, playlistId: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/users/${userId.encode()}/playlists/${playlistId.encode()}/images").toObject<List<SpotifyImage>>(api)
+            get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/images").build()).toObject<List<SpotifyImage>>(api)
         })
     }
 }

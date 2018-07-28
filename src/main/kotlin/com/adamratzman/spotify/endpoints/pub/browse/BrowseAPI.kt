@@ -18,7 +18,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction(Supplier {
-            JSONObject(get("https://api.spotify.com/v1/recommendations/available-genre-seeds")).getJSONArray("genres").map { it.toString() }
+            JSONObject(get(EndpointBuilder("/recommendations/available-genre-seeds").build())).getJSONArray("genres").map { it.toString() }
         })
     }
 
@@ -32,10 +32,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filter parameters are illegal
      */
-    fun getNewReleases(limit: Int = 20, offset: Int = 0, market: Market? = null): SpotifyRestAction<PagingObject<Album>> {
+    fun getNewReleases(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<Album>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset${if (market != null) "&market=${market.code}" else ""}")
-                    .toPagingObject<Album>("albums", api)
+            get(EndpointBuilder("/browse/news-releases").with("limit", limit).with("offset", offset).with("market", market?.code).build())
+                    .toPagingObject<Album>("albums", endpoint = this)
         })
     }
 
@@ -56,12 +56,11 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filter parameters are illegal or [locale] does not exist
      */
-    fun getFeaturedPlaylists(limit: Int = 20, offset: Int = 0, locale: String? = null, market: Market? = null, timestamp: Timestamp? = null): SpotifyRestAction<FeaturedPlaylists> {
+    fun getFeaturedPlaylists(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null, timestamp: Timestamp? = null): SpotifyRestAction<FeaturedPlaylists> {
         return toAction(Supplier {
             timestamp?.let { timestamp.time = 1000 * (Math.floor(timestamp.time / 1000.0).toLong()) }
-            get("https://api.spotify.com/v1/browse/featured-playlists?limit=$limit&offset=$offset" +
-                    "${if (locale != null) "&locale=$locale" else ""}${if (market != null) "&market=${market.code}" else ""}${if (timestamp != null) "&timestamp=$timestamp" else ""}")
-                    .toObject<FeaturedPlaylists>(api)
+            get(EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .with("locale", locale).with("timestamp", timestamp).build()).toObject<FeaturedPlaylists>(api)
         })
     }
 
@@ -78,10 +77,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      */
-    fun getCategoryList(limit: Int = 20, offset: Int = 0, locale: String? = null, market: Market? = null): SpotifyRestAction<PagingObject<SpotifyCategory>> {
+    fun getCategoryList(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null): SpotifyRestAction<PagingObject<SpotifyCategory>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/browse/categories?limit=$limit&offset=$offset${if (locale != null) "&locale=$locale" else ""}${if (market != null) "&market=${market.code}" else ""}")
-                    .toPagingObject<SpotifyCategory>("categories", api)
+            get(EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .with("locale", locale).build()).toPagingObject<SpotifyCategory>("categories", endpoint = this)
         })
     }
 
@@ -100,13 +99,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getCategory(categoryId: String, market: Market? = null, locale: String? = null): SpotifyRestAction<SpotifyCategory> {
         return toAction(Supplier {
-            val params = when {
-                market != null && locale == null -> "?market=${market.code}"
-                market == null && locale != null -> "?locale=$locale"
-                market != null && locale != null -> "?market=${market.code}&locale=$locale"
-                else -> null
-            }
-            get("https://api.spotify.com/v1/browse/categories/${categoryId.encode()}" + params).toObject<SpotifyCategory>(api)
+            get(EndpointBuilder("/browse/categories/${categoryId.encode()}").with("market", market?.code)
+                    .with("locale", locale).build()).toObject<SpotifyCategory>(api)
         })
     }
 
@@ -120,10 +114,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
      */
-    fun getPlaylistsForCategory(categoryId: String, market: Market? = null, limit: Int = 20, offset: Int = 0): SpotifyRestAction<PagingObject<SimplePlaylist>> {
+    fun getPlaylistsForCategory(categoryId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SimplePlaylist>> {
         return toAction(Supplier {
-            get("https://api.spotify.com/v1/browse/categories/${categoryId.encode()}/playlists?limit=$limit&offset=$offset${if (market != null) "&market=${market.code}" else ""}")
-                    .toPagingObject<SimplePlaylist>("playlists", api)
+            get(EndpointBuilder("/browse/categories/${categoryId.encode()}/playlists").with("limit", limit).with("offset", offset)
+                    .with("market", market?.code).build()).toPagingObject<SimplePlaylist>("playlists", endpoint = this)
         })
     }
 
@@ -151,20 +145,19 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any filter is applied illegally
      */
-    fun getRecommendations(seedArtists: List<String>? = null, seedGenres: List<String>? = null, seedTracks: List<String>? = null, limit: Int = 20,
+    fun getRecommendations(seedArtists: List<String>? = null, seedGenres: List<String>? = null, seedTracks: List<String>? = null, limit: Int? = null,
                            market: Market? = null, targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
                            minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(), maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf())
             : SpotifyRestAction<RecommendationResponse> {
         return toAction(Supplier {
-            val url = StringBuilder("https://api.spotify.com/v1/recommendations?limit=$limit")
-            if (market != null) url.append("&market=${market.code}")
-            if (seedArtists != null) url.append("&seed_artists=${seedArtists.map { it.encode() }.stream().collect(Collectors.joining(","))}")
-            if (seedGenres != null) url.append("&seed_genres=${seedGenres.map { it.encode() }.stream().collect(Collectors.joining(","))}")
-            if (seedTracks != null) url.append("&seed_tracks=${seedTracks.map { it.encode() }.stream().collect(Collectors.joining(","))}")
-            if (targetAttributes.isNotEmpty()) targetAttributes.forEach { url.append("&target_${it.key.attribute}=${it.value}") }
-            if (minAttributes.isNotEmpty()) minAttributes.forEach { url.append("&min_${it.key.attribute}=${it.value}") }
-            if (maxAttributes.isNotEmpty()) maxAttributes.forEach { url.append("&max_${it.key.attribute}=${it.value}") }
-            get(url.toString()).toObject<RecommendationResponse>(api)
+            val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.code)
+                    .with("seed_artists", seedArtists?.joinToString(",") {it.encode() })
+                    .with("seed_genres", seedGenres?.joinToString(",") {it.encode() })
+                    .with("seed_tracks", seedTracks?.joinToString(",") {it.encode() })
+            targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
+            minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
+            maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }
+            get(builder.build()).toObject<RecommendationResponse>(api)
         })
     }
 }
@@ -183,5 +176,7 @@ enum class TuneableTrackAttribute(val attribute: String) {
     SPEECHINESS("speechiness"),
     TEMPO("tempo"),
     TIME_SIGNATURE("time_signature"),
-    VALENCE("valence")
+    VALENCE("valence");
+
+    override fun toString() = attribute
 }

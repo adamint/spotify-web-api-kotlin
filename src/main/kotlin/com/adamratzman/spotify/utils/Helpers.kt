@@ -2,6 +2,7 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.base
 import com.google.gson.Gson
 import org.json.JSONObject
 import org.jsoup.Connection
@@ -35,7 +36,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
         }
         var connection = Jsoup.connect(url).ignoreContentType(true)
-        if (data != null) data.forEach { connection.data(it.first, it.second) }
+        data?.forEach { connection.data(it.first, it.second) }
         if (contentType != null) connection.header("Content-Type", contentType)
         if (body != null) {
             if (contentType != null) connection.requestBody(body)
@@ -46,7 +47,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
                 } else connection.requestBody(body)
         }
         connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
-        val document = connection.ignoreHttpErrors(true).method(method).execute()
+        val document = connection.method(method).ignoreHttpErrors(true).execute()
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) throw BadRequestException(api.gson.fromJson(document.body(), ErrorResponse::class.java).error)
         else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
         return document.body()
@@ -55,13 +56,49 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
 }
 
+internal class EndpointBuilder(val path: String) {
+    val builder = StringBuilder(base)
+
+    init {
+        builder.append(path)
+    }
+
+    fun with(key: String, value: Any?): EndpointBuilder {
+        if (value != null && (value !is String || value.isNotEmpty())) {
+            if (builder.toString() == base + path) builder.append("?")
+            else builder.append("&")
+            builder.append(key).append("=").append(value.toString())
+        }
+        return this
+    }
+
+    fun build() = builder.toString()
+}
+
 data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String?, val cursors: Cursor,
-                                          val total: Int)
+                                          val total: Int, val endpoint: SpotifyEndpoint) {
+    inline fun <reified T> getNext(): SpotifyRestAction<CursorBasedPagingObject<T>> = endpoint.toAction(
+            Supplier {
+                next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#next is null!")
+            })
+}
 
 data class Cursor(val after: String)
-data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
-data class PlaylistTrackPagingObject(val href: String, val items: List<PlaylistTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
-data class SimpleTrackPagingObject(val href: String, val items: List<SimpleTrack>, val limit: Int, val next: String? = null, val offset: Int = 0, val previous: String? = null, val total: Int)
+data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
+                               val previous: String? = null, val total: Int, val endpoint: SpotifyEndpoint) {
+    inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+            Supplier {
+                next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#next is null!")
+            })
+
+    inline fun <reified T> getPrevious(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+            Supplier {
+                previous?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                        ?: throw IllegalStateException("PagingObject#previous is null!")
+            })
+}
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
     fun toPlaylistParams(): PlaylistParams {
@@ -105,27 +142,29 @@ inline fun <reified T> Any.toObject(o: Any): T {
             .fromJson(this as String, T::class.java)
 }
 
-inline fun <reified T> String.toPagingObject(innerObjectName: String? = null, api: SpotifyAPI): PagingObject<T> {
+inline fun <reified T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     return PagingObject(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) },
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api) },
             jsonObject.getInt("limit"),
             jsonObject.get("next") as? String,
             jsonObject.get("offset") as Int,
             jsonObject.get("previous") as? String,
-            jsonObject.getInt("total"))
+            jsonObject.getInt("total"),
+            endpoint)
 }
 
-inline fun <reified T> String.toCursorBasedPagingObject(innerObjectName: String? = null, api: SpotifyAPI): CursorBasedPagingObject<T> {
+inline fun <reified T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     return CursorBasedPagingObject(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) },
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint) },
             jsonObject.getInt("limit"),
             jsonObject.get("next") as? String,
-            api.gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),
-            if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1)
+            endpoint.api.gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),
+            if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1,
+            endpoint)
 }
 
 inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {
@@ -139,10 +178,10 @@ inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI):
     return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject<T>(api) }
 }
 
-fun <T> catch(function: () -> T):T? {
-    return try{
-       function()
-    } catch (e:BadRequestException) {
-        null
+fun <T> catch(function: () -> T): T? {
+    return try {
+        function()
+    } catch (e: BadRequestException) {
+        if (e.error.status == 404) null else throw e
     }
 }

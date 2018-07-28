@@ -23,6 +23,8 @@ import org.jsoup.Jsoup
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+internal val base = "https://api.spotify.com/v1"
+
 open class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(1)

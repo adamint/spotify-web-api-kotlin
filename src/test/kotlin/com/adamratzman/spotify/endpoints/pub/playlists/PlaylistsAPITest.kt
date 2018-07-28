@@ -1,12 +1,13 @@
 package com.adamratzman.spotify.kotlin.endpoints.pub.playlists
 
 import api
+import com.adamratzman.spotify.utils.SimplePlaylist
 import org.junit.Test
 
 internal class PlaylistsAPITest {
     @Test
     fun getPlaylists() {
-        println(api.playlists.getPlaylists("wizzler").complete())
+        println(api.playlists.getPlaylists("wizzler", limit = 3).complete().getNext<SimplePlaylist>().complete())
     }
 
     @Test
