@@ -25,9 +25,10 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
-    fun getSavedAlbums(): SpotifyRestAction<PagingObject<SavedAlbum>> {
+    fun getSavedAlbums(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SavedAlbum>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/albums").build()).toPagingObject<SavedAlbum>(endpoint = this)
+            get(EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .build()).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
