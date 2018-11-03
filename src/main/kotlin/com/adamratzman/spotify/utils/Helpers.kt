@@ -116,6 +116,6 @@ fun <T> catch(function: () -> T): T? {
     return try {
         function()
     } catch (e: BadRequestException) {
-        if (e.error.status == 404) null else throw e
+        null
     }
 }

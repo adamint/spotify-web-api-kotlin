@@ -34,4 +34,6 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
             api.executor.schedule({ consumer(result) }, runAt - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
         }
     }
+
+    override fun toString() = complete().toString()
 }
