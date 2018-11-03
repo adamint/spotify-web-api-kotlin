@@ -40,7 +40,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             if (description != null) json.put("description", description)
             if (public != null) json.put("public", public)
             if (collaborative != null) json.put("collaborative", collaborative)
-            post(EndpointBuilder("/users/${userId.encode()}/playlists").build(), json.toString()).toObject<Playlist>(api)
+            post(EndpointBuilder("/users/${userId.encode()}/playlists").toString(), json.toString()).toObject<Playlist>(api)
         })
     }
 
@@ -60,7 +60,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         val json = JSONObject().put("uris", uris.map { "spotify:track:${it.encode()}" })
         if (position != null) json.put("position", position)
         return toAction(Supplier {
-            post(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").build(), json.toString())
+            post(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
             Unit
         })
     }
@@ -86,7 +86,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         if (description != null) json.put("description", description)
         if (json.length() == 0) throw IllegalArgumentException("At least one option must not be null")
         return toAction(Supplier {
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}").build(), json.toString())
+            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}").toString(), json.toString())
             Unit
         })
     }
@@ -131,7 +131,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             json.put("insert_before", insertionPoint)
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").build(), json.toString())
+            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
                     .toObject<Snapshot>(api)
         })
     }
@@ -150,7 +150,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("uris", trackIds.map { "spotify:track:${it.encode()}" })
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").build(),
+            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(),
                     json.toString())
             Unit
         })
@@ -183,7 +183,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 imagePath != null -> encode(ImageIO.read(URL("file:///$imagePath")))
                 else -> throw IllegalArgumentException("No cover image was specified")
             }
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/images").build(),
+            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/images").toString(),
                     data, contentType = "image/jpeg")
             Unit
         })

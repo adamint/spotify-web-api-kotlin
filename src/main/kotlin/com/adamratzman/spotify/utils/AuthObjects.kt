@@ -1,12 +1,13 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.SpotifyScope
 
 data class Token(val access_token: String, val token_type: String, val expires_in: Int, val refresh_token: String?, val scope: String?) {
-    fun getScopes(): List<SpotifyClientAPI.Scope> {
-        val scopes = mutableListOf<SpotifyClientAPI.Scope>()
+    fun getScopes(): List<SpotifyScope> {
+        val scopes = mutableListOf<SpotifyScope>()
         scope?.split(" ")?.forEach { split ->
-            SpotifyClientAPI.Scope.values().forEach { if (split == it.uri) scopes.add(it) }
+            SpotifyScope.values().forEach { if (split == it.uri) scopes.add(it) }
         }
         return scopes
     }
