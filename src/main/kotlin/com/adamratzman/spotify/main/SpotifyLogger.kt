@@ -14,3 +14,5 @@ class SpotifyLogger(var enabled: Boolean) {
         throwable?.printStackTrace()
     }
 }
+
+class SpotifyException(message: String, cause: Throwable) : Exception(message, cause)

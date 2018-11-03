@@ -104,7 +104,7 @@ class PlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun startPlayback(albumId: String? = null, artistId: String? = null, playlist: PlaylistParams? = null,
                       offsetNum: Int? = null, offsetTrackId: String? = null, deviceId: String? = null, vararg tracksToPlay: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).build()
+            val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = JSONObject()
             when {
                 albumId != null -> body.put("context_uri", "spotify:album:$albumId")

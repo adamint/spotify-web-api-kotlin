@@ -88,6 +88,6 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     private fun build(type: SearchType, query: String, limit: Int?, offset: Int?, market: Market?): String {
         return EndpointBuilder("/search").with("q", query.encode()).with("type", type.id).with("market", market?.code)
-                .with("limit", limit).with("offset", offset).build()
+                .with("limit", limit).with("offset", offset).toString()
     }
 }

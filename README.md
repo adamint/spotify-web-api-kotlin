@@ -57,8 +57,8 @@ You have two options when building the Client API.
 1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) with 
 `Builder.buildToken(token: String)`. However, this is a one-time token that cannot be refreshed.
 2. You can use the [Authorization code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow). We provide a method
-with `Builder.buildAuthCode(code: String, automaticRefresh: Boolean)`to generate the flow url with Builder.getAuthUrl(vararg scopes: Scope), allowing you to request specific 
-scopes. This library does not provide a method to retrieve the code from your 
+with `Builder.buildAuthCode(code: String, automaticRefresh: Boolean)`to generate the flow url with Builder.getAuthUrl(vararg spotifyScopes: Scope), allowing you to request specific 
+spotifyScopes. This library does not provide a method to retrieve the code from your 
 callback URL. You must implement that with a web server. This method allows you 
 to choose whether to use automatic token refresh.
 
@@ -177,7 +177,7 @@ in your market!
    - **[PublicUserAPI (SpotifyAPI.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
         1. `getProfile` returns the corresponding SpotifyPublicUser object. Pay attention to nullable parameters.
 #### SpotifyClientAPI:
-Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-scopes/) in order to 
+Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-spotifyScopes/) in order to 
 ensure proper function of this library.
 
 Check to see which Scope is necessary with the corresponding endpoint using the 
