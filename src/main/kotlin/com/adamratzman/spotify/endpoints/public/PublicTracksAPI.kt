@@ -15,7 +15,7 @@ class PublicTracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param trackId The Spotify ID for the track.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
-     * @throws BadRequestException if [trackId] cannot be found
+     * @return nullable Track. This behavior is *the same* as in `getTracks`
      */
     fun getTrack(trackId: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction(Supplier {
