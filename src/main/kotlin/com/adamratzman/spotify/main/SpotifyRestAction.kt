@@ -1,6 +1,5 @@
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.main.SpotifyAPI
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier

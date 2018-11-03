@@ -1,25 +1,26 @@
 package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.endpoints.priv.follow.ClientFollowAPI
-import com.adamratzman.spotify.endpoints.priv.library.ClientLibraryAPI
-import com.adamratzman.spotify.endpoints.priv.personalization.PersonalizationAPI
-import com.adamratzman.spotify.endpoints.priv.player.PlayerAPI
-import com.adamratzman.spotify.endpoints.priv.playlists.ClientPlaylistAPI
-import com.adamratzman.spotify.endpoints.priv.users.ClientProfileAPI
-import com.adamratzman.spotify.endpoints.pub.album.AlbumAPI
-import com.adamratzman.spotify.endpoints.pub.artists.ArtistsAPI
-import com.adamratzman.spotify.endpoints.pub.browse.BrowseAPI
-import com.adamratzman.spotify.endpoints.pub.follow.PublicFollowingAPI
-import com.adamratzman.spotify.endpoints.pub.playlists.PlaylistsAPI
-import com.adamratzman.spotify.endpoints.pub.search.SearchAPI
-import com.adamratzman.spotify.endpoints.pub.tracks.TracksAPI
-import com.adamratzman.spotify.endpoints.pub.users.PublicUserAPI
+import com.adamratzman.spotify.endpoints.client.ClientFollowAPI
+import com.adamratzman.spotify.endpoints.client.ClientLibraryAPI
+import com.adamratzman.spotify.endpoints.client.ClientPersonalizationAPI
+import com.adamratzman.spotify.endpoints.client.PlayerAPI
+import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
+import com.adamratzman.spotify.endpoints.client.ClientProfileAPI
+import com.adamratzman.spotify.endpoints.public.PublicAlbumAPI
+import com.adamratzman.spotify.endpoints.public.PublicArtistsAPI
+import com.adamratzman.spotify.endpoints.public.BrowseAPI
+import com.adamratzman.spotify.endpoints.public.PublicFollowingAPI
+import com.adamratzman.spotify.endpoints.public.PublicPlaylistsAPI
+import com.adamratzman.spotify.endpoints.public.SearchAPI
+import com.adamratzman.spotify.endpoints.public.PublicTracksAPI
+import com.adamratzman.spotify.endpoints.public.PublicUserAPI
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.jsoup.Jsoup
+import java.lang.IllegalArgumentException
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -30,14 +31,14 @@ open class SpotifyAPI internal constructor(val clientId: String, val clientSecre
     internal val executor = Executors.newScheduledThreadPool(1)
     val gson = GsonBuilder().setLenient().create()!!
     val search = SearchAPI(this)
-    val albums = AlbumAPI(this)
+    val albums = PublicAlbumAPI(this)
     val browse = BrowseAPI(this)
-    val artists = ArtistsAPI(this)
-    val playlists = PlaylistsAPI(this)
+    val artists = PublicArtistsAPI(this)
+    val playlists = PublicPlaylistsAPI(this)
     val users = PublicUserAPI(this)
-    val tracks = TracksAPI(this)
+    val tracks = PublicTracksAPI(this)
     val publicFollowing = PublicFollowingAPI(this)
-    val logger = SpotifyLogger(true)
+    internal val logger = SpotifyLogger(true)
 
     class Builder(private var clientId: String, private var clientSecret: String) {
         fun build(): SpotifyAPI {
@@ -78,7 +79,7 @@ open class SpotifyAPI internal constructor(val clientId: String, val clientSecre
 }
 
 class SpotifyClientAPI private constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false, var redirectUri: String) : SpotifyAPI(clientId, clientSecret, token) {
-    val personalization = PersonalizationAPI(this)
+    val personalization = ClientPersonalizationAPI(this)
     val clientProfile = ClientProfileAPI(this)
     val clientLibrary = ClientLibraryAPI(this)
     val clientFollowing = ClientFollowAPI(this)

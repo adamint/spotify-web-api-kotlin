@@ -1,6 +1,7 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.InvalidObjectException
