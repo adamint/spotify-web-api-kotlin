@@ -1,6 +1,7 @@
-package com.adamratzman.spotify.endpoints.priv.users
+package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
@@ -19,7 +20,7 @@ class ClientProfileAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getUserProfile(): SpotifyRestAction<SpotifyUserInformation> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me").build()).toObject<SpotifyUserInformation>(api)
+            get(EndpointBuilder("/me").toString()).toObject<SpotifyUserInformation>(api)
         })
     }
 }

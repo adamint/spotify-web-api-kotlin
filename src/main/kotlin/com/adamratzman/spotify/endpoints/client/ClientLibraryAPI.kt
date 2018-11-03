@@ -1,6 +1,7 @@
-package com.adamratzman.spotify.endpoints.priv.library
+package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
@@ -16,7 +17,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getSavedTracks(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SavedTrack>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .build()).toPagingObject<SavedTrack>(endpoint = this)
+                    .toString()).toPagingObject<SavedTrack>(endpoint = this)
         })
     }
 
@@ -28,7 +29,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getSavedAlbums(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SavedAlbum>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .build()).toPagingObject<SavedAlbum>(endpoint = this)
+                    .toString()).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
@@ -51,7 +52,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun doesLibraryContainTracks(vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/tracks/contains").with("ids", ids.joinToString(",") { it.encode() })
-                    .build()).toObject<List<Boolean>>(api)
+                    .toString()).toObject<List<Boolean>>(api)
         })
     }
 
@@ -74,7 +75,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun doesLibraryContainAlbums(vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/albums/contains").with("ids", ids.joinToString(",") { it.encode() })
-                    .build()).toObject<List<Boolean>>(api)
+                    .toString()).toObject<List<Boolean>>(api)
         })
     }
 
@@ -96,7 +97,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun addTracksToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).build())
+            put(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
@@ -119,7 +120,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun addAlbumsToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).build())
+            put(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
@@ -142,7 +143,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun removeTracksFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).build())
+            delete(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
@@ -165,7 +166,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun removeAlbumsFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).build())
+            delete(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }

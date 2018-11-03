@@ -1,6 +1,7 @@
-package com.adamratzman.spotify.endpoints.priv.playlists
+package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
 import java.awt.image.BufferedImage
@@ -102,7 +103,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         if (limit != null && limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
         return toAction(Supplier {
-            get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).build())
+            get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
                     .toPagingObject<SimplePlaylist>(endpoint = this)
         })
     }

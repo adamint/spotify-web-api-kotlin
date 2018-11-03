@@ -1,13 +1,14 @@
-package com.adamratzman.spotify.endpoints.priv.personalization
+package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
 /**
  * Endpoints for retrieving information about the user’s listening habits.
  */
-class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     enum class TimeRange(val id: String) {
         LONG_TERM("long_term"), MEDIUM_TERM("medium_term"), SHORT_TERM("short_term");
         override fun toString() = id
@@ -28,7 +29,7 @@ class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestAction<PagingObject<Artist>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).build()).toPagingObject<Artist>(endpoint = this)
+                    .with("time_range", timeRange).toString()).toPagingObject<Artist>(endpoint = this)
         })
     }
 
@@ -47,7 +48,7 @@ class PersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestAction<PagingObject<Track>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).build()).toPagingObject<Track>(endpoint = this)
+                    .with("time_range", timeRange).toString()).toPagingObject<Track>(endpoint = this)
         })
     }
 

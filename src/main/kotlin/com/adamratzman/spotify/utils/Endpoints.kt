@@ -2,6 +2,7 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.base
 import org.json.JSONObject
 import org.jsoup.Connection
@@ -53,11 +54,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 }
 
 internal class EndpointBuilder(val path: String) {
-    val builder = StringBuilder(base)
-
-    init {
-        builder.append(path)
-    }
+    private val builder = StringBuilder(base + path)
 
     fun with(key: String, value: Any?): EndpointBuilder {
         if (value != null && (value !is String || value.isNotEmpty())) {
@@ -68,5 +65,5 @@ internal class EndpointBuilder(val path: String) {
         return this
     }
 
-    fun build() = builder.toString()
+    override fun toString() = builder.toString()
 }
