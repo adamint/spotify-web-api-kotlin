@@ -53,7 +53,7 @@ class PublicArtistsAPITest : Spek({
             }
         }
 
-        describe("get artist top tracks per market") {
+        describe("get artist top tracks by market") {
             it("invalid artist") {
                 assertThrows<BadRequestException> { a.getArtistTopTracks("no").complete() }
             }

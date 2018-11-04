@@ -1,6 +1,9 @@
 package com.adamratzman.spotify.utils
 
-data class FeaturedPlaylists(val message: String?, val playlists: PagingObject<Playlist>)
+/**
+ * @param message the featured message in "Overview"
+ */
+data class FeaturedPlaylists(val message: String, val playlists: PagingObject<Playlist>)
 data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
 data class AlbumsResponse(val albums: List<Album?>)
 data class ArtistList(val artists: List<Artist?>)
