@@ -130,6 +130,10 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
                     null, null), false, redirectUri)
         }
 
+        fun buildToken(oauthToken: Token): SpotifyClientAPI {
+            return SpotifyClientAPI(clientId, clientSecret, oauthToken, false, redirectUri)
+        }
+
         fun getAuthUrl(vararg spotifyScopes: SpotifyScope): String = getAuthUrlFull(*spotifyScopes, clientId = clientId, redirectUri = redirectUri)
     }
 }

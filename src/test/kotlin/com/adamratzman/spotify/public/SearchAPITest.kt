@@ -1,6 +1,5 @@
 package com.adamratzman.spotify.public
 
-import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.assertThrows
@@ -9,9 +8,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class SearchAPITest : Spek({
     describe("Search API test") {
-        val api by memoized {
-            SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-        }
         val s = api.search
         describe("search track") {
             it("valid request") {

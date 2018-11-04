@@ -1,7 +1,6 @@
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.endpoints.public.PublicArtistsAPI
-import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.Assertions.*
@@ -11,9 +10,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicArtistsAPITest : Spek({
     describe("Public Artists test") {
-        val api by memoized {
-            SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-        }
         val a = api.artists
         describe("get artists") {
             it("invalid artist") {

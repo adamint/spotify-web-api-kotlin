@@ -1,6 +1,5 @@
 package com.adamratzman.spotify.public
 
-import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -10,9 +9,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicFollowingAPITest : Spek({
     describe("Public Following test") {
-        val api by memoized {
-            SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-        }
         val f = api.publicFollowing
         describe("do users follow playlist") {
             it("invalid users, valid playlist") {
@@ -33,7 +29,7 @@ class PublicFollowingAPITest : Spek({
                         f.doUsersFollowPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "adamratzman1", "adamratzman").complete())
             }
             it("mix of valid and invalid users, valid playlist") {
-                assertEquals(listOf(false,true),
+                assertEquals(listOf(false, true),
                         f.doUsersFollowPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "udontexist89", "adamratzman1").complete())
             }
         }
