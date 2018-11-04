@@ -133,9 +133,15 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * together with pool size details. For artists and tracks that are very new or obscure there might not be enough data
      * to generate a list of tracks.
      *
-     * Tuneable track attribute descriptions and ranges are described [here](https://hastebin.com/olojoxonul.vbs)
+     * **5** seeds of any combination of [seedArtists], [seedGenres], and [seedTracks] can be provided. AT LEAST 1 seed must be provided.
+     *
+     * **All attributes** are weighted equally.
+     *
+     * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
+     * and descriptions of tuneable track attributes and their ranges.
+     *
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
-     * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations
+     * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
      * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
      * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
@@ -154,6 +160,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                            market: Market? = null, targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
                            minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(), maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf())
             : SpotifyRestAction<RecommendationResponse> {
+        if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
+            throw BadRequestException(ErrorObject(400, "At least one seed (genre, artist, track) must be provided."))
+        }
         return toAction(Supplier {
             val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.code)
                     .with("seed_artists", seedArtists?.joinToString(",") { it.encode() })
