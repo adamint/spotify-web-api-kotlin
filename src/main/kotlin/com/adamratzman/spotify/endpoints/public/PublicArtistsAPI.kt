@@ -13,11 +13,11 @@ class PublicArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID.
      * @param artistId The Spotify ID for the artist.
      *
-     * @throws BadRequestException if the [artistId] is not found
+     * @return [Artist] if valid artist id is provided, otherwise null
      */
-    fun getArtist(artistId: String): SpotifyRestAction<Artist> {
+    fun getArtist(artistId: String): SpotifyRestAction<Artist?> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists/${artistId.encode()}").toString()).toObject<Artist>(api)
+            catch { get(EndpointBuilder("/artists/${artistId.encode()}").toString()).toObject<Artist>(api) }
         })
 
     }
@@ -55,7 +55,9 @@ class PublicArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Get Spotify catalog information about an artist’s top tracks **by country**.
+     * Get Spotify catalog information about an artist’s top tracks **by country**. Contains only up to **10** tracks with no
+     * [CursorBasedPagingObject] to go between top track pages. Unfortunately, this isn't likely to change soon
+     *
      * @param artistId    The Spotify ID for the artist.
      * @param market The country ([Market]) to search. Unlike endpoints with optional Track Relinking, the Market is **not** optional.
      *
@@ -66,7 +68,6 @@ class PublicArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(EndpointBuilder("/artists/${artistId.encode()}/top-tracks").with("country", market.code).toString())
                     .toObject<TrackList>(api).tracks.map { it!! }
         })
-
     }
 
     /**
@@ -82,6 +83,5 @@ class PublicArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${artistId.encode()}/related-artists").toString()).toObject<ArtistList>(api).artists.map { it!! }
         })
-
     }
 }
