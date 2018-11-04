@@ -16,7 +16,7 @@ class PublicUserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return publicly-available information about the user
      *
-     * @throws BadRequestException if the user cannot be found
+     * @return null if the user cannot be found
      */
     fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {
