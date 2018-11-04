@@ -1,12 +1,12 @@
 package com.adamratzman.spotify.public
 
+import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.Suite
 import org.spekframework.spek2.style.specification.describe
 
 class BrowseAPITest : Spek({
@@ -49,22 +49,54 @@ class BrowseAPITest : Spek({
         }
 
         describe("get recommendations") {
+            it("no parameters") {
+                assertThrows<BadRequestException> { b.getRecommendations().complete() }
+            }
             it("seed artists") {
-
+                assertThrows<BadRequestException> { b.getRecommendations(seedArtists = listOf("abc")).complete() }
+                assert(b.getRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).complete().tracks.isNotEmpty())
+                assert(b.getRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89", "7lMgpN1tEBQKpRoUMKB8iw")).complete().tracks.isNotEmpty())
             }
             it("seed tracks") {
-
+                assertThrows<BadRequestException> { b.getRecommendations(seedTracks = listOf("abc")).complete() }
+                assert(b.getRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
+                assert(b.getRecommendations(seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
             }
             it("seed genres") {
-
+                assertDoesNotThrow { b.getRecommendations(seedGenres = listOf("abc")).complete() }
+                assert(b.getRecommendations(seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
+                assert(b.getRecommendations(seedGenres = listOf("pop", "latinx")).complete().tracks.isNotEmpty())
+            }
+            it("multiple seed types") {
+                assertDoesNotThrow {
+                    b.getRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89"),
+                            seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl"),
+                            seedGenres = listOf("pop")).complete()
+                }
             }
             it("target attributes") {
-
+                assertThrows<BadRequestException> {
+                    b.getRecommendations(targetAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 3)).complete()
+                }
+                assert(b.getRecommendations(
+                        targetAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 1.0, TuneableTrackAttribute.DANCEABILITY to .5),
+                        seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
             }
             it("min attributes") {
-
+                assertThrows<BadRequestException> {
+                    b.getRecommendations(minAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 3)).complete()
+                }
+                assert(b.getRecommendations(
+                        minAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 0.5, TuneableTrackAttribute.DANCEABILITY to .5),
+                        seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
             }
             it("max attributes") {
+                assertThrows<BadRequestException> {
+                    b.getRecommendations(maxAttributes = hashMapOf(TuneableTrackAttribute.SPEECHINESS to 3)).complete()
+                }
+                assert(b.getRecommendations(
+                        maxAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 0.9, TuneableTrackAttribute.DANCEABILITY to 0.9),
+                        seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
 
             }
 
