@@ -1,6 +1,5 @@
 package com.adamratzman.spotify.public
 
-import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.Assertions.*
@@ -10,9 +9,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicAlbumsAPITest : Spek({
     describe("Public Albums test") {
-        val api by memoized {
-            SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-        }
         val a = api.albums
         describe("get albums") {
             it("singular album") {

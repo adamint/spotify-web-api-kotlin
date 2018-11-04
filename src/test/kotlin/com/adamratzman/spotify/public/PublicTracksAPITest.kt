@@ -1,6 +1,5 @@
 package com.adamratzman.spotify.public
 
-import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,9 +10,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicTracksAPITest : Spek({
     describe("Track API (Public View) test") {
-        val api by memoized {
-            SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-        }
         val t = api.tracks
         describe("get track") {
             it("known track should return author name") {

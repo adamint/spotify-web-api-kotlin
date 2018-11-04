@@ -15,13 +15,13 @@ This library is available via Maven Central.
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '1.0.3'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '1.0.4'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
@@ -33,7 +33,7 @@ repositories {
 Then, you can use the following:
 ```
 dependencies {
-	compile 'com.github.adamint:spotify-web-api-kotlin:master-SNAPSHOT'
+	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
 }
 ```
 
@@ -134,6 +134,16 @@ will be populated with the href, uri, and, most importantly, the id of the track
 
 You can then use this track in clientApi actions such as playing or saving the track, knowing that it will be playable 
 in your market!
+
+### Testing
+We use [Spek](https://github.com/spekframework/spek), which integrates with the JUnit runner, for testing. To run any test, you 
+need to run `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET`. If you'd like to run the client tests 
+as well, you need to add the `spotifyRedirectUri` parameter, along with EITHER `spotifyAuthCode` OR `spotifyTokenString`
+
+Using a token is preferred if you will be doing multiple tests, as the code is one-time.
+
+An example: `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
+
 
 ### Endpoint List
 #### SpotifyAPI:
