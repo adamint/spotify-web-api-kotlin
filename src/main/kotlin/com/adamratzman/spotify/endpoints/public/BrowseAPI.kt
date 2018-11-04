@@ -4,7 +4,9 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
-import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.*
 import java.util.function.Supplier
 
 /**
@@ -34,7 +36,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getNewReleases(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<Album>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/browse/news-releases").with("limit", limit).with("offset", offset).with("market", market?.code).toString())
+            get(EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with("country", market?.code).toString())
                     .toPagingObject<Album>("albums", endpoint = this)
         })
     }
@@ -51,16 +53,17 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
-     * @param timestamp Use this parameter to specify the user’s local time to get results tailored for that specific
+     * @param timestamp Use this parameter (time in milliseconds) to specify the user’s local time to get results tailored for that specific
      * date and time in the day. If not provided, the response defaults to the current UTC time.
      *
      * @throws BadRequestException if filter parameters are illegal or [locale] does not exist
      */
-    fun getFeaturedPlaylists(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null, timestamp: Timestamp? = null): SpotifyRestAction<FeaturedPlaylists> {
+    fun getFeaturedPlaylists(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null, timestamp: Long? = null): SpotifyRestAction<FeaturedPlaylists> {
         return toAction(Supplier {
-            timestamp?.let { timestamp.time = 1000 * (Math.floor(timestamp.time / 1000.0).toLong()) }
             get(EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .with("locale", locale).with("timestamp", timestamp).toString()).toObject<FeaturedPlaylists>(api)
+                    .with("locale", locale).with("timestamp", timestamp?.let {
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(Date.from(Instant.ofEpochMilli(timestamp)))
+                    }).toString()).toObject<FeaturedPlaylists>(api)
         })
     }
 
@@ -76,6 +79,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     fun getCategoryList(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null): SpotifyRestAction<PagingObject<SpotifyCategory>> {
         return toAction(Supplier {
@@ -151,9 +156,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             : SpotifyRestAction<RecommendationResponse> {
         return toAction(Supplier {
             val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.code)
-                    .with("seed_artists", seedArtists?.joinToString(",") {it.encode() })
-                    .with("seed_genres", seedGenres?.joinToString(",") {it.encode() })
-                    .with("seed_tracks", seedTracks?.joinToString(",") {it.encode() })
+                    .with("seed_artists", seedArtists?.joinToString(",") { it.encode() })
+                    .with("seed_genres", seedGenres?.joinToString(",") { it.encode() })
+                    .with("seed_tracks", seedTracks?.joinToString(",") { it.encode() })
             targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
             minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }

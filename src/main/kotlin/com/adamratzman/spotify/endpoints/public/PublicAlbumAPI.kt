@@ -14,7 +14,7 @@ class PublicAlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param albumId The Spotify ID for the album.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
-     * @throws BadRequestException if the [albumId] is not found
+     * @return full [Album] object if the provided id is found, otherwise null
      */
     fun getAlbum(albumId: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
@@ -30,7 +30,6 @@ class PublicAlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      */
     fun getAlbums(vararg albumIds: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
-        if (albumIds.isEmpty()) throw BadRequestException(ErrorObject(404, "You cannot send a request with no album ids!"))
         return toAction(Supplier {
             get(EndpointBuilder("/albums").with("ids", albumIds.joinToString(",") { it.encode() })
                     .with("market", market?.code).toString()).toObject<AlbumsResponse>(api).albums
