@@ -22,7 +22,7 @@ open class SpotifyAPI internal constructor(val clientId: String, val clientSecre
     val browse = BrowseAPI(this)
     val artists = PublicArtistsAPI(this)
     val playlists = PublicPlaylistsAPI(this)
-    val users = PublicUserAPI(this)
+    val publicUsers = PublicUserAPI(this)
     val tracks = PublicTracksAPI(this)
     val publicFollowing = PublicFollowingAPI(this)
     internal val logger = SpotifyLogger(true)
@@ -73,8 +73,23 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     val clientPlaylists = ClientPlaylistAPI(this)
 
     init {
+        init(automaticRefresh)
+    }
+
+    private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
             executor.scheduleAtFixedRate({ refreshToken() }, ((token.expires_in - 30).toLong()), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
+            if (token.expires_in > 60) {
+                executor.scheduleAtFixedRate(
+                        { refreshToken() },
+                        (token.expires_in - 30).toLong(),
+                        (token.expires_in - 30).toLong(),
+                        TimeUnit.SECONDS
+                )
+            } else {
+                refreshToken()
+                init(automaticRefresh)
+            }
         }
     }
 

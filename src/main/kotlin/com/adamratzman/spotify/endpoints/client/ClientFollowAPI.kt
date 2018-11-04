@@ -6,11 +6,11 @@ import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
 /**
- * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
+ * These endpoints allow you manage the artists, publicUsers and playlists that a Spotify user follows.
  */
 class ClientFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
-     * Check to see if the current user is following another Spotify users.
+     * Check to see if the current user is following another Spotify publicUsers.
      *
      * @param userId Spotify ID to check.
      *
@@ -23,7 +23,7 @@ class ClientFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Check to see if the current user is following one or more other Spotify users.
+     * Check to see if the current user is following one or more other Spotify publicUsers.
      *
      * @param userIds List of the user Spotify IDs to check. Max 50
      *
@@ -90,7 +90,7 @@ class ClientFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Add the current user as a follower of other users
+     * Add the current user as a follower of other publicUsers
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -159,9 +159,9 @@ class ClientFollowAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Remove the current user as a follower of other users
+     * Remove the current user as a follower of other publicUsers
      *
-     * @param userIds The users to be unfollowed from
+     * @param userIds The publicUsers to be unfollowed from
      *
      * @throws BadRequestException if an invalid id is provided
      */

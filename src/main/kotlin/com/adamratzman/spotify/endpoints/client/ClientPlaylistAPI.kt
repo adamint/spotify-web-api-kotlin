@@ -112,7 +112,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * Reorder a track or a group of tracks in a playlist.
      *
      * When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
-     * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
+     * untouched. In addition, the publicUsers following the playlists won’t be notified about changes in the playlists
      * when the tracks are reordered.
      *
      * @param userId The user’s Spotify user ID.

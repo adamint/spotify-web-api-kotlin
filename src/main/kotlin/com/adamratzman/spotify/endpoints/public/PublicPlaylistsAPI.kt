@@ -51,8 +51,8 @@ class PublicPlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param userId The user’s Spotify user ID.
      * @param playlistId The Spotify ID for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of track objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first track to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
      *
      * @throws BadRequestException if the playlist cannot be found
      */

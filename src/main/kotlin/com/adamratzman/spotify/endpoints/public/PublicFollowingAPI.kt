@@ -10,11 +10,11 @@ import java.util.function.Supplier
  */
 class PublicFollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
-     * Check to see if one or more Spotify users are following a specified playlist.
+     * Check to see if one or more Spotify publicUsers are following a specified playlist.
      *
      * @param playlistOwner Spotify ID of the creator of the playlist
      * @param playlistId Spotify playlist ID
-     * @param userIds users to check
+     * @param userIds publicUsers to check
      *
      * @return List of Booleans representing whether the user follows the playlist. User IDs **not** found will return false
      *
