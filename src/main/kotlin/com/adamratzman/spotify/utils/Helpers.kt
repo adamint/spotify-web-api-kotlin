@@ -32,6 +32,24 @@ data class PagingObject<out T>(val href: String, val items: List<T>, val limit: 
                 previous?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
                         ?: throw IllegalStateException("PagingObject#previous is null!")
             })
+
+    inline fun <reified T> getAll(): SpotifyRestAction<List<T>> = endpoint.toAction(
+            Supplier {
+                val pagingObjects = mutableListOf<PagingObject<T>>()
+                var prev = previous?.let { getPrevious<T>().complete() }
+                while (prev != null) {
+                    pagingObjects.add(prev)
+                    prev = prev.previous?.let { prev!!.getPrevious<T>().complete() }
+                }
+                pagingObjects.reverse() // closer we are to current, the further we are from the start
+                var nxt = next?.let { getNext<T>().complete() }
+                while (nxt != null) {
+                    pagingObjects.add(nxt)
+                    nxt = nxt.next?.let { nxt!!.getNext<T>().complete() }
+                }
+                // we don't need to reverse here, as it's in order
+                pagingObjects.map { it.items }.flatten()
+            })
 }
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
