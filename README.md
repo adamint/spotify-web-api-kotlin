@@ -138,9 +138,10 @@ in your market!
 ### Testing
 We use [Spek](https://github.com/spekframework/spek), which integrates with the JUnit runner, for testing. To run any test, you 
 need to run `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET`. If you'd like to run the client tests 
-as well, you need to add the `spotifyRedirectUri` parameter, along with EITHER `spotifyAuthCode` OR `spotifyTokenString`
+as well, you need to add the `spotifyRedirectUri` parameter, along with `spotifyTokenString`
 
-Using a token is preferred if you will be doing multiple tests, as the code is one-time.
+Some tests may fail if you do not allow access to all required scopes. Look carefully to see which ones fail, 
+as there's a high probability that it's a scope issue.
 
 An example: `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
 

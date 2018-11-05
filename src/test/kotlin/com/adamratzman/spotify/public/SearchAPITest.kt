@@ -1,5 +1,6 @@
 package com.adamratzman.spotify.public
 
+import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.assertThrows

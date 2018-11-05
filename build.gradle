@@ -32,10 +32,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
     // Spek testing requirements
-    testImplementation ('org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.1')  {
+    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.1') {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntimeOnly ('org.spekframework.spek2:spek-runner-junit5:2.0.0-alpha.1') {
+    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0-alpha.1') {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
@@ -46,7 +46,9 @@ dependencies {
 }
 
 test {
-    systemProperties project.properties.subMap(["clientId", "clientSecret"])
+    systemProperties project.properties.subMap(
+            ["clientId", "clientSecret", "spotifyTokenString", "spotifyRedirectUri", "spotifyAuthCode"]
+    )
     useJUnitPlatform {
         includeEngines 'spek2'
     }
