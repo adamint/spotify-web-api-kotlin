@@ -1,6 +1,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
@@ -33,7 +34,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return The created [Playlist] object with no tracks
      */
-    fun createPlaylist(userId: String, name: String, description: String? = null, public: Boolean? = null, collaborative: Boolean? = null): SpotifyRestAction<Playlist> {
+    fun createPlaylist(name: String, description: String? = null, public: Boolean? = null, collaborative: Boolean? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Playlist> {
+        if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction(Supplier {
             val json = JSONObject()
             json.put("name", name)
@@ -56,7 +58,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-    fun addTracksToPlaylist(userId: String, playlistId: String, vararg uris: String, position: Int? = null): SpotifyRestAction<Unit> {
+    fun addTracksToPlaylist(playlistId: String, vararg uris: String, position: Int? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
         val json = JSONObject().put("uris", uris.map { "spotify:track:${it.encode()}" })
         if (position != null) json.put("position", position)
         return toAction(Supplier {
@@ -77,8 +79,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
-    fun changePlaylistDescription(userId: String, playlistId: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
-                                  description: String? = null): SpotifyRestAction<Unit> {
+    fun changePlaylistDescription(playlistId: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
+                                  description: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
         val json = JSONObject()
         if (name != null) json.put("name", name)
         if (public != null) json.put("public", public)
@@ -124,7 +126,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    fun reorderTracks(userId: String, playlistId: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int, snapshotId: String? = null): SpotifyRestAction<Snapshot> {
+    fun reorderTracks(playlistId: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int,
+                      snapshotId: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("range_start", reorderRangeStart)
@@ -146,7 +149,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun replaceTracks(userId: String, playlistId: String, vararg trackIds: String): SpotifyRestAction<Unit> {
+    fun replaceTracks(playlistId: String, vararg trackIds: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("uris", trackIds.map { "spotify:track:${it.encode()}" })
@@ -172,9 +175,9 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws IIOException if the image is not found
      * @throws BadRequestException if invalid data is provided
      */
-    fun uploadPlaylistCover(userId: String, playlistId: String, imagePath: String? = null,
+    fun uploadPlaylistCover(playlistId: String, imagePath: String? = null,
                             imageFile: File? = null, image: BufferedImage? = null, imageData: String? = null,
-                            imageUrl: String? = null): SpotifyRestAction<Unit> {
+                            imageUrl: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val data = imageData ?: when {
                 image != null -> encode(image)

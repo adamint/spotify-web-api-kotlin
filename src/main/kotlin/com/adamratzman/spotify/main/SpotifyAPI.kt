@@ -71,9 +71,11 @@ class SpotifyClientAPI private constructor(clientId: String, clientSecret: Strin
     val clientFollowing = ClientFollowAPI(this)
     val player = PlayerAPI(this)
     val clientPlaylists = ClientPlaylistAPI(this)
+    val userId: String
 
     init {
         init(automaticRefresh)
+        userId = clientProfile.getUserProfile().complete().id
     }
 
     private fun init(automaticRefresh: Boolean) {

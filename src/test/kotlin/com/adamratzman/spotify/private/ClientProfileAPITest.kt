@@ -10,7 +10,6 @@ class ClientProfileAPITest : Spek({
     describe("Client profile test") {
         val cp = (api as? SpotifyClientAPI)?.clientProfile
         it("valid user") {
-            println(cp?.getUserProfile()?.complete()?.birthdate)
             cp?.let { Assertions.assertDoesNotThrow { it.getUserProfile().complete().birthdate } }
         }
     }
