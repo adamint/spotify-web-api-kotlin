@@ -1,6 +1,8 @@
 group 'com.adamratzman'
 version '1.0.4'
 
+archivesBaseName = 'spotify-api-kotlin'
+
 buildscript {
     ext.kotlin_version = '1.3.0'
 
@@ -16,6 +18,9 @@ buildscript {
 }
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'base'
+apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'io.codearte.nexus-staging'
 
 sourceCompatibility = 1.8
 
@@ -59,4 +64,46 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+modifyPom {
+    project {
+        name 'spotify-api-kotlin'
+        description 'A Kotlin wrapper for the Spotify Web API.'
+        url 'https://github.com/adamint/spotify-web-api-kotlin'
+        inceptionYear '2018'
+        scm {
+            url 'https://github.com/adamint/spotify-web-api-kotlin'
+            connection 'scm:https://github.com/adamint/spotify-web-api-kotlin.git'
+            developerConnection 'scm:git://github.com/adamint/spotify-web-api-kotlin.git'
+        }
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'adamratzman'
+                name 'Adam Ratzman'
+                email 'adam@adamratzman.com'
+            }
+        }
+    }
+}
+extraArchive {
+    sources = true
+    tests = true
+    javadoc = true
+}
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+}
+
+nexusStaging {
+    packageGroup = "com.adamratzman"
 }
