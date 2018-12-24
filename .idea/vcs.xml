@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$USER_HOME$/OneDrive/Desktop/spotify-web-api-kotlin" vcs="Git" />
   </component>
 </project>

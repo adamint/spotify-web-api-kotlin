@@ -5,7 +5,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_main.iml" group="SpotifyKotlinWrapper" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SpotifyKotlinWrapper_test.iml" group="SpotifyKotlinWrapper" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/examples.iml" filepath="$PROJECT_DIR$/.idea/modules/examples.iml" group="SpotifyKotlinWrapper" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/examples.iml" filepath="$PROJECT_DIR$/.idea/modules/examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/examples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/examples_main.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/examples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/examples_test.iml" group="examples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spotify-web-api-kotlin-examples.iml" filepath="$PROJECT_DIR$/.idea/modules/spotify-web-api-kotlin-examples.iml" />
     </modules>
   </component>
 </project>

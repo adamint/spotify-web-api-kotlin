@@ -111,6 +111,21 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
+     * Find a client playlist by its id. Convenience method
+     *
+     * @param id the Spotify identifier of the ID
+     *
+     * @return possibly-null SimplePlaylist
+     */
+    fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
+        return toAction(Supplier {
+            val playlists = getClientPlaylists().complete()
+                     playlists.items.find { it.id == id } ?:
+                    playlists.getAll<SimplePlaylist>().complete().find { it.id == id }
+        })
+    }
+
+    /**
      * Reorder a track or a group of tracks in a playlist.
      *
      * When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
