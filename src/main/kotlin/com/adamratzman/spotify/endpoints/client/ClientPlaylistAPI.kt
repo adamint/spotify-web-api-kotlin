@@ -51,15 +51,15 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param userId The user’s Spotify user ID.
      * @param playlistId The Spotify ID for the playlist.
-     * @param uris Spotify track ids. A maximum of 100 tracks can be added in one request.
+     * @param ids Spotify track ids. A maximum of 100 tracks can be added in one request.
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
      * first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
      * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-    fun addTracksToPlaylist(playlistId: String, vararg uris: String, position: Int? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
-        val json = JSONObject().put("uris", uris.map { "spotify:track:${it.encode()}" })
+    fun addTracksToPlaylist(playlistId: String, vararg ids: String, position: Int? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+        val json = JSONObject().put("uris", ids.map { "spotify:track:${it.encode()}" })
         if (position != null) json.put("position", position)
         return toAction(Supplier {
             post(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
@@ -120,9 +120,21 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
         return toAction(Supplier {
             val playlists = getClientPlaylists().complete()
-                     playlists.items.find { it.id == id } ?:
-                    playlists.getAll<SimplePlaylist>().complete().find { it.id == id }
+            playlists.items.find { it.id == id } ?: playlists.getAll<SimplePlaylist>().complete().find { it.id == id }
         })
+    }
+
+    /**
+     * This method is equivalent to unfollowing a playlist with the given [id] and [ownerId].
+     *
+     * Unfortunately, Spotify does not allow **deletion** of playlists themselves
+     *
+     * @param id playlist id
+     * @param ownerId the owner of this playlist. Ignore if it's the authenticated user
+     */
+    fun deletePlaylist(id: String, ownerId: String? = null): SpotifyRestAction<Unit> {
+        api as SpotifyClientAPI
+        return api.clientFollowing.unfollowPlaylist(ownerId ?: api.userId, id)
     }
 
     /**
@@ -135,7 +147,9 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param userId The user’s Spotify user ID.
      * @param playlistId The Spotify ID for the playlist.
      * @param reorderRangeStart The position of the first track to be reordered.
-     * @param reorderRangeLength
+     * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
+     * The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
+     * Example: To move the tracks at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
      * @param insertionPoint
      * @param snapshotId
      *
@@ -172,6 +186,15 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     json.toString())
             Unit
         })
+    }
+
+    /**
+     * Remove all the tracks in a playlist
+     * @param userId The user’s Spotify user ID.
+     * @param playlistId The Spotify ID for the playlist.
+     */
+    fun removeAllPlaylistTracks(playlistId: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+        return replaceTracks(playlistId, userId = userId)
     }
 
     /**

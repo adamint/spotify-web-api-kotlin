@@ -27,7 +27,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun searchPlaylist(query: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<Playlist>> {
         return toAction(Supplier {
-            get(build(SearchType.PLAYLIST,query, limit, offset, market)).toPagingObject<Playlist>("playlists", this)
+            get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject<Playlist>("playlists", this)
         })
 
     }
@@ -46,7 +46,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun searchArtist(query: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<Artist>> {
         return toAction(Supplier {
-            get(build(SearchType.ARTIST,query, limit, offset, market)).toPagingObject<Artist>("artists", this)
+            get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject<Artist>("artists", this)
         })
     }
 
@@ -64,7 +64,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun searchAlbum(query: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SimpleAlbum>> {
         return toAction(Supplier {
-            get(build(SearchType.ALBUM,query, limit, offset, market)).toPagingObject<SimpleAlbum>("albums", this)
+            get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject<SimpleAlbum>("albums", this)
         })
     }
 
