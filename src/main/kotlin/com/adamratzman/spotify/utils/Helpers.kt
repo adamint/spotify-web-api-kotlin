@@ -11,45 +11,55 @@ import java.util.function.Supplier
 
 data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String?, val cursors: Cursor,
                                           val total: Int, val endpoint: SpotifyEndpoint) {
-    inline fun <reified T> getNext(): SpotifyRestAction<CursorBasedPagingObject<T>> = endpoint.toAction(
+    inline fun <reified T> getNext(): SpotifyRestAction<CursorBasedPagingObject<T>?> = endpoint.toAction(
             Supplier {
-                next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
-                        ?: throw IllegalStateException("PagingObject#next is null!")
+                catch {
+                    next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
+                }
             })
 }
 
 data class Cursor(val after: String)
+@Suppress("UNCHECKED_CAST")
 data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
-                               val previous: String? = null, val total: Int, val endpoint: SpotifyEndpoint) {
-    inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+                               val previous: String? = null, val total: Int, var endpoint: SpotifyEndpoint) {
+    inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
             Supplier {
-                next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
-                        ?: throw IllegalStateException("PagingObject#next is null!")
+                catch {
+                    next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                }
             })
 
-    inline fun <reified T> getPrevious(): SpotifyRestAction<PagingObject<T>> = endpoint.toAction(
+    inline fun <reified T> getPrevious(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
             Supplier {
-                previous?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
-                        ?: throw IllegalStateException("PagingObject#previous is null!")
+                catch {
+                    previous?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                }
             })
 
-    inline fun <reified T> getAll(): SpotifyRestAction<List<T>> = endpoint.toAction(
-            Supplier {
-                val pagingObjects = mutableListOf<PagingObject<T>>()
-                var prev = previous?.let { getPrevious<T>().complete() }
-                while (prev != null) {
-                    pagingObjects.add(prev)
-                    prev = prev.previous?.let { prev!!.getPrevious<T>().complete() }
-                }
-                pagingObjects.reverse() // closer we are to current, the further we are from the start
-                var nxt = next?.let { getNext<T>().complete() }
-                while (nxt != null) {
-                    pagingObjects.add(nxt)
-                    nxt = nxt.next?.let { nxt!!.getNext<T>().complete() }
-                }
-                // we don't need to reverse here, as it's in order
-                pagingObjects.map { it.items }.flatten()
-            })
+    inline fun <reified T> getAll(): SpotifyRestAction<List<T>> {
+        this as PagingObject<T>
+        return endpoint.toAction(
+                Supplier {
+                    val pagingObjects = mutableListOf<PagingObject<T>>()
+                    var prev = previous?.let { getPrevious<T>().complete() }
+                    while (prev != null) {
+                        pagingObjects.add(prev)
+                        prev = prev.previous?.let { prev?.getPrevious<T>()?.complete() }
+                    }
+                    pagingObjects.reverse() // closer we are to current, the further we are from the start
+
+                    pagingObjects.add(this)
+
+                    var nxt = next?.let { getNext<T>().complete() }
+                    while (nxt != null) {
+                        pagingObjects.add(nxt)
+                        nxt = nxt.next?.let { nxt?.getNext<T>()?.complete() }
+                    }
+                    // we don't need to reverse here, as it's in order
+                    pagingObjects.map { it.items }.flatten()
+                })
+    }
 }
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
@@ -78,7 +88,7 @@ data class LinkedResult<out T>(val href: String, val items: List<T>) {
 
 data class PlaylistParams(val author: String, val id: String)
 
-abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) {
+abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) : Linkable() {
     fun isRelinked() = linkedTrack != null
 }
 
@@ -89,10 +99,22 @@ internal fun String.byteEncode(): String {
 internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
 
 inline fun <reified T> Any.toObject(o: Any): T {
-    return ((o as? SpotifyAPI)?.gson ?: (o as? Gson)
+    val obj = ((o as? SpotifyAPI)?.gson ?: (o as? Gson)
     ?: throw IllegalArgumentException("Parameter must be a SpotifyAPI or Gson instance"))
             .fromJson(this as String, T::class.java)
+    if (o is SpotifyAPI) {
+        if (obj is Linkable) obj.api = o
+        obj?.instantiatePagingObjects(o)
+    }
+    return obj
 }
+
+fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
+    this is FeaturedPlaylists -> this.playlists
+    this is Album -> this.tracks
+    this is Playlist -> this.tracks
+    else -> null
+}.let { it?.endpoint = spotifyAPI.tracks; this }
 
 inline fun <reified T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
@@ -111,7 +133,7 @@ inline fun <reified T> String.toCursorBasedPagingObject(innerObjectName: String?
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     return CursorBasedPagingObject(
             jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint) },
+            jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api) },
             jsonObject.getInt("limit"),
             jsonObject.get("next") as? String,
             endpoint.api.gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),

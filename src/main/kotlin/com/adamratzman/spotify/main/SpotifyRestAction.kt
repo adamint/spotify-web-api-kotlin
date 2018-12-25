@@ -13,7 +13,9 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
         }
     }
 
-    fun queue(consumer: ((T) -> Unit)) = queue(consumer, {})
+    fun queue() = queue({}, { throw it })
+
+    fun queue(consumer: (T) -> Unit) = queue(consumer, {})
 
     fun queue(consumer: ((T) -> Unit), failure: ((Throwable) -> Unit)) {
         api.executor.execute {

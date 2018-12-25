@@ -1,11 +1,13 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
 
 /**
  * @param message the featured message in "Overview"
  */
 data class FeaturedPlaylists(val message: String, val playlists: PagingObject<Playlist>)
+
 data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
 data class AlbumsResponse(val albums: List<Album?>)
 data class ArtistList(val artists: List<Artist?>)
@@ -35,6 +37,11 @@ data class SpotifyPublicUser(val display_name: String, val external_urls: HashMa
 
 data class SpotifyImage(val height: Int, val url: String, val width: Int)
 
+abstract class Linkable {
+    @Transient
+    lateinit var api: SpotifyAPI
+}
+
 /**
  * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
@@ -42,7 +49,7 @@ data class SpotifyImage(val height: Int, val url: String, val width: Int)
 data class LinkedTrack(val external_urls: HashMap<String, String>, val href: String, val id: String, val type: String, val uri: String)
 
 data class SimpleArtist(val external_urls: HashMap<String, String>, val href: String, val id: String, val name: String,
-                        val type: String, val uri: String, @Transient private val api: SpotifyAPI) {
+                        val type: String, val uri: String) : Linkable() {
     fun toFullArtist() = api.artists.getArtist(id)
 }
 
@@ -52,18 +59,17 @@ data class Artist(val external_urls: HashMap<String, String>, val followers: Fol
 data class SimpleTrack(val artists: List<SimpleArtist>, val available_markets: List<String>, val disc_number: Int, val duration_ms: Int,
                        val explicit: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
                        val is_playable: Boolean?, private val linked_from: LinkedTrack?, val name: String, val preview_url: String,
-                       val track_number: Int, val type: String, val uri: String, @Transient private val api: SpotifyAPI):RelinkingAvailableResponse(linked_from) {
+                       val track_number: Int, val type: String, val uri: String) : RelinkingAvailableResponse(linked_from) {
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
 data class Track(val album: SimpleAlbum, val artists: List<SimpleArtist>, val available_markets: List<String>, val disc_number: Int,
                  val duration_ms: Int, val explicit: Boolean, val external_ids: HashMap<String, String>, val external_urls: HashMap<String, String>,
                  val href: String, val id: String, val is_playable: Boolean?, private val linked_from: LinkedTrack?, val name: String, val popularity: Int,
-                 val preview_url: String, val track_number: Int, val type: String, val uri: String): RelinkingAvailableResponse(linked_from)
+                 val preview_url: String, val track_number: Int, val type: String, val uri: String) : RelinkingAvailableResponse(linked_from)
 
 data class SimpleAlbum(val album_type: String, val artists: List<SimpleArtist>, val available_markets: List<String>, val external_urls: HashMap<String, String>,
-                       val href: String, val id: String, val images: List<SpotifyImage>, val name: String, val type: String, val uri: String,
-                       @Transient private val api: SpotifyAPI) {
+                       val href: String, val id: String, val images: List<SpotifyImage>, val name: String, val type: String, val uri: String) : Linkable() {
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
 
@@ -74,11 +80,9 @@ data class Album(val album_type: String, val artists: List<SimpleArtist>, val av
 
 data class SimplePlaylist(val collaborative: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
                           val images: List<SpotifyImage>, val name: String, val owner: SpotifyPublicUser, val public: Boolean?,
-                          val snapshot_id: String, val tracks: PlaylistTrackInfo, val type: String, val uri: String,
-                          @Transient private val api: SpotifyAPI) {
-    fun toFullPlaylist(market: Market? = null) = api.playlists.getPlaylist(owner.id, id, market)
+                          val snapshot_id: String, val tracks: PlaylistTrackInfo, val type: String, val uri: String) : Linkable() {
+    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(owner.id, id, market)
 }
-
 
 /**
  * Some parameters are timestamps and will be updated soon to reflect Spotify's use of a Timestamp string
