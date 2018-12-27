@@ -1,7 +1,7 @@
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.endpoints.public.PublicArtistsAPI
+import com.adamratzman.spotify.endpoints.public.ArtistsAPI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import org.junit.jupiter.api.Assertions.*
@@ -35,7 +35,7 @@ class PublicArtistsAPITest : Spek({
                 assertThrows<BadRequestException> { a.getArtistAlbums("asfasdf").complete() }
             }
             it("valid artist") {
-                assertTrue(a.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", limit = 10, include = listOf(PublicArtistsAPI.AlbumInclusionStrategy.ALBUM))
+                assertTrue(a.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", limit = 10, include = listOf(ArtistsAPI.AlbumInclusionStrategy.ALBUM))
                         .complete().items.asSequence().map { it.name }.contains("Louane"))
             }
         }

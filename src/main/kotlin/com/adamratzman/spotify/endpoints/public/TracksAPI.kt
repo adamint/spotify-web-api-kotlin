@@ -8,7 +8,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
  */
-class PublicTracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *

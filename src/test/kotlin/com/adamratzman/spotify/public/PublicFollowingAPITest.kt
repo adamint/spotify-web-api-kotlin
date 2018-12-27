@@ -10,7 +10,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicFollowingAPITest : Spek({
     describe("Public Following test") {
-        val f = api.publicFollowing
+        val f = api.following
         describe("do users follow playlist") {
             it("invalid users, valid playlist") {
                 assertFalse(f.doUsersFollowPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "udontexist89").complete()[0])

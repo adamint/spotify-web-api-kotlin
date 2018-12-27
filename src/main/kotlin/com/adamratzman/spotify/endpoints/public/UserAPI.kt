@@ -8,7 +8,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about a user’s profile.
  */
-class PublicUserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *

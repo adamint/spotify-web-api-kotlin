@@ -1,8 +1,26 @@
 package com.adamratzman.spotify
 
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.spotifyApi
 
-val api = if (System.getProperty("spotifyRedirectUri") == null) SpotifyAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret")).build()
-else SpotifyClientAPI.Builder(System.getProperty("clientId"), System.getProperty("clientSecret"),
-        System.getProperty("spotifyRedirectUri")).buildToken((System.getProperty("spotifyTokenString")))
+val api = when {
+    System.getProperty("spotifyRedirectUri") == null -> {
+        spotifyApi {
+            credentials {
+                clientId = System.getProperty("clientId")
+                clientSecret = System.getProperty("clientSecret")
+            }
+        }.buildCredentialed()
+    }
+    else -> {
+        spotifyApi {
+            credentials {
+                clientId = System.getProperty("clientId")
+                clientSecret = System.getProperty("clientSecret")
+                redirectUri = System.getProperty("spotifyRedirectUri")
+            }
+            clientAuthentication {
+                tokenString = System.getProperty("spotifyTokenString")
+            }
+        }.buildClient()
+    }
+}

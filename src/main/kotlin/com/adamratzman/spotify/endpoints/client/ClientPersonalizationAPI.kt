@@ -18,7 +18,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * Get the current user’s top artists based on calculated affinity.
      * Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user
      * behavior, including play history, but does not include actions made while in incognito mode. Light or infrequent
-     * publicUsers of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
+     * users of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
      * is likely to shift over time, this preference data is available over three time spans. See time_range in the
      * query parameter table for more information. For each time range, the top 50 tracks and artists are available
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
@@ -37,7 +37,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * Get the current user’s top tracks based on calculated affinity.
      * Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user
      * behavior, including play history, but does not include actions made while in incognito mode. Light or infrequent
-     * publicUsers of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
+     * users of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
      * is likely to shift over time, this preference data is available over three time spans. See time_range in the
      * query parameter table for more information. For each time range, the top 50 tracks and artists are available
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated

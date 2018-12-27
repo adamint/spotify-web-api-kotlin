@@ -20,6 +20,7 @@ data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, 
 }
 
 data class Cursor(val after: String)
+
 @Suppress("UNCHECKED_CAST")
 data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
                                val previous: String? = null, val total: Int, var endpoint: SpotifyEndpoint) {

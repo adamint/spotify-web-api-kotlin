@@ -7,7 +7,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
-        val cp = (api as? SpotifyClientAPI)?.clientPlaylists
+        val cp = (api as? SpotifyClientAPI)?.playlists
         val playlistsBefore = cp?.getClientPlaylists()?.complete()
         val createdPlaylist = cp?.createPlaylist("this is a test playlist", "description")
                 ?.complete()
