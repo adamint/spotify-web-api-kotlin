@@ -53,7 +53,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
 }
 
-internal class EndpointBuilder(val path: String) {
+internal class EndpointBuilder(private val path: String) {
     private val builder = StringBuilder(base + path)
 
     fun with(key: String, value: Any?): EndpointBuilder {

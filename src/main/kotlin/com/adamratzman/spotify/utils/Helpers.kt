@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
@@ -17,11 +19,29 @@ data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, 
                     next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
                 }
             })
+
+    inline fun <reified T> getAll(): SpotifyRestAction<List<CursorBasedPagingObject<T>>> {
+       return  endpoint.toAction(Supplier {
+           this as CursorBasedPagingObject<T>
+           val pagingObjects = mutableListOf<CursorBasedPagingObject<T>>(this)
+           var next = getNext<T>().complete()
+           while (next != null) {
+               pagingObjects.add(next)
+               next = getNext<T>().complete()
+           }
+           pagingObjects.toList()
+       })
+    }
+
+    inline fun <reified T> getAllItems(): SpotifyRestAction<List<T>> {
+        return endpoint.toAction(Supplier {
+            getAll<T>().complete().map { it.items }.flatten()
+        })
+    }
 }
 
 data class Cursor(val after: String)
 
-@Suppress("UNCHECKED_CAST")
 data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
                                val previous: String? = null, val total: Int, var endpoint: SpotifyEndpoint) {
     inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
@@ -60,6 +80,12 @@ data class PagingObject<out T>(val href: String, val items: List<T>, val limit: 
                     // we don't need to reverse here, as it's in order
                     pagingObjects.map { it.items }.flatten()
                 })
+    }
+
+    inline fun <reified T> getAllItems(): SpotifyRestAction<List<T>> {
+        return endpoint.toAction(Supplier {
+            getAll<T>().complete().asSequence().map { it as PagingObject<T> }.map { it.items }.toList().flatten()
+        })
     }
 }
 

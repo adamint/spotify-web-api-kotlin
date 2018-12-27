@@ -77,7 +77,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
         })
     }
 
-    fun getFollowedUsers(): SpotifyRestAction<SpotifyPublicUser> = throw NotImplementedError("Though Spotify will implement this in the future, it is not currently supported.")
+    fun getFollowedUsers(): SpotifyRestAction<List<SpotifyPublicUser>> = throw NotImplementedError("Though Spotify will implement this in the future, it is not currently supported.")
 
     /**
      * Add the current user as a follower of another user

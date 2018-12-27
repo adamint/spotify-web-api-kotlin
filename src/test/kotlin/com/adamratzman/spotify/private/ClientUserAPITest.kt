@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Assertions
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientProfileAPITest : Spek({
+class ClientUserAPITest : Spek({
     describe("Client profile test") {
-        val cp = (api as? SpotifyClientAPI)?.clientProfile
+        val cp = (api as? SpotifyClientAPI)?.users
         it("valid user") {
             cp?.let { Assertions.assertDoesNotThrow { it.getUserProfile().complete().birthdate } }
         }

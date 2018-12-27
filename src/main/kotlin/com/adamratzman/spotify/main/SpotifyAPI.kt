@@ -70,12 +70,12 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
  * @property redirectUri nullable redirect uri (use if you're doing client authentication
  */
 class SpotifyCredentialsBuilder {
-    var clientId: String = ""
-    var clientSecret: String = ""
+    var clientId: String?=null
+    var clientSecret: String?=null
     var redirectUri: String? = null
 
     fun build() =
-            if (clientId.isEmpty() || clientSecret.isEmpty()) throw IllegalArgumentException("clientId or clientSecret is empty")
+            if (clientId?.isNotEmpty() == false || clientSecret?.isNotEmpty() == false) throw IllegalArgumentException("clientId or clientSecret is empty")
             else SpotifyCredentials(clientId, clientSecret, redirectUri)
 }
 
@@ -120,8 +120,6 @@ class SpotifyApiBuilder {
             throw SpotifyException("Invalid credentials provided in the login process", e)
         }
     }
-
-    // TODO look into whether Client should be renamed to User
 
     fun buildClient(automaticRefresh: Boolean = false): SpotifyClientAPI =
             buildClient(clientAuthentication.authorizationCode, clientAuthentication.tokenString,
@@ -218,15 +216,14 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
     override val tracks: TracksAPI = TracksAPI(this)
     override val following: ClientFollowingAPI = ClientFollowingAPI(this)
     val personalization: ClientPersonalizationAPI = ClientPersonalizationAPI(this)
-    val clientProfile: ClientUserAPI = ClientUserAPI(this)
     val library: ClientLibraryAPI = ClientLibraryAPI(this)
-    val player: PlayerAPI = PlayerAPI(this)
+    val player: ClientPlayerAPI = ClientPlayerAPI(this)
 
     val userId: String
 
     init {
         init(automaticRefresh)
-        userId = clientProfile.getUserProfile().complete().id
+        userId = users.getUserProfile().complete().id
     }
 
     private fun init(automaticRefresh: Boolean) {

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: org.spekframework.spek2:spek-runtime-common:2.0.0-alpha.1" type="kotlin.common">
+  <library name="Gradle: org.spekframework.spek2:spek-runtime-common:2.0.0-alpha.1">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spekframework.spek2/spek-runtime-common/2.0.0-alpha.1/2a2e1d99f85f15009fea2306ca798cba605ca54a/spek-runtime-common-2.0.0-alpha.1.jar!/" />
     </CLASSES>
