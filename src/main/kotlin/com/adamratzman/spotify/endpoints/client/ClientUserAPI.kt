@@ -1,5 +1,6 @@
 package com.adamratzman.spotify.endpoints.client
 
+import com.adamratzman.spotify.endpoints.public.UserAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
@@ -8,7 +9,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about a user’s profile.
  */
-class ClientProfileAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientUserAPI(api: SpotifyAPI) : UserAPI(api) {
     /**
      * Get detailed profile information about the current user (including the current user’s username).
      *

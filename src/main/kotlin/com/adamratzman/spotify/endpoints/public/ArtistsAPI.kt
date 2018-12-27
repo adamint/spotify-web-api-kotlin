@@ -8,7 +8,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
  */
-class PublicArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID.
      * @param artistId The Spotify ID for the artist.

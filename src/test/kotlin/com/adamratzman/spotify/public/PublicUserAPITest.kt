@@ -10,10 +10,10 @@ class PublicUserAPITest : Spek({
     describe("Public User test") {
         describe("get user") {
             it("available user should return author name") {
-                assertEquals(0, api.publicUsers.getProfile("adamratzman1").complete()!!.followers.total)
+                assertEquals(0, api.users.getProfile("adamratzman1").complete()!!.followers.total)
             }
             it("unknown user should throw exception") {
-                assertNull(api.publicUsers.getProfile("non-existant-user").complete())
+                assertNull(api.users.getProfile("non-existant-user").complete())
             }
         }
     }

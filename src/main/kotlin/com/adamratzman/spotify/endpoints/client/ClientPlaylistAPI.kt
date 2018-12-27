@@ -1,5 +1,6 @@
 package com.adamratzman.spotify.endpoints.client
 
+import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
@@ -18,7 +19,7 @@ import javax.xml.bind.DatatypeConverter
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  */
-class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *
@@ -134,14 +135,14 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun deletePlaylist(id: String, ownerId: String? = null): SpotifyRestAction<Unit> {
         api as SpotifyClientAPI
-        return api.clientFollowing.unfollowPlaylist(ownerId ?: api.userId, id)
+        return api.following.unfollowPlaylist(ownerId ?: api.userId, id)
     }
 
     /**
      * Reorder a track or a group of tracks in a playlist.
      *
      * When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
-     * untouched. In addition, the publicUsers following the playlists won’t be notified about changes in the playlists
+     * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
      * when the tracks are reordered.
      *
      * @param userId The user’s Spotify user ID.
@@ -178,7 +179,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun replaceTracks(playlistId: String, vararg trackIds: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+    fun setPlaylistTracks(playlistId: String, vararg trackIds: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("uris", trackIds.map { "spotify:track:${it.encode()}" })
@@ -194,7 +195,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param playlistId The Spotify ID for the playlist.
      */
     fun removeAllPlaylistTracks(playlistId: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
-        return replaceTracks(playlistId, userId = userId)
+        return setPlaylistTracks(playlistId, userId = userId)
     }
 
     /**

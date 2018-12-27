@@ -8,7 +8,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
  */
-class PublicAlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single album.
      * @param albumId The Spotify ID for the album.
