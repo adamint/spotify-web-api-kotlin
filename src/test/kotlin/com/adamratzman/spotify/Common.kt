@@ -19,7 +19,7 @@ val api = when {
                 redirectUri = System.getProperty("spotifyRedirectUri")
             }
             clientAuthentication {
-                authorizationCode = System.getProperty("spotifyAuthCode")
+                tokenString = System.getProperty("spotifyTokenString")
             }
         }.buildClient()
     }
