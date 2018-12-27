@@ -13,7 +13,56 @@ import java.util.concurrent.TimeUnit
 
 internal val base = "https://api.spotify.com/v1"
 
+// Kotlin DSL builder
 fun spotifyApi(block: SpotifyApiBuilder.() -> Unit) = SpotifyApiBuilder().apply(block)
+
+// Java-friendly builder
+class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
+    var redirectUri: String? = null
+    var authorizationCode: String? = null
+    var tokenString: String? = null
+    var token: Token? = null
+
+    fun redirectUri(redirectUri: String?): SpotifyApiBuilderJava {
+        this.redirectUri = redirectUri
+        return this
+    }
+
+    fun authorizationCode(authorizationCode: String?): SpotifyApiBuilderJava {
+        this.authorizationCode = authorizationCode
+        return this
+    }
+
+    fun tokenString(tokenString: String?): SpotifyApiBuilderJava {
+        this.tokenString = tokenString
+        return this
+    }
+
+    fun token(token: Token?): SpotifyApiBuilderJava {
+        this.token = token
+        return this
+    }
+
+    fun buildCredentialed() = spotifyApi {
+        credentials {
+            clientId = this@SpotifyApiBuilderJava.clientId
+            clientSecret = this@SpotifyApiBuilderJava.clientSecret
+        }
+    }.buildCredentialed()
+
+    fun buildClient(automaticRefresh: Boolean=false) = spotifyApi {
+        credentials{
+            clientId = this@SpotifyApiBuilderJava.clientId
+            clientSecret = this@SpotifyApiBuilderJava.clientSecret
+            redirectUri = this@SpotifyApiBuilderJava.redirectUri
+        }
+        clientAuthentication {
+            authorizationCode = this@SpotifyApiBuilderJava.authorizationCode
+            tokenString = this@SpotifyApiBuilderJava.tokenString
+            token = this@SpotifyApiBuilderJava.token
+        }
+    }.buildClient(automaticRefresh)
+}
 
 /**
  * @property clientId the client id of your Spotify application
