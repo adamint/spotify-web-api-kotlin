@@ -1,17 +1,21 @@
 package com.adamratzman.spotify.utils
 
-private fun String.add(type: String, length: Int = 22): String {
-    val match = "^(?:$type:)?(.{$length})(?::.*)?$".toRegex().matchEntire(this)
-    match?.groupValues?.get(1)?.also {
-        return "$type:$it"
-    }
-    throw IllegalArgumentException("$this isn't convertible to $type uri")
+private fun String.matchType(type: String): String? {
+    val typeRegex = "^spotify:(?:.*:)*$type:([^:]+)(?::.*)*$|^([^:]+)$".toRegex()
+    val match = typeRegex.matchEntire(this)?.groupValues ?: return null
+    return match[1].takeIf { it.isNotEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
-private fun String.remove(type: String, length: Int = 22): String {
-    val match = "^(?:$type:)?(.{$length})(?::.*)?$".toRegex().matchEntire(this)
-    match?.groupValues?.get(1)?.also {
-        return it
+private fun String.add(type: String): String {
+    this.matchType(type)?.also {
+        return "spotify:$type:${it.trim()}"
+    }
+    throw IllegalArgumentException("'$this' isn't convertible to '$type' uri")
+}
+
+private fun String.remove(type: String): String {
+    this.matchType(type)?.also {
+        return it.trim()
     }
     throw IllegalArgumentException("'$this' isn't convertible to '$type' id")
 }
@@ -19,43 +23,36 @@ private fun String.remove(type: String, length: Int = 22): String {
 
 inline class AlbumURI(private val input: String) {
     val uri: String
-        get() = input.add("spotify:album")
+        get() = input.add("album")
     val id: String
-        get() = input.remove("spotify:album")
+        get() = input.remove("album")
 }
 
 inline class ArtistURI(private val input: String) {
     val uri: String
-        get() = input.add("spotify:artist")
+        get() = input.add("artist")
     val id: String
-        get() = input.remove("spotify:artist")
+        get() = input.remove("artist")
 }
 
 inline class TrackURI(private val input: String) {
     val uri: String
-        get() = input.add("spotify:track")
+        get() = input.add("track")
     val id: String
-        get() = input.remove("spotify:track")
+        get() = input.remove("track")
 }
 
 inline class UserURI(private val input: String) {
     val uri: String
-        get() = input.add("spotify:user", 25)
+        get() = input.add("user")
     val id: String
-        get() = input.remove("spotify:user", 25)
-
-    // inline is not supported as non-top-level-class
-    inner /*inline*/ class PlaylistURI(private val input: String) {
-        val uri: String
-            get() = input.add("${this@UserURI.uri}:playlist")
-        val id: String
-            get() = input.remove("${this@UserURI.uri}:playlist")
-    }
-
-    companion object {
-        @Suppress("FunctionName") // "static" constructor
-        fun PlaylistURI(input: String): PlaylistURI {
-            return UserURI(input).PlaylistURI(input).also { it.uri /*check format*/ }
-        }
-    }
+        get() = input.remove("user")
 }
+
+inline class PlaylistURI(private val input: String) {
+    val uri: String
+        get() = input.add("playlist")
+    val id: String
+        get() = input.remove("playlist")
+}
+

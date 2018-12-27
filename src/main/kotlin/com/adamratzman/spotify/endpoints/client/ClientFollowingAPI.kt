@@ -19,9 +19,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if [userId] is a non-existing id
      */
-    fun isFollowingUser(userId: String): SpotifyRestAction<Boolean> {
+    fun isFollowingUser(user: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
-            isFollowingUsers(userId).complete()[0]
+            isFollowingUsers(user).complete()[0]
         })
     }
 
@@ -46,10 +46,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if [userIds] contains a non-existing id
      */
-    fun isFollowingUsers(vararg userIds: String): SpotifyRestAction<List<Boolean>> {
+    fun isFollowingUsers(vararg users: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/following/contains").with("type", "user")
-                    .with("ids", userIds.joinToString(",") { it.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 
@@ -60,9 +60,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if [artistId] is a non-existing id
      */
-    fun isFollowingArtist(artistId: String): SpotifyRestAction<Boolean> {
+    fun isFollowingArtist(artist: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
-            isFollowingArtists(artistId).complete()[0]
+            isFollowingArtists(artist).complete()[0]
         })
     }
 
@@ -73,10 +73,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if [artistIds] contains a non-existing id
      */
-    fun isFollowingArtists(vararg artistIds: String): SpotifyRestAction<List<Boolean>> {
+    fun isFollowingArtists(vararg artists: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/following/contains").with("type", "artist")
-                    .with("ids", artistIds.joinToString(",") { it.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 
@@ -100,9 +100,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun followUser(userId: String): SpotifyRestAction<Unit> {
+    fun followUser(user: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            followUsers(userId).complete()
+            followUsers(user).complete()
         })
     }
 
@@ -111,10 +111,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun followUsers(vararg userIds: String): SpotifyRestAction<Unit> {
+    fun followUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", userIds.joinToString(",") { it.encode() }).toString())
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString())
             Unit
         })
     }
@@ -135,10 +135,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun followArtists(vararg artistIds: String): SpotifyRestAction<Unit> {
+    fun followArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artistIds.joinToString(",") { it.encode() }).toString())
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString())
             Unit
         })
     }
@@ -146,17 +146,16 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Add the current user as a follower of a playlist.
      *
-     * @param ownerId The Spotify user ID of the person who owns the playlist.
-     * @param playlistId The Spotify ID of the playlist. Any playlist can be followed, regardless of its
+     * @param playlist The Spotify ID of the playlist. Any playlist can be followed, regardless of its
      * public/private status, as long as you know its playlist ID.
      * @param followPublicly Defaults to true. If true the playlist will be included in user’s public playlists,
      * if false it will remain private. To be able to follow playlists privately, the user must have granted the playlist-modify-private scope.
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun followPlaylist(playlistId: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
+    fun followPlaylist(playlist: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/playlists/$playlistId/followers").toString(), "{\"public\": $followPublicly}")
+            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(), "{\"public\": $followPublicly}")
             Unit
         })
 
@@ -169,9 +168,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if [userId] is not found
      */
-    fun unfollowUser(userId: String): SpotifyRestAction<Unit> {
+    fun unfollowUser(user: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            unfollowUsers(userId).complete()
+            unfollowUsers(user).complete()
         })
     }
 
@@ -182,10 +181,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun unfollowUsers(vararg userIds: String): SpotifyRestAction<Unit> {
+    fun unfollowUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete(EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", userIds.joinToString(",") { it.encode() }).toString())
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString())
             Unit
         })
     }
@@ -197,9 +196,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun unfollowArtist(artistId: String): SpotifyRestAction<Unit> {
+    fun unfollowArtist(artist: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            unfollowArtists(artistId).complete()
+            unfollowArtists(artist).complete()
         })
     }
 
@@ -210,10 +209,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    fun unfollowArtists(vararg artistIds: String): SpotifyRestAction<Unit> {
+    fun unfollowArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete(EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artistIds.joinToString(",") { it.encode() }).toString())
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString())
             Unit
         })
     }
@@ -221,14 +220,13 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Remove the current user as a follower of a playlist.
      *
-     * @param ownerId The Spotify user ID of the person who owns the playlist.
      * @param playlistId The Spotify ID of the playlist that is to be no longer followed.
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun unfollowPlaylist(playlistId: String): SpotifyRestAction<Unit> {
+    fun unfollowPlaylist(playlist: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/playlists/$playlistId/followers").toString())
+            delete(EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString())
             Unit
         })
     }
