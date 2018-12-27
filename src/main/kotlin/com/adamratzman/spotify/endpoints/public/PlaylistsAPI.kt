@@ -14,7 +14,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return empty [PagingObject]s
      * (blame Spotify)
      *
-     * @param userId The user’s Spotify user ID.
+     * @param user The user’s Spotify user ID.
      * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
      *
@@ -22,9 +22,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * This does not have the detail of full [Playlist] objects.
      *
      */
-    fun getPlaylists(userId: String, limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
+    fun getPlaylists(user: String, limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/users/${userId.encode()}/playlists").with("limit", limit).with("offset", offset)
+            get(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with("offset", offset)
                     .toString()).toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
         })
     }
@@ -32,16 +32,16 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a playlist owned by a Spotify user.
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun getPlaylist(playlistId: String, market: Market? = null): SpotifyRestAction<Playlist?> {
+    fun getPlaylist(playlist: String, market: Market? = null): SpotifyRestAction<Playlist?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/playlists/${playlistId.encode()}")
+                get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
                         .with("market", market?.code).toString()).toObject(api, Playlist::class.java)
             }
         })
@@ -50,17 +50,16 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get full details of the tracks of a playlist owned by a Spotify user.
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param playlist The Spotify ID for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of track objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first track to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistTracks(playlistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
+    fun getPlaylistTracks(playlist: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").with("limit", limit)
+            get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
                     .with("offset", offset).with("market", market?.code).toString()).toLinkedResult(api, PlaylistTrack::class.java)
         })
 
@@ -68,14 +67,14 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get the current image associated with a specific playlist.
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistCovers(playlistId: String): SpotifyRestAction<List<SpotifyImage>> {
+    fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString()).toObject(api, mutableListOf<SpotifyImage>().javaClass).toList()
+            get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString()).toObject(api, mutableListOf<SpotifyImage>().javaClass).toList()
         })
     }
 }

@@ -2,6 +2,7 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.ArtistURI
+import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.UserURI
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
@@ -16,15 +17,15 @@ class UrisTests : Spek({
             it("Create track with invalid input") {
 
                 assertDoesNotThrow {
-                    TrackURI("invalid")
+                    TrackURI("a:invalid")
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    TrackURI("invalid").uri
+                    TrackURI("a:invalid").uri
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    TrackURI("invalid").id
+                    TrackURI("a:invalid").id
                 }
 
                 assertThrows<IllegalArgumentException> {
@@ -33,6 +34,7 @@ class UrisTests : Spek({
             }
 
             it("Create track with valid input") {
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
@@ -46,6 +48,7 @@ class UrisTests : Spek({
                         TrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
                     )
                 }
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
@@ -66,15 +69,15 @@ class UrisTests : Spek({
             it("Create user with invalid input") {
 
                 assertDoesNotThrow {
-                    UserURI("invalid")
+                    UserURI("a:invalid")
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    UserURI("invalid").uri
+                    UserURI("a:invalid").uri
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    UserURI("invalid").id
+                    UserURI("a:invalid").id
                 }
 
                 assertThrows<IllegalArgumentException> {
@@ -83,6 +86,7 @@ class UrisTests : Spek({
             }
 
             it("Create user with valid input") {
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
@@ -130,107 +134,63 @@ class UrisTests : Spek({
         describe("PlaylistURI") {
             it("Create playlist with invalid input") {
 
-                assertThrows<IllegalArgumentException> {
-                    UserURI.PlaylistURI("invalid")
+                assertDoesNotThrow {
+                    PlaylistURI("a:invalid")
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    UserURI.PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")
+                    PlaylistURI("a:invalid").uri
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    UserURI.PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:invalid")
+                    PlaylistURI("a:invalid").id
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    UserURI.PlaylistURI("spotify:user:invalid:playlist:66wcLiS5R50akaQ3onDyZd")
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI.PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd")
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("invalid").uri
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("invalid").id
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:invalid").uri
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:invalid").id
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:invalid:playlist:66wcLiS5R50akaQ3onDyZd").uri
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:invalid:playlist:66wcLiS5R50akaQ3onDyZd").id
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
-                }
-
-                assertThrows<IllegalArgumentException> {
-                    UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
 
             it("Create playlist with valid input") {
                 assertDoesNotThrow {
                     assertEquals(
-                        "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd",
-                        UserURI.PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                        "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                        PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
                     )
                 }
 
                 assertDoesNotThrow {
                     assertEquals(
                         "66wcLiS5R50akaQ3onDyZd",
-                        UserURI.PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                        PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
                     )
                 }
 
                 assertDoesNotThrow {
                     assertEquals(
-                        "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd",
-                        UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
-                    )
-                }
-
-                assertDoesNotThrow {
-                    assertEquals(
-                        "66wcLiS5R50akaQ3onDyZd",
-                        UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
-                    )
-                }
-
-                assertDoesNotThrow {
-                    assertEquals(
-                        "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd",
-                        UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("66wcLiS5R50akaQ3onDyZd").uri
+                        "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                        PlaylistURI("66wcLiS5R50akaQ3onDyZd").uri
                     )
                 }
 
                 assertDoesNotThrow {
                     assertEquals(
                         "66wcLiS5R50akaQ3onDyZd",
-                        UserURI("7r7uq6qxa4ymx3wnjd9mm6i83").PlaylistURI("66wcLiS5R50akaQ3onDyZd").id
+                        PlaylistURI("66wcLiS5R50akaQ3onDyZd").id
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                        PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "66wcLiS5R50akaQ3onDyZd",
+                        PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
                     )
                 }
             }
@@ -240,15 +200,15 @@ class UrisTests : Spek({
             it("Create album with invalid input") {
 
                 assertDoesNotThrow {
-                    AlbumURI("invalid")
+                    AlbumURI("a:invalid")
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    AlbumURI("invalid").uri
+                    AlbumURI("a:invalid").uri
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    AlbumURI("invalid").id
+                    AlbumURI("a:invalid").id
                 }
 
                 assertThrows<IllegalArgumentException> {
@@ -257,6 +217,7 @@ class UrisTests : Spek({
             }
 
             it("Create album with valid input") {
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
@@ -270,6 +231,7 @@ class UrisTests : Spek({
                         AlbumURI("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
                     )
                 }
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
@@ -290,15 +252,15 @@ class UrisTests : Spek({
             it("Create artist with invalid input") {
 
                 assertDoesNotThrow {
-                    ArtistURI("invalid")
+                    ArtistURI("a:invalid")
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    ArtistURI("invalid").uri
+                    ArtistURI("a:invalid").uri
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    ArtistURI("invalid").id
+                    ArtistURI("a:invalid").id
                 }
 
                 assertThrows<IllegalArgumentException> {
@@ -307,6 +269,7 @@ class UrisTests : Spek({
             }
 
             it("Create artist with valid input") {
+
                 assertDoesNotThrow {
                     assertEquals(
                         "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
