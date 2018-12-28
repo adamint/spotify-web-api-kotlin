@@ -15,13 +15,13 @@ This library is available via Maven Central.
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>1.0.4</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '1.0.4'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.0.0'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
@@ -68,6 +68,7 @@ includes options for asynchronous and blocking execution in all endpoints. Howev
  due to this, you **must** call one of the provided methods in order for the call 
  to execute! The `SpotifyRestAction` provides four methods for use: 1 blocking and 3 async.
 - `complete()` blocks the current thread and returns the result
+- `queue()` executes and immediately returns
 - `queue(consumer: (T) -> Unit)` executes the provided callback as soon as the request 
 is asynchronously evaluated
 - `queueAfter(quantity: Int, timeUnit: TimeUnit, consumer: (T) -> Unit)` executes the 
@@ -135,16 +136,8 @@ will be populated with the href, uri, and, most importantly, the id of the track
 You can then use this track in clientApi actions such as playing or saving the track, knowing that it will be playable 
 in your market!
 
-### Testing
-We use [Spek](https://github.com/spekframework/spek), which integrates with the JUnit runner, for testing. To run any test, you 
-need to run `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET`. If you'd like to run the client tests 
-as well, you need to add the `spotifyRedirectUri` parameter, along with `spotifyTokenString`
-
-Some tests may fail if you do not allow access to all required scopes. Look carefully to see which ones fail, 
-as there's a high probability that it's a scope issue.
-
-An example: `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
-
+### How to test
+See [TESTING.md](testing.md)
 
 ### Endpoint List
 #### SpotifyAPI:
