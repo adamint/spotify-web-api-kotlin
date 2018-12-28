@@ -26,7 +26,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "https://dl.bintray.com/spekframework/spek-dev" }
+    maven { url "https://dl.bintray.com/spekframework/spek" }
 }
 
 dependencies {
@@ -39,22 +39,22 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:1.3.0"
 
     // Spek testing requirements
-    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.1') {
+    testImplementation ('org.spekframework.spek2:spek-dsl-jvm:2.0.0-rc.1')  {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0-alpha.1') {
+    testRuntimeOnly ('org.spekframework.spek2:spek-runner-junit5:2.0.0-rc.1') {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
+
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
     testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
 }
 
 test {
     systemProperties project.properties.subMap(
-            ["clientId", "clientSecret", "spotifyTokenString", "spotifyRedirectUri", "spotifyAuthCode"]
+            ["clientId", "clientSecret", "spotifyTokenString", "spotifyRedirectUri"]
     )
     useJUnitPlatform {
         includeEngines 'spek2'
