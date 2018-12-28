@@ -4,6 +4,7 @@ import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
@@ -48,7 +49,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun isFollowingUsers(vararg userIds: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/following/contains").with("type", "user")
-                    .with("ids", userIds.joinToString(",") { it.encode() }).toString()).toObject<List<Boolean>>(api)
+                    .with("ids", userIds.joinToString(",") { it.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 
@@ -75,7 +76,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun isFollowingArtists(vararg artistIds: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/following/contains").with("type", "artist")
-                    .with("ids", artistIds.joinToString(",") { it.encode() }).toString()).toObject<List<Boolean>>(api)
+                    .with("ids", artistIds.joinToString(",") { it.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 
@@ -85,10 +86,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
      * with full [Artist] objects
      */
-    fun getFollowedArtists(limit: Int? = null, after: String? = null): SpotifyRestAction<CursorBasedPagingObject<Artist>> {
-        return toAction(Supplier {
+    fun getFollowedArtists(limit: Int? = null, after: String? = null): SpotifyRestPagingAction<Artist, CursorBasedPagingObject<Artist>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with("after", after).toString())
-                    .toCursorBasedPagingObject<Artist>("artists", this)
+                    .toCursorBasedPagingObject("artists", this, Artist::class.java)
         })
     }
 

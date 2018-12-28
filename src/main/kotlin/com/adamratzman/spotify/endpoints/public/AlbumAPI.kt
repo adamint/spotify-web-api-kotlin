@@ -19,7 +19,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbum(albumId: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/albums/$albumId").with("market", market?.code).toString()).toObject<Album>(api)
+                get(EndpointBuilder("/albums/$albumId").with("market", market?.code).toString()).toObject(api, Album::class.java)
             }
         })
     }
@@ -32,7 +32,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbums(vararg albumIds: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
         return toAction(Supplier {
             get(EndpointBuilder("/albums").with("ids", albumIds.joinToString(",") { it.encode() })
-                    .with("market", market?.code).toString()).toObject<AlbumsResponse>(api).albums
+                    .with("market", market?.code).toString()).toObject(api, AlbumsResponse::class.java).albums
         })
     }
 
@@ -48,7 +48,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbumTracks(albumId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<SimpleTrack>> {
         return toAction(Supplier {
             get(EndpointBuilder("/albums/${albumId.encode()}/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .toString()).toLinkedResult<SimpleTrack>(api)
+                    .toString()).toLinkedResult(api, SimpleTrack::class.java)
         })
     }
 }

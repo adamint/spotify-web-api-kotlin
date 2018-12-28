@@ -2,6 +2,7 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -34,10 +35,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filter parameters are illegal
      */
-    fun getNewReleases(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<Album>> {
-        return toAction(Supplier {
+    fun getNewReleases(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestPagingAction<Album, PagingObject<Album>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with("country", market?.code).toString())
-                    .toPagingObject<Album>("albums", endpoint = this)
+                    .toPagingObject("albums", endpoint = this, tClazz = Album::class.java)
         })
     }
 
@@ -63,7 +64,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .with("locale", locale).with("timestamp", timestamp?.let {
                         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(Date.from(Instant.ofEpochMilli(timestamp)))
-                    }).toString()).toObject<FeaturedPlaylists>(api)
+                    }).toString()).toObject(api, FeaturedPlaylists::class.java)
         })
     }
 
@@ -82,10 +83,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
-    fun getCategoryList(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null): SpotifyRestAction<PagingObject<SpotifyCategory>> {
-        return toAction(Supplier {
+    fun getCategoryList(limit: Int? = null, offset: Int? = null, locale: String? = null, market: Market? = null): SpotifyRestPagingAction<SpotifyCategory, PagingObject<SpotifyCategory>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .with("locale", locale).toString()).toPagingObject<SpotifyCategory>("categories", endpoint = this)
+                    .with("locale", locale).toString()).toPagingObject("categories", endpoint = this, tClazz = SpotifyCategory::class.java)
         })
     }
 
@@ -105,7 +106,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getCategory(categoryId: String, market: Market? = null, locale: String? = null): SpotifyRestAction<SpotifyCategory> {
         return toAction(Supplier {
             get(EndpointBuilder("/browse/categories/${categoryId.encode()}").with("market", market?.code)
-                    .with("locale", locale).toString()).toObject<SpotifyCategory>(api)
+                    .with("locale", locale).toString()).toObject(api, SpotifyCategory::class.java)
         })
     }
 
@@ -119,10 +120,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
      */
-    fun getPlaylistsForCategory(categoryId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<PagingObject<SimplePlaylist>> {
-        return toAction(Supplier {
+    fun getPlaylistsForCategory(categoryId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/browse/categories/${categoryId.encode()}/playlists").with("limit", limit).with("offset", offset)
-                    .with("market", market?.code).toString()).toPagingObject<SimplePlaylist>("playlists", endpoint = this)
+                    .with("market", market?.code).toString()).toPagingObject("playlists", endpoint = this, tClazz = SimplePlaylist::class.java)
         })
     }
 
@@ -171,7 +172,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
             minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }
-            get(builder.toString()).toObject<RecommendationResponse>(api)
+            get(builder.toString()).toObject(api, RecommendationResponse::class.java)
         })
     }
 }

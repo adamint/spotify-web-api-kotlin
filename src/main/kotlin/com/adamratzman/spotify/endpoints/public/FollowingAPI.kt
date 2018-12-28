@@ -23,7 +23,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun areFollowingPlaylist(playlistOwner: String, playlistId: String, vararg userIds: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/users/${playlistOwner.encode()}/playlists/${playlistId.encode()}/followers/contains")
-                    .with("ids", userIds.joinToString(",") { it.encode() }).toString()).toObject<List<Boolean>>(api)
+                    .with("ids", userIds.joinToString(",") { it.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 

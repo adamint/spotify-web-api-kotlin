@@ -4,6 +4,7 @@ import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
 import java.awt.image.BufferedImage
@@ -43,7 +44,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (description != null) json.put("description", description)
             if (public != null) json.put("public", public)
             if (collaborative != null) json.put("collaborative", collaborative)
-            post(EndpointBuilder("/users/${userId.encode()}/playlists").toString(), json.toString()).toObject<Playlist>(api)
+            post(EndpointBuilder("/users/${userId.encode()}/playlists").toString(), json.toString()).toObject(api, Playlist::class.java)
         })
     }
 
@@ -102,12 +103,12 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the filters provided are illegal
      */
-    fun getClientPlaylists(limit: Int? = null, offset: Int? = null): SpotifyRestAction<PagingObject<SimplePlaylist>> {
+    fun getClientPlaylists(limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         if (limit != null && limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
-        return toAction(Supplier {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                    .toPagingObject<SimplePlaylist>(endpoint = this)
+                    .toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
         })
     }
 
@@ -120,8 +121,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      */
     fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
         return toAction(Supplier {
-            val playlists = getClientPlaylists().complete()
-            playlists.items.find { it.id == id } ?: playlists.getAllItems<SimplePlaylist>().complete().find { it.id == id }
+            val playlists = getClientPlaylists().completeWithPaging()
+            playlists.items.find { it.id == id } ?: playlists.getAllItems().complete().find { it.id == id }
         })
     }
 
@@ -165,7 +166,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
             put(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
-                    .toObject<Snapshot>(api)
+                    .toObject(api, Snapshot::class.java)
         })
     }
 

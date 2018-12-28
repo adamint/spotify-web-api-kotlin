@@ -17,8 +17,8 @@ class BrowseAPITest : Spek({
         }
 
         it("get category list") {
-            assertEquals(b.getCategoryList(locale = "BAD_LOCALE").complete().items[0], b.getCategoryList().complete().items[0])
-            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = Market.CA).complete().total > 0)
+            assertEquals(b.getCategoryList(locale = "BAD_LOCALE").complete()[0], b.getCategoryList().complete()[0])
+            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = Market.CA).complete().isNotEmpty())
         }
 
         it("get category") {
@@ -31,7 +31,7 @@ class BrowseAPITest : Spek({
 
         it("get playlists by category") {
             assertThrows<BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
-            assertTrue(b.getPlaylistsForCategory("pop", 10, 500, Market.FR).complete().total > 0)
+            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, Market.FR).complete().isNotEmpty())
         }
 
         it("get featured playlists") {
@@ -40,9 +40,9 @@ class BrowseAPITest : Spek({
         }
 
         it("get new releases") {
-            assertTrue(b.getNewReleases(market = Market.CA).complete().total > 0)
-            assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().total > 0)
-            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = Market.US).complete().total > 0)
+            assertTrue(b.getNewReleases(market = Market.CA).complete().isNotEmpty())
+            assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().isNotEmpty())
+            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = Market.US).complete().isNotEmpty())
         }
 
         describe("get recommendations") {

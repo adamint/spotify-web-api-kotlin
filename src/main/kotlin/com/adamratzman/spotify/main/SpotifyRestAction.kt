@@ -1,10 +1,11 @@
 package com.adamratzman.spotify.main
 
+import com.adamratzman.spotify.utils.PagingObject
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-open class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Supplier<T>) {
+class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Supplier<T>) {
     fun complete(): T {
         return try {
             supplier.get()
@@ -39,9 +40,36 @@ open class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplie
 
     override fun toString() = complete().toString()
 }
-/*
-class SpotifyRestPagingAction<Z, T: PagingObject<Z>>(val api: SpotifyAPI) {
-    fun complete(): Z {
-    }
-    fun complete
-}*/
+
+
+class SpotifyRestPagingAction<Z, T : PagingObject<Z>>(val api: SpotifyAPI, val supplier: Supplier<T>) {
+    private val restAction = SpotifyRestAction(api, supplier)
+
+    /**
+     * Block the current thread and get the objects for the **specified** PagingObject
+     */
+    fun complete(): List<Z> = completeWithPaging().items
+    fun queue() = queue({}, { throw it })
+    fun queue(consumer: (List<Z>) -> Unit) = queue(consumer, {})
+    fun queue(consumer: ((List<Z>) -> Unit), failure: ((Throwable) -> Unit)) =
+            queueWithPaging({ consumer(it.items) }, failure)
+
+    fun queueAfter(quantity: Int, timeUnit: TimeUnit = TimeUnit.SECONDS, consumer: (List<Z>) -> Unit) =
+            queueAfterWithPaging(quantity, timeUnit) { consumer(it.items) }
+
+    fun asFuture(): CompletableFuture<List<Z>> = asFutureWithPaging().thenApply { it.items }
+
+    fun completeWithPaging(): T = restAction.complete()
+    fun asFutureWithPaging(): CompletableFuture<T> = restAction.asFuture()
+    fun queueWithPaging() = restAction.queue({}, { throw it })
+    fun queueWithPaging(consumer: (T) -> Unit) = restAction.queue(consumer, {})
+    fun queueWithPaging(consumer: ((T) -> Unit), failure: ((Throwable) -> Unit)) = restAction.queue(consumer, failure)
+    fun queueAfterWithPaging(quantity: Int, timeUnit: TimeUnit = TimeUnit.SECONDS, consumer: (T) -> Unit) = restAction.queueAfter(quantity, timeUnit, consumer)
+
+    fun getAllPagingObjects() = SpotifyRestAction(api, Supplier { restAction.complete().getAll().complete() })
+
+    /**
+     * Get the items for **all linked [PagingObjects]**
+     */
+    fun getAllItems(): SpotifyRestAction<List<Z>> = SpotifyRestAction(api, Supplier { getAllPagingObjects().complete().map { it.items }.flatten() })
+}
