@@ -44,14 +44,22 @@ In order to use the methods in this library, you must create either a `SpotifyAP
 The SpotifyAPI `Token` automatically regenerates when needed.
 To build it, you must pass the application id and secret.
 ```kotlin
-    val api = SpotifyAPI.Builder("application id", "application secret").build()
+import com.adamratzman.spotify.main.SpotifyScope
+import com.adamratzman.spotify.main.spotifyApi
+
+spotifyApi {
+    credentials {
+        clientId = "YOUR_CLIENT_ID"
+        clientSecret = "YOUR_CLIENT_SECRET"
+    }
+}.buildCredentialed()
 ```
-*Note:* You are **unable** to use any clientApi endpoint. 
+*Note:* You are **unable** to use any client endpoint without authenticating with the methods below. 
 
 ### SpotifyClientAPI
-All endpoints inside SpotifyAPI can be accessed within SpotifyClientAPI.
-The SpotifyClientAPI's automatic refresh is available *only* when building with
-an authorization code. Otherwise, it will expire in `Token.expires_in` seconds after creation.
+All endpoints inside `SpotifyAPI` can be accessed within the `SpotifyClientAPI`.
+Its automatic refresh is available *only* when building with
+an authorization code or a `Token` object. Otherwise, it will expire `Token#expires_in` seconds after creation.
 
 You have two options when building the Client API.
 1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) with 
@@ -75,6 +83,13 @@ is asynchronously evaluated
 provided callback after the provided time. As long as supplier execution is less than the provided 
 time, this will likely be accurate within a few milliseconds.
 - `asFuture()` transforms the supplier into a `CompletableFuture` 
+
+### SpotifyRestPagingAction
+Separate from SpotifyRestAction, this specialized implementation of RestActions is 
+just for [PagingObject]. This class gives you the same functionality as SpotifyRestAction, 
+but you also have the ability to retrieve *all* of its items or linked PagingObjects with 
+a single method call to `getAllItems()` or `getAllPagingObjects()` respectively
+
 
 ## Using the Library
 ### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
@@ -102,26 +117,35 @@ list of objects. With this, we have access to its Spotify API url (with `href`),
 that url.
 
 ### Generic Request
-For obvious reasons, in most cases, asynchronous requests via `queue` or `queueAfter` are preferred. However, 
+For obvious reasons, in most cases, making asynchronous requests via `queue` or `queueAfter` is preferred. However, 
 the synchronous format is also shown.
 
 ```kotlin
-    val api = SpotifyAPI.Builder("appId", "appSecret").build()
-    val trackSearch = api.search.searchTrack("Si t'étais là", market = Market.FR)
-    // with optional parameter of market
-    
-    fun blocking() {
-        val trackPaging = trackSearch.complete()
-        println(trackPaging.items.map { it.name })
-        // iterate through, see total found, etc. with the paging object..
+import com.adamratzman.spotify.main.SpotifyScope
+import com.adamratzman.spotify.main.spotifyApi
+
+val spotifyApi = spotifyApi {
+    credentials {
+        clientId = "YOUR_CLIENT_ID"
+        clientSecret = "YOUR_CLIENT_SECRET"
     }
-    
-    fun async() {
-        trackSearch.queueAfter(2, TimeUnit.SECONDS, { result ->
-            // do whatever with the result.
-            // this will be executed 2000 +- approximately 5 ms after invocation
-        })
-    }
+}.buildCredentialed()
+
+// block and print out the names of the twenty most similar songs to the search
+spotifyApi.search.searchTrack("Début de la Suite").complete().map { it.name }.joinToString().let { println(it) }
+
+// now, let's do it asynchronously
+spotifyApi.search.searchTrack("Début de la Suite").queue { it.map { it.name }.joinToString().let { println(it) } }
+
+// simple, right? what about if we want to print ou the featured playlists message from the "Overview" tab?
+spotifyApi.browse.getFeaturedPlaylists().complete().message.let { println(it )}
+
+// easy! let's try something a little harder
+// let's find out Bénabar's Spotify ID, find his top tracks, and print them out
+
+spotifyApi.search.searchArtist("Bénabar").complete()[0].id.let { id -> 
+    spotifyApi.artists.getArtistTopTracks(id).complete().joinToString { it.name }.let { println(it) }
+ }
 ```
 
 ### Track Relinking
@@ -136,8 +160,8 @@ will be populated with the href, uri, and, most importantly, the id of the track
 You can then use this track in clientApi actions such as playing or saving the track, knowing that it will be playable 
 in your market!
 
-### How to test
-See [TESTING.md](testing.md)
+### Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Endpoint List
 #### SpotifyAPI:
