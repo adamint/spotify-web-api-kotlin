@@ -1,6 +1,13 @@
 # Kotlin Spotify Web API
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
+### Have a question?
+If you have a question, you can:
+
+1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
+2. Read (but that's hard)
+3. Contact me using **Adam#9261** on [Discord](https://discordapp.com) or by sending me an email
+
 ## Contents
   1. **[Downloading](#downloading)**
   2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyapi-or-spotifyclientapi-object)**
