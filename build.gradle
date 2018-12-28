@@ -63,9 +63,6 @@ test {
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions {
-        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
-    }
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
