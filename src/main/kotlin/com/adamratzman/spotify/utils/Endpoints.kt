@@ -1,9 +1,6 @@
 package com.adamratzman.spotify.utils
 
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyClientAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.base
+import com.adamratzman.spotify.main.*
 import com.google.gson.JsonParseException
 import org.json.JSONObject
 import org.jsoup.Connection
@@ -53,12 +50,12 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
                 ErrorObject(400, "malformed request (likely spaces)")
             }
             throw BadRequestException(message)
-        }
-        else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
+        } else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
         return document.body()
     }
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
+    fun <Z, T : PagingObject<Z>> toPagingObjectAction(supplier: Supplier<T>) = SpotifyRestPagingAction(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {

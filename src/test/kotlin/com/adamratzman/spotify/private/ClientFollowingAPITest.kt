@@ -21,7 +21,7 @@ class ClientFollowingAPITest : Spek({
 
             assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 
-            val beforeFollowing = api.following.getFollowedArtists().complete().getAllItems<Artist>().complete()
+            val beforeFollowing = api.following.getFollowedArtists().getAllItems().complete()
 
             assertNull(beforeFollowing.find { it.id == testArtistId })
 
@@ -30,12 +30,12 @@ class ClientFollowingAPITest : Spek({
 
             assertTrue(api.following.isFollowingArtist(testArtistId).complete())
 
-            assertEquals(1, api.following.getFollowedArtists().complete().getAllItems<Artist>().complete().size - beforeFollowing.size)
+            assertEquals(1, api.following.getFollowedArtists().getAllItems().complete().size - beforeFollowing.size)
 
             api.following.unfollowArtist(testArtistId).complete()
             api.following.unfollowArtist(testArtistId).complete()
 
-            assertTrue(beforeFollowing.size == api.following.getFollowedArtists().complete().getAllItems<Artist>().complete().size)
+            assertTrue(beforeFollowing.size == api.following.getFollowedArtists().getAllItems().complete().size)
 
             assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 

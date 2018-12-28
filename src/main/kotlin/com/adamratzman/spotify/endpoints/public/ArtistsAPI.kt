@@ -17,7 +17,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtist(artistId: String): SpotifyRestAction<Artist?> {
         return toAction(Supplier {
-            catch { get(EndpointBuilder("/artists/${artistId.encode()}").toString()).toObject<Artist>(api) }
+            catch { get(EndpointBuilder("/artists/${artistId.encode()}").toString()).toObject(api, Artist::class.java) }
         })
 
     }
@@ -29,7 +29,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getArtists(vararg artistIds: String): SpotifyRestAction<List<Artist?>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists").with("ids", artistIds.joinToString(",") { it.encode() }).toString())
-                    .toObject<ArtistList>(api).artists
+                    .toObject(api, ArtistList::class.java).artists
         })
     }
 
@@ -46,7 +46,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getArtistAlbums(artistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${artistId.encode()}/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .with("include_groups", include.joinToString(",") { it.keyword }).toString()).toLinkedResult<SimpleAlbum>(api)
+                    .with("include_groups", include.joinToString(",") { it.keyword }).toString()).toLinkedResult(api, SimpleAlbum::class.java)
         })
     }
 
@@ -66,7 +66,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getArtistTopTracks(artistId: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${artistId.encode()}/top-tracks").with("country", market.code).toString())
-                    .toObject<TrackList>(api).tracks.map { it!! }
+                    .toObject(api, TrackList::class.java).tracks.map { it!! }
         })
     }
 
@@ -81,7 +81,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getRelatedArtists(artistId: String): SpotifyRestAction<List<Artist>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists/${artistId.encode()}/related-artists").toString()).toObject<ArtistList>(api).artists.map { it!! }
+            get(EndpointBuilder("/artists/${artistId.encode()}/related-artists").toString()).toObject(api, ArtistList::class.java).artists.map { it!! }
         })
     }
 }

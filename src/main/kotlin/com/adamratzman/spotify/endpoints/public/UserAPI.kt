@@ -21,7 +21,7 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/users/${userId.encode()}").toString()).toObject<SpotifyPublicUser>(api)
+                get(EndpointBuilder("/users/${userId.encode()}").toString()).toObject(api,SpotifyPublicUser::class.java)
             }
         })
     }
