@@ -244,7 +244,6 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
 
     private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
-            executor.scheduleAtFixedRate({ refreshToken() }, ((token.expires_in - 30).toLong()), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
             if (token.expires_in > 60) {
                 executor.scheduleAtFixedRate(
                         { refreshToken() },
@@ -263,7 +262,7 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
 
     private fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "client_credentials")
+                .data("grant_type", "refresh_token")
                 .data("refresh_token", token.refresh_token ?: "")
                 .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
                 .ignoreContentType(true).post().body().text(), Token::class.java)
