@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.main
 
 class SpotifyLogger(var enabled: Boolean) {
@@ -14,3 +15,5 @@ class SpotifyLogger(var enabled: Boolean) {
         throwable?.printStackTrace()
     }
 }
+
+class SpotifyException(message: String, cause: Throwable) : Exception(message, cause)
