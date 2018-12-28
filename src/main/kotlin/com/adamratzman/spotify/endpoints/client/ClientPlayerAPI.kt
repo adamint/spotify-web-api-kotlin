@@ -102,20 +102,20 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
-    fun startPlayback(albumId: String? = null, artistId: String? = null, playlist: PlaylistParams? = null,
+    fun startPlayback(album: String? = null, artist: String? = null, playlist: PlaylistURI? = null,
                       offsetNum: Int? = null, offsetTrackId: String? = null, deviceId: String? = null, vararg tracksToPlay: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = JSONObject()
             when {
-                albumId != null -> body.put("context_uri", "spotify:album:$albumId")
-                artistId != null -> body.put("context_uri", "spotify:artist:$artistId")
-                playlist != null -> body.put("context_uri", "spotify:user:${playlist.author}:playlist:${playlist.id}")
-                tracksToPlay.isNotEmpty() -> body.put("uris", tracksToPlay.map { "spotify:track:$it" })
+                album != null -> body.put("context_uri", AlbumURI(album).uri)
+                artist != null -> body.put("context_uri", ArtistURI(artist).uri)
+                playlist != null -> body.put("context_uri", playlist.uri)
+                tracksToPlay.isNotEmpty() -> body.put("uris", tracksToPlay.map { TrackURI(it).uri })
             }
             if (body.keySet().isNotEmpty()) {
                 if (offsetNum != null) body.put("offset", JSONObject().put("position", offsetNum))
-                else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", "spotify:track:$offsetTrackId"))
+                else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", TrackURI(offsetTrackId).uri))
                 put(url, body.toString())
             } else put(url)
             Unit

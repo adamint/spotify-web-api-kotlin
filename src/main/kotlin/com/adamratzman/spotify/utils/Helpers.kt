@@ -76,30 +76,28 @@ open class PagingObject<T>(val href: String, val items: List<T>, val limit: Int,
 }
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
-    fun toPlaylistParams(): PlaylistParams {
+    fun toPlaylist(): PlaylistURI {
         if (href.startsWith("https://api.spotify.com/v1/users/")) {
             val split = href.removePrefix("https://api.spotify.com/v1/users/").split("/playlists/")
-            if (split.size == 2) return PlaylistParams(split[0], split[1].split("/")[0])
+            if (split.size == 2) return PlaylistURI(split[1].split("/")[0])
         }
         throw InvalidObjectException("This object is not linked to a playlist")
     }
 
-    fun getArtistId(): String {
+    fun getArtist(): ArtistURI {
         if (href.startsWith("https://api.spotify.com/v1/artists/")) {
-            return href.removePrefix("https://api.spotify.com/v1/artists/").split("/")[0]
+            return ArtistURI(href.removePrefix("https://api.spotify.com/v1/artists/").split("/")[0])
         }
         throw InvalidObjectException("This object is not linked to an artist")
     }
 
-    fun getAlbumId(): String {
+    fun getAlbum(): AlbumURI {
         if (href.startsWith("https://api.spotify.com/v1/albums/")) {
-            return href.removePrefix("https://api.spotify.com/v1/albums/").split("/")[0]
+            return AlbumURI(href.removePrefix("https://api.spotify.com/v1/albums/").split("/")[0])
         }
         throw InvalidObjectException("This object is not linked to an album")
     }
 }
-
-data class PlaylistParams(val author: String, val id: String)
 
 abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) : Linkable() {
     fun isRelinked() = linkedTrack != null

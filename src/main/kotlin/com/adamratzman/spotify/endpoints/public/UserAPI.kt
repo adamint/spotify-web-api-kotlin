@@ -12,16 +12,16 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *
-     * @param userId The user’s Spotify user ID.
+     * @param user The user’s Spotify user ID.
      *
      * @return publicly-available information about the user
      *
      * @return null if the user cannot be found
      */
-    fun getProfile(userId: String): SpotifyRestAction<SpotifyPublicUser?> {
+    fun getProfile(user: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/users/${userId.encode()}").toString()).toObject(api,SpotifyPublicUser::class.java)
+                get(EndpointBuilder("/users/${UserURI(user).id.encode()}").toString()).toObject(api,SpotifyPublicUser::class.java)
             }
         })
     }

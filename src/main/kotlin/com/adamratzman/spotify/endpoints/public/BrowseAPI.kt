@@ -166,9 +166,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         }
         return toAction(Supplier {
             val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.code)
-                    .with("seed_artists", seedArtists?.joinToString(",") { it.encode() })
+                    .with("seed_artists", seedArtists?.joinToString(",") { ArtistURI(it).id.encode() })
                     .with("seed_genres", seedGenres?.joinToString(",") { it.encode() })
-                    .with("seed_tracks", seedTracks?.joinToString(",") { it.encode() })
+                    .with("seed_tracks", seedTracks?.joinToString(",") { TrackURI(it).id.encode() })
             targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
             minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }

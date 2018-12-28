@@ -24,7 +24,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *
-     * @param userId The user’s Spotify user ID.
+     * @param user The user’s Spotify user ID.
      * @param name The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be
      * unique; a user may have several playlists with the same name.
      * @param description
@@ -36,7 +36,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @return The created [Playlist] object with no tracks
      */
-    fun createPlaylist(name: String, description: String? = null, public: Boolean? = null, collaborative: Boolean? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Playlist> {
+    fun createPlaylist(name: String, description: String? = null, public: Boolean? = null, collaborative: Boolean? = null, user: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Playlist> {
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction(Supplier {
             val json = JSONObject()
@@ -44,27 +44,27 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (description != null) json.put("description", description)
             if (public != null) json.put("public", public)
             if (collaborative != null) json.put("collaborative", collaborative)
-            post(EndpointBuilder("/users/${userId.encode()}/playlists").toString(), json.toString()).toObject(api, Playlist::class.java)
+            post(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(), json.toString()).toObject(api, Playlist::class.java)
         })
     }
 
     /**
      * Add one or more tracks to a user’s playlist.
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
-     * @param ids Spotify track ids. A maximum of 100 tracks can be added in one request.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
+     * @param tracks Spotify track ids. A maximum of 100 tracks can be added in one request.
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
      * first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
      * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-    fun addTracksToPlaylist(playlistId: String, vararg ids: String, position: Int? = null): SpotifyRestAction<Unit> {
-        val json = JSONObject().put("uris", ids.map { "spotify:track:${it.encode()}" })
+    fun addTracksToPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
+        val json = JSONObject().put("uris", tracks.map { TrackURI(TrackURI(it).id.encode()).uri })
         if (position != null) json.put("position", position)
         return toAction(Supplier {
-            post(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
+            post(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(), json.toString())
             Unit
         })
     }
@@ -72,8 +72,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      * @param name Optional. The name to change the playlist to.
      * @param public Optional. Whether to make the playlist public or not.
      * @param collaborative Optional. Whether to make the playlist collaborative or not.
@@ -81,7 +81,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
-    fun changePlaylistDescription(playlistId: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
+    fun changePlaylistDescription(playlist: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
                                   description: String? = null): SpotifyRestAction<Unit> {
         val json = JSONObject()
         if (name != null) json.put("name", name)
@@ -90,7 +90,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         if (description != null) json.put("description", description)
         if (json.length() == 0) throw IllegalArgumentException("At least one option must not be null")
         return toAction(Supplier {
-            put(EndpointBuilder("/playlists/${playlistId.encode()}").toString(), json.toString())
+            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}").toString(), json.toString())
             Unit
         })
     }
@@ -127,16 +127,15 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     }
 
     /**
-     * This method is equivalent to unfollowing a playlist with the given [id] and [ownerId].
+     * This method is equivalent to unfollowing a playlist with the given [playlist] and [owner].
      *
      * Unfortunately, Spotify does not allow **deletion** of playlists themselves
      *
-     * @param id playlist id
-     * @param ownerId the owner of this playlist. Ignore if it's the authenticated user
+     * @param playlist playlist id
+     * @param owner the owner of this playlist. Ignore if it's the authenticated user
      */
-    fun deletePlaylist(id: String): SpotifyRestAction<Unit> {
-        api as SpotifyClientAPI
-        return api.following.unfollowPlaylist(id)
+    fun deletePlaylist(playlist: String): SpotifyRestAction<Unit> {
+        return (api as SpotifyClientAPI).following.unfollowPlaylist(PlaylistURI(playlist).id)
     }
 
     /**
@@ -146,8 +145,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
      * when the tracks are reordered.
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      * @param reorderRangeStart The position of the first track to be reordered.
      * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
      * The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
@@ -157,7 +156,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    fun reorderTracks(playlistId: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int,
+    fun reorderTracks(playlist: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int,
                       snapshotId: String? = null): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
             val json = JSONObject()
@@ -165,7 +164,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             json.put("insert_before", insertionPoint)
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
-            put(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
+            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(), json.toString())
                     .toObject(api, Snapshot::class.java)
         })
     }
@@ -174,29 +173,28 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
      * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
-     * @param trackIds The Spotify track ids.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
+     * @param tracks The Spotify track ids.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun setPlaylistTracks(playlistId: String, vararg trackIds: String): SpotifyRestAction<Unit> {
+    fun setPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val json = JSONObject()
-            json.put("uris", trackIds.map { "spotify:track:${it.encode()}" })
-            put(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(),
-                    json.toString())
+            json.put("uris", tracks.map { TrackURI(TrackURI(it).id.encode()).uri })
+            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(), json.toString())
             Unit
         })
     }
 
     /**
      * Remove all the tracks in a playlist
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      */
-    fun removeAllPlaylistTracks(playlistId: String): SpotifyRestAction<Unit> {
-        return setPlaylistTracks(playlistId)
+    fun removeAllPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
+        return setPlaylistTracks(playlist)
     }
 
     /**
@@ -204,8 +202,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * Must specify a JPEG image path or image data, maximum payload size is 256 KB
      *
-     * @param userId The user’s Spotify user ID.
-     * @param playlistId The Spotify ID for the playlist.
+     * @param user The user’s Spotify user ID.
+     * @param playlist The Spotify ID for the playlist.
      * @param imagePath Optionally specify the full local path to the image
      * @param imageUrl Optionally specify a URL to the image
      * @param imageFile Optionally specify the image [File]
@@ -215,7 +213,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @throws IIOException if the image is not found
      * @throws BadRequestException if invalid data is provided
      */
-    fun uploadPlaylistCover(playlistId: String, imagePath: String? = null,
+    fun uploadPlaylistCover(playlist: String, imagePath: String? = null,
                             imageFile: File? = null, image: BufferedImage? = null, imageData: String? = null,
                             imageUrl: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
@@ -226,20 +224,21 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
                 imagePath != null -> encode(ImageIO.read(URL("file:///$imagePath")))
                 else -> throw IllegalArgumentException("No cover image was specified")
             }
-            put(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString(),
+            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString(),
                     data, contentType = "image/jpeg")
             Unit
         })
     }
 
     /*
-    fun removeAllOccurances(userId: String, playlistId: String, vararg trackIds: String): SpotifyRestAction<Unit> {
-        if (trackIds.isEmpty()) throw IllegalArgumentException("Tracks to remove must not be empty")
+    fun removeAllOccurances(user: String, playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
+        if (tracks.isEmpty()) throw IllegalArgumentException("Tracks to remove must not be empty")
         return toAction(Supplier {
             val json = JSONObject()
-            json.put("tracks", trackIds.map { JSONObject().put("uri", "spotify:track:$it") })
+            json.put("tracks", tracks.map { JSONObject().put("uri", TrackURI(it).uri) })
             println(json.toString())
-            delete("https://api.spotify.com/v1/users/$userId/playlists/$playlistId/tracks",
+            val userURI = UserURI(user)
+            delete("https://api.spotify.com/v1/users/${userURI.id}/playlists/${userURI.PlaylistURI(playlist).id}/tracks",
                     body =  json.toString(), contentType = "application/json")
             Unit
         })

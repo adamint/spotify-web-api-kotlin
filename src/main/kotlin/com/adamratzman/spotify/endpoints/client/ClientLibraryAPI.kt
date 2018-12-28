@@ -37,7 +37,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * @throws BadRequestException if [id] is not found
+     * @throws BadRequestException if [track] is not found
      */
     fun contains(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
@@ -52,7 +52,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { it.encode() })
+            get(EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                     .toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
@@ -75,7 +75,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
+            put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { type.id(it).encode() }).toString())
             Unit
         })
     }
@@ -98,14 +98,14 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
+            delete(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { type.id(it).encode() }).toString())
             Unit
         })
     }
 }
 
-enum class LibraryType(private val value: String) {
-    TRACK("tracks"), ALBUM("albums");
+enum class LibraryType(private val value: String, internal val id: (String) -> String) {
+    TRACK("tracks", { TrackURI(it).id }), ALBUM("albums", { AlbumURI(it).id });
 
     override fun toString() = value
 }
