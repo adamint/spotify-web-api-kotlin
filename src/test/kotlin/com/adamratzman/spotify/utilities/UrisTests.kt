@@ -1,10 +1,6 @@
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.utils.AlbumURI
-import com.adamratzman.spotify.utils.ArtistURI
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.TrackURI
-import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.*
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
@@ -16,19 +12,15 @@ class UrisTests : Spek({
         describe("TrackURI tests") {
             it("Create track with invalid input") {
 
-                assertDoesNotThrow {
+                assertThrows<BadRequestException> {
                     TrackURI("a:invalid")
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     TrackURI("a:invalid").uri
                 }
 
-                assertThrows<IllegalArgumentException> {
-                    TrackURI("a:invalid").id
-                }
-
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     TrackURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
@@ -68,19 +60,19 @@ class UrisTests : Spek({
         describe("UserURI") {
             it("Create user with invalid input") {
 
-                assertDoesNotThrow {
+                assertThrows<BadRequestException> {
                     UserURI("a:invalid")
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     UserURI("a:invalid").uri
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     UserURI("a:invalid").id
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     UserURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
@@ -134,19 +126,19 @@ class UrisTests : Spek({
         describe("PlaylistURI") {
             it("Create playlist with invalid input") {
 
-                assertDoesNotThrow {
+                assertThrows<BadRequestException> {
                     PlaylistURI("a:invalid")
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     PlaylistURI("a:invalid").uri
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     PlaylistURI("a:invalid").id
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
@@ -199,19 +191,19 @@ class UrisTests : Spek({
         describe("AlbumURI tests") {
             it("Create album with invalid input") {
 
-                assertDoesNotThrow {
+                assertThrows<BadRequestException> {
                     AlbumURI("a:invalid")
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     AlbumURI("a:invalid").uri
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     AlbumURI("a:invalid").id
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     AlbumURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
@@ -251,19 +243,19 @@ class UrisTests : Spek({
         describe("ArtistURI tests") {
             it("Create artist with invalid input") {
 
-                assertDoesNotThrow {
+                assertThrows<BadRequestException> {
                     ArtistURI("a:invalid")
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     ArtistURI("a:invalid").uri
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     ArtistURI("a:invalid").id
                 }
 
-                assertThrows<IllegalArgumentException> {
+                assertThrows<BadRequestException> {
                     ArtistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }

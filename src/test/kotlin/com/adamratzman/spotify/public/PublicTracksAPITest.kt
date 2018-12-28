@@ -43,7 +43,7 @@ class PublicTracksAPITest : Spek({
                 assertEquals("0.0589", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())
             }
             it("multiple tracks (all known)") {
-                assertEquals(listOf(null, "0.0589"), t.getAudioFeatures("", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
+                assertEquals(listOf(null, "0.0589"), t.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
             }
             it("mix of known and unknown tracks") {
                 assertTrue(t.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").complete().let {
