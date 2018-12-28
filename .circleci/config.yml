@@ -7,8 +7,5 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      - run:
           name: Run Tests
           command: ./gradlew test -PclientId=$SPOTIFY_CLIENT_ID -PclientSecret=$SPOTIFY_CLIENT_SECRET
