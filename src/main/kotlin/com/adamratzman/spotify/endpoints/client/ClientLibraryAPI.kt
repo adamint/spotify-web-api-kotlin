@@ -38,9 +38,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [id] is not found
      */
-    fun doesLibraryContain(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
+    fun contains(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
-            doesLibraryContain(type, ids = *arrayOf(id)).complete()[0]
+            contains(type, ids = *arrayOf(id)).complete()[0]
         })
     }
 
@@ -49,7 +49,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun doesLibraryContain(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
+    fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { it.encode() })
                     .toString()).toObject<List<Boolean>>(api)
@@ -61,9 +61,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the id is invalid
      */
-    fun addToLibrary(type: LibraryType, id: String): SpotifyRestAction<Unit> {
+    fun add(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            addToLibrary(type, ids = *arrayOf(id)).complete()
+            add(type, ids = *arrayOf(id)).complete()
         })
     }
 
@@ -72,7 +72,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun addToLibrary(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+    fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
@@ -84,9 +84,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun removeFromLibrary(type: LibraryType, id: String): SpotifyRestAction<Unit> {
+    fun remove(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            removeFromLibrary(type, ids = *arrayOf(id)).complete()
+            remove(type, ids = *arrayOf(id)).complete()
         })
     }
 
@@ -95,16 +95,16 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun removeFromLibrary(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+    fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
+}
 
-    enum class LibraryType(private val value: String) {
-        TRACK("tracks"), ALBUM("albums");
+enum class LibraryType(private val value: String) {
+    TRACK("tracks"), ALBUM("albums");
 
-        override fun toString() = value
-    }
+    override fun toString() = value
 }

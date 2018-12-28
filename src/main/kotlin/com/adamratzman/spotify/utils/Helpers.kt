@@ -58,7 +58,7 @@ data class PagingObject<out T>(val href: String, val items: List<T>, val limit: 
                 }
             })
 
-    inline fun <reified T> getAll(): SpotifyRestAction<List<T>> {
+    inline fun <reified T> getAll(): SpotifyRestAction<List<PagingObject<T>>> {
         this as PagingObject<T>
         return endpoint.toAction(
                 Supplier {
@@ -78,7 +78,7 @@ data class PagingObject<out T>(val href: String, val items: List<T>, val limit: 
                         nxt = nxt.next?.let { nxt?.getNext<T>()?.complete() }
                     }
                     // we don't need to reverse here, as it's in order
-                    pagingObjects.map { it.items }.flatten()
+                    pagingObjects.toList()
                 })
     }
 
