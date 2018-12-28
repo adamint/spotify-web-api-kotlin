@@ -18,6 +18,7 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import org.json.JSONArray
 import org.json.JSONObject
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -71,7 +72,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Add one or more tracks to a user’s playlist.
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param tracks Spotify track ids. A maximum of 100 tracks can be added in one request.
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
@@ -92,7 +92,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param name Optional. The name to change the playlist to.
      * @param public Optional. Whether to make the playlist public or not.
@@ -173,7 +172,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
      * when the tracks are reordered.
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param reorderRangeStart The position of the first track to be reordered.
      * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
@@ -206,7 +204,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
      * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param tracks The Spotify track ids.
      *
@@ -223,7 +220,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
 
     /**
      * Remove all the tracks in a playlist
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      */
     fun removeAllPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
@@ -235,7 +231,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * Must specify a JPEG image path or image data, maximum payload size is 256 KB
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param imagePath Optionally specify the full local path to the image
      * @param imageUrl Optionally specify a URL to the image
@@ -271,6 +266,30 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     }
 
     /*
+    private fun removePlaylistTracks(
+        playlist: String,
+        tracks: List<Pair<TrackURI, SpotifyTrackPositions?>>,
+        snapshotId: String?
+    ): SpotifyRestAction<String> {
+        return toAction(Supplier {
+            if (tracks.isEmpty()) throw IllegalArgumentException("You need to provide at least one track to remove")
+
+            val json = JSONObject().also { if (snapshotId != null) it.put("snapshot_id", snapshotId) }
+
+            tracks.map { (track, positions) ->
+                JSONObject().put("uri", track.uri)
+                    .also { if (positions?.positions?.isNotEmpty() == true) it.put("positions", positions.positions) }
+            }.let { json.put("tracks", JSONArray(it)) }
+
+            delete(
+                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), data = listOf(
+                    "tracks" to json.toString()
+                )
+            )
+        })
+    }*/
+
+    /*
     fun removeAllOccurances(user: String, playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         if (tracks.isEmpty()) throw IllegalArgumentException("Tracks to remove must not be empty")
         return toAction(Supplier {
@@ -293,3 +312,5 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
 
     data class Snapshot(val snapshot_id: String)
 }
+
+class SpotifyTrackPositions(vararg val positions: Int)

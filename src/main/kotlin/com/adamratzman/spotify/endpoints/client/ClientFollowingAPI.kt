@@ -25,7 +25,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Check to see if the current user is following another Spotify users.
      *
-     * @param userId Spotify ID to check.
+     * @param user Spotify ID to check.
      *
      * @throws BadRequestException if [userId] is a non-existing id
      */
@@ -52,7 +52,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Check to see if the current user is following one or more other Spotify users.
      *
-     * @param userIds List of the user Spotify IDs to check. Max 50
+     * @param users List of the user Spotify IDs to check. Max 50
      *
      * @throws BadRequestException if [userIds] contains a non-existing id
      */
@@ -173,7 +173,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Remove the current user as a follower of another user
      *
-     * @param userId The user to be unfollowed from
+     * @param user The user to be unfollowed from
      *
      * @throws BadRequestException if [userId] is not found
      */
@@ -186,7 +186,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     /**
      * Remove the current user as a follower of other users
      *
-     * @param userIds The users to be unfollowed from
+     * @param users The users to be unfollowed from
      *
      * @throws BadRequestException if an invalid id is provided
      */
