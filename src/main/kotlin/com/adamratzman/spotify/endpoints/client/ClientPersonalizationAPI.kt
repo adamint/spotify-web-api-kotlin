@@ -1,7 +1,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
@@ -11,6 +11,7 @@ import java.util.function.Supplier
 class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     enum class TimeRange(val id: String) {
         LONG_TERM("long_term"), MEDIUM_TERM("medium_term"), SHORT_TERM("short_term");
+
         override fun toString() = id
     }
 
@@ -26,10 +27,10 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
-    fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestAction<PagingObject<Artist>> {
-        return toAction(Supplier {
+    fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Artist, PagingObject<Artist>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject<Artist>(endpoint = this)
+                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Artist::class.java)
         })
     }
 
@@ -45,10 +46,10 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
-    fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestAction<PagingObject<Track>> {
-        return toAction(Supplier {
+    fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Track, PagingObject<Track>> {
+        return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject<Track>(endpoint = this)
+                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Track::class.java)
         })
     }
 

@@ -19,7 +19,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getTrack(trackId: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction(Supplier {
-            catch { get(EndpointBuilder("/tracks/${trackId.encode()}").with("market", market?.code).toString()).toObject<Track>(api) }
+            catch { get(EndpointBuilder("/tracks/${trackId.encode()}").with("market", market?.code).toString()).toObject(api, Track::class.java) }
         })
     }
 
@@ -34,7 +34,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTracks(vararg trackIds: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
         return toAction(Supplier {
             get(EndpointBuilder("/tracks").with("ids", trackIds.joinToString(",") { it.encode() })
-                    .with("market", market?.code).toString()).toObject<TrackList>(api).tracks
+                    .with("market", market?.code).toString()).toObject(api, TrackList::class.java).tracks
         })
     }
 
@@ -47,7 +47,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAudioAnalysis(trackId: String): SpotifyRestAction<AudioAnalysis> {
         return toAction(Supplier {
-            get(EndpointBuilder("/audio-analysis/${trackId.encode()}").toString()).toObject<AudioAnalysis>(api)
+            get(EndpointBuilder("/audio-analysis/${trackId.encode()}").toString()).toObject(api, AudioAnalysis::class.java)
         })
     }
 
@@ -60,7 +60,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAudioFeatures(trackId: String): SpotifyRestAction<AudioFeatures> {
         return toAction(Supplier {
-            get(EndpointBuilder("/audio-features/${trackId.encode()}").toString()).toObject<AudioFeatures>(api)
+            get(EndpointBuilder("/audio-features/${trackId.encode()}").toString()).toObject(api, AudioFeatures::class.java)
         })
     }
 
@@ -73,8 +73,8 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAudioFeatures(vararg trackIds: String): SpotifyRestAction<List<AudioFeatures?>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/audio-features").with("ids", trackIds.joinToString(",") {it.encode()}).toString())
-                    .toObject<AudioFeaturesResponse>(api).audio_features
+            get(EndpointBuilder("/audio-features").with("ids", trackIds.joinToString(",") { it.encode() }).toString())
+                    .toObject(api, AudioFeaturesResponse::class.java).audio_features
         })
     }
 

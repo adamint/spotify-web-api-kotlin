@@ -13,34 +13,34 @@ class SearchAPITest : Spek({
         val s = api.search
         describe("search track") {
             it("valid request") {
-                assertTrue(s.searchTrack("hello", 1, 1, Market.US).complete().total > 0)
+                assertTrue(s.searchTrack("hello", 1, 1, Market.US).complete().isNotEmpty())
             }
             it("invalid request") {
-                assertThrows<BadRequestException> { s.searchTrack("").complete().total }
+                assertThrows<BadRequestException> { s.searchTrack("").complete().size }
             }
         }
         describe("search album") {
             it("valid request") {
-                assertTrue(s.searchAlbum("le début").complete().total > 0)
+                assertTrue(s.searchAlbum("le début").complete().size > 0)
             }
             it("invalid request") {
-                assertThrows<BadRequestException> { s.searchAlbum("").complete().total }
+                assertThrows<BadRequestException> { s.searchAlbum("").complete().size }
             }
         }
         describe("search playlist") {
             it("valid request") {
-                assertTrue(s.searchPlaylist("test").complete().total > 0)
+                assertTrue(s.searchPlaylist("test").complete().size > 0)
             }
             it("invalid request") {
-                assertThrows<BadRequestException> { s.searchPlaylist("").complete().total }
+                assertThrows<BadRequestException> { s.searchPlaylist("").complete().size }
             }
         }
         describe("search artist") {
             it("valid request") {
-                assertTrue(s.searchArtist("amir").complete().total > 0)
+                assertTrue(s.searchArtist("amir").complete().size > 0)
             }
             it("invalid request") {
-                assertThrows<BadRequestException> { s.searchArtist("").complete().total }
+                assertThrows<BadRequestException> { s.searchArtist("").complete().size }
             }
         }
     }
