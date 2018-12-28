@@ -10,15 +10,16 @@ import java.util.function.Supplier
  */
 open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
-     * Get a list of the playlists owned or followed by a Spotify user.
+     * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return empty [PagingObject]s
+     * (blame Spotify)
      *
      * @param userId The user’s Spotify user ID.
      * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
      *
-     * @return [PagingObject] of [SimplePlaylist]s. This does not have the detail of full [Playlist] objects.
+     * @return [PagingObject] of [SimplePlaylist]s **ONLY if** the user can be found. Otherwise, an empty paging object is returned.
+     * This does not have the detail of full [Playlist] objects.
      *
-     * @throws BadRequestException if the [userId] cannot be found
      */
     fun getPlaylists(userId: String, limit: Int? = null, offset: Int? = null): SpotifyRestAction<PagingObject<SimplePlaylist>> {
         return toAction(Supplier {

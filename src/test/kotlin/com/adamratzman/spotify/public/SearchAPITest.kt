@@ -28,7 +28,7 @@ class SearchAPITest : Spek({
         }
         describe("search playlist") {
             it("valid request") {
-                assert(s.searchPlaylist("run2").complete().total > 0)
+                assert(s.searchPlaylist("test").complete().total > 0)
             }
             it("invalid request") {
                 assertThrows<BadRequestException> { s.searchPlaylist("").complete().total }
