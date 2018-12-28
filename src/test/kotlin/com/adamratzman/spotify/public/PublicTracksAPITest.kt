@@ -3,8 +3,7 @@ package com.adamratzman.spotify.public
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -47,7 +46,7 @@ class PublicTracksAPITest : Spek({
                 assertEquals(listOf(null, "0.0589"), t.getAudioFeatures("", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
             }
             it("mix of known and unknown tracks") {
-                assert(t.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").complete().let {
+                assertTrue(t.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").complete().let {
                     it[0] == null && it[1] != null
                 })
             }

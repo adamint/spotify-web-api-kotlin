@@ -19,28 +19,64 @@ class ClientFollowingAPITest : Spek({
                 api.following.unfollowArtist(testArtistId).complete()
             }
 
-            assert(!api.following.isFollowingArtist(testArtistId).complete())
+            assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 
             val beforeFollowing = api.following.getFollowedArtists().complete().getAllItems<Artist>().complete()
 
             assertNull(beforeFollowing.find { it.id == testArtistId })
 
             api.following.followArtist(testArtistId).complete()
+            api.following.followArtist(testArtistId).complete()
 
-            assert(api.following.isFollowingArtist(testArtistId).complete())
+            assertTrue(api.following.isFollowingArtist(testArtistId).complete())
 
             assertEquals(1, api.following.getFollowedArtists().complete().getAllItems<Artist>().complete().size - beforeFollowing.size)
 
             api.following.unfollowArtist(testArtistId).complete()
+            api.following.unfollowArtist(testArtistId).complete()
 
-            assert(beforeFollowing.size == api.following.getFollowedArtists().complete().getAllItems<Artist>().complete().size)
+            assertTrue(beforeFollowing.size == api.following.getFollowedArtists().complete().getAllItems<Artist>().complete().size)
 
-            assert(!api.following.isFollowingArtist(testArtistId).complete())
+            assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 
             assertThrows<BadRequestException> { api.following.isFollowingArtist("no u").complete() }
             assertThrows<BadRequestException> { api.following.followArtist("no u").complete() }
-            assertThrows<BadRequestException> { api.following.followArtists(testArtistId,"no u").complete() }
+            assertThrows<BadRequestException> { api.following.followArtists(testArtistId, "no u").complete() }
             assertThrows<BadRequestException> { api.following.unfollowArtist("no u").complete() }
+        }
+
+        it("follow/unfollow users") {
+            val testUserId = "adamratzman"
+
+            if (api.following.isFollowingUser(testUserId).complete()) {
+                api.following.unfollowUser(testUserId).complete()
+            }
+
+            api.following.followUser(testUserId).complete()
+
+            assertTrue(api.following.isFollowingUser(testUserId).complete())
+
+            api.following.unfollowUser(testUserId).complete()
+
+            assertFalse(api.following.isFollowingUser(testUserId).complete())
+        }
+
+        it("follow/unfollow playlists") {
+            val playlistId = "37i9dQZF1DXcBWIGoYBM5M"
+            val playlistOwnerId = "spotify"
+            if (api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete()) {
+                api.following.unfollowPlaylist(playlistId).complete()
+            }
+
+            assertFalse(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+
+            api.following.followPlaylist(playlistId).complete()
+
+            assertTrue(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+
+            assertThrows<BadRequestException> { api.following.isFollowingPlaylist(" no u", "no u").complete() }
+            assertThrows<BadRequestException> { api.following.unfollowPlaylist("no-u").complete() }
+            assertThrows<BadRequestException> { api.following.followPlaylist("nou").complete() }
         }
     }
 })

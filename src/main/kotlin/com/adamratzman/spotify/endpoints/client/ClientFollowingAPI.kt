@@ -2,6 +2,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
@@ -21,6 +22,20 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
         return toAction(Supplier {
             isFollowingUsers(userId).complete()[0]
         })
+    }
+
+    /**
+     * Check to see if the logged-in Spotify user is following the specified playlist.
+     *
+     * @param playlistOwner Spotify ID of the creator of the playlist
+     * @param playlistId Spotify playlist ID
+     *
+     * @return booleans representing whether the user follows the playlist. User IDs **not** found will return false
+     *
+     * @throws [BadRequestException] if the playlist is not found
+     */
+    fun isFollowingPlaylist(playlistOwner: String, playlistId: String): SpotifyRestAction<Boolean> {
+        return toAction(Supplier { isFollowingPlaylist(playlistOwner, playlistId, (api as SpotifyClientAPI).userId).complete() })
     }
 
     /**
@@ -138,9 +153,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun followPlaylist(ownerId: String, playlistId: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
+    fun followPlaylist(playlistId: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/users/$ownerId/playlists/$playlistId/followers").toString(), "{\"public\": $followPublicly}")
+            put(EndpointBuilder("/playlists/$playlistId/followers").toString(), "{\"public\": $followPublicly}")
             Unit
         })
 
@@ -210,9 +225,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun unfollowPlaylist(ownerId: String, playlistId: String): SpotifyRestAction<Unit> {
+    fun unfollowPlaylist(playlistId: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/users/$ownerId/playlists/$playlistId/followers").toString())
+            delete(EndpointBuilder("/playlists/$playlistId/followers").toString())
             Unit
         })
     }
