@@ -4,7 +4,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Supplier<T>) {
+open class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Supplier<T>) {
     fun complete(): T {
         return try {
             supplier.get()
@@ -39,3 +39,9 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
 
     override fun toString() = complete().toString()
 }
+/*
+class SpotifyRestPagingAction<Z, T: PagingObject<Z>>(val api: SpotifyAPI) {
+    fun complete(): Z {
+    }
+    fun complete
+}*/
