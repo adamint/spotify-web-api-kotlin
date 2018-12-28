@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 @file:Suppress("UNCHECKED_CAST")
 
 package com.adamratzman.spotify.utils
@@ -8,17 +9,32 @@ import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.InvalidObjectException
 import java.net.URLEncoder
-import java.util.*
+import java.util.Base64
 import java.util.function.Supplier
 
 data class Cursor(val after: String)
 
-class CursorBasedPagingObject<T>(href: String, items: List<T>, limit: Int, next: String?,
-                                 val cursors: Cursor, total: Int, endpoint: SpotifyEndpoint)
+class CursorBasedPagingObject<T>(
+    href: String,
+    items: List<T>,
+    limit: Int,
+    next: String?,
+    val cursors: Cursor,
+    total: Int,
+    endpoint: SpotifyEndpoint
+)
     : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint)
 
-open class PagingObject<T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
-                           val previous: String? = null, val total: Int, var endpoint: SpotifyEndpoint) {
+open class PagingObject<T>(
+    val href: String,
+    val items: List<T>,
+    val limit: Int,
+    val next: String? = null,
+    val offset: Int = 0,
+    val previous: String? = null,
+    val total: Int,
+    var endpoint: SpotifyEndpoint
+) {
     lateinit var tClazz: Class<T>
     fun getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
             Supplier {
@@ -129,7 +145,7 @@ internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
 
 internal fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
-    val pagingObject= PagingObject(
+    val pagingObject = PagingObject(
             jsonObject.getString("href"),
             jsonObject.getJSONArray("items").map { it.toString().toObject(endpoint.api, tClazz) },
             jsonObject.getInt("limit"),
@@ -144,7 +160,7 @@ internal fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint
 
 internal fun <T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
-    val cursorBasedPagingObject= CursorBasedPagingObject(
+    val cursorBasedPagingObject = CursorBasedPagingObject(
             jsonObject.getString("href"),
             jsonObject.getJSONArray("items").map { it.toString().toObject(endpoint.api, tClazz) },
             jsonObject.getInt("limit"),

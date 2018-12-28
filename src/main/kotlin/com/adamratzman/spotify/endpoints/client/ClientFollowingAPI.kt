@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.FollowingAPI
@@ -5,7 +6,16 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.Artist
+import com.adamratzman.spotify.utils.ArtistURI
+import com.adamratzman.spotify.utils.CursorBasedPagingObject
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SpotifyPublicUser
+import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toCursorBasedPagingObject
+import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -158,7 +168,6 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(), "{\"public\": $followPublicly}")
             Unit
         })
-
     }
 
     /**

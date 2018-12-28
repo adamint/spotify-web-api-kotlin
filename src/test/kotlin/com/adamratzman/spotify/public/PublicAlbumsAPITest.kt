@@ -1,9 +1,14 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -39,6 +44,5 @@ class PublicAlbumsAPITest : Spek({
                 assertFalse(a.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3, Market.US).complete().items[0].isRelinked())
             }
         }
-
     }
 })

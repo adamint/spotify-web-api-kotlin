@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.main
 
 import com.adamratzman.spotify.utils.PagingObject
@@ -40,7 +41,6 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
 
     override fun toString() = complete().toString()
 }
-
 
 /**
  * Specialized implementation of RestActions just for [PagingObject]. This class gives you the same

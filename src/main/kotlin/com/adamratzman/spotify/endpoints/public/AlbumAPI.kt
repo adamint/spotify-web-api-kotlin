@@ -1,8 +1,21 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.Album
+import com.adamratzman.spotify.utils.AlbumURI
+import com.adamratzman.spotify.utils.AlbumsResponse
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.LinkedResult
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.SimpleTrack
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toLinkedResult
+import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -19,7 +32,10 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbum(album: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString()).toObject(api, Album::class.java)
+                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString()).toObject(
+                    api,
+                    Album::class.java
+                )
             }
         })
     }
@@ -31,8 +47,10 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAlbums(vararg albums: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
-                    .with("market", market?.code).toString()).toObject(api, AlbumsResponse::class.java).albums
+            get(
+                EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
+                    .with("market", market?.code).toString()
+            ).toObject(api, AlbumsResponse::class.java).albums
         })
     }
 
@@ -45,10 +63,20 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the [albumId] is not found, or positioning of [limit] or [offset] is illegal.
      */
-    fun getAlbumTracks(album: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<SimpleTrack>> {
+    fun getAlbumTracks(
+        album: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<LinkedResult<SimpleTrack>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .toString()).toLinkedResult(api, SimpleTrack::class.java)
+            get(
+                EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
+                    "offset",
+                    offset
+                ).with("market", market?.code)
+                    .toString()
+            ).toLinkedResult(api, SimpleTrack::class.java)
         })
     }
 }

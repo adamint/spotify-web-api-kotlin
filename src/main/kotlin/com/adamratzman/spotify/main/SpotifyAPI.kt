@@ -1,7 +1,20 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.endpoints.client.*
-import com.adamratzman.spotify.endpoints.public.*
+import com.adamratzman.spotify.endpoints.client.ClientFollowingAPI
+import com.adamratzman.spotify.endpoints.client.ClientLibraryAPI
+import com.adamratzman.spotify.endpoints.client.ClientPersonalizationAPI
+import com.adamratzman.spotify.endpoints.client.ClientPlayerAPI
+import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
+import com.adamratzman.spotify.endpoints.client.ClientUserAPI
+import com.adamratzman.spotify.endpoints.public.AlbumAPI
+import com.adamratzman.spotify.endpoints.public.ArtistsAPI
+import com.adamratzman.spotify.endpoints.public.BrowseAPI
+import com.adamratzman.spotify.endpoints.public.FollowingAPI
+import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
+import com.adamratzman.spotify.endpoints.public.SearchAPI
+import com.adamratzman.spotify.endpoints.public.TracksAPI
+import com.adamratzman.spotify.endpoints.public.UserAPI
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
@@ -50,8 +63,8 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
         }
     }.buildCredentialed()
 
-    fun buildClient(automaticRefresh: Boolean=false) = spotifyApi {
-        credentials{
+    fun buildClient(automaticRefresh: Boolean = false) = spotifyApi {
+        credentials {
             clientId = this@SpotifyApiBuilderJava.clientId
             clientSecret = this@SpotifyApiBuilderJava.clientSecret
             redirectUri = this@SpotifyApiBuilderJava.redirectUri
@@ -70,8 +83,8 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
  * @property redirectUri nullable redirect uri (use if you're doing client authentication
  */
 class SpotifyCredentialsBuilder {
-    var clientId: String?=null
-    var clientSecret: String?=null
+    var clientId: String? = null
+    var clientSecret: String? = null
     var redirectUri: String? = null
 
     fun build() =
@@ -81,8 +94,11 @@ class SpotifyCredentialsBuilder {
 
 data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, val redirectUri: String?)
 
-class SpotifyUserAuthorizationBuilder(var authorizationCode: String? = null,
-                                      var tokenString: String? = null, var token: Token? = null)
+class SpotifyUserAuthorizationBuilder(
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null
+)
 
 class SpotifyApiBuilder {
     var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)

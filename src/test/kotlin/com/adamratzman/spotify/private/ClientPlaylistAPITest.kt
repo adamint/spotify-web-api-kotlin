@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
@@ -29,8 +30,8 @@ class ClientPlaylistAPITest : Spek({
             var updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!
             val fullPlaylist = updatedPlaylist.toFullPlaylist().complete()!!
 
-            assertTrue(updatedPlaylist.collaborative && updatedPlaylist.public == false
-                    && updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2")
+            assertTrue(updatedPlaylist.collaborative && updatedPlaylist.public == false &&
+                    updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2")
 
             assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images.isNotEmpty())
 

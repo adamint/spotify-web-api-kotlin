@@ -1,10 +1,14 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.Market
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -94,9 +98,7 @@ class BrowseAPITest : Spek({
                 assertTrue(b.getRecommendations(
                         maxAttributes = hashMapOf(TuneableTrackAttribute.ACOUSTICNESS to 0.9, TuneableTrackAttribute.DANCEABILITY to 0.9),
                         seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
-
             }
-
         }
     }
 })

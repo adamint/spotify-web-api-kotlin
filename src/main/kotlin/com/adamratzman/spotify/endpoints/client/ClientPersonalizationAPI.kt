@@ -1,8 +1,14 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.Artist
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.Track
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -52,5 +58,4 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Track::class.java)
         })
     }
-
 }

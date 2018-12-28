@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.api
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.lang.Exception
 
 class UtilityTests : Spek({
     describe("Utility tests") {
@@ -23,7 +23,6 @@ class UtilityTests : Spek({
                             clientId = System.getProperty("clientId")
                         }
                     }.buildCredentialed()
-
                 }
                 assertThrows<IllegalArgumentException> {
                     spotifyApi { }.buildClient()

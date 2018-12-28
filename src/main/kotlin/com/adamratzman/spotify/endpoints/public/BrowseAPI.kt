@@ -1,13 +1,32 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.Album
+import com.adamratzman.spotify.utils.ArtistURI
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.ErrorObject
+import com.adamratzman.spotify.utils.FeaturedPlaylists
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.RecommendationResponse
+import com.adamratzman.spotify.utils.RecommendationSeed
+import com.adamratzman.spotify.utils.SimplePlaylist
+import com.adamratzman.spotify.utils.SimpleTrack
+import com.adamratzman.spotify.utils.SpotifyCategory
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.util.*
+import java.util.Date
+import java.util.HashMap
 import java.util.function.Supplier
 
 /**
@@ -157,10 +176,16 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any filter is applied illegally
      */
-    fun getRecommendations(seedArtists: List<String>? = null, seedGenres: List<String>? = null, seedTracks: List<String>? = null, limit: Int? = null,
-                           market: Market? = null, targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
-                           minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(), maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf())
-            : SpotifyRestAction<RecommendationResponse> {
+    fun getRecommendations(
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = null,
+        market: Market? = null,
+        targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
+        minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
+        maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf()
+    ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
             throw BadRequestException(ErrorObject(400, "At least one seed (genre, artist, track) must be provided."))
         }

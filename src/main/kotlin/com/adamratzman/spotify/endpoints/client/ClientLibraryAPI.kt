@@ -1,9 +1,20 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.AlbumURI
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.SavedAlbum
+import com.adamratzman.spotify.utils.SavedTrack
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -15,10 +26,16 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return Paging Object of [SavedTrack] ordered by position in library
      */
-    fun getSavedTracks(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestPagingAction<SavedTrack, PagingObject<SavedTrack>> {
+    fun getSavedTracks(
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestPagingAction<SavedTrack, PagingObject<SavedTrack>> {
         return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .toString()).toPagingObject(endpoint = this, tClazz = SavedTrack::class.java)
+            get(
+                EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .toString()
+            ).toPagingObject(endpoint = this, tClazz = SavedTrack::class.java)
         })
     }
 
@@ -27,10 +44,16 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
-    fun getSavedAlbums(limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestPagingAction<SavedAlbum, PagingObject<SavedAlbum>> {
+    fun getSavedAlbums(
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestPagingAction<SavedAlbum, PagingObject<SavedAlbum>> {
         return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .toString()).toPagingObject(endpoint = this, tClazz = SavedAlbum::class.java)
+            get(
+                EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    .toString()
+            ).toPagingObject(endpoint = this, tClazz = SavedAlbum::class.java)
         })
     }
 
@@ -52,8 +75,10 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
-                    .toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            get(
+                EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
+                    .toString()
+            ).toObject(api, mutableListOf<Boolean>().javaClass).toList()
         })
     }
 

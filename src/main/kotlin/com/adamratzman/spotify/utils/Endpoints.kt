@@ -1,6 +1,11 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
-import com.adamratzman.spotify.main.*
+import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.base
 import com.google.gson.JsonParseException
 import org.json.JSONObject
 import org.jsoup.Connection
@@ -24,8 +29,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         return execute(url, body, Connection.Method.DELETE, data = data, contentType = contentType)
     }
 
-    private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET,
-                        retry202: Boolean = true, contentType: String? = null, data: List<Pair<String, String>>? = null): String {
+    private fun execute(
+        url: String,
+        body: String? = null,
+        method: Connection.Method = Connection.Method.GET,
+        retry202: Boolean = true,
+        contentType: String? = null,
+        data: List<Pair<String, String>>? = null
+    ): String {
         if (api !is SpotifyClientAPI && System.currentTimeMillis() >= api.expireTime) {
             api.refreshClient()
             api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000

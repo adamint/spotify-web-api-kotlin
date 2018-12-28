@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
 enum class Market(val country: String) {
@@ -206,5 +207,5 @@ enum class Market(val country: String) {
     ZM("Zambia"),
     ZW("Zimbabwe");
 
-    val code = name;
+    val code = name
 }
