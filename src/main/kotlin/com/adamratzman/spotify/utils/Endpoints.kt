@@ -4,6 +4,7 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.base
+import com.google.gson.JsonParseException
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -45,7 +46,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         }
         connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
         val document = connection.method(method).ignoreHttpErrors(true).execute()
-        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) throw BadRequestException(api.gson.fromJson(document.body(), ErrorResponse::class.java).error)
+        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) {
+            val message = try {
+                api.gson.fromJson(document.body(), ErrorResponse::class.java).error
+            } catch (e: JsonParseException) {
+                ErrorObject(400, "malformed request (likely spaces)")
+            }
+            throw BadRequestException(message)
+        }
         else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
         return document.body()
     }

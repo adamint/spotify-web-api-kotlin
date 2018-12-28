@@ -81,7 +81,7 @@ data class Album(val album_type: String, val artists: List<SimpleArtist>, val av
 data class SimplePlaylist(val collaborative: Boolean, val external_urls: HashMap<String, String>, val href: String, val id: String,
                           val images: List<SpotifyImage>, val name: String, val owner: SpotifyPublicUser, val public: Boolean?,
                           val snapshot_id: String, val tracks: PlaylistTrackInfo, val type: String, val uri: String) : Linkable() {
-    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(owner.id, id, market)
+    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
 }
 
 /**

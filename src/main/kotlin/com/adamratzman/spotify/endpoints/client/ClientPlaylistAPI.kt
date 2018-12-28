@@ -59,11 +59,11 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-    fun addTracksToPlaylist(playlistId: String, vararg ids: String, position: Int? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+    fun addTracksToPlaylist(playlistId: String, vararg ids: String, position: Int? = null): SpotifyRestAction<Unit> {
         val json = JSONObject().put("uris", ids.map { "spotify:track:${it.encode()}" })
         if (position != null) json.put("position", position)
         return toAction(Supplier {
-            post(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
+            post(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
             Unit
         })
     }
@@ -81,7 +81,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
     fun changePlaylistDescription(playlistId: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
-                                  description: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+                                  description: String? = null): SpotifyRestAction<Unit> {
         val json = JSONObject()
         if (name != null) json.put("name", name)
         if (public != null) json.put("public", public)
@@ -89,7 +89,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         if (description != null) json.put("description", description)
         if (json.length() == 0) throw IllegalArgumentException("At least one option must not be null")
         return toAction(Supplier {
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}").toString(), json.toString())
+            put(EndpointBuilder("/playlists/${playlistId.encode()}").toString(), json.toString())
             Unit
         })
     }
@@ -133,9 +133,9 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @param id playlist id
      * @param ownerId the owner of this playlist. Ignore if it's the authenticated user
      */
-    fun deletePlaylist(id: String, ownerId: String? = null): SpotifyRestAction<Unit> {
+    fun deletePlaylist(id: String): SpotifyRestAction<Unit> {
         api as SpotifyClientAPI
-        return api.following.unfollowPlaylist(ownerId ?: api.userId, id)
+        return api.following.unfollowPlaylist(id)
     }
 
     /**
@@ -157,14 +157,14 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
     fun reorderTracks(playlistId: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int,
-                      snapshotId: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Snapshot> {
+                      snapshotId: String? = null): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("range_start", reorderRangeStart)
             json.put("insert_before", insertionPoint)
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
+            put(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(), json.toString())
                     .toObject<Snapshot>(api)
         })
     }
@@ -179,11 +179,11 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun setPlaylistTracks(playlistId: String, vararg trackIds: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+    fun setPlaylistTracks(playlistId: String, vararg trackIds: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("uris", trackIds.map { "spotify:track:${it.encode()}" })
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").toString(),
+            put(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").toString(),
                     json.toString())
             Unit
         })
@@ -194,8 +194,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @param userId The user’s Spotify user ID.
      * @param playlistId The Spotify ID for the playlist.
      */
-    fun removeAllPlaylistTracks(playlistId: String, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
-        return setPlaylistTracks(playlistId, userId = userId)
+    fun removeAllPlaylistTracks(playlistId: String): SpotifyRestAction<Unit> {
+        return setPlaylistTracks(playlistId)
     }
 
     /**
@@ -216,7 +216,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      */
     fun uploadPlaylistCover(playlistId: String, imagePath: String? = null,
                             imageFile: File? = null, image: BufferedImage? = null, imageData: String? = null,
-                            imageUrl: String? = null, userId: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Unit> {
+                            imageUrl: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val data = imageData ?: when {
                 image != null -> encode(image)
@@ -225,7 +225,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
                 imagePath != null -> encode(ImageIO.read(URL("file:///$imagePath")))
                 else -> throw IllegalArgumentException("No cover image was specified")
             }
-            put(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/images").toString(),
+            put(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString(),
                     data, contentType = "image/jpeg")
             Unit
         })

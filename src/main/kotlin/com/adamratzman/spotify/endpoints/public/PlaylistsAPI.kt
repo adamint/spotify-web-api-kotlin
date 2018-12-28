@@ -37,10 +37,10 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun getPlaylist(userId: String, playlistId: String, market: Market? = null): SpotifyRestAction<Playlist?> {
+    fun getPlaylist(playlistId: String, market: Market? = null): SpotifyRestAction<Playlist?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}")
+                get(EndpointBuilder("/playlists/${playlistId.encode()}")
                         .with("market", market?.code).toString()).toObject<Playlist>(api)
             }
         })
@@ -57,9 +57,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistTracks(userId: String, playlistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
+    fun getPlaylistTracks(playlistId: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/tracks").with("limit", limit)
+            get(EndpointBuilder("/playlists/${playlistId.encode()}/tracks").with("limit", limit)
                     .with("offset", offset).with("market", market?.code).toString()).toLinkedResult<PlaylistTrack>(api)
         })
 
@@ -72,9 +72,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistCovers(userId: String, playlistId: String): SpotifyRestAction<List<SpotifyImage>> {
+    fun getPlaylistCovers(playlistId: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/users/${userId.encode()}/playlists/${playlistId.encode()}/images").toString()).toObject<List<SpotifyImage>>(api)
+            get(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString()).toObject<List<SpotifyImage>>(api)
         })
     }
 }
