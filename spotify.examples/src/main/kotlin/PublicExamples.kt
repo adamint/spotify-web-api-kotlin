@@ -10,8 +10,7 @@ fun main(args:Array<String>){
         }
     }.buildCredentialed()
 
-    //api.search.searchTrack("High Hopes", 4, market = Market.US).queue { ->
-        //items.
-
-    //}
+    api.search.searchTrack("High Hopes", 4, market = Market.US).queue { items ->
+        items.
+    }
 }

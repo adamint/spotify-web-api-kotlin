@@ -42,6 +42,11 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
 }
 
 
+/**
+ * Specialized implementation of RestActions just for [PagingObject]. This class gives you the same
+ * functionality of [SpotifyRestAction], but in addition, you have the ability to retrieve all linked
+ * items or paging objects using [getAllItems] or [getAllPagingObjects], respectively
+ */
 class SpotifyRestPagingAction<Z, T : PagingObject<Z>>(val api: SpotifyAPI, val supplier: Supplier<T>) {
     private val restAction = SpotifyRestAction(api, supplier)
 
