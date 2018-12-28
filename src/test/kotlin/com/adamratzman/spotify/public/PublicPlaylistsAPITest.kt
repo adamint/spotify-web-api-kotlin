@@ -28,7 +28,7 @@ class PublicPlaylistsAPITest : Spek({
         }
         describe("get playlist tracks") {
             it("valid playlist") {
-                assertTrue(p.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj", offset = 1).complete().items.isNotEmpty())
+                assertTrue(p.getPlaylistTracks("37i9dQZF1DXcBWIGoYBM5M", offset = 1).complete().items.isNotEmpty())
             }
             it("invalid playlist") {
                 assertThrows<BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
@@ -36,7 +36,7 @@ class PublicPlaylistsAPITest : Spek({
         }
         describe("get playlist cover") {
             it("valid playlist") {
-                assertTrue(p.getPlaylistCovers("78eWnYKwDksmCHAjOUNPEj").complete().isNotEmpty())
+                assertTrue(p.getPlaylistCovers("37i9dQZF1DXcBWIGoYBM5M").complete().isNotEmpty())
             }
             it("invalid playlist") {
                 assertThrows<BadRequestException> { p.getPlaylistCovers("adskjfjkasdf").complete() }

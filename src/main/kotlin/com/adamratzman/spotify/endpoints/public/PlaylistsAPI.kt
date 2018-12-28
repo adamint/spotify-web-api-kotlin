@@ -74,6 +74,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getPlaylistCovers(playlistId: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
+            println(get(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString()))
             get(EndpointBuilder("/playlists/${playlistId.encode()}/images").toString()).toObject<List<SpotifyImage>>(api)
         })
     }
