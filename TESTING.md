@@ -8,12 +8,12 @@ To run **only** public endpoint tests, run
 
 To run **all** tests, you need a valid Spotify application, redirect uri, and token string. use:
 
-An example: `gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
+`gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
 
 Some tests may fail if you do not allow access to all required scopes. To mitigate this, you can individually grant 
 each scope or use the following code snippet to print out the Spotify token string (given a generated authorization code)
 
-**Generate authorization URL**
+**How to generate an authorization URL**
 ```kotlin
 import com.adamratzman.spotify.main.SpotifyScope
 import com.adamratzman.spotify.main.spotifyApi
@@ -28,7 +28,7 @@ spotifyApi {
 
 ```
 
-**Get Spotify token**
+**How to get a Spotify token**
 ```kotlin
 import com.adamratzman.spotify.main.spotifyApi
 
