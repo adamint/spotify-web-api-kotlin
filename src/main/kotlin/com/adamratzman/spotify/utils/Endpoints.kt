@@ -1,8 +1,12 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.main.base
+import com.google.gson.JsonParseException
 import org.json.JSONObject
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -25,8 +29,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         return execute(url, body, Connection.Method.DELETE, data = data, contentType = contentType)
     }
 
-    private fun execute(url: String, body: String? = null, method: Connection.Method = Connection.Method.GET,
-                        retry202: Boolean = true, contentType: String? = null, data: List<Pair<String, String>>? = null): String {
+    private fun execute(
+        url: String,
+        body: String? = null,
+        method: Connection.Method = Connection.Method.GET,
+        retry202: Boolean = true,
+        contentType: String? = null,
+        data: List<Pair<String, String>>? = null
+    ): String {
         if (api !is SpotifyClientAPI && System.currentTimeMillis() >= api.expireTime) {
             api.refreshClient()
             api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
@@ -44,20 +54,23 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         }
         connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
         val document = connection.method(method).ignoreHttpErrors(true).execute()
-        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) throw BadRequestException(api.gson.fromJson(document.body(), ErrorResponse::class.java).error)
-        else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
+        if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) {
+            val message = try {
+                api.gson.fromJson(document.body(), ErrorResponse::class.java).error
+            } catch (e: JsonParseException) {
+                ErrorObject(400, "malformed request (likely spaces)")
+            }
+            throw BadRequestException(message)
+        } else if (document.statusCode() == 202 && retry202) return execute(url, body, method, false)
         return document.body()
     }
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
+    fun <Z, T : PagingObject<Z>> toPagingObjectAction(supplier: Supplier<T>) = SpotifyRestPagingAction(api, supplier)
 }
 
-internal class EndpointBuilder(val path: String) {
-    val builder = StringBuilder(base)
-
-    init {
-        builder.append(path)
-    }
+internal class EndpointBuilder(private val path: String) {
+    private val builder = StringBuilder(base + path)
 
     fun with(key: String, value: Any?): EndpointBuilder {
         if (value != null && (value !is String || value.isNotEmpty())) {
@@ -68,5 +81,5 @@ internal class EndpointBuilder(val path: String) {
         return this
     }
 
-    fun build() = builder.toString()
+    override fun toString() = builder.toString()
 }
