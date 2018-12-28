@@ -150,7 +150,7 @@ class SpotifyApiBuilder {
                         .data("code", authorizationCode)
                         .data("redirect_uri", redirectUri)
                         .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                        .ignoreContentType(true).post().body().text().toObject(Gson()), automaticRefresh, redirectUri)
+                        .ignoreContentType(true).post().body().text().toObject(Gson(), Token::class.java), automaticRefresh, redirectUri)
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }

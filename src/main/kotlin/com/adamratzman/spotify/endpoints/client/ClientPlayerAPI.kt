@@ -2,6 +2,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.*
 import org.json.JSONObject
 import java.util.function.Supplier
@@ -13,26 +14,26 @@ import java.util.function.Supplier
 class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<Device>("devices", api)
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject("devices", api, Device::class.java)
         })
     }
 
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingContext? = get(EndpointBuilder("/me/player").toString()).toObject<CurrentlyPlayingContext>(api)
+            val obj: CurrentlyPlayingContext? = get(EndpointBuilder("/me/player").toString()).toObject(api, CurrentlyPlayingContext::class.java)
             if (obj?.timestamp == null) null else obj
         })
     }
 
-    fun getRecentlyPlayed(): SpotifyRestAction<CursorBasedPagingObject<PlayHistory>> {
-        return toAction(Supplier {
-            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject<PlayHistory>(endpoint = this)
+    fun getRecentlyPlayed(): SpotifyRestPagingAction<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
+        return toPagingObjectAction(Supplier {
+            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject(endpoint = this, tClazz = PlayHistory::class.java)
         })
     }
 
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").toString()).toObject<CurrentlyPlayingObject>(api)
+            val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").toString()).toObject(api, CurrentlyPlayingObject::class.java)
             if (obj?.timestamp == null) null else obj
         })
     }
@@ -116,8 +117,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 if (offsetNum != null) body.put("offset", JSONObject().put("position", offsetNum))
                 else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", "spotify:track:$offsetTrackId"))
                 put(url, body.toString())
-            }
-            else put(url)
+            } else put(url)
             Unit
         })
     }
@@ -139,7 +139,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun transferPlayback(vararg deviceId: String, play: Boolean = true): SpotifyRestAction<Unit> {
         if (deviceId.size > 1) throw IllegalArgumentException("Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request")
         return toAction(Supplier {
-            put(EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") {it.encode()})
+            put(EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") { it.encode() })
                     .with("play", play).toString())
             Unit
         })

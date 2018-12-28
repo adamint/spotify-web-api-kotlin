@@ -14,7 +14,7 @@ class ClientPlaylistAPITest : Spek({
                 ?.complete()
         it("get playlists for user, then see if we can create/delete playlists") {
             createdPlaylist ?: return@it
-            assertTrue(cp.getClientPlaylists().complete().total - 1 == playlistsBefore?.total)
+            assertTrue(cp.getClientPlaylists().complete().size - 1 == playlistsBefore?.size)
         }
         it("edit playlists") {
             createdPlaylist ?: return@it
