@@ -49,7 +49,6 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a playlist owned by a Spotify user.
      *
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
@@ -83,7 +82,6 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get the current image associated with a specific playlist.
-     * @param user The user’s Spotify user ID.
      * @param playlist The Spotify ID for the playlist.
      *
      * @throws BadRequestException if the playlist cannot be found
