@@ -11,43 +11,19 @@ import java.net.URLEncoder
 import java.util.*
 import java.util.function.Supplier
 
-data class CursorBasedPagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String?, val cursors: Cursor,
-                                          val total: Int, val endpoint: SpotifyEndpoint) {
-    inline fun <reified T> getNext(): SpotifyRestAction<CursorBasedPagingObject<T>?> = endpoint.toAction(
-            Supplier {
-                catch {
-                    next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
-                }
-            })
-
-    inline fun <reified T> getAll(): SpotifyRestAction<List<CursorBasedPagingObject<T>>> {
-       return  endpoint.toAction(Supplier {
-           this as CursorBasedPagingObject<T>
-           val pagingObjects = mutableListOf<CursorBasedPagingObject<T>>(this)
-           var next = getNext<T>().complete()
-           while (next != null) {
-               pagingObjects.add(next)
-               next = getNext<T>().complete()
-           }
-           pagingObjects.toList()
-       })
-    }
-
-    inline fun <reified T> getAllItems(): SpotifyRestAction<List<T>> {
-        return endpoint.toAction(Supplier {
-            getAll<T>().complete().map { it.items }.flatten()
-        })
-    }
-}
-
 data class Cursor(val after: String)
 
-data class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
+class CursorBasedPagingObject<out T>(href: String, items: List<T>, limit: Int, next: String?,
+                                     val cursors: Cursor, total: Int, endpoint: SpotifyEndpoint)
+    : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint)
+
+open class PagingObject<out T>(val href: String, val items: List<T>, val limit: Int, val next: String? = null, val offset: Int = 0,
                                val previous: String? = null, val total: Int, var endpoint: SpotifyEndpoint) {
     inline fun <reified T> getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
             Supplier {
                 catch {
-                    next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
+                    if (this is CursorBasedPagingObject) next?.let { endpoint.get(it).toCursorBasedPagingObject<T>(endpoint = endpoint) }
+                    else next?.let { endpoint.get(it).toPagingObject<T>(endpoint = endpoint) }
                 }
             })
 
@@ -62,29 +38,40 @@ data class PagingObject<out T>(val href: String, val items: List<T>, val limit: 
         this as PagingObject<T>
         return endpoint.toAction(
                 Supplier {
-                    val pagingObjects = mutableListOf<PagingObject<T>>()
-                    var prev = previous?.let { getPrevious<T>().complete() }
-                    while (prev != null) {
-                        pagingObjects.add(prev)
-                        prev = prev.previous?.let { prev?.getPrevious<T>()?.complete() }
-                    }
-                    pagingObjects.reverse() // closer we are to current, the further we are from the start
+                    if (this is CursorBasedPagingObject) {
+                        this as CursorBasedPagingObject<T>
+                        val pagingObjects = mutableListOf<CursorBasedPagingObject<T>>(this)
+                        var next = getNext<T>().complete()
+                        while (next != null) {
+                            pagingObjects.add(next as CursorBasedPagingObject<T>)
+                            next = getNext<T>().complete()
+                        }
+                        pagingObjects.toList()
+                    } else {
+                        val pagingObjects = mutableListOf<PagingObject<T>>()
+                        var prev = previous?.let { getPrevious<T>().complete() }
+                        while (prev != null) {
+                            pagingObjects.add(prev)
+                            prev = prev.previous?.let { prev?.getPrevious<T>()?.complete() }
+                        }
+                        pagingObjects.reverse() // closer we are to current, the further we are from the start
 
-                    pagingObjects.add(this)
+                        pagingObjects.add(this)
 
-                    var nxt = next?.let { getNext<T>().complete() }
-                    while (nxt != null) {
-                        pagingObjects.add(nxt)
-                        nxt = nxt.next?.let { nxt?.getNext<T>()?.complete() }
+                        var nxt = next?.let { getNext<T>().complete() }
+                        while (nxt != null) {
+                            pagingObjects.add(nxt)
+                            nxt = nxt.next?.let { nxt?.getNext<T>()?.complete() }
+                        }
+                        // we don't need to reverse here, as it's in order
+                        pagingObjects.toList()
                     }
-                    // we don't need to reverse here, as it's in order
-                    pagingObjects.toList()
                 })
     }
 
     inline fun <reified T> getAllItems(): SpotifyRestAction<List<T>> {
         return endpoint.toAction(Supplier {
-            getAll<T>().complete().asSequence().map { it as PagingObject<T> }.map { it.items }.toList().flatten()
+            getAll<T>().complete().asSequence().map { it.items }.toList().flatten()
         })
     }
 }

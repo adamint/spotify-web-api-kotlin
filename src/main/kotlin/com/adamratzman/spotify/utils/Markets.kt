@@ -206,5 +206,5 @@ enum class Market(val country: String) {
     ZM("Zambia"),
     ZW("Zimbabwe");
 
-    val code = name
+    val code = name;
 }
