@@ -111,7 +111,7 @@ internal fun String.byteEncode(): String {
 
 internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
 
-fun <T> Any.toObject(o: Any, tClazz: Class<T>): T {
+internal fun <T> Any.toObject(o: Any, tClazz: Class<T>): T {
     val obj = ((o as? SpotifyAPI)?.gson ?: (o as? Gson)
     ?: throw IllegalArgumentException("Parameter must be a SpotifyAPI or Gson instance"))
             .fromJson(this as String, tClazz)
@@ -122,14 +122,14 @@ fun <T> Any.toObject(o: Any, tClazz: Class<T>): T {
     return obj
 }
 
-fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
+internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
     this is FeaturedPlaylists -> this.playlists
     this is Album -> this.tracks
     this is Playlist -> this.tracks
     else -> null
 }.let { it?.endpoint = spotifyAPI.tracks; this }
 
-fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): PagingObject<T> {
+internal fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     val pagingObject= PagingObject(
             jsonObject.getString("href"),
@@ -144,7 +144,7 @@ fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint: Spotify
     return pagingObject
 }
 
-fun <T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): CursorBasedPagingObject<T> {
+internal fun <T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     val cursorBasedPagingObject= CursorBasedPagingObject(
             jsonObject.getString("href"),
@@ -158,18 +158,18 @@ fun <T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoi
     return cursorBasedPagingObject
 }
 
-fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): LinkedResult<T> {
+internal fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): LinkedResult<T> {
     val jsonObject = JSONObject(this)
     return LinkedResult(
             jsonObject.getString("href"),
             jsonObject.getJSONArray("items").map { it.toString().toObject(api, tClazz) })
 }
 
-fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): List<T> {
+internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): List<T> {
     return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject(api, tClazz) }
 }
 
-fun <T> catch(function: () -> T): T? {
+internal fun <T> catch(function: () -> T): T? {
     return try {
         function()
     } catch (e: BadRequestException) {
