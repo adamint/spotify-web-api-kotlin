@@ -1,9 +1,25 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.AlbumURI
+import com.adamratzman.spotify.utils.ArtistURI
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.CurrentlyPlayingContext
+import com.adamratzman.spotify.utils.CurrentlyPlayingObject
+import com.adamratzman.spotify.utils.CursorBasedPagingObject
+import com.adamratzman.spotify.utils.Device
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.PlayHistory
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toCursorBasedPagingObject
+import com.adamratzman.spotify.utils.toInnerObject
+import com.adamratzman.spotify.utils.toObject
 import org.json.JSONObject
 import java.util.function.Supplier
 
@@ -102,8 +118,15 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
-    fun startPlayback(album: String? = null, artist: String? = null, playlist: PlaylistURI? = null,
-                      offsetNum: Int? = null, offsetTrackId: String? = null, deviceId: String? = null, vararg tracksToPlay: String): SpotifyRestAction<Unit> {
+    fun startPlayback(
+        album: String? = null,
+        artist: String? = null,
+        playlist: PlaylistURI? = null,
+        offsetNum: Int? = null,
+        offsetTrackId: String? = null,
+        deviceId: String? = null,
+        vararg tracksToPlay: String
+    ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = JSONObject()

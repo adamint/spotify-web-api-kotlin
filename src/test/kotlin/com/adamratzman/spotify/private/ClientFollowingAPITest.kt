@@ -1,10 +1,13 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.main.SpotifyClientAPI
-import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.BadRequestException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

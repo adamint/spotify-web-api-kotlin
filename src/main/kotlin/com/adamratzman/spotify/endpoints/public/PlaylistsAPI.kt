@@ -1,9 +1,26 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.LinkedResult
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.Playlist
+import com.adamratzman.spotify.utils.PlaylistTrack
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SimplePlaylist
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.SpotifyImage
+import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toLinkedResult
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -62,7 +79,6 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
                     .with("offset", offset).with("market", market?.code).toString()).toLinkedResult(api, PlaylistTrack::class.java)
         })
-
     }
 
     /**

@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientPersonalizationAPITest:Spek({
+class ClientPersonalizationAPITest : Spek({
     describe("personalization endpoints") {
         it("top artists") {
             if (api !is SpotifyClientAPI) return@it

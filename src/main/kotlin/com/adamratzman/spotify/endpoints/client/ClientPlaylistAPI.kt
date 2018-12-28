@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
@@ -5,7 +6,18 @@ import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.ErrorObject
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.Playlist
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SimplePlaylist
+import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import org.json.JSONObject
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -15,7 +27,6 @@ import java.util.function.Supplier
 import javax.imageio.IIOException
 import javax.imageio.ImageIO
 import javax.xml.bind.DatatypeConverter
-
 
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
@@ -36,7 +47,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @return The created [Playlist] object with no tracks
      */
-    fun createPlaylist(name: String, description: String? = null, public: Boolean? = null, collaborative: Boolean? = null, user: String = (api as SpotifyClientAPI).userId): SpotifyRestAction<Playlist> {
+    fun createPlaylist(
+        name: String,
+        description: String? = null,
+        public: Boolean? = null,
+        collaborative: Boolean? = null,
+        user: String = (api as SpotifyClientAPI).userId
+    ): SpotifyRestAction<Playlist> {
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction(Supplier {
             val json = JSONObject()
@@ -44,7 +61,10 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (description != null) json.put("description", description)
             if (public != null) json.put("public", public)
             if (collaborative != null) json.put("collaborative", collaborative)
-            post(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(), json.toString()).toObject(api, Playlist::class.java)
+            post(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(), json.toString()).toObject(
+                api,
+                Playlist::class.java
+            )
         })
     }
 
@@ -81,8 +101,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
-    fun changePlaylistDescription(playlist: String, name: String? = null, public: Boolean? = null, collaborative: Boolean? = null,
-                                  description: String? = null): SpotifyRestAction<Unit> {
+    fun changePlaylistDescription(
+        playlist: String,
+        name: String? = null,
+        public: Boolean? = null,
+        collaborative: Boolean? = null,
+        description: String? = null
+    ): SpotifyRestAction<Unit> {
         val json = JSONObject()
         if (name != null) json.put("name", name)
         if (public != null) json.put("public", public)
@@ -103,12 +128,15 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the filters provided are illegal
      */
-    fun getClientPlaylists(limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
+    fun getClientPlaylists(
+        limit: Int? = null,
+        offset: Int? = null
+    ): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         if (limit != null && limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                    .toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
+                .toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
         })
     }
 
@@ -156,8 +184,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    fun reorderTracks(playlist: String, reorderRangeStart: Int, reorderRangeLength: Int? = null, insertionPoint: Int,
-                      snapshotId: String? = null): SpotifyRestAction<Snapshot> {
+    fun reorderTracks(
+        playlist: String,
+        reorderRangeStart: Int,
+        reorderRangeLength: Int? = null,
+        insertionPoint: Int,
+        snapshotId: String? = null
+    ): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
             val json = JSONObject()
             json.put("range_start", reorderRangeStart)
@@ -165,7 +198,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
             put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(), json.toString())
-                    .toObject(api, Snapshot::class.java)
+                .toObject(api, Snapshot::class.java)
         })
     }
 
@@ -213,9 +246,14 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @throws IIOException if the image is not found
      * @throws BadRequestException if invalid data is provided
      */
-    fun uploadPlaylistCover(playlist: String, imagePath: String? = null,
-                            imageFile: File? = null, image: BufferedImage? = null, imageData: String? = null,
-                            imageUrl: String? = null): SpotifyRestAction<Unit> {
+    fun uploadPlaylistCover(
+        playlist: String,
+        imagePath: String? = null,
+        imageFile: File? = null,
+        image: BufferedImage? = null,
+        imageData: String? = null,
+        imageUrl: String? = null
+    ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val data = imageData ?: when {
                 image != null -> encode(image)
@@ -224,8 +262,10 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
                 imagePath != null -> encode(ImageIO.read(URL("file:///$imagePath")))
                 else -> throw IllegalArgumentException("No cover image was specified")
             }
-            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString(),
-                    data, contentType = "image/jpeg")
+            put(
+                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString(),
+                data, contentType = "image/jpeg"
+            )
             Unit
         })
     }

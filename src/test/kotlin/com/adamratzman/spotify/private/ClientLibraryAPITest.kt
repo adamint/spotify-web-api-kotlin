@@ -1,11 +1,10 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.LibraryType
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.SavedAlbum
-import com.adamratzman.spotify.utils.SavedTrack
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
@@ -62,14 +61,13 @@ class ClientLibraryAPITest : Spek({
         }
 
         it("invalid inputs") {
-            assertThrows<BadRequestException> { api.library.remove(LibraryType.TRACK, "ajksdfkjasjfd").complete()}
-            assertThrows<BadRequestException> { api.library.contains(LibraryType.TRACK, "adsfjk").complete()}
-            assertThrows<BadRequestException> { api.library.add(LibraryType.TRACK, "wer").complete()}
+            assertThrows<BadRequestException> { api.library.remove(LibraryType.TRACK, "ajksdfkjasjfd").complete() }
+            assertThrows<BadRequestException> { api.library.contains(LibraryType.TRACK, "adsfjk").complete() }
+            assertThrows<BadRequestException> { api.library.add(LibraryType.TRACK, "wer").complete() }
 
-
-            assertThrows<BadRequestException> { api.library.remove(LibraryType.ALBUM, "elkars").complete()}
-            assertThrows<BadRequestException> { api.library.contains(LibraryType.ALBUM, "").complete()}
-            assertThrows<BadRequestException> { api.library.add(LibraryType.ALBUM, "oieriwkjrjkawer").complete()}
+            assertThrows<BadRequestException> { api.library.remove(LibraryType.ALBUM, "elkars").complete() }
+            assertThrows<BadRequestException> { api.library.contains(LibraryType.ALBUM, "").complete() }
+            assertThrows<BadRequestException> { api.library.add(LibraryType.ALBUM, "oieriwkjrjkawer").complete() }
         }
     }
 })

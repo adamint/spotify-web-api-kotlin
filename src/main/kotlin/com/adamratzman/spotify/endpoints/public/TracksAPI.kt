@@ -1,8 +1,21 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.AudioAnalysis
+import com.adamratzman.spotify.utils.AudioFeatures
+import com.adamratzman.spotify.utils.AudioFeaturesResponse
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.Track
+import com.adamratzman.spotify.utils.TrackList
+import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -77,5 +90,4 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     .toObject(api, AudioFeaturesResponse::class.java).audio_features
         })
     }
-
 }
