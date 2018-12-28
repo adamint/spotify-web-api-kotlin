@@ -34,140 +34,77 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Check if a track is already saved in the current Spotify user’s ‘Your Music’ library.
+     * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
      * @throws BadRequestException if [id] is not found
      */
-    fun doesLibraryContainTrack(id: String): SpotifyRestAction<Boolean> {
+    fun doesLibraryContain(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
-            doesLibraryContainTracks(id).complete()[0]
+            doesLibraryContain(type, ids = *arrayOf(id)).complete()[0]
         })
     }
 
     /**
-     * Check if a track is already saved in the current Spotify user’s ‘Your Music’ library.
+     * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * @throws BadRequestException if a provided id is not found
+     * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun doesLibraryContainTracks(vararg ids: String): SpotifyRestAction<List<Boolean>> {
+    fun doesLibraryContain(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/tracks/contains").with("ids", ids.joinToString(",") { it.encode() })
+            get(EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { it.encode() })
                     .toString()).toObject<List<Boolean>>(api)
         })
     }
 
     /**
-     * Check if an album is already saved in the current Spotify user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if id is not found
-     */
-    fun doesLibraryContainAlbum(id: String): SpotifyRestAction<Boolean> {
-        return toAction(Supplier {
-            doesLibraryContainAlbums(id).complete()[0]
-        })
-    }
-
-    /**
-     * Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if any of the provided ids is invalid
-     */
-    fun doesLibraryContainAlbums(vararg ids: String): SpotifyRestAction<List<Boolean>> {
-        return toAction(Supplier {
-            get(EndpointBuilder("/me/albums/contains").with("ids", ids.joinToString(",") { it.encode() })
-                    .toString()).toObject<List<Boolean>>(api)
-        })
-    }
-
-    /**
-     * Save a track to the current user’s ‘Your Music’ library.
+     * Save one of [LibraryType] to the current user’s ‘Your Music’ library.
      *
      * @throws BadRequestException if the id is invalid
      */
-    fun addTrackToLibrary(id: String): SpotifyRestAction<Unit> {
+    fun addToLibrary(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            addTracksToLibrary(id).complete()
+            addToLibrary(type, ids = *arrayOf(id)).complete()
         })
     }
 
     /**
-     * Save one or more tracks to the current user’s ‘Your Music’ library.
+     * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun addTracksToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
+    fun addToLibrary(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).toString())
+            put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
 
     /**
-     * Save an album to the current user’s ‘Your Music’ library.
+     * Remove one of [LibraryType] (track or album) from the current user’s ‘Your Music’ library.
      *
-     * @throws BadRequestException if the id is invalid
+     * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun addAlbumToLibrary(id: String): SpotifyRestAction<Unit> {
+    fun removeFromLibrary(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            addAlbumsToLibrary(id).complete()
+            removeFromLibrary(type, ids = *arrayOf(id)).complete()
         })
     }
 
     /**
-     * Save one or more albums to the current user’s ‘Your Music’ library.
+     * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun addAlbumsToLibrary(vararg ids: String): SpotifyRestAction<Unit> {
+    fun removeFromLibrary(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).toString())
+            delete(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { it.encode() }).toString())
             Unit
         })
     }
 
-    /**
-     * Remove a track from the current user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if the provided id is invalid
-     */
-    fun removeTrackFromLibrary(id: String): SpotifyRestAction<Unit> {
-        return toAction(Supplier {
-            removeTracksFromLibrary(id).complete()
-        })
-    }
+    enum class LibraryType(private val value: String) {
+        TRACK("tracks"), ALBUM("albums");
 
-    /**
-     * Remove one or more tracks from the current user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if any of the provided ids is invalid
-     */
-    fun removeTracksFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
-        return toAction(Supplier {
-            delete(EndpointBuilder("/me/tracks").with("ids", ids.joinToString(",") { it.encode() }).toString())
-            Unit
-        })
-    }
-
-    /**
-     * Remove an album from the current user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if any of the provided ids is invalid
-     */
-    fun removeAlbumFromLibrary(id: String): SpotifyRestAction<Unit> {
-        return toAction(Supplier {
-            removeAlbumsFromLibrary(id).complete()
-        })
-    }
-
-    /**
-     * Remove one or more albums from the current user’s ‘Your Music’ library.
-     *
-     * @throws BadRequestException if any of the provided ids is invalid
-     */
-    fun removeAlbumsFromLibrary(vararg ids: String): SpotifyRestAction<Unit> {
-        return toAction(Supplier {
-            delete(EndpointBuilder("/me/albums").with("ids", ids.joinToString(",") { it.encode() }).toString())
-            Unit
-        })
+        override fun toString() = value
     }
 }
