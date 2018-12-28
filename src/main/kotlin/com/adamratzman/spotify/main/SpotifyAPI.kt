@@ -101,8 +101,8 @@ class SpotifyUserAuthorizationBuilder(
 )
 
 class SpotifyApiBuilder {
-    var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
-    var clientAuthentication = SpotifyUserAuthorizationBuilder()
+    private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
+    private var clientAuthentication = SpotifyUserAuthorizationBuilder()
 
     fun credentials(block: SpotifyCredentialsBuilder.() -> Unit) {
         credentials = SpotifyCredentialsBuilder().apply(block).build()
