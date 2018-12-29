@@ -246,7 +246,7 @@ class SpotifyApiBuilder {
 abstract class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
-    val gson = GsonBuilder().setLenient().create()!!
+    internal val gson = GsonBuilder().setLenient().create()!!
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -262,11 +262,13 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     abstract fun refreshToken()
     abstract fun clearCache()
 
+    var useCache: Boolean = true
+
     init {
         executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
     }
 
-    fun clearCaches(vararg endpoints: SpotifyEndpoint) {
+    internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
     }
 
@@ -279,7 +281,8 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     }
 }
 
-class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) : SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) :
+    SpotifyAPI(clientId, clientSecret, token) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -306,7 +309,16 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
         expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
 
-    override fun clearCache() = clearCaches(search, albums, browse, artists, playlists, users, tracks, following)
+    override fun clearCache() = clearAllCaches(
+        search,
+        albums,
+        browse,
+        artists,
+        playlists,
+        users,
+        tracks,
+        following
+    )
 }
 
 class SpotifyClientAPI internal constructor(
@@ -374,7 +386,7 @@ class SpotifyClientAPI internal constructor(
         }
     }
 
-    override fun clearCache() = clearCaches(
+    override fun clearCache() = clearAllCaches(
         search,
         albums,
         browse,
