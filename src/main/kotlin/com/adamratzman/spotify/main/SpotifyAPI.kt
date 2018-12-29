@@ -263,11 +263,11 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     abstract fun clearCache()
 
     init {
-        clearCache()
+        executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
     }
 
-    fun clearCache(vararg endpoints: SpotifyEndpoint) {
-        executor.scheduleAtFixedRate({ endpoints.forEach { it.cache.clear() } }, 10, 10, TimeUnit.MINUTES)
+    fun clearCaches(vararg endpoints: SpotifyEndpoint) {
+        endpoints.forEach { it.cache.clear() }
     }
 
     fun useLogger(enable: Boolean) {
@@ -279,8 +279,7 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     }
 }
 
-class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) :
-    SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) : SpotifyAPI(clientId, clientSecret, token) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -307,7 +306,7 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
         expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
 
-    override fun clearCache() = clearCache(search, albums, browse, artists, playlists, users, tracks, following)
+    override fun clearCache() = clearCaches(search, albums, browse, artists, playlists, users, tracks, following)
 }
 
 class SpotifyClientAPI internal constructor(
@@ -354,7 +353,10 @@ class SpotifyClientAPI internal constructor(
         }
     }
 
-    fun cancelRefresh() = executor.shutdown()
+    /**
+     * This function will stop all automatic functions like refreshToken or clearCache
+     * */
+    fun cancelAutomatics() = executor.shutdown()
 
     override fun refreshToken() {
         val tempToken = gson.fromJson(
@@ -372,7 +374,7 @@ class SpotifyClientAPI internal constructor(
         }
     }
 
-    override fun clearCache() = clearCache(
+    override fun clearCache() = clearCaches(
         search,
         albums,
         browse,
