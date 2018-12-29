@@ -195,12 +195,7 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
 
     internal val logger = SpotifyLogger(true)
 
-    internal fun refreshClient() {
-        token = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "client_credentials")
-                .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                .ignoreContentType(true).post().body().text(), Token::class.java)
-    }
+    abstract fun refreshToken()
 
     fun useLogger(enable: Boolean) {
         logger.enabled = enable
@@ -220,6 +215,13 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
     override val users: UserAPI = UserAPI(this)
     override val tracks: TracksAPI = TracksAPI(this)
     override val following: FollowingAPI = FollowingAPI(this)
+
+    override fun refreshToken() {
+        token = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
+            .data("grant_type", "client_credentials")
+            .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
+            .ignoreContentType(true).post().body().text(), Token::class.java)
+    }
 }
 
 class SpotifyClientAPI internal constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false, var redirectUri: String) : SpotifyAPI(clientId, clientSecret, token) {
@@ -261,7 +263,7 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
 
     fun cancelRefresh() = executor.shutdown()
 
-    private fun refreshToken() {
+    override fun refreshToken() {
         val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
                 .data("grant_type", "client_credentials")
                 .data("refresh_token", token.refresh_token ?: "")
