@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyClientAPI
+import com.adamratzman.spotify.main.SpotifyAppAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.main.base
@@ -37,8 +37,8 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         contentType: String? = null,
         data: List<Pair<String, String>>? = null
     ): String {
-        if (api !is SpotifyClientAPI && System.currentTimeMillis() >= api.expireTime) {
-            api.refreshClient()
+        if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) {
+            api.refreshToken()
             api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
         }
         var connection = Jsoup.connect(url).ignoreContentType(true)
