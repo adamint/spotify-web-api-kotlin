@@ -18,7 +18,6 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
-import org.json.JSONArray
 import org.json.JSONObject
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
