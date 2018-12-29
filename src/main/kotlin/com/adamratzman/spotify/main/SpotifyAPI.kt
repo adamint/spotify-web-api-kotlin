@@ -15,6 +15,7 @@ import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.endpoints.public.SearchAPI
 import com.adamratzman.spotify.endpoints.public.TracksAPI
 import com.adamratzman.spotify.endpoints.public.UserAPI
+import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
@@ -244,7 +245,7 @@ class SpotifyApiBuilder {
 
 abstract class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
-    internal val executor = Executors.newScheduledThreadPool(1)
+    internal val executor = Executors.newScheduledThreadPool(2)
     val gson = GsonBuilder().setLenient().create()!!
 
     abstract val search: SearchAPI
@@ -259,6 +260,15 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     internal val logger = SpotifyLogger(true)
 
     abstract fun refreshToken()
+    abstract fun clearCache()
+
+    init {
+        clearCache()
+    }
+
+    fun clearCache(vararg endpoints: SpotifyEndpoint) {
+        executor.scheduleAtFixedRate({ endpoints.forEach { it.cache.clear() } }, 10, 10, TimeUnit.MINUTES)
+    }
 
     fun useLogger(enable: Boolean) {
         logger.enabled = enable
@@ -296,6 +306,8 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
             )
         expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
+
+    override fun clearCache() = clearCache(search, albums, browse, artists, playlists, users, tracks, following)
 }
 
 class SpotifyClientAPI internal constructor(
@@ -365,6 +377,20 @@ class SpotifyClientAPI internal constructor(
             logger.logInfo("Successfully refreshed the Spotify token")
         }
     }
+
+    override fun clearCache() = clearCache(
+        search,
+        albums,
+        browse,
+        artists,
+        playlists,
+        users,
+        tracks,
+        following,
+        personalization,
+        library,
+        player
+    )
 
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
