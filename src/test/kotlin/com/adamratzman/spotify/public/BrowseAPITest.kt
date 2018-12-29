@@ -18,6 +18,11 @@ class BrowseAPITest : Spek({
         val b = api.browse
         it("get genre seeds") {
             assertTrue(b.getAvailableGenreSeeds().complete().isNotEmpty())
+            println("genre seeds")
+            b.getAvailableGenreSeeds().complete()
+            b.getAvailableGenreSeeds().complete()
+            b.getAvailableGenreSeeds().complete()
+            b.getAvailableGenreSeeds().complete()
         }
 
         it("get category list") {

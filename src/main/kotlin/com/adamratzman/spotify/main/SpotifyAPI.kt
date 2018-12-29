@@ -294,6 +294,7 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
                     .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
                     .ignoreContentType(true).post().body().text(), Token::class.java
             )
+        expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
 }
 

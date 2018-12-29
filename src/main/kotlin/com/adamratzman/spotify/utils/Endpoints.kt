@@ -13,6 +13,8 @@ import org.jsoup.Jsoup
 import java.util.function.Supplier
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
+    private val cache = SpotifyCache()
+
     fun get(url: String): String {
         return execute(url)
     }
@@ -25,7 +27,12 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         return execute(url, body, Connection.Method.PUT, contentType = contentType)
     }
 
-    fun delete(url: String, body: String? = null, data: List<Pair<String, String>>? = null, contentType: String? = null): String {
+    fun delete(
+        url: String,
+        body: String? = null,
+        data: List<Pair<String, String>>? = null,
+        contentType: String? = null
+    ): String {
         return execute(url, body, Connection.Method.DELETE, data = data, contentType = contentType)
     }
 
@@ -37,10 +44,8 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         contentType: String? = null,
         data: List<Pair<String, String>>? = null
     ): String {
-        if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) {
-            api.refreshToken()
-            api.expireTime = System.currentTimeMillis() + api.token.expires_in * 1000
-        }
+        if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
+
         var connection = Jsoup.connect(url).ignoreContentType(true)
         data?.forEach { connection.data(it.first, it.second) }
         if (contentType != null) connection.header("Content-Type", contentType)
@@ -52,8 +57,36 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
                     connection.data(key, JSONObject(body).getJSONArray(key).toString())
                 } else connection.requestBody(body)
         }
+
+        val spotifyRequest = SpotifyRequest(url, method, body, data)
+        val requestOrder = cache.shouldRequest(spotifyRequest)
+        if (requestOrder == SpotifyCache.RequestOrder.NO) {
+            return cache.getData(spotifyRequest)
+        } else if (requestOrder == SpotifyCache.RequestOrder.YES_WITH_ETAG) {
+            connection = connection.header("If-None-Match", cache.getEtag(spotifyRequest))
+        }
+
         connection = connection.header("Authorization", "Bearer ${api.token.access_token}")
+
         val document = connection.method(method).ignoreHttpErrors(true).execute()
+
+        if (document.statusCode() == 304) {
+            if (requestOrder != SpotifyCache.RequestOrder.YES_WITH_ETAG) throw BadRequestException("304 status only allowed on Etag-able endpoints")
+            return cache.getData(spotifyRequest)
+        } else {
+            val cacheControlHeader = document.header("Cache-Control")
+            // this api is single-user and thus can ignore the public/private cache distinction
+            val (maxAge: Int, eTag: String?) = cache.cacheRegex
+                .find(cacheControlHeader)
+                ?.groupValues?.let {
+                (it.getOrNull(1)?.toIntOrNull()
+                    ?: throw BadRequestException("Unable to match cache max-age")) to it.getOrNull(3)
+            } ?: throw BadRequestException("Unable to match regex")
+
+            cache.cachedRequests[spotifyRequest] =
+                CacheResponse(System.currentTimeMillis() + 1000 * maxAge, eTag, document.body())
+        }
+
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) {
             val message = try {
                 api.gson.fromJson(document.body(), ErrorResponse::class.java).error
@@ -83,3 +116,35 @@ internal class EndpointBuilder(private val path: String) {
 
     override fun toString() = builder.toString()
 }
+
+internal class SpotifyCache {
+    internal val cachedRequests = hashMapOf<SpotifyRequest, CacheResponse>()
+    internal val cacheRegex = ".+,\\smax-age=(\\d+),?\\s?(ETag : \"(.+)\")?".toRegex()
+
+    internal fun shouldRequest(spotifyRequest: SpotifyRequest): RequestOrder {
+        return cachedRequests[spotifyRequest]?.let {
+            if (System.currentTimeMillis() <= it.expireBy) RequestOrder.NO
+            else {
+                if (it.eTag == null) {
+                    cachedRequests.remove(spotifyRequest)
+                    RequestOrder.YES
+                } else RequestOrder.YES_WITH_ETAG
+            }
+        } ?: RequestOrder.YES
+    }
+
+    internal fun getData(spotifyRequest: SpotifyRequest) = cachedRequests[spotifyRequest]!!.data
+
+    internal fun getEtag(spotifyRequest: SpotifyRequest) = cachedRequests[spotifyRequest]!!.eTag
+
+    internal enum class RequestOrder { YES, NO, YES_WITH_ETAG }
+}
+
+internal data class SpotifyRequest(
+    val url: String,
+    val method: Connection.Method,
+    val body: String?,
+    val params: List<Pair<String, String>>?
+)
+
+internal data class CacheResponse(val expireBy: Long, val eTag: String?, val data: String)
