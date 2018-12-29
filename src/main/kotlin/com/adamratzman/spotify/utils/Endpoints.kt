@@ -48,7 +48,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
 
         val spotifyRequest = SpotifyRequest(url, method, body, data)
-        val cacheState = cache[spotifyRequest]
+        val cacheState = if (api.useCache) cache[spotifyRequest] else null
 
         if (cacheState?.isStillValid() == true) return cacheState.data
         else if (cacheState?.let { it.eTag == null } == true) {
@@ -59,7 +59,14 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             if (cacheState?.eTag != null) header("If-None-Match", cacheState.eTag)
         }.execute()
 
-        return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(url, body, method, false, contentType, data)
+        return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
+            url,
+            body,
+            method,
+            false,
+            contentType,
+            data
+        )
     }
 
     private fun handleResponse(
@@ -78,7 +85,9 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         val responseBody = document.body()
 
         document.header("Cache-Control")?.also {
-            cache[spotifyRequest] = (cacheState ?: CacheState(responseBody, document.header("ETag"))).update(it)
+            if (api.useCache) {
+                cache[spotifyRequest] = (cacheState ?: CacheState(responseBody, document.header("ETag"))).update(it)
+            }
         }
 
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) {
