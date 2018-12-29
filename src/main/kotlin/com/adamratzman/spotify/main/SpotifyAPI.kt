@@ -338,7 +338,9 @@ class SpotifyClientAPI internal constructor(
 
     private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
-            if (token.expires_in > 60 && clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
+            if (clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
+                browse.getAvailableGenreSeeds().complete()
+
                 executor.scheduleAtFixedRate(
                     { refreshToken() },
                     ((token.expires_in - 30).toLong()),
@@ -365,7 +367,7 @@ class SpotifyClientAPI internal constructor(
     override fun refreshToken() {
         val tempToken = gson.fromJson(
             Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "refresh_token")
+                .data("grant_type", "client_credentials")
                 .data("refresh_token", token.refresh_token ?: "")
                 .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
                 .ignoreContentType(true).post().body().text(), Token::class.java
