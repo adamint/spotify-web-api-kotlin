@@ -13,7 +13,7 @@ import org.jsoup.Jsoup
 import java.util.function.Supplier
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
-    private val cache = SpotifyCache()
+    internal val cache = SpotifyCache()
 
     fun get(url: String): String {
         return execute(url)
@@ -60,6 +60,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
         val spotifyRequest = SpotifyRequest(url, method, body, data)
         val requestOrder = cache.shouldRequest(spotifyRequest)
+
         if (requestOrder == SpotifyCache.RequestOrder.NO) {
             return cache.getData(spotifyRequest)
         } else if (requestOrder == SpotifyCache.RequestOrder.YES_WITH_ETAG) {
@@ -74,17 +75,20 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             if (requestOrder != SpotifyCache.RequestOrder.YES_WITH_ETAG) throw BadRequestException("304 status only allowed on Etag-able endpoints")
             return cache.getData(spotifyRequest)
         } else {
-            val cacheControlHeader = document.header("Cache-Control")
+            val cacheHeaders = document.header("Cache-Control")
             // this api is single-user and thus can ignore the public/private cache distinction
-            val (maxAge: Int, eTag: String?) = cache.cacheRegex
-                .find(cacheControlHeader)
+            val maxAge: Int = cache.cacheRegex
+                .find(cacheHeaders)
                 ?.groupValues?.let {
-                (it.getOrNull(1)?.toIntOrNull()
-                    ?: throw BadRequestException("Unable to match cache max-age")) to it.getOrNull(3)
+                it.getOrNull(1)?.toIntOrNull()
             } ?: throw BadRequestException("Unable to match regex")
 
-            cache.cachedRequests[spotifyRequest] =
-                CacheResponse(System.currentTimeMillis() + 1000 * maxAge, eTag, document.body())
+            if (requestOrder == SpotifyCache.RequestOrder.YES_WITH_ETAG) cache.remove(spotifyRequest)
+
+            cache.add(
+                spotifyRequest,
+                CacheResponse(System.currentTimeMillis() + 1000 * maxAge, document.header("ETag"), document.body())
+            )
         }
 
         if (document.statusCode() / 200 != 1 /* Check if status is 2xx */) {
@@ -118,8 +122,8 @@ internal class EndpointBuilder(private val path: String) {
 }
 
 internal class SpotifyCache {
-    internal val cachedRequests = hashMapOf<SpotifyRequest, CacheResponse>()
-    internal val cacheRegex = ".+,\\smax-age=(\\d+),?\\s?(ETag : \"(.+)\")?".toRegex()
+    private val cachedRequests = hashMapOf<SpotifyRequest, CacheResponse>()
+    internal val cacheRegex = "max-age=(\\d+)".toRegex()
 
     internal fun shouldRequest(spotifyRequest: SpotifyRequest): RequestOrder {
         return cachedRequests[spotifyRequest]?.let {
@@ -133,9 +137,19 @@ internal class SpotifyCache {
         } ?: RequestOrder.YES
     }
 
+    internal fun add(spotifyRequest: SpotifyRequest, cacheResponse: CacheResponse) {
+        if (cacheResponse.eTag != null || cacheResponse.expireBy > System.currentTimeMillis() + 1000) {
+            cachedRequests[spotifyRequest] = cacheResponse
+        }
+    }
+
+    internal fun remove(spotifyRequest: SpotifyRequest) = cachedRequests.remove(spotifyRequest)
+
     internal fun getData(spotifyRequest: SpotifyRequest) = cachedRequests[spotifyRequest]!!.data
 
     internal fun getEtag(spotifyRequest: SpotifyRequest) = cachedRequests[spotifyRequest]!!.eTag
+
+    fun clear() = cachedRequests.clear()
 
     internal enum class RequestOrder { YES, NO, YES_WITH_ETAG }
 }
