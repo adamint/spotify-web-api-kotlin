@@ -88,7 +88,6 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         }
 
         if (document.responseCode / 200 != 1 /* Check if status is 2xx */) {
-            println("body: " + document.body)
             val message = try {
                 api.gson.fromJson(responseBody, ErrorResponse::class.java).error
             } catch (e: JsonParseException) {

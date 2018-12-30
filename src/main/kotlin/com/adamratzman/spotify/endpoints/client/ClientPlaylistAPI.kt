@@ -304,10 +304,6 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
                 JSONObject().put("uri", TrackURI(track).uri)
                     .also { if (positions?.positions?.isNotEmpty() == true) it.put("positions", positions.positions) }
             }.let { json.put("tracks", JSONArray(it)) }
-
-            println(EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString())
-            println(json)
-            println(api.token)
             delete(
                 EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), body = json.toString()
             )
