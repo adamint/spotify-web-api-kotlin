@@ -3,7 +3,7 @@ package com.adamratzman.spotify.utils
 import java.net.HttpURLConnection
 import java.net.URL
 
-enum class HttpRequestMethod { GET, POST, PUT, DELETE, }
+enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 data class HttpHeader(val key: String, val value: String)
 
 class HttpConnection(
@@ -11,40 +11,35 @@ class HttpConnection(
     private val method: HttpRequestMethod,
     private val body: String?,
     private val contentType: String?,
-    vararg headersVararg: HttpHeader,
-    val headers: MutableList<HttpHeader> = headersVararg.toMutableList()
+    private vararg val headers: HttpHeader
 ) {
 
-    fun execute(): HttpResponse {
+    fun execute(vararg additionalHeaders: HttpHeader?): HttpResponse {
         val connection = URL(url).openConnection() as HttpURLConnection
         connection.requestMethod = method.toString()
 
         contentType?.let { connection.setRequestProperty("Content-Type", contentType) }
-        headers.forEach { (key, value) -> connection.setRequestProperty(key, value) }
-
-        if (body != null || method != HttpRequestMethod.GET){
-            connection.doOutput = true
-            connection.setFixedLengthStreamingMode(body?.length ?: 0)
+        headers.union(additionalHeaders.filterNotNull()).forEach { (key, value) ->
+            connection.setRequestProperty(key, value)
         }
 
-        body?.let { _ ->
-            connection.outputStream.bufferedWriter().also { it.write(body) }.let { it.close() }
+        if (body != null || method != HttpRequestMethod.GET) {
+            connection.doOutput = true
+            connection.setFixedLengthStreamingMode(body?.toByteArray()?.size ?: 0)
+            connection.outputStream.bufferedWriter().use {
+                body?.also(it::write)
+            }
         }
 
         connection.connect()
 
-        val responseCode = connection.responseCode
-
-        val outputBody = (connection.errorStream ?: connection.inputStream).bufferedReader().let {
-            val text = it.readText()
-            it.close()
-            text
-        }
-
-        val headers = connection.headerFields.keys.filterNotNull().map { HttpHeader(it, connection.getHeaderField(it)) }
-        connection.disconnect()
-
-        return HttpResponse(responseCode, outputBody, headers)
+        return HttpResponse(
+            responseCode = connection.responseCode,
+            body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
+                it.readText()
+            },
+            headers = connection.headerFields.keys.filterNotNull().map { HttpHeader(it, connection.getHeaderField(it)) }
+        ).also { connection.disconnect() }
     }
 }
 

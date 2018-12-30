@@ -50,9 +50,11 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             cache -= spotifyRequest
         }
 
-        val document = createConnection(url, body, method, contentType).apply {
-            if (cacheState?.eTag != null) headers.add(HttpHeader("If-None-Match", cacheState.eTag))
-        }.execute()
+        val document = createConnection(url, body, method, contentType).execute(
+            cacheState?.eTag?.let {
+                HttpHeader("If-None-Match", it)
+            }
+        )
 
         return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
             url,
