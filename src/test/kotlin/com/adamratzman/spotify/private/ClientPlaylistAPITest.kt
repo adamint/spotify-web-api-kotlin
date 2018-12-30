@@ -3,6 +3,7 @@ package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.main.SpotifyClientAPI
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -13,13 +14,12 @@ class ClientPlaylistAPITest : Spek({
         val playlistsBefore = cp?.getClientPlaylists()?.complete()
         val createdPlaylist = cp?.createPlaylist("this is a test playlist", "description")
                 ?.complete()
+
+        createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
-            createdPlaylist ?: return@it
             assertTrue(cp.getClientPlaylists().complete().size - 1 == playlistsBefore?.size)
         }
         it("edit playlists") {
-            createdPlaylist ?: return@it
-
             cp.changePlaylistDescription(createdPlaylist.id, "test playlist", false,
                     true, "description 2").complete()
 
@@ -48,8 +48,19 @@ class ClientPlaylistAPITest : Spek({
             assertTrue(updatedPlaylist.tracks.total == 0)
         }
 
+        it("remove playlist tracks") {
+            val trackIdOne = "3WDIhWoRWVcaHdRwMEHkkS"
+            val trackIdTwo = "7FjZU7XFs7P9jHI9Z0yRhK"
+            cp.addTracksToPlaylist(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo).complete()
+
+            assertTrue(cp.getPlaylistTracks(createdPlaylist.id).complete().items.size == 4)
+
+            cp.removePlaylistTrack(createdPlaylist.id, trackIdOne).complete()
+
+            assertEquals(listOf(trackIdTwo, trackIdTwo), cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+        }
+
         it("destroy (unfollow) playlist") {
-            createdPlaylist ?: return@it
             cp.deletePlaylist(createdPlaylist.id).complete()
             assertTrue(cp.getClientPlaylist(createdPlaylist.id).complete() == null)
         }
