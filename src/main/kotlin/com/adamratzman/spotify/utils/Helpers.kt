@@ -180,8 +180,8 @@ internal fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): Linke
             jsonObject.getJSONArray("items").map { it.toString().toObject(api, tClazz) })
 }
 
-internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): List<T> {
-    return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject(api, tClazz) }
+internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): T {
+    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, tClazz)
 }
 
 internal fun <T> catch(function: () -> T): T? {
