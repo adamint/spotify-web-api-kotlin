@@ -15,13 +15,15 @@ import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.endpoints.public.SearchAPI
 import com.adamratzman.spotify.endpoints.public.TracksAPI
 import com.adamratzman.spotify.endpoints.public.UserAPI
+import com.adamratzman.spotify.utils.HttpConnection
+import com.adamratzman.spotify.utils.HttpHeader
+import com.adamratzman.spotify.utils.HttpRequestMethod
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import org.jsoup.Jsoup
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -159,17 +161,10 @@ class SpotifyApiBuilder {
                 )
             }
             else -> try {
-                val token = Gson().fromJson(
-                    Jsoup.connect("https://accounts.spotify.com/api/token")
-                        .data("grant_type", "client_credentials")
-                        .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                        .ignoreContentType(true).post().body().text(), Token::class.java
-                ) ?: throw IllegalArgumentException("Invalid credentials provided")
-                SpotifyAppAPI(
-                    clientId ?: throw IllegalArgumentException(),
-                    clientSecret ?: throw IllegalArgumentException(),
-                    token
-                )
+                if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
+                val token = getCredentialedToken(clientId, clientSecret)
+                    ?: throw IllegalArgumentException("Invalid credentials provided")
+                SpotifyAppAPI(clientId, clientSecret, token)
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
@@ -210,12 +205,12 @@ class SpotifyApiBuilder {
                 SpotifyClientAPI(
                     clientId ?: throw IllegalArgumentException(),
                     clientSecret ?: throw IllegalArgumentException(),
-                    Jsoup.connect("https://accounts.spotify.com/api/token")
-                        .data("grant_type", "authorization_code")
-                        .data("code", authorizationCode)
-                        .data("redirect_uri", redirectUri)
-                        .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                        .ignoreContentType(true).post().body().text().toObject(Gson(), Token::class.java),
+                    HttpConnection(
+                        url = "https://accounts.spotify.com/api/token",
+                        method = HttpRequestMethod.POST,
+                        body = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
+                        contentType = "application/x-www-form-urlencoded"
+                    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body.toObject(Gson(), Token::class.java),
                     automaticRefresh,
                     redirectUri ?: throw IllegalArgumentException()
                 )
@@ -237,7 +232,7 @@ class SpotifyApiBuilder {
             )
             else -> throw IllegalArgumentException(
                 "At least one of: authorizationCode, tokenString, or token must be provided " +
-                    "to build a SpotifyClientAPI object"
+                        "to build a SpotifyClientAPI object"
             )
         }
     }
@@ -300,12 +295,7 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
 
     override fun refreshToken() {
         if (clientId != "not-set" && clientSecret != "not-set")
-            token = gson.fromJson(
-                Jsoup.connect("https://accounts.spotify.com/api/token")
-                    .data("grant_type", "client_credentials")
-                    .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                    .ignoreContentType(true).post().body().text(), Token::class.java
-            )
+            token = getCredentialedToken(clientId, clientSecret)
         expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
 
@@ -372,11 +362,13 @@ class SpotifyClientAPI internal constructor(
 
     override fun refreshToken() {
         val tempToken = gson.fromJson(
-            Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "refresh_token")
-                .data("refresh_token", token.refresh_token ?: "")
-                .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                .ignoreContentType(true).post().body().text(), Token::class.java
+            HttpConnection(
+                url = "https://accounts.spotify.com/api/token",
+                method = HttpRequestMethod.POST,
+                body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
+                contentType = "application/x-www-form-urlencoded"
+            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
+            Token::class.java
         )
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
@@ -407,7 +399,17 @@ class SpotifyClientAPI internal constructor(
 
 private fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-        "&response_type=code" +
-        "&redirect_uri=$redirectUri" +
-        if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
+            "&response_type=code" +
+            "&redirect_uri=$redirectUri" +
+            if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
+
+private fun getCredentialedToken(clientId: String, clientSecret: String) = Gson().fromJson(
+    HttpConnection(
+        url = "https://accounts.spotify.com/api/token",
+        method = HttpRequestMethod.POST,
+        body = "grant_type=client_credentials",
+        contentType = "application/x-www-form-urlencoded"
+    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
+    Token::class.java
+)

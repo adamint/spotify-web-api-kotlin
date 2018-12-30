@@ -13,19 +13,19 @@ import java.util.function.Supplier
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     internal val cache = SpotifyCache()
 
-    fun get(url: String): String {
+    internal fun get(url: String): String {
         return execute(url)
     }
 
-    fun post(url: String, body: String? = null): String {
+    internal fun post(url: String, body: String? = null): String {
         return execute(url, body, HttpRequestMethod.POST)
     }
 
-    fun put(url: String, body: String? = null, contentType: String? = null): String {
+    internal fun put(url: String, body: String? = null, contentType: String? = null): String {
         return execute(url, body, HttpRequestMethod.PUT, contentType = contentType)
     }
 
-    fun delete(
+    internal fun delete(
         url: String,
         body: String? = null,
         contentType: String? = null
