@@ -2,7 +2,9 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyScope
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Token(val access_token: String, val token_type: String, val expires_in: Int, val refresh_token: String?, val scope: String?) {
     fun getScopes(): List<SpotifyScope> {
         val scopes = mutableListOf<SpotifyScope>()
@@ -13,6 +15,7 @@ data class Token(val access_token: String, val token_type: String, val expires_i
     }
 }
 
+@Serializable
 data class ErrorResponse(val error: ErrorObject)
 
 data class ErrorObject(val status: Int, val message: String)
