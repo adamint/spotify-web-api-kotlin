@@ -42,12 +42,14 @@ class UtilityTests : Spek({
 
             it("App API valid parameters") {
                 assertDoesNotThrow {
-                    spotifyApi {
+                    val api = spotifyApi {
                         credentials {
                             clientId = System.getProperty("clientId")
                             clientSecret = System.getProperty("clientSecret")
                         }
-                    }.buildCredentialed()
+                    }
+                    api.buildCredentialed()
+                    api.buildCredentialedAsync { }
                 }
             }
         }
