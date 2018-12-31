@@ -17,8 +17,10 @@ import com.adamratzman.spotify.utils.Track
 import com.adamratzman.spotify.utils.TrackList
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toInnerObject
 import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
+import kotlinx.serialization.internal.ArrayListSerializer
 import java.util.function.Supplier
 
 /**
@@ -99,12 +101,18 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
+            println(get(
+                EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
+                    "country",
+                    market.code
+                ).toString()
+            ))
             get(
                 EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
                     "country",
                     market.code
                 ).toString()
-            ).toObject(api, TrackList.serializer()).tracks.map { it!! }
+            ).toInnerObject("tracks", api, ArrayListSerializer(Track.serializer()))
         })
     }
 
