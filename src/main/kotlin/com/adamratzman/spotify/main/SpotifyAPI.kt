@@ -15,12 +15,15 @@ import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.endpoints.public.SearchAPI
 import com.adamratzman.spotify.endpoints.public.TracksAPI
 import com.adamratzman.spotify.endpoints.public.UserAPI
+import com.adamratzman.spotify.utils.HttpConnection
+import com.adamratzman.spotify.utils.HttpHeader
+import com.adamratzman.spotify.utils.HttpRequestMethod
+import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import org.jsoup.Jsoup
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -35,31 +38,26 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
     var authorizationCode: String? = null
     var tokenString: String? = null
     var token: Token? = null
+    var useCache: Boolean = true
 
-    fun redirectUri(redirectUri: String?): SpotifyApiBuilderJava {
-        this.redirectUri = redirectUri
-        return this
-    }
+    fun useCache(useCache: Boolean) = apply { this.useCache = useCache }
 
-    fun authorizationCode(authorizationCode: String?): SpotifyApiBuilderJava {
-        this.authorizationCode = authorizationCode
-        return this
-    }
+    fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
 
-    fun tokenString(tokenString: String?): SpotifyApiBuilderJava {
-        this.tokenString = tokenString
-        return this
-    }
+    fun authorizationCode(authorizationCode: String?) = apply { this.authorizationCode = authorizationCode }
 
-    fun token(token: Token?): SpotifyApiBuilderJava {
-        this.token = token
-        return this
-    }
+    fun tokenString(tokenString: String?) = apply { this.tokenString = tokenString }
+
+    fun token(token: Token?) = apply { this.token = token }
 
     fun buildCredentialed() = spotifyApi {
         credentials {
             clientId = this@SpotifyApiBuilderJava.clientId
             clientSecret = this@SpotifyApiBuilderJava.clientSecret
+        }
+        authentication {
+            token = this@SpotifyApiBuilderJava.token
+            tokenString = this@SpotifyApiBuilderJava.tokenString
         }
     }.buildCredentialed()
 
@@ -69,7 +67,7 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
             clientSecret = this@SpotifyApiBuilderJava.clientSecret
             redirectUri = this@SpotifyApiBuilderJava.redirectUri
         }
-        clientAuthentication {
+        authentication {
             authorizationCode = this@SpotifyApiBuilderJava.authorizationCode
             tokenString = this@SpotifyApiBuilderJava.tokenString
             token = this@SpotifyApiBuilderJava.token
@@ -88,12 +86,22 @@ class SpotifyCredentialsBuilder {
     var redirectUri: String? = null
 
     fun build() =
-            if (clientId?.isNotEmpty() == false || clientSecret?.isNotEmpty() == false) throw IllegalArgumentException("clientId or clientSecret is empty")
-            else SpotifyCredentials(clientId, clientSecret, redirectUri)
+        if (clientId?.isNotEmpty() == false || clientSecret?.isNotEmpty() == false) throw IllegalArgumentException("clientId or clientSecret is empty")
+        else SpotifyCredentials(clientId, clientSecret, redirectUri)
 }
 
 data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, val redirectUri: String?)
 
+/**
+ * Authentication methods.
+ *
+ * @property authorizationCode Only available when building [SpotifyClientAPI]. Spotify auth code
+ * @property token Build the API using an existing token. If you're building [SpotifyClientAPI], this
+ * will be your **access** token. If you're building [SpotifyAPI], it will be your **refresh** token
+ * @property tokenString Build the API using an existing token (string). If you're building [SpotifyClientAPI], this
+ * will be your **access** token. If you're building [SpotifyAPI], it will be your **refresh** token. There is a *very*
+ * limited time constraint on these before the API automatically refreshes them
+ */
 class SpotifyUserAuthorizationBuilder(
     var authorizationCode: String? = null,
     var tokenString: String? = null,
@@ -101,15 +109,20 @@ class SpotifyUserAuthorizationBuilder(
 )
 
 class SpotifyApiBuilder {
-    var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
-    var clientAuthentication = SpotifyUserAuthorizationBuilder()
+    private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
+    private var authentication = SpotifyUserAuthorizationBuilder()
+    var useCache: Boolean = true
 
     fun credentials(block: SpotifyCredentialsBuilder.() -> Unit) {
         credentials = SpotifyCredentialsBuilder().apply(block).build()
     }
 
-    fun clientAuthentication(block: SpotifyUserAuthorizationBuilder.() -> Unit) {
-        clientAuthentication = SpotifyUserAuthorizationBuilder().apply(block)
+    /**
+     * Allows you to authenticate a [SpotifyClientAPI] with an authorization code
+     * or build [SpotifyAPI] using a refresh token
+     */
+    fun authentication(block: SpotifyUserAuthorizationBuilder.() -> Unit) {
+        authentication = SpotifyUserAuthorizationBuilder().apply(block)
     }
 
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
@@ -119,27 +132,48 @@ class SpotifyApiBuilder {
         return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
+    fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Runnable { consumer(buildCredentialed()) }.run()
+
     fun buildCredentialed(): SpotifyAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
-        if (clientId == null || clientSecret == null) {
+        if ((clientId == null || clientSecret == null) && (authentication.token == null && authentication.tokenString == null)) {
             throw IllegalArgumentException("You didn't specify a client id or client secret in the credentials block!")
         }
-        return try {
-            val token = Gson().fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                    .data("grant_type", "client_credentials")
-                    .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                    .ignoreContentType(true).post().body().text(), Token::class.java)
+        return when {
+            authentication.token != null -> {
+                SpotifyAppAPI(clientId ?: "not-set", clientSecret ?: "not-set", authentication.token!!, useCache)
+            }
+            authentication.tokenString != null -> {
+                SpotifyAppAPI(
+                    clientId ?: "not-set",
+                    clientSecret ?: "not-set",
+                    Token(
+                        authentication.tokenString!!, "client_credentials",
+                        60000, null, null
+                    ),
+                    useCache
+                )
+            }
+            else -> try {
+                if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
+                val token = getCredentialedToken(clientId, clientSecret)
                     ?: throw IllegalArgumentException("Invalid credentials provided")
-            SpotifyAppAPI(clientId, clientSecret, token)
-        } catch (e: Exception) {
-            throw SpotifyException("Invalid credentials provided in the login process", e)
+                SpotifyAppAPI(clientId, clientSecret, token, useCache)
+            } catch (e: Exception) {
+                throw SpotifyException("Invalid credentials provided in the login process", e)
+            }
         }
     }
 
+    fun buildClientAsync(consumer: (SpotifyClientAPI) -> Unit, automaticRefresh: Boolean = false) =
+        Runnable { consumer(buildClient(automaticRefresh)) }.run()
+
     fun buildClient(automaticRefresh: Boolean = false): SpotifyClientAPI =
-            buildClient(clientAuthentication.authorizationCode, clientAuthentication.tokenString,
-                    clientAuthentication.token, automaticRefresh)
+        buildClient(
+            authentication.authorizationCode, authentication.tokenString,
+            authentication.token, automaticRefresh
+        )
 
     /**
      * Build the client api by providing an authorization code, token string, or token object. Only one of the following
@@ -151,38 +185,72 @@ class SpotifyApiBuilder {
      * @param automaticRefresh automatically refresh the token. otherwise, the authorization will eventually expire. **only** valid when
      * [authorizationCode] or [token] is provided
      */
-    private fun buildClient(authorizationCode: String? = null, tokenString: String? = null, token: Token? = null, automaticRefresh: Boolean = false): SpotifyClientAPI {
+    private fun buildClient(
+        authorizationCode: String? = null,
+        tokenString: String? = null,
+        token: Token? = null,
+        automaticRefresh: Boolean = false
+    ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         val redirectUri = credentials.redirectUri
 
-        if (clientId == null || clientSecret == null || redirectUri == null) {
+        if ((clientId == null || clientSecret == null || redirectUri == null) && (token == null && tokenString == null)) {
             throw IllegalArgumentException("You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!")
         }
         return when {
             authorizationCode != null -> try {
-                SpotifyClientAPI(clientId, clientSecret, Jsoup.connect("https://accounts.spotify.com/api/token")
-                        .data("grant_type", "authorization_code")
-                        .data("code", authorizationCode)
-                        .data("redirect_uri", redirectUri)
-                        .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                        .ignoreContentType(true).post().body().text().toObject(Gson(), Token::class.java), automaticRefresh, redirectUri)
+                SpotifyClientAPI(
+                    clientId ?: throw IllegalArgumentException(),
+                    clientSecret ?: throw IllegalArgumentException(),
+                    HttpConnection(
+                        url = "https://accounts.spotify.com/api/token",
+                        method = HttpRequestMethod.POST,
+                        body = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
+                        contentType = "application/x-www-form-urlencoded"
+                    ).execute(
+                        HttpHeader(
+                            "Authorization",
+                            "Basic ${"$clientId:$clientSecret".byteEncode()}"
+                        )
+                    ).body.toObject(Gson(), Token::class.java),
+                    automaticRefresh,
+                    redirectUri ?: throw IllegalArgumentException(),
+                    useCache
+                )
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
-            token != null -> SpotifyClientAPI(clientId, clientSecret, token, automaticRefresh, redirectUri)
-            tokenString != null -> SpotifyClientAPI(clientId, clientSecret, Token(tokenString, "client_credentials", 1000,
-                    null, null), false, redirectUri)
-            else -> throw IllegalArgumentException("At least one of: authorizationCode, tokenString, or token must be provided " +
-                    "to build a SpotifyClientAPI object")
+            token != null -> SpotifyClientAPI(
+                clientId ?: "not-set",
+                clientSecret ?: "not-set",
+                token,
+                automaticRefresh,
+                redirectUri ?: "not-set",
+                useCache
+            )
+            tokenString != null -> SpotifyClientAPI(
+                clientId ?: "not-set", clientSecret ?: "not-set", Token(
+                    tokenString, "client_credentials", 1000,
+                    null, null
+                ), false, redirectUri ?: "not-set",
+                useCache
+            )
+            else -> throw IllegalArgumentException(
+                "At least one of: authorizationCode, tokenString, or token must be provided " +
+                    "to build a SpotifyClientAPI object"
+            )
         }
     }
 }
 
-abstract class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
+abstract class SpotifyAPI internal constructor(
+    val clientId: String, val clientSecret: String,
+    var token: Token, var useCache: Boolean
+) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
-    internal val executor = Executors.newScheduledThreadPool(1)
-    val gson = GsonBuilder().setLenient().create()!!
+    internal val executor = Executors.newScheduledThreadPool(2)
+    internal val gson = GsonBuilder().setLenient().create()!!
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -195,11 +263,15 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
 
     internal val logger = SpotifyLogger(true)
 
-    internal fun refreshClient() {
-        token = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "client_credentials")
-                .header("Authorization", "Basic " + ("$clientId:$clientSecret".byteEncode()))
-                .ignoreContentType(true).post().body().text(), Token::class.java)
+    abstract fun refreshToken()
+    abstract fun clearCache()
+
+    init {
+        executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
+    }
+
+    internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
+        endpoints.forEach { it.cache.clear() }
     }
 
     fun useLogger(enable: Boolean) {
@@ -211,7 +283,8 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     }
 }
 
-class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) : SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token, useCache: Boolean) :
+    SpotifyAPI(clientId, clientSecret, token, useCache) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -220,9 +293,39 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
     override val users: UserAPI = UserAPI(this)
     override val tracks: TracksAPI = TracksAPI(this)
     override val following: FollowingAPI = FollowingAPI(this)
+
+    init {
+        if (clientId == "not-set" || clientSecret == "not-set") {
+            logger.logWarning("Token refresh is disabled - application parameters not set")
+        }
+    }
+
+    override fun refreshToken() {
+        if (clientId != "not-set" && clientSecret != "not-set")
+            token = getCredentialedToken(clientId, clientSecret)
+        expireTime = System.currentTimeMillis() + token.expires_in * 1000
+    }
+
+    override fun clearCache() = clearAllCaches(
+        search,
+        albums,
+        browse,
+        artists,
+        playlists,
+        users,
+        tracks,
+        following
+    )
 }
 
-class SpotifyClientAPI internal constructor(clientId: String, clientSecret: String, token: Token, automaticRefresh: Boolean = false, var redirectUri: String) : SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyClientAPI internal constructor(
+    clientId: String,
+    clientSecret: String,
+    token: Token,
+    automaticRefresh: Boolean = false,
+    var redirectUri: String,
+    useCache: Boolean
+) : SpotifyAPI(clientId, clientSecret, token, useCache) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -244,29 +347,37 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
 
     private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
-            executor.scheduleAtFixedRate({ refreshToken() }, ((token.expires_in - 30).toLong()), (token.expires_in - 30).toLong(), TimeUnit.SECONDS)
-            if (token.expires_in > 60) {
-                executor.scheduleAtFixedRate(
+            if (clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
+                if (token.expires_in > 60) {
+                    executor.scheduleAtFixedRate(
                         { refreshToken() },
                         (token.expires_in - 30).toLong(),
                         (token.expires_in - 30).toLong(),
                         TimeUnit.SECONDS
-                )
-            } else {
-                refreshToken()
-                init(automaticRefresh)
-            }
+                    )
+                } else {
+                    refreshToken()
+                    init(automaticRefresh)
+                }
+            } else logger.logWarning("Automatic refresh unavailable - client parameters not set")
         }
     }
 
-    fun cancelRefresh() = executor.shutdown()
+    /**
+     * This function will stop all automatic functions like refreshToken or clearCache
+     * */
+    fun cancelAutomatics() = executor.shutdown()
 
-    private fun refreshToken() {
-        val tempToken = gson.fromJson(Jsoup.connect("https://accounts.spotify.com/api/token")
-                .data("grant_type", "client_credentials")
-                .data("refresh_token", token.refresh_token ?: "")
-                .header("Authorization", "Basic " + ("$clientId:$clientSecret").byteEncode())
-                .ignoreContentType(true).post().body().text(), Token::class.java)
+    override fun refreshToken() {
+        val tempToken = gson.fromJson(
+            HttpConnection(
+                url = "https://accounts.spotify.com/api/token",
+                method = HttpRequestMethod.POST,
+                body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
+                contentType = "application/x-www-form-urlencoded"
+            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
+            Token::class.java
+        )
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
@@ -275,6 +386,20 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
         }
     }
 
+    override fun clearCache() = clearAllCaches(
+        search,
+        albums,
+        browse,
+        artists,
+        playlists,
+        users,
+        tracks,
+        following,
+        personalization,
+        library,
+        player
+    )
+
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
@@ -282,7 +407,17 @@ class SpotifyClientAPI internal constructor(clientId: String, clientSecret: Stri
 
 private fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-            "&response_type=code" +
-            "&redirect_uri=$redirectUri" +
-            if (scopes.isEmpty()) "" else "&scope=${scopes.map { it.uri }.joinToString("%20")}"
+        "&response_type=code" +
+        "&redirect_uri=$redirectUri" +
+        if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
+
+private fun getCredentialedToken(clientId: String, clientSecret: String) = Gson().fromJson(
+    HttpConnection(
+        url = "https://accounts.spotify.com/api/token",
+        method = HttpRequestMethod.POST,
+        body = "grant_type=client_credentials",
+        contentType = "application/x-www-form-urlencoded"
+    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
+    Token::class.java
+)

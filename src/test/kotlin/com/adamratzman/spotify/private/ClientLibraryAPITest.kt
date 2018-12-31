@@ -22,19 +22,22 @@ class ClientLibraryAPITest : Spek({
 
             assertFalse(api.library.contains(LibraryType.TRACK, testTrack).complete())
             assertFalse(api.library.getSavedTracks().getAllItems().complete()
-                    .map { it.track.id }.contains(testTrack))
+                .map { it.track.id }.contains(testTrack)
+            )
 
             api.library.add(LibraryType.TRACK, testTrack).complete()
 
             assertTrue(api.library.contains(LibraryType.TRACK, testTrack).complete())
             assertTrue(api.library.getSavedTracks().getAllItems().complete()
-                    .map { it.track.id }.contains(testTrack))
+                .map { it.track.id }.contains(testTrack)
+            )
 
             api.library.remove(LibraryType.TRACK, testTrack).complete()
 
             assertFalse(api.library.contains(LibraryType.TRACK, testTrack).complete())
             assertFalse(api.library.getSavedTracks().getAllItems().complete()
-                    .map { it.track.id }.contains(testTrack))
+                .map { it.track.id }.contains(testTrack)
+            )
         }
 
         it("library album tests") {
@@ -45,19 +48,22 @@ class ClientLibraryAPITest : Spek({
 
             assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
             assertFalse(api.library.getSavedAlbums().getAllItems().complete()
-                    .map { it.album.id }.contains(testAlbum))
+                .map { it.album.id }.contains(testAlbum)
+            )
 
             api.library.add(LibraryType.ALBUM, testAlbum).complete()
 
             assertTrue(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
             assertTrue(api.library.getSavedAlbums().getAllItems().complete()
-                    .map { it.album.id }.contains(testAlbum))
+                .map { it.album.id }.contains(testAlbum)
+            )
 
             api.library.remove(LibraryType.ALBUM, testAlbum).complete()
 
             assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
             assertFalse(api.library.getSavedAlbums().getAllItems().complete()
-                    .map { it.album.id }.contains(testAlbum))
+                .map { it.album.id }.contains(testAlbum)
+            )
         }
 
         it("invalid inputs") {

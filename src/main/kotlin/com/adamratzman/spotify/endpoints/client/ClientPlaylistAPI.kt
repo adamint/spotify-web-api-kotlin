@@ -265,10 +265,34 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         })
     }
 
-    /*
-    private fun removePlaylistTracks(
+    fun removePlaylistTrack(
         playlist: String,
-        tracks: List<Pair<TrackURI, SpotifyTrackPositions?>>,
+        track: String,
+        positions: SpotifyTrackPositions,
+        snapshotId: String? = null
+    ) = removePlaylistTracks(playlist, track to positions, snapshotId = snapshotId)
+
+    fun removePlaylistTrack(
+        playlist: String,
+        track: String,
+        snapshotId: String? = null
+    ) = removePlaylistTracks(playlist, track, snapshotId = snapshotId)
+
+    fun removePlaylistTracks(
+        playlist: String,
+        vararg tracks: String,
+        snapshotId: String? = null
+    ) = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
+
+    fun removePlaylistTracks(
+        playlist: String,
+        vararg tracks: Pair<String, SpotifyTrackPositions>,
+        snapshotId: String? = null
+    ) = removePlaylistTracksImpl(playlist, tracks.toList().toTypedArray(), snapshotId)
+
+    private fun removePlaylistTracksImpl(
+        playlist: String,
+        tracks: Array<Pair<String, SpotifyTrackPositions?>>,
         snapshotId: String?
     ): SpotifyRestAction<String> {
         return toAction(Supplier {
@@ -277,17 +301,14 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             val json = JSONObject().also { if (snapshotId != null) it.put("snapshot_id", snapshotId) }
 
             tracks.map { (track, positions) ->
-                JSONObject().put("uri", track.uri)
+                JSONObject().put("uri", TrackURI(track).uri)
                     .also { if (positions?.positions?.isNotEmpty() == true) it.put("positions", positions.positions) }
             }.let { json.put("tracks", JSONArray(it)) }
-
             delete(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), data = listOf(
-                    "tracks" to json.toString()
-                )
+                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), body = json.toString()
             )
         })
-    }*/
+    }
 
     /*
     fun removeAllOccurances(user: String, playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {

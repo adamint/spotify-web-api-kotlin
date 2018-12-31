@@ -6,6 +6,7 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.google.gson.Gson
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InvalidObjectException
 import java.net.URLEncoder
@@ -179,8 +180,8 @@ internal fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): Linke
             jsonObject.getJSONArray("items").map { it.toString().toObject(api, tClazz) })
 }
 
-internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): List<T> {
-    return JSONObject(this).getJSONArray(innerName).map { it.toString().toObject(api, tClazz) }
+internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): T {
+    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, tClazz)
 }
 
 internal fun <T> catch(function: () -> T): T? {
@@ -188,5 +189,11 @@ internal fun <T> catch(function: () -> T): T? {
         function()
     } catch (e: BadRequestException) {
         null
+    }
+}
+
+internal inline fun <R> JSONArray.map(transform: (Any) -> R): List<R> {
+    return List(this.length()) {
+        transform(this.get(it))
     }
 }
