@@ -59,7 +59,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
-                        .with("market", market?.code).toString()).toObject<Playlist>(api, Playlist.serializer())
+                        .with("market", market?.code).toString()).toObject(api, Playlist.serializer())
             }
         })
     }

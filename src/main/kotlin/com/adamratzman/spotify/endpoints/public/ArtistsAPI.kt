@@ -101,12 +101,6 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
-            println(get(
-                EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
-                    "country",
-                    market.code
-                ).toString()
-            ))
             get(
                 EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
                     "country",
