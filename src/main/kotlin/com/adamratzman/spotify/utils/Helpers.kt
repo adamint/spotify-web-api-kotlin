@@ -124,7 +124,7 @@ data class LinkedResult<out T>(val href: String, val items: List<T>) {
 }
 
 @Serializable
-abstract class RelinkingAvailableResponse(@Transient val linkedTrack: LinkedTrack?=null) : Linkable() {
+abstract class RelinkingAvailableResponse(@Transient val linkedTrack: LinkedTrack? = null) : Linkable() {
     fun isRelinked() = linkedTrack != null
 }
 
@@ -143,7 +143,7 @@ internal fun <T> String.toObjectNullable(o: SpotifyAPI?, serializer: KSerializer
 @Suppress("UNCHECKED_CAST")
 internal fun <T> String.toObject(o: SpotifyAPI?, serializer: KSerializer<T>): T {
     try {
-        val obj = (JSON.parse(serializer, this) as? T) ?: throw SpotifyException(
+        val obj = (JSON.nonstrict.parse(serializer, this) as? T) ?: throw SpotifyException(
             "Unable to parse $this",
             IllegalArgumentException("$serializer not found")
         )
@@ -152,7 +152,7 @@ internal fun <T> String.toObject(o: SpotifyAPI?, serializer: KSerializer<T>): T 
             obj.instantiatePagingObjects(o)
         }
         return obj
-    }catch (e:java.lang.Exception){
+    } catch (e: java.lang.Exception) {
         println(this)
         throw e
     }
@@ -212,7 +212,8 @@ internal fun <T> String.toLinkedResult(api: SpotifyAPI, serializer: KSerializer<
 }
 
 internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, serializer: KSerializer<T>): T {
-    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, serializer)
+    return JSONObject(this).let { it.optJSONObject(innerName) ?: it.getJSONArray(innerName) }
+        .toString().toObject(api, serializer)
 }
 
 internal fun <T> catch(function: () -> T): T? {
