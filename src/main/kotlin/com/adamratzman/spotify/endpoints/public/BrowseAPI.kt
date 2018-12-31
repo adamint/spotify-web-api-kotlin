@@ -20,6 +20,7 @@ import com.adamratzman.spotify.utils.SpotifyCategory
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.map
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
 import org.json.JSONObject

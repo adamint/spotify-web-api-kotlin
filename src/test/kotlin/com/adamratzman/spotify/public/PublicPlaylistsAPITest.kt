@@ -16,6 +16,9 @@ class PublicPlaylistsAPITest : Spek({
         describe("get user's playlists") {
             it("available user should return playlists") {
                 assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
             }
             it("unknown user should throw exception but doesn't. if the id is valid, the list should be empty") {
                 assertEquals(0, p.getPlaylists("non-existant-user").complete().size)
