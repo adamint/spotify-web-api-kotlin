@@ -208,7 +208,7 @@ internal fun <T> String.toLinkedResult(api: SpotifyAPI, serializer: KSerializer<
     val jsonObject = JSONObject(this)
     return LinkedResult(
         jsonObject.getString("href"),
-        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api, serializer) })
+        jsonObject.getJSONArray("items").map { it.toString().toObject(api, serializer) })
 }
 
 internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, serializer: KSerializer<T>): T {
