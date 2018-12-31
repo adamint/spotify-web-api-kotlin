@@ -22,8 +22,6 @@ import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -213,7 +211,7 @@ class SpotifyApiBuilder {
                             "Authorization",
                             "Basic ${"$clientId:$clientSecret".byteEncode()}"
                         )
-                    ).body.toObject(Gson(), Token::class.java),
+                    ).body.toObject(null, Token),
                     automaticRefresh,
                     redirectUri ?: throw IllegalArgumentException(),
                     useCache
@@ -250,7 +248,6 @@ abstract class SpotifyAPI internal constructor(
 ) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
-    internal val gson = GsonBuilder().setLenient().create()!!
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -369,15 +366,14 @@ class SpotifyClientAPI internal constructor(
     fun cancelAutomatics() = executor.shutdown()
 
     override fun refreshToken() {
-        val tempToken = gson.fromJson(
+        val tempToken =
             HttpConnection(
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
                 body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
                 contentType = "application/x-www-form-urlencoded"
-            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
-            Token::class.java
-        )
+            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
+                .toObject<Token?>(null, Token)
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
@@ -412,12 +408,11 @@ private fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redire
         if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-private fun getCredentialedToken(clientId: String, clientSecret: String) = Gson().fromJson(
+private fun getCredentialedToken(clientId: String, clientSecret: String) =
     HttpConnection(
         url = "https://accounts.spotify.com/api/token",
         method = HttpRequestMethod.POST,
         body = "grant_type=client_credentials",
         contentType = "application/x-www-form-urlencoded"
-    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
-    Token::class.java
-)
+    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
+        .toObject<Token>(null, Token)
