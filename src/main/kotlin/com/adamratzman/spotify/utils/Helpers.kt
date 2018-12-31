@@ -18,7 +18,6 @@ import java.util.function.Supplier
 @Serializable
 data class Cursor(val after: String)
 
-@Serializable
 class CursorBasedPagingObject<T>(
     href: String,
     items: List<T>,
@@ -26,8 +25,9 @@ class CursorBasedPagingObject<T>(
     next: String?,
     val cursors: Cursor,
     total: Int,
-    endpoint: SpotifyEndpoint
-) : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint)
+    endpoint: SpotifyEndpoint,
+    serializer: KSerializer<T>
+) : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint,serializer)
 
 @Serializable
 open class PagingObject<T>(
@@ -38,23 +38,23 @@ open class PagingObject<T>(
     val offset: Int = 0,
     val previous: String? = null,
     val total: Int,
-    var endpoint: SpotifyEndpoint
+    var endpoint: SpotifyEndpoint,
+    val serializer: KSerializer<T>
 ) {
-    lateinit var tClazz: Class<T>
     fun getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
         Supplier {
             catch {
                 if (this is CursorBasedPagingObject) next?.let {
-                    endpoint.get(it).toCursorBasedPagingObject(tClazz = tClazz, endpoint = endpoint)
+                    endpoint.get(it).toCursorBasedPagingObject(serializer = serializer, endpoint = endpoint)
                 }
-                else next?.let { endpoint.get(it).toPagingObject<T>(tClazz = tClazz, endpoint = endpoint) }
+                else next?.let { endpoint.get(it).toPagingObject<T>(serializer = serializer, endpoint = endpoint) }
             }
         })
 
     fun getPrevious(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
         Supplier {
             catch {
-                previous?.let { endpoint.get(it).toPagingObject(tClazz = tClazz, endpoint = endpoint) }
+                previous?.let { endpoint.get(it).toPagingObject(serializer = serializer, endpoint = endpoint) }
             }
         })
 
@@ -122,6 +122,7 @@ data class LinkedResult<out T>(val href: String, val items: List<T>) {
     }
 }
 
+@Serializable
 abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) : Linkable() {
     fun isRelinked() = linkedTrack != null
 }
@@ -132,19 +133,17 @@ internal fun String.byteEncode(): String {
 
 internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
 
+internal fun <T> String.toObjectNullable(o: SpotifyAPI?, serializer: KSerializer<T>): T? = try {
+    toObject<T>(o, serializer)
+} catch (e: Exception) {
+    null
+}
+
 @Suppress("UNCHECKED_CAST")
-internal fun <T> String.toObject(o: SpotifyAPI?, companion: Any): T {
-    val serializer = when (companion) {
-        is Token.Companion -> Token.serializer()
-        is ErrorResponse.Companion -> ErrorResponse.serializer()
-        is KSerializer<*> -> companion
-        else -> {
-            throw IllegalArgumentException("Serializer for $companion not registered")
-        }
-    }
-    val obj = (JSON.parse(serializer, this) as? T)?: throw SpotifyException(
+internal fun <T> String.toObject(o: SpotifyAPI?, serializer: KSerializer<T>): T {
+    val obj = (JSON.parse(serializer, this) as? T) ?: throw SpotifyException(
         "Unable to parse $this",
-        IllegalArgumentException("$companion not found")
+        IllegalArgumentException("$serializer not found")
     )
     o?.let {
         if (obj is Linkable) obj.api = o
@@ -163,51 +162,51 @@ internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
 internal fun <T> String.toPagingObject(
     innerObjectName: String? = null,
     endpoint: SpotifyEndpoint,
-    tClazz: Class<T>
+    serializer: KSerializer<T>
 ): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     val pagingObject = PagingObject(
         jsonObject.getString("href"),
-        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api, tClazz) },
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api, serializer) },
         jsonObject.getInt("limit"),
         jsonObject.get("next") as? String,
         jsonObject.get("offset") as Int,
         jsonObject.get("previous") as? String,
         jsonObject.getInt("total"),
-        endpoint
+        endpoint,
+        serializer
     )
-    pagingObject.tClazz = tClazz
     return pagingObject
 }
 
 internal fun <T> String.toCursorBasedPagingObject(
     innerObjectName: String? = null,
     endpoint: SpotifyEndpoint,
-    tClazz: Class<T>
+    serializer: KSerializer<T>
 ): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
     val cursorBasedPagingObject = CursorBasedPagingObject(
         jsonObject.getString("href"),
-        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api, tClazz) },
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api, serializer) },
         jsonObject.getInt("limit"),
         jsonObject.get("next") as? String,
         JSON.parse(Cursor.serializer(), jsonObject.getJSONObject("cursors").toString()),
         if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1,
-        endpoint
+        endpoint,
+        serializer
     )
-    cursorBasedPagingObject.tClazz = tClazz
     return cursorBasedPagingObject
 }
 
-internal fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): LinkedResult<T> {
+internal fun <T> String.toLinkedResult(api: SpotifyAPI, serializer: KSerializer<T>): LinkedResult<T> {
     val jsonObject = JSONObject(this)
     return LinkedResult(
         jsonObject.getString("href"),
-        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api, tClazz) })
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api, serializer) })
 }
 
-internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): T {
-    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, tClazz)
+internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, serializer: KSerializer<T>): T {
+    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, serializer)
 }
 
 internal fun <T> catch(function: () -> T): T? {

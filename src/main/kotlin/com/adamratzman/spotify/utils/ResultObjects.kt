@@ -3,17 +3,27 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import kotlinx.serialization.Serializable
 
 /**
  * @param message the featured message in "Overview"
  */
+@Serializable
 data class FeaturedPlaylists(val message: String, val playlists: PagingObject<Playlist>)
 
+@Serializable
 data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
+
+@Serializable
 data class AlbumsResponse(val albums: List<Album?>)
+
+@Serializable
 data class ArtistList(val artists: List<Artist?>)
+
+@Serializable
 data class TrackList(val tracks: List<Track?>)
 
+@Serializable
 data class RecommendationSeed(
     val initialPoolSize: Int,
     val afterFilteringSize: Int,
@@ -23,6 +33,7 @@ data class RecommendationSeed(
     val type: String
 )
 
+@Serializable
 data class SpotifyCategory(val href: String, val icons: List<SpotifyImage>, val id: String, val name: String)
 
 data class SpotifyCopyright(val text: String, val type: String)
@@ -32,8 +43,10 @@ data class PlaylistTrackInfo(val href: String, val total: Int)
 /**
  * @param href Will always be null, per the Spotify documentation, until the Web API is updated to support this.
  */
+@Serializable
 data class Followers(val href: String?, val total: Int)
 
+@Serializable
 data class SpotifyUserInformation(
     val birthdate: String?,
     val country: String?,
@@ -49,6 +62,7 @@ data class SpotifyUserInformation(
     val uri: String
 )
 
+@Serializable
 data class SpotifyPublicUser(
     val display_name: String,
     val external_urls: HashMap<String, String>,
@@ -60,6 +74,7 @@ data class SpotifyPublicUser(
     val uri: String
 )
 
+@Serializable
 data class SpotifyImage(val height: Int, val url: String, val width: Int)
 
 abstract class Linkable {
@@ -71,8 +86,16 @@ abstract class Linkable {
  * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  */
-data class LinkedTrack(val external_urls: HashMap<String, String>, val href: String, val id: String, val type: String, val uri: String)
+@Serializable
+data class LinkedTrack(
+    val external_urls: HashMap<String, String>,
+    val href: String,
+    val id: String,
+    val type: String,
+    val uri: String
+)
 
+@Serializable
 data class SimpleArtist(
     val external_urls: HashMap<String, String>,
     val href: String,
@@ -84,6 +107,7 @@ data class SimpleArtist(
     fun toFullArtist() = api.artists.getArtist(id)
 }
 
+@Serializable
 data class Artist(
     val external_urls: HashMap<String, String>,
     val followers: Followers,
@@ -97,6 +121,7 @@ data class Artist(
     val uri: String
 )
 
+@Serializable
 data class SimpleTrack(
     val artists: List<SimpleArtist>,
     val available_markets: List<String>,
@@ -117,6 +142,7 @@ data class SimpleTrack(
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
+@Serializable
 data class Track(
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
@@ -138,6 +164,7 @@ data class Track(
     val uri: String
 ) : RelinkingAvailableResponse(linked_from)
 
+@Serializable
 data class SimpleAlbum(
     val album_type: String,
     val artists: List<SimpleArtist>,
@@ -153,6 +180,7 @@ data class SimpleAlbum(
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
 
+@Serializable
 data class Album(
     val album_type: String,
     val artists: List<SimpleArtist>,
@@ -174,6 +202,7 @@ data class Album(
     val uri: String
 )
 
+@Serializable
 data class SimplePlaylist(
     val collaborative: Boolean,
     val external_urls: HashMap<String, String>,
@@ -194,8 +223,10 @@ data class SimplePlaylist(
 /**
  * Some parameters are timestamps and will be updated soon to reflect Spotify's use of a Timestamp string
  */
+@Serializable
 data class PlaylistTrack(val added_at: String, val added_by: SpotifyPublicUser, val is_local: Boolean, val track: Track)
 
+@Serializable
 data class Playlist(
     val collaborative: Boolean,
     val description: String,
@@ -213,8 +244,10 @@ data class Playlist(
     val uri: String
 )
 
+@Serializable
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
 
+@Serializable
 data class AudioAnalysis(
     val bars: List<AudioBar>,
     val beats: List<AudioBeat>,
@@ -228,6 +261,8 @@ data class AudioAnalysis(
 data class AudioBar(val start: Float, val duration: Float, val confidence: Float)
 data class AudioBeat(val start: Float, val duration: Float, val confidence: Float)
 data class AudioTatum(val start: Float, val duration: Float, val confidence: Float)
+
+@Serializable
 data class AudioAnalysisMeta(
     val analyzer_version: String,
     val platform: String,
@@ -238,6 +273,7 @@ data class AudioAnalysisMeta(
     val input_process: String
 )
 
+@Serializable
 data class AudioSection(
     val start: Float,
     val duration: Float,
@@ -253,6 +289,7 @@ data class AudioSection(
     val time_signature_confidence: Float
 )
 
+@Serializable
 data class AudioSegment(
     val start: Float,
     val duration: Float,
@@ -265,6 +302,7 @@ data class AudioSegment(
     val timbre: List<Float>
 )
 
+@Serializable
 data class TrackAnalysis(
     val num_samples: Int,
     val duration: Float,
@@ -294,6 +332,7 @@ data class TrackAnalysis(
     val rhythm_version: Int
 )
 
+@Serializable
 data class AudioFeatures(
     val acousticness: Float,
     val analysis_url: String,
@@ -315,8 +354,13 @@ data class AudioFeatures(
     val valence: Float
 )
 
+@Serializable
 data class SavedAlbum(val added_at: String, val album: Album)
+
+@Serializable
 data class SavedTrack(val added_at: String, val track: Track)
+
+@Serializable
 data class Device(
     val id: String,
     val is_active: Boolean,
@@ -326,6 +370,7 @@ data class Device(
     val volume_percent: Int
 )
 
+@Serializable
 data class CurrentlyPlayingContext(
     val timestamp: Long?,
     val device: Device,
@@ -338,6 +383,8 @@ data class CurrentlyPlayingContext(
 )
 
 data class Context(val external_urls: HashMap<String, String>)
+
+@Serializable
 data class CurrentlyPlayingObject(
     val context: PlayHistoryContext?,
     val timestamp: Long,
@@ -346,5 +393,12 @@ data class CurrentlyPlayingObject(
     val item: Track
 )
 
-data class PlayHistoryContext(val type: String, val href: String, val external_urls: HashMap<String, String>, val uri: String)
+data class PlayHistoryContext(
+    val type: String,
+    val href: String,
+    val external_urls: HashMap<String, String>,
+    val uri: String
+)
+
+@Serializable
 data class PlayHistory(val track: SimpleTrack, val played_at: String, val context: PlayHistoryContext)

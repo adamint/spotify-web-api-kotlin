@@ -21,6 +21,7 @@ import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import kotlinx.serialization.list
 import java.util.function.Supplier
 
 /**
@@ -42,7 +43,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylists(user: String, limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with("offset", offset)
-                    .toString()).toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
+                    .toString()).toPagingObject(endpoint = this, serializer = SimplePlaylist.serializer())
         })
     }
 
@@ -58,7 +59,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
-                        .with("market", market?.code).toString()).toObject(api, Playlist::class.java)
+                        .with("market", market?.code).toString()).toObject<Playlist>(api, Playlist.serializer())
             }
         })
     }
@@ -76,7 +77,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylistTracks(playlist: String, limit: Int? = null, offset: Int? = null, market: Market? = null): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
         return toAction(Supplier {
             get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
-                    .with("offset", offset).with("market", market?.code).toString()).toLinkedResult(api, PlaylistTrack::class.java)
+                    .with("offset", offset).with("market", market?.code).toString())
+                .toLinkedResult(api, PlaylistTrack.serializer())
         })
     }
 
@@ -88,7 +90,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString()).toObject(api, mutableListOf<SpotifyImage>().javaClass).toList()
+            get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString())
+                .toObject<List<SpotifyImage>>(api, SpotifyImage.serializer().list).toList()
         })
     }
 }

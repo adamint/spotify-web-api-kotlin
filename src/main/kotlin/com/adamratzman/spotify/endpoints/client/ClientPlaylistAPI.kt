@@ -18,6 +18,7 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import kotlinx.serialization.Serializable
 import org.json.JSONArray
 import org.json.JSONObject
 import java.awt.image.BufferedImage
@@ -62,10 +63,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (description != null) json.put("description", description)
             if (public != null) json.put("public", public)
             if (collaborative != null) json.put("collaborative", collaborative)
-            post(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(), json.toString()).toObject(
-                api,
-                Playlist::class.java
-            )
+            post(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(),
+                json.toString()).toObject(api, Playlist.serializer())
         })
     }
 
@@ -135,7 +134,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                .toPagingObject(endpoint = this, tClazz = SimplePlaylist::class.java)
+                .toPagingObject(endpoint = this, serializer = SimplePlaylist.serializer())
         })
     }
 
@@ -196,7 +195,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             if (reorderRangeLength != null) json.put("range_length", reorderRangeLength)
             if (snapshotId != null) json.put("snapshot_id", snapshotId)
             put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(), json.toString())
-                .toObject(api, Snapshot::class.java)
+                .toObject(api, Snapshot.serializer())
         })
     }
 
@@ -331,6 +330,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         return DatatypeConverter.printBase64Binary(bos.toByteArray())
     }
 
+    @Serializable
     data class Snapshot(val snapshot_id: String)
 }
 
