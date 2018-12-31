@@ -38,26 +38,17 @@ class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
     var authorizationCode: String? = null
     var tokenString: String? = null
     var token: Token? = null
+    var useCache: Boolean = true
 
-    fun redirectUri(redirectUri: String?): SpotifyApiBuilderJava {
-        this.redirectUri = redirectUri
-        return this
-    }
+    fun useCache(useCache: Boolean) = apply { this.useCache = useCache }
 
-    fun authorizationCode(authorizationCode: String?): SpotifyApiBuilderJava {
-        this.authorizationCode = authorizationCode
-        return this
-    }
+    fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
 
-    fun tokenString(tokenString: String?): SpotifyApiBuilderJava {
-        this.tokenString = tokenString
-        return this
-    }
+    fun authorizationCode(authorizationCode: String?) = apply { this.authorizationCode = authorizationCode }
 
-    fun token(token: Token?): SpotifyApiBuilderJava {
-        this.token = token
-        return this
-    }
+    fun tokenString(tokenString: String?) = apply { this.tokenString = tokenString }
+
+    fun token(token: Token?) = apply { this.token = token }
 
     fun buildCredentialed() = spotifyApi {
         credentials {
@@ -120,6 +111,7 @@ class SpotifyUserAuthorizationBuilder(
 class SpotifyApiBuilder {
     private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
     private var authentication = SpotifyUserAuthorizationBuilder()
+    var useCache: Boolean = true
 
     fun credentials(block: SpotifyCredentialsBuilder.() -> Unit) {
         credentials = SpotifyCredentialsBuilder().apply(block).build()
@@ -140,6 +132,8 @@ class SpotifyApiBuilder {
         return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
+    fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Runnable { consumer(buildCredentialed()) }.run()
+
     fun buildCredentialed(): SpotifyAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
@@ -148,7 +142,7 @@ class SpotifyApiBuilder {
         }
         return when {
             authentication.token != null -> {
-                SpotifyAppAPI(clientId ?: "not-set", clientSecret ?: "not-set", authentication.token!!)
+                SpotifyAppAPI(clientId ?: "not-set", clientSecret ?: "not-set", authentication.token!!, useCache)
             }
             authentication.tokenString != null -> {
                 SpotifyAppAPI(
@@ -157,19 +151,23 @@ class SpotifyApiBuilder {
                     Token(
                         authentication.tokenString!!, "client_credentials",
                         60000, null, null
-                    )
+                    ),
+                    useCache
                 )
             }
             else -> try {
                 if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
                 val token = getCredentialedToken(clientId, clientSecret)
                     ?: throw IllegalArgumentException("Invalid credentials provided")
-                SpotifyAppAPI(clientId, clientSecret, token)
+                SpotifyAppAPI(clientId, clientSecret, token, useCache)
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
         }
     }
+
+    fun buildClientAsync(consumer: (SpotifyClientAPI) -> Unit, automaticRefresh: Boolean = false) =
+        Runnable { consumer(buildClient(automaticRefresh)) }.run()
 
     fun buildClient(automaticRefresh: Boolean = false): SpotifyClientAPI =
         buildClient(
@@ -210,9 +208,15 @@ class SpotifyApiBuilder {
                         method = HttpRequestMethod.POST,
                         body = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
                         contentType = "application/x-www-form-urlencoded"
-                    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body.toObject(Gson(), Token::class.java),
+                    ).execute(
+                        HttpHeader(
+                            "Authorization",
+                            "Basic ${"$clientId:$clientSecret".byteEncode()}"
+                        )
+                    ).body.toObject(Gson(), Token::class.java),
                     automaticRefresh,
-                    redirectUri ?: throw IllegalArgumentException()
+                    redirectUri ?: throw IllegalArgumentException(),
+                    useCache
                 )
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
@@ -222,23 +226,28 @@ class SpotifyApiBuilder {
                 clientSecret ?: "not-set",
                 token,
                 automaticRefresh,
-                redirectUri ?: "not-set"
+                redirectUri ?: "not-set",
+                useCache
             )
             tokenString != null -> SpotifyClientAPI(
                 clientId ?: "not-set", clientSecret ?: "not-set", Token(
                     tokenString, "client_credentials", 1000,
                     null, null
-                ), false, redirectUri ?: "not-set"
+                ), false, redirectUri ?: "not-set",
+                useCache
             )
             else -> throw IllegalArgumentException(
                 "At least one of: authorizationCode, tokenString, or token must be provided " +
-                        "to build a SpotifyClientAPI object"
+                    "to build a SpotifyClientAPI object"
             )
         }
     }
 }
 
-abstract class SpotifyAPI internal constructor(val clientId: String, val clientSecret: String, var token: Token) {
+abstract class SpotifyAPI internal constructor(
+    val clientId: String, val clientSecret: String,
+    var token: Token, var useCache: Boolean
+) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
     internal val gson = GsonBuilder().setLenient().create()!!
@@ -257,8 +266,6 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     abstract fun refreshToken()
     abstract fun clearCache()
 
-    var useCache: Boolean = true
-
     init {
         executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
     }
@@ -276,8 +283,8 @@ abstract class SpotifyAPI internal constructor(val clientId: String, val clientS
     }
 }
 
-class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token) :
-    SpotifyAPI(clientId, clientSecret, token) {
+class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token, useCache: Boolean) :
+    SpotifyAPI(clientId, clientSecret, token, useCache) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -316,8 +323,9 @@ class SpotifyClientAPI internal constructor(
     clientSecret: String,
     token: Token,
     automaticRefresh: Boolean = false,
-    var redirectUri: String
-) : SpotifyAPI(clientId, clientSecret, token) {
+    var redirectUri: String,
+    useCache: Boolean
+) : SpotifyAPI(clientId, clientSecret, token, useCache) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -399,9 +407,9 @@ class SpotifyClientAPI internal constructor(
 
 private fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-            "&response_type=code" +
-            "&redirect_uri=$redirectUri" +
-            if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
+        "&response_type=code" +
+        "&redirect_uri=$redirectUri" +
+        if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
 private fun getCredentialedToken(clientId: String, clientSecret: String) = Gson().fromJson(
