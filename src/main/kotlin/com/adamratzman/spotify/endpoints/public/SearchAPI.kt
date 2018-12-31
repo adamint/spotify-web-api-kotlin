@@ -10,8 +10,10 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.Playlist
 import com.adamratzman.spotify.utils.SimpleAlbum
+import com.adamratzman.spotify.utils.SimplePlaylist
 import com.adamratzman.spotify.utils.SimpleTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.Track
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
@@ -41,12 +43,12 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<Playlist, PagingObject<Playlist>> {
+    ): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toPagingObjectAction(Supplier {
             get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject(
                 "playlists",
                 this,
-                Playlist.serializer()
+                SimplePlaylist.serializer()
             )
         })
     }
@@ -122,12 +124,12 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SimpleTrack, PagingObject<SimpleTrack>> {
+    ): SpotifyRestPagingAction<Track, PagingObject<Track>> {
         return toPagingObjectAction(Supplier {
             get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject(
                 "tracks",
                 this,
-                SimpleTrack.serializer()
+                Track.serializer()
             )
         })
     }
