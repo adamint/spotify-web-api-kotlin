@@ -90,7 +90,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
         if (document.responseCode / 200 != 1 /* Check if status is 2xx */) {
             val message = try {
-                document.body.toObject<ErrorResponse>(api, ErrorResponse).error
+                document.body.toObject<ErrorResponse>(api, ErrorResponse.serializer()).error
             } catch (e: Exception) {
                 ErrorObject(400, "malformed request sent")
             }

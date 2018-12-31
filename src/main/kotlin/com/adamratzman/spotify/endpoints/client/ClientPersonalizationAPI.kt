@@ -36,7 +36,8 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Artist, PagingObject<Artist>> {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Artist::class.java)
+                    .with("time_range", timeRange).toString())
+                .toPagingObject(endpoint = this, serializer = Artist.serializer())
         })
     }
 
@@ -55,7 +56,8 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Track, PagingObject<Track>> {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Track::class.java)
+                    .with("time_range", timeRange).toString())
+                .toPagingObject(endpoint = this, serializer = Track.serializer())
         })
     }
 }

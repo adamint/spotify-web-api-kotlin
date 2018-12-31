@@ -15,6 +15,8 @@ import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import kotlinx.serialization.internal.ArrayListSerializer
+import kotlinx.serialization.internal.BooleanSerializer
 import java.util.function.Supplier
 
 /**
@@ -35,7 +37,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedTrack::class.java)
+            ).toPagingObject(endpoint = this, serializer = SavedTrack.serializer())
         })
     }
 
@@ -53,7 +55,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedAlbum::class.java)
+            ).toPagingObject(endpoint = this, serializer = SavedAlbum.serializer())
         })
     }
 
@@ -78,7 +80,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                     .toString()
-            ).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
         })
     }
 

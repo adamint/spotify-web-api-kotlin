@@ -20,6 +20,7 @@ import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
 import com.adamratzman.spotify.utils.toInnerObject
 import com.adamratzman.spotify.utils.toObject
+import kotlinx.serialization.list
 import org.json.JSONObject
 import java.util.function.Supplier
 
@@ -33,7 +34,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(
                 "devices",
                 api,
-                mutableListOf<Device>().javaClass
+                Device.serializer().list
             ).toList()
         })
     }
@@ -41,7 +42,8 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction(Supplier {
             val obj: CurrentlyPlayingContext? =
-                get(EndpointBuilder("/me/player").toString()).toObject(api, CurrentlyPlayingContext::class.java)
+                get(EndpointBuilder("/me/player").toString())
+                    .toObject(api, CurrentlyPlayingContext.serializer())
             if (obj?.timestamp == null) null else obj
         })
     }
@@ -50,7 +52,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject(
                 endpoint = this,
-                tClazz = PlayHistory::class.java
+                serializer = PlayHistory.serializer()
             )
         })
     }
@@ -59,7 +61,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").toString()).toObject(
                 api,
-                CurrentlyPlayingObject::class.java
+                CurrentlyPlayingObject.serializer()
             )
             if (obj?.timestamp == null) null else obj
         })

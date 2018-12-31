@@ -22,6 +22,7 @@ import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toObjectNullable
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -211,7 +212,7 @@ class SpotifyApiBuilder {
                             "Authorization",
                             "Basic ${"$clientId:$clientSecret".byteEncode()}"
                         )
-                    ).body.toObject(null, Token),
+                    ).body.toObject(null, Token.serializer()),
                     automaticRefresh,
                     redirectUri ?: throw IllegalArgumentException(),
                     useCache
@@ -299,7 +300,7 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
 
     override fun refreshToken() {
         if (clientId != "not-set" && clientSecret != "not-set")
-            token = getCredentialedToken(clientId, clientSecret)
+            getCredentialedToken(clientId, clientSecret)?.let { token = it }
         expireTime = System.currentTimeMillis() + token.expires_in * 1000
     }
 
@@ -373,7 +374,7 @@ class SpotifyClientAPI internal constructor(
                 body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
                 contentType = "application/x-www-form-urlencoded"
             ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-                .toObject<Token?>(null, Token)
+                .toObjectNullable(null, Token.serializer())
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
@@ -415,4 +416,4 @@ private fun getCredentialedToken(clientId: String, clientSecret: String) =
         body = "grant_type=client_credentials",
         contentType = "application/x-www-form-urlencoded"
     ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-        .toObject<Token>(null, Token)
+        .toObjectNullable(null, Token.serializer())

@@ -69,7 +69,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                 EndpointBuilder("/me/following/contains").with("type", "user")
                     .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toObject<List<Boolean>>(api, ArrayListSerializer(BooleanSerializer)).toList()
+            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
         })
     }
 
@@ -98,7 +98,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                 EndpointBuilder("/me/following/contains").with("type", "artist")
                     .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
-            ).toObject<List<Boolean>>(api, ArrayListSerializer(BooleanSerializer)).toList()
+            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
         })
     }
 
@@ -118,8 +118,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
                     "after",
                     after
                 ).toString()
-            )
-                .toCursorBasedPagingObject("artists", this, Artist::class.java)
+            ).toCursorBasedPagingObject("artists", this, Artist.serializer())
         })
     }
 
