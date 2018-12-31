@@ -3,6 +3,7 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 /**
@@ -36,12 +37,17 @@ data class RecommendationSeed(
 @Serializable
 data class SpotifyCategory(val href: String, val icons: List<SpotifyImage>, val id: String, val name: String)
 
+@Serializable
 data class SpotifyCopyright(val text: String, val type: String)
 
+@Serializable
 data class PlaylistTrackInfo(val href: String, val total: Int)
 
 /**
- * @param href Will always be null, per the Spotify documentation, until the Web API is updated to support this.
+ * @param href Will always be null, per the Spotify documentation,
+ * until the Web API is updated to support this.
+ *
+ * @param total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 @Serializable
 data class Followers(val href: String?, val total: Int)
@@ -66,16 +72,16 @@ data class SpotifyUserInformation(
 data class SpotifyPublicUser(
     val display_name: String,
     val external_urls: HashMap<String, String>,
-    val followers: Followers,
+    @Optional val followers: Followers = Followers(null,-1),
     val href: String,
     val id: String,
-    val images: List<SpotifyImage>,
+    @Optional val images: List<SpotifyImage> = listOf(),
     val type: String,
     val uri: String
 )
 
 @Serializable
-data class SpotifyImage(val height: Int, val url: String, val width: Int)
+data class SpotifyImage(val height: Int?, val url: String, val width: Int?)
 
 abstract class Linkable {
     @Transient
@@ -131,13 +137,14 @@ data class SimpleTrack(
     val external_urls: HashMap<String, String>,
     val href: String,
     val id: String,
-    val is_playable: Boolean?,
+   @Optional val is_playable: Boolean = true,
     private val linked_from: LinkedTrack?,
     val name: String,
     val preview_url: String,
     val track_number: Int,
     val type: String,
-    val uri: String
+    val uri: String,
+    val is_local:Boolean
 ) : RelinkingAvailableResponse(linked_from) {
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
@@ -146,7 +153,8 @@ data class SimpleTrack(
 data class Track(
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
-    val available_markets: List<String>,
+   @Optional val available_markets: List<String>? = null,
+    @Optional val is_playable: Boolean = true,
     val disc_number: Int,
     val duration_ms: Int,
     val explicit: Boolean,
@@ -154,28 +162,31 @@ data class Track(
     val external_urls: HashMap<String, String>,
     val href: String,
     val id: String,
-    val is_playable: Boolean?,
-    private val linked_from: LinkedTrack?,
+    @Optional private val linked_from: LinkedTrack?=null,
     val name: String,
     val popularity: Int,
     val preview_url: String,
     val track_number: Int,
     val type: String,
-    val uri: String
+    val uri: String,
+    val is_local:Boolean
 ) : RelinkingAvailableResponse(linked_from)
 
 @Serializable
 data class SimpleAlbum(
     val album_type: String,
     val artists: List<SimpleArtist>,
-    val available_markets: List<String>,
+    @Optional val available_markets: List<String>? = null,
     val external_urls: HashMap<String, String>,
     val href: String,
     val id: String,
     val images: List<SpotifyImage>,
     val name: String,
     val type: String,
-    val uri: String
+    val uri: String,
+    val release_date: String,
+    val release_date_precision: String,
+    val total_tracks:Int
 ) : Linkable() {
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
@@ -211,6 +222,7 @@ data class SimplePlaylist(
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
+    @Optional val primary_color: String? = null,
     val public: Boolean?,
     val snapshot_id: String,
     val tracks: PlaylistTrackInfo,
@@ -234,6 +246,7 @@ data class Playlist(
     val followers: Followers,
     val href: String,
     val id: String,
+    @Optional val primary_color: String? = null,
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
@@ -257,9 +270,11 @@ data class AudioAnalysis(
     val tatums: List<AudioTatum>,
     val track: TrackAnalysis
 )
-
+@Serializable
 data class AudioBar(val start: Float, val duration: Float, val confidence: Float)
+@Serializable
 data class AudioBeat(val start: Float, val duration: Float, val confidence: Float)
+@Serializable
 data class AudioTatum(val start: Float, val duration: Float, val confidence: Float)
 
 @Serializable
@@ -297,7 +312,7 @@ data class AudioSegment(
     val loudness_start: Float,
     val loudness_max_time: Float,
     val loudness_max: Float,
-    val loudness_end: Float,
+    @Optional val loudness_end: Float?=null,
     val pitches: List<Float>,
     val timbre: List<Float>
 )
@@ -327,9 +342,9 @@ data class TrackAnalysis(
     val echoprintstring: String,
     val echoprint_version: Float,
     val synchstring: String,
-    val synch_version: Int,
+    val synch_version: Float,
     val rhythmstring: String,
-    val rhythm_version: Int
+    val rhythm_version: Float
 )
 
 @Serializable
@@ -382,6 +397,7 @@ data class CurrentlyPlayingContext(
     val context: Context
 )
 
+@Serializable
 data class Context(val external_urls: HashMap<String, String>)
 
 @Serializable
@@ -393,6 +409,7 @@ data class CurrentlyPlayingObject(
     val item: Track
 )
 
+@Serializable
 data class PlayHistoryContext(
     val type: String,
     val href: String,

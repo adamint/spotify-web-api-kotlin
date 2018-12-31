@@ -7,6 +7,7 @@ import com.adamratzman.spotify.main.SpotifyException
 import com.adamratzman.spotify.main.SpotifyRestAction
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.json.JSON
 import org.json.JSONArray
 import org.json.JSONObject
@@ -27,7 +28,7 @@ class CursorBasedPagingObject<T>(
     total: Int,
     endpoint: SpotifyEndpoint,
     serializer: KSerializer<T>
-) : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint,serializer)
+) : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint, serializer)
 
 @Serializable
 open class PagingObject<T>(
@@ -123,7 +124,7 @@ data class LinkedResult<out T>(val href: String, val items: List<T>) {
 }
 
 @Serializable
-abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) : Linkable() {
+abstract class RelinkingAvailableResponse(@Transient val linkedTrack: LinkedTrack?=null) : Linkable() {
     fun isRelinked() = linkedTrack != null
 }
 
@@ -141,15 +142,20 @@ internal fun <T> String.toObjectNullable(o: SpotifyAPI?, serializer: KSerializer
 
 @Suppress("UNCHECKED_CAST")
 internal fun <T> String.toObject(o: SpotifyAPI?, serializer: KSerializer<T>): T {
-    val obj = (JSON.parse(serializer, this) as? T) ?: throw SpotifyException(
-        "Unable to parse $this",
-        IllegalArgumentException("$serializer not found")
-    )
-    o?.let {
-        if (obj is Linkable) obj.api = o
-        obj.instantiatePagingObjects(o)
+    try {
+        val obj = (JSON.parse(serializer, this) as? T) ?: throw SpotifyException(
+            "Unable to parse $this",
+            IllegalArgumentException("$serializer not found")
+        )
+        o?.let {
+            if (obj is Linkable) obj.api = o
+            obj.instantiatePagingObjects(o)
+        }
+        return obj
+    }catch (e:java.lang.Exception){
+        println(this)
+        throw e
     }
-    return obj
 }
 
 internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
