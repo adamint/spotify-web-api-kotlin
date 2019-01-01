@@ -245,8 +245,10 @@ class SpotifyApiBuilder {
 }
 
 abstract class SpotifyAPI internal constructor(
-    val clientId: String, val clientSecret: String,
-    var token: Token, var useCache: Boolean
+    val clientId: String,
+    val clientSecret: String,
+    var token: Token,
+    var useCache: Boolean
 ) {
     internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
@@ -378,10 +380,13 @@ class SpotifyClientAPI internal constructor(
             ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
             Token::class.java
         )
-        if (tempToken == null) {
+        if (tempToken?.access_token == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
-            this.token = tempToken
+            this.token = tempToken.copy(
+                refresh_token = tempToken.refresh_token ?: this.token.refresh_token,
+                scope = tempToken.scope ?: this.token.scope
+            )
             logger.logInfo("Successfully refreshed the Spotify token")
         }
     }
