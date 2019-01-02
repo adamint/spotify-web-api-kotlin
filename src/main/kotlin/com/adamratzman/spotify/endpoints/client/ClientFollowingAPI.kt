@@ -118,7 +118,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
                     "after",
                     after
                 ).toString()
-            ).toCursorBasedPagingObject("artists", this, Artist.serializer())
+            ).toCursorBasedPagingObject("artists", this, CursorBasedPagingObject.serializer(Artist.serializer()))
         })
     }
 

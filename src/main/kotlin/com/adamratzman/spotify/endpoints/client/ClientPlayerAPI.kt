@@ -52,7 +52,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject(
                 endpoint = this,
-                serializer = PlayHistory.serializer()
+                serializer = CursorBasedPagingObject.serializer(PlayHistory.serializer())
             )
         })
     }

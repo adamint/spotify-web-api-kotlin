@@ -48,7 +48,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject(
                 "playlists",
                 this,
-                SimplePlaylist.serializer()
+                PagingObject.serializer(SimplePlaylist.serializer())
             )
         })
     }
@@ -75,7 +75,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject(
                 "artists",
                 this,
-                Artist.serializer()
+                PagingObject.serializer(Artist.serializer())
             )
         })
     }
@@ -102,7 +102,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject(
                 "albums",
                 this,
-                SimpleAlbum.serializer()
+                PagingObject.serializer(SimpleAlbum.serializer())
             )
         })
     }
@@ -129,7 +129,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject(
                 "tracks",
                 this,
-                Track.serializer()
+                PagingObject.serializer(Track.serializer())
             )
         })
     }
