@@ -134,7 +134,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                .toPagingObject(endpoint = this, serializer = SimplePlaylist.serializer())
+                .toPagingObject(endpoint = this, serializer = PagingObject.serializer(SimplePlaylist.serializer()))
         })
     }
 

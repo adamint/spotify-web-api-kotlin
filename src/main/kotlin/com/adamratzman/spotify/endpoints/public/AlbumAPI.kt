@@ -8,14 +8,14 @@ import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.AlbumsResponse
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.LinkedResult
 import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.SimpleTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -66,7 +66,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<LinkedResult<SimpleTrack>> {
+    ): SpotifyRestAction<PagingObject<SimpleTrack>> {
         return toAction(Supplier {
             get(
                 EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
@@ -74,7 +74,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     offset
                 ).with("market", market?.code)
                     .toString()
-            ).toLinkedResult(api, SimpleTrack.serializer())
+            ).toPagingObject(endpoint = this, serializer = PagingObject.serializer(SimpleTrack.serializer()))
         })
     }
 }

@@ -43,7 +43,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylists(user: String, limit: Int? = null, offset: Int? = null): SpotifyRestPagingAction<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toPagingObjectAction(Supplier {
             get(EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with("offset", offset)
-                    .toString()).toPagingObject(endpoint = this, serializer = SimplePlaylist.serializer())
+                    .toString()).toPagingObject(endpoint = this, serializer = PagingObject.serializer(SimplePlaylist.serializer()))
         })
     }
 

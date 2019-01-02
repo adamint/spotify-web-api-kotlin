@@ -37,7 +37,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, serializer = SavedTrack.serializer())
+            ).toPagingObject(endpoint = this, serializer = PagingObject.serializer(SavedTrack.serializer()))
         })
     }
 
@@ -55,7 +55,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, serializer = SavedAlbum.serializer())
+            ).toPagingObject(endpoint = this, serializer = PagingObject.serializer(SavedAlbum.serializer()))
         })
     }
 
