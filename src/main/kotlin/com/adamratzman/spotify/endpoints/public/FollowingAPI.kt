@@ -9,9 +9,7 @@ import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
-import kotlinx.serialization.internal.ArrayListSerializer
-import kotlinx.serialization.internal.BooleanSerializer
+import com.adamratzman.spotify.utils.toArray
 import java.util.function.Supplier
 
 /**
@@ -39,7 +37,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
                     .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
+            ).toArray<Boolean>(api)
         })
     }
 

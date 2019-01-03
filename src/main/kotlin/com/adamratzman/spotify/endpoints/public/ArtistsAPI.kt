@@ -14,13 +14,11 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.SimpleAlbum
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Track
-import com.adamratzman.spotify.utils.TrackList
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toInnerObject
+import com.adamratzman.spotify.utils.toInnerArray
 import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
-import kotlinx.serialization.internal.ArrayListSerializer
 import java.util.function.Supplier
 
 /**
@@ -36,10 +34,8 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getArtist(artist: String): SpotifyRestAction<Artist?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString()).toObject<Artist>(
-                    api,
-                    Artist.serializer()
-                )
+                get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString())
+                    .toObject<Artist>(api)
             }
         })
     }
@@ -54,7 +50,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 EndpointBuilder("/artists").with(
                     "ids",
                     artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
-            ).toObject(api, ArtistList.serializer()).artists
+            ).toObject<ArtistList>(api).artists
         })
     }
 
@@ -82,7 +78,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     offset
                 ).with("market", market?.code)
                     .with("include_groups", include.joinToString(",") { it.keyword }).toString()
-            ).toLinkedResult(api, SimpleAlbum.serializer())
+            ).toLinkedResult<SimpleAlbum>(api)
         })
     }
 
@@ -106,7 +102,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     "country",
                     market.code
                 ).toString()
-            ).toInnerObject("tracks", api, ArrayListSerializer(Track.serializer()))
+            ).toInnerArray<Track>("tracks", api)
         })
     }
 
@@ -122,7 +118,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getRelatedArtists(artist: String): SpotifyRestAction<List<Artist>> {
         return toAction(Supplier {
             get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/related-artists").toString())
-                .toObject(api, ArtistList.serializer()).artists.map { it!! }
+                .toObject<ArtistList>(api).artists.filterNotNull()
         })
     }
 }

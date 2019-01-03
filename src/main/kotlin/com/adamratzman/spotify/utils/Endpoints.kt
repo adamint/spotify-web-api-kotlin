@@ -4,7 +4,6 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyAppAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.main.base
 import java.net.HttpURLConnection
 import java.util.function.Supplier
@@ -90,7 +89,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
         if (document.responseCode / 200 != 1 /* Check if status is 2xx */) {
             val message = try {
-                document.body.toObject<ErrorResponse>(api, ErrorResponse.serializer()).error
+                document.body.toObject<ErrorResponse>(api).error
             } catch (e: Exception) {
                 ErrorObject(400, "malformed request sent")
             }
@@ -113,7 +112,6 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     )
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
-    fun <Z, T : PagingObject<Z>> toPagingObjectAction(supplier: Supplier<T>) = SpotifyRestPagingAction(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {

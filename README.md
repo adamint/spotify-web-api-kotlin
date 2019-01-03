@@ -38,21 +38,7 @@ dependencies {
 ```
 
 #### Android
-This library should work out of the box on Android too.
-
-If you're using Proguard, please add this to `proguard-rules.pro`:
-```
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class com.yourcompany.yourpackage.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
-    *** Companion;
-}
--keepclasseswithmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
-
+This library should work out of the box on Android.
 ```
 
 ## Creating a SpotifyAPI or SpotifyClientAPI object

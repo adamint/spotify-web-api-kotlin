@@ -5,7 +5,6 @@ import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.CursorBasedPagingObject
@@ -14,10 +13,8 @@ import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyPublicUser
 import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toArray
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
-import com.adamratzman.spotify.utils.toObject
-import kotlinx.serialization.internal.ArrayListSerializer
-import kotlinx.serialization.internal.BooleanSerializer
 import java.util.function.Supplier
 
 /**
@@ -69,7 +66,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                 EndpointBuilder("/me/following/contains").with("type", "user")
                     .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
+            ).toArray<Boolean>(api)
         })
     }
 
@@ -98,7 +95,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                 EndpointBuilder("/me/following/contains").with("type", "artist")
                     .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
-            ).toObject(api, ArrayListSerializer(BooleanSerializer)).toList()
+            ).toArray<Boolean>(api)
         })
     }
 
@@ -111,14 +108,14 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun getFollowedArtists(
         limit: Int? = null,
         after: String? = null
-    ): SpotifyRestPagingAction<Artist, CursorBasedPagingObject<Artist>> {
-        return toPagingObjectAction(Supplier {
+    ): SpotifyRestAction<CursorBasedPagingObject<Artist>> {
+        return toAction(Supplier {
             get(
                 EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
                     "after",
                     after
                 ).toString()
-            ).toCursorBasedPagingObject("artists", this, CursorBasedPagingObject.serializer(Artist.serializer()))
+            ).toCursorBasedPagingObject<Artist>("artists", this)
         })
     }
 
