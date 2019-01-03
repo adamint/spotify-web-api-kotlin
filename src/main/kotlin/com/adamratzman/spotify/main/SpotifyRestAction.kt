@@ -2,12 +2,11 @@
 package com.adamratzman.spotify.main
 
 import com.adamratzman.spotify.utils.AbstractPagingObject
-import com.adamratzman.spotify.utils.PagingObject
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Supplier<T>) {
+open class SpotifyRestAction<T>(protected val api: SpotifyAPI, private val supplier: Supplier<T>) {
     fun complete(): T {
         return try {
             supplier.get()
@@ -41,4 +40,10 @@ class SpotifyRestAction<T>(private val api: SpotifyAPI, private val supplier: Su
     }
 
     override fun toString() = complete().toString()
+}
+
+class SpotifyRestActionPaging<Z, T:AbstractPagingObject<Z>>(api: SpotifyAPI, supplier: Supplier<T>) :
+    SpotifyRestAction<T>(api, supplier) {
+    fun getAll() = api.tracks.toAction(Supplier { complete().getAllImpl() })
+    fun getAllItems() = api.tracks.toAction(Supplier { complete().getAllImpl().toList().map { it.items }.flatten() })
 }

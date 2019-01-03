@@ -52,15 +52,15 @@ class PagingObject<T>(
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint.get(it) }?.let { json ->
             when {
-                this as? PagingObject<SimpleTrack> != null -> json.toPagingObject<SimpleTrack>(null, endpoint)
-                this as? PagingObject<SpotifyCategory> != null -> json.toPagingObject<SpotifyCategory>(null, endpoint)
-                this as? PagingObject<SimpleAlbum> != null -> json.toPagingObject<SimpleAlbum>(null, endpoint)
-                this as? PagingObject<SimplePlaylist> != null -> json.toPagingObject<SimplePlaylist>(null, endpoint)
-                this as? PagingObject<SavedTrack> != null -> json.toPagingObject<SavedTrack>(null, endpoint)
-                this as? PagingObject<SavedAlbum> != null -> json.toPagingObject<SavedAlbum>(null, endpoint)
-                this as? PagingObject<Artist> != null -> json.toPagingObject<Artist>(null, endpoint)
-                this as? PagingObject<Track> != null -> json.toPagingObject<Track>(null, endpoint)
-                this as? PagingObject<PlaylistTrack> != null -> json.toPagingObject<PlaylistTrack>(null, endpoint)
+                itemClazz == SimpleTrack::class.java -> json.toPagingObject<SimpleTrack>(null, endpoint)
+                itemClazz == SpotifyCategory::class.java -> json.toPagingObject<SpotifyCategory>(null, endpoint)
+                itemClazz == SimpleAlbum::class.java -> json.toPagingObject<SimpleAlbum>(null, endpoint)
+                itemClazz == SimplePlaylist::class.java -> json.toPagingObject<SimplePlaylist>(null, endpoint)
+                itemClazz == SavedTrack::class.java -> json.toPagingObject<SavedTrack>(null, endpoint)
+                itemClazz == SavedAlbum::class.java -> json.toPagingObject<SavedAlbum>(null, endpoint)
+                itemClazz == Artist::class.java -> json.toPagingObject<Artist>(null, endpoint)
+                itemClazz == Track::class.java -> json.toPagingObject<Track>(null, endpoint)
+                itemClazz == PlaylistTrack::class.java -> json.toPagingObject<PlaylistTrack>(null, endpoint)
                 else -> throw IllegalArgumentException("Unknown type in $href response")
             } as? PagingObject<T>
         }
@@ -119,11 +119,11 @@ class CursorBasedPagingObject<T>(
         return next?.let {
             val url = endpoint.get(it)
             when {
-                this as? CursorBasedPagingObject<PlayHistory> != null -> url.toCursorBasedPagingObject<PlayHistory>(
+                itemClazz == PlayHistory::class.java -> url.toCursorBasedPagingObject<PlayHistory>(
                     null,
                     endpoint
                 )
-                this as? CursorBasedPagingObject<Artist> != null -> url.toCursorBasedPagingObject<Artist>(
+                itemClazz == Artist::class.java -> url.toCursorBasedPagingObject<Artist>(
                     null,
                     endpoint
                 )
@@ -145,9 +145,12 @@ abstract class AbstractPagingObject<T>(
     val offset: Int = 0,
     val previous: String? = null,
     val total: Int
-) {
+) : ArrayList<T>(items) {
     @Json(ignored = true)
     lateinit var endpoint: SpotifyEndpoint
+
+    @Json(ignored = true)
+    lateinit var itemClazz: Class<T>
 
     internal abstract fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
     internal abstract fun getAllImpl(): Sequence<AbstractPagingObject<T>>

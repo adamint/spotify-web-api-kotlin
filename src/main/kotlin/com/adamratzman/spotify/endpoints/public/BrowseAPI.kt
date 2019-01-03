@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
@@ -59,8 +60,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<PagingObject<SimpleAlbum>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimpleAlbum,PagingObject<SimpleAlbum>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
                     "country",
@@ -129,8 +130,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         offset: Int? = null,
         locale: String? = null,
         market: Market? = null
-    ): SpotifyRestAction<PagingObject<SpotifyCategory>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SpotifyCategory,PagingObject<SpotifyCategory>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
                     "market",
@@ -184,8 +185,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<PagingObject<SimplePlaylist>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimplePlaylist,PagingObject<SimplePlaylist>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/categories/${categoryId.encode()}/playlists").with(
                     "limit",
