@@ -17,7 +17,7 @@ class ClientLibraryAPITest : Spek({
         it("library track tests") {
             val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
             if (api.library.contains(LibraryType.TRACK, testTrack).complete()) {
-                api.library.remove(LibraryType.TRACK, testTrack)
+                api.library.remove(LibraryType.TRACK, testTrack).complete()
             }
 
             assertFalse(api.library.contains(LibraryType.TRACK, testTrack).complete())

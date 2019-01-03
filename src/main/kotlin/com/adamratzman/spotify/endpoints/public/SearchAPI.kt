@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
@@ -10,8 +10,10 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.Playlist
 import com.adamratzman.spotify.utils.SimpleAlbum
+import com.adamratzman.spotify.utils.SimplePlaylist
 import com.adamratzman.spotify.utils.SimpleTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.Track
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
@@ -41,12 +43,10 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<Playlist, PagingObject<Playlist>> {
-        return toPagingObjectAction(Supplier {
-            get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject(
-                "playlists",
-                this,
-                Playlist::class.java
+    ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
+        return toActionPaging(Supplier {
+            get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject<SimplePlaylist>(
+                "playlists", this
             )
         })
     }
@@ -68,12 +68,10 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<Artist, PagingObject<Artist>> {
-        return toPagingObjectAction(Supplier {
-            get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject(
-                "artists",
-                this,
-                Artist::class.java
+    ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
+        return toActionPaging(Supplier {
+            get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject<Artist>(
+                "artists", this
             )
         })
     }
@@ -95,12 +93,10 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SimpleAlbum, PagingObject<SimpleAlbum>> {
-        return toPagingObjectAction(Supplier {
-            get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject(
-                "albums",
-                this,
-                SimpleAlbum::class.java
+    ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
+        return toActionPaging(Supplier {
+            get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject<SimpleAlbum>(
+                "albums", this
             )
         })
     }
@@ -122,12 +118,10 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SimpleTrack, PagingObject<SimpleTrack>> {
-        return toPagingObjectAction(Supplier {
-            get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject(
-                "tracks",
-                this,
-                SimpleTrack::class.java
+    ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
+        return toActionPaging(Supplier {
+            get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject<Track>(
+                "tracks", this
             )
         })
     }

@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.BadRequestException
@@ -16,6 +16,7 @@ import com.adamratzman.spotify.utils.PlayHistory
 import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
 import com.adamratzman.spotify.utils.toInnerObject
@@ -30,37 +31,37 @@ import java.util.function.Supplier
 class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(
-                "devices",
-                api,
-                mutableListOf<Device>().javaClass
-            ).toList()
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<List<Device>>(
+                "devices", api
+            )
         })
     }
 
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingContext? =
-                get(EndpointBuilder("/me/player").toString()).toObject(api, CurrentlyPlayingContext::class.java)
+            val obj = catch {
+                get(EndpointBuilder("/me/player").toString())
+                    .toObject<CurrentlyPlayingContext>(api)
+            }
             if (obj?.timestamp == null) null else obj
         })
     }
 
-    fun getRecentlyPlayed(): SpotifyRestPagingAction<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject(
-                endpoint = this,
-                tClazz = PlayHistory::class.java
+    fun getRecentlyPlayed(): SpotifyRestActionPaging<PlayHistory,CursorBasedPagingObject<PlayHistory>> {
+        return toActionPaging(Supplier {
+            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject<PlayHistory>(
+                endpoint = this
             )
         })
     }
 
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").toString()).toObject(
-                api,
-                CurrentlyPlayingObject::class.java
-            )
+            val obj =
+                catch {
+                    get(EndpointBuilder("/me/player/currently-playing").toString())
+                        .toObject<CurrentlyPlayingObject>(api)
+                }
             if (obj?.timestamp == null) null else obj
         })
     }

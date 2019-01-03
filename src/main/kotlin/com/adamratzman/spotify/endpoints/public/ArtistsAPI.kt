@@ -14,9 +14,9 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.SimpleAlbum
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Track
-import com.adamratzman.spotify.utils.TrackList
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toInnerArray
 import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
@@ -33,7 +33,10 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtist(artist: String): SpotifyRestAction<Artist?> {
         return toAction(Supplier {
-            catch { get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString()).toObject(api, Artist::class.java) }
+            catch {
+                get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString())
+                    .toObject<Artist>(api)
+            }
         })
     }
 
@@ -43,8 +46,11 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtists(vararg artists: String): SpotifyRestAction<List<Artist?>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists").with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString())
-                    .toObject(api, ArtistList::class.java).artists
+            get(
+                EndpointBuilder("/artists").with(
+                    "ids",
+                    artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+            ).toObject<ArtistList>(api).artists
         })
     }
 
@@ -58,10 +64,21 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [artist] is not found, or filter parameters are illegal
      */
-    fun getArtistAlbums(artist: String, limit: Int? = null, offset: Int? = null, market: Market? = null, include: List<AlbumInclusionStrategy> = listOf()): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
+    fun getArtistAlbums(
+        artist: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null,
+        include: List<AlbumInclusionStrategy> = listOf()
+    ): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
-                    .with("include_groups", include.joinToString(",") { it.keyword }).toString()).toLinkedResult(api, SimpleAlbum::class.java)
+            get(
+                EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/albums").with("limit", limit).with(
+                    "offset",
+                    offset
+                ).with("market", market?.code)
+                    .with("include_groups", include.joinToString(",") { it.keyword }).toString()
+            ).toLinkedResult<SimpleAlbum>(api)
         })
     }
 
@@ -80,8 +97,12 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with("country", market.code).toString())
-                    .toObject(api, TrackList::class.java).tracks.map { it!! }
+            get(
+                EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
+                    "country",
+                    market.code
+                ).toString()
+            ).toInnerArray<Track>("tracks", api)
         })
     }
 
@@ -96,7 +117,8 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getRelatedArtists(artist: String): SpotifyRestAction<List<Artist>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/related-artists").toString()).toObject(api, ArtistList::class.java).artists.map { it!! }
+            get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/related-artists").toString())
+                .toObject<ArtistList>(api).artists.filterNotNull()
         })
     }
 }

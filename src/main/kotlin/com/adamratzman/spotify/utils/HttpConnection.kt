@@ -33,11 +33,16 @@ class HttpConnection(
 
         connection.connect()
 
+        val responseCode = connection.responseCode
+        val body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
+            val text = it.readText()
+            it.close()
+            text
+        }
+
         return HttpResponse(
-            responseCode = connection.responseCode,
-            body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
-                it.readText()
-            },
+            responseCode = responseCode,
+            body = body,
             headers = connection.headerFields.keys.filterNotNull().map { HttpHeader(it, connection.getHeaderField(it)) }
         ).also { connection.disconnect() }
     }

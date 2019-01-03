@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.Market
@@ -13,7 +13,7 @@ import com.adamratzman.spotify.utils.SavedTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toArray
 import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
@@ -30,12 +30,12 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SavedTrack, PagingObject<SavedTrack>> {
-        return toPagingObjectAction(Supplier {
+    ): SpotifyRestActionPaging<SavedTrack,PagingObject<SavedTrack>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedTrack::class.java)
+            ).toPagingObject<SavedTrack>(endpoint = this)
         })
     }
 
@@ -48,12 +48,12 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SavedAlbum, PagingObject<SavedAlbum>> {
-        return toPagingObjectAction(Supplier {
+    ): SpotifyRestActionPaging<SavedAlbum,PagingObject<SavedAlbum>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedAlbum::class.java)
+            ).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
@@ -78,7 +78,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                     .toString()
-            ).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            ).toArray<Boolean>(api)
         })
     }
 

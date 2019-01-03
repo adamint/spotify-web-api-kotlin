@@ -1,96 +1,18 @@
 /* Created by Adam Ratzman (2018) */
-@file:Suppress("UNCHECKED_CAST")
 
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.google.gson.Gson
+import com.adamratzman.spotify.main.SpotifyException
+import com.beust.klaxon.Json
+import com.beust.klaxon.Klaxon
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InvalidObjectException
 import java.net.URLEncoder
 import java.util.Base64
-import java.util.function.Supplier
 
-data class Cursor(val after: String)
-
-class CursorBasedPagingObject<T>(
-    href: String,
-    items: List<T>,
-    limit: Int,
-    next: String?,
-    val cursors: Cursor,
-    total: Int,
-    endpoint: SpotifyEndpoint
-)
-    : PagingObject<T>(href, items, limit, next, 0, null, total, endpoint)
-
-open class PagingObject<T>(
-    val href: String,
-    val items: List<T>,
-    val limit: Int,
-    val next: String? = null,
-    val offset: Int = 0,
-    val previous: String? = null,
-    val total: Int,
-    var endpoint: SpotifyEndpoint
-) {
-    lateinit var tClazz: Class<T>
-    fun getNext(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
-            Supplier {
-                catch {
-                    if (this is CursorBasedPagingObject) next?.let { endpoint.get(it).toCursorBasedPagingObject(tClazz = tClazz, endpoint = endpoint) }
-                    else next?.let { endpoint.get(it).toPagingObject<T>(tClazz = tClazz, endpoint = endpoint) }
-                }
-            })
-
-    fun getPrevious(): SpotifyRestAction<PagingObject<T>?> = endpoint.toAction(
-            Supplier {
-                catch {
-                    previous?.let { endpoint.get(it).toPagingObject(tClazz = tClazz, endpoint = endpoint) }
-                }
-            })
-
-    fun getAll(): SpotifyRestAction<List<PagingObject<T>>> {
-        return endpoint.toAction(
-                Supplier {
-                    if (this is CursorBasedPagingObject) {
-                        val pagingObjects = mutableListOf(this)
-                        var next = getNext().complete()
-                        while (next != null) {
-                            pagingObjects.add(next as CursorBasedPagingObject<T>)
-                            next = getNext().complete()
-                        }
-                        pagingObjects.toList()
-                    } else {
-                        val pagingObjects = mutableListOf<PagingObject<T>>()
-                        var prev = previous?.let { getPrevious().complete() }
-                        while (prev != null) {
-                            pagingObjects.add(prev)
-                            prev = prev.previous?.let { prev?.getPrevious()?.complete() }
-                        }
-                        pagingObjects.reverse() // closer we are to current, the further we are from the start
-
-                        pagingObjects.add(this)
-
-                        var nxt = next?.let { getNext().complete() }
-                        while (nxt != null) {
-                            pagingObjects.add(nxt)
-                            nxt = nxt.next?.let { nxt?.getNext()?.complete() }
-                        }
-                        // we don't need to reverse here, as it's in order
-                        pagingObjects.toList()
-                    }
-                })
-    }
-
-    fun getAllItems(): SpotifyRestAction<List<T>> {
-        return endpoint.toAction(Supplier {
-            getAll().complete().asSequence().map { it.items }.toList().flatten()
-        })
-    }
-}
+data class Cursor(val after: String?)
 
 data class LinkedResult<out T>(val href: String, val items: List<T>) {
     fun toPlaylist(): PlaylistURI {
@@ -116,7 +38,7 @@ data class LinkedResult<out T>(val href: String, val items: List<T>) {
     }
 }
 
-abstract class RelinkingAvailableResponse(val linkedTrack: LinkedTrack?) : Linkable() {
+abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
     fun isRelinked() = linkedTrack != null
 }
 
@@ -126,62 +48,91 @@ internal fun String.byteEncode(): String {
 
 internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
 
-internal fun <T> Any.toObject(o: Any, tClazz: Class<T>): T {
-    val obj = ((o as? SpotifyAPI)?.gson ?: (o as? Gson)
-    ?: throw IllegalArgumentException("Parameter must be a SpotifyAPI or Gson instance"))
-            .fromJson(this as String, tClazz)
-    if (o is SpotifyAPI) {
-        if (obj is Linkable) obj.api = o
-        obj?.instantiatePagingObjects(o)
+internal inline fun <reified T> String.toObjectNullable(o: SpotifyAPI?): T? = try {
+    toObject<T>(o)
+} catch (e: Exception) {
+    null
+}
+
+internal inline fun <reified T> String.toObject(o: SpotifyAPI?): T {
+    try {
+        val klaxon = o?.klaxon ?: Klaxon()
+        val obj = klaxon.parse<T>(this) ?: throw SpotifyException(
+            "Unable to parse $this",
+            IllegalArgumentException("$this not found")
+        )
+        o?.let {
+            if (obj is Linkable) obj.api = o
+            if (obj is AbstractPagingObject<*>) obj.endpoint = o.tracks
+            obj.instantiatePagingObjects(o)
+        }
+        return obj
+    } catch (e: java.lang.Exception) {
+        println(this)
+        throw e
     }
-    return obj
 }
 
-internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
-    this is FeaturedPlaylists -> this.playlists
-    this is Album -> this.tracks
-    this is Playlist -> this.tracks
-    else -> null
-}.let { it?.endpoint = spotifyAPI.tracks; this }
+internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
+    val klaxon = o?.klaxon ?: Klaxon()
+    return klaxon.parseArray<T>(this) ?: throw SpotifyException(
+        "Unable to parse $this",
+        IllegalArgumentException("$this not found")
+    )
+}
 
-internal fun <T> String.toPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): PagingObject<T> {
+internal inline fun <reified T> String.toPagingObject(
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
+): PagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
-    val pagingObject = PagingObject(
-            jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject(endpoint.api, tClazz) },
-            jsonObject.getInt("limit"),
-            jsonObject.get("next") as? String,
-            jsonObject.get("offset") as Int,
-            jsonObject.get("previous") as? String,
-            jsonObject.getInt("total"),
-            endpoint)
-    pagingObject.tClazz = tClazz
-    return pagingObject
+    return PagingObject(
+        jsonObject.getString("href"),
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api) },
+        jsonObject.getInt("limit"),
+        jsonObject.get("next") as? String,
+        jsonObject.get("offset") as Int,
+        jsonObject.get("previous") as? String,
+        jsonObject.getInt("total")
+    ).apply {
+        this.endpoint = endpoint
+        this.itemClazz = T::class.java
+    }
 }
 
-internal fun <T> String.toCursorBasedPagingObject(innerObjectName: String? = null, endpoint: SpotifyEndpoint, tClazz: Class<T>): CursorBasedPagingObject<T> {
+internal inline fun <reified T> String.toCursorBasedPagingObject(
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
+): CursorBasedPagingObject<T> {
     val jsonObject = if (innerObjectName != null) JSONObject(this).getJSONObject(innerObjectName) else JSONObject(this)
-    val cursorBasedPagingObject = CursorBasedPagingObject(
-            jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject(endpoint.api, tClazz) },
-            jsonObject.getInt("limit"),
-            jsonObject.get("next") as? String,
-            endpoint.api.gson.fromJson(jsonObject.getJSONObject("cursors").toString(), Cursor::class.java),
-            if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1,
-            endpoint)
-    cursorBasedPagingObject.tClazz = tClazz
-    return cursorBasedPagingObject
+    return CursorBasedPagingObject(
+        jsonObject.getString("href"),
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(endpoint.api) },
+        jsonObject.getInt("limit"),
+        jsonObject.get("next") as? String,
+        jsonObject.getJSONObject("cursors").toString().toObject(endpoint.api),
+        if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1
+    ).apply {
+        this.endpoint = endpoint
+        this.itemClazz = T::class.java
+    }
 }
 
-internal fun <T> String.toLinkedResult(api: SpotifyAPI, tClazz: Class<T>): LinkedResult<T> {
+internal inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {
     val jsonObject = JSONObject(this)
     return LinkedResult(
-            jsonObject.getString("href"),
-            jsonObject.getJSONArray("items").map { it.toString().toObject(api, tClazz) })
+        jsonObject.getString("href"),
+        jsonObject.getJSONArray("items").map { it.toString().toObject<T>(api) })
 }
 
-internal fun <T> String.toInnerObject(innerName: String, api: SpotifyAPI, tClazz: Class<T>): T {
-    return JSONObject(this).getJSONObject(innerName).toString().toObject(api, tClazz)
+internal inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): T {
+    return JSONObject(this).let { it.optJSONObject(innerName) ?: it.getJSONArray(innerName) }
+        .toString().toObject(api)
+}
+
+internal inline fun <reified T> String.toInnerArray(innerName: String, api: SpotifyAPI): List<T> {
+    return JSONObject(this).let { it.optJSONObject(innerName) ?: it.getJSONArray(innerName) }
+        .toString().toArray(api)
 }
 
 internal fun <T> catch(function: () -> T): T? {
