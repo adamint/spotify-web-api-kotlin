@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.PagingObject
@@ -37,8 +37,8 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): SpotifyRestAction<PagingObject<Artist>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
                     .with("time_range", timeRange).toString()
@@ -63,8 +63,8 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): SpotifyRestAction<PagingObject<Track>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<Track,PagingObject<Track>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
                     .with("time_range", timeRange).toString()

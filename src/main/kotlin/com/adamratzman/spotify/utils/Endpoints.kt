@@ -4,6 +4,7 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyAppAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.main.base
 import java.net.HttpURLConnection
 import java.util.function.Supplier
@@ -112,6 +113,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     )
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
+    fun <Z, T:AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {

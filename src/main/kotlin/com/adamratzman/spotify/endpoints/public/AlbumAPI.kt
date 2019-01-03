@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Album
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.AlbumsResponse
@@ -66,8 +67,8 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<PagingObject<SimpleTrack>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
                     "offset",

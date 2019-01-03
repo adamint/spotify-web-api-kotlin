@@ -5,6 +5,7 @@ import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.CursorBasedPagingObject
@@ -108,8 +109,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun getFollowedArtists(
         limit: Int? = null,
         after: String? = null
-    ): SpotifyRestAction<CursorBasedPagingObject<Artist>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<Artist,CursorBasedPagingObject<Artist>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
                     "after",

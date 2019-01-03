@@ -5,6 +5,7 @@ import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.ErrorObject
@@ -129,10 +130,10 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     fun getClientPlaylists(
         limit: Int? = null,
         offset: Int? = null
-    ): SpotifyRestAction<PagingObject<SimplePlaylist>> {
+    ): SpotifyRestActionPaging<SimplePlaylist,PagingObject<SimplePlaylist>> {
         if (limit != null && limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
-        return toAction(Supplier {
+        return toActionPaging(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
                 .toPagingObject<SimplePlaylist>(endpoint = this)
         })

@@ -94,7 +94,10 @@ internal inline fun <reified T> String.toPagingObject(
         jsonObject.get("offset") as Int,
         jsonObject.get("previous") as? String,
         jsonObject.getInt("total")
-    ).apply { this.endpoint = endpoint }
+    ).apply {
+        this.endpoint = endpoint
+        this.itemClazz = T::class.java
+    }
 }
 
 internal inline fun <reified T> String.toCursorBasedPagingObject(
@@ -109,7 +112,10 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
         jsonObject.get("next") as? String,
         jsonObject.getJSONObject("cursors").toString().toObject(endpoint.api),
         if (jsonObject.keySet().contains("total")) jsonObject.getInt("total") else -1
-    ).apply { this.endpoint = endpoint }
+    ).apply {
+        this.endpoint = endpoint
+        this.itemClazz = T::class.java
+    }
 }
 
 internal inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {

@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.LinkedResult
@@ -43,8 +44,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         user: String,
         limit: Int? = null,
         offset: Int? = null
-    ): SpotifyRestAction<PagingObject<SimplePlaylist>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimplePlaylist,PagingObject<SimplePlaylist>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(
                     "offset", offset

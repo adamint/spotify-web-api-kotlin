@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.BadRequestException
@@ -46,8 +47,8 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun getRecentlyPlayed(): SpotifyRestAction<CursorBasedPagingObject<PlayHistory>> {
-        return toAction(Supplier {
+    fun getRecentlyPlayed(): SpotifyRestActionPaging<PlayHistory,CursorBasedPagingObject<PlayHistory>> {
+        return toActionPaging(Supplier {
             get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject<PlayHistory>(
                 endpoint = this
             )
