@@ -88,7 +88,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             }
         }
 
-        if (document.responseCode / 200 != 1 /* Check if status is 2xx */) {
+        if (document.responseCode / 200 != 1 /* Check if status is 2xx or 3xx */) {
             val message = try {
                 document.body.toObject<ErrorResponse>(api).error
             } catch (e: Exception) {
