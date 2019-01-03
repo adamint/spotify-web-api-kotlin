@@ -28,6 +28,7 @@ class HttpConnection(
             connection.setFixedLengthStreamingMode(body?.toByteArray()?.size ?: 0)
             connection.outputStream.bufferedWriter().use {
                 body?.also(it::write)
+                it.close()
             }
         }
 
