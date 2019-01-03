@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.PagingObject
@@ -33,11 +33,17 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
-    fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Artist, PagingObject<Artist>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString())
-                .toPagingObject(endpoint = this, serializer = PagingObject.serializer(Artist.serializer()))
+    fun getTopArtists(
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
+    ): SpotifyRestAction<PagingObject<Artist>> {
+        return toAction(Supplier {
+            get(
+                EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
+                    .with("time_range", timeRange).toString()
+            )
+                .toPagingObject<Artist>(endpoint = this)
         })
     }
 
@@ -53,11 +59,17 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
-    fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Track, PagingObject<Track>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString())
-                .toPagingObject(endpoint = this, serializer = PagingObject.serializer(Track.serializer()))
+    fun getTopTracks(
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
+    ): SpotifyRestAction<PagingObject<Track>> {
+        return toAction(Supplier {
+            get(
+                EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
+                    .with("time_range", timeRange).toString()
+            )
+                .toPagingObject<Track>(endpoint = this)
         })
     }
 }

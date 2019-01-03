@@ -21,8 +21,13 @@ import com.adamratzman.spotify.utils.HttpRequestMethod
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
+import com.adamratzman.spotify.utils.getAlbumConverter
+import com.adamratzman.spotify.utils.getFeaturedPlaylistsConverter
+import com.adamratzman.spotify.utils.getPlaylistConverter
+import com.adamratzman.spotify.utils.getSavedTrackConverter
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toObjectNullable
+import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -212,7 +217,7 @@ class SpotifyApiBuilder {
                             "Authorization",
                             "Basic ${"$clientId:$clientSecret".byteEncode()}"
                         )
-                    ).body.toObject(null, Token.serializer()),
+                    ).body.toObject(null),
                     automaticRefresh,
                     redirectUri ?: throw IllegalArgumentException(),
                     useCache
@@ -261,6 +266,8 @@ abstract class SpotifyAPI internal constructor(
 
     internal val logger = SpotifyLogger(true)
 
+    abstract val klaxon: Klaxon
+
     abstract fun refreshToken()
     abstract fun clearCache()
 
@@ -291,6 +298,8 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
     override val users: UserAPI = UserAPI(this)
     override val tracks: TracksAPI = TracksAPI(this)
     override val following: FollowingAPI = FollowingAPI(this)
+
+    override val klaxon: Klaxon = getKlaxon(this)
 
     init {
         if (clientId == "not-set" || clientSecret == "not-set") {
@@ -336,6 +345,8 @@ class SpotifyClientAPI internal constructor(
     val library: ClientLibraryAPI = ClientLibraryAPI(this)
     val player: ClientPlayerAPI = ClientPlayerAPI(this)
 
+    override val klaxon: Klaxon = getKlaxon(this)
+
     val userId: String
 
     init {
@@ -374,7 +385,7 @@ class SpotifyClientAPI internal constructor(
                 body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
                 contentType = "application/x-www-form-urlencoded"
             ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-                .toObjectNullable(null, Token.serializer())
+                .toObjectNullable<Token>(null)
         if (tempToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
@@ -416,4 +427,10 @@ private fun getCredentialedToken(clientId: String, clientSecret: String) =
         body = "grant_type=client_credentials",
         contentType = "application/x-www-form-urlencoded"
     ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-        .toObjectNullable(null, Token.serializer())
+        .toObjectNullable<Token>(null)
+
+private fun getKlaxon(api: SpotifyAPI) = Klaxon()
+    .converter(getFeaturedPlaylistsConverter(api))
+    .converter(getPlaylistConverter(api))
+    .converter(getAlbumConverter(api))
+    .converter(getSavedTrackConverter(api))

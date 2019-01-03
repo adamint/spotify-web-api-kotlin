@@ -33,7 +33,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getTrack(track: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction(Supplier {
             catch { get(EndpointBuilder("/tracks/${TrackURI(track).id.encode()}").with("market", market?.code).toString())
-                .toObject(api, Track.serializer()) }
+                .toObject<Track>(api) }
         })
     }
 
@@ -49,7 +49,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             get(EndpointBuilder("/tracks").with("ids", tracks.joinToString(",") { TrackURI(it).id.encode() })
                     .with("market", market?.code).toString())
-                .toObject(api, TrackList.serializer()).tracks
+                .toObject<TrackList>(api).tracks
         })
     }
 
@@ -63,7 +63,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-analysis/${TrackURI(track).id.encode()}").toString())
-                .toObject(api, AudioAnalysis.serializer())
+                .toObject<AudioAnalysis>(api)
         })
     }
 
@@ -77,7 +77,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-features/${TrackURI(track).id.encode()}").toString())
-                .toObject(api, AudioFeatures.serializer())
+                .toObject<AudioFeatures>(api)
         })
     }
 
@@ -91,7 +91,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-features").with("ids", tracks.joinToString(",") { TrackURI(it).id.encode() }).toString())
-                    .toObject(api, AudioFeaturesResponse.serializer()).audio_features
+                    .toObject<AudioFeaturesResponse>(api).audio_features
         })
     }
 }
