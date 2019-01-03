@@ -9,7 +9,7 @@ import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toArray
 import java.util.function.Supplier
 
 /**
@@ -27,11 +27,17 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws [BadRequestException] if the playlist is not found
      */
-    fun areFollowingPlaylist(playlistOwner: String, playlist: String, vararg users: String): SpotifyRestAction<List<Boolean>> {
+    fun areFollowingPlaylist(
+        playlistOwner: String,
+        playlist: String,
+        vararg users: String
+    ): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             val user = UserURI(playlistOwner)
-            get(EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            get(
+                EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+            ).toArray<Boolean>(api)
         })
     }
 
@@ -47,6 +53,12 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found
      */
     fun isFollowingPlaylist(playlistOwner: String, playlist: String, user: String): SpotifyRestAction<Boolean> {
-        return toAction(Supplier { areFollowingPlaylist(playlistOwner, playlist, users = *arrayOf(user)).complete()[0] })
+        return toAction(Supplier {
+            areFollowingPlaylist(
+                playlistOwner,
+                playlist,
+                users = *arrayOf(user)
+            ).complete()[0]
+        })
     }
 }

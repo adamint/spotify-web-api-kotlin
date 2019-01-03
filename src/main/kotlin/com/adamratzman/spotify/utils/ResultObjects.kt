@@ -3,22 +3,27 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.beust.klaxon.Json
 
 /**
  * @param message the featured message in "Overview"
  */
-data class FeaturedPlaylists(val message: String, val playlists: PagingObject<Playlist>)
+
+data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)
 
 data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
+
 data class AlbumsResponse(val albums: List<Album?>)
+
 data class ArtistList(val artists: List<Artist?>)
+
 data class TrackList(val tracks: List<Track?>)
 
 data class RecommendationSeed(
     val initialPoolSize: Int,
     val afterFilteringSize: Int,
     val afterRelinkingSize: Int?,
-    val href: String,
+    val href: String?,
     val id: String,
     val type: String
 )
@@ -30,15 +35,19 @@ data class SpotifyCopyright(val text: String, val type: String)
 data class PlaylistTrackInfo(val href: String, val total: Int)
 
 /**
- * @param href Will always be null, per the Spotify documentation, until the Web API is updated to support this.
+ * @param href Will always be null, per the Spotify documentation,
+ * until the Web API is updated to support this.
+ *
+ * @param total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
+
 data class Followers(val href: String?, val total: Int)
 
 data class SpotifyUserInformation(
-    val birthdate: String?,
-    val country: String?,
-    val display_name: String?,
-    val email: String?,
+    val birthdate: String? = null,
+    val country: String? = null,
+    val display_name: String? = null,
+    val email: String? = null,
     val external_urls: HashMap<String, String>,
     val followers: Followers,
     val href: String,
@@ -50,17 +59,17 @@ data class SpotifyUserInformation(
 )
 
 data class SpotifyPublicUser(
-    val display_name: String,
+    val display_name: String? = null,
     val external_urls: HashMap<String, String>,
-    val followers: Followers,
+    val followers: Followers = Followers(null, -1),
     val href: String,
     val id: String,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage> = listOf(),
     val type: String,
     val uri: String
 )
 
-data class SpotifyImage(val height: Int, val url: String, val width: Int)
+data class SpotifyImage(val height: Int?, val url: String, val width: Int?)
 
 abstract class Linkable {
     @Transient
@@ -71,7 +80,14 @@ abstract class Linkable {
  * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  */
-data class LinkedTrack(val external_urls: HashMap<String, String>, val href: String, val id: String, val type: String, val uri: String)
+
+data class LinkedTrack(
+    val external_urls: HashMap<String, String>,
+    val href: String,
+    val id: String,
+    val type: String,
+    val uri: String
+)
 
 data class SimpleArtist(
     val external_urls: HashMap<String, String>,
@@ -99,20 +115,23 @@ data class Artist(
 
 data class SimpleTrack(
     val artists: List<SimpleArtist>,
-    val available_markets: List<String>,
+    val available_markets: List<String> = listOf(),
     val disc_number: Int,
     val duration_ms: Int,
     val explicit: Boolean,
-    val external_urls: HashMap<String, String>,
+    val external_urls: HashMap<String, String>,//
+    val external_ids: HashMap<String, String> = hashMapOf(),
     val href: String,
     val id: String,
-    val is_playable: Boolean?,
-    private val linked_from: LinkedTrack?,
+    val is_playable: Boolean = true,
+    @Json(ignored = false) private val linked_from: LinkedTrack? = null,
     val name: String,
-    val preview_url: String,
+    val preview_url: String?,
     val track_number: Int,
     val type: String,
-    val uri: String
+    val uri: String,
+    val is_local: Boolean? = null,
+    val popularity: Int? = null
 ) : RelinkingAvailableResponse(linked_from) {
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
@@ -120,37 +139,52 @@ data class SimpleTrack(
 data class Track(
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
-    val available_markets: List<String>,
+    val available_markets: List<String>? = null,
+    val is_playable: Boolean = true,
     val disc_number: Int,
     val duration_ms: Int,
     val explicit: Boolean,
-    val external_ids: HashMap<String, String>,
-    val external_urls: HashMap<String, String>,
+    val external_ids: Map<String, String>,
+    val external_urls: Map<String, String>,
     val href: String,
     val id: String,
-    val is_playable: Boolean?,
-    private val linked_from: LinkedTrack?,
+    @Json(ignored = false) private val linked_from: LinkedTrack? = null,
     val name: String,
     val popularity: Int,
-    val preview_url: String,
+    val preview_url: String?,
     val track_number: Int,
     val type: String,
-    val uri: String
+    val uri: String,
+    val is_local: Boolean?
 ) : RelinkingAvailableResponse(linked_from)
 
 data class SimpleAlbum(
-    val album_type: String,
-    val artists: List<SimpleArtist>,
-    val available_markets: List<String>,
-    val external_urls: HashMap<String, String>,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val type: String,
-    val uri: String
+    val album_type: String,//
+    val artists: List<SimpleArtist>,//
+    val available_markets: List<String>? = null,
+    val external_urls: HashMap<String, String>,//
+    val href: String,//
+    val id: String,//
+    val images: List<SpotifyImage>,//
+    val name: String,//
+    val type: String,//
+    val uri: String,//
+    val release_date: String,//
+    val release_date_precision: String,//
+    val total_tracks: Int? = null,
+    @Json(ignored = false) private val album_group: String? = null
 ) : Linkable() {
+    @Transient
+    val albumGroup: AlbumGroup? = album_group?.let { _ -> AlbumGroup.values().find { it.id == album_group } }
+
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
+}
+
+enum class AlbumGroup(internal val id: String) {
+    ALBUM("album"),
+    SINGLE("single"),
+    COMPILATION("compilation"),
+    APPEARS_ON("appears_on")
 }
 
 data class Album(
@@ -158,8 +192,8 @@ data class Album(
     val artists: List<SimpleArtist>,
     val available_markets: List<String>,
     val copyrights: List<SpotifyCopyright>,
-    val external_ids: HashMap<String, String>,
-    val external_urls: HashMap<String, String>,
+    val external_ids: Map<String, String>,
+    val external_urls: Map<String, String>,
     val genres: List<String>,
     val href: String,
     val id: String,
@@ -171,7 +205,8 @@ data class Album(
     val release_date_precision: String,
     val tracks: PagingObject<SimpleTrack>,
     val type: String,
-    val uri: String
+    val uri: String,
+    val total_tracks: Int
 )
 
 data class SimplePlaylist(
@@ -182,7 +217,8 @@ data class SimplePlaylist(
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
-    val public: Boolean?,
+    val primary_color: String? = null,
+    val public: Boolean? = null,
     val snapshot_id: String,
     val tracks: PlaylistTrackInfo,
     val type: String,
@@ -194,19 +230,30 @@ data class SimplePlaylist(
 /**
  * Some parameters are timestamps and will be updated soon to reflect Spotify's use of a Timestamp string
  */
-data class PlaylistTrack(val added_at: String, val added_by: SpotifyPublicUser, val is_local: Boolean, val track: Track)
+
+data class PlaylistTrack(
+    val primary_color: String? = null,
+    val added_at: String,
+    val added_by: SpotifyPublicUser,
+    val is_local: Boolean?,
+    val track: Track,
+    val video_thumbnail: VideoThumbnail? = null
+)
+
+data class VideoThumbnail(val url: String?)
 
 data class Playlist(
     val collaborative: Boolean,
     val description: String,
-    val external_urls: HashMap<String, String>,
+    val external_urls: Map<String, String>,
     val followers: Followers,
     val href: String,
     val id: String,
+    val primary_color: String? = null,
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
-    val public: Boolean?,
+    val public: Boolean? = null,
     val snapshot_id: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String,
@@ -226,13 +273,16 @@ data class AudioAnalysis(
 )
 
 data class AudioBar(val start: Float, val duration: Float, val confidence: Float)
+
 data class AudioBeat(val start: Float, val duration: Float, val confidence: Float)
+
 data class AudioTatum(val start: Float, val duration: Float, val confidence: Float)
+
 data class AudioAnalysisMeta(
     val analyzer_version: String,
     val platform: String,
     val detailed_status: String,
-    val status_code: String,
+    val status_code: Int,
     val timestamp: Long,
     val analysis_time: Float,
     val input_process: String
@@ -260,7 +310,7 @@ data class AudioSegment(
     val loudness_start: Float,
     val loudness_max_time: Float,
     val loudness_max: Float,
-    val loudness_end: Float,
+    val loudness_end: Float? = null,
     val pitches: List<Float>,
     val timbre: List<Float>
 )
@@ -289,9 +339,9 @@ data class TrackAnalysis(
     val echoprintstring: String,
     val echoprint_version: Float,
     val synchstring: String,
-    val synch_version: Int,
+    val synch_version: Float,
     val rhythmstring: String,
-    val rhythm_version: Int
+    val rhythm_version: Float
 )
 
 data class AudioFeatures(
@@ -316,7 +366,9 @@ data class AudioFeatures(
 )
 
 data class SavedAlbum(val added_at: String, val album: Album)
+
 data class SavedTrack(val added_at: String, val track: Track)
+
 data class Device(
     val id: String,
     val is_active: Boolean,
@@ -338,6 +390,7 @@ data class CurrentlyPlayingContext(
 )
 
 data class Context(val external_urls: HashMap<String, String>)
+
 data class CurrentlyPlayingObject(
     val context: PlayHistoryContext?,
     val timestamp: Long,
@@ -346,5 +399,11 @@ data class CurrentlyPlayingObject(
     val item: Track
 )
 
-data class PlayHistoryContext(val type: String, val href: String, val external_urls: HashMap<String, String>, val uri: String)
+data class PlayHistoryContext(
+    val type: String,
+    val href: String,
+    val external_urls: HashMap<String, String>,
+    val uri: String
+)
+
 data class PlayHistory(val track: SimpleTrack, val played_at: String, val context: PlayHistoryContext)

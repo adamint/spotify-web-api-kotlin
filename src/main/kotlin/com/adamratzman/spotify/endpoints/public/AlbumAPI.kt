@@ -3,19 +3,20 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Album
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.AlbumsResponse
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.LinkedResult
 import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.SimpleTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -32,10 +33,8 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbum(album: String, market: Market? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString()).toObject(
-                    api,
-                    Album::class.java
-                )
+                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString())
+                    .toObject<Album>(api)
             }
         })
     }
@@ -50,7 +49,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
                     .with("market", market?.code).toString()
-            ).toObject(api, AlbumsResponse::class.java).albums
+            ).toObject<AlbumsResponse>(api).albums
         })
     }
 
@@ -68,15 +67,15 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<LinkedResult<SimpleTrack>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
                     "offset",
                     offset
                 ).with("market", market?.code)
                     .toString()
-            ).toLinkedResult(api, SimpleTrack::class.java)
+            ).toPagingObject<SimpleTrack>(endpoint = this)
         })
     }
 }

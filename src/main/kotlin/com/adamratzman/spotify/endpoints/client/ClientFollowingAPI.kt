@@ -5,7 +5,7 @@ import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.CursorBasedPagingObject
@@ -14,8 +14,8 @@ import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyPublicUser
 import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toArray
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
-import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -46,7 +46,13 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      * @throws [BadRequestException] if the playlist is not found
      */
     fun isFollowingPlaylist(playlistOwner: String, playlistId: String): SpotifyRestAction<Boolean> {
-        return toAction(Supplier { isFollowingPlaylist(playlistOwner, playlistId, (api as SpotifyClientAPI).userId).complete() })
+        return toAction(Supplier {
+            isFollowingPlaylist(
+                playlistOwner,
+                playlistId,
+                (api as SpotifyClientAPI).userId
+            ).complete()
+        })
     }
 
     /**
@@ -58,8 +64,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun isFollowingUsers(vararg users: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/following/contains").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            get(
+                EndpointBuilder("/me/following/contains").with("type", "user")
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+            ).toArray<Boolean>(api)
         })
     }
 
@@ -85,8 +93,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun isFollowingArtists(vararg artists: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/following/contains").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            get(
+                EndpointBuilder("/me/following/contains").with("type", "artist")
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+            ).toArray<Boolean>(api)
         })
     }
 
@@ -96,14 +106,22 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
      * with full [Artist] objects
      */
-    fun getFollowedArtists(limit: Int? = null, after: String? = null): SpotifyRestPagingAction<Artist, CursorBasedPagingObject<Artist>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with("after", after).toString())
-                    .toCursorBasedPagingObject("artists", this, Artist::class.java)
+    fun getFollowedArtists(
+        limit: Int? = null,
+        after: String? = null
+    ): SpotifyRestActionPaging<Artist,CursorBasedPagingObject<Artist>> {
+        return toActionPaging(Supplier {
+            get(
+                EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
+                    "after",
+                    after
+                ).toString()
+            ).toCursorBasedPagingObject<Artist>("artists", this)
         })
     }
 
-    fun getFollowedUsers(): SpotifyRestAction<List<SpotifyPublicUser>> = throw NotImplementedError("Though Spotify will implement this in the future, it is not currently supported.")
+    fun getFollowedUsers(): SpotifyRestAction<List<SpotifyPublicUser>> =
+        throw NotImplementedError("Though Spotify will implement this in the future, it is not currently supported.")
 
     /**
      * Add the current user as a follower of another user
@@ -123,8 +141,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun followUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString())
+            put(
+                EndpointBuilder("/me/following").with("type", "user")
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+            )
             Unit
         })
     }
@@ -147,8 +167,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun followArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString())
+            put(
+                EndpointBuilder("/me/following").with("type", "artist")
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+            )
             Unit
         })
     }
@@ -165,7 +187,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun followPlaylist(playlist: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(), "{\"public\": $followPublicly}")
+            put(
+                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(),
+                "{\"public\": $followPublicly}"
+            )
             Unit
         })
     }
@@ -192,8 +217,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun unfollowUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString())
+            delete(
+                EndpointBuilder("/me/following").with("type", "user")
+                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+            )
             Unit
         })
     }
@@ -220,8 +247,10 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      */
     fun unfollowArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
-            delete(EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString())
+            delete(
+                EndpointBuilder("/me/following").with("type", "artist")
+                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+            )
             Unit
         })
     }
