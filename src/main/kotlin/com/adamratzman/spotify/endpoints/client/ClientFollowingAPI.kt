@@ -11,7 +11,6 @@ import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.CursorBasedPagingObject
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SpotifyPublicUser
 import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toArray
@@ -119,9 +118,6 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             ).toCursorBasedPagingObject<Artist>("artists", this)
         })
     }
-
-    fun getFollowedUsers(): SpotifyRestAction<List<SpotifyPublicUser>> =
-        throw NotImplementedError("Though Spotify will implement this in the future, it is not currently supported.")
 
     /**
      * Add the current user as a follower of another user
