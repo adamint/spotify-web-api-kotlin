@@ -53,22 +53,17 @@ internal inline fun <reified T> String.toObjectNullable(o: SpotifyAPI?): T? = tr
 }
 
 internal inline fun <reified T> String.toObject(o: SpotifyAPI?): T {
-    try {
-        val klaxon = o?.klaxon ?: Klaxon()
-        val obj = klaxon.parse<T>(this) ?: throw SpotifyException(
-            "Unable to parse $this",
-            IllegalArgumentException("$this not found")
-        )
-        o?.let {
-            if (obj is Linkable) obj.api = o
-            if (obj is AbstractPagingObject<*>) obj.endpoint = o.tracks
-            obj.instantiatePagingObjects(o)
-        }
-        return obj
-    } catch (e: java.lang.Exception) {
-        println(this)
-        throw e
+    val klaxon = o?.klaxon ?: Klaxon()
+    val obj = klaxon.parse<T>(this) ?: throw SpotifyException(
+        "Unable to parse $this",
+        IllegalArgumentException("$this not found")
+    )
+    o?.let {
+        if (obj is Linkable) obj.api = o
+        if (obj is AbstractPagingObject<*>) obj.endpoint = o.tracks
+        obj.instantiatePagingObjects(o)
     }
+    return obj
 }
 
 internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
