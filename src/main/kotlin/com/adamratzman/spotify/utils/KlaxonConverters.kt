@@ -5,7 +5,38 @@ import com.beust.klaxon.Converter
 import com.beust.klaxon.JsonValue
 import org.json.JSONObject
 
-fun getSavedTrackConverter(api:SpotifyAPI)= object : Converter {
+fun getPublicUserConverter(api: SpotifyAPI) = object : Converter {
+    override fun canConvert(cls: Class<*>): Boolean {
+        return cls == SpotifyPublicUser::class.java
+    }
+
+    override fun fromJson(jv: JsonValue): Any? {
+        return jv.obj?.let { obj ->
+            if (obj.string("id")?.isNotBlank() == true) {
+                SpotifyPublicUser(
+                    obj.string("display_name"),
+                    obj.obj("external_urls")!!.map.mapValues { it.value as String },
+                    obj.obj("followers")?.let { api.klaxon.parseFromJsonObject<Followers>(it) } ?: Followers(null, -1),
+                    obj.string("href")!!,
+                    obj.string("id")!!,
+                    obj.array("images") ?: listOf(),
+                    obj.string("type")!!,
+                    obj.string("uri")!!
+                )
+            } else {
+                // this is the *Spotify* user, and is SOMEHOW broken
+                SpotifyPublicUser(
+                    externalUrls = hashMapOf(), href = "https://api.spotify.com/v1/users/spotify",
+                    id = "spotify", type = "user", _uri = "spotify:user:spotify"
+                )
+            }
+        }
+    }
+
+    override fun toJson(value: Any): String = JSONObject(value).toString()
+}
+
+fun getSavedTrackConverter(api: SpotifyAPI) = object : Converter {
     override fun canConvert(cls: Class<*>): Boolean {
         return cls == SavedTrack::class.java
     }
@@ -48,6 +79,7 @@ fun getAlbumConverter(api: SpotifyAPI) = object : Converter {
                 obj.obj("tracks")!!.toJsonString().toPagingObject(endpoint = api.tracks),
                 obj.string("type")!!,
                 obj.string("uri")!!,
+                AlbumURI(obj.string("uri")!!),
                 obj.int("total_tracks")!!
             )
         }

@@ -24,6 +24,7 @@ import com.adamratzman.spotify.utils.byteEncode
 import com.adamratzman.spotify.utils.getAlbumConverter
 import com.adamratzman.spotify.utils.getFeaturedPlaylistsConverter
 import com.adamratzman.spotify.utils.getPlaylistConverter
+import com.adamratzman.spotify.utils.getPublicUserConverter
 import com.adamratzman.spotify.utils.getSavedTrackConverter
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toObjectNullable
@@ -439,3 +440,4 @@ private fun getKlaxon(api: SpotifyAPI) = Klaxon()
     .converter(getPlaylistConverter(api))
     .converter(getAlbumConverter(api))
     .converter(getSavedTrackConverter(api))
+    .converter(getPublicUserConverter(api))
