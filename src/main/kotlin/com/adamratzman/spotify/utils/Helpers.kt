@@ -5,8 +5,8 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyException
 import com.beust.klaxon.Json
+import com.beust.klaxon.JsonBase
 import com.beust.klaxon.Klaxon
-import org.json.JSONObject
 import java.io.InvalidObjectException
 import java.net.URLEncoder
 import java.util.Base64
@@ -96,7 +96,7 @@ internal inline fun <reified T> String.toPagingObject(
 
     return PagingObject(
         jsonObject.string("href")!!,
-        JSONObject(jsonObject.toJsonString()).getJSONArray("items").toString().toArray<T>(endpoint.api),
+        (jsonObject["items"] as JsonBase).toJsonString().toArray<T>(endpoint.api),
         jsonObject.int("limit")!!,
         jsonObject.string("next"),
         jsonObject.int("offset")!!,
@@ -117,7 +117,7 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
 
     return CursorBasedPagingObject(
         jsonObject.string("href")!!,
-        JSONObject(jsonObject.toJsonString()).getJSONArray("items").toString().toArray<T>(endpoint.api),
+        (jsonObject["items"] as JsonBase).toJsonString().toArray<T>(endpoint.api),
         jsonObject.int("limit")!!,
         jsonObject.string("next"),
         endpoint.api.klaxon.parseFromJsonObject(jsonObject.obj("cursors")!!)!!,
@@ -132,7 +132,7 @@ internal inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedRe
     val jsonObject = api.klaxon.parseJsonObject(this.reader())
     return LinkedResult(
         jsonObject.string("href")!!,
-        JSONObject(jsonObject.toJsonString()).getJSONArray("items").toString().toArray<T>(api)
+        (jsonObject["items"] as JsonBase).toJsonString().toArray(api)
     )
 }
 
