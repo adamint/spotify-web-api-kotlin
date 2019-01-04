@@ -21,7 +21,7 @@ import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
 import com.adamratzman.spotify.utils.toInnerObject
 import com.adamratzman.spotify.utils.toObject
-import org.json.JSONObject
+import com.beust.klaxon.JsonObject
 import java.util.function.Supplier
 
 /**
@@ -47,7 +47,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun getRecentlyPlayed(): SpotifyRestActionPaging<PlayHistory,CursorBasedPagingObject<PlayHistory>> {
+    fun getRecentlyPlayed(): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
         return toActionPaging(Supplier {
             get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject<PlayHistory>(
                 endpoint = this
@@ -156,17 +156,18 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
-            val body = JSONObject()
+            val body = JsonObject()
             when {
-                album != null -> body.put("context_uri", AlbumURI(album).uri)
-                artist != null -> body.put("context_uri", ArtistURI(artist).uri)
-                playlist != null -> body.put("context_uri", playlist.uri)
-                tracksToPlay.isNotEmpty() -> body.put("uris", tracksToPlay.map { TrackURI(it).uri })
+                album != null -> body["context_uri"] = AlbumURI(album).uri
+                artist != null -> body["context_uri"] = ArtistURI(artist).uri
+                playlist != null -> body["context_uri"] = playlist.uri
+                tracksToPlay.isNotEmpty() -> body["uris"] = tracksToPlay.map { TrackURI(it).uri }
             }
-            if (body.keySet().isNotEmpty()) {
-                if (offsetNum != null) body.put("offset", JSONObject().put("position", offsetNum))
-                else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", TrackURI(offsetTrackId).uri))
-                put(url, body.toString())
+            if (body.keys.isNotEmpty()) {
+                if (offsetNum != null) body["offset"] = JsonObject().apply { this["position"] = offsetNum }
+                else if (offsetTrackId != null) body["offset"] =
+                    JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
+                put(url, body.toJsonString())
             } else put(url)
             Unit
         })

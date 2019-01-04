@@ -32,8 +32,6 @@ repositories {
 
 dependencies {
     // Actual library dependencies
-    implementation(group: 'org.json', name: 'json', version: '20180130')
-
     implementation 'com.beust:klaxon:5.0.1'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -49,8 +47,9 @@ dependencies {
     }
 
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    implementation(group: 'org.json', name: 'json', version: '20180130')
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
 }
 
 spotless {

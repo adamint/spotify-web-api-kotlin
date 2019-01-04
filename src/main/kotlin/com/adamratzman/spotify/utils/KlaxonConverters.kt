@@ -3,7 +3,6 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.beust.klaxon.Converter
 import com.beust.klaxon.JsonValue
-import org.json.JSONObject
 
 fun getPublicUserConverter(api: SpotifyAPI) = object : Converter {
     override fun canConvert(cls: Class<*>): Boolean {
@@ -33,7 +32,7 @@ fun getPublicUserConverter(api: SpotifyAPI) = object : Converter {
         }
     }
 
-    override fun toJson(value: Any): String = JSONObject(value).toString()
+    override fun toJson(value: Any): String = api.klaxon.toJsonString(value)
 }
 
 fun getSavedTrackConverter(api: SpotifyAPI) = object : Converter {
@@ -50,7 +49,7 @@ fun getSavedTrackConverter(api: SpotifyAPI) = object : Converter {
         }
     }
 
-    override fun toJson(value: Any): String = JSONObject(value).toString()
+    override fun toJson(value: Any): String = api.klaxon.toJsonString(value)
 }
 
 fun getAlbumConverter(api: SpotifyAPI) = object : Converter {
@@ -85,7 +84,7 @@ fun getAlbumConverter(api: SpotifyAPI) = object : Converter {
         }
     }
 
-    override fun toJson(value: Any): String = JSONObject(value).toString()
+    override fun toJson(value: Any): String = api.klaxon.toJsonString(value)
 }
 
 fun getFeaturedPlaylistsConverter(api: SpotifyAPI) = object : Converter {
@@ -102,7 +101,7 @@ fun getFeaturedPlaylistsConverter(api: SpotifyAPI) = object : Converter {
         }
     }
 
-    override fun toJson(value: Any): String = JSONObject(value).toString()
+    override fun toJson(value: Any): String = api.klaxon.toJsonString(value)
 }
 
 fun getPlaylistConverter(api: SpotifyAPI) = object : Converter {
@@ -132,5 +131,5 @@ fun getPlaylistConverter(api: SpotifyAPI) = object : Converter {
         }
     }
 
-    override fun toJson(value: Any): String = JSONObject(value).toString()
+    override fun toJson(value: Any): String = api.klaxon.toJsonString(value)
 }
