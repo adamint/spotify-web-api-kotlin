@@ -4,10 +4,10 @@ package com.adamratzman.spotify.utils
 import java.net.HttpURLConnection
 import java.net.URL
 
-enum class HttpRequestMethod { GET, POST, PUT, DELETE }
-data class HttpHeader(val key: String, val value: String)
+internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
+internal data class HttpHeader(val key: String, val value: String)
 
-class HttpConnection(
+internal class HttpConnection(
     private val url: String,
     private val method: HttpRequestMethod,
     private val body: String?,
@@ -50,4 +50,4 @@ class HttpConnection(
     }
 }
 
-data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
+internal data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)

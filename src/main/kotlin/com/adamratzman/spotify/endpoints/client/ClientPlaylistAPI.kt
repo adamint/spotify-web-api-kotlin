@@ -18,6 +18,7 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import com.beust.klaxon.Json
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import java.awt.image.BufferedImage
@@ -370,7 +371,17 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         return DatatypeConverter.printBase64Binary(bos.toByteArray())
     }
 
-    data class Snapshot(val snapshot_id: String)
+    /**
+     * Contains the snapshot id, returned from API responses
+     *
+     * @param snapshotId playlist state identifier
+     */
+    data class Snapshot(@Json(name = "snapshot_id") val snapshotId: String)
 }
 
+/**
+ * Represents the positions inside a playlist's items list of where to locate the track
+ *
+ * @param positions positions (zero-based)
+ */
 class SpotifyTrackPositions(vararg val positions: Int) : ArrayList<Int>(positions.toList())

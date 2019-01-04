@@ -2,20 +2,20 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyScope
+import com.beust.klaxon.Json
 
+/**
+ * Represents a Spotify Token, retrieved through instantiating a new [SpotifyAPI]
+ */
 data class Token(
-    val access_token: String,
-    val token_type: String,
-    val expires_in: Int,
-    val refresh_token: String? = null,
-    val scope: String?
+    @Json(name = "access_token") val accessToken: String,
+    @Json(name = "token_type") val tokenType: String,
+    @Json(name = "expires_in")val expiresIn: Int,
+    @Json(name = "refresh_token") val refreshToken: String? = null,
+    @Json(ignored = false) private val scopeString: String? = null
 ) {
-    fun getScopes(): List<SpotifyScope> {
-        val scopes = mutableListOf<SpotifyScope>()
-        scope?.split(" ")?.forEach { split ->
-            SpotifyScope.values().forEach { if (split == it.uri) scopes.add(it) }
-        }
-        return scopes
+    @Json(ignored = true) val scopes: List<SpotifyScope>? = scopeString?.let { str ->
+        str.split(" ").mapNotNull { scope -> SpotifyScope.values().find { it.uri == scope } }
     }
 }
 
