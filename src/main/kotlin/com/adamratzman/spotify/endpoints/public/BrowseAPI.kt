@@ -20,10 +20,9 @@ import com.adamratzman.spotify.utils.SpotifyCategory
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.map
+import com.adamratzman.spotify.utils.toInnerArray
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date
@@ -41,8 +40,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction(Supplier {
-            JSONObject(get(EndpointBuilder("/recommendations/available-genre-seeds").toString())).getJSONArray("genres")
-                .map { it.toString() }
+            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>(
+                "genres",
+                api
+            )
         })
     }
 
@@ -60,7 +61,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SimpleAlbum,PagingObject<SimpleAlbum>> {
+    ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
@@ -130,7 +131,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         offset: Int? = null,
         locale: String? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SpotifyCategory,PagingObject<SpotifyCategory>> {
+    ): SpotifyRestActionPaging<SpotifyCategory, PagingObject<SpotifyCategory>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
@@ -185,7 +186,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SimplePlaylist,PagingObject<SimplePlaylist>> {
+    ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/browse/categories/${categoryId.encode()}/playlists").with(
