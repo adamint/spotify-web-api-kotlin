@@ -7,19 +7,35 @@ import com.adamratzman.spotify.main.SpotifyRestAction
 import com.beust.klaxon.Json
 
 /**
- * @param message the featured message in "Overview"
+ * Spotify featured playlists (on the Browse tab)
+ *
+ * @property message the featured message in "Overview"
+ * @property playlists [PagingObject] of returned items
  */
-
 data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)
 
-data class AudioFeaturesResponse(val audio_features: List<AudioFeatures?>)
+internal data class AudioFeaturesResponse(
+    @Json(name = "audio_features") val audioFeatures: List<AudioFeatures?>
+)
 
-data class AlbumsResponse(val albums: List<Album?>)
+internal data class AlbumsResponse(val albums: List<Album?>)
 
-data class ArtistList(val artists: List<Artist?>)
+internal data class ArtistList(val artists: List<Artist?>)
 
-data class TrackList(val tracks: List<Track?>)
+internal data class TrackList(val tracks: List<Track?>)
 
+/**
+ * Seed from which the recommendation was constructed
+ *
+ * @property initialPoolSize The number of recommended tracks available for this seed.
+ * @property afterFilteringSize The number of tracks available after min_* and max_* filters have been applied.
+ * @property afterRelinkingSize The number of tracks available after relinking for regional availability.
+ * @property href A link to the full track or artist data for this seed. For tracks this will be a link to a Track
+ * Object. For artists a link to an Artist Object. For genre seeds, this value will be null.
+ * @property id The id used to select this seed. This will be the same as the string used in the
+ * seed_artists , seed_tracks or seed_genres parameter.
+ * @property type The entity type of this seed. One of artist , track or genre.
+ */
 data class RecommendationSeed(
     val initialPoolSize: Int,
     val afterFilteringSize: Int,
@@ -29,6 +45,14 @@ data class RecommendationSeed(
     val type: String
 )
 
+/**
+ * Spotify music category
+ *
+ * @property href A link to the Web API endpoint returning full details of the category.
+ * @property icons The category icon, in various sizes.
+ * @property id The Spotify category ID of the category.
+ * @property name The name of the category.
+ */
 data class SpotifyCategory(
     val href: String,
     val icons: List<SpotifyImage>,
@@ -36,6 +60,13 @@ data class SpotifyCategory(
     val name: String
 )
 
+/**
+ * Describes an album's copyright
+ *
+ * @property text The copyright text for this album.
+ * @property type The type of copyright: C = the copyright,
+ * P = the sound recording (performance) copyright.
+ */
 data class SpotifyCopyright(
     val text: String,
     val type: String
@@ -47,12 +78,13 @@ data class PlaylistTrackInfo(
 )
 
 /**
- * @param href Will always be null, per the Spotify documentation,
+ * Spotify user's followers
+ *
+ * @property href Will always be null, per the Spotify documentation,
  * until the Web API is updated to support this.
  *
- * @param total -1 if the user object does not contain followers, otherwise the amount of followers the user has
+ * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
-
 data class Followers(
     val href: String?,
     val total: Int
@@ -189,7 +221,7 @@ data class Track(
 /**
  * Contains an explanation of why a track is not available
  *
- * @param reason why the track is not available
+ * @property reason why the track is not available
  */
 data class Restrictions(val reason: String)
 

@@ -109,7 +109,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         method,
         body,
         contentType,
-        HttpHeader("Authorization", "Bearer ${api.token.access_token}")
+        HttpHeader("Authorization", "Bearer ${api.token.accessToken}")
     )
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)

@@ -137,8 +137,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
                     "market",
                     market?.code
-                )
-                    .with("locale", locale).toString()
+                ).with("locale", locale).toString()
             ).toPagingObject<SpotifyCategory>(
                 "categories", endpoint = this
             )

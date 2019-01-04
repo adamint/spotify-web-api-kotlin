@@ -3,22 +3,23 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.ArtistList
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.CursorBasedPagingObject
 import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.LinkedResult
 import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.SimpleAlbum
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Track
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toInnerArray
-import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -70,15 +71,15 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null,
         vararg include: AlbumInclusionStrategy
-    ): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/albums").with("limit", limit).with(
                     "offset",
                     offset
                 ).with("market", market?.code)
                     .with("include_groups", include.joinToString(",") { it.keyword }).toString()
-            ).toLinkedResult<SimpleAlbum>(api)
+            ).toPagingObject<SimpleAlbum>(null, this)
         })
     }
 

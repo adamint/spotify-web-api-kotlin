@@ -6,7 +6,6 @@ import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.BadRequestException
 import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.LinkedResult
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.PagingObject
 import com.adamratzman.spotify.utils.Playlist
@@ -19,7 +18,6 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toArray
-import com.adamratzman.spotify.utils.toLinkedResult
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
@@ -88,13 +86,13 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<LinkedResult<PlaylistTrack>> {
-        return toAction(Supplier {
+    ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
                     .with("offset", offset).with("market", market?.code).toString()
             )
-                .toLinkedResult<PlaylistTrack>(api)
+                .toPagingObject<PlaylistTrack>(null, this)
         })
     }
 

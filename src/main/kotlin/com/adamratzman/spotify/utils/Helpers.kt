@@ -6,35 +6,19 @@ import com.adamratzman.spotify.main.SpotifyException
 import com.beust.klaxon.Json
 import com.beust.klaxon.JsonBase
 import com.beust.klaxon.Klaxon
-import java.io.InvalidObjectException
 import java.net.URLEncoder
 import java.util.Base64
 
+/**
+ * The cursor to use as key to find the next page of items.
+ *
+ * @property after nullable cursor value
+ */
 data class Cursor(val after: String?)
 
-data class LinkedResult<out T>(val href: String, val items: List<T>) {
-    fun toPlaylist(): PlaylistURI {
-        if (href.startsWith("https://api.spotify.com/v1/users/")) {
-            val split = href.removePrefix("https://api.spotify.com/v1/users/").split("/playlists/")
-            if (split.size == 2) return PlaylistURI(split[1].split("/")[0])
-        }
-        throw InvalidObjectException("This object is not linked to a playlist")
-    }
-
-    fun getArtist(): ArtistURI {
-        if (href.startsWith("https://api.spotify.com/v1/artists/")) {
-            return ArtistURI(href.removePrefix("https://api.spotify.com/v1/artists/").split("/")[0])
-        }
-        throw InvalidObjectException("This object is not linked to an artist")
-    }
-
-    fun getAlbum(): AlbumURI {
-        if (href.startsWith("https://api.spotify.com/v1/albums/")) {
-            return AlbumURI(href.removePrefix("https://api.spotify.com/v1/albums/").split("/")[0])
-        }
-        throw InvalidObjectException("This object is not linked to an album")
-    }
-}
+/**
+ *
+ */
 
 abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
     fun isRelinked() = linkedTrack != null
@@ -120,14 +104,6 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
         this.endpoint = endpoint
         this.itemClazz = T::class.java
     }
-}
-
-internal inline fun <reified T> String.toLinkedResult(api: SpotifyAPI): LinkedResult<T> {
-    val jsonObject = api.klaxon.parseJsonObject(this.reader())
-    return LinkedResult(
-        jsonObject.string("href")!!,
-        (jsonObject["items"] as JsonBase).toJsonString().toArray(api)
-    )
 }
 
 internal inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): T {

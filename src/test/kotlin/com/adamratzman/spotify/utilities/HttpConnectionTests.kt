@@ -3,7 +3,6 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.utils.HttpConnection
 import com.adamratzman.spotify.utils.HttpRequestMethod
-import com.beust.klaxon.Klaxon
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.spekframework.spek2.Spek
