@@ -69,7 +69,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null,
-        include: List<AlbumInclusionStrategy> = listOf()
+        vararg include: AlbumInclusionStrategy
     ): SpotifyRestAction<LinkedResult<SimpleAlbum>> {
         return toAction(Supplier {
             get(
@@ -82,6 +82,11 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
+    /**
+     * Describes object types to include when finding albums
+     *
+     * @param keyword the spotify id of the strategy
+     */
     enum class AlbumInclusionStrategy(val keyword: String) {
         ALBUM("album"), SINGLE("single"), APPEARS_ON("appears_on"), COMPILATION("compilation")
     }

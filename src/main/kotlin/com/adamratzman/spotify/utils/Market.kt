@@ -2,7 +2,9 @@
 package com.adamratzman.spotify.utils
 
 /**
- * Repres
+ * Represents Spotify markets (countries + distinctive territories)
+ *
+ * @param country the readable country name of the market
  */
 enum class Market(val country: String) {
     AD("Andorra"),
