@@ -76,7 +76,7 @@ data class SpotifyUserInformation(
 
 data class SpotifyPublicUser(
     @Json(name = "display_name") val displayName: String? = null,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
     val followers: Followers = Followers(null, -1),
     val href: String,
     val id: String,
@@ -339,10 +339,10 @@ data class AudioSegment(
     val start: Float,
     val duration: Float,
     val confidence: Float,
-    @Json(name = "input_process") val loudness_start: Float,
-    @Json(name = "input_process") val loudness_max_time: Float,
-    @Json(name = "input_process") val loudness_max: Float,
-    @Json(name = "input_process") val loudness_end: Float? = null,
+    @Json(name = "loudness_start") val loudnessStart: Float,
+    @Json(name = "loudness_max_time") val loudnessMaxTime: Float,
+    @Json(name = "loudness_max") val loudnessMax: Float,
+    @Json(name = "loudness_end") val loudnessEnd: Float? = null,
     val pitches: List<Float>,
     val timbre: List<Float>
 )
