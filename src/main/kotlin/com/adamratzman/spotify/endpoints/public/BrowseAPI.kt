@@ -50,8 +50,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
      *
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      *
@@ -77,8 +77,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
      *
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
@@ -114,8 +114,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
@@ -176,8 +176,8 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
      */
@@ -215,7 +215,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
      * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      * @param targetAttributes For each of the tunable track attributes a target value may be provided.

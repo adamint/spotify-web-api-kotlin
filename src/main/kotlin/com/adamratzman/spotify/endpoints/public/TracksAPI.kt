@@ -25,7 +25,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *
-     * @param track The Spotify ID for the track.
+     * @param track the spotify id or uri for the track.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @return nullable Track. This behavior is *the same* as in `getTracks`
@@ -40,7 +40,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for multiple tracks based on their Spotify IDs.
      *
-     * @param tracks The Spotify ID for the tracks.
+     * @param tracks the spotify id or uri for the tracks.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @return List of possibly-null full [Track] objects.
@@ -56,7 +56,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a detailed audio analysis for a single track identified by its unique Spotify ID.
      *
-     * @param track The Spotify ID for the track.
+     * @param track the spotify id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
      */
@@ -70,7 +70,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get audio feature information for a single track identified by its unique Spotify ID.
      *
-     * @param track The Spotify ID for the track.
+     * @param track the spotify id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
      */
@@ -84,7 +84,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get audio features for multiple tracks based on their Spotify IDs.
      *
-     * @param tracks The Spotify ID for the tracks.
+     * @param tracks the spotify id or uri for the tracks.
      *
      * @return Ordered list of possibly-null [AudioFeatures] objects.
      */

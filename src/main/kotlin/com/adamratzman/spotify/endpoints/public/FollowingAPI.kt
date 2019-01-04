@@ -19,9 +19,9 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *
-     * @param playlistOwner Spotify ID of the creator of the playlist
-     * @param playlist Spotify playlist ID
-     * @param users users to check
+     * @param playlistOwner id or uri of the creator of the playlist
+     * @param playlist playlist id or uri
+     * @param users user ids or uris to check
      *
      * @return List of Booleans representing whether the user follows the playlist. User IDs **not** found will return false
      *
@@ -44,8 +44,8 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Check to see if a specific Spotify user is following the specified playlist.
      *
-     * @param playlistOwner Spotify ID of the creator of the playlist
-     * @param playlist Spotify playlist ID
+     * @param playlistOwner id or uri of the creator of the playlist
+     * @param playlist playlist id or uri
      * @param user Spotify user id
      *
      * @return booleans representing whether the user follows the playlist. User IDs **not** found will return false
