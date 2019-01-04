@@ -63,7 +63,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): SpotifyRestActionPaging<Track,PagingObject<Track>> {
+    ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)

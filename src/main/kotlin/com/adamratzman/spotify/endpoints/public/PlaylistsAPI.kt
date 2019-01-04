@@ -44,7 +44,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         user: String,
         limit: Int? = null,
         offset: Int? = null
-    ): SpotifyRestActionPaging<SimplePlaylist,PagingObject<SimplePlaylist>> {
+    ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(

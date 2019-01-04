@@ -109,7 +109,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun getFollowedArtists(
         limit: Int? = null,
         after: String? = null
-    ): SpotifyRestActionPaging<Artist,CursorBasedPagingObject<Artist>> {
+    ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(

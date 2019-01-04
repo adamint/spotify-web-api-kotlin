@@ -113,7 +113,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     )
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
-    fun <Z, T:AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
+    fun <Z, T : AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {
