@@ -69,6 +69,22 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         })
     }
 
+
+    /**
+     * Add a track to a user’s playlist.
+     *
+     * @param playlist The Spotify ID for the playlist.
+     * @param tracks Spotify track id
+     * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
+     * first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
+     * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
+     *
+     * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
+     */
+
+    fun addTrackToPlaylist(playlist: String,track: String,position: Int?=null)
+    = addTracksToPlaylist(playlist,track,position = position)
+
     /**
      * Add one or more tracks to a user’s playlist.
      *
@@ -185,7 +201,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    fun reorderTracks(
+    fun reorderPlaylistTracks(
         playlist: String,
         reorderRangeStart: Int,
         reorderRangeLength: Int? = null,
@@ -273,26 +289,55 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         })
     }
 
-    fun removePlaylistTrack(
+    /**
+     * Remove a track in the specified positions (zero-based) from the specified playlist.
+     *
+     * @param playlist the playlist id
+     * @param track the track id
+     * @param positions the positions at which the track is located in the playlist
+     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     */
+    fun removeTrackFromPlaylist(
         playlist: String,
         track: String,
         positions: SpotifyTrackPositions,
         snapshotId: String? = null
-    ) = removePlaylistTracks(playlist, track to positions, snapshotId = snapshotId)
+    ) = removeTracksFromPlaylist(playlist, track to positions, snapshotId = snapshotId)
 
-    fun removePlaylistTrack(
+    /**
+     * Remove all occurrences of a track from the specified playlist.
+     *
+     * @param playlist the playlist id
+     * @param track the track id
+     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     */
+    fun removeTrackFromPlaylist(
         playlist: String,
         track: String,
         snapshotId: String? = null
-    ) = removePlaylistTracks(playlist, track, snapshotId = snapshotId)
+    ) = removeTracksFromPlaylist(playlist, track, snapshotId = snapshotId)
 
-    fun removePlaylistTracks(
+    /**
+     * Remove all occurrences of the specified tracks from the given playlist.
+     *
+     * @param playlist the playlist id
+     * @param tracks an array of track ids
+     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     */
+    fun removeTracksFromPlaylist(
         playlist: String,
         vararg tracks: String,
         snapshotId: String? = null
     ) = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
 
-    fun removePlaylistTracks(
+    /**
+     * Remove tracks (each with their own positions) from the given playlist.
+     *
+     * @param playlist the playlist id
+     * @param tracks an array of [Pair]s of track ids *and* track positions (zero-based)
+     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     */
+    fun removeTracksFromPlaylist(
         playlist: String,
         vararg tracks: Pair<String, SpotifyTrackPositions>,
         snapshotId: String? = null
@@ -302,7 +347,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         playlist: String,
         tracks: Array<Pair<String, SpotifyTrackPositions?>>,
         snapshotId: String?
-    ): SpotifyRestAction<String> {
+    ): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
             if (tracks.isEmpty()) throw IllegalArgumentException("You need to provide at least one track to remove")
 
@@ -311,29 +356,15 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
             tracks.map { (track, positions) ->
                 JsonObject().apply {
                     this["uri"] = TrackURI(track).uri
-                    if (positions?.positions?.isNotEmpty() == true) this.put("positions", positions.positions)
-                }.also { if (positions?.positions?.isNotEmpty() == true) it["positions"] = positions.positions }
+                    if (positions?.positions?.isNotEmpty() == true) this["positions"] = positions.positions
+                }.also { if (positions?.positions?.isNotEmpty() == true) it["positions"] = positions }
             }.let { json.put("tracks", JsonArray(it)) }
             delete(
                 EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), body = json.toJsonString()
-            )
+            ).toObject<Snapshot>(api)
         })
     }
 
-    /*
-    fun removeAllOccurances(user: String, playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
-        if (tracks.isEmpty()) throw IllegalArgumentException("Tracks to remove must not be empty")
-        return toAction(Supplier {
-            val json = JSONObject()
-            json.put("tracks", tracks.map { JSONObject().put("uri", TrackURI(it).uri) })
-            println(json.toString())
-            val userURI = UserURI(user)
-            delete("https://api.spotify.com/v1/users/${userURI.id}/playlists/${userURI.PlaylistURI(playlist).id}/tracks",
-                    body =  json.toString(), contentType = "application/json")
-            Unit
-        })
-    }
-*/
     private fun encode(image: BufferedImage): String {
         val bos = ByteArrayOutputStream()
         ImageIO.write(image, "jpg", bos)
@@ -344,4 +375,4 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     data class Snapshot(val snapshot_id: String)
 }
 
-class SpotifyTrackPositions(vararg val positions: Int)
+class SpotifyTrackPositions(vararg val positions: Int) : ArrayList<Int>(positions.toList())
