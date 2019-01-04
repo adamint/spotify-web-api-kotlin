@@ -11,7 +11,6 @@ import org.spekframework.spek2.style.specification.describe
 
 class HttpConnectionTests : Spek({
     describe("http connection testing") {
-        val klaxon = Klaxon()
         describe("get request") {
             val (response, body) = HttpConnection(
                 "https://httpbin.org/get?query=string",

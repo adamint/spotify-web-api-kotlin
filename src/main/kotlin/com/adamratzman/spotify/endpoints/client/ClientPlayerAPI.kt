@@ -127,20 +127,20 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Start or resume playback.
-     * **Note:** Only one of the following can be used: [albumId], [artistId], [playlist], or [tracksToPlay]. Else, you will
+     * **Note:** Only one of the following can be used: [album], [artist], [playlist], or [tracksToPlay]. Else, you will
      * not see expected results.
      *
      * **Note also:** You can only use one of the following: [offsetNum] or [offsetTrackId]
      *
      * **Specify nothing to play to simply resume playback**
      *
-     * @param albumId an album id to play
-     * @param artistId an artist id for whom to play
-     * @param playlist a playlist id from which to play
-     * @param tracksToPlay track ids to play. these are converted into URIs. Max 100
-     * @param offsetNum Indicates from where in the context playback should start. Only available with use of [albumId] or [playlist]
+     * @param album an album id or uri to play
+     * @param artist an artist id or uri for whom to play
+     * @param playlist a playlist id or uri from which to play
+     * @param tracksToPlay track ids or uris to play. these are converted into URIs. Max 100
+     * @param offsetNum Indicates from where in the context playback should start. Only available with use of [album] or [playlist]
      * or when [tracksToPlay] is used.
-     * @param offsetTrackId Does the same as [offsetNum] but with a track id instead of place number
+     * @param offsetTrackId Does the same as [offsetNum] but with a track id or uri instead of place number
      * @param deviceId the device to play on
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.

@@ -33,8 +33,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * (blame Spotify)
      *
      * @param user The user’s Spotify user ID.
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of [SimplePlaylist]s **ONLY if** the user can be found. Otherwise, an empty paging object is returned.
      * This does not have the detail of full [Playlist] objects.
@@ -57,7 +57,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a playlist owned by a Spotify user.
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @throws BadRequestException if the playlist is not found
@@ -76,10 +76,10 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get full details of the tracks of a playlist owned by a Spotify user.
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of track objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first track to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the playlist cannot be found
      */
@@ -100,7 +100,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get the current image associated with a specific playlist.
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      *
      * @throws BadRequestException if the playlist cannot be found
      */
