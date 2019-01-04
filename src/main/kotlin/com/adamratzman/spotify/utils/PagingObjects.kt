@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 @file:Suppress("UNCHECKED_CAST")
 
 package com.adamratzman.spotify.utils

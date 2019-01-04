@@ -42,7 +42,7 @@ open class SpotifyRestAction<T>(protected val api: SpotifyAPI, private val suppl
     override fun toString() = complete().toString()
 }
 
-class SpotifyRestActionPaging<Z, T:AbstractPagingObject<Z>>(api: SpotifyAPI, supplier: Supplier<T>) :
+class SpotifyRestActionPaging<Z, T : AbstractPagingObject<Z>>(api: SpotifyAPI, supplier: Supplier<T>) :
     SpotifyRestAction<T>(api, supplier) {
     fun getAll() = api.tracks.toAction(Supplier { complete().getAllImpl() })
     fun getAllItems() = api.tracks.toAction(Supplier { complete().getAllImpl().toList().map { it.items }.flatten() })

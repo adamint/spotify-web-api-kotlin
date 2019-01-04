@@ -30,7 +30,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SavedTrack,PagingObject<SavedTrack>> {
+    ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
@@ -48,7 +48,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SavedAlbum,PagingObject<SavedAlbum>> {
+    ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)

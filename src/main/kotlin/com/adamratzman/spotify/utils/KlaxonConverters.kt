@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.main.SpotifyAPI

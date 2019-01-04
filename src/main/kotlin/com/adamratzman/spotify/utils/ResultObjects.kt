@@ -70,8 +70,8 @@ data class SpotifyUserInformation(
     val images: List<SpotifyImage>,
     val product: String?,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:UserURI=UserURI(_uri)
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 data class SpotifyPublicUser(
@@ -82,8 +82,8 @@ data class SpotifyPublicUser(
     val id: String,
     val images: List<SpotifyImage> = listOf(),
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:UserURI=UserURI(_uri)
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 data class SpotifyImage(
@@ -107,8 +107,8 @@ data class LinkedTrack(
     val href: String,
     val id: String,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:TrackURI= TrackURI(_uri)
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
 )
 
 data class SimpleArtist(
@@ -117,8 +117,8 @@ data class SimpleArtist(
     val id: String,
     val name: String,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:ArtistURI=ArtistURI(_uri)
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 ) : Linkable() {
     fun toFullArtist() = api.artists.getArtist(id)
 }
@@ -133,8 +133,8 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:ArtistURI=ArtistURI(_uri)
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 )
 
 data class SimpleTrack(
@@ -143,7 +143,7 @@ data class SimpleTrack(
     @Json(name = "disc_number") val discNumber: Int,
     @Json(name = "duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,//
+    @Json(name = "external_urls") val externalUrls: HashMap<String, String>, //
     @Json(name = "external_ids") val externalIds: HashMap<String, String> = hashMapOf(),
     val href: String,
     val id: String,
@@ -153,8 +153,8 @@ data class SimpleTrack(
     @Json(name = "preview_url") val previewUrl: String?,
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:TrackURI=TrackURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     @Json(name = "is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null
 ) : RelinkingAvailableResponse(linkedFrom) {
@@ -179,8 +179,8 @@ data class Track(
     @Json(name = "preview_url") val previewUrl: String?,
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:TrackURI=TrackURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     @Json(name = "is_local") val isLocal: Boolean?
 ) : RelinkingAvailableResponse(linked_from)
 
@@ -194,8 +194,8 @@ data class SimpleAlbum(
     val images: List<SpotifyImage>,
     val name: String,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:AlbumURI=AlbumURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
     @Json(name = "release_date") val releaseDate: String,
     @Json(name = "release_date_precision") val releaseDatePrecision: String,
     @Json(name = "total_tracks") val totalTracks: Int? = null,
@@ -232,8 +232,8 @@ data class Album(
     @Json(name = "release_date_precision") val releaseDatePrecision: String,
     val tracks: PagingObject<SimpleTrack>,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:AlbumURI= AlbumURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
     @Json(name = "total_tracks") val totalTracks: Int
 )
 
@@ -250,8 +250,8 @@ data class SimplePlaylist(
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PlaylistTrackInfo,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:PlaylistURI=PlaylistURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
     @Json(ignored = true) val snapshotId: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 ) : Linkable() {
     fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
@@ -287,8 +287,8 @@ data class Playlist(
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:PlaylistURI=PlaylistURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
     @Json(ignored = true) val snapshotId: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 )
 
@@ -393,8 +393,8 @@ data class AudioFeatures(
     @Json(name = "time_signature") val timeSignature: Int,
     @Json(name = "track_href") val trackHref: String,
     val type: String,
-    @Json(name="uri",ignored=false)private val _uri: String,
-    @Json(ignored = true) val uri:TrackURI=TrackURI(_uri),
+    @Json(name = "uri", ignored = false)private val _uri: String,
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     val valence: Float
 )
 
