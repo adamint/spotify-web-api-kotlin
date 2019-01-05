@@ -1,4 +1,9 @@
-# Kotlin Spotify Web API
+# Kotlin Spotify Web API 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+![](https://img.shields.io/badge/License-MIT-blue.svg)
+[![CircleCI](https://circleci.com/gh/adamint/spotify-web-api-kotlin.svg?style=shield)](https://circleci.com/gh/adamint/spotify-web-api-kotlin) 
+
+
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
 ### Have a question?
