@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Token - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.utils</a>&nbsp;/&nbsp;<a href="./index.html">Token</a><br/>
+<br/>
+<h1>Token</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Token</span></code>
+<p>Represents a Spotify Token, retrieved through instantiating a new <a href="#">SpotifyAPI</a></p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Token</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/accessToken">accessToken</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/tokenType">tokenType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/expiresIn">expiresIn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/refreshToken">refreshToken</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/scopeString">scopeString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.Token$<init>(kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.main.SpotifyScope)))/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.main/-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">&gt;</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;scopeString?.let { str -&gt;
+        str.split(" ").mapNotNull { scope -&gt; SpotifyScope.values().find { it.uri == scope } }
+    }<span class="symbol">)</span></code>
+<p>Represents a Spotify Token, retrieved through instantiating a new <a href="#">SpotifyAPI</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="access-token.html">accessToken</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">accessToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="expires-in.html">expiresIn</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">expiresIn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="refresh-token.html">refreshToken</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">refreshToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="scopes.html">scopes</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">scopes</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.main/-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="token-type.html">tokenType</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tokenType</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

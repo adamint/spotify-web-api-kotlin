@@ -1,0 +1,208 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ClientPlayerAPI - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="./index.html">ClientPlayerAPI</a><br/>
+<br/>
+<h1>ClientPlayerAPI</h1>
+<code><span class="keyword">class </span><span class="identifier">ClientPlayerAPI</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<p>These endpoints allow for viewing and controlling user playback. Please view <a href="https://developer.spotify.com/web-api/working-with-connect/">the official documentation</a>
+for more information on how this works. This is in beta and is available for <strong>premium users only</strong>. Endpoints are <strong>not</strong> guaranteed to work</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-player-repeat-state/index.html">PlayerRepeatState</a></p>
+</td>
+<td>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">PlayerRepeatState</span></code>
+<p>What state the player can repeat in.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">ClientPlayerAPI</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$<init>(com.adamratzman.spotify.main.SpotifyAPI)/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.main/-spotify-a-p-i/index.html"><span class="identifier">SpotifyAPI</span></a><span class="symbol">)</span></code>
+<p>These endpoints allow for viewing and controlling user playback. Please view <a href="https://developer.spotify.com/web-api/working-with-connect/">the official documentation</a>
+for more information on how this works. This is in beta and is available for <strong>premium users only</strong>. Endpoints are <strong>not</strong> guaranteed to work</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/api.html">api</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-a-p-i/index.html"><span class="identifier">SpotifyAPI</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get-current-context.html">getCurrentContext</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getCurrentContext</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-currently-playing-context/index.html"><span class="identifier">CurrentlyPlayingContext</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Get information about the user’s current playback state, including track, track progress, and active device.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-currently-playing.html">getCurrentlyPlaying</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getCurrentlyPlaying</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-currently-playing-object/index.html"><span class="identifier">CurrentlyPlayingObject</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Get the object currently being played on the user’s Spotify account.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-devices.html">getDevices</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDevices</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-device/index.html"><span class="identifier">Device</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get information about a user’s available devices.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-recently-played.html">getRecentlyPlayed</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getRecentlyPlayed</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-play-history/index.html"><span class="identifier">PlayHistory</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-cursor-based-paging-object/index.html"><span class="identifier">CursorBasedPagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-play-history/index.html"><span class="identifier">PlayHistory</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get tracks from the current user’s recently played tracks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="pause.html">pause</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">pause</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$pause(kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Pause playback on the user’s account.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="resume.html">resume</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">resume</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$resume(kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Resumes playback on the current device, if <a href="resume.html#com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$resume(kotlin.String)/deviceId">deviceId</a> is not specified.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="seek.html">seek</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">seek</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$seek(kotlin.Long, kotlin.String)/positionMs">positionMs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$seek(kotlin.Long, kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Seeks to the given position in the user’s currently playing track.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-repeat-mode.html">setRepeatMode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setRepeatMode</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$setRepeatMode(com.adamratzman.spotify.endpoints.client.ClientPlayerAPI.PlayerRepeatState, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="-player-repeat-state/index.html"><span class="identifier">PlayerRepeatState</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$setRepeatMode(com.adamratzman.spotify.endpoints.client.ClientPlayerAPI.PlayerRepeatState, kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-volume.html">setVolume</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setVolume</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$setVolume(kotlin.Int, kotlin.String)/volume">volume</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$setVolume(kotlin.Int, kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Set the volume for the user’s current playback device.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="skip-behind.html">skipBehind</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">skipBehind</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$skipBehind(kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Skips to previous track in the user’s queue.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="skip-forward.html">skipForward</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">skipForward</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$skipForward(kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Skips to next track in the user’s queue.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="start-playback.html">startPlayback</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">startPlayback</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/album">album</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-playlist-u-r-i/index.html"><span class="identifier">PlaylistURI</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/offsetNum">offsetNum</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/offsetTrackId">offsetTrackId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/tracksToPlay">tracksToPlay</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Start or resume playback.
+<strong>Note:</strong> Only one of the following can be used: <a href="start-playback.html#com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/album">album</a>, <a href="start-playback.html#com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/artist">artist</a>, <a href="start-playback.html#com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/playlist">playlist</a>, or <a href="start-playback.html#com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$startPlayback(kotlin.String, kotlin.String, com.adamratzman.spotify.utils.PlaylistURI, kotlin.Int, kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/tracksToPlay">tracksToPlay</a>. Else, you will
+not see expected results.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="toggle-shuffle.html">toggleShuffle</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toggleShuffle</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$toggleShuffle(kotlin.Boolean, kotlin.String)/shuffle">shuffle</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$toggleShuffle(kotlin.Boolean, kotlin.String)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Toggle shuffle on or off for user’s playback.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="transfer-playback.html">transferPlayback</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">transferPlayback</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$transferPlayback(kotlin.Array((kotlin.String)), kotlin.Boolean)/deviceId">deviceId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlayerAPI$transferPlayback(kotlin.Array((kotlin.String)), kotlin.Boolean)/play">play</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Transfer playback to a new device and determine if it should start playing.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html">toAction</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">toAction</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.SpotifyEndpoint$toAction(java.util.function.Supplier((com.adamratzman.spotify.utils.SpotifyEndpoint.toAction.T)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html">toActionPaging</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Z</span><span class="symbol">, </span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#Z"><span class="identifier">Z</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <span class="identifier">toActionPaging</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.SpotifyEndpoint$toActionPaging(java.util.function.Supplier((com.adamratzman.spotify.utils.SpotifyEndpoint.toActionPaging.T)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#Z"><span class="identifier">Z</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

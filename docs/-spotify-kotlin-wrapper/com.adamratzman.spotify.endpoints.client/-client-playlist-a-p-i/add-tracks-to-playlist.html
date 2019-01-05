@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ClientPlaylistAPI.addTracksToPlaylist - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistAPI</a>&nbsp;/&nbsp;<a href="./add-tracks-to-playlist.html">addTracksToPlaylist</a><br/>
+<br/>
+<h1>addTracksToPlaylist</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI$addTracksToPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.Int)"></a>
+<code><span class="keyword">fun </span><span class="identifier">addTracksToPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI$addTracksToPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.Int)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI$addTracksToPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.Int)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI$addTracksToPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Add one or more tracks to a user’s playlist.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - the spotify id or uri for the playlist.</p>
+<p><a name="tracks"></a>
+<code>tracks</code> - Spotify track ids. A maximum of 100 tracks can be added in one request.</p>
+<p><a name="position"></a>
+<code>position</code> - The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
+first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
+be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if any invalid track ids is provided or the playlist is not found</p>
+</BODY>
+</HTML>
