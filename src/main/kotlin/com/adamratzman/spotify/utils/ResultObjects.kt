@@ -33,11 +33,12 @@ data class VideoThumbnail(val url: String?)
  */
 data class Restrictions(val reason: String)
 
-data class AudioBar(val start: Float, val duration: Float, val confidence: Float)
-
-data class AudioBeat(val start: Float, val duration: Float, val confidence: Float)
-
-data class AudioTatum(val start: Float, val duration: Float, val confidence: Float)
+/**
+ * @property start The starting point (in seconds) of the time interval.
+ * @property duration The duration (in seconds) of the time interval.
+ * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the interval
+ */
+data class TimeInterval(val start: Float, val duration: Float, val confidence: Float)
 
 data class Context(
     @Json(name = "external_urls") val externalUrls: HashMap<String, String>
@@ -594,17 +595,31 @@ data class Playlist(
 
 /**
  * @property seeds An array of recommendation seed objects.
- * @property An array of track object (simplified) ordered according to the parameters supplied.
+ * @property tracks An array of track object (simplified) ordered according to the parameters supplied.
  */
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
 
+/**
+ * @param bars The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as
+ * a given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.
+ * @param beats The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music;
+ * for example, each tick of a metronome. Beats are typically multiples of tatums.
+ * @param meta Analysis meta information (limited use)
+ * @param sections Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge, guitar
+ * solo, etc. Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.
+ * @param segments Audio segments attempts to subdivide a song into many segments, with each segment containing
+ * a roughly consitent sound throughout its duration.
+ * @param tatums A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing
+ * of perceived musical events (segments).
+ * @param track An analysis of the track as a whole. Undocumented on Spotify's side.
+ */
 data class AudioAnalysis(
-    val bars: List<AudioBar>,
-    val beats: List<AudioBeat>,
+    val bars: List<TimeInterval>,
+    val beats: List<TimeInterval>,
     val meta: AudioAnalysisMeta,
     val sections: List<AudioSection>,
     val segments: List<AudioSegment>,
-    val tatums: List<AudioTatum>,
+    val tatums: List<TimeInterval>,
     val track: TrackAnalysis
 )
 
@@ -618,6 +633,32 @@ data class AudioAnalysisMeta(
     @Json(name = "input_process") val inputProcess: String
 )
 
+/**
+ * @param start The starting point (in seconds) of the section.
+ * @param duration The duration (in seconds) of the section.
+ * @param confidence The confidence, from 0.0 to 1.0, of the reliability of the section’s “designation”.
+ * @param loudness The overall loudness of the section in decibels (dB). Loudness values are useful
+ * for comparing relative loudness of sections within tracks.
+ * @param tempo The overall estimated tempo of the section in beats per minute (BPM). In musical terminology, tempo
+ * is the speed or pace of a given piece and derives directly from the average beat duration.
+ * @param tempoConfidence The confidence, from 0.0 to 1.0, of the reliability of the tempo. Some tracks contain tempo
+ * changes or sounds which don’t contain tempo (like pure speech) which would correspond to a low value in this field.
+ * @param key The estimated overall key of the section. The values in this field ranging from 0 to 11 mapping to
+ * pitches using standard Pitch Class notation (E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on). If no key was detected,
+ * the value is -1.
+ * @param keyConfidence The confidence, from 0.0 to 1.0, of the reliability of the key.
+ * Songs with many key changes may correspond to low values in this field.
+ * @param mode Indicates the modality (major or minor) of a track, the type of scale from which its melodic content is
+ * derived. This field will contain a 0 for “minor”, a 1 for “major”, or a -1 for no result. Note that the major key
+ * (e.g. C major) could more likely be confused with the minor key at 3 semitones lower (e.g. A minor) as both
+ * keys carry the same pitches.
+ * @param modeConfidence The confidence, from 0.0 to 1.0, of the reliability of the mode.
+ * @param timeSignature An estimated overall time signature of a track. The time signature (meter) is a notational
+ * convention to specify how many beats are in each bar (or measure). The time signature ranges from 3 to 7
+ * indicating time signatures of “3/4”, to “7/4”.
+ * @param timeSignatureConfidence The confidence, from 0.0 to 1.0, of the reliability of the time_signature.
+ * Sections with time signature changes may correspond to low values in this field.
+ */
 data class AudioSection(
     val start: Float,
     val duration: Float,
@@ -629,10 +670,28 @@ data class AudioSection(
     @Json(name = "key_confidence") val keyConfidence: Float,
     val mode: Int,
     @Json(name = "mode_confidence") val modeConfidence: Float,
-    val time_signature: Int,
+    @Json(name="time_signature") val timeSignature: Int,
     @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float
 )
 
+/**
+ * @param start The starting point (in seconds) of the segment.
+ * @param duration The duration (in seconds) of the segment.
+ * @param confidence The confidence, from 0.0 to 1.0, of the reliability of the segmentation. Segments of the song which
+ * are difficult to logically segment (e.g: noise) may correspond to low values in this field.
+ * @param loudnessStart The onset loudness of the segment in decibels (dB). Combined with loudness_max and
+ * loudness_max_time, these components can be used to desctibe the “attack” of the segment.
+ * @param loudnessMaxTime The segment-relative offset of the segment peak loudness in seconds. Combined with
+ * loudness_start and loudness_max, these components can be used to desctibe the “attack” of the segment.
+ * @param loudnessMax The peak loudness of the segment in decibels (dB). Combined with loudness_start and
+ * loudness_max_time, these components can be used to desctibe the “attack” of the segment.
+ * @param loudnessEnd The offset loudness of the segment in decibels (dB). This value should be equivalent to the
+ * loudness_start of the following segment.
+ * @param pitches A “chroma” vector representing the pitch content of the segment, corresponding to the 12 pitch classes
+ * C, C#, D to B, with values ranging from 0 to 1 that describe the relative dominance of every pitch in the chromatic scale
+ * @param timbre Timbre is the quality of a musical note or sound that distinguishes different types of musical
+ * instruments, or voices. Timbre vectors are best used in comparison with each other.
+ */
 data class AudioSegment(
     val start: Float,
     val duration: Float,
