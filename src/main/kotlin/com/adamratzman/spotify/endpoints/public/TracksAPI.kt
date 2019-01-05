@@ -91,7 +91,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-features").with("ids", tracks.joinToString(",") { TrackURI(it).id.encode() }).toString())
-                    .toObject<AudioFeaturesResponse>(api).audio_features
+                    .toObject<AudioFeaturesResponse>(api).audioFeatures
         })
     }
 }
