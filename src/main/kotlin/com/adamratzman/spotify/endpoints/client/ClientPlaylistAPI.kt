@@ -18,6 +18,7 @@ import com.adamratzman.spotify.utils.UserURI
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toObject
 import com.adamratzman.spotify.utils.toPagingObject
+import com.beust.klaxon.Json
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import java.awt.image.BufferedImage
@@ -69,12 +70,11 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         })
     }
 
-
     /**
      * Add a track to a user’s playlist.
      *
-     * @param playlist The Spotify ID for the playlist.
-     * @param tracks Spotify track id
+     * @param playlist the spotify id or uri for the playlist.
+     * @param track track id or uri
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
      * first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
      * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
@@ -82,13 +82,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
 
-    fun addTrackToPlaylist(playlist: String,track: String,position: Int?=null)
-    = addTracksToPlaylist(playlist,track,position = position)
+    fun addTrackToPlaylist(playlist: String, track: String, position: Int? = null) =
+        addTracksToPlaylist(playlist, track, position = position)
 
     /**
      * Add one or more tracks to a user’s playlist.
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param tracks Spotify track ids. A maximum of 100 tracks can be added in one request.
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
      * first position: position=0; to insert the tracks in the third position: position=2 . If omitted, the tracks will
@@ -111,7 +111,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param name Optional. The name to change the playlist to.
      * @param public Optional. Whether to make the playlist public or not.
      * @param collaborative Optional. Whether to make the playlist collaborative or not.
@@ -141,8 +141,8 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user.
      *
-     * @param limit The maximum number of tracks to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first track to return. Default: 0 (the first object). Use with limit to get the next set of tracks.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the filters provided are illegal
      */
@@ -161,7 +161,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     /**
      * Find a client playlist by its id. Convenience method
      *
-     * @param id the Spotify identifier of the ID
+     * @param id playlist id or uri
      *
      * @return possibly-null SimplePlaylist
      */
@@ -173,12 +173,11 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
     }
 
     /**
-     * This method is equivalent to unfollowing a playlist with the given [playlist] and [owner].
+     * This method is equivalent to unfollowing a playlist with the given [playlist].
      *
      * Unfortunately, Spotify does not allow **deletion** of playlists themselves
      *
      * @param playlist playlist id
-     * @param owner the owner of this playlist. Ignore if it's the authenticated user
      */
     fun deletePlaylist(playlist: String): SpotifyRestAction<Unit> {
         return (api as SpotifyClientAPI).following.unfollowPlaylist(PlaylistURI(playlist).id)
@@ -191,13 +190,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
      * when the tracks are reordered.
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param reorderRangeStart The position of the first track to be reordered.
      * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
      * The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
      * Example: To move the tracks at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
-     * @param insertionPoint
-     * @param snapshotId
+     * @param insertionPoint The position where the tracks should be inserted. To reorder the tracks to the end of the playlist, simply set insert_before to the position after the last track.
+     * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
@@ -225,7 +224,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
      * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param tracks The Spotify track ids.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
@@ -244,7 +243,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
 
     /**
      * Remove all the tracks in a playlist
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      */
     fun removeAllPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
         return setPlaylistTracks(playlist)
@@ -255,7 +254,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * Must specify a JPEG image path or image data, maximum payload size is 256 KB
      *
-     * @param playlist The Spotify ID for the playlist.
+     * @param playlist the spotify id or uri for the playlist.
      * @param imagePath Optionally specify the full local path to the image
      * @param imageUrl Optionally specify a URL to the image
      * @param imageFile Optionally specify the image [File]
@@ -295,7 +294,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      * @param playlist the playlist id
      * @param track the track id
      * @param positions the positions at which the track is located in the playlist
-     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTrackFromPlaylist(
         playlist: String,
@@ -309,7 +308,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @param playlist the playlist id
      * @param track the track id
-     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTrackFromPlaylist(
         playlist: String,
@@ -322,7 +321,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @param playlist the playlist id
      * @param tracks an array of track ids
-     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromPlaylist(
         playlist: String,
@@ -335,7 +334,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
      *
      * @param playlist the playlist id
      * @param tracks an array of [Pair]s of track ids *and* track positions (zero-based)
-     * @param snapshotId the playlist snapshot against which to apply the track removals. **recommended to have**
+     * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromPlaylist(
         playlist: String,
@@ -372,7 +371,17 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
         return DatatypeConverter.printBase64Binary(bos.toByteArray())
     }
 
-    data class Snapshot(val snapshot_id: String)
+    /**
+     * Contains the snapshot id, returned from API responses
+     *
+     * @param snapshotId playlist state identifier
+     */
+    data class Snapshot(@Json(name = "snapshot_id") val snapshotId: String)
 }
 
+/**
+ * Represents the positions inside a playlist's items list of where to locate the track
+ *
+ * @param positions positions (zero-based)
+ */
 class SpotifyTrackPositions(vararg val positions: Int) : ArrayList<Int>(positions.toList())

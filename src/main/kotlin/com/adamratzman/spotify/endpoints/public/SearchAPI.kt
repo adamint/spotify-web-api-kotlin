@@ -22,7 +22,12 @@ import java.util.function.Supplier
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
  */
 class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
-    enum class SearchType(val id: String) {
+    /**
+     * Describes which object to search for
+     *
+     * @param id internal spotify id
+     */
+    enum class SearchType(internal val id: String) {
         ALBUM("album"), TRACK("track"), ARTIST("artist"), PLAYLIST("playlist")
     }
 
@@ -31,8 +36,8 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of full [Playlist] objects ordered by likelihood of correct match
      *
@@ -56,8 +61,8 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of full [Artist] objects ordered by likelihood of correct match
      *
@@ -81,8 +86,8 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of non-full [SimpleAlbum] objects ordered by likelihood of correct match
      *
@@ -106,8 +111,8 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of album objects to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param offset The index of the first album to return. Default: 0 (i.e., the first album). Use with limit to get the next set of albums.
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of non-full [SimpleTrack] objects ordered by likelihood of correct match
      *

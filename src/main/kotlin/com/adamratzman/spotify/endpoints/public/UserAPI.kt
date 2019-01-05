@@ -22,8 +22,6 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param user The user’s Spotify user ID.
      *
      * @return publicly-available information about the user
-     *
-     * @return null if the user cannot be found
      */
     fun getProfile(user: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {

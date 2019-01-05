@@ -1,6 +1,11 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
+/**
+ * Represents Spotify markets (countries + distinctive territories)
+ *
+ * @param country the readable country name of the market
+ */
 enum class Market(val country: String) {
     AD("Andorra"),
     AE("United Arab Emirates"),
