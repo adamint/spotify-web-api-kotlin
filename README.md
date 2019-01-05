@@ -10,6 +10,7 @@ If you have a question, you can:
 
 ## Contents
   1. **[Downloading](#downloading)**
+  2. **[Documentation](#documentation)**
   2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyapi-or-spotifyclientapi-object)**
   3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class?)**
   4. **[Using the Library](#using-the-library)**
@@ -46,7 +47,9 @@ dependencies {
 
 #### Android
 This library should work out of the box on Android.
-```
+
+## Documentation
+The `spotify-web-api-kotlin` KDocs are live at https://adamint.github.io/spotify-web-api-kotlin/-spotify-kotlin-wrapper/
 
 ## Creating a SpotifyAPI or SpotifyClientAPI object
 In order to use the methods in this library, you must create either a `SpotifyAPI` or `SpotifyClientAPI` object using their respective exposed builders. Client-specific methods are unable to be accessed with the generic SpotifyAPI, rather you must create an instance of the Client API.
