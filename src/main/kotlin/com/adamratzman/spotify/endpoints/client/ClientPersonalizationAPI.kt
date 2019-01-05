@@ -15,6 +15,11 @@ import java.util.function.Supplier
  * Endpoints for retrieving information about the user’s listening habits.
  */
 class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+    /**
+     * The time frame for which attribute affinities are computed.
+     *
+     * @param id the Spotify id of the time frame
+     */
     enum class TimeRange(val id: String) {
         LONG_TERM("long_term"), MEDIUM_TERM("medium_term"), SHORT_TERM("short_term");
 
@@ -30,6 +35,10 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * query parameter table for more information. For each time range, the top 50 tracks and artists are available
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
+     *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
@@ -56,6 +65,10 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * query parameter table for more information. For each time range, the top 50 tracks and artists are available
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
+     *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */

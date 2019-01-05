@@ -255,7 +255,7 @@ abstract class SpotifyAPI internal constructor(
     var token: Token,
     var useCache: Boolean
 ) {
-    internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
+    internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
 
     abstract val search: SearchAPI
@@ -313,7 +313,7 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
     override fun refreshToken() {
         if (clientId != "not-set" && clientSecret != "not-set")
             getCredentialedToken(clientId, clientSecret)?.let { token = it }
-        expireTime = System.currentTimeMillis() + token.expires_in * 1000
+        expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     }
 
     override fun clearCache() = clearAllCaches(
@@ -360,11 +360,11 @@ class SpotifyClientAPI internal constructor(
     private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
             if (clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
-                if (token.expires_in > 60) {
+                if (token.expiresIn > 60) {
                     executor.scheduleAtFixedRate(
                         { refreshToken() },
-                        (token.expires_in - 30).toLong(),
-                        (token.expires_in - 30).toLong(),
+                        (token.expiresIn - 30).toLong(),
+                        (token.expiresIn - 30).toLong(),
                         TimeUnit.SECONDS
                     )
                 } else {
@@ -385,16 +385,16 @@ class SpotifyClientAPI internal constructor(
             HttpConnection(
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
-                body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
+                body = "grant_type=refresh_token&refresh_token=${token.refreshToken ?: ""}",
                 contentType = "application/x-www-form-urlencoded"
             ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
                 .toObjectNullable<Token>(null)
-        if (tempToken?.access_token == null) {
+        if (tempToken?.accessToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
             this.token = tempToken.copy(
-                refresh_token = tempToken.refresh_token ?: this.token.refresh_token,
-                scope = tempToken.scope ?: this.token.scope
+                refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
+                scopes = tempToken.scopes ?: this.token.scopes
             )
             logger.logInfo("Successfully refreshed the Spotify token")
         }

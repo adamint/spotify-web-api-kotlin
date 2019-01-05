@@ -39,7 +39,9 @@ class PublicArtistsAPITest : Spek({
                 assertThrows<BadRequestException> { a.getArtistAlbums("asfasdf").complete() }
             }
             it("valid artist") {
-                assertTrue(a.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", limit = 10, include = listOf(ArtistsAPI.AlbumInclusionStrategy.ALBUM))
+                assertTrue(a.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", 10,
+                    include = *arrayOf(ArtistsAPI.AlbumInclusionStrategy.ALBUM)
+                )
                         .complete().items.asSequence().map { it.name }.contains("Louane"))
             }
         }
