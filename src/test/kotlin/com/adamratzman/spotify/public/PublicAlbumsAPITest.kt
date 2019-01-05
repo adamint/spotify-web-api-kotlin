@@ -40,6 +40,7 @@ class PublicAlbumsAPITest : Spek({
             }
             it("valid album") {
                 assertTrue(a.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3, Market.US).complete().items.isNotEmpty())
+
                 assertTrue(a.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3).complete().items.isNotEmpty())
                 assertFalse(a.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3, Market.US).complete().items[0].isRelinked())
             }

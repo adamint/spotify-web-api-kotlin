@@ -4,9 +4,8 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyAppAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.main.base
-import com.google.gson.JsonParseException
 import java.net.HttpURLConnection
 import java.util.function.Supplier
 
@@ -89,11 +88,11 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             }
         }
 
-        if (document.responseCode / 200 != 1 /* Check if status is 2xx */) {
+        if (document.responseCode / 200 != 1 /* Check if status is 2xx or 3xx */) {
             val message = try {
-                api.gson.fromJson(responseBody, ErrorResponse::class.java).error
-            } catch (e: JsonParseException) {
-                ErrorObject(400, "malformed request (likely spaces)")
+                document.body.toObject<ErrorResponse>(api).error
+            } catch (e: Exception) {
+                ErrorObject(400, "malformed request sent")
             }
             throw BadRequestException(message)
         } else if (document.responseCode == 202 && retry202) return null
@@ -110,11 +109,11 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         method,
         body,
         contentType,
-        HttpHeader("Authorization", "Bearer ${api.token.access_token}")
+        HttpHeader("Authorization", "Bearer ${api.token.accessToken}")
     )
 
     fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
-    fun <Z, T : PagingObject<Z>> toPagingObjectAction(supplier: Supplier<T>) = SpotifyRestPagingAction(api, supplier)
+    fun <Z, T : AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {

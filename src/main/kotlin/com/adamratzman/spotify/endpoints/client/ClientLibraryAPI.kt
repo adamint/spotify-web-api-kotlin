@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.Market
@@ -13,7 +13,7 @@ import com.adamratzman.spotify.utils.SavedTrack
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
 import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toArray
 import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
@@ -24,23 +24,33 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
      * @return Paging Object of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SavedTrack, PagingObject<SavedTrack>> {
-        return toPagingObjectAction(Supplier {
+    ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedTrack::class.java)
+            ).toPagingObject<SavedTrack>(endpoint = this)
         })
     }
 
     /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
+     *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
      *
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
@@ -48,19 +58,22 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestPagingAction<SavedAlbum, PagingObject<SavedAlbum>> {
-        return toPagingObjectAction(Supplier {
+    ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
+        return toActionPaging(Supplier {
             get(
                 EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
                     .toString()
-            ).toPagingObject(endpoint = this, tClazz = SavedAlbum::class.java)
+            ).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
     /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * @throws BadRequestException if [track] is not found
+     * @param type the type of object (album or track)
+     * @param id the spotify id or uri of the object
+     *
+     * @throws BadRequestException if [id] is not found
      */
     fun contains(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
@@ -71,6 +84,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
+     * @param type the type of objects (album or track)
+     * @param ids the spotify ids or uris of the objects
+     *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
@@ -78,12 +94,15 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                     .toString()
-            ).toObject(api, mutableListOf<Boolean>().javaClass).toList()
+            ).toArray<Boolean>(api)
         })
     }
 
     /**
      * Save one of [LibraryType] to the current user’s ‘Your Music’ library.
+     *
+     * @param type the type of object (album or track)
+     * @param id the spotify id or uri of the object
      *
      * @throws BadRequestException if the id is invalid
      */
@@ -95,6 +114,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
+     *
+     * @param type the type of objects to check against (album or track)
+     * @param ids the spotify ids or uris of the objects
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
@@ -108,6 +130,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Remove one of [LibraryType] (track or album) from the current user’s ‘Your Music’ library.
      *
+     * @param type the type of object to check against (album or track)
+     * @param id the spotify id or uri of the object
+     *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun remove(type: LibraryType, id: String): SpotifyRestAction<Unit> {
@@ -119,6 +144,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.
      *
+     * @param type the type of objects to check against (album or track)
+     * @param ids the spotify ids or uris of the objects
+     *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
@@ -129,6 +157,12 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 }
 
+/**
+ * Type of object in a user's Spotify library
+ *
+ * @param value Spotify id for the type
+ * @param id how to transform an id (or uri) input into its Spotify id
+ */
 enum class LibraryType(private val value: String, internal val id: (String) -> String) {
     TRACK("tracks", { TrackURI(it).id }), ALBUM("albums", { AlbumURI(it).id });
 

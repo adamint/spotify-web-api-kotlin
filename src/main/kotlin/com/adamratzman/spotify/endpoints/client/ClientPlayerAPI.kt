@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.AlbumURI
 import com.adamratzman.spotify.utils.ArtistURI
 import com.adamratzman.spotify.utils.BadRequestException
@@ -16,11 +16,12 @@ import com.adamratzman.spotify.utils.PlayHistory
 import com.adamratzman.spotify.utils.PlaylistURI
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encode
 import com.adamratzman.spotify.utils.toCursorBasedPagingObject
 import com.adamratzman.spotify.utils.toInnerObject
 import com.adamratzman.spotify.utils.toObject
-import org.json.JSONObject
+import com.beust.klaxon.JsonObject
 import java.util.function.Supplier
 
 /**
@@ -28,51 +29,75 @@ import java.util.function.Supplier
  * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work
  */
 class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+    /**
+     * Get information about a user’s available devices.
+     */
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(
-                "devices",
-                api,
-                mutableListOf<Device>().javaClass
-            ).toList()
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<List<Device>>(
+                "devices", api
+            )
         })
     }
 
+    /**
+     * Get information about the user’s current playback state, including track, track progress, and active device.
+     */
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingContext? =
-                get(EndpointBuilder("/me/player").toString()).toObject(api, CurrentlyPlayingContext::class.java)
+            val obj = catch {
+                get(EndpointBuilder("/me/player").toString())
+                    .toObject<CurrentlyPlayingContext>(api)
+            }
             if (obj?.timestamp == null) null else obj
         })
     }
 
-    fun getRecentlyPlayed(): SpotifyRestPagingAction<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject(
-                endpoint = this,
-                tClazz = PlayHistory::class.java
+    /**
+     * Get tracks from the current user’s recently played tracks.
+     */
+    fun getRecentlyPlayed(): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
+        return toActionPaging(Supplier {
+            get(EndpointBuilder("/me/player/recently-played").toString()).toCursorBasedPagingObject<PlayHistory>(
+                endpoint = this
             )
         })
     }
 
+    /**
+     * Get the object currently being played on the user’s Spotify account.
+     */
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction(Supplier {
-            val obj: CurrentlyPlayingObject? = get(EndpointBuilder("/me/player/currently-playing").toString()).toObject(
-                api,
-                CurrentlyPlayingObject::class.java
-            )
+            val obj =
+                catch {
+                    get(EndpointBuilder("/me/player/currently-playing").toString())
+                        .toObject<CurrentlyPlayingObject>(api)
+                }
             if (obj?.timestamp == null) null else obj
         })
     }
 
-    fun pausePlayback(deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Pause playback on the user’s account.
+     *
+     * @param deviceId the device to play on
+     */
+    fun pause(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(EndpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
             Unit
         })
     }
 
-    fun seekPosition(positionMs: Long, deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Seeks to the given position in the user’s currently playing track.
+     *
+     * @param positionMs The position in milliseconds to seek to. Must be a positive number. Passing in a position
+     * that is greater than the length of the track will cause the player to start playing the next song.
+     * @param deviceId the device to play on
+     */
+    fun seek(positionMs: Long, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             if (positionMs < 0) throw IllegalArgumentException("Position must not be negative!")
             put(
@@ -85,6 +110,12 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
+    /**
+     * Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
+     *
+     * @param state mode to describe how to repeat in the current context
+     * @param deviceId the device to play on
+     */
     fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(
@@ -97,6 +128,12 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
+    /**
+     * Set the volume for the user’s current playback device.
+     *
+     * @param volume The volume to set. Must be a value from 0 to 100 inclusive.
+     * @param deviceId the device to play on
+     */
     fun setVolume(volume: Int, deviceId: String? = null): SpotifyRestAction<Unit> {
         if (volume !in 0..100) throw IllegalArgumentException("Volume must be within 0 to 100 inclusive. Provided: $volume")
         return toAction(Supplier {
@@ -110,14 +147,24 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    fun skipToNextTrack(deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Skips to next track in the user’s queue.
+     *
+     * @param deviceId the device to play on
+     */
+    fun skipForward(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             post(EndpointBuilder("/me/player/next").with("device_id", deviceId).toString())
             Unit
         })
     }
 
-    fun rewindToLastTrack(deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Skips to previous track in the user’s queue.
+     *
+     * @param deviceId the device to play on
+     */
+    fun skipBehind(deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             post(EndpointBuilder("/me/player/previous").with("device_id", deviceId).toString())
             Unit
@@ -126,20 +173,20 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Start or resume playback.
-     * **Note:** Only one of the following can be used: [albumId], [artistId], [playlist], or [tracksToPlay]. Else, you will
+     * **Note:** Only one of the following can be used: [album], [artist], [playlist], or [tracksToPlay]. Else, you will
      * not see expected results.
      *
      * **Note also:** You can only use one of the following: [offsetNum] or [offsetTrackId]
      *
      * **Specify nothing to play to simply resume playback**
      *
-     * @param albumId an album id to play
-     * @param artistId an artist id for whom to play
-     * @param playlist a playlist id from which to play
-     * @param tracksToPlay track ids to play. these are converted into URIs. Max 100
-     * @param offsetNum Indicates from where in the context playback should start. Only available with use of [albumId] or [playlist]
+     * @param album an album id or uri to play
+     * @param artist an artist id or uri for whom to play
+     * @param playlist a playlist id or uri from which to play
+     * @param tracksToPlay track ids or uris to play. these are converted into URIs. Max 100
+     * @param offsetNum Indicates from where in the context playback should start. Only available with use of [album] or [playlist]
      * or when [tracksToPlay] is used.
-     * @param offsetTrackId Does the same as [offsetNum] but with a track id instead of place number
+     * @param offsetTrackId Does the same as [offsetNum] but with a track id or uri instead of place number
      * @param deviceId the device to play on
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
@@ -155,17 +202,18 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
-            val body = JSONObject()
+            val body = JsonObject()
             when {
-                album != null -> body.put("context_uri", AlbumURI(album).uri)
-                artist != null -> body.put("context_uri", ArtistURI(artist).uri)
-                playlist != null -> body.put("context_uri", playlist.uri)
-                tracksToPlay.isNotEmpty() -> body.put("uris", tracksToPlay.map { TrackURI(it).uri })
+                album != null -> body["context_uri"] = AlbumURI(album).uri
+                artist != null -> body["context_uri"] = ArtistURI(artist).uri
+                playlist != null -> body["context_uri"] = playlist.uri
+                tracksToPlay.isNotEmpty() -> body["uris"] = tracksToPlay.map { TrackURI(it).uri }
             }
-            if (body.keySet().isNotEmpty()) {
-                if (offsetNum != null) body.put("offset", JSONObject().put("position", offsetNum))
-                else if (offsetTrackId != null) body.put("offset", JSONObject().put("uri", TrackURI(offsetTrackId).uri))
-                put(url, body.toString())
+            if (body.keys.isNotEmpty()) {
+                if (offsetNum != null) body["offset"] = JsonObject().apply { this["position"] = offsetNum }
+                else if (offsetTrackId != null) body["offset"] =
+                    JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
+                put(url, body.toJsonString())
             } else put(url)
             Unit
         })
@@ -176,15 +224,26 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param deviceId the device to play on
      */
-    fun resumePlayback(deviceId: String? = null) = startPlayback(deviceId = deviceId)
+    fun resume(deviceId: String? = null) = startPlayback(deviceId = deviceId)
 
-    fun shufflePlayback(shuffle: Boolean = true, deviceId: String? = null): SpotifyRestAction<Unit> {
+    /**
+     * Toggle shuffle on or off for user’s playback.
+     *
+     * @param deviceId the device to play on
+     */
+    fun toggleShuffle(shuffle: Boolean = true, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(EndpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).toString())
             Unit
         })
     }
 
+    /**
+     * Transfer playback to a new device and determine if it should start playing.
+     *
+     * @param deviceId the device to play on
+     * @param play whether to immediately start playback on the transferred device
+     */
     fun transferPlayback(vararg deviceId: String, play: Boolean = true): SpotifyRestAction<Unit> {
         if (deviceId.size > 1) throw IllegalArgumentException("Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request")
         return toAction(Supplier {
@@ -196,5 +255,21 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    enum class PlayerRepeatState { TRACK, CONTEXT, OFF }
+    /**
+     * What state the player can repeat in.
+     */
+    enum class PlayerRepeatState {
+        /**
+         * Repeat the current track
+         */
+        TRACK,
+        /**
+         * Repeat the current context
+         */
+        CONTEXT,
+        /**
+         * Will turn repeat off
+         */
+        OFF
+    }
 }
