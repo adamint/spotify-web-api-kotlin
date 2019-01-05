@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AudioSegment.<init> - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.utils</a>&nbsp;/&nbsp;<a href="index.html">AudioSegment</a>&nbsp;/&nbsp;<a href="./-init-.html">&lt;init&gt;</a><br/>
+<br/>
+<h1>&lt;init&gt;</h1>
+<a name="com.adamratzman.spotify.utils.AudioSegment$&lt;init&gt;(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))"></a>
+<code><span class="identifier">AudioSegment</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/start">start</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/duration">duration</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/confidence">confidence</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/loudnessStart">loudnessStart</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/loudnessMaxTime">loudnessMaxTime</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/loudnessMax">loudnessMax</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/loudnessEnd">loudnessEnd</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/pitches">pitches</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.utils.AudioSegment$<init>(kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.collections.List((kotlin.Float)), kotlin.collections.List((kotlin.Float)))/timbre">timbre</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<h3>Parameters</h3>
+<p><a name="start"></a>
+<code>start</code> - The starting point (in seconds) of the segment.</p>
+<p><a name="duration"></a>
+<code>duration</code> - The duration (in seconds) of the segment.</p>
+<p><a name="confidence"></a>
+<code>confidence</code> - The confidence, from 0.0 to 1.0, of the reliability of the segmentation. Segments of the song which
+are difficult to logically segment (e.g: noise) may correspond to low values in this field.</p>
+<p><a name="loudnessStart"></a>
+<code>loudnessStart</code> - The onset loudness of the segment in decibels (dB). Combined with loudness_max and
+loudness_max_time, these components can be used to desctibe the “attack” of the segment.</p>
+<p><a name="loudnessMaxTime"></a>
+<code>loudnessMaxTime</code> - The segment-relative offset of the segment peak loudness in seconds. Combined with
+loudness_start and loudness_max, these components can be used to desctibe the “attack” of the segment.</p>
+<p><a name="loudnessMax"></a>
+<code>loudnessMax</code> - The peak loudness of the segment in decibels (dB). Combined with loudness_start and
+loudness_max_time, these components can be used to desctibe the “attack” of the segment.</p>
+<p><a name="loudnessEnd"></a>
+<code>loudnessEnd</code> - The offset loudness of the segment in decibels (dB). This value should be equivalent to the
+loudness_start of the following segment.</p>
+<p><a name="pitches"></a>
+<code>pitches</code> - A “chroma” vector representing the pitch content of the segment, corresponding to the 12 pitch classes
+C, C#, D to B, with values ranging from 0 to 1 that describe the relative dominance of every pitch in the chromatic scale</p>
+<p><a name="timbre"></a>
+<code>timbre</code> - Timbre is the quality of a musical note or sound that distinguishes different types of musical
+instruments, or voices. Timbre vectors are best used in comparison with each other.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>BrowseAPI.getNewReleases - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">BrowseAPI</a>&nbsp;/&nbsp;<a href="./get-new-releases.html">getNewReleases</a><br/>
+<br/>
+<h1>getNewReleases</h1>
+<a name="com.adamratzman.spotify.endpoints.public.BrowseAPI$getNewReleases(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getNewReleases</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseAPI$getNewReleases(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseAPI$getNewReleases(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseAPI$getNewReleases(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).</p>
+<h3>Parameters</h3>
+<p><a name="limit"></a>
+<code>limit</code> - The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want the list of returned items to be relevant to a particular country.
+If omitted, the returned items will be relevant to all countries.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if filter parameters are illegal</p>
+</BODY>
+</HTML>
