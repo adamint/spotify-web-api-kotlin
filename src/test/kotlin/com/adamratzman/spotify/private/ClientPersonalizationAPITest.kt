@@ -10,14 +10,13 @@ import org.spekframework.spek2.style.specification.describe
 
 class ClientPersonalizationAPITest : Spek({
     describe("personalization endpoints") {
+        if (api !is SpotifyClientAPI) return@describe
         it("top artists") {
-            if (api !is SpotifyClientAPI) return@it
             assertTrue(api.personalization.getTopArtists(5, timeRange = ClientPersonalizationAPI.TimeRange.MEDIUM_TERM)
                     .complete().isNotEmpty())
         }
 
         it("top tracks") {
-            (api as? SpotifyClientAPI) ?: return@it
             assertTrue(api.personalization.getTopTracks(5).complete().isNotEmpty())
         }
     }

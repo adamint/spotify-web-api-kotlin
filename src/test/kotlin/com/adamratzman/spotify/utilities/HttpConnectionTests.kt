@@ -1,3 +1,4 @@
+/* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.utils.HttpConnection

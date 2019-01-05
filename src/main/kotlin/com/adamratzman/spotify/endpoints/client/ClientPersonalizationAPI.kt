@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestPagingAction
+import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.utils.Artist
 import com.adamratzman.spotify.utils.EndpointBuilder
 import com.adamratzman.spotify.utils.PagingObject
@@ -15,6 +15,11 @@ import java.util.function.Supplier
  * Endpoints for retrieving information about the user’s listening habits.
  */
 class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+    /**
+     * The time frame for which attribute affinities are computed.
+     *
+     * @param id the Spotify id of the time frame
+     */
     enum class TimeRange(val id: String) {
         LONG_TERM("long_term"), MEDIUM_TERM("medium_term"), SHORT_TERM("short_term");
 
@@ -31,12 +36,23 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
      *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
+     *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
-    fun getTopArtists(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Artist, PagingObject<Artist>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Artist::class.java)
+    fun getTopArtists(
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
+    ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
+        return toActionPaging(Supplier {
+            get(
+                EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
+                    .with("time_range", timeRange).toString()
+            )
+                .toPagingObject<Artist>(endpoint = this)
         })
     }
 
@@ -50,12 +66,23 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
      *
+     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
+     *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
-    fun getTopTracks(limit: Int? = null, offset: Int? = null, timeRange: TimeRange? = null): SpotifyRestPagingAction<Track, PagingObject<Track>> {
-        return toPagingObjectAction(Supplier {
-            get(EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()).toPagingObject(endpoint = this, tClazz = Track::class.java)
+    fun getTopTracks(
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
+    ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
+        return toActionPaging(Supplier {
+            get(
+                EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
+                    .with("time_range", timeRange).toString()
+            )
+                .toPagingObject<Track>(endpoint = this)
         })
     }
 }

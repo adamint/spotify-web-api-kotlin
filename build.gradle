@@ -1,13 +1,28 @@
+buildscript {
+    ext.kotlin_version = '1.3.11'
+    ext.dokka_version = '0.9.17'
+
+    repositories { jcenter() }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+    }
+}
+
+
 plugins {
     id "com.diffplug.gradle.spotless" version "3.16.0"
     id "base"
     id "io.codearte.nexus-staging" version "0.12.0"
     id "com.bmuschko.nexus" version "2.3.1"
-    id "org.jetbrains.kotlin.jvm" version "1.3.11"
 }
 
+apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.dokka'
+
 group 'com.adamratzman'
-version '2.0.1'
+version '2.1.0'
 
 archivesBaseName = 'spotify-api-kotlin'
 
@@ -15,17 +30,17 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url "https://dl.bintray.com/spekframework/spek" }
 }
 
 dependencies {
     // Actual library dependencies
-    implementation(group: 'org.json', name: 'json', version: '20180130')
-    implementation("com.google.code.gson:gson:2.8.1")
+    implementation 'com.beust:klaxon:5.0.1'
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.11"
-    compile "org.jetbrains.kotlin:kotlin-reflect:1.3.11"
-
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    
     // Spek testing requirements
     testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.0-rc.1') {
         exclude group: 'org.jetbrains.kotlin'
@@ -36,8 +51,24 @@ dependencies {
     }
 
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    testImplementation(group: 'org.json', name: 'json', version: '20180130')
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:1.3.11"
+
+}
+
+dokka {
+    outputFormat = 'gfm'
+    outputDirectory = 'docs/md'
+
+    jdkVersion = 8
+    includeNonPublic = false
+    impliedPlatforms = ["JVM"]
+
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/src/main/kotlin"
+        suffix = "#L"
+    }
 }
 
 spotless {
@@ -46,7 +77,6 @@ spotless {
         licenseHeader '/* Created by Adam Ratzman (2018) */'    // License header
     }
 }
-
 
 test {
     systemProperties project.properties.subMap(

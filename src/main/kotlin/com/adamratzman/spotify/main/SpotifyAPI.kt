@@ -21,9 +21,14 @@ import com.adamratzman.spotify.utils.HttpRequestMethod
 import com.adamratzman.spotify.utils.SpotifyEndpoint
 import com.adamratzman.spotify.utils.Token
 import com.adamratzman.spotify.utils.byteEncode
+import com.adamratzman.spotify.utils.getAlbumConverter
+import com.adamratzman.spotify.utils.getFeaturedPlaylistsConverter
+import com.adamratzman.spotify.utils.getPlaylistConverter
+import com.adamratzman.spotify.utils.getPublicUserConverter
+import com.adamratzman.spotify.utils.getSavedTrackConverter
 import com.adamratzman.spotify.utils.toObject
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.adamratzman.spotify.utils.toObjectNullable
+import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -213,7 +218,7 @@ class SpotifyApiBuilder {
                             "Authorization",
                             "Basic ${"$clientId:$clientSecret".byteEncode()}"
                         )
-                    ).body.toObject(Gson(), Token::class.java),
+                    ).body.toObject(null),
                     automaticRefresh,
                     redirectUri ?: throw IllegalArgumentException(),
                     useCache
@@ -245,12 +250,13 @@ class SpotifyApiBuilder {
 }
 
 abstract class SpotifyAPI internal constructor(
-    val clientId: String, val clientSecret: String,
-    var token: Token, var useCache: Boolean
+    val clientId: String,
+    val clientSecret: String,
+    var token: Token,
+    var useCache: Boolean
 ) {
-    internal var expireTime = System.currentTimeMillis() + token.expires_in * 1000
+    internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
-    internal val gson = GsonBuilder().setLenient().create()!!
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -262,6 +268,8 @@ abstract class SpotifyAPI internal constructor(
     abstract val following: FollowingAPI
 
     internal val logger = SpotifyLogger(true)
+
+    abstract val klaxon: Klaxon
 
     abstract fun refreshToken()
     abstract fun clearCache()
@@ -294,6 +302,8 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
     override val tracks: TracksAPI = TracksAPI(this)
     override val following: FollowingAPI = FollowingAPI(this)
 
+    override val klaxon: Klaxon = getKlaxon(this)
+
     init {
         if (clientId == "not-set" || clientSecret == "not-set") {
             logger.logWarning("Token refresh is disabled - application parameters not set")
@@ -302,8 +312,8 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
 
     override fun refreshToken() {
         if (clientId != "not-set" && clientSecret != "not-set")
-            token = getCredentialedToken(clientId, clientSecret)
-        expireTime = System.currentTimeMillis() + token.expires_in * 1000
+            getCredentialedToken(clientId, clientSecret)?.let { token = it }
+        expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     }
 
     override fun clearCache() = clearAllCaches(
@@ -338,6 +348,8 @@ class SpotifyClientAPI internal constructor(
     val library: ClientLibraryAPI = ClientLibraryAPI(this)
     val player: ClientPlayerAPI = ClientPlayerAPI(this)
 
+    override val klaxon: Klaxon = getKlaxon(this)
+
     val userId: String
 
     init {
@@ -348,11 +360,11 @@ class SpotifyClientAPI internal constructor(
     private fun init(automaticRefresh: Boolean) {
         if (automaticRefresh) {
             if (clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
-                if (token.expires_in > 60) {
+                if (token.expiresIn > 60) {
                     executor.scheduleAtFixedRate(
                         { refreshToken() },
-                        (token.expires_in - 30).toLong(),
-                        (token.expires_in - 30).toLong(),
+                        (token.expiresIn - 30).toLong(),
+                        (token.expiresIn - 30).toLong(),
                         TimeUnit.SECONDS
                     )
                 } else {
@@ -369,19 +381,21 @@ class SpotifyClientAPI internal constructor(
     fun cancelAutomatics() = executor.shutdown()
 
     override fun refreshToken() {
-        val tempToken = gson.fromJson(
+        val tempToken =
             HttpConnection(
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
-                body = "grant_type=refresh_token&refresh_token=${token.refresh_token ?: ""}",
+                body = "grant_type=refresh_token&refresh_token=${token.refreshToken ?: ""}",
                 contentType = "application/x-www-form-urlencoded"
-            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
-            Token::class.java
-        )
-        if (tempToken == null) {
+            ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
+                .toObjectNullable<Token>(null)
+        if (tempToken?.accessToken == null) {
             logger.logWarning("Spotify token refresh failed")
         } else {
-            this.token = tempToken
+            this.token = tempToken.copy(
+                refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
+                scopes = tempToken.scopes ?: this.token.scopes
+            )
             logger.logInfo("Successfully refreshed the Spotify token")
         }
     }
@@ -412,12 +426,18 @@ private fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redire
         if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-private fun getCredentialedToken(clientId: String, clientSecret: String) = Gson().fromJson(
+private fun getCredentialedToken(clientId: String, clientSecret: String) =
     HttpConnection(
         url = "https://accounts.spotify.com/api/token",
         method = HttpRequestMethod.POST,
         body = "grant_type=client_credentials",
         contentType = "application/x-www-form-urlencoded"
-    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body,
-    Token::class.java
-)
+    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
+        .toObjectNullable<Token>(null)
+
+private fun getKlaxon(api: SpotifyAPI) = Klaxon()
+    .converter(getFeaturedPlaylistsConverter(api))
+    .converter(getPlaylistConverter(api))
+    .converter(getAlbumConverter(api))
+    .converter(getSavedTrackConverter(api))
+    .converter(getPublicUserConverter(api))

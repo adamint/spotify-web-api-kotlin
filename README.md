@@ -22,13 +22,13 @@ This library is available via Maven Central.
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.0.1'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.0'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
@@ -42,6 +42,10 @@ Then, you can use the following:
 dependencies {
 	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
 }
+```
+
+#### Android
+This library should work out of the box on Android.
 ```
 
 ## Creating a SpotifyAPI or SpotifyClientAPI object
