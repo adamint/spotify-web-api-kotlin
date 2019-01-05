@@ -672,7 +672,7 @@ data class AudioSection(
     @Json(name = "key_confidence") val keyConfidence: Float,
     val mode: Int,
     @Json(name = "mode_confidence") val modeConfidence: Float,
-    @Json(name="time_signature") val timeSignature: Int,
+    @Json(name = "time_signature") val timeSignature: Int,
     @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float
 )
 
