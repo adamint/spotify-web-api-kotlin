@@ -1,5 +1,0 @@
-[SpotifyKotlinWrapper](../../index.md) / [com.adamratzman.spotify.utils](../index.md) / [CurrentlyPlayingContext](index.md) / [&lt;init&gt;](./-init-.md)
-
-# &lt;init&gt;
-
-`CurrentlyPlayingContext(timestamp: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)`?, device: `[`Device`](../-device/index.md)`, progressMs: `[`String`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)`, isPlaying: `[`Boolean`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)`, item: `[`Track`](../-track/index.md)`?, shuffleState: `[`Boolean`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)`, repeatState: `[`String`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)`, context: `[`Context`](../-context/index.md)`)`
