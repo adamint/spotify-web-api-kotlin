@@ -16,20 +16,20 @@ If you have a question, you can:
   4. **[Using the Library](#using-the-library)**
 
 ## Downloading
-This library is available via Maven Central. 
+This library is available via Maven Central [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
 ### Maven:
 ```
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.1'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.0'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
