@@ -112,8 +112,8 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         HttpHeader("Authorization", "Bearer ${api.token.accessToken}")
     )
 
-    fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
-    fun <Z, T : AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
+    internal fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
+    internal fun <Z, T : AbstractPagingObject<Z>> toActionPaging(supplier: Supplier<T>) = SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {

@@ -10,15 +10,9 @@ import java.net.URLEncoder
 import java.util.Base64
 
 /**
- * The cursor to use as key to find the next page of items.
- *
- * @property after nullable cursor value
+ * The cursor to use as key to find the next (or previous) page of items.
  */
-data class Cursor(val after: String?)
-
-/**
- *
- */
+data class Cursor(val before: String? = null, val after: String? = null)
 
 abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
     fun isRelinked() = linkedTrack != null
