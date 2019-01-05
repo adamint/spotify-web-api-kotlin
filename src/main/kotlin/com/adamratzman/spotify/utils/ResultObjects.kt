@@ -93,7 +93,8 @@ data class SpotifyCopyright(
 )
 
 /**
- * A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.
+ * A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks
+ * can be retrieved, along with the total number of tracks in the playlist.
  *
  * @property href link to the Web API endpoint where full details of the playlist’s tracks
  * can be retrieved
@@ -420,11 +421,12 @@ data class SimpleAlbum(
     val restrictions: Restrictions? = null,
     @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
         AlbumResultType.values().find { it.id == albumGroupString }
-    },
-    @Json(ignored = true) val albumType: AlbumResultType = _albumType.let { _ ->
-        AlbumResultType.values().first { it.id == albumGroupString }
     }
 ) : Linkable() {
+    @Json(ignored = true) val albumType: AlbumResultType = _albumType.let { _ ->
+        AlbumResultType.values().first { it.id == _albumType }
+    }
+
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
 
