@@ -57,8 +57,8 @@ dependencies {
 }
 
 dokka {
-    outputFormat = 'gfm'
-    outputDirectory = 'docs/md'
+    outputFormat = 'html'
+    outputDirectory = 'docs'
 
     jdkVersion = 8
     includeNonPublic = false
