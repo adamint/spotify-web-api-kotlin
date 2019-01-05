@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>FollowingAPI.areFollowingPlaylist - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">FollowingAPI</a>&nbsp;/&nbsp;<a href="./are-following-playlist.html">areFollowingPlaylist</a><br/>
+<br/>
+<h1>areFollowingPlaylist</h1>
+<a name="com.adamratzman.spotify.endpoints.public.FollowingAPI$areFollowingPlaylist(kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">areFollowingPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.FollowingAPI$areFollowingPlaylist(kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/playlistOwner">playlistOwner</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.FollowingAPI$areFollowingPlaylist(kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.FollowingAPI$areFollowingPlaylist(kotlin.String, kotlin.String, kotlin.Array((kotlin.String)))/users">users</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Check to see if one or more Spotify users are following a specified playlist.</p>
+<h3>Parameters</h3>
+<p><a name="playlistOwner"></a>
+<code>playlistOwner</code> - id or uri of the creator of the playlist</p>
+<p><a name="playlist"></a>
+<code>playlist</code> - playlist id or uri</p>
+<p><a name="users"></a>
+<code>users</code> - user ids or uris to check</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the playlist is not found</p>
+<p><strong>Return</strong><br/>
+List of Booleans representing whether the user follows the playlist. User IDs <strong>not</strong> found will return false</p>
+</BODY>
+</HTML>

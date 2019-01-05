@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PlaylistsAPI - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">PlaylistsAPI</a><br/>
+<br/>
+<h1>PlaylistsAPI</h1>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">PlaylistsAPI</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<p>Endpoints for retrieving information about a user’s playlists</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">PlaylistsAPI</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$<init>(com.adamratzman.spotify.main.SpotifyAPI)/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.main/-spotify-a-p-i/index.html"><span class="identifier">SpotifyAPI</span></a><span class="symbol">)</span></code>
+<p>Endpoints for retrieving information about a user’s playlists</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/api.html">api</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-a-p-i/index.html"><span class="identifier">SpotifyAPI</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get-playlist.html">getPlaylist</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylist(kotlin.String, com.adamratzman.spotify.utils.Market)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylist(kotlin.String, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-playlist/index.html"><span class="identifier">Playlist</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Get a playlist owned by a Spotify user.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-playlist-covers.html">getPlaylistCovers</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getPlaylistCovers</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylistCovers(kotlin.String)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-image/index.html"><span class="identifier">SpotifyImage</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get the current image associated with a specific playlist.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-playlist-tracks.html">getPlaylistTracks</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getPlaylistTracks</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-playlist-track/index.html"><span class="identifier">PlaylistTrack</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-playlist-track/index.html"><span class="identifier">PlaylistTrack</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get full details of the tracks of a playlist owned by a Spotify user.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-playlists.html">getPlaylists</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getPlaylists</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylists(kotlin.String, kotlin.Int, kotlin.Int)/user">user</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylists(kotlin.String, kotlin.Int, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.PlaylistsAPI$getPlaylists(kotlin.String, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return empty <a href="../../com.adamratzman.spotify.utils/-paging-object/index.html">PagingObject</a>s
+(blame Spotify)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html">toAction</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">toAction</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.SpotifyEndpoint$toAction(java.util.function.Supplier((com.adamratzman.spotify.utils.SpotifyEndpoint.toAction.T)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html">toActionPaging</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Z</span><span class="symbol">, </span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#Z"><span class="identifier">Z</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <span class="identifier">toActionPaging</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils.SpotifyEndpoint$toActionPaging(java.util.function.Supplier((com.adamratzman.spotify.utils.SpotifyEndpoint.toActionPaging.T)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#Z"><span class="identifier">Z</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-spotify-endpoint/to-action-paging.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.adamratzman.spotify.endpoints.client/-client-playlist-a-p-i/index.html">ClientPlaylistAPI</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ClientPlaylistAPI</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">PlaylistsAPI</span></a></code>
+<p>Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ArtistsAPI.getArtistTopTracks - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">ArtistsAPI</a>&nbsp;/&nbsp;<a href="./get-artist-top-tracks.html">getArtistTopTracks</a><br/>
+<br/>
+<h1>getArtistTopTracks</h1>
+<a name="com.adamratzman.spotify.endpoints.public.ArtistsAPI$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getArtistTopTracks</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistsAPI$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistsAPI$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Market.US<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify catalog information about an artist’s top tracks <strong>by country</strong>. Contains only up to <strong>10</strong> tracks with no
+<a href="../../com.adamratzman.spotify.utils/-cursor-based-paging-object/index.html">CursorBasedPagingObject</a> to go between top track pages. Unfortunately, this isn't likely to change soon</p>
+<h3>Parameters</h3>
+<p><a name="artist"></a>
+<code>artist</code> - the spotify id or uri for the artist.</p>
+<p><a name="market"></a>
+<code>market</code> - The country (<a href="../../com.adamratzman.spotify.utils/-market/index.html">Market</a>) to search. Unlike endpoints with optional Track Relinking, the Market is <strong>not</strong> optional.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if tracks are not available in the specified <a href="../../com.adamratzman.spotify.utils/-market/index.html">Market</a> or the <a href="get-artist-top-tracks.html#com.adamratzman.spotify.endpoints.public.ArtistsAPI$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)/artist">artist</a> is not found</p>
+</BODY>
+</HTML>

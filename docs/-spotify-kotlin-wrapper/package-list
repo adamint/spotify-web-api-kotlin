@@ -1,0 +1,7 @@
+$dokka.format:html
+$dokka.linkExtension:html
+
+com.adamratzman.spotify.endpoints.client
+com.adamratzman.spotify.endpoints.public
+com.adamratzman.spotify.main
+com.adamratzman.spotify.utils

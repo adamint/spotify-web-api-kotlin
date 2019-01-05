@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ClientLibraryAPI.contains - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientLibraryAPI</a>&nbsp;/&nbsp;<a href="./contains.html">contains</a><br/>
+<br/>
+<h1>contains</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code>
+<p>Check if the <a href="../-library-type/index.html">LibraryType</a> with id <a href="contains.html#com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</a> is already saved in the current Spotify user’s ‘Your Music’ library.</p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - the type of object (album or track)</p>
+<p><a name="id"></a>
+<code>id</code> - the spotify id or uri of the object</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if <a href="contains.html#com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</a> is not found</p>
+<a name="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryAPI$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/ids">ids</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.main/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Check if one or more of <a href="../-library-type/index.html">LibraryType</a> is already saved in the current Spotify user’s ‘Your Music’ library.</p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - the type of objects (album or track)</p>
+<p><a name="ids"></a>
+<code>ids</code> - the spotify ids or uris of the objects</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if any of the provided ids is invalid</p>
+</BODY>
+</HTML>

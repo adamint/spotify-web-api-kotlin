@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SpotifyApiBuilderJava - SpotifyKotlinWrapper</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">SpotifyKotlinWrapper</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.main</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyApiBuilderJava</a><br/>
+<br/>
+<h1>SpotifyApiBuilderJava</h1>
+<code><span class="keyword">class </span><span class="identifier">SpotifyApiBuilderJava</span></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SpotifyApiBuilderJava</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$<init>(kotlin.String, kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$<init>(kotlin.String, kotlin.String)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="authorization-code.html">authorizationCode</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">authorizationCode</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="client-id.html">clientId</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">clientId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="client-secret.html">clientSecret</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">clientSecret</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="redirect-uri.html">redirectUri</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">redirectUri</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="token.html">token</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">token</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.utils/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="token-string.html">tokenString</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">tokenString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="use-cache.html">useCache</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">useCache</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="authorization-code.html">authorizationCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">authorizationCode</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$authorizationCode(kotlin.String)/authorizationCode">authorizationCode</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilderJava</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="build-client.html">buildClient</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">buildClient</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$buildClient(kotlin.Boolean)/automaticRefresh">automaticRefresh</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-client-a-p-i/index.html"><span class="identifier">SpotifyClientAPI</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="build-credentialed.html">buildCredentialed</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">buildCredentialed</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-a-p-i/index.html"><span class="identifier">SpotifyAPI</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="redirect-uri.html">redirectUri</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">redirectUri</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$redirectUri(kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilderJava</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="token.html">token</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">token</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$token(com.adamratzman.spotify.utils.Token)/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilderJava</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="token-string.html">tokenString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">tokenString</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$tokenString(kotlin.String)/tokenString">tokenString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilderJava</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="use-cache.html">useCache</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">useCache</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.main.SpotifyApiBuilderJava$useCache(kotlin.Boolean)/useCache">useCache</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilderJava</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
