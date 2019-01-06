@@ -28,13 +28,13 @@ This library is available via Maven Central [here](https://search.maven.org/arti
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.0'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.1'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository
