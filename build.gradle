@@ -36,7 +36,7 @@ repositories {
 
 dependencies {
     // Actual library dependencies
-    implementation 'com.beust:klaxon:5.0.1'
+    implementation 'com.beust:klaxon:5.0.4'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
