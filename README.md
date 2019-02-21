@@ -1,14 +1,27 @@
-# Kotlin Spotify Web API
+# Kotlin Spotify Web API 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+[![](https://img.shields.io/badge/Wiki-Docs-red.svg)](https://adamint.github.io/spotify-web-api-kotlin/-spotify-kotlin-wrapper/)
+[![CircleCI](https://circleci.com/gh/adamint/spotify-web-api-kotlin.svg?style=shield)](https://circleci.com/gh/adamint/spotify-web-api-kotlin) 
+![](https://img.shields.io/badge/License-MIT-blue.svg)
+
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
+
+### Have a question?
+If you have a question, you can:
+
+1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
+2. Read (but that's hard)
+3. Contact me using **Adam#9261** on [Discord](https://discordapp.com) or by sending me an email
 
 ## Contents
   1. **[Downloading](#downloading)**
+  2. **[Documentation](#documentation)**
   2. **[Creating a SpotifyAPI or SpotifyClientAPI object](#creating-a-spotifyapi-or-spotifyclientapi-object)**
   3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class?)**
   4. **[Using the Library](#using-the-library)**
 
 ## Downloading
-This library is available via Maven Central. 
+This library is available via Maven Central [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
 ### Maven:
 ```
@@ -39,7 +52,9 @@ dependencies {
 
 #### Android
 This library should work out of the box on Android.
-```
+
+## Documentation
+The `spotify-web-api-kotlin` KDocs are hosted at https://docs.adamratzman.com/-spotify-kotlin-wrapper/
 
 ## Creating a SpotifyAPI or SpotifyClientAPI object
 In order to use the methods in this library, you must create either a `SpotifyAPI` or `SpotifyClientAPI` object using their respective exposed builders. Client-specific methods are unable to be accessed with the generic SpotifyAPI, rather you must create an instance of the Client API.
