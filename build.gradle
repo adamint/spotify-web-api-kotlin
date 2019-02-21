@@ -56,7 +56,7 @@ dependencies {
 }
 
 dokka {
-    outputFormat = 'html'
+    outputFormat = 'javadoc'
     outputDirectory = 'docs'
 
     jdkVersion = 8
