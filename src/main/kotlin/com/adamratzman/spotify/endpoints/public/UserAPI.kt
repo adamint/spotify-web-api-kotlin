@@ -1,15 +1,15 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.SpotifyPublicUser
-import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.models.SpotifyPublicUser
+import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -27,7 +27,7 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/users/${UserURI(user).id.encode()}").toString())
-                    .toObject<SpotifyPublicUser>(api)
+                        .toObject<SpotifyPublicUser>(api)
             }
         })
     }

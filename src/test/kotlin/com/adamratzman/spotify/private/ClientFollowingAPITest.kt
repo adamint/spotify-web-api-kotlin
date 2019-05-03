@@ -3,7 +3,7 @@ package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.main.SpotifyClientAPI
-import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.models.BadRequestException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull

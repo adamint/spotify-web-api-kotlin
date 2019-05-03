@@ -1,5 +1,5 @@
 /* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
 import com.adamratzman.spotify.main.SpotifyAPI
@@ -539,6 +539,11 @@ data class SimplePlaylist(
 }
 
 /**
+ * The cursor to use as key to find the next (or previous) page of items.
+ */
+data class Cursor(val before: String? = null, val after: String? = null)
+
+/**
  * @property primaryColor Unknown. Spotify has released no information about this
  * @property addedAt The date and time the track was added. Note that some very old playlists may return null in this field.
  * @property addedBy The Spotify user who added the track. Note that some very old playlists may return null in this field.
@@ -812,6 +817,10 @@ data class SavedAlbum(
         @Json(name = "added_at") val addedAt: String,
         val album: Album
 )
+
+abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
+    fun isRelinked() = linkedTrack != null
+}
 
 /**
  * @property addedAt The date and time the track was saved.

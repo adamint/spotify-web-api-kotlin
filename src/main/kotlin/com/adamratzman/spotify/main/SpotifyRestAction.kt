@@ -1,7 +1,7 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.utils.AbstractPagingObject
+import com.adamratzman.spotify.models.AbstractPagingObject
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier

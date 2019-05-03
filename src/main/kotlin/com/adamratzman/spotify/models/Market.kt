@@ -1,5 +1,5 @@
 /* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.models
 
 /**
  * Represents Spotify markets (countries + distinctive territories)
