@@ -54,7 +54,7 @@ dependencies {
 This library should work out of the box on Android.
 
 ## Documentation
-The `spotify-web-api-kotlin` KDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin
+The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin
 
 ## Creating a SpotifyAPI or SpotifyClientAPI object
 In order to use the methods in this library, you must create either a `SpotifyAPI` or `SpotifyClientAPI` object using their respective exposed builders. Client-specific methods are unable to be accessed with the generic SpotifyAPI, rather you must create an instance of the Client API.

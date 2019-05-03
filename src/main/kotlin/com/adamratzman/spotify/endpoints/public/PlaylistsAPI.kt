@@ -4,22 +4,7 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.Market
-import com.adamratzman.spotify.utils.PagingObject
-import com.adamratzman.spotify.utils.Playlist
-import com.adamratzman.spotify.utils.PlaylistTrack
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SimplePlaylist
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.SpotifyImage
-import com.adamratzman.spotify.utils.UserURI
-import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toArray
-import com.adamratzman.spotify.utils.toObject
-import com.adamratzman.spotify.utils.toPagingObject
+import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
 /**
@@ -36,6 +21,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of [SimplePlaylist]s **ONLY if** the user can be found. Otherwise, an empty paging object is returned.
      * This does not have the detail of full [Playlist] objects.
+     *
+     * @throws BadRequestException if the user is not found (404)
      *
      */
     fun getPlaylists(
