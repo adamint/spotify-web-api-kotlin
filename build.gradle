@@ -22,7 +22,7 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
 group 'com.adamratzman'
-version '2.1.2'
+version '2.1.3'
 
 archivesBaseName = 'spotify-api-kotlin'
 
@@ -42,10 +42,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     
     // Spek testing requirements
-    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.3') {
+    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.0') {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.3') {
+    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0') {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
