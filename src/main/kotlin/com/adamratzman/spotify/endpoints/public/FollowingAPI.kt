@@ -1,15 +1,15 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.UserURI
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toArray
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.serialization.toArray
 import java.util.function.Supplier
 
 /**
@@ -28,9 +28,9 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-        playlistOwner: String,
-        playlist: String,
-        vararg users: String
+            playlistOwner: String,
+            playlist: String,
+            vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             val user = UserURI(playlistOwner)

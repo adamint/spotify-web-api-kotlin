@@ -1,21 +1,21 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.Artist
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.Market
-import com.adamratzman.spotify.utils.PagingObject
-import com.adamratzman.spotify.utils.Playlist
-import com.adamratzman.spotify.utils.SimpleAlbum
-import com.adamratzman.spotify.utils.SimplePlaylist
-import com.adamratzman.spotify.utils.SimpleTrack
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.Track
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toPagingObject
+import com.adamratzman.spotify.models.Artist
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.Market
+import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.Playlist
+import com.adamratzman.spotify.models.SimpleAlbum
+import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.SimpleTrack
+import com.adamratzman.spotify.models.Track
+import com.adamratzman.spotify.models.serialization.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -44,14 +44,14 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchPlaylist(
-        query: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject<SimplePlaylist>(
-                "playlists", this
+                    "playlists", this
             )
         })
     }
@@ -69,14 +69,14 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchArtist(
-        query: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject<Artist>(
-                "artists", this
+                    "artists", this
             )
         })
     }
@@ -94,14 +94,14 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchAlbum(
-        query: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
             get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject<SimpleAlbum>(
-                "albums", this
+                    "albums", this
             )
         })
     }
@@ -119,20 +119,20 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchTrack(
-        query: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging(Supplier {
             get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject<Track>(
-                "tracks", this
+                    "tracks", this
             )
         })
     }
 
     private fun build(type: SearchType, query: String, limit: Int?, offset: Int?, market: Market?): String {
         return EndpointBuilder("/search").with("q", query.encode()).with("type", type.id).with("market", market?.code)
-            .with("limit", limit).with("offset", offset).toString()
+                .with("limit", limit).with("offset", offset).toString()
     }
 }

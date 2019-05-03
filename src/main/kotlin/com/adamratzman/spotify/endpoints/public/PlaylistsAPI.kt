@@ -1,25 +1,25 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.Market
-import com.adamratzman.spotify.utils.PagingObject
-import com.adamratzman.spotify.utils.Playlist
-import com.adamratzman.spotify.utils.PlaylistTrack
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SimplePlaylist
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.SpotifyImage
-import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.Market
+import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.Playlist
+import com.adamratzman.spotify.models.PlaylistTrack
+import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.SpotifyImage
+import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toArray
-import com.adamratzman.spotify.utils.toObject
-import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -41,9 +41,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      */
     fun getPlaylists(
-        user: String,
-        limit: Int? = null,
-        offset: Int? = null
+            user: String,
+            limit: Int? = null,
+            offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
@@ -84,10 +84,10 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getPlaylistTracks(
-        playlist: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            playlist: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
         return toActionPaging(Supplier {
             get(

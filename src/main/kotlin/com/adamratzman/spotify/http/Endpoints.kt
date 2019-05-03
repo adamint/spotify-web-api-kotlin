@@ -1,12 +1,19 @@
 /* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyAppAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
 import com.adamratzman.spotify.main.base
+import com.adamratzman.spotify.models.AbstractPagingObject
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.ErrorObject
+import com.adamratzman.spotify.models.ErrorResponse
+import com.adamratzman.spotify.models.serialization.toObject
 import java.net.HttpURLConnection
+import java.net.URLEncoder
+import java.util.Base64
 import java.util.function.Supplier
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
@@ -169,3 +176,9 @@ internal data class CacheState(val data: String, val eTag: String?, val expireBy
         )
     }
 }
+
+internal fun String.byteEncode(): String {
+    return String(Base64.getEncoder().encode(toByteArray()))
+}
+
+internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!

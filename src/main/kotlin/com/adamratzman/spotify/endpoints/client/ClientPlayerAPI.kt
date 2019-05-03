@@ -1,26 +1,26 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.client
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.AlbumURI
-import com.adamratzman.spotify.utils.ArtistURI
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.CurrentlyPlayingContext
-import com.adamratzman.spotify.utils.CurrentlyPlayingObject
-import com.adamratzman.spotify.utils.CursorBasedPagingObject
-import com.adamratzman.spotify.utils.Device
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.PlayHistory
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.models.AlbumURI
+import com.adamratzman.spotify.models.ArtistURI
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.CurrentlyPlayingContext
+import com.adamratzman.spotify.models.CurrentlyPlayingObject
+import com.adamratzman.spotify.models.CursorBasedPagingObject
+import com.adamratzman.spotify.models.Device
+import com.adamratzman.spotify.models.PlayHistory
+import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
+import com.adamratzman.spotify.models.serialization.toInnerObject
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toCursorBasedPagingObject
-import com.adamratzman.spotify.utils.toInnerObject
-import com.adamratzman.spotify.utils.toObject
 import com.beust.klaxon.JsonObject
 import java.util.function.Supplier
 
@@ -35,7 +35,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<List<Device>>(
-                "devices", api
+                    "devices", api
             )
         })
     }
@@ -47,7 +47,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             val obj = catch {
                 get(EndpointBuilder("/me/player").toString())
-                    .toObject<CurrentlyPlayingContext>(api)
+                        .toObject<CurrentlyPlayingContext>(api)
             }
             if (obj?.timestamp == null) null else obj
         })
@@ -62,16 +62,16 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      */
     fun getRecentlyPlayed(
-        limit: Int? = null,
-        before: String? = null,
-        after: String? = null
+            limit: Int? = null,
+            before: String? = null,
+            after: String? = null
     ): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
         return toActionPaging(Supplier {
             get(
-                EndpointBuilder("/me/player/recently-played")
-                    .with("limit", limit).with("before", before).with("after", after).toString()
+                    EndpointBuilder("/me/player/recently-played")
+                            .with("limit", limit).with("before", before).with("after", after).toString()
             ).toCursorBasedPagingObject<PlayHistory>(
-                endpoint = this
+                    endpoint = this
             )
         })
     }
@@ -82,10 +82,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction(Supplier {
             val obj =
-                catch {
-                    get(EndpointBuilder("/me/player/currently-playing").toString())
-                        .toObject<CurrentlyPlayingObject>(api)
-                }
+                    catch {
+                        get(EndpointBuilder("/me/player/currently-playing").toString())
+                                .toObject<CurrentlyPlayingObject>(api)
+                    }
             if (obj?.timestamp == null) null else obj
         })
     }
@@ -113,10 +113,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             if (positionMs < 0) throw IllegalArgumentException("Position must not be negative!")
             put(
-                EndpointBuilder("/me/player/seek").with("position_ms", positionMs).with(
-                    "device_id",
-                    deviceId
-                ).toString()
+                    EndpointBuilder("/me/player/seek").with("position_ms", positionMs).with(
+                            "device_id",
+                            deviceId
+                    ).toString()
             )
             Unit
         })
@@ -131,10 +131,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(
-                EndpointBuilder("/me/player/repeat").with("state", state.toString().toLowerCase()).with(
-                    "device_id",
-                    deviceId
-                ).toString()
+                    EndpointBuilder("/me/player/repeat").with("state", state.toString().toLowerCase()).with(
+                            "device_id",
+                            deviceId
+                    ).toString()
             )
             Unit
         })
@@ -150,10 +150,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         if (volume !in 0..100) throw IllegalArgumentException("Volume must be within 0 to 100 inclusive. Provided: $volume")
         return toAction(Supplier {
             put(
-                EndpointBuilder("/me/player/volume").with("volume_percent", volume).with(
-                    "device_id",
-                    deviceId
-                ).toString()
+                    EndpointBuilder("/me/player/volume").with("volume_percent", volume).with(
+                            "device_id",
+                            deviceId
+                    ).toString()
             )
             Unit
         })
@@ -204,13 +204,13 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     fun startPlayback(
-        album: String? = null,
-        artist: String? = null,
-        playlist: PlaylistURI? = null,
-        offsetNum: Int? = null,
-        offsetTrackId: String? = null,
-        deviceId: String? = null,
-        vararg tracksToPlay: String
+            album: String? = null,
+            artist: String? = null,
+            playlist: PlaylistURI? = null,
+            offsetNum: Int? = null,
+            offsetTrackId: String? = null,
+            deviceId: String? = null,
+            vararg tracksToPlay: String
     ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
@@ -224,7 +224,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body["offset"] = JsonObject().apply { this["position"] = offsetNum }
                 else if (offsetTrackId != null) body["offset"] =
-                    JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
+                        JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
                 put(url, body.toJsonString())
             } else put(url)
             Unit
@@ -260,8 +260,8 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         if (deviceId.size > 1) throw IllegalArgumentException("Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request")
         return toAction(Supplier {
             put(
-                EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") { it.encode() })
-                    .with("play", play).toString()
+                    EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") { it.encode() })
+                            .with("play", play).toString()
             )
             Unit
         })
