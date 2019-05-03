@@ -1,9 +1,33 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.main
 
-import com.adamratzman.spotify.endpoints.client.*
-import com.adamratzman.spotify.endpoints.public.*
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.endpoints.client.ClientFollowingAPI
+import com.adamratzman.spotify.endpoints.client.ClientLibraryAPI
+import com.adamratzman.spotify.endpoints.client.ClientPersonalizationAPI
+import com.adamratzman.spotify.endpoints.client.ClientPlayerAPI
+import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
+import com.adamratzman.spotify.endpoints.client.ClientUserAPI
+import com.adamratzman.spotify.endpoints.public.AlbumAPI
+import com.adamratzman.spotify.endpoints.public.ArtistsAPI
+import com.adamratzman.spotify.endpoints.public.BrowseAPI
+import com.adamratzman.spotify.endpoints.public.FollowingAPI
+import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
+import com.adamratzman.spotify.endpoints.public.SearchAPI
+import com.adamratzman.spotify.endpoints.public.TracksAPI
+import com.adamratzman.spotify.endpoints.public.UserAPI
+import com.adamratzman.spotify.utils.HttpConnection
+import com.adamratzman.spotify.utils.HttpHeader
+import com.adamratzman.spotify.utils.HttpRequestMethod
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.Token
+import com.adamratzman.spotify.utils.byteEncode
+import com.adamratzman.spotify.utils.getAlbumConverter
+import com.adamratzman.spotify.utils.getFeaturedPlaylistsConverter
+import com.adamratzman.spotify.utils.getPlaylistConverter
+import com.adamratzman.spotify.utils.getPublicUserConverter
+import com.adamratzman.spotify.utils.getSavedTrackConverter
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toObjectNullable
 import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit

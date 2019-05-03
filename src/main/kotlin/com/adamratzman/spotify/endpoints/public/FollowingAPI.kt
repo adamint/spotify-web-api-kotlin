@@ -3,7 +3,13 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toArray
 import java.util.function.Supplier
 
 /**
@@ -29,8 +35,8 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             val user = UserURI(playlistOwner)
             get(
-                EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+                    EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
+                            .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
             ).toArray<Boolean>(api)
         })
     }
@@ -49,9 +55,9 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun isFollowingPlaylist(playlistOwner: String, playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
             areFollowingPlaylist(
-                playlistOwner,
-                playlist,
-                users = *arrayOf(user)
+                    playlistOwner,
+                    playlist,
+                    users = *arrayOf(user)
             ).complete()[0]
         })
     }

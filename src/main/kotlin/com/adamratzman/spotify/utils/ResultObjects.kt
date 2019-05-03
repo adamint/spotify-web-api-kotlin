@@ -15,7 +15,7 @@ import com.beust.klaxon.Json
 data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)
 
 internal data class AudioFeaturesResponse(
-    @Json(name = "audio_features") val audioFeatures: List<AudioFeatures?>
+        @Json(name = "audio_features") val audioFeatures: List<AudioFeatures?>
 )
 
 internal data class AlbumsResponse(val albums: List<Album?>)
@@ -41,7 +41,7 @@ data class Restrictions(val reason: String)
 data class TimeInterval(val start: Float, val duration: Float, val confidence: Float)
 
 data class Context(
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>
+        @Json(name = "external_urls") val externalUrls: Map<String, String>
 )
 
 /**
@@ -57,12 +57,12 @@ data class Context(
  * @property type The entity type of this seed. One of artist , track or genre.
  */
 data class RecommendationSeed(
-    val initialPoolSize: Int,
-    val afterFilteringSize: Int,
-    val afterRelinkingSize: Int?,
-    val href: String?,
-    val id: String,
-    val type: String
+        val initialPoolSize: Int,
+        val afterFilteringSize: Int,
+        val afterRelinkingSize: Int?,
+        val href: String?,
+        val id: String,
+        val type: String
 )
 
 /**
@@ -74,10 +74,10 @@ data class RecommendationSeed(
  * @property name The name of the category.
  */
 data class SpotifyCategory(
-    val href: String,
-    val icons: List<SpotifyImage>,
-    val id: String,
-    val name: String
+        val href: String,
+        val icons: List<SpotifyImage>,
+        val id: String,
+        val name: String
 )
 
 /**
@@ -88,8 +88,8 @@ data class SpotifyCategory(
  * P = the sound recording (performance) copyright.
  */
 data class SpotifyCopyright(
-    val text: String,
-    val type: String
+        val text: String,
+        val type: String
 )
 
 /**
@@ -101,8 +101,8 @@ data class SpotifyCopyright(
  * @property total the total number of tracks in the playlist.
  */
 data class PlaylistTrackInfo(
-    val href: String,
-    val total: Int
+        val href: String,
+        val total: Int
 )
 
 /**
@@ -114,8 +114,8 @@ data class PlaylistTrackInfo(
  * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 data class Followers(
-    val href: String?,
-    val total: Int
+        val href: String?,
+        val total: Int
 )
 
 /**
@@ -139,19 +139,19 @@ data class Followers(
  * @property uri The Spotify URI for the user.
  */
 data class SpotifyUserInformation(
-    val birthdate: String? = null,
-    val country: String? = null,
-    @Json(name = "display_name") val displayName: String? = null,
-    val email: String? = null,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val followers: Followers,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val product: String?,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
+        val birthdate: String? = null,
+        val country: String? = null,
+        @Json(name = "display_name") val displayName: String? = null,
+        val email: String? = null,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val followers: Followers,
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage>,
+        val product: String?,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 /**
@@ -165,15 +165,15 @@ data class SpotifyUserInformation(
  * @property uri The Spotify URI for this user.
  */
 data class SpotifyPublicUser(
-    @Json(name = "display_name") val displayName: String? = null,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val followers: Followers = Followers(null, -1),
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage> = listOf(),
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
+        @Json(name = "display_name") val displayName: String? = null,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val followers: Followers = Followers(null, -1),
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage> = listOf(),
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 /**
@@ -184,9 +184,9 @@ data class SpotifyPublicUser(
  * @property width The image width in pixels. If unknown: null or not returned.
  */
 data class SpotifyImage(
-    val height: Int? = null,
-    val url: String,
-    val width: Int? = null
+        val height: Int? = null,
+        val url: String,
+        val width: Int? = null
 )
 
 /**
@@ -198,7 +198,7 @@ abstract class Linkable {
 }
 
 /**
- * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
+ * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  *
  * @property externalUrls
@@ -208,12 +208,12 @@ abstract class Linkable {
  * @property uri
  */
 data class LinkedTrack(
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val href: String,
-    val id: String,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val href: String,
+        val id: String,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
 )
 
 /**
@@ -225,13 +225,13 @@ data class LinkedTrack(
  * @property uri The Spotify URI for the artist.
  */
 data class SimpleArtist(
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val href: String,
-    val id: String,
-    val name: String,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val href: String,
+        val id: String,
+        val name: String,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 ) : Linkable() {
     fun toFullArtist() = api.artists.getArtist(id)
 }
@@ -251,17 +251,17 @@ data class SimpleArtist(
  * @property uri The Spotify URI for the artist.
  */
 data class Artist(
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val followers: Followers,
-    val genres: List<String>,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val popularity: Int,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val followers: Followers,
+        val genres: List<String>,
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val popularity: Int,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 )
 
 /**
@@ -295,26 +295,26 @@ data class Artist(
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleTrack(
-    val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String> = listOf(),
-    @Json(name = "disc_number") val discNumber: Int,
-    @Json(name = "duration_ms") val durationMs: Int,
-    val explicit: Boolean,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>, //
-    @Json(name = "external_ids") val externalIds: HashMap<String, String> = hashMapOf(),
-    val href: String,
-    val id: String,
-    @Json(name = "is_playable") val isPlayable: Boolean = true,
-    @Json(name = "linked_from", ignored = false) private val linkedFrom: LinkedTrack? = null,
-    val name: String,
-    @Json(name = "preview_url") val previewUrl: String?,
-    @Json(name = "track_number") val trackNumber: Int,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
-    @Json(name = "is_local") val isLocal: Boolean? = null,
-    val popularity: Int? = null,
-    val restrictions: Restrictions? = null
+        val artists: List<SimpleArtist>,
+        @Json(name = "available_markets") val availableMarkets: List<String> = listOf(),
+        @Json(name = "disc_number") val discNumber: Int,
+        @Json(name = "duration_ms") val durationMs: Int,
+        val explicit: Boolean,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        @Json(name = "external_ids") val externalIds: Map<String, String> = hashMapOf(),
+        val href: String,
+        val id: String,
+        @Json(name = "is_playable") val isPlayable: Boolean = true,
+        @Json(name = "linked_from", ignored = false) private val linkedFrom: LinkedTrack? = null,
+        val name: String,
+        @Json(name = "preview_url") val previewUrl: String?,
+        @Json(name = "track_number") val trackNumber: Int,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
+        @Json(name = "is_local") val isLocal: Boolean? = null,
+        val popularity: Int? = null,
+        val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linkedFrom) {
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
@@ -356,27 +356,27 @@ data class SimpleTrack(
  * "restrictions" : {"reason" : "market"}
  */
 data class Track(
-    val album: SimpleAlbum,
-    val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String>? = null,
-    @Json(name = "is_playable") val isPlayable: Boolean = true,
-    @Json(name = "disc_number") val discNumber: Int,
-    @Json(name = "duration_ms") val durationMs: Int,
-    val explicit: Boolean,
-    @Json(name = "external_ids") val externalIds: Map<String, String>,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val href: String,
-    val id: String,
-    @Json(name = "linked_from", ignored = false) private val linked_from: LinkedTrack? = null,
-    val name: String,
-    val popularity: Int,
-    @Json(name = "preview_url") val previewUrl: String?,
-    @Json(name = "track_number") val trackNumber: Int,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
-    @Json(name = "is_local") val isLocal: Boolean?,
-    val restrictions: Restrictions? = null
+        val album: SimpleAlbum,
+        val artists: List<SimpleArtist>,
+        @Json(name = "available_markets") val availableMarkets: List<String>? = null,
+        @Json(name = "is_playable") val isPlayable: Boolean = true,
+        @Json(name = "disc_number") val discNumber: Int,
+        @Json(name = "duration_ms") val durationMs: Int,
+        val explicit: Boolean,
+        @Json(name = "external_ids") val externalIds: Map<String, String>,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val href: String,
+        val id: String,
+        @Json(name = "linked_from", ignored = false) private val linked_from: LinkedTrack? = null,
+        val name: String,
+        val popularity: Int,
+        @Json(name = "preview_url") val previewUrl: String?,
+        @Json(name = "track_number") val trackNumber: Int,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
+        @Json(name = "is_local") val isLocal: Boolean?,
+        val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linked_from)
 
 /**
@@ -403,28 +403,29 @@ data class Track(
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleAlbum(
-    @Json(name = "album_type", ignored = false) private val _albumType: String,//
-    val artists: List<SimpleArtist>,//
-    @Json(name = "available_markets") val availableMarkets: List<String>? = null,//
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,//
-    val href: String,//
-    val id: String,//
-    val images: List<SpotifyImage>,//
-    val name: String,//
-    val type: String,//
-    @Json(name = "uri", ignored = false) private val _uri: String,//
-    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),//
-    @Json(name = "release_date") val releaseDate: String,//
-    @Json(name = "release_date_precision") val releaseDatePrecision: String,//
-    @Json(name = "total_tracks") val totalTracks: Int? = null,//
-    @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
-    val restrictions: Restrictions? = null,
-    @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
-        AlbumResultType.values().find { it.id == albumGroupString }
-    }
+        @Json(name = "album_type", ignored = false) private val _albumType: String,
+        val artists: List<SimpleArtist>,
+        @Json(name = "available_markets") val availableMarkets: List<String>? = null,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
+        @Json(name = "release_date") val releaseDate: String,
+        @Json(name = "release_date_precision") val releaseDatePrecision: String,
+        @Json(name = "total_tracks") val totalTracks: Int? = null,
+        @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
+        val restrictions: Restrictions? = null,
+        @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
+            AlbumResultType.values().find { it.id == albumGroupString }
+        }
 ) : Linkable() {
-    @Json(ignored = true) val albumType: AlbumResultType = _albumType.let { _ ->
-        AlbumResultType.values().first { it.id == _albumType }
+    @Json(ignored = true)
+    val albumType: AlbumResultType = _albumType.let { _ ->
+        AlbumResultType.values().first { it.id.equals(_albumType, true) }
     }
 
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
@@ -472,28 +473,28 @@ enum class AlbumResultType(internal val id: String) {
  * restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}
  */
 data class Album(
-    @Json(name = "album_type", ignored = false) private val _albumType: String,
-    val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String>,
-    val copyrights: List<SpotifyCopyright>,
-    @Json(name = "external_ids") val externalIds: Map<String, String>,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val genres: List<String>,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val label: String,
-    val name: String,
-    val popularity: Int,
-    @Json(name = "release_date") val releaseDate: String,
-    @Json(name = "release_date_precision") val releaseDatePrecision: String,
-    val tracks: PagingObject<SimpleTrack>,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
-    @Json(name = "total_tracks") val totalTracks: Int,
-    val restrictions: Restrictions? = null,
-    @Json(ignored = true) val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
+        @Json(name = "album_type", ignored = false) private val _albumType: String,
+        val artists: List<SimpleArtist>,
+        @Json(name = "available_markets") val availableMarkets: List<String>,
+        val copyrights: List<SpotifyCopyright>,
+        @Json(name = "external_ids") val externalIds: Map<String, String>,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val genres: List<String>,
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage>,
+        val label: String,
+        val name: String,
+        val popularity: Int,
+        @Json(name = "release_date") val releaseDate: String,
+        @Json(name = "release_date_precision") val releaseDatePrecision: String,
+        val tracks: PagingObject<SimpleTrack>,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
+        @Json(name = "total_tracks") val totalTracks: Int,
+        val restrictions: Restrictions? = null,
+        @Json(ignored = true) val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
 )
 
 /**
@@ -518,21 +519,21 @@ data class Album(
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
-    val collaborative: Boolean,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val owner: SpotifyPublicUser,
-    @Json(name = "primary_color") val primaryColor: String? = null,
-    val public: Boolean? = null,
-    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
-    val tracks: PlaylistTrackInfo,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
-    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+        val collaborative: Boolean,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val href: String,
+        val id: String,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val owner: SpotifyPublicUser,
+        @Json(name = "primary_color") val primaryColor: String? = null,
+        val public: Boolean? = null,
+        @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
+        val tracks: PlaylistTrackInfo,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
+        @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 ) : Linkable() {
     fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
 }
@@ -545,12 +546,12 @@ data class SimplePlaylist(
  * @property track Information about the track.
  */
 data class PlaylistTrack(
-    @Json(name = "primary_color") val primaryColor: String? = null,
-    @Json(name = "added_at") val addedAt: String?,
-    @Json(name = "added_by") val addedBy: SpotifyPublicUser?,
-    @Json(name = "is_local") val isLocal: Boolean?,
-    val track: Track,
-    @Json(name = "video_thumbnail") val videoThumbnail: VideoThumbnail? = null
+        @Json(name = "primary_color") val primaryColor: String? = null,
+        @Json(name = "added_at") val addedAt: String?,
+        @Json(name = "added_by") val addedBy: SpotifyPublicUser?,
+        @Json(name = "is_local") val isLocal: Boolean?,
+        val track: Track,
+        @Json(name = "video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
 /**
@@ -576,23 +577,23 @@ data class PlaylistTrack(
  * @param uri The Spotify URI for the playlist.
  */
 data class Playlist(
-    val collaborative: Boolean,
-    val description: String,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val followers: Followers,
-    val href: String,
-    val id: String,
-    @Json(name = "primary_color") val primaryColor: String? = null,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val owner: SpotifyPublicUser,
-    val public: Boolean? = null,
-    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
-    val tracks: PagingObject<PlaylistTrack>,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
-    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+        val collaborative: Boolean,
+        val description: String,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val followers: Followers,
+        val href: String,
+        val id: String,
+        @Json(name = "primary_color") val primaryColor: String? = null,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val owner: SpotifyPublicUser,
+        val public: Boolean? = null,
+        @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
+        val tracks: PagingObject<PlaylistTrack>,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
+        @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 )
 
 /**
@@ -616,23 +617,23 @@ data class RecommendationResponse(val seeds: List<RecommendationSeed>, val track
  * @param track An analysis of the track as a whole. Undocumented on Spotify's side.
  */
 data class AudioAnalysis(
-    val bars: List<TimeInterval>,
-    val beats: List<TimeInterval>,
-    val meta: AudioAnalysisMeta,
-    val sections: List<AudioSection>,
-    val segments: List<AudioSegment>,
-    val tatums: List<TimeInterval>,
-    val track: TrackAnalysis
+        val bars: List<TimeInterval>,
+        val beats: List<TimeInterval>,
+        val meta: AudioAnalysisMeta,
+        val sections: List<AudioSection>,
+        val segments: List<AudioSegment>,
+        val tatums: List<TimeInterval>,
+        val track: TrackAnalysis
 )
 
 data class AudioAnalysisMeta(
-    @Json(name = "analyzer_version") val analyzerVersion: String,
-    val platform: String,
-    @Json(name = "detailed_status") val detailedStatus: String,
-    @Json(name = "status_code") val statusCode: Int,
-    val timestamp: Long,
-    @Json(name = "analysis_time") val analysisTime: Float,
-    @Json(name = "input_process") val inputProcess: String
+        @Json(name = "analyzer_version") val analyzerVersion: String,
+        val platform: String,
+        @Json(name = "detailed_status") val detailedStatus: String,
+        @Json(name = "status_code") val statusCode: Int,
+        val timestamp: Long,
+        @Json(name = "analysis_time") val analysisTime: Float,
+        @Json(name = "input_process") val inputProcess: String
 )
 
 /**
@@ -662,18 +663,18 @@ data class AudioAnalysisMeta(
  * Sections with time signature changes may correspond to low values in this field.
  */
 data class AudioSection(
-    val start: Float,
-    val duration: Float,
-    val confidence: Float,
-    val loudness: Float,
-    val tempo: Float,
-    @Json(name = "tempo_confidence") val tempoConfidence: Float,
-    val key: Int,
-    @Json(name = "key_confidence") val keyConfidence: Float,
-    val mode: Int,
-    @Json(name = "mode_confidence") val modeConfidence: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float
+        val start: Float,
+        val duration: Float,
+        val confidence: Float,
+        val loudness: Float,
+        val tempo: Float,
+        @Json(name = "tempo_confidence") val tempoConfidence: Float,
+        val key: Int,
+        @Json(name = "key_confidence") val keyConfidence: Float,
+        val mode: Int,
+        @Json(name = "mode_confidence") val modeConfidence: Float,
+        @Json(name = "time_signature") val timeSignature: Int,
+        @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float
 )
 
 /**
@@ -695,44 +696,44 @@ data class AudioSection(
  * instruments, or voices. Timbre vectors are best used in comparison with each other.
  */
 data class AudioSegment(
-    val start: Float,
-    val duration: Float,
-    val confidence: Float,
-    @Json(name = "loudness_start") val loudnessStart: Float,
-    @Json(name = "loudness_max_time") val loudnessMaxTime: Float,
-    @Json(name = "loudness_max") val loudnessMax: Float,
-    @Json(name = "loudness_end") val loudnessEnd: Float? = null,
-    val pitches: List<Float>,
-    val timbre: List<Float>
+        val start: Float,
+        val duration: Float,
+        val confidence: Float,
+        @Json(name = "loudness_start") val loudnessStart: Float,
+        @Json(name = "loudness_max_time") val loudnessMaxTime: Float,
+        @Json(name = "loudness_max") val loudnessMax: Float,
+        @Json(name = "loudness_end") val loudnessEnd: Float? = null,
+        val pitches: List<Float>,
+        val timbre: List<Float>
 )
 
 data class TrackAnalysis(
-    @Json(name = "num_samples") val numSamples: Int,
-    val duration: Float,
-    @Json(name = "sample_md5") val sampleMd5: String,
-    @Json(name = "offset_seconds") val offsetSeconds: Int,
-    @Json(name = "window_seconds") val windowSeconds: Int,
-    @Json(name = "analysis_sample_rate") val analysisSampleRate: Int,
-    @Json(name = "analysis_channels") val analysisChannels: Int,
-    @Json(name = "end_of_fade_in") val endOfFadeIn: Float,
-    @Json(name = "start_of_fade_out") val startOfFadeOut: Float,
-    val loudness: Float,
-    val tempo: Float,
-    @Json(name = "tempo_confidence") val tempoConfidence: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float,
-    val key: Int,
-    @Json(name = "key_confidence") val keyConfidence: Float,
-    val mode: Int,
-    @Json(name = "mode_confidence") val modeConfidence: Float,
-    val codestring: String,
-    @Json(name = "code_version") val codeVersion: Float,
-    val echoprintstring: String,
-    @Json(name = "echoprint_version") val echoprintVersion: Float,
-    val synchstring: String,
-    @Json(name = "synch_version") val synchVersion: Float,
-    val rhythmstring: String,
-    @Json(name = "rhythm_version") val rhythmVersion: Float
+        @Json(name = "num_samples") val numSamples: Int,
+        val duration: Float,
+        @Json(name = "sample_md5") val sampleMd5: String,
+        @Json(name = "offset_seconds") val offsetSeconds: Int,
+        @Json(name = "window_seconds") val windowSeconds: Int,
+        @Json(name = "analysis_sample_rate") val analysisSampleRate: Int,
+        @Json(name = "analysis_channels") val analysisChannels: Int,
+        @Json(name = "end_of_fade_in") val endOfFadeIn: Float,
+        @Json(name = "start_of_fade_out") val startOfFadeOut: Float,
+        val loudness: Float,
+        val tempo: Float,
+        @Json(name = "tempo_confidence") val tempoConfidence: Float,
+        @Json(name = "time_signature") val timeSignature: Int,
+        @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float,
+        val key: Int,
+        @Json(name = "key_confidence") val keyConfidence: Float,
+        val mode: Int,
+        @Json(name = "mode_confidence") val modeConfidence: Float,
+        val codestring: String,
+        @Json(name = "code_version") val codeVersion: Float,
+        val echoprintstring: String,
+        @Json(name = "echoprint_version") val echoprintVersion: Float,
+        val synchstring: String,
+        @Json(name = "synch_version") val synchVersion: Float,
+        val rhythmstring: String,
+        @Json(name = "rhythm_version") val rhythmVersion: Float
 )
 
 /**
@@ -782,25 +783,25 @@ data class TrackAnalysis(
  * valence sound more negative (e.g. sad, depressed, angry).
  */
 data class AudioFeatures(
-    val acousticness: Float,
-    @Json(name = "analysis_url") val analysisUrl: String,
-    val danceability: Float,
-    @Json(name = "duration_ms") val durationMs: Int,
-    val energy: Float,
-    val id: String,
-    val instrumentalness: Float,
-    val key: Int,
-    val liveness: Float,
-    val loudness: Float,
-    val mode: Int,
-    val speechiness: Float,
-    val tempo: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "track_href") val trackHref: String,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
-    val valence: Float
+        val acousticness: Float,
+        @Json(name = "analysis_url") val analysisUrl: String,
+        val danceability: Float,
+        @Json(name = "duration_ms") val durationMs: Int,
+        val energy: Float,
+        val id: String,
+        val instrumentalness: Float,
+        val key: Int,
+        val liveness: Float,
+        val loudness: Float,
+        val mode: Int,
+        val speechiness: Float,
+        val tempo: Float,
+        @Json(name = "time_signature") val timeSignature: Int,
+        @Json(name = "track_href") val trackHref: String,
+        val type: String,
+        @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
+        val valence: Float
 )
 
 /**
@@ -808,8 +809,8 @@ data class AudioFeatures(
  * @property track Information about the album.
  */
 data class SavedAlbum(
-    @Json(name = "added_at") val addedAt: String,
-    val album: Album
+        @Json(name = "added_at") val addedAt: String,
+        val album: Album
 )
 
 /**
@@ -817,47 +818,47 @@ data class SavedAlbum(
  * @property track Information about the track.
  */
 data class SavedTrack(
-    @Json(name = "added_at") val addedAt: String,
-    val track: Track
+        @Json(name = "added_at") val addedAt: String,
+        val track: Track
 )
 
 data class Device(
-    val id: String,
-    @Json(name = "is_active") val isActive: Boolean,
-    @Json(name = "is_restricted") val isRestricted: Boolean,
-    val name: String,
-    val type: String,
-    @Json(name = "volume_percent") val volumePercent: Int
+        val id: String,
+        @Json(name = "is_active") val isActive: Boolean,
+        @Json(name = "is_restricted") val isRestricted: Boolean,
+        val name: String,
+        val type: String,
+        @Json(name = "volume_percent") val volumePercent: Int
 )
 
 data class CurrentlyPlayingContext(
-    val timestamp: Long?,
-    val device: Device,
-    @Json(name = "progress_ms") val progressMs: String,
-    @Json(name = "is_playing") val isPlaying: Boolean,
-    val item: Track?,
-    @Json(name = "shuffle_state") val shuffleState: Boolean,
-    @Json(name = "repeat_state") val repeatState: String,
-    val context: Context
+        val timestamp: Long?,
+        val device: Device,
+        @Json(name = "progress_ms") val progressMs: String,
+        @Json(name = "is_playing") val isPlaying: Boolean,
+        val item: Track?,
+        @Json(name = "shuffle_state") val shuffleState: Boolean,
+        @Json(name = "repeat_state") val repeatState: String,
+        val context: Context
 )
 
 data class CurrentlyPlayingObject(
-    val context: PlayHistoryContext?,
-    val timestamp: Long,
-    @Json(name = "progress_ms") val progressMs: Int,
-    @Json(name = "is_playing") val isPlaying: Boolean,
-    val item: Track
+        val context: PlayHistoryContext?,
+        val timestamp: Long,
+        @Json(name = "progress_ms") val progressMs: Int,
+        @Json(name = "is_playing") val isPlaying: Boolean,
+        val item: Track
 )
 
 data class PlayHistoryContext(
-    val type: String,
-    val href: String,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val uri: String
+        val type: String,
+        val href: String,
+        @Json(name = "external_urls") val externalUrls: Map<String, String>,
+        val uri: String
 )
 
 data class PlayHistory(
-    val track: SimpleTrack,
-    @Json(name = "played_at") val playedAt: String,
-    val context: PlayHistoryContext
+        val track: SimpleTrack,
+        @Json(name = "played_at") val playedAt: String,
+        val context: PlayHistoryContext
 )
