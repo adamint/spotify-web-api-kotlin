@@ -25,19 +25,19 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     internal fun delete(
-        url: String,
-        body: String? = null,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            contentType: String? = null
     ): String {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     private fun execute(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        retry202: Boolean = true,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            retry202: Boolean = true,
+            contentType: String? = null
     ): String {
         if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
 
@@ -50,25 +50,25 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         }
 
         val document = createConnection(url, body, method, contentType).execute(
-            cacheState?.eTag?.let {
-                HttpHeader("If-None-Match", it)
-            }
+                cacheState?.eTag?.let {
+                    HttpHeader("If-None-Match", it)
+                }
         )
 
         return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
-            url,
-            body,
-            method,
-            false,
-            contentType
+                url,
+                body,
+                method,
+                false,
+                contentType
         )
     }
 
     private fun handleResponse(
-        document: HttpResponse,
-        cacheState: CacheState?,
-        spotifyRequest: SpotifyRequest,
-        retry202: Boolean
+            document: HttpResponse,
+            cacheState: CacheState?,
+            spotifyRequest: SpotifyRequest,
+            retry202: Boolean
     ): String? {
         val statusCode = document.responseCode
 
@@ -82,7 +82,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         document.headers.find { it.key == "Cache-Control" }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
-                    responseBody, document.headers
+                        responseBody, document.headers
                         .find { it.key == "ETag" }?.value
                 )).update(cacheControlHeader.value)
             }
@@ -100,16 +100,17 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun createConnection(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            contentType: String? = null
     ) = HttpConnection(
-        url,
-        method,
-        body,
-        contentType,
-        HttpHeader("Authorization", "Bearer ${api.token.accessToken}")
+            url,
+            method,
+            body,
+            contentType,
+            HttpHeader("Authorization", "Bearer ${api.token.accessToken}"),
+            api = api
     )
 
     internal fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
@@ -150,9 +151,9 @@ internal class SpotifyCache {
 }
 
 internal data class SpotifyRequest(
-    val url: String,
-    val method: HttpRequestMethod,
-    val body: String?
+        val url: String,
+        val method: HttpRequestMethod,
+        val body: String?
 )
 
 internal data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
@@ -164,7 +165,7 @@ internal data class CacheState(val data: String, val eTag: String?, val expireBy
         val time = group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
-            expireBy = System.currentTimeMillis() + 1000 * time
+                expireBy = System.currentTimeMillis() + 1000 * time
         )
     }
 }

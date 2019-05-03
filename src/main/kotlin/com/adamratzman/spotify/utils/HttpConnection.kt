@@ -1,6 +1,7 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utils
 
+import com.adamratzman.spotify.main.SpotifyAPI
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -8,14 +9,15 @@ internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 internal data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-    private val url: String,
-    private val method: HttpRequestMethod,
-    private val body: String?,
-    private val contentType: String?,
-    private vararg val headers: HttpHeader
+        private val url: String,
+        private val method: HttpRequestMethod,
+        private val body: String?,
+        private val contentType: String?,
+        private vararg val headers: HttpHeader,
+        val api: SpotifyAPI? = null
 ) {
 
-    fun execute(vararg additionalHeaders: HttpHeader?): HttpResponse {
+    fun execute(vararg additionalHeaders: HttpHeader?, retryIf502: Boolean = true): HttpResponse {
         val connection = URL(url).openConnection() as HttpURLConnection
         connection.requestMethod = method.toString()
 
@@ -36,6 +38,14 @@ internal class HttpConnection(
         connection.connect()
 
         val responseCode = connection.responseCode
+
+        if (responseCode == 502 && retryIf502) {
+            api?.logger?.logWarning("Received 502 (Invalid response) for URL $url and $this\nRetrying..")
+            return execute(*additionalHeaders, retryIf502 = false)
+        }
+
+        if (responseCode == 502 && !retryIf502) api?.logger?.logInfo("502 retry successful for $this")
+
         val body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
             val text = it.readText()
             it.close()
@@ -43,10 +53,20 @@ internal class HttpConnection(
         }
 
         return HttpResponse(
-            responseCode = responseCode,
-            body = body,
-            headers = connection.headerFields.keys.filterNotNull().map { HttpHeader(it, connection.getHeaderField(it)) }
+                responseCode = responseCode,
+                body = body,
+                headers = connection.headerFields.keys.filterNotNull().map { HttpHeader(it, connection.getHeaderField(it)) }
         ).also { connection.disconnect() }
+    }
+
+    override fun toString(): String {
+        return """HttpConnection  (
+            |url=$url,
+            |method=$method,
+            |body=$body,
+            |contentType=$contentType,
+            |headers=${headers.toList()}
+            |  )""".trimMargin()
     }
 }
 

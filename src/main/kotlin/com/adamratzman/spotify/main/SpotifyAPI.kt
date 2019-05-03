@@ -212,7 +212,8 @@ class SpotifyApiBuilder {
                                 url = "https://accounts.spotify.com/api/token",
                                 method = HttpRequestMethod.POST,
                                 body = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
-                                contentType = "application/x-www-form-urlencoded"
+                                contentType = "application/x-www-form-urlencoded",
+                                api = null
                         ).execute(
                                 HttpHeader(
                                         "Authorization",
@@ -386,7 +387,8 @@ class SpotifyClientAPI internal constructor(
                         url = "https://accounts.spotify.com/api/token",
                         method = HttpRequestMethod.POST,
                         body = "grant_type=refresh_token&refresh_token=${token.refreshToken ?: ""}",
-                        contentType = "application/x-www-form-urlencoded"
+                        contentType = "application/x-www-form-urlencoded",
+                        api = this
                 ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
                         .toObjectNullable<Token>(null)
         if (tempToken?.accessToken == null) {
@@ -431,7 +433,8 @@ private fun getCredentialedToken(clientId: String, clientSecret: String) =
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
                 body = "grant_type=client_credentials",
-                contentType = "application/x-www-form-urlencoded"
+                contentType = "application/x-www-form-urlencoded",
+                api = null
         ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
                 .toObjectNullable<Token>(null)
 
