@@ -403,20 +403,20 @@ data class Track(
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleAlbum(
-    @Json(name = "album_type", ignored = false) private val _albumType: String,
-    val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String>? = null,
-    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,
-    val href: String,
-    val id: String,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
-    @Json(name = "release_date") val releaseDate: String,
-    @Json(name = "release_date_precision") val releaseDatePrecision: String,
-    @Json(name = "total_tracks") val totalTracks: Int? = null,
+    @Json(name = "album_type", ignored = false) private val _albumType: String,//
+    val artists: List<SimpleArtist>,//
+    @Json(name = "available_markets") val availableMarkets: List<String>? = null,//
+    @Json(name = "external_urls") val externalUrls: HashMap<String, String>,//
+    val href: String,//
+    val id: String,//
+    val images: List<SpotifyImage>,//
+    val name: String,//
+    val type: String,//
+    @Json(name = "uri", ignored = false) private val _uri: String,//
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),//
+    @Json(name = "release_date") val releaseDate: String,//
+    @Json(name = "release_date_precision") val releaseDatePrecision: String,//
+    @Json(name = "total_tracks") val totalTracks: Int? = null,//
     @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
     val restrictions: Restrictions? = null,
     @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
