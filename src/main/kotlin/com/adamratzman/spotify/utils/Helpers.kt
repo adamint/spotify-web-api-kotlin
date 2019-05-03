@@ -7,7 +7,7 @@ import com.beust.klaxon.Json
 import com.beust.klaxon.JsonBase
 import com.beust.klaxon.Klaxon
 import java.net.URLEncoder
-import java.util.*
+import java.util.Base64
 
 /**
  * The cursor to use as key to find the next (or previous) page of items.
@@ -60,8 +60,8 @@ internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
 }
 
 internal inline fun <reified T> String.toPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): PagingObject<T> {
     val jsonObject = endpoint.api.klaxon.parseJsonObject(this.reader())
             .let { if (innerObjectName != null) it.obj(innerObjectName)!! else it }
@@ -81,8 +81,8 @@ internal inline fun <reified T> String.toPagingObject(
 }
 
 internal inline fun <reified T> String.toCursorBasedPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): CursorBasedPagingObject<T> {
     val jsonObject = endpoint.api.klaxon.parseJsonObject(this.reader())
             .let { if (innerObjectName != null) it.obj(innerObjectName)!! else it }

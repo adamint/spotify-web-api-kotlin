@@ -4,7 +4,22 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.*
+import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.utils.EndpointBuilder
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.PagingObject
+import com.adamratzman.spotify.utils.Playlist
+import com.adamratzman.spotify.utils.PlaylistTrack
+import com.adamratzman.spotify.utils.PlaylistURI
+import com.adamratzman.spotify.utils.SimplePlaylist
+import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.utils.SpotifyImage
+import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encode
+import com.adamratzman.spotify.utils.toArray
+import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -32,9 +47,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
-                EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(
-                    "offset", offset
-                ).toString()
+                    EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(
+                            "offset", offset
+                    ).toString()
             ).toPagingObject<SimplePlaylist>(endpoint = this)
         })
     }
@@ -51,8 +66,8 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(
-                    EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
-                        .with("market", market?.code).toString()
+                        EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
+                                .with("market", market?.code).toString()
                 ).toObject<Playlist>(api)
             }
         })
@@ -76,10 +91,10 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
         return toActionPaging(Supplier {
             get(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
-                    .with("offset", offset).with("market", market?.code).toString()
+                    EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
+                            .with("offset", offset).with("market", market?.code).toString()
             )
-                .toPagingObject<PlaylistTrack>(null, this)
+                    .toPagingObject<PlaylistTrack>(null, this)
         })
     }
 
@@ -92,7 +107,7 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
             get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString())
-                .toArray<SpotifyImage>(api).toList()
+                    .toArray<SpotifyImage>(api).toList()
         })
     }
 }

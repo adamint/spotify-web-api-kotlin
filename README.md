@@ -28,19 +28,30 @@ This library is available via Maven Central [here](https://search.maven.org/arti
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.1.2</version>
+    <version>2.1.3</version>
 </dependency>
+
+<repository>
+    <id>jcenter</id>
+    <name>jcenter-bintray</name>
+    <url>http://jcenter.bintray.com</url>
+</repository>
 ```
 
 ### Gradle
 ```
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.2'
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.3'
 ```
 
-To use the latest snapshot instead, you must add the Jitpack repository
+To use the latest snapshot instead, you must add the Jitpack repository as well
 ```
 repositories {
-	maven { url 'https://jitpack.io' }
+    jcenter()
+    maven { url 'https://jitpack.io' }
 }
 ```
 Then, you can use the following:
