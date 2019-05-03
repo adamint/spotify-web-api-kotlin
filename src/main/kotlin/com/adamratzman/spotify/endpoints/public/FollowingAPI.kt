@@ -3,13 +3,7 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.UserURI
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toArray
+import com.adamratzman.spotify.utils.*
 import java.util.function.Supplier
 
 /**
@@ -25,7 +19,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return List of Booleans representing whether the user follows the playlist. User IDs **not** found will return false
      *
-     * @throws [BadRequestException] if the playlist is not found
+     * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
         playlistOwner: String,
@@ -50,7 +44,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return booleans representing whether the user follows the playlist. User IDs **not** found will return false
      *
-     * @throws [BadRequestException] if the playlist is not found
+     * @throws [BadRequestException] if the playlist is not found or if the user does not exist
      */
     fun isFollowingPlaylist(playlistOwner: String, playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
