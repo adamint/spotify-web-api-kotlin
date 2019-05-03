@@ -37,7 +37,7 @@ sealed class SpotifyUri(input: String, type: String) {
             this.id = it.remove(type)
         }
     }
-    
+
     override fun equals(other: Any?): Boolean {
         val spotifyUri = other as? SpotifyUri ?: return false
         return spotifyUri.uri == this.uri
