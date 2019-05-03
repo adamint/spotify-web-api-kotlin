@@ -6,6 +6,7 @@ class SpotifyLogger(var enabled: Boolean) {
     val resetString = "\u001B[0m"
     fun logInfo(message: String) = println("Spotify Logger Info: $message")
     fun logWarning(message: String) = println("${redString}Spotify Logger Warning: $message$resetString")
+
     fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {
         val sb = StringBuilder("${redString}Spotify Logger ")
         sb.append(if (fatal) "FATAL" else "Error")
