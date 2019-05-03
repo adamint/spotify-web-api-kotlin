@@ -1,21 +1,21 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.AudioAnalysis
-import com.adamratzman.spotify.utils.AudioFeatures
-import com.adamratzman.spotify.utils.AudioFeaturesResponse
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.Market
-import com.adamratzman.spotify.utils.SpotifyEndpoint
-import com.adamratzman.spotify.utils.Track
-import com.adamratzman.spotify.utils.TrackList
-import com.adamratzman.spotify.utils.TrackURI
+import com.adamratzman.spotify.models.AudioAnalysis
+import com.adamratzman.spotify.models.AudioFeatures
+import com.adamratzman.spotify.models.AudioFeaturesResponse
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.Market
+import com.adamratzman.spotify.models.Track
+import com.adamratzman.spotify.models.TrackList
+import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
 import java.util.function.Supplier
 
 /**
@@ -32,8 +32,10 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getTrack(track: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction(Supplier {
-            catch { get(EndpointBuilder("/tracks/${TrackURI(track).id.encode()}").with("market", market?.code).toString())
-                .toObject<Track>(api) }
+            catch {
+                get(EndpointBuilder("/tracks/${TrackURI(track).id.encode()}").with("market", market?.code).toString())
+                        .toObject<Track>(api)
+            }
         })
     }
 
@@ -49,7 +51,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             get(EndpointBuilder("/tracks").with("ids", tracks.joinToString(",") { TrackURI(it).id.encode() })
                     .with("market", market?.code).toString())
-                .toObject<TrackList>(api).tracks
+                    .toObject<TrackList>(api).tracks
         })
     }
 
@@ -63,7 +65,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-analysis/${TrackURI(track).id.encode()}").toString())
-                .toObject<AudioAnalysis>(api)
+                    .toObject<AudioAnalysis>(api)
         })
     }
 
@@ -77,7 +79,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-features/${TrackURI(track).id.encode()}").toString())
-                .toObject<AudioFeatures>(api)
+                    .toObject<AudioFeatures>(api)
         })
     }
 

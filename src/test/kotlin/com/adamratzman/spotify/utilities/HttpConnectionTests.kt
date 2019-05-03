@@ -1,8 +1,8 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.utils.HttpConnection
-import com.adamratzman.spotify.utils.HttpRequestMethod
+import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequestMethod
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.spekframework.spek2.Spek
@@ -12,10 +12,10 @@ class HttpConnectionTests : Spek({
     describe("http connection testing") {
         describe("get request") {
             val (response, body) = HttpConnection(
-                "https://httpbin.org/get?query=string",
-                HttpRequestMethod.GET,
-                null,
-                "text/html"
+                    "https://httpbin.org/get?query=string",
+                    HttpRequestMethod.GET,
+                    null,
+                    "text/html"
             ).execute().let { it to JSONObject(it.body) }
 
             it("get request response code") {
@@ -42,10 +42,10 @@ class HttpConnectionTests : Spek({
 
         describe("post request") {
             val (response, body) = HttpConnection(
-                "https://httpbin.org/post?query=string",
-                HttpRequestMethod.POST,
-                "body",
-                "text/html"
+                    "https://httpbin.org/post?query=string",
+                    HttpRequestMethod.POST,
+                    "body",
+                    "text/html"
             ).execute().let { it to JSONObject(it.body) }
 
             it("post request response code") {
@@ -77,10 +77,10 @@ class HttpConnectionTests : Spek({
 
         describe("delete request") {
             val (response, body) = HttpConnection(
-                "https://httpbin.org/delete?query=string",
-                HttpRequestMethod.DELETE,
-                "body",
-                "text/html"
+                    "https://httpbin.org/delete?query=string",
+                    HttpRequestMethod.DELETE,
+                    "body",
+                    "text/html"
             ).execute().let { it to JSONObject(it.body) }
 
             it("delete request response code") {
@@ -115,9 +115,9 @@ class HttpConnectionTests : Spek({
                 200,
                 HttpConnection(
                         "https://apple.com",
-                    HttpRequestMethod.GET,
-                    null,
-                    null
+                        HttpRequestMethod.GET,
+                        null,
+                        null
                 ).execute().responseCode
             )
         }

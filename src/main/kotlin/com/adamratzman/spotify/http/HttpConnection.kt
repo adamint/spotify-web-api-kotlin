@@ -1,5 +1,5 @@
 /* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.main.SpotifyAPI
 import java.net.HttpURLConnection
@@ -44,7 +44,7 @@ internal class HttpConnection(
             return execute(*additionalHeaders, retryIf502 = false)
         }
 
-        if (responseCode == 502 && !retryIf502) api?.logger?.logInfo("502 retry successful for $this")
+        if (responseCode == 502 && !retryIf502) api?.logger?.logWarning("502 retry successful for $this")
 
         val body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
             val text = it.readText()

@@ -1,22 +1,22 @@
 /* Created by Adam Ratzman (2018) */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.Album
-import com.adamratzman.spotify.utils.AlbumURI
-import com.adamratzman.spotify.utils.AlbumsResponse
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.Market
-import com.adamratzman.spotify.utils.PagingObject
-import com.adamratzman.spotify.utils.SimpleTrack
-import com.adamratzman.spotify.utils.SpotifyEndpoint
+import com.adamratzman.spotify.models.Album
+import com.adamratzman.spotify.models.AlbumURI
+import com.adamratzman.spotify.models.AlbumsResponse
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.Market
+import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.SimpleTrack
+import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toObject
-import com.adamratzman.spotify.utils.toPagingObject
 import java.util.function.Supplier
 
 /**
@@ -34,7 +34,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString())
-                    .toObject<Album>(api)
+                        .toObject<Album>(api)
             }
         })
     }
@@ -47,8 +47,8 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbums(vararg albums: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
         return toAction(Supplier {
             get(
-                EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
-                    .with("market", market?.code).toString()
+                    EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
+                            .with("market", market?.code).toString()
             ).toObject<AlbumsResponse>(api).albums
         })
     }
@@ -63,18 +63,18 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the [album] is not found, or positioning of [limit] or [offset] is illegal.
      */
     fun getAlbumTracks(
-        album: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            album: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
         return toActionPaging(Supplier {
             get(
-                EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
-                    "offset",
-                    offset
-                ).with("market", market?.code)
-                    .toString()
+                    EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
+                            "offset",
+                            offset
+                    ).with("market", market?.code)
+                            .toString()
             ).toPagingObject<SimpleTrack>(endpoint = this)
         })
     }

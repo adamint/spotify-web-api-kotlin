@@ -2,19 +2,19 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.FollowingAPI
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyClientAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
 import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.utils.Artist
-import com.adamratzman.spotify.utils.ArtistURI
-import com.adamratzman.spotify.utils.CursorBasedPagingObject
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.UserURI
-import com.adamratzman.spotify.utils.encode
-import com.adamratzman.spotify.utils.toArray
-import com.adamratzman.spotify.utils.toCursorBasedPagingObject
+import com.adamratzman.spotify.models.Artist
+import com.adamratzman.spotify.models.ArtistURI
+import com.adamratzman.spotify.models.CursorBasedPagingObject
+import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import java.util.function.Supplier
 
 /**
@@ -47,9 +47,9 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun isFollowingPlaylist(playlistOwner: String, playlistId: String): SpotifyRestAction<Boolean> {
         return toAction(Supplier {
             isFollowingPlaylist(
-                playlistOwner,
-                playlistId,
-                (api as SpotifyClientAPI).userId
+                    playlistOwner,
+                    playlistId,
+                    (api as SpotifyClientAPI).userId
             ).complete()
         })
     }
@@ -64,8 +64,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun isFollowingUsers(vararg users: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(
-                EndpointBuilder("/me/following/contains").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following/contains").with("type", "user")
+                            .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
             ).toArray<Boolean>(api)
         })
     }
@@ -93,8 +93,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun isFollowingArtists(vararg artists: String): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             get(
-                EndpointBuilder("/me/following/contains").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following/contains").with("type", "artist")
+                            .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
             ).toArray<Boolean>(api)
         })
     }
@@ -106,15 +106,15 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      * with full [Artist] objects
      */
     fun getFollowedArtists(
-        limit: Int? = null,
-        after: String? = null
+            limit: Int? = null,
+            after: String? = null
     ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(
-                EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
-                    "after",
-                    after
-                ).toString()
+                    EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
+                            "after",
+                            after
+                    ).toString()
             ).toCursorBasedPagingObject<Artist>("artists", this)
         })
     }
@@ -138,8 +138,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun followUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(
-                EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following").with("type", "user")
+                            .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
             )
             Unit
         })
@@ -164,8 +164,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun followArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(
-                EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following").with("type", "artist")
+                            .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
             )
             Unit
         })
@@ -184,8 +184,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun followPlaylist(playlist: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             put(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(),
-                "{\"public\": $followPublicly}"
+                    EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/followers").toString(),
+                    "{\"public\": $followPublicly}"
             )
             Unit
         })
@@ -214,8 +214,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun unfollowUsers(vararg users: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete(
-                EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following").with("type", "user")
+                            .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
             )
             Unit
         })
@@ -244,8 +244,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
     fun unfollowArtists(vararg artists: String): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             delete(
-                EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
+                    EndpointBuilder("/me/following").with("type", "artist")
+                            .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
             )
             Unit
         })

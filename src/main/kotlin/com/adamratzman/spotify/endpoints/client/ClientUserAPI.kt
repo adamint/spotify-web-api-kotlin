@@ -2,11 +2,11 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.UserAPI
+import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.utils.EndpointBuilder
-import com.adamratzman.spotify.utils.SpotifyUserInformation
-import com.adamratzman.spotify.utils.toObject
+import com.adamratzman.spotify.models.SpotifyUserInformation
+import com.adamratzman.spotify.models.serialization.toObject
 import java.util.function.Supplier
 
 /**

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AudioAnalysis</title>
 <meta name="date" content="2019-02-21">
-<meta name="keywords" content="com.adamratzman.spotify.utils.AudioAnalysis class">
+<meta name="keywords" content="com.adamratzman.spotify.models.AudioAnalysis class">
 <meta name="keywords" content="getBars()">
 <meta name="keywords" content="getBeats()">
 <meta name="keywords" content="getMeta()">
@@ -116,7 +116,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li>com.adamratzman.spotify.utils.AudioAnalysis</li>
+<li>com.adamratzman.spotify.models.AudioAnalysis</li>
 </ul>
 <div class="description">
 <ul class="blockList">
@@ -142,12 +142,12 @@ var activeTableTab = "activeTableTab";
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#AudioAnalysis-bars-beats-meta-sections-segments-tatums-track-">AudioAnalysis</a></span>(java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;bars,
-             java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;beats,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#AudioAnalysis-bars-beats-meta-sections-segments-tatums-track-">AudioAnalysis</a></span>(java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;bars,
+             java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;beats,
              <a href="../../../../com/adamratzman/spotify/utils/AudioAnalysisMeta.html" title="type parameter in AudioAnalysisMeta">AudioAnalysisMeta</a>&nbsp;meta,
-             java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;sections,
-             java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;segments,
-             java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;tatums,
+             java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;sections,
+             java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;segments,
+             java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;tatums,
              <a href="../../../../com/adamratzman/spotify/utils/TrackAnalysis.html" title="type parameter in TrackAnalysis">TrackAnalysis</a>&nbsp;track)</code>&nbsp;</td>
 </tr>
 </table>
@@ -166,13 +166,13 @@ var activeTableTab = "activeTableTab";
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#component1--">component1</a></span>()</code>
 <div class="block">The time intervals of the bars throughout the track.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#component2--">component2</a></span>()</code>
 <div class="block">The time intervals of beats throughout the track.</div>
 </td>
@@ -184,19 +184,19 @@ var activeTableTab = "activeTableTab";
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#component4--">component4</a></span>()</code>
 <div class="block">Sections are defined by large variations in rhythm or timbre,</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#component5--">component5</a></span>()</code>
 <div class="block">Audio segments attempts to subdivide a song into many segments,</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#component6--">component6</a></span>()</code>
 <div class="block">A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing</div>
 </td>
@@ -209,12 +209,12 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html" title="type parameter in AudioAnalysis">AudioAnalysis</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#copy-bars-beats-meta-sections-segments-tatums-track-">copy</a></span>(java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;bars,
-    java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;beats,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#copy-bars-beats-meta-sections-segments-tatums-track-">copy</a></span>(java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;bars,
+    java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;beats,
     <a href="../../../../com/adamratzman/spotify/utils/AudioAnalysisMeta.html" title="type parameter in AudioAnalysisMeta">AudioAnalysisMeta</a>&nbsp;meta,
-    java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;sections,
-    java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;segments,
-    java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;tatums,
+    java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;sections,
+    java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;segments,
+    java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;tatums,
     <a href="../../../../com/adamratzman/spotify/utils/TrackAnalysis.html" title="type parameter in TrackAnalysis">TrackAnalysis</a>&nbsp;track)</code>&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
@@ -222,13 +222,13 @@ var activeTableTab = "activeTableTab";
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#equals-p-">equals</a></span>(java.lang.Object&nbsp;p)</code>&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#getBars--">getBars</a></span>()</code>
 <div class="block">The time intervals of the bars throughout the track.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#getBeats--">getBeats</a></span>()</code>
 <div class="block">The time intervals of beats throughout the track.</div>
 </td>
@@ -240,19 +240,19 @@ var activeTableTab = "activeTableTab";
 </td>
 </tr>
 <tr id="i12" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#getSections--">getSections</a></span>()</code>
 <div class="block">Sections are defined by large variations in rhythm or timbre,</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#getSegments--">getSegments</a></span>()</code>
 <div class="block">Audio segments attempts to subdivide a song into many segments,</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html#getTatums--">getTatums</a></span>()</code>
 <div class="block">A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing</div>
 </td>
@@ -292,12 +292,12 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>AudioAnalysis</h4>
-<pre>public&nbsp;AudioAnalysis(java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;bars,
-                     java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;beats,
+<pre>public&nbsp;AudioAnalysis(java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;bars,
+                     java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;beats,
                      <a href="../../../../com/adamratzman/spotify/utils/AudioAnalysisMeta.html" title="type parameter in AudioAnalysisMeta">AudioAnalysisMeta</a>&nbsp;meta,
-                     java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;sections,
-                     java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;segments,
-                     java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;tatums,
+                     java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;sections,
+                     java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;segments,
+                     java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;tatums,
                      <a href="../../../../com/adamratzman/spotify/utils/TrackAnalysis.html" title="type parameter in TrackAnalysis">TrackAnalysis</a>&nbsp;track)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -337,7 +337,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>getBars</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;getBars()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;getBars()</pre>
 <div class="block"><p>The time intervals of the bars throughout the track.</p><p><p> A bar (or measure) is a segment of time defined asa given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.</p></p></div>
 </li>
 </ul>
@@ -347,7 +347,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>getBeats</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;getBeats()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;getBeats()</pre>
 <div class="block"><p>The time intervals of beats throughout the track.</p><p><p> A beat is the basic time unit of a piece of music;for example, each tick of a metronome. Beats are typically multiples of tatums.</p></p></div>
 </li>
 </ul>
@@ -367,7 +367,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSections</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;getSections()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;getSections()</pre>
 <div class="block"><p>Sections are defined by large variations in rhythm or timbre,</p><p><p> e.g. chorus, verse, bridge, guitarsolo, etc. Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.</p></p></div>
 </li>
 </ul>
@@ -377,7 +377,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSegments</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;getSegments()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;getSegments()</pre>
 <div class="block"><p>Audio segments attempts to subdivide a song into many segments,</p><p><p> with each segment containinga roughly consitent sound throughout its duration.</p></p></div>
 </li>
 </ul>
@@ -387,7 +387,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>getTatums</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;getTatums()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;getTatums()</pre>
 <div class="block"><p>A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing</p><p><p>of perceived musical events (segments).</p></p></div>
 </li>
 </ul>
@@ -407,7 +407,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>component1</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;component1()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;component1()</pre>
 <div class="block"><p>The time intervals of the bars throughout the track.</p><p><p> A bar (or measure) is a segment of time defined asa given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.</p></p></div>
 </li>
 </ul>
@@ -417,7 +417,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>component2</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;component2()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;component2()</pre>
 <div class="block"><p>The time intervals of beats throughout the track.</p><p><p> A beat is the basic time unit of a piece of music;for example, each tick of a metronome. Beats are typically multiples of tatums.</p></p></div>
 </li>
 </ul>
@@ -437,7 +437,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>component4</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;component4()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;component4()</pre>
 <div class="block"><p>Sections are defined by large variations in rhythm or timbre,</p><p><p> e.g. chorus, verse, bridge, guitarsolo, etc. Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.</p></p></div>
 </li>
 </ul>
@@ -447,7 +447,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>component5</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;component5()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;component5()</pre>
 <div class="block"><p>Audio segments attempts to subdivide a song into many segments,</p><p><p> with each segment containinga roughly consitent sound throughout its duration.</p></p></div>
 </li>
 </ul>
@@ -457,7 +457,7 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>component6</h4>
-<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;component6()</pre>
+<pre>public&nbsp;java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;component6()</pre>
 <div class="block"><p>A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing</p><p><p>of perceived musical events (segments).</p></p></div>
 </li>
 </ul>
@@ -477,12 +477,12 @@ of perceived musical events (segments).</dd>
 <ul class="blockList">
 <li class="blockList">
 <h4>copy</h4>
-<pre>public&nbsp;<a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html" title="type parameter in AudioAnalysis">AudioAnalysis</a>&nbsp;copy(java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;bars,
-                          java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;beats,
+<pre>public&nbsp;<a href="../../../../com/adamratzman/spotify/utils/AudioAnalysis.html" title="type parameter in AudioAnalysis">AudioAnalysis</a>&nbsp;copy(java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;bars,
+                          java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;beats,
                           <a href="../../../../com/adamratzman/spotify/utils/AudioAnalysisMeta.html" title="type parameter in AudioAnalysisMeta">AudioAnalysisMeta</a>&nbsp;meta,
-                          java.util.List&lt;com.adamratzman.spotify.utils.AudioSection&gt;&nbsp;sections,
-                          java.util.List&lt;com.adamratzman.spotify.utils.AudioSegment&gt;&nbsp;segments,
-                          java.util.List&lt;com.adamratzman.spotify.utils.TimeInterval&gt;&nbsp;tatums,
+                          java.util.List&lt;com.adamratzman.spotify.models.AudioSection&gt;&nbsp;sections,
+                          java.util.List&lt;com.adamratzman.spotify.models.AudioSegment&gt;&nbsp;segments,
+                          java.util.List&lt;com.adamratzman.spotify.models.TimeInterval&gt;&nbsp;tatums,
                           <a href="../../../../com/adamratzman/spotify/utils/TrackAnalysis.html" title="type parameter in TrackAnalysis">TrackAnalysis</a>&nbsp;track)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
