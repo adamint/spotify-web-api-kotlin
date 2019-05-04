@@ -4,6 +4,7 @@ package com.adamratzman.spotify.models
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
 import com.adamratzman.spotify.main.SpotifyAPI
 import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.utils.match
 import com.beust.klaxon.Json
 
 /**
@@ -608,6 +609,16 @@ data class Playlist(
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
 
 /**
+ * The Audio Analysis endpoint provides low-level audio analysis for all of the tracks
+ * in the Spotify catalog. The Audio Analysis describes the track’s structure
+ * and musical content, including rhythm, pitch, and timbre. All information is
+ * precise to the audio sample. Many elements of analysis include confidence values,
+ * a floating-point number ranging from 0.0 to 1.0. Confidence indicates the reliability
+ * of its corresponding attribute. Elements carrying a small confidence value should
+ * be considered speculative. There may not be sufficient data in the audio to
+ * compute the attribute with high certainty.
+ *
+ *
  * @param bars The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as
  * a given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.
  * @param beats The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music;
@@ -631,6 +642,17 @@ data class AudioAnalysis(
         val track: TrackAnalysis
 )
 
+/**
+ * Information about the analysis run
+ *
+ * @param analyzerVersion Which version of the Spotify analyzer the analysis was run on
+ * @param platform The OS the analysis was run on
+ * @param detailedStatus Whether there was an error in the analysis or "OK"
+ * @param statusCode 0 on success, any other integer on error
+ * @param timestamp When this analysis was completed
+ * @param analysisTime How long, in milliseconds, this analysis took to run
+ * @param inputProcess The process used in the analysis
+ */
 data class AudioAnalysisMeta(
         @Json(name = "analyzer_version") val analyzerVersion: String,
         val platform: String,
@@ -824,21 +846,54 @@ abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack:
 
 /**
  * @property addedAt The date and time the track was saved.
- * @property track Information about the track.
+ * @property track The track object.
  */
 data class SavedTrack(
         @Json(name = "added_at") val addedAt: String,
         val track: Track
 )
 
+/**
+ * @param id The device ID. This may be null.
+ * @param isActive If this device is the currently active device.
+ * @param isPrivateSession If this device is currently in a private session.
+ * @param isRestricted Whether controlling this device is restricted. At present
+ * if this is “true” then no Web API commands will be accepted by this device.
+ * @param name The name of the device.
+ * @param type Device type, such as “Computer”, “Smartphone” or “Speaker”.
+ */
 data class Device(
-        val id: String,
+        val id: String?,
         @Json(name = "is_active") val isActive: Boolean,
+        @Json(name = "is_private_session") val isPrivateSession: Boolean,
         @Json(name = "is_restricted") val isRestricted: Boolean,
         val name: String,
-        val type: String,
-        @Json(name = "volume_percent") val volumePercent: Int
+        val _type: String,
+        @Json(name = "volume_percent") val volumePercent: Int,
+        val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
+
 )
+
+/**
+ * Electronic type of registered Spotify device
+ *
+ * @param identifier readable name
+ */
+enum class DeviceType(val identifier: String) {
+    COMPUTER("Computer"),
+    TABLET("Tablet"),
+    SMARTPHONE("Smartphone"),
+    SPEAKER("Speaker"),
+    TV("TV"),
+    AVR("AVR"),
+    STB("STB"),
+    AUDIO_DONGLE("AudioDongle"),
+    GAME_CONSOLE("GameConsole"),
+    CAST_VIDEO("CastVideo"),
+    CAST_AUDIO("CastAudio"),
+    AUTOMOBILE("Automobile"),
+    UNKNOWN("Unknown")
+}
 
 data class CurrentlyPlayingContext(
         val timestamp: Long?,
@@ -851,21 +906,102 @@ data class CurrentlyPlayingContext(
         val context: Context
 )
 
+/**
+ * Information about the currently playing track and context
+ *
+ * @param context A Context Object. Can be null.
+ * @param timestamp Unix Millisecond Timestamp when data was fetched
+ * @param progressMs Progress into the currently playing track. Can be null.
+ * @param isPlaying If something is currently playing.
+ * @param track The currently playing track. Can be null.
+ * @param currentlyPlayingType The object type of the currently playing item. Can be one of track, episode, ad or unknown.
+ * @param actions Allows to update the user interface based on which playback actions are available within the current context
+ *
+ */
 data class CurrentlyPlayingObject(
         val context: PlayHistoryContext?,
         val timestamp: Long,
-        @Json(name = "progress_ms") val progressMs: Int,
+        @Json(name = "progress_ms") val progressMs: Int?,
         @Json(name = "is_playing") val isPlaying: Boolean,
-        val item: Track
+        @Json(name = "item") val track: Track,
+        @Json(name = "currently_playing_type") private val _currentlyPlayingType: String,
+        @Json(ignored = true) val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!,
+        val actions: PlaybackActions
 )
 
+data class PlaybackActions(
+        @Json(name = "disallows") val _disallows: Map<String, Boolean?>,
+        @Json(ignored = true) val disallows: List<DisallowablePlaybackAction> = _disallows.map {
+            DisallowablePlaybackAction(
+                    PlaybackAction.values().match(it.key)!!,
+                    it.value ?: false
+            )
+        }
+)
+
+data class DisallowablePlaybackAction(val action: PlaybackAction, val disallowed: Boolean)
+
+/**
+ * Action a user takes that will affect current playback
+ */
+enum class PlaybackAction(private val identifier: String) : ResultEnum {
+    INTERRUPTING_PLAYBACK("interrupting_playback"),
+    PAUSING("pausing"),
+    PLAYING("playing"),
+    RESUMING("resuming"),
+    SEEKING("seeking"),
+    SKIPPING_NEXT("skipping_next"),
+    SKIPPING_PREV("skipping_prev"),
+    STOPPING("stopping"),
+    TOGGLING_REPEAT_CONTEXT("toggling_repeat_context"),
+    TOGGLING_SHUFFLE("toggling_shuffle"),
+    TOGGLING_REPEAT_TRACK("toggling_repeat_track"),
+    TRANSFERRING_PLAYBACK("transferring_playback")
+    ;
+
+    override fun retrieveIdentifier() = identifier
+}
+
+/**
+ * The object type of the currently playing item
+ */
+enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
+    TRACK("track"),
+    EPISODE("episode"),
+    AD("ad"),
+    UNKNOWN("unknown");
+
+    override fun retrieveIdentifier() = identifier
+
+}
+
+interface ResultEnum {
+    fun retrieveIdentifier(): Any
+}
+
+/**
+ * Context in which a track was played
+ *
+ * @param type The object type, e.g. “artist”, “playlist”, “album”.
+ * @param href A link to the Web API endpoint providing full details of the track.
+ * @param externalUrls External URLs for this context.
+ * @param uri The Spotify URI for the context.
+ */
 data class PlayHistoryContext(
         val type: String,
         val href: String,
         @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val uri: String
+        @Json(name = "uri") private val _uri: String,
+        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
 )
 
+/**
+ * Information about a previously-played track
+ *
+ * @param track The track the user listened to.
+ * @param playedAt The date and time the track was played.
+ * @param context The context the track was played from.
+ */
 data class PlayHistory(
         val track: SimpleTrack,
         @Json(name = "played_at") val playedAt: String,
