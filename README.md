@@ -28,7 +28,7 @@ This library is available via Maven Central [here](https://search.maven.org/arti
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.1.3</version>
+    <version>2.2.0</version>
 </dependency>
 
 <repository>
@@ -44,7 +44,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.1.3'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.2.0'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
