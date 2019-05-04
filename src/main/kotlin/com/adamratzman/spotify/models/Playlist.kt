@@ -1,7 +1,8 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestAction
 import com.beust.klaxon.Json
 
 /**
@@ -26,21 +27,21 @@ import com.beust.klaxon.Json
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
-        val collaborative: Boolean,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val owner: SpotifyPublicUser,
-        @Json(name = "primary_color") val primaryColor: String? = null,
-        val public: Boolean? = null,
-        @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
-        val tracks: PlaylistTrackInfo,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
-        @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val collaborative: Boolean,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val owner: SpotifyPublicUser,
+    @Json(name = "primary_color") val primaryColor: String? = null,
+    val public: Boolean? = null,
+    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
+    val tracks: PlaylistTrackInfo,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
+    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 ) : Linkable() {
     fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
 }
@@ -53,12 +54,12 @@ data class SimplePlaylist(
  * @property track Information about the track.
  */
 data class PlaylistTrack(
-        @Json(name = "primary_color") val primaryColor: String? = null,
-        @Json(name = "added_at") val addedAt: String?,
-        @Json(name = "added_by") val addedBy: SpotifyPublicUser?,
-        @Json(name = "is_local") val isLocal: Boolean?,
-        val track: Track,
-        @Json(name = "video_thumbnail") val videoThumbnail: VideoThumbnail? = null
+    @Json(name = "primary_color") val primaryColor: String? = null,
+    @Json(name = "added_at") val addedAt: String?,
+    @Json(name = "added_by") val addedBy: SpotifyPublicUser?,
+    @Json(name = "is_local") val isLocal: Boolean?,
+    val track: Track,
+    @Json(name = "video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
 /**
@@ -84,23 +85,23 @@ data class PlaylistTrack(
  * @param uri The Spotify URI for the playlist.
  */
 data class Playlist(
-        val collaborative: Boolean,
-        val description: String,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val followers: Followers,
-        val href: String,
-        val id: String,
-        @Json(name = "primary_color") val primaryColor: String? = null,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val owner: SpotifyPublicUser,
-        val public: Boolean? = null,
-        @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
-        val tracks: PagingObject<PlaylistTrack>,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
-        @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val collaborative: Boolean,
+    val description: String,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val followers: Followers,
+    val href: String,
+    val id: String,
+    @Json(name = "primary_color") val primaryColor: String? = null,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val owner: SpotifyPublicUser,
+    val public: Boolean? = null,
+    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
+    val tracks: PagingObject<PlaylistTrack>,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
+    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 )
 
 /**
@@ -112,8 +113,8 @@ data class Playlist(
  * @property total the total number of tracks in the playlist.
  */
 data class PlaylistTrackInfo(
-        val href: String,
-        val total: Int
+    val href: String,
+    val total: Int
 )
 
 data class VideoThumbnail(val url: String?)

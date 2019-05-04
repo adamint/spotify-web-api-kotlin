@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.beust.klaxon.Json
@@ -23,19 +24,19 @@ import com.beust.klaxon.Json
  * @property uri The Spotify URI for the user.
  */
 data class SpotifyUserInformation(
-        val birthdate: String? = null,
-        val country: String? = null,
-        @Json(name = "display_name") val displayName: String? = null,
-        val email: String? = null,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val followers: Followers,
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage>,
-        val product: String?,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: UserURI = UserURI(_uri)
+    val birthdate: String? = null,
+    val country: String? = null,
+    @Json(name = "display_name") val displayName: String? = null,
+    val email: String? = null,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val followers: Followers,
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage>,
+    val product: String?,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 /**
@@ -49,15 +50,15 @@ data class SpotifyUserInformation(
  * @property uri The Spotify URI for this user.
  */
 data class SpotifyPublicUser(
-        @Json(name = "display_name") val displayName: String? = null,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val followers: Followers = Followers(null, -1),
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage> = listOf(),
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: UserURI = UserURI(_uri)
+    @Json(name = "display_name") val displayName: String? = null,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val followers: Followers = Followers(null, -1),
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage> = listOf(),
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: UserURI = UserURI(_uri)
 )
 
 /**
@@ -69,6 +70,6 @@ data class SpotifyPublicUser(
  * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 data class Followers(
-        val href: String?,
-        val total: Int
+    val href: String?,
+    val total: Int
 )

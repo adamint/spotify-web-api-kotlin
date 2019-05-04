@@ -1,11 +1,11 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyAppAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.main.base
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyAppAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.base
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
@@ -32,19 +32,19 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     internal fun delete(
-            url: String,
-            body: String? = null,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        contentType: String? = null
     ): String {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     private fun execute(
-            url: String,
-            body: String? = null,
-            method: HttpRequestMethod = HttpRequestMethod.GET,
-            retry202: Boolean = true,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        method: HttpRequestMethod = HttpRequestMethod.GET,
+        retry202: Boolean = true,
+        contentType: String? = null
     ): String {
         if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
 
@@ -72,10 +72,10 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun handleResponse(
-            document: HttpResponse,
-            cacheState: CacheState?,
-            spotifyRequest: SpotifyRequest,
-            retry202: Boolean
+        document: HttpResponse,
+        cacheState: CacheState?,
+        spotifyRequest: SpotifyRequest,
+        retry202: Boolean
     ): String? {
         val statusCode = document.responseCode
 
@@ -107,10 +107,10 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun createConnection(
-            url: String,
-            body: String? = null,
-            method: HttpRequestMethod = HttpRequestMethod.GET,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        method: HttpRequestMethod = HttpRequestMethod.GET,
+        contentType: String? = null
     ) = HttpConnection(
             url,
             method,
@@ -158,9 +158,9 @@ internal class SpotifyCache {
 }
 
 internal data class SpotifyRequest(
-        val url: String,
-        val method: HttpRequestMethod,
-        val body: String?
+    val url: String,
+    val method: HttpRequestMethod,
+    val body: String?
 )
 
 internal data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {

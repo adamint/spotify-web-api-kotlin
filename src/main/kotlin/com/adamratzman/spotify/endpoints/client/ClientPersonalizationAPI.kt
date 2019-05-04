@@ -1,10 +1,10 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
@@ -43,9 +43,9 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
     fun getTopArtists(
-            limit: Int? = null,
-            offset: Int? = null,
-            timeRange: TimeRange? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(
@@ -73,9 +73,9 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
     fun getTopTracks(
-            limit: Int? = null,
-            offset: Int? = null,
-            timeRange: TimeRange? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging(Supplier {
             get(

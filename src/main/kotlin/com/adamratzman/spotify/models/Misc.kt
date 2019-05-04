@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 /**
@@ -8,9 +9,9 @@ package com.adamratzman.spotify.models
  * @property width The image width in pixels. If unknown: null or not returned.
  */
 data class SpotifyImage(
-        val height: Int? = null,
-        val url: String,
-        val width: Int? = null
+    val height: Int? = null,
+    val url: String,
+    val width: Int? = null
 )
 
 /**
