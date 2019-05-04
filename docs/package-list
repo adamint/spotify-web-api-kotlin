@@ -3,3 +3,4 @@ com.adamratzman.spotify.endpoints.public
 com.adamratzman.spotify.http
 com.adamratzman.spotify.main
 com.adamratzman.spotify.models
+com.adamratzman.spotify.utils
