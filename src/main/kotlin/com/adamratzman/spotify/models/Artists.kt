@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.beust.klaxon.Json
@@ -11,13 +12,13 @@ import com.beust.klaxon.Json
  * @property uri The Spotify URI for the artist.
  */
 data class SimpleArtist(
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val href: String,
-        val id: String,
-        val name: String,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val href: String,
+    val id: String,
+    val name: String,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 ) : Linkable() {
     fun toFullArtist() = api.artists.getArtist(id)
 }
@@ -37,17 +38,17 @@ data class SimpleArtist(
  * @property uri The Spotify URI for the artist.
  */
 data class Artist(
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val followers: Followers,
-        val genres: List<String>,
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val popularity: Int,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val followers: Followers,
+    val genres: List<String>,
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val popularity: Int,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
 )
 
 internal data class ArtistList(val artists: List<Artist?>)

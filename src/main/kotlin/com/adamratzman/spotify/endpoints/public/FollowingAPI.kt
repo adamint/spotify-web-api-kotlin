@@ -1,11 +1,11 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.UserURI
@@ -28,9 +28,9 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-            playlistOwner: String,
-            playlist: String,
-            vararg users: String
+        playlistOwner: String,
+        playlist: String,
+        vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
         return toAction(Supplier {
             val user = UserURI(playlistOwner)

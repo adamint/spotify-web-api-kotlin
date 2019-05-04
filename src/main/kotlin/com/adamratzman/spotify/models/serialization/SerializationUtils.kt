@@ -1,8 +1,9 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models.serialization
 
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyException
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Linkable
@@ -47,8 +48,8 @@ internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
 }
 
 internal inline fun <reified T> String.toPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): PagingObject<T> {
     val jsonObject = endpoint.api.klaxon.parseJsonObject(this.reader())
             .let { if (innerObjectName != null) it.obj(innerObjectName)!! else it }
@@ -68,8 +69,8 @@ internal inline fun <reified T> String.toPagingObject(
 }
 
 internal inline fun <reified T> String.toCursorBasedPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): CursorBasedPagingObject<T> {
     val jsonObject = endpoint.api.klaxon.parseJsonObject(this.reader())
             .let { if (innerObjectName != null) it.obj(innerObjectName)!! else it }

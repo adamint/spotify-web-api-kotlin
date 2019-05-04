@@ -1,10 +1,10 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.UserAPI
 import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.adamratzman.spotify.models.serialization.toObject
 import java.util.function.Supplier

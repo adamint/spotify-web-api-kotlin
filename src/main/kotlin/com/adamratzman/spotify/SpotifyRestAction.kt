@@ -1,5 +1,5 @@
-/* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.main
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+package com.adamratzman.spotify
 
 import com.adamratzman.spotify.models.AbstractPagingObject
 import java.util.concurrent.CompletableFuture

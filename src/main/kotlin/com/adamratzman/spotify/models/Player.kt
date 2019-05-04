@@ -1,8 +1,8 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.utils.match
 import com.beust.klaxon.Json
-
 
 /**
  * Context in which a track was played
@@ -13,11 +13,11 @@ import com.beust.klaxon.Json
  * @param uri The Spotify URI for the context.
  */
 data class PlayHistoryContext(
-        val type: String,
-        val href: String,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        @Json(name = "uri") private val _uri: String,
-        @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+    val type: String,
+    val href: String,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    @Json(name = "uri") private val _uri: String,
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
 )
 
 /**
@@ -28,11 +28,10 @@ data class PlayHistoryContext(
  * @param context The context the track was played from.
  */
 data class PlayHistory(
-        val track: SimpleTrack,
-        @Json(name = "played_at") val playedAt: String,
-        val context: PlayHistoryContext
+    val track: SimpleTrack,
+    @Json(name = "played_at") val playedAt: String,
+    val context: PlayHistoryContext
 )
-
 
 /**
  * @param id The device ID. This may be null.
@@ -44,14 +43,14 @@ data class PlayHistory(
  * @param type Device type, such as “Computer”, “Smartphone” or “Speaker”.
  */
 data class Device(
-        val id: String?,
-        @Json(name = "is_active") val isActive: Boolean,
-        @Json(name = "is_private_session") val isPrivateSession: Boolean,
-        @Json(name = "is_restricted") val isRestricted: Boolean,
-        val name: String,
-        val _type: String,
-        @Json(name = "volume_percent") val volumePercent: Int,
-        val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
+    val id: String?,
+    @Json(name = "is_active") val isActive: Boolean,
+    @Json(name = "is_private_session") val isPrivateSession: Boolean,
+    @Json(name = "is_restricted") val isRestricted: Boolean,
+    val name: String,
+    val _type: String,
+    @Json(name = "volume_percent") val volumePercent: Int,
+    val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
 
 )
 
@@ -90,15 +89,15 @@ enum class DeviceType(val identifier: String) {
  *
  */
 data class CurrentlyPlayingContext(
-        val timestamp: Long,
-        val device: Device,
-        @Json(name = "progress_ms") val progressMs: Int?,
-        @Json(name = "is_playing") val isPlaying: Boolean,
-        @Json(name = "item") val track: Track?,
-        @Json(name = "shuffle_state") val shuffleState: Boolean,
-        @Json(name = "repeat_state") val _repeatState: String,
-        @Json(ignored = true) val repeatState: RepeatState = RepeatState.values().match(_repeatState)!!,
-        val context: Context
+    val timestamp: Long,
+    val device: Device,
+    @Json(name = "progress_ms") val progressMs: Int?,
+    @Json(name = "is_playing") val isPlaying: Boolean,
+    @Json(name = "item") val track: Track?,
+    @Json(name = "shuffle_state") val shuffleState: Boolean,
+    @Json(name = "repeat_state") val _repeatState: String,
+    @Json(ignored = true) val repeatState: RepeatState = RepeatState.values().match(_repeatState)!!,
+    val context: Context
 )
 
 /**
@@ -126,24 +125,24 @@ enum class RepeatState(val identifier: String) : ResultEnum {
  *
  */
 data class CurrentlyPlayingObject(
-        val context: PlayHistoryContext?,
-        val timestamp: Long,
-        @Json(name = "progress_ms") val progressMs: Int?,
-        @Json(name = "is_playing") val isPlaying: Boolean,
-        @Json(name = "item") val track: Track,
-        @Json(name = "currently_playing_type") private val _currentlyPlayingType: String,
-        @Json(ignored = true) val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!,
-        val actions: PlaybackActions
+    val context: PlayHistoryContext?,
+    val timestamp: Long,
+    @Json(name = "progress_ms") val progressMs: Int?,
+    @Json(name = "is_playing") val isPlaying: Boolean,
+    @Json(name = "item") val track: Track,
+    @Json(name = "currently_playing_type") private val _currentlyPlayingType: String,
+    @Json(ignored = true) val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!,
+    val actions: PlaybackActions
 )
 
 data class PlaybackActions(
-        @Json(name = "disallows") val _disallows: Map<String, Boolean?>,
-        @Json(ignored = true) val disallows: List<DisallowablePlaybackAction> = _disallows.map {
-            DisallowablePlaybackAction(
-                    PlaybackAction.values().match(it.key)!!,
-                    it.value ?: false
-            )
-        }
+    @Json(name = "disallows") val _disallows: Map<String, Boolean?>,
+    @Json(ignored = true) val disallows: List<DisallowablePlaybackAction> = _disallows.map {
+        DisallowablePlaybackAction(
+                PlaybackAction.values().match(it.key)!!,
+                it.value ?: false
+        )
+    }
 )
 
 data class DisallowablePlaybackAction(val action: PlaybackAction, val disallowed: Boolean)
@@ -185,5 +184,5 @@ enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
  * Puts an object in-context by linking to other related endpoints
  */
 data class Context(
-        @Json(name = "external_urls") val externalUrls: Map<String, String>
+    @Json(name = "external_urls") val externalUrls: Map<String, String>
 )

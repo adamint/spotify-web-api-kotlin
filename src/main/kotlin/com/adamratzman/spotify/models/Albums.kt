@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.beust.klaxon.Json
@@ -26,25 +27,25 @@ import com.beust.klaxon.Json
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleAlbum(
-        @Json(name = "album_type", ignored = false) private val _albumType: String,
-        val artists: List<SimpleArtist>,
-        @Json(name = "available_markets") val availableMarkets: List<String>? = null,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
-        @Json(name = "release_date") val releaseDate: String,
-        @Json(name = "release_date_precision") val releaseDatePrecision: String,
-        @Json(name = "total_tracks") val totalTracks: Int? = null,
-        @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
-        val restrictions: Restrictions? = null,
-        @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
-            AlbumResultType.values().find { it.id == albumGroupString }
-        }
+    @Json(name = "album_type", ignored = false) private val _albumType: String,
+    val artists: List<SimpleArtist>,
+    @Json(name = "available_markets") val availableMarkets: List<String>? = null,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
+    @Json(name = "release_date") val releaseDate: String,
+    @Json(name = "release_date_precision") val releaseDatePrecision: String,
+    @Json(name = "total_tracks") val totalTracks: Int? = null,
+    @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
+    val restrictions: Restrictions? = null,
+    @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
+        AlbumResultType.values().find { it.id == albumGroupString }
+    }
 ) : Linkable() {
     @Json(ignored = true)
     val albumType: AlbumResultType = _albumType.let { _ ->
@@ -96,28 +97,28 @@ enum class AlbumResultType(internal val id: String) {
  * restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}
  */
 data class Album(
-        @Json(name = "album_type", ignored = false) private val _albumType: String,
-        val artists: List<SimpleArtist>,
-        @Json(name = "available_markets") val availableMarkets: List<String>,
-        val copyrights: List<SpotifyCopyright>,
-        @Json(name = "external_ids") val externalIds: Map<String, String>,
-        @Json(name = "external_urls") val externalUrls: Map<String, String>,
-        val genres: List<String>,
-        val href: String,
-        val id: String,
-        val images: List<SpotifyImage>,
-        val label: String,
-        val name: String,
-        val popularity: Int,
-        @Json(name = "release_date") val releaseDate: String,
-        @Json(name = "release_date_precision") val releaseDatePrecision: String,
-        val tracks: PagingObject<SimpleTrack>,
-        val type: String,
-        @Json(name = "uri", ignored = false) private val _uri: String,
-        @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
-        @Json(name = "total_tracks") val totalTracks: Int,
-        val restrictions: Restrictions? = null,
-        @Json(ignored = true) val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
+    @Json(name = "album_type", ignored = false) private val _albumType: String,
+    val artists: List<SimpleArtist>,
+    @Json(name = "available_markets") val availableMarkets: List<String>,
+    val copyrights: List<SpotifyCopyright>,
+    @Json(name = "external_ids") val externalIds: Map<String, String>,
+    @Json(name = "external_urls") val externalUrls: Map<String, String>,
+    val genres: List<String>,
+    val href: String,
+    val id: String,
+    val images: List<SpotifyImage>,
+    val label: String,
+    val name: String,
+    val popularity: Int,
+    @Json(name = "release_date") val releaseDate: String,
+    @Json(name = "release_date_precision") val releaseDatePrecision: String,
+    val tracks: PagingObject<SimpleTrack>,
+    val type: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
+    @Json(name = "total_tracks") val totalTracks: Int,
+    val restrictions: Restrictions? = null,
+    @Json(ignored = true) val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
 )
 
 /**
@@ -128,8 +129,8 @@ data class Album(
  * P = the sound recording (performance) copyright.
  */
 data class SpotifyCopyright(
-        val text: String,
-        val type: String
+    val text: String,
+    val type: String
 )
 
 internal data class AlbumsResponse(val albums: List<Album?>)

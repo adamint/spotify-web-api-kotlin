@@ -1,5 +1,5 @@
-/* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.main
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+package com.adamratzman.spotify
 
 class SpotifyLogger(var enabled: Boolean) {
     val redString = "\u001B[31m"

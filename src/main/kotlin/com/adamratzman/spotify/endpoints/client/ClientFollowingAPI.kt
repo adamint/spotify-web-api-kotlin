@@ -1,13 +1,13 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.endpoints.public.FollowingAPI
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyClientAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.CursorBasedPagingObject
@@ -106,8 +106,8 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
      * with full [Artist] objects
      */
     fun getFollowedArtists(
-            limit: Int? = null,
-            after: String? = null
+        limit: Int? = null,
+        after: String? = null
     ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(
