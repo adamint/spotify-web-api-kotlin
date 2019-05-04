@@ -1,6 +1,7 @@
 # Testing
 
-We use [Spek](https://github.com/spekframework/spek) to run unit tests.
+We use [Spek](https://github.com/spekframework/spek) to run unit tests. You must add Maven Central to the gradle repositories 
+in order to pull Spek.
 
 To run **only** public endpoint tests, run
 
