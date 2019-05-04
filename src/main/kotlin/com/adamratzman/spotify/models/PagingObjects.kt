@@ -190,6 +190,11 @@ class CursorBasedPagingObject<T>(
 }
 
 /**
+ * The cursor to use as key to find the next (or previous) page of items.
+ */
+data class Cursor(val before: String? = null, val after: String? = null)
+
+/**
  * @property href A link to the Web API endpoint returning the full result of the request.
  * @property items The requested data.
  * @property limit The maximum number of items in the response (as set in the query or by default).
