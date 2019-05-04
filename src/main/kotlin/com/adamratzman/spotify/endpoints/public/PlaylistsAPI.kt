@@ -1,12 +1,12 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
@@ -41,9 +41,9 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      */
     fun getPlaylists(
-            user: String,
-            limit: Int? = null,
-            offset: Int? = null
+        user: String,
+        limit: Int? = null,
+        offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
@@ -84,10 +84,10 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getPlaylistTracks(
-            playlist: String,
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        playlist: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
         return toActionPaging(Supplier {
             get(

@@ -1,7 +1,7 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models.serialization
 
-import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.models.Album
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.FeaturedPlaylists

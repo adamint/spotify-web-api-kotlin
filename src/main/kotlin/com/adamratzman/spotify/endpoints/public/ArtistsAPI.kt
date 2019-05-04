@@ -1,12 +1,12 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistList
 import com.adamratzman.spotify.models.ArtistURI
@@ -66,11 +66,11 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [artist] is not found, or filter parameters are illegal
      */
     fun getArtistAlbums(
-            artist: String,
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null,
-            vararg include: AlbumInclusionStrategy
+        artist: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null,
+        vararg include: AlbumInclusionStrategy
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
             get(

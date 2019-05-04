@@ -1,12 +1,12 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
@@ -32,9 +32,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging(Supplier {
             get(
@@ -55,9 +55,9 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     fun getSavedAlbums(
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging(Supplier {
             get(

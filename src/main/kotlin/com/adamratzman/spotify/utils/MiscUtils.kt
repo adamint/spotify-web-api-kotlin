@@ -1,4 +1,4 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.models.BadRequestException
@@ -12,6 +12,5 @@ internal fun <T> catch(function: () -> T): T? {
     }
 }
 
-
-fun <T : ResultEnum> Array<T>.match(identifier: String)
-        = firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
+fun <T : ResultEnum> Array<T>.match(identifier: String) =
+        firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }

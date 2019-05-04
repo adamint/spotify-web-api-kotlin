@@ -1,7 +1,7 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.SpotifyAPI
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -9,12 +9,12 @@ internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 internal data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-        private val url: String,
-        private val method: HttpRequestMethod,
-        private val body: String?,
-        private val contentType: String?,
-        private vararg val headers: HttpHeader,
-        val api: SpotifyAPI? = null
+    private val url: String,
+    private val method: HttpRequestMethod,
+    private val body: String?,
+    private val contentType: String?,
+    private vararg val headers: HttpHeader,
+    val api: SpotifyAPI? = null
 ) {
 
     fun execute(vararg additionalHeaders: HttpHeader?, retryIf502: Boolean = true): HttpResponse {

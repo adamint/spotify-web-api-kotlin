@@ -1,10 +1,10 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 /**
  * Represents Spotify markets (countries + distinctive territories)
  *
- * @param country the readable country name of the market
+ * @param country the readable country/territory name of the market
  */
 enum class Market(val country: String) {
     AD("Andorra"),

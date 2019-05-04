@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 /**
@@ -9,10 +10,10 @@ package com.adamratzman.spotify.models
  * @property name The name of the category.
  */
 data class SpotifyCategory(
-        val href: String,
-        val icons: List<SpotifyImage>,
-        val id: String,
-        val name: String
+    val href: String,
+    val icons: List<SpotifyImage>,
+    val id: String,
+    val name: String
 )
 
 /**
@@ -28,12 +29,12 @@ data class SpotifyCategory(
  * @property type The entity type of this seed. One of artist , track or genre.
  */
 data class RecommendationSeed(
-        val initialPoolSize: Int,
-        val afterFilteringSize: Int,
-        val afterRelinkingSize: Int?,
-        val href: String?,
-        val id: String,
-        val type: String
+    val initialPoolSize: Int,
+    val afterFilteringSize: Int,
+    val afterRelinkingSize: Int?,
+    val href: String?,
+    val id: String,
+    val type: String
 )
 
 /**

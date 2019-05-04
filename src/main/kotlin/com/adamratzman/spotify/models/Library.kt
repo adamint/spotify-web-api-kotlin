@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.beust.klaxon.Json
@@ -7,8 +8,8 @@ import com.beust.klaxon.Json
  * @property track Information about the album.
  */
 data class SavedAlbum(
-        @Json(name = "added_at") val addedAt: String,
-        val album: Album
+    @Json(name = "added_at") val addedAt: String,
+    val album: Album
 )
 
 /**
@@ -16,6 +17,6 @@ data class SavedAlbum(
  * @property track The track object.
  */
 data class SavedTrack(
-        @Json(name = "added_at") val addedAt: String,
-        val track: Track
+    @Json(name = "added_at") val addedAt: String,
+    val track: Track
 )

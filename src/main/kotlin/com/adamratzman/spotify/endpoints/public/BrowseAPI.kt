@@ -1,12 +1,12 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
@@ -58,9 +58,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filter parameters are illegal
      */
     fun getNewReleases(
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
             get(
@@ -92,11 +92,11 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filter parameters are illegal or [locale] does not exist
      */
     fun getFeaturedPlaylists(
-            limit: Int? = null,
-            offset: Int? = null,
-            locale: String? = null,
-            market: Market? = null,
-            timestamp: Long? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        locale: String? = null,
+        market: Market? = null,
+        timestamp: Long? = null
     ): SpotifyRestAction<FeaturedPlaylists> {
         return toAction(Supplier {
             get(
@@ -127,10 +127,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     fun getCategoryList(
-            limit: Int? = null,
-            offset: Int? = null,
-            locale: String? = null,
-            market: Market? = null
+        limit: Int? = null,
+        offset: Int? = null,
+        locale: String? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SpotifyCategory, PagingObject<SpotifyCategory>> {
         return toActionPaging(Supplier {
             get(
@@ -158,9 +158,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [categoryId] is not found or [locale] does not exist on Spotify
      */
     fun getCategory(
-            categoryId: String,
-            market: Market? = null,
-            locale: String? = null
+        categoryId: String,
+        market: Market? = null,
+        locale: String? = null
     ): SpotifyRestAction<SpotifyCategory> {
         return toAction(Supplier {
             get(
@@ -181,10 +181,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
      */
     fun getPlaylistsForCategory(
-            categoryId: String,
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        categoryId: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(
@@ -228,14 +228,14 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any filter is applied illegally
      */
     fun getRecommendations(
-            seedArtists: List<String>? = null,
-            seedGenres: List<String>? = null,
-            seedTracks: List<String>? = null,
-            limit: Int? = null,
-            market: Market? = null,
-            targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
-            minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
-            maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf()
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = null,
+        market: Market? = null,
+        targetAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
+        minAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf(),
+        maxAttributes: HashMap<TuneableTrackAttribute, Number> = hashMapOf()
     ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
             throw BadRequestException(ErrorObject(400, "At least one seed (genre, artist, track) must be provided."))
