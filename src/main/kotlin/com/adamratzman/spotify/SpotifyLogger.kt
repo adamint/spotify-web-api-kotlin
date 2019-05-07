@@ -4,9 +4,11 @@ package com.adamratzman.spotify
 class SpotifyLogger(var enabled: Boolean) {
     val redString = "\u001B[31m"
     val resetString = "\u001B[0m"
+
     fun logInfo(message: String) {
         if (enabled) println("Spotify Logger Info: $message")
     }
+
     fun logWarning(message: String) {
         if (enabled) println("${redString}Spotify Logger Warning: $message$resetString")
     }

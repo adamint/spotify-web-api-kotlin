@@ -6,6 +6,8 @@ import com.beust.klaxon.Json
 
 /**
  * Allow for track relinking
+ *
+ * @property api The API client used to create the object
  */
 abstract class Linkable {
     @Json(ignored = true)
@@ -17,12 +19,12 @@ interface ResultEnum {
 }
 
 /**
- * Wrapper around [ErrorObject]
+ * Wraps around [ErrorObject]
  */
 data class ErrorResponse(val error: ErrorObject)
 
 /**
- * Contains a parsed error from Spotify
+ * An endpoint exception from Spotify
  *
  * @property status The HTTP status code
  * @property message A short description of the cause of the error.
@@ -31,6 +33,9 @@ data class ErrorObject(val status: Int, val message: String)
 
 class SpotifyUriException(message: String) : BadRequestException(message)
 
+/**
+ * Thrown when a request fails
+ */
 open class BadRequestException(message: String) : Exception(message) {
     constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}")
 }
