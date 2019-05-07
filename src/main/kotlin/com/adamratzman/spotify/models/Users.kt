@@ -4,6 +4,8 @@ package com.adamratzman.spotify.models
 import com.beust.klaxon.Json
 
 /**
+ * Private information about a Spotify user. Each field may require a specific scope.
+ *
  * @property birthdate The user’s date-of-birth. This field is only available when the current user
  * has granted access to the user-read-birthdate scope.
  * @property country The country of the user, as set in the user’s account profile. An ISO 3166-1 alpha-2
@@ -40,6 +42,8 @@ data class SpotifyUserInformation(
 )
 
 /**
+ * Public information about a Spotify user
+ *
  * @property displayName The name displayed on the user’s profile. null if not available.
  * @property externalUrls Known public external URLs for this user.
  * @property followers Information about the followers of this user.
@@ -62,7 +66,7 @@ data class SpotifyPublicUser(
 )
 
 /**
- * Spotify user's followers
+ * Information about a Spotify user's followers
  *
  * @property href Will always be null, per the Spotify documentation,
  * until the Web API is updated to support this.

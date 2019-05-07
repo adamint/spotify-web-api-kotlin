@@ -1,9 +1,12 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.utils.match
 import com.beust.klaxon.Json
 
 /**
+ * Simplified Album object that can be used to retrieve a full [Album]
+ *
  * @property albumGroup Optional. The field is present when getting an artist’s albums. Possible values
  * are “album”, “single”, “compilation”, “appears_on”. Compare to album_type this field represents relationship
  * between the artist and the album.
@@ -36,27 +39,35 @@ data class SimpleAlbum(
     val images: List<SpotifyImage>,
     val name: String,
     val type: String,
+    val restrictions: Restrictions? = null,
     @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
     @Json(name = "release_date") val releaseDate: String,
     @Json(name = "release_date_precision") val releaseDatePrecision: String,
     @Json(name = "total_tracks") val totalTracks: Int? = null,
-    @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null,
-    val restrictions: Restrictions? = null,
-    @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
-        AlbumResultType.values().find { it.id == albumGroupString }
-    }
+    @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null
 ) : Linkable() {
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri)
+
     @Json(ignored = true)
     val albumType: AlbumResultType = _albumType.let { _ ->
         AlbumResultType.values().first { it.id.equals(_albumType, true) }
     }
 
+    @Json(ignored = true) val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
+        AlbumResultType.values().find { it.id == albumGroupString }
+    }
+
+    /**
+     * Converts this [SimpleAlbum] into a full [Album] object with the given
+     * market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
 
 /**
- * Album type
+ * Album search type
  */
 enum class AlbumResultType(internal val id: String) {
     ALBUM("album"),
@@ -66,6 +77,8 @@ enum class AlbumResultType(internal val id: String) {
 }
 
 /**
+ * Represents an Album on Spotify
+ *
  * @property albumType The type of the album: one of "album" , "single" , or "compilation".
  * @property artists The artists of the album. Each artist object includes a link in href to more detailed
  * information about the artist.
@@ -115,22 +128,41 @@ data class Album(
     val tracks: PagingObject<SimpleTrack>,
     val type: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri),
     @Json(name = "total_tracks") val totalTracks: Int,
-    val restrictions: Restrictions? = null,
+    val restrictions: Restrictions? = null
+) {
+    @Json(ignored = true) val uri: AlbumURI = AlbumURI(_uri)
+
     @Json(ignored = true) val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
-)
+}
 
 /**
- * Describes an album's copyright
+ * Describes an album's copyright information
  *
  * @property text The copyright text for this album.
  * @property type The type of copyright: C = the copyright,
  * P = the sound recording (performance) copyright.
  */
 data class SpotifyCopyright(
-    val text: String,
-    val type: String
-)
+        @Json(name="text") private val _text: String,
+        @Json(name="type") private val _type: String
+) {
+    @Json(ignored = true) val text = _text
+            .removePrefix("(P)")
+            .removePrefix("(C)")
+            .trim()
+    @Json(ignored = true) val type = CopyrightType.values().match(_type)!!
+}
 
 internal data class AlbumsResponse(val albums: List<Album?>)
+
+/**
+ * Copyright statement type of an Album
+ */
+enum class CopyrightType(val identifier: String): ResultEnum {
+    COPYRIGHT("C"),
+    SOUND_PERFORMANCE_COPYRIGHT("P")
+    ;
+
+    override fun retrieveIdentifier() = identifier
+}

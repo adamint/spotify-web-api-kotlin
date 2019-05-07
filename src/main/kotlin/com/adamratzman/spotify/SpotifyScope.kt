@@ -1,6 +1,15 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+/**
+ * Scopes provide Spotify users using third-party apps the confidence
+ * that only the information they choose to share will be shared, and nothing more.
+ *
+ * Each represents a distinct privilege and may be required by one or more endpoints as discussed
+ * on the [Spotify Authorization Documentation](https://developer.spotify.com/documentation/general/guides/scopes/)
+ *
+ * @property uri the scope id
+ */
 enum class SpotifyScope(val uri: String) {
     PLAYLIST_READ_PRIVATE("playlist-read-private"),
     PLAYLIST_READ_COLLABORATIVE("playlist-read-collaborative"),

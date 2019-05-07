@@ -110,6 +110,8 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
             tracks,
             following
     )
+
+    override fun equals(other: Any?) = other is SpotifyAppAPI && other.token == this.token
 }
 
 class SpotifyClientAPI internal constructor(
@@ -202,6 +204,8 @@ class SpotifyClientAPI internal constructor(
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
+
+    override fun equals(other: Any?) = other is SpotifyClientAPI && other.token == this.token
 }
 
 internal fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {

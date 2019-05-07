@@ -3,8 +3,8 @@
 
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
@@ -191,6 +191,9 @@ class CursorBasedPagingObject<T>(
 
 /**
  * The cursor to use as key to find the next (or previous) page of items.
+ *
+ * @property before The cursor to use as key to find the previous page of items.
+ * @property after The cursor to use as key to find the next page of items.
  */
 data class Cursor(val before: String? = null, val after: String? = null)
 

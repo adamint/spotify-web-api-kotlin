@@ -1,11 +1,13 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
 import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
 import com.beust.klaxon.Json
 
 /**
+ * Simplified Playlist object that can be used to retrieve a full [Playlist]
+ *
  * @property collaborative Returns true if context is not search and the owner allows other users to
  * modify the playlist. Otherwise returns false.
  * @property externalUrls Known external URLs for this playlist.
@@ -39,15 +41,24 @@ data class SimplePlaylist(
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PlaylistTrackInfo,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
-    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    @Json(name = "uri", ignored = false) private val _uri: String
 ) : Linkable() {
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri)
+    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+
+    /**
+     * Converts this [SimplePlaylist] into a full [Playlist] object with the given
+     * market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
     fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
 }
 
 /**
- * @property primaryColor Unknown. Spotify has released no information about this
+ * Represents a Spotify track inside a [Playlist]
+ *
+ * @property primaryColor Unknown. Undocumented field
  * @property addedAt The date and time the track was added. Note that some very old playlists may return null in this field.
  * @property addedBy The Spotify user who added the track. Note that some very old playlists may return null in this field.
  * @property isLocal Whether this track is a local file or not.
@@ -63,26 +74,28 @@ data class PlaylistTrack(
 )
 
 /**
- * @param collaborative Returns true if context is not search and the owner allows other users to modify the playlist.
+ * Represents a Playlist on Spotify
+ *
+ * @property collaborative Returns true if context is not search and the owner allows other users to modify the playlist.
  * Otherwise returns false.
- * @param description The playlist description. Only returned for modified, verified playlists, otherwise null.
- * @param externalUrls Known external URLs for this playlist.
- * @param followers
- * @param href A link to the Web API endpoint providing full details of the playlist.
- * @param id The Spotify ID for the playlist.
- * @param primaryColor Unknown.
- * @param images Images for the playlist. The array may be empty or contain up to three images.
+ * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
+ * @property externalUrls Known external URLs for this playlist.
+ * @property followers
+ * @property href A link to the Web API endpoint providing full details of the playlist.
+ * @property id The Spotify ID for the playlist.
+ * @property primaryColor Unknown.
+ * @property images Images for the playlist. The array may be empty or contain up to three images.
  * The images are returned by size in descending order.Note: If returned, the source URL for the
  * image ( url ) is temporary and will expire in less than a day.
- * @param name The name of the playlist.
- * @param owner The user who owns the playlist
- * @param public The playlist’s public/private status: true the playlist is public, false the playlist is private,
+ * @property name The name of the playlist.
+ * @property owner The user who owns the playlist
+ * @property public The playlist’s public/private status: true the playlist is public, false the playlist is private,
  * null the playlist status is not relevant
- * @param snapshot The version identifier for the current playlist. Can be supplied in other requests to target
+ * @property snapshot The version identifier for the current playlist. Can be supplied in other requests to target
  * a specific playlist version
- * @param tracks Information about the tracks of the playlist.
- * @param type The object type: “playlist”
- * @param uri The Spotify URI for the playlist.
+ * @property tracks Information about the tracks of the playlist.
+ * @property type The object type: “playlist”
+ * @property uri The Spotify URI for the playlist.
  */
 data class Playlist(
     val collaborative: Boolean,
@@ -99,10 +112,11 @@ data class Playlist(
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri),
+    @Json(name = "uri", ignored = false) private val _uri: String
+) {
+    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri)
     @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
-)
+}
 
 /**
  * A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks
