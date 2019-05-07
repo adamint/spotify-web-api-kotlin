@@ -4,6 +4,8 @@ package com.adamratzman.spotify.models
 import com.beust.klaxon.Json
 
 /**
+ * Simplified Artist object that can be used to retrieve a full [Artist]
+ *
  * @property externalUrls Known external URLs for this artist.
  * @property href A link to the Web API endpoint providing full details of the artist.
  * @property id The Spotify ID for the artist.
@@ -17,13 +19,19 @@ data class SimpleArtist(
     val id: String,
     val name: String,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+    @Json(name = "uri", ignored = false) private val _uri: String
 ) : Linkable() {
+    @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
+
+    /**
+     * Converts this [SimpleArtist] into a full [Artist] object
+     */
     fun toFullArtist() = api.artists.getArtist(id)
 }
 
 /**
+ * Represents an Artist (distinct from a regular user) on Spotify
+ *
  * @property externalUrls Known external URLs for this artist.
  * @property followers Information about the followers of the artist.
  * @property genres A list of the genres the artist is associated with. For example: "Prog Rock" ,
@@ -47,8 +55,9 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "uri", ignored = false) private val _uri: String
+) {
     @Json(ignored = true) val uri: ArtistURI = ArtistURI(_uri)
-)
+}
 
 internal data class ArtistList(val artists: List<Artist?>)

@@ -42,6 +42,12 @@ sealed class SpotifyUri(input: String, type: String) {
         val spotifyUri = other as? SpotifyUri ?: return false
         return spotifyUri.uri == this.uri
     }
+
+    override fun hashCode(): Int {
+        var result = uri.hashCode()
+        result = 31 * result + id.hashCode()
+        return result
+    }
 }
 
 /**

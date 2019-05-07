@@ -4,6 +4,8 @@ package com.adamratzman.spotify.models
 import com.beust.klaxon.Json
 
 /**
+ * Simplified Playlist object that can be used to retrieve a full [Playlist]
+ *
  * @property artists The artists who performed the track. Each artist object includes a link in href to
  * more detailed information about the artist.
  * @property availableMarkets A list of the countries in which the track can be played,
@@ -50,15 +52,24 @@ data class SimpleTrack(
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     @Json(name = "is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linkedFrom) {
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+
+    /**
+     * Converts this [SimpleTrack] into a full [Track] object with the given
+     * market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
 /**
+ * Represents a music track on Spotify
+ *
  * @property album The album on which the track appears. The album object includes a link in
  * href to full information about the album.
  * @property artists The artists who performed the track. Each artist object includes a link in href
@@ -113,29 +124,39 @@ data class Track(
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     @Json(name = "is_local") val isLocal: Boolean?,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linked_from)
+) : RelinkingAvailableResponse(linked_from) {
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+}
 
 /**
  * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  *
- * @property externalUrls
- * @property href
- * @property id
- * @property type
- * @property uri
+ * @property externalUrls Known external URLs for this track.
+ * @property href A link to the Web API endpoint providing full details of the track.
+ * @property id The Spotify ID for the track.
+ * @property type The object type: “track”.
+ * @property uri The Spotify URI for the track.
  */
 data class LinkedTrack(
     @Json(name = "external_urls") val externalUrls: Map<String, String>,
     val href: String,
     val id: String,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "uri", ignored = false) private val _uri: String
+): Linkable() {
     @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
-)
+
+    /**
+     * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
+
+    fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
+}
 
 abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
     fun isRelinked() = linkedTrack != null
@@ -156,18 +177,18 @@ internal data class AudioFeaturesResponse(
  * compute the attribute with high certainty.
  *
  *
- * @param bars The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as
+ * @property bars The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as
  * a given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.
- * @param beats The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music;
+ * @property beats The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music;
  * for example, each tick of a metronome. Beats are typically multiples of tatums.
- * @param meta Analysis meta information (limited use)
- * @param sections Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge, guitar
+ * @property meta Analysis meta information (limited use)
+ * @property sections Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge, guitar
  * solo, etc. Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.
- * @param segments Audio segments attempts to subdivide a song into many segments, with each segment containing
+ * @property segments Audio segments attempts to subdivide a song into many segments, with each segment containing
  * a roughly consitent sound throughout its duration.
- * @param tatums A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing
+ * @property tatums A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing
  * of perceived musical events (segments).
- * @param track An analysis of the track as a whole. Undocumented on Spotify's side.
+ * @property track An analysis of the track as a whole. Undocumented on Spotify's side.
  */
 data class AudioAnalysis(
     val bars: List<TimeInterval>,
@@ -182,13 +203,13 @@ data class AudioAnalysis(
 /**
  * Information about the analysis run
  *
- * @param analyzerVersion Which version of the Spotify analyzer the analysis was run on
- * @param platform The OS the analysis was run on
- * @param detailedStatus Whether there was an error in the analysis or "OK"
- * @param statusCode 0 on success, any other integer on error
- * @param timestamp When this analysis was completed
- * @param analysisTime How long, in milliseconds, this analysis took to run
- * @param inputProcess The process used in the analysis
+ * @property analyzerVersion Which version of the Spotify analyzer the analysis was run on
+ * @property platform The OS the analysis was run on
+ * @property detailedStatus Whether there was an error in the analysis or "OK"
+ * @property statusCode 0 on success, any other integer on error
+ * @property timestamp When this analysis was completed
+ * @property analysisTime How long, in milliseconds, this analysis took to run
+ * @property inputProcess The process used in the analysis
  */
 data class AudioAnalysisMeta(
     @Json(name = "analyzer_version") val analyzerVersion: String,
@@ -201,29 +222,32 @@ data class AudioAnalysisMeta(
 )
 
 /**
- * @param start The starting point (in seconds) of the section.
- * @param duration The duration (in seconds) of the section.
- * @param confidence The confidence, from 0.0 to 1.0, of the reliability of the section’s “designation”.
- * @param loudness The overall loudness of the section in decibels (dB). Loudness values are useful
+ * Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge, guitar solo, etc.
+ * Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.*
+ *
+ * @property start The starting point (in seconds) of the section.
+ * @property duration The duration (in seconds) of the section.
+ * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the section’s “designation”.
+ * @property loudness The overall loudness of the section in decibels (dB). Loudness values are useful
  * for comparing relative loudness of sections within tracks.
- * @param tempo The overall estimated tempo of the section in beats per minute (BPM). In musical terminology, tempo
+ * @property tempo The overall estimated tempo of the section in beats per minute (BPM). In musical terminology, tempo
  * is the speed or pace of a given piece and derives directly from the average beat duration.
- * @param tempoConfidence The confidence, from 0.0 to 1.0, of the reliability of the tempo. Some tracks contain tempo
+ * @property tempoConfidence The confidence, from 0.0 to 1.0, of the reliability of the tempo. Some tracks contain tempo
  * changes or sounds which don’t contain tempo (like pure speech) which would correspond to a low value in this field.
- * @param key The estimated overall key of the section. The values in this field ranging from 0 to 11 mapping to
+ * @property key The estimated overall key of the section. The values in this field ranging from 0 to 11 mapping to
  * pitches using standard Pitch Class notation (E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on). If no key was detected,
  * the value is -1.
- * @param keyConfidence The confidence, from 0.0 to 1.0, of the reliability of the key.
+ * @property keyConfidence The confidence, from 0.0 to 1.0, of the reliability of the key.
  * Songs with many key changes may correspond to low values in this field.
- * @param mode Indicates the modality (major or minor) of a track, the type of scale from which its melodic content is
+ * @property mode Indicates the modality (major or minor) of a track, the type of scale from which its melodic content is
  * derived. This field will contain a 0 for “minor”, a 1 for “major”, or a -1 for no result. Note that the major key
  * (e.g. C major) could more likely be confused with the minor key at 3 semitones lower (e.g. A minor) as both
  * keys carry the same pitches.
- * @param modeConfidence The confidence, from 0.0 to 1.0, of the reliability of the mode.
- * @param timeSignature An estimated overall time signature of a track. The time signature (meter) is a notational
+ * @property modeConfidence The confidence, from 0.0 to 1.0, of the reliability of the mode.
+ * @property timeSignature An estimated overall time signature of a track. The time signature (meter) is a notational
  * convention to specify how many beats are in each bar (or measure). The time signature ranges from 3 to 7
  * indicating time signatures of “3/4”, to “7/4”.
- * @param timeSignatureConfidence The confidence, from 0.0 to 1.0, of the reliability of the time_signature.
+ * @property timeSignatureConfidence The confidence, from 0.0 to 1.0, of the reliability of the time_signature.
  * Sections with time signature changes may correspond to low values in this field.
  */
 data class AudioSection(
@@ -242,21 +266,24 @@ data class AudioSection(
 )
 
 /**
- * @param start The starting point (in seconds) of the segment.
- * @param duration The duration (in seconds) of the segment.
- * @param confidence The confidence, from 0.0 to 1.0, of the reliability of the segmentation. Segments of the song which
+ * Audio segments attempts to subdivide a song into many segments, with each segment containing
+ * a roughly consistent sound throughout its duration.
+ *
+ * @property start The starting point (in seconds) of the segment.
+ * @property duration The duration (in seconds) of the segment.
+ * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the segmentation. Segments of the song which
  * are difficult to logically segment (e.g: noise) may correspond to low values in this field.
- * @param loudnessStart The onset loudness of the segment in decibels (dB). Combined with loudness_max and
+ * @property loudnessStart The onset loudness of the segment in decibels (dB). Combined with loudness_max and
  * loudness_max_time, these components can be used to desctibe the “attack” of the segment.
- * @param loudnessMaxTime The segment-relative offset of the segment peak loudness in seconds. Combined with
+ * @property loudnessMaxTime The segment-relative offset of the segment peak loudness in seconds. Combined with
  * loudness_start and loudness_max, these components can be used to desctibe the “attack” of the segment.
- * @param loudnessMax The peak loudness of the segment in decibels (dB). Combined with loudness_start and
+ * @property loudnessMax The peak loudness of the segment in decibels (dB). Combined with loudness_start and
  * loudness_max_time, these components can be used to desctibe the “attack” of the segment.
- * @param loudnessEnd The offset loudness of the segment in decibels (dB). This value should be equivalent to the
+ * @property loudnessEnd The offset loudness of the segment in decibels (dB). This value should be equivalent to the
  * loudness_start of the following segment.
- * @param pitches A “chroma” vector representing the pitch content of the segment, corresponding to the 12 pitch classes
+ * @property pitches A “chroma” vector representing the pitch content of the segment, corresponding to the 12 pitch classes
  * C, C#, D to B, with values ranging from 0 to 1 that describe the relative dominance of every pitch in the chromatic scale
- * @param timbre Timbre is the quality of a musical note or sound that distinguishes different types of musical
+ * @property timbre Timbre is the quality of a musical note or sound that distinguishes different types of musical
  * instruments, or voices. Timbre vectors are best used in comparison with each other.
  */
 data class AudioSegment(
@@ -271,6 +298,9 @@ data class AudioSegment(
     val timbre: List<Float>
 )
 
+/**
+ * General information about the track as a whole
+ */
 data class TrackAnalysis(
     @Json(name = "num_samples") val numSamples: Int,
     val duration: Float,
@@ -301,6 +331,8 @@ data class TrackAnalysis(
 )
 
 /**
+ * General attributes of a [Track]
+ *
  * @property acousticness A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
  * 1.0 represents high confidence the track is acoustic.
  * @property analysisUrl An HTTP URL to access the full audio analysis of this track.
@@ -364,11 +396,14 @@ data class AudioFeatures(
     @Json(name = "track_href") val trackHref: String,
     val type: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri),
     val valence: Float
-)
+) {
+    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+}
 
 /**
+ * This is a generic object used to represent various time intervals within Audio Analysis.
+ *
  * @property start The starting point (in seconds) of the time interval.
  * @property duration The duration (in seconds) of the time interval.
  * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the interval
