@@ -3,6 +3,7 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyAPI
 import com.beust.klaxon.Json
+import com.neovisionaries.i18n.CountryCode
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
@@ -96,3 +97,5 @@ class SpotifyUriException(message: String) : BadRequestException(message)
 open class BadRequestException(message: String) : Exception(message) {
     constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}")
 }
+
+typealias Market = CountryCode

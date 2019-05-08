@@ -1,22 +1,22 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.Album
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.AlbumsResponse
 import com.adamratzman.spotify.models.BadRequestException
-import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
+import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
 
 /**
@@ -30,10 +30,10 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @return full [Album] object if the provided id is found, otherwise null
      */
-    fun getAlbum(album: String, market: Market? = null): SpotifyRestAction<Album?> {
+    fun getAlbum(album: String, market: CountryCode? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.code).toString())
+                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.name).toString())
                         .toObject<Album>(api)
             }
         })
@@ -44,11 +44,11 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param albums the spotify ids or uris for the albums.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      */
-    fun getAlbums(vararg albums: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
+    fun getAlbums(vararg albums: String, market: CountryCode? = null): SpotifyRestAction<List<Album?>> {
         return toAction(Supplier {
             get(
                     EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumURI(it).id.encode() })
-                            .with("market", market?.code).toString()
+                            .with("market", market?.name).toString()
             ).toObject<AlbumsResponse>(api).albums
         })
     }
@@ -66,14 +66,14 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         album: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
         return toActionPaging(Supplier {
             get(
                     EndpointBuilder("/albums/${AlbumURI(album).id.encode()}/tracks").with("limit", limit).with(
                             "offset",
                             offset
-                    ).with("market", market?.code)
+                    ).with("market", market?.name)
                             .toString()
             ).toPagingObject<SimpleTrack>(endpoint = this)
         })

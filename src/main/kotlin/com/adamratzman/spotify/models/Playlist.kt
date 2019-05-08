@@ -4,6 +4,7 @@ package com.adamratzman.spotify.models
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
 import com.beust.klaxon.Json
+import com.neovisionaries.i18n.CountryCode
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -27,9 +28,9 @@ import com.beust.klaxon.Json
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val collaborative: Boolean,
@@ -51,7 +52,7 @@ data class SimplePlaylist(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
+    fun toFullPlaylist(market: CountryCode? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
 }
 
 /**
@@ -95,9 +96,9 @@ data class PlaylistTrack(
  * @property type The object type: “playlist”
  */
 data class Playlist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val collaborative: Boolean,

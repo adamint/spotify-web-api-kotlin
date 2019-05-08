@@ -40,7 +40,7 @@ internal class HttpConnection(
         val responseCode = connection.responseCode
 
         if (responseCode == 502 && retryIf502) {
-            api?.logger?.logWarning("Received 502 (Invalid response) for URL $url and $this\nRetrying..")
+            api?.logger?.logError(false, "Received 502 (Invalid response) for URL $url and $this\nRetrying..", null)
             return execute(*additionalHeaders, retryIf502 = false)
         }
 

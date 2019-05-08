@@ -1,14 +1,13 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.SpotifyAPI
-import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.BadRequestException
-import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimpleAlbum
@@ -16,6 +15,7 @@ import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
 
 /**
@@ -47,7 +47,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
             get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject<SimplePlaylist>(
@@ -72,7 +72,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging(Supplier {
             get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject<Artist>(
@@ -97,7 +97,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
             get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject<SimpleAlbum>(
@@ -122,7 +122,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging(Supplier {
             get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject<Track>(
@@ -131,8 +131,8 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         })
     }
 
-    private fun build(type: SearchType, query: String, limit: Int?, offset: Int?, market: Market?): String {
-        return EndpointBuilder("/search").with("q", query.encode()).with("type", type.id).with("market", market?.code)
+    private fun build(type: SearchType, query: String, limit: Int?, offset: Int?, market: CountryCode?): String {
+        return EndpointBuilder("/search").with("q", query.encode()).with("type", type.id).with("market", market?.name)
                 .with("limit", limit).with("offset", offset).toString()
     }
 }

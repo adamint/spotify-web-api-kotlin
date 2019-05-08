@@ -12,9 +12,9 @@ import com.beust.klaxon.Json
  * @property type The object type: "artist"
  */
 data class SimpleArtist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val name: String,
@@ -41,9 +41,9 @@ data class SimpleArtist(
  * @property type The object type: "artist"
  */
 data class Artist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val followers: Followers,

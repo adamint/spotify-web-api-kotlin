@@ -11,9 +11,9 @@ import com.beust.klaxon.Json
  * @property href A link to the Web API endpoint providing full details of the track.
  */
 data class PlayHistoryContext(
-    @Json(name = "href") private val _href: String,
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "uri") private val _uri: String,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "uri", ignored = false) private val _uri: String,
 
     val type: String
 ) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
@@ -43,7 +43,7 @@ data class PlayHistory(
  * @property type Device type, such as “Computer”, “Smartphone” or “Speaker”.
  */
 data class Device(
-    @Json(name = "id") private val _id: String?,
+    @Json(name = "id", ignored = false) private val _id: String?,
 
     @Json(name = "is_active") val isActive: Boolean,
     @Json(name = "is_private_session") val isPrivateSession: Boolean,
@@ -202,7 +202,7 @@ enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
  * Puts an object in-context by linking to other related endpoints
  */
 data class Context(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>
 ) {
     @Json(ignored = true)
     val externalUrls = _externalUrls.map { ExternalUrl(it.key, it.value) }
