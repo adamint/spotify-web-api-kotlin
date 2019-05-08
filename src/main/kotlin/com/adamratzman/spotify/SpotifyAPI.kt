@@ -11,7 +11,7 @@ import com.adamratzman.spotify.endpoints.public.AlbumAPI
 import com.adamratzman.spotify.endpoints.public.ArtistsAPI
 import com.adamratzman.spotify.endpoints.public.BrowseAPI
 import com.adamratzman.spotify.endpoints.public.FollowingAPI
-import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
+import com.adamratzman.spotify.endpoints.public.PlaylistAPI
 import com.adamratzman.spotify.endpoints.public.SearchAPI
 import com.adamratzman.spotify.endpoints.public.TracksAPI
 import com.adamratzman.spotify.endpoints.public.UserAPI
@@ -33,11 +33,32 @@ import java.util.concurrent.TimeUnit
 
 internal val base = "https://api.spotify.com/v1"
 
+/**
+ * Represents an instance of the Spotify API client, with common
+ * functionality and information between the [SpotifyClientAPI] and [SpotifyAppAPI]
+ * implementations of the API
+ *
+ * @property clientId The application client id found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
+ * @property clientSecret The application client secret found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
+ * @property token The access token associated with this API instance
+ * @property useCache Whether to use the built-in cache to avoid making unnecessary calls to
+ * the Spotify API
+ *
+ * @property search Provides access to the Spotify [search endpoint](https://developer.spotify.com/documentation/web-api/reference/search/search/)
+ * @property albums Provides access to Spotify [album endpoints](https://developer.spotify.com/documentation/web-api/reference/albums/)
+ * @property browse Provides access to Spotify [browse endpoints](https://developer.spotify.com/documentation/web-api/reference/browse/)
+ * @property artists Provides access to Spotify [artist endpoints](https://developer.spotify.com/documentation/web-api/reference/artists/)
+ * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
+ *
+ * @property logger The Spotify event logger
+ * @property klaxon The serializer/deserializer associated with this API instance
+ *
+ */
 abstract class SpotifyAPI internal constructor(
-    val clientId: String,
-    val clientSecret: String,
-    var token: Token,
-    var useCache: Boolean
+        val clientId: String,
+        val clientSecret: String,
+        var token: Token,
+        var useCache: Boolean
 ) {
     internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
@@ -46,7 +67,7 @@ abstract class SpotifyAPI internal constructor(
     abstract val albums: AlbumAPI
     abstract val browse: BrowseAPI
     abstract val artists: ArtistsAPI
-    abstract val playlists: PlaylistsAPI
+    abstract val playlists: PlaylistAPI
     abstract val users: UserAPI
     abstract val tracks: TracksAPI
     abstract val following: FollowingAPI
@@ -55,35 +76,78 @@ abstract class SpotifyAPI internal constructor(
 
     abstract val klaxon: Klaxon
 
-    abstract fun refreshToken()
+    /**
+     * If the method used to create the [token] supports token refresh and
+     * the information in [token] is accurate, attempt to refresh the token
+     *
+     * @return The old access token if refresh was successful, otherwise null
+     */
+    abstract fun refreshToken(): Token?
+
+    /**
+     * If the cache is enabled, clear all stored queries in the cache
+     */
     abstract fun clearCache()
 
     init {
-        executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
+        if (useCache) {
+            executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
+        }
     }
 
     internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
     }
 
+    /**
+     * Allows enabling and disabling the logger
+     *
+     * @param enable Whether to enable the logger
+     */
     fun useLogger(enable: Boolean) {
         logger.enabled = enable
     }
 
+    /**
+     * Create a Spotify authorization URL from which client access can be obtained
+     *
+     * @param scopes The scopes that the application should have access to
+     * @param redirectUri The redirect uri specified on the Spotify developer dashboard; where to
+     * redirect the browser after authentication
+     *
+     * @return Authorization URL that can be used in a browser
+     */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
 }
 
+/**
+ * An API instance created with application credentials, not through
+ * client authentication
+ */
 class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token, useCache: Boolean) :
         SpotifyAPI(clientId, clientSecret, token, useCache) {
+
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
     override val artists: ArtistsAPI = ArtistsAPI(this)
-    override val playlists: PlaylistsAPI = PlaylistsAPI(this)
-    override val users: UserAPI = UserAPI(this)
     override val tracks: TracksAPI = TracksAPI(this)
+
+    /**
+     * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
+     */
+    override val playlists: PlaylistAPI = PlaylistAPI(this)
+
+    /**
+     * Provides access to **public** Spotify [user information](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)
+     */
+    override val users: UserAPI = UserAPI(this)
+
+    /**
+     * Provides access to **public** playlist [follower information](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)
+     */
     override val following: FollowingAPI = FollowingAPI(this)
 
     override val klaxon: Klaxon = getKlaxon(this)
@@ -94,10 +158,16 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
         }
     }
 
-    override fun refreshToken() {
-        if (clientId != "not-set" && clientSecret != "not-set")
+    override fun refreshToken(): Token? {
+        if (clientId != "not-set" && clientSecret != "not-set") {
+            val currentToken = this.token
+
             getCredentialedToken(clientId, clientSecret)?.let { token = it }
-        expireTime = System.currentTimeMillis() + token.expiresIn * 1000
+            expireTime = System.currentTimeMillis() + token.expiresIn * 1000
+
+            return currentToken
+        }
+        return null
     }
 
     override fun clearCache() = clearAllCaches(
@@ -110,32 +180,76 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
             tracks,
             following
     )
-
-    override fun equals(other: Any?) = other is SpotifyAppAPI && other.token == this.token
 }
 
+/**
+ * An API instance created through client authentication, with access to private information
+ * managed through the scopes exposed in [token]
+ */
 class SpotifyClientAPI internal constructor(
-    clientId: String,
-    clientSecret: String,
-    token: Token,
-    automaticRefresh: Boolean = false,
-    var redirectUri: String,
-    useCache: Boolean
+        clientId: String,
+        clientSecret: String,
+        token: Token,
+        automaticRefresh: Boolean = false,
+        var redirectUri: String,
+        useCache: Boolean
 ) : SpotifyAPI(clientId, clientSecret, token, useCache) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
     override val artists: ArtistsAPI = ArtistsAPI(this)
-    override val playlists: ClientPlaylistAPI = ClientPlaylistAPI(this)
-    override val users: ClientUserAPI = ClientUserAPI(this)
     override val tracks: TracksAPI = TracksAPI(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving
+     * information about a user’s playlists and for managing a user’s playlists.
+     * *Superset of [PlaylistAPI]*
+     */
+    override val playlists: ClientPlaylistAPI = ClientPlaylistAPI(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/users-profile/) for
+     * retrieving information about a user’s profile.
+     * *Superset of [UserAPI]*
+     */
+    override val users: ClientUserAPI = ClientUserAPI(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/follow/) for managing
+     * the artists, users, and playlists that a Spotify user follows.
+     * *Superset of [FollowingAPI]*
+     */
     override val following: ClientFollowingAPI = ClientFollowingAPI(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/personalization/) for
+     * retrieving information about the user’s listening habits.
+
+     */
     val personalization: ClientPersonalizationAPI = ClientPersonalizationAPI(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/library/) for
+     * retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
+     */
     val library: ClientLibraryAPI = ClientLibraryAPI(this)
+
+    /**
+     * Provides access to the **beta** [player api](https://developer.spotify.com/documentation/web-api/reference/player/),
+     * including track playing and pausing endpoints.
+     *
+     * Please consult the [usage guide](https://developer.spotify.com/documentation/web-api/guides/using-connect-web-api/) before
+     * calling any endpoint in this api.
+     *
+     * **These endpoints may break at any time.**
+     */
     val player: ClientPlayerAPI = ClientPlayerAPI(this)
 
     override val klaxon: Klaxon = getKlaxon(this)
 
+    /**
+     * The Spotify user id to which the api instance is connected
+     */
     val userId: String
 
     init {
@@ -162,11 +276,14 @@ class SpotifyClientAPI internal constructor(
     }
 
     /**
-     * This function will stop all automatic functions like refreshToken or clearCache
+     * Stop all automatic functions like refreshToken or clearCache and shut down the scheduled
+     * executor
      * */
     fun cancelAutomatics() = executor.shutdown()
 
-    override fun refreshToken() {
+    override fun refreshToken(): Token? {
+        val currentToken = this.token
+
         val tempToken =
                 HttpConnection(
                         url = "https://accounts.spotify.com/api/token",
@@ -176,14 +293,16 @@ class SpotifyClientAPI internal constructor(
                         api = this
                 ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
                         .toObjectNullable<Token>(null)
-        if (tempToken?.accessToken == null) {
+        return if (tempToken?.accessToken == null) {
             logger.logWarning("Spotify token refresh failed")
+            null
         } else {
             this.token = tempToken.copy(
                     refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
                     scopes = tempToken.scopes
             )
             logger.logInfo("Successfully refreshed the Spotify token")
+            currentToken
         }
     }
 
@@ -201,11 +320,18 @@ class SpotifyClientAPI internal constructor(
             player
     )
 
+    /**
+     * Create a Spotify authorization URL from which client access can be obtained
+     *
+     * @param scopes The scopes that the application should have access to
+     * @param redirectUri The redirect uri specified on the Spotify developer dashboard; where to
+     * redirect the browser after authentication
+     *
+     * @return Authorization URL that can be used in a browser
+     */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
-
-    override fun equals(other: Any?) = other is SpotifyClientAPI && other.token == this.token
 }
 
 internal fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {

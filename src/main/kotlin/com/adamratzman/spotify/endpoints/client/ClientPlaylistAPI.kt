@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.endpoints.public.PlaylistsAPI
+import com.adamratzman.spotify.endpoints.public.PlaylistAPI
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
@@ -33,7 +33,7 @@ import javax.xml.bind.DatatypeConverter
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  */
-class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistsAPI(api) {
+class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *

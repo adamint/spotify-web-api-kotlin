@@ -25,7 +25,7 @@ import java.util.function.Supplier
 /**
  * Endpoints for retrieving information about a user’s playlists
  */
-open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return empty [PagingObject]s
      * (blame Spotify)
