@@ -1,20 +1,20 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.AlbumURI
-import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.serialization.toArray
 import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
 
 /**
@@ -34,11 +34,11 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getSavedTracks(
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging(Supplier {
             get(
-                    EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
             ).toPagingObject<SavedTrack>(endpoint = this)
         })
@@ -57,11 +57,11 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getSavedAlbums(
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging(Supplier {
             get(
-                    EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.code)
+                    EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
             ).toPagingObject<SavedAlbum>(endpoint = this)
         })

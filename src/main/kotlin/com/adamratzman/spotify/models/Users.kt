@@ -24,9 +24,9 @@ import com.beust.klaxon.Json
  * @property type The object type: “user”
  */
 data class SpotifyUserInformation(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val birthdate: String? = null,
@@ -50,9 +50,9 @@ data class SpotifyUserInformation(
  * @property type The object type: “user”
  */
 data class SpotifyPublicUser(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     @Json(name = "display_name") val displayName: String? = null,

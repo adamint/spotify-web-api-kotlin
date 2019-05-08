@@ -12,8 +12,8 @@ import com.beust.klaxon.Json
  * @property name The name of the category.
  */
 data class SpotifyCategory(
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
 
     val icons: List<SpotifyImage>,
     val name: String
@@ -32,8 +32,8 @@ data class SpotifyCategory(
  * @property type The entity type of this seed. One of artist , track or genre.
  */
 data class RecommendationSeed(
-    @Json(name = "href") private val _href: String?,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "href", ignored = false) private val _href: String?,
+    @Json(name = "id", ignored = false) private val _id: String,
 
     val initialPoolSize: Int,
     val afterFilteringSize: Int,

@@ -1,18 +1,17 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistList
 import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.CursorBasedPagingObject
-import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleAlbum
 import com.adamratzman.spotify.models.Track
@@ -20,6 +19,7 @@ import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
+import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
 
 /**
@@ -69,7 +69,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         artist: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null,
+        market: CountryCode? = null,
         vararg include: AlbumInclusionStrategy
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
@@ -77,7 +77,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/albums").with("limit", limit).with(
                             "offset",
                             offset
-                    ).with("market", market?.code)
+                    ).with("market", market?.name)
                             .with("include_groups", include.joinToString(",") { it.keyword }).toString()
             ).toPagingObject<SimpleAlbum>(null, this)
         })
@@ -101,12 +101,12 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if tracks are not available in the specified [Market] or the [artist] is not found
      */
-    fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
+    fun getArtistTopTracks(artist: String, market: CountryCode = CountryCode.US): SpotifyRestAction<List<Track>> {
         return toAction(Supplier {
             get(
                     EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}/top-tracks").with(
                             "country",
-                            market.code
+                            market.name
                     ).toString()
             ).toInnerArray<Track>("tracks", api)
         })
