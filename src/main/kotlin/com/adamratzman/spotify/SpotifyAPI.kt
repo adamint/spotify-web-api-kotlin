@@ -181,7 +181,7 @@ class SpotifyClientAPI internal constructor(
         } else {
             this.token = tempToken.copy(
                     refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
-                    scopes = tempToken.scopes ?: this.token.scopes
+                    scopes = tempToken.scopes
             )
             logger.logInfo("Successfully refreshed the Spotify token")
         }
