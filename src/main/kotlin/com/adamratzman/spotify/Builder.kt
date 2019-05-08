@@ -82,9 +82,9 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null
 )
 
 class SpotifyApiBuilder {
@@ -166,10 +166,10 @@ class SpotifyApiBuilder {
      * [authorizationCode] or [token] is provided
      */
     private fun buildClient(
-            authorizationCode: String? = null,
-            tokenString: String? = null,
-            token: Token? = null,
-            automaticRefresh: Boolean = false
+        authorizationCode: String? = null,
+        tokenString: String? = null,
+        token: Token? = null,
+        automaticRefresh: Boolean = false
     ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
