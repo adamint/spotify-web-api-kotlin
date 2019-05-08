@@ -3,6 +3,7 @@ package com.adamratzman.spotify
 
 class SpotifyLogger(var enabled: Boolean) {
     val redString = "\u001B[31m"
+    val orangeString = "\u001B[33m"
     val resetString = "\u001B[0m"
 
     fun logInfo(message: String) {
@@ -10,7 +11,7 @@ class SpotifyLogger(var enabled: Boolean) {
     }
 
     fun logWarning(message: String) {
-        if (enabled) println("${redString}Spotify Logger Warning: $message$resetString")
+        if (enabled) println("${orangeString}Spotify Logger Warning: $message$resetString")
     }
 
     fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {

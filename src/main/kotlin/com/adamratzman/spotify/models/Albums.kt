@@ -3,6 +3,7 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.utils.match
 import com.beust.klaxon.Json
+import com.neovisionaries.i18n.CountryCode
 
 /**
  * Simplified Album object that can be used to retrieve a full [Album]
@@ -29,10 +30,10 @@ import com.beust.klaxon.Json
  */
 data class SimpleAlbum(
     @Json(name = "album_type", ignored = false) private val _albumType: String,
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "available_markets", ignored = false) private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val artists: List<SimpleArtist>,
@@ -46,7 +47,7 @@ data class SimpleAlbum(
     @Json(name = "album_group", ignored = false) private val albumGroupString: String? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Json(ignored = true)
-    val availableMarkets = _availableMarkets.map { Market.valueOf(it) }
+    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
     @Json(ignored = true)
     val albumType: AlbumResultType = _albumType.let { _ ->
@@ -64,7 +65,7 @@ data class SimpleAlbum(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
+    fun toFullAlbum(market: CountryCode? = null) = api.albums.getAlbum(id, market)
 }
 
 /**
@@ -110,11 +111,11 @@ enum class AlbumResultType(internal val id: String) {
  */
 data class Album(
     @Json(name = "album_type", ignored = false) private val _albumType: String,
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "external_ids") private val _externalIds: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @Json(name = "available_markets", ignored = false) private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
+    @Json(name = "external_ids", ignored = false) private val _externalIds: Map<String, String> = hashMapOf(),
+    @Json(name = "href", ignored = false) private val _href: String,
+    @Json(name = "id", ignored = false) private val _id: String,
     @Json(name = "uri", ignored = false) private val _uri: String,
 
     val artists: List<SimpleArtist>,
@@ -132,7 +133,7 @@ data class Album(
     val restrictions: Restrictions? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Json(ignored = true)
-    val availableMarkets = _availableMarkets.map { Market.valueOf(it) }
+    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
     @Json(ignored = true)
     val externalIds = _externalIds.map { ExternalId(it.key, it.value) }

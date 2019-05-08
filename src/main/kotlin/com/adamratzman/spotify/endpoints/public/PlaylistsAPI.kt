@@ -1,14 +1,13 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.BadRequestException
-import com.adamratzman.spotify.models.Market
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.PlaylistTrack
@@ -20,6 +19,7 @@ import com.adamratzman.spotify.models.serialization.toArray
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
+import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
 
 /**
@@ -62,12 +62,12 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun getPlaylist(playlist: String, market: Market? = null): SpotifyRestAction<Playlist?> {
+    fun getPlaylist(playlist: String, market: CountryCode? = null): SpotifyRestAction<Playlist?> {
         return toAction(Supplier {
             catch {
                 get(
                         EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
-                                .with("market", market?.code).toString()
+                                .with("market", market?.name).toString()
                 ).toObject<Playlist>(api)
             }
         })
@@ -87,12 +87,12 @@ open class PlaylistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         playlist: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: Market? = null
+        market: CountryCode? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
         return toActionPaging(Supplier {
             get(
                     EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
-                            .with("offset", offset).with("market", market?.code).toString()
+                            .with("offset", offset).with("market", market?.name).toString()
             )
                     .toPagingObject<PlaylistTrack>(null, this)
         })
