@@ -9,17 +9,14 @@ import com.beust.klaxon.Json
  *
  * @property type The object type, e.g. “artist”, “playlist”, “album”.
  * @property href A link to the Web API endpoint providing full details of the track.
- * @property externalUrls External URLs for this context.
- * @property uri The Spotify URI for the context.
  */
 data class PlayHistoryContext(
-    val type: String,
-    val href: String,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    @Json(name = "uri") private val _uri: String
-) {
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
-}
+    @Json(name = "href") private val _href: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "uri") private val _uri: String,
+
+    val type: String
+) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
 
 /**
  * Information about a previously-played track
@@ -46,7 +43,8 @@ data class PlayHistory(
  * @property type Device type, such as “Computer”, “Smartphone” or “Speaker”.
  */
 data class Device(
-    val id: String?,
+    @Json(name = "id") private val _id: String?,
+
     @Json(name = "is_active") val isActive: Boolean,
     @Json(name = "is_private_session") val isPrivateSession: Boolean,
     @Json(name = "is_restricted") val isRestricted: Boolean,
@@ -54,7 +52,7 @@ data class Device(
     val _type: String,
     @Json(name = "volume_percent") val volumePercent: Int,
     val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
-)
+) : IdentifiableNullable(null, _id)
 
 /**
  * Electronic type of registered Spotify device
@@ -84,7 +82,7 @@ enum class DeviceType(val identifier: String) {
  * @property device The device that is currently active
  * @property progressMs Progress into the currently playing track. Can be null (e.g. If private session is enabled this will be null).
  * @property isPlaying If something is currently playing.
- * @property item The currently playing track. Can be null (e.g. If private session is enabled this will be null).
+ * @property track The currently playing track. Can be null (e.g. If private session is enabled this will be null).
  * @property context A Context Object. Can be null (e.g. If private session is enabled this will be null).
  * @property shuffleState If shuffle is on or off
  * @property repeatState If and how the playback is repeating
@@ -100,7 +98,8 @@ data class CurrentlyPlayingContext(
     @Json(name = "repeat_state") val _repeatState: String,
     val context: Context
 ) {
-    @Json(ignored = true) val repeatState: RepeatState = RepeatState.values().match(_repeatState)!!
+    @Json(ignored = true)
+    val repeatState: RepeatState = RepeatState.values().match(_repeatState)!!
 }
 
 /**
@@ -136,7 +135,8 @@ data class CurrentlyPlayingObject(
     @Json(name = "currently_playing_type") private val _currentlyPlayingType: String,
     val actions: PlaybackActions
 ) {
-    @Json(ignored = true) val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!
+    @Json(ignored = true)
+    val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!
 }
 
 /**
@@ -148,7 +148,8 @@ data class CurrentlyPlayingObject(
 data class PlaybackActions(
     @Json(name = "disallows") val _disallows: Map<String, Boolean?>
 ) {
-    @Json(ignored = true) val disallows: List<DisallowablePlaybackAction> = _disallows.map {
+    @Json(ignored = true)
+    val disallows: List<DisallowablePlaybackAction> = _disallows.map {
         DisallowablePlaybackAction(
                 PlaybackAction.values().match(it.key)!!,
                 it.value ?: false
@@ -201,5 +202,8 @@ enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
  * Puts an object in-context by linking to other related endpoints
  */
 data class Context(
-    @Json(name = "external_urls") val externalUrls: Map<String, String>
-)
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>
+) {
+    @Json(ignored = true)
+    val externalUrls = _externalUrls.map { ExternalUrl(it.key, it.value) }
+}

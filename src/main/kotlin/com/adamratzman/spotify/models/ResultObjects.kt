@@ -5,11 +5,68 @@ import com.adamratzman.spotify.SpotifyAPI
 import com.beust.klaxon.Json
 
 /**
- * Allow for track relinking
- *
- * @property api The API client used to create the object
+ * Represents an identifiable Spotify object such as an Album or Recommendation Seed
  */
-abstract class Linkable {
+abstract class Identifiable(
+    href: String?,
+    @Json(ignored = true) override val id: String
+) : IdentifiableNullable(href, id)
+
+/**
+ * Represents an identifiable Spotify object such as an Album or Recommendation Seed
+ *
+ * @property href A link to the Spotify web api endpoint associated with this request
+ * @property id The Spotify id of the associated object
+ */
+abstract class IdentifiableNullable(
+    @Json(ignored = true) val href: String?,
+    @Json(ignored = true) open val id: String?
+) : NeedsApi()
+
+/**
+ * Represents a core Spotify object such as a Track or Album
+ *
+ * @property uri The URI associated with the object
+ * @property externalUrls Known external URLs for this object
+ */
+abstract class CoreObject(
+    _href: String,
+    _id: String,
+    @Json(ignored = true) val uri: SpotifyUri,
+    _externalUrls: Map<String, String>
+) : Identifiable(_href, _id) {
+    @Json(ignored = true) val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
+}
+
+abstract class RelinkingAvailableResponse(
+    @Json(ignored = true) val linkedTrack: LinkedTrack? = null,
+    _href: String,
+    _id: String,
+    _uri: SpotifyUri,
+    _externalUrls: Map<String, String>
+) : CoreObject(_href, _id, _uri, _externalUrls) {
+    fun isRelinked() = linkedTrack != null
+}
+
+class ExternalUrl(val name: String, val url: String)
+
+/**
+ * An external id linked to the result object
+ *
+ * @property key The identifier type, for example:
+- "isrc" - International Standard Recording Code
+- "ean" - International Article Number
+- "upc" - Universal Product Code
+ * @property id An external identifier for the object.
+ */
+class ExternalId(val key: String, val id: String)
+
+/**
+ * Provide access to the underlying [SpotifyAPI]
+ *
+ * @property api The API client associated with the request
+ */
+abstract class NeedsApi {
     @Json(ignored = true)
     lateinit var api: SpotifyAPI
 }

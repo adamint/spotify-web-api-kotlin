@@ -13,7 +13,6 @@ import com.beust.klaxon.Json
  * @property discNumber The disc number (usually 1 unless the album consists of more than one disc).
  * @property durationMs The track length in milliseconds.
  * @property explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
- * @property externalUrls External URLs for this track.
  * @property externalIds External IDs for this track.
  * @property href A link to the Web API endpoint providing full details of the track.
  * @property id The Spotify ID for the track.
@@ -27,7 +26,6 @@ import com.beust.klaxon.Json
  * @property trackNumber The number of the track. If an album has several discs, the track number
  * is the number on the specified disc.
  * @property type The object type: “track”.
- * @property uri The Spotify URI for the track.
  * @property isLocal Whether or not the track is from a local file.
  * @property popularity the popularity of this track. possibly null
  * @property restrictions Part of the response when Track Relinking is applied, the original track is not available in
@@ -36,27 +34,32 @@ import com.beust.klaxon.Json
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleTrack(
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+
     val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String> = listOf(),
     @Json(name = "disc_number") val discNumber: Int,
     @Json(name = "duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    @Json(name = "external_ids") val externalIds: Map<String, String> = hashMapOf(),
-    val href: String,
-    val id: String,
     @Json(name = "is_playable") val isPlayable: Boolean = true,
     @Json(name = "linked_from", ignored = false) private val linkedFrom: LinkedTrack? = null,
     val name: String,
     @Json(name = "preview_url") val previewUrl: String?,
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
     @Json(name = "is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linkedFrom) {
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+) : RelinkingAvailableResponse(linkedFrom, _href, _id, TrackURI(_uri), _externalUrls) {
+    @Json(ignored = true)
+    val availableMarkets = _availableMarkets.map { Market.valueOf(it) }
+
+    @Json(ignored = true)
+    val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
 
     /**
      * Converts this [SimpleTrack] into a full [Track] object with the given
@@ -80,7 +83,6 @@ data class SimpleTrack(
  * @property discNumber The disc number (usually 1 unless the album consists of more than one disc).
  * @property durationMs The track length in milliseconds.
  * @property explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
- * @property externalUrls External URLs for this track.
  * @property externalIds External IDs for this track.
  * @property href A link to the Web API endpoint providing full details of the track.
  * @property id The Spotify ID for the track.
@@ -98,7 +100,6 @@ data class SimpleTrack(
  * @property previewUrl A link to a 30 second preview (MP3 format) of the track. Can be null
  * @property trackNumber The number of the track. If an album has several discs, the track number is the number on the specified disc.
  * @property type The object type: “track”.
- * @property uri The Spotify URI for the track.
  * @property isLocal Whether or not the track is from a local file.
  * @property restrictions Part of the response when Track Relinking is applied, the original track is not available in
  * the given market, and Spotify did not have any tracks to relink it with. The track response will still contain
@@ -106,48 +107,51 @@ data class SimpleTrack(
  * "restrictions" : {"reason" : "market"}
  */
 data class Track(
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "external_ids") private val _externalIds: Map<String, String>,
+    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
-    @Json(name = "available_markets") val availableMarkets: List<String>? = null,
     @Json(name = "is_playable") val isPlayable: Boolean = true,
     @Json(name = "disc_number") val discNumber: Int,
     @Json(name = "duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "external_ids") val externalIds: Map<String, String>,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val href: String,
-    val id: String,
     @Json(name = "linked_from", ignored = false) private val linked_from: LinkedTrack? = null,
     val name: String,
     val popularity: Int,
     @Json(name = "preview_url") val previewUrl: String?,
     @Json(name = "track_number") val trackNumber: Int,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
     @Json(name = "is_local") val isLocal: Boolean?,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linked_from) {
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+) : RelinkingAvailableResponse(linked_from, _href, _id, TrackURI(_uri), _externalUrls) {
+    @Json(ignored = true)
+    val availableMarkets = _availableMarkets.map { Market.valueOf(it) }
+
+    @Json(ignored = true)
+    val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
 }
 
 /**
  * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  *
- * @property externalUrls Known external URLs for this track.
  * @property href A link to the Web API endpoint providing full details of the track.
  * @property id The Spotify ID for the track.
  * @property type The object type: “track”.
- * @property uri The Spotify URI for the track.
  */
 data class LinkedTrack(
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val href: String,
-    val id: String,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String
-): Linkable() {
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+    @Json(name = "external_urls") val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+
+    val type: String
+) : CoreObject(_href, _id, TrackURI(_uri), _externalUrls) {
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
@@ -156,10 +160,6 @@ data class LinkedTrack(
      */
 
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
-}
-
-abstract class RelinkingAvailableResponse(@Json(ignored = true) val linkedTrack: LinkedTrack? = null) : Linkable() {
-    fun isRelinked() = linkedTrack != null
 }
 
 internal data class AudioFeaturesResponse(
@@ -398,7 +398,8 @@ data class AudioFeatures(
     @Json(name = "uri", ignored = false) private val _uri: String,
     val valence: Float
 ) {
-    @Json(ignored = true) val uri: TrackURI = TrackURI(_uri)
+    @Json(ignored = true)
+    val uri: TrackURI = TrackURI(_uri)
 }
 
 /**
