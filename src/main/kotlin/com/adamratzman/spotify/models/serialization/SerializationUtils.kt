@@ -6,7 +6,7 @@ import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
-import com.adamratzman.spotify.models.Linkable
+import com.adamratzman.spotify.models.NeedsApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
 import com.beust.klaxon.JsonBase
@@ -25,7 +25,7 @@ internal inline fun <reified T> String.toObject(o: SpotifyAPI?): T {
             IllegalArgumentException("$this not found")
     )
     o?.let {
-        if (obj is Linkable) obj.api = o
+        if (obj is NeedsApi) obj.api = o
         if (obj is AbstractPagingObject<*>) obj.endpoint = o.tracks
         obj.instantiatePagingObjects(o)
     }
@@ -37,7 +37,7 @@ internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
     return klaxon.parseArray<T>(this)?.apply {
         if (o != null) {
             forEach { obj ->
-                if (obj is Linkable) obj.api = o
+                if (obj is NeedsApi) obj.api = o
                 if (obj is AbstractPagingObject<*>) obj.endpoint = o.tracks
             }
         }

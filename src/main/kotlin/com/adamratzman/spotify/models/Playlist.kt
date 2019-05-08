@@ -10,7 +10,6 @@ import com.beust.klaxon.Json
  *
  * @property collaborative Returns true if context is not search and the owner allows other users to
  * modify the playlist. Otherwise returns false.
- * @property externalUrls Known external URLs for this playlist.
  * @property href A link to the Web API endpoint providing full details of the playlist.
  * @property id The Spotify ID for the playlist.
  * @property images Images for the playlist. The array may be empty or contain up to three images.
@@ -24,15 +23,16 @@ import com.beust.klaxon.Json
  * @property tracks A collection containing a link ( href ) to the Web API endpoint where full details of the
  * playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.
  * @property type The object type: “playlist”
- * @property uri The Spotify URI for the playlist.
  * @property snapshot The version identifier for the current playlist. Can be supplied in other
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+
     val collaborative: Boolean,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
-    val href: String,
-    val id: String,
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
@@ -40,11 +40,10 @@ data class SimplePlaylist(
     val public: Boolean? = null,
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PlaylistTrackInfo,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String
-) : Linkable() {
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri)
-    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val type: String
+) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
+    @Json(ignored = true)
+    val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 
     /**
      * Converts this [SimplePlaylist] into a full [Playlist] object with the given
@@ -79,7 +78,6 @@ data class PlaylistTrack(
  * @property collaborative Returns true if context is not search and the owner allows other users to modify the playlist.
  * Otherwise returns false.
  * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
- * @property externalUrls Known external URLs for this playlist.
  * @property followers
  * @property href A link to the Web API endpoint providing full details of the playlist.
  * @property id The Spotify ID for the playlist.
@@ -95,15 +93,16 @@ data class PlaylistTrack(
  * a specific playlist version
  * @property tracks Information about the tracks of the playlist.
  * @property type The object type: “playlist”
- * @property uri The Spotify URI for the playlist.
  */
 data class Playlist(
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri", ignored = false) private val _uri: String,
+
     val collaborative: Boolean,
     val description: String,
-    @Json(name = "external_urls") val externalUrls: Map<String, String>,
     val followers: Followers,
-    val href: String,
-    val id: String,
     @Json(name = "primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
     val name: String,
@@ -111,11 +110,10 @@ data class Playlist(
     val public: Boolean? = null,
     @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
-    val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String
-) {
-    @Json(ignored = true) val uri: PlaylistURI = PlaylistURI(_uri)
-    @Json(ignored = true) val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val type: String
+) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
+    @Json(ignored = true)
+    val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 }
 
 /**
