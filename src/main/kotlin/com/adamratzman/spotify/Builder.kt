@@ -9,47 +9,108 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
 
 // Kotlin DSL builder
-fun spotifyApi(block: SpotifyApiBuilder.() -> Unit) = SpotifyApiBuilder().apply(block)
+/**
+ * A builder DSL to create a new [SpotifyAPI]
+ */
+fun spotifyApi(block: SpotifyApiBuilderDsl.() -> Unit) = SpotifyApiBuilderDsl().apply(block)
 
 // Java-friendly builder
-class SpotifyApiBuilderJava(val clientId: String, val clientSecret: String) {
-    var redirectUri: String? = null
-    var authorizationCode: String? = null
-    var tokenString: String? = null
-    var token: Token? = null
-    var useCache: Boolean = true
 
+/**
+ * A builder in the style of traditional Java builders
+ */
+class SpotifyApiBuilder(
+        val clientId: String,
+        val clientSecret: String,
+        var redirectUri: String? = null,
+        var authorizationCode: String? = null,
+        var tokenString: String? = null,
+        var token: Token? = null,
+        var useCache: Boolean = true
+) {
+    /**
+     * Instantiate the builder with the application [clientId] and [clientSecret]
+     */
+    constructor(clientId: String, clientSecret: String) : this(clientId, clientSecret, null)
+
+    /**
+     * Instantiate the builder with the application [clientId], [clientSecret], and whether to use a cache
+     */
+    constructor(clientId: String, clientSecret: String, useCache: Boolean) : this(clientId, clientSecret, null, useCache = useCache)
+
+    /**
+     * Instantiate the builder with the application [clientId], [clientSecret], and application
+     * [redirectUri]
+     */
+    constructor(clientId: String, clientSecret: String, redirectUri: String) : this(clientId, clientSecret, redirectUri, null)
+
+    /**
+     * Instantiate the builder with the application [clientId], [clientSecret], application
+     * [redirectUri], and an [authorizationCode]
+     */
+    constructor(clientId: String, clientSecret: String, redirectUri: String?, authorizationCode: String, useCache: Boolean)
+            : this(clientId, clientSecret, redirectUri, authorizationCode, null, useCache = useCache)
+
+    /**
+     * Instantiate the builder with the application [clientId], [clientSecret], application
+     * [redirectUri], and an access token string ([tokenString])
+     */
+    constructor(clientId: String, clientSecret: String, redirectUri: String?, tokenString: String)
+            : this(clientId, clientSecret, redirectUri, null, tokenString)
+
+    /**
+     * Instantiate the builder with the application [clientId], [clientSecret], application
+     * [redirectUri], and a [token]
+     */
+    constructor(clientId: String, clientSecret: String, redirectUri: String?, token: Token, useCache: Boolean)
+            : this(clientId, clientSecret, redirectUri, null, null, token, useCache)
+
+    /**
+     * Set whether to cache requests. Default: true
+     */
     fun useCache(useCache: Boolean) = apply { this.useCache = useCache }
 
+    /**
+     * Set the application [redirect uri](https://developer.spotify.com/documentation/general/guides/authorization-guide/)
+     */
     fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
 
+    /**
+     * Set a returned [authorization code](https://developer.spotify.com/documentation/general/guides/authorization-guide/)
+     */
     fun authorizationCode(authorizationCode: String?) = apply { this.authorizationCode = authorizationCode }
 
+    /**
+     * If you only have an access token, the api can be instantiated with it
+     */
     fun tokenString(tokenString: String?) = apply { this.tokenString = tokenString }
 
+    /**
+     * Set the token to be used with this api instance
+     */
     fun token(token: Token?) = apply { this.token = token }
 
     fun buildCredentialed() = spotifyApi {
         credentials {
-            clientId = this@SpotifyApiBuilderJava.clientId
-            clientSecret = this@SpotifyApiBuilderJava.clientSecret
+            clientId = this@SpotifyApiBuilder.clientId
+            clientSecret = this@SpotifyApiBuilder.clientSecret
         }
         authentication {
-            token = this@SpotifyApiBuilderJava.token
-            tokenString = this@SpotifyApiBuilderJava.tokenString
+            token = this@SpotifyApiBuilder.token
+            tokenString = this@SpotifyApiBuilder.tokenString
         }
     }.buildCredentialed()
 
     fun buildClient(automaticRefresh: Boolean = false) = spotifyApi {
         credentials {
-            clientId = this@SpotifyApiBuilderJava.clientId
-            clientSecret = this@SpotifyApiBuilderJava.clientSecret
-            redirectUri = this@SpotifyApiBuilderJava.redirectUri
+            clientId = this@SpotifyApiBuilder.clientId
+            clientSecret = this@SpotifyApiBuilder.clientSecret
+            redirectUri = this@SpotifyApiBuilder.redirectUri
         }
         authentication {
-            authorizationCode = this@SpotifyApiBuilderJava.authorizationCode
-            tokenString = this@SpotifyApiBuilderJava.tokenString
-            token = this@SpotifyApiBuilderJava.token
+            authorizationCode = this@SpotifyApiBuilder.authorizationCode
+            tokenString = this@SpotifyApiBuilder.tokenString
+            token = this@SpotifyApiBuilder.token
         }
     }.buildClient(automaticRefresh)
 }
@@ -82,12 +143,12 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-    var authorizationCode: String? = null,
-    var tokenString: String? = null,
-    var token: Token? = null
+        var authorizationCode: String? = null,
+        var tokenString: String? = null,
+        var token: Token? = null
 )
 
-class SpotifyApiBuilder {
+class SpotifyApiBuilderDsl {
     private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
     private var authentication = SpotifyUserAuthorizationBuilder()
     var useCache: Boolean = true
@@ -166,10 +227,10 @@ class SpotifyApiBuilder {
      * [authorizationCode] or [token] is provided
      */
     private fun buildClient(
-        authorizationCode: String? = null,
-        tokenString: String? = null,
-        token: Token? = null,
-        automaticRefresh: Boolean = false
+            authorizationCode: String? = null,
+            tokenString: String? = null,
+            token: Token? = null,
+            automaticRefresh: Boolean = false
     ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
