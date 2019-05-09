@@ -29,6 +29,7 @@ import com.adamratzman.spotify.models.serialization.getSavedTrackConverter
 import com.adamratzman.spotify.models.serialization.toObjectNullable
 import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 internal val base = "https://api.spotify.com/v1"
@@ -58,8 +59,18 @@ abstract class SpotifyAPI internal constructor(
         val clientId: String,
         val clientSecret: String,
         var token: Token,
-        var useCache: Boolean
+        useCache: Boolean
 ) {
+    private var refreshFuture: ScheduledFuture<*>? = null
+
+    var useCache = useCache
+        set(value) {
+            if (!useCache && value) refreshFuture = startCacheRefreshRunnable()
+            else if (useCache && !value) refreshFuture?.cancel(false)
+
+            field = value
+        }
+
     internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
     internal val executor = Executors.newScheduledThreadPool(2)
 
@@ -89,11 +100,21 @@ abstract class SpotifyAPI internal constructor(
      */
     abstract fun clearCache()
 
+    /**
+     * Return a new [SpotifyApiBuilder] with the parameters provided to this api instance
+     */
+    abstract fun getApiBuilder(): SpotifyApiBuilder
+
+    /**
+     * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
+     */
+    abstract fun getApiBuilderDsl(): SpotifyApiBuilderDsl
+
     init {
-        if (useCache) {
-            executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
-        }
+        if (useCache) refreshFuture = startCacheRefreshRunnable()
     }
+
+    private fun startCacheRefreshRunnable() = executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
 
     internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
@@ -180,6 +201,17 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
             tracks,
             following
     )
+
+    override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, useCache)
+
+    override fun getApiBuilderDsl() = spotifyApi {
+        credentials {
+            clientId = this@SpotifyAppAPI.clientId
+            clientSecret = this@SpotifyAppAPI.clientSecret
+        }
+
+        useCache = this@SpotifyAppAPI.useCache
+    }
 }
 
 /**
@@ -320,6 +352,18 @@ class SpotifyClientAPI internal constructor(
             player
     )
 
+    override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, redirectUri, useCache = useCache)
+
+    override fun getApiBuilderDsl() = spotifyApi {
+        credentials {
+            clientId = this@SpotifyClientAPI.clientId
+            clientSecret = this@SpotifyClientAPI.clientSecret
+            redirectUri = this@SpotifyClientAPI.redirectUri
+        }
+
+        useCache = this@SpotifyClientAPI.useCache
+    }
+
     /**
      * Create a Spotify authorization URL from which client access can be obtained
      *
@@ -334,14 +378,14 @@ class SpotifyClientAPI internal constructor(
     }
 }
 
-internal fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
+ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
             "&response_type=code" +
             "&redirect_uri=$redirectUri" +
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-internal fun getCredentialedToken(clientId: String, clientSecret: String) =
+ fun getCredentialedToken(clientId: String, clientSecret: String) =
         HttpConnection(
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
