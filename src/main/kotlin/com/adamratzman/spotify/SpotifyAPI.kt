@@ -20,13 +20,15 @@ import com.adamratzman.spotify.http.HttpHeader
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.byteEncode
+import com.adamratzman.spotify.models.AuthenticationError
+import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.getAlbumConverter
 import com.adamratzman.spotify.models.serialization.getFeaturedPlaylistsConverter
 import com.adamratzman.spotify.models.serialization.getPlaylistConverter
 import com.adamratzman.spotify.models.serialization.getPublicUserConverter
 import com.adamratzman.spotify.models.serialization.getSavedTrackConverter
-import com.adamratzman.spotify.models.serialization.toObjectNullable
+import com.adamratzman.spotify.models.serialization.toObject
 import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
@@ -59,7 +61,8 @@ abstract class SpotifyAPI internal constructor(
         val clientId: String,
         val clientSecret: String,
         var token: Token,
-        useCache: Boolean
+        useCache: Boolean,
+        var automaticRefresh: Boolean
 ) {
     private var refreshFuture: ScheduledFuture<*>? = null
 
@@ -72,7 +75,7 @@ abstract class SpotifyAPI internal constructor(
         }
 
     internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
-    internal val executor = Executors.newScheduledThreadPool(2)
+    internal val executor = Executors.newScheduledThreadPool(0)
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -91,9 +94,10 @@ abstract class SpotifyAPI internal constructor(
      * If the method used to create the [token] supports token refresh and
      * the information in [token] is accurate, attempt to refresh the token
      *
-     * @return The old access token if refresh was successful, otherwise null
+     * @return The old access token if refresh was successful
+     * @throws BadRequestException if refresh fails
      */
-    abstract fun refreshToken(): Token?
+    abstract fun refreshToken(): Token
 
     /**
      * If the cache is enabled, clear all stored queries in the cache
@@ -147,8 +151,12 @@ abstract class SpotifyAPI internal constructor(
  * An API instance created with application credentials, not through
  * client authentication
  */
-class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String, token: Token, useCache: Boolean) :
-        SpotifyAPI(clientId, clientSecret, token, useCache) {
+class SpotifyAppAPI internal constructor(clientId: String,
+                                         clientSecret: String,
+                                         token: Token,
+                                         useCache: Boolean,
+                                         automaticRefresh: Boolean) :
+        SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh) {
 
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -173,22 +181,16 @@ class SpotifyAppAPI internal constructor(clientId: String, clientSecret: String,
 
     override val klaxon: Klaxon = getKlaxon(this)
 
-    init {
-        if (clientId == "not-set" || clientSecret == "not-set") {
-            logger.logWarning("Token refresh is disabled - application parameters not set")
-        }
-    }
-
-    override fun refreshToken(): Token? {
+    override fun refreshToken(): Token {
         if (clientId != "not-set" && clientSecret != "not-set") {
             val currentToken = this.token
 
-            getCredentialedToken(clientId, clientSecret)?.let { token = it }
+            token = getCredentialedToken(clientId, clientSecret)
             expireTime = System.currentTimeMillis() + token.expiresIn * 1000
 
             return currentToken
         }
-        return null
+        throw BadRequestException("Either the client id or the client secret is not set")
     }
 
     override fun clearCache() = clearAllCaches(
@@ -225,7 +227,7 @@ class SpotifyClientAPI internal constructor(
         automaticRefresh: Boolean = false,
         var redirectUri: String,
         useCache: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache) {
+) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -285,26 +287,7 @@ class SpotifyClientAPI internal constructor(
     val userId: String
 
     init {
-        init(automaticRefresh)
         userId = users.getUserProfile().complete().id
-    }
-
-    private fun init(automaticRefresh: Boolean) {
-        if (automaticRefresh) {
-            if (clientId != "not-set" && clientSecret != "not-set" && redirectUri != "not-set") {
-                if (token.expiresIn > 60) {
-                    executor.scheduleAtFixedRate(
-                            { refreshToken() },
-                            (token.expiresIn - 30).toLong(),
-                            (token.expiresIn - 30).toLong(),
-                            TimeUnit.SECONDS
-                    )
-                } else {
-                    refreshToken()
-                    init(automaticRefresh)
-                }
-            } else logger.logWarning("Automatic refresh unavailable - client parameters not set")
-        }
     }
 
     /**
@@ -313,29 +296,28 @@ class SpotifyClientAPI internal constructor(
      * */
     fun cancelAutomatics() = executor.shutdown()
 
-    override fun refreshToken(): Token? {
+    override fun refreshToken(): Token {
         val currentToken = this.token
 
-        val tempToken =
+        val response =
                 HttpConnection(
                         url = "https://accounts.spotify.com/api/token",
                         method = HttpRequestMethod.POST,
                         body = "grant_type=refresh_token&refresh_token=${token.refreshToken ?: ""}",
                         contentType = "application/x-www-form-urlencoded",
                         api = this
-                ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-                        .toObjectNullable<Token>(null)
-        return if (tempToken?.accessToken == null) {
-            logger.logWarning("Spotify token refresh failed")
-            null
-        } else {
+                ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}"))
+
+        if (response.responseCode / 200 == 1) {
+            val tempToken = response.body.toObject<Token>(this)
             this.token = tempToken.copy(
                     refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
                     scopes = tempToken.scopes
             )
             logger.logInfo("Successfully refreshed the Spotify token")
-            currentToken
+            return currentToken
         }
+        else throw BadRequestException(response.body.toObject<AuthenticationError>(this))
     }
 
     override fun clearCache() = clearAllCaches(
@@ -378,22 +360,26 @@ class SpotifyClientAPI internal constructor(
     }
 }
 
- fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
+fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
             "&response_type=code" +
             "&redirect_uri=$redirectUri" +
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
- fun getCredentialedToken(clientId: String, clientSecret: String) =
-        HttpConnection(
-                url = "https://accounts.spotify.com/api/token",
-                method = HttpRequestMethod.POST,
-                body = "grant_type=client_credentials",
-                contentType = "application/x-www-form-urlencoded",
-                api = null
-        ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")).body
-                .toObjectNullable<Token>(null)
+fun getCredentialedToken(clientId: String, clientSecret: String): Token {
+    val response = HttpConnection(
+            url = "https://accounts.spotify.com/api/token",
+            method = HttpRequestMethod.POST,
+            body = "grant_type=client_credentials",
+            contentType = "application/x-www-form-urlencoded",
+            api = null
+    ).execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}"))
+
+    if (response.responseCode / 200 == 1) return response.body.toObject(null)
+
+    throw BadRequestException(response.body.toObject<AuthenticationError>(null))
+}
 
 private fun getKlaxon(api: SpotifyAPI) = Klaxon()
         .converter(getFeaturedPlaylistsConverter(api))

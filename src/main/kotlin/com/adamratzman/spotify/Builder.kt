@@ -90,6 +90,13 @@ class SpotifyApiBuilder(
      */
     fun token(token: Token?) = apply { this.token = token }
 
+    /*fun build(type: AuthorizationType, automaticRefresh: Boolean = true) {
+
+    }*/
+
+    /**
+     *
+     */
     fun buildCredentialed() = spotifyApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
@@ -101,7 +108,7 @@ class SpotifyApiBuilder(
         }
     }.buildCredentialed()
 
-    fun buildClient(automaticRefresh: Boolean = false) = spotifyApi {
+    fun buildClient(automaticRefresh: Boolean = true) = spotifyApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -174,7 +181,7 @@ class SpotifyApiBuilderDsl {
 
     fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Runnable { consumer(buildCredentialed()) }.run()
 
-    fun buildCredentialed(): SpotifyAPI {
+    fun buildCredentialed(automaticRefresh: Boolean = true): SpotifyAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         if ((clientId == null || clientSecret == null) && (authentication.token == null && authentication.tokenString == null)) {
@@ -183,7 +190,7 @@ class SpotifyApiBuilderDsl {
         return when {
             authentication.token != null -> {
                 SpotifyAppAPI(clientId ?: "not-set", clientSecret
-                        ?: "not-set", authentication.token!!, useCache)
+                        ?: "not-set", authentication.token!!, useCache, automaticRefresh)
             }
             authentication.tokenString != null -> {
                 SpotifyAppAPI(
@@ -193,14 +200,15 @@ class SpotifyApiBuilderDsl {
                                 authentication.tokenString!!, "client_credentials",
                                 60000, null, null
                         ),
-                        useCache
+                        useCache,
+                        automaticRefresh
                 )
             }
             else -> try {
                 if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
                 val token = getCredentialedToken(clientId, clientSecret)
                         ?: throw IllegalArgumentException("Invalid credentials provided")
-                SpotifyAppAPI(clientId, clientSecret, token, useCache)
+                SpotifyAppAPI(clientId, clientSecret, token, useCache, automaticRefresh)
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
