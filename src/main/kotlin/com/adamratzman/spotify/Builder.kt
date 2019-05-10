@@ -92,14 +92,24 @@ class SpotifyApiBuilder(
      */
     fun automaticRefresh(automaticRefresh: Boolean) = apply { this.automaticRefresh = automaticRefresh }
 
-    /*fun build(type: AuthorizationType, automaticRefresh: Boolean = true) {
-
-    }*/
+    /**
+     * Create a [SpotifyAPI] instance with the given [SpotifyApiBuilder] parameters and the type -
+     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     */
+    fun build(type: AuthorizationType): SpotifyAPI {
+        return if (type == AuthorizationType.CLIENT) buildClient()
+        else buildCredentialed()
+    }
 
     /**
-     *
+     * Create a new [SpotifyAppAPI] that only has access to *public* endpoints and data
      */
-    fun buildCredentialed() = spotifyApi {
+    fun buildPublic() = buildCredentialed()
+
+    /**
+     * Create a new [SpotifyAppAPI] that only has access to *public* endpoints and data
+     */
+    fun buildCredentialed(): SpotifyAPI = spotifyApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -112,7 +122,11 @@ class SpotifyApiBuilder(
         automaticRefresh = this@SpotifyApiBuilder.automaticRefresh
     }.buildCredentialed()
 
-    fun buildClient() = spotifyApi {
+    /**
+     * Create a new [SpotifyClientAPI] that has access to public endpoints, in addition to endpoints
+     * requiring scopes contained in the client authorization request
+     */
+    fun buildClient(): SpotifyClientAPI = spotifyApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -129,6 +143,8 @@ class SpotifyApiBuilder(
 }
 
 /**
+ * A holder for application-specific credentials
+ *
  * @property clientId the client id of your Spotify application
  * @property clientSecret the client secret of your Spotify application
  * @property redirectUri nullable redirect uri (use if you're doing client authentication
@@ -167,6 +183,10 @@ class SpotifyApiBuilderDsl {
     var useCache: Boolean = true
     var automaticRefresh: Boolean = true
 
+    /**
+     * A block in which Spotify application credentials (accessible via the Spotify [dashboard](https://developer.spotify.com/dashboard/applications))
+     * should be put
+     */
     fun credentials(block: SpotifyCredentialsBuilder.() -> Unit) {
         credentials = SpotifyCredentialsBuilder().apply(block).build()
     }
@@ -179,6 +199,13 @@ class SpotifyApiBuilderDsl {
         authentication = SpotifyUserAuthorizationBuilder().apply(block)
     }
 
+    /**
+     * Create a Spotify authorization URL from which client access can be obtained
+     *
+     * @param scopes The scopes that the application should have access to
+     *
+     * @return Authorization URL that can be used in a browser
+     */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         if (credentials.redirectUri == null || credentials.clientId == null) {
             throw IllegalArgumentException("You didn't specify a redirect uri or client id in the credentials block!")
@@ -186,8 +213,16 @@ class SpotifyApiBuilderDsl {
         return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
+    /**
+     * Build a public [SpotifyAppAPI] using the provided credentials
+     *
+     * Provide a consumer object to be executed after the api has been successfully built
+     */
     fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Runnable { consumer(buildCredentialed()) }.run()
 
+    /**
+     * Build a public [SpotifyAppAPI] using the provided credentials
+     */
     fun buildCredentialed(): SpotifyAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
@@ -221,9 +256,19 @@ class SpotifyApiBuilderDsl {
         }
     }
 
+    /**
+     * Build the client api using a provided authorization code, token string, or token object (only one of which
+     * is necessary)
+     *
+     * Provide a consumer object to be executed after the client has been successfully built
+     */
     fun buildClientAsync(consumer: (SpotifyClientAPI) -> Unit) =
             Runnable { consumer(buildClient()) }.run()
 
+    /**
+     * Build the client api using a provided authorization code, token string, or token object (only one of which
+     * is necessary)
+     */
     fun buildClient(): SpotifyClientAPI =
             buildClient(
                     authentication.authorizationCode, authentication.tokenString,
@@ -305,4 +350,8 @@ class SpotifyApiBuilderDsl {
             )
         }
     }
+}
+
+enum class AuthorizationType {
+    CLIENT, APPLICATION
 }
