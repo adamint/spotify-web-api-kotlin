@@ -9,12 +9,12 @@ internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 internal data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-        private val url: String,
-        private val method: HttpRequestMethod,
-        private val body: String?,
-        private val contentType: String?,
-        private vararg val headers: HttpHeader,
-        val api: SpotifyAPI? = null
+    private val url: String,
+    private val method: HttpRequestMethod,
+    private val body: String?,
+    private val contentType: String?,
+    private vararg val headers: HttpHeader,
+    val api: SpotifyAPI? = null
 ) {
 
     fun execute(vararg additionalHeaders: HttpHeader?, retryIf502: Boolean = true): HttpResponse {
@@ -52,8 +52,8 @@ internal class HttpConnection(
             text
         }
 
-        if (responseCode == 401 && body.contains("access token")
-                && api != null && api.automaticRefresh) {
+        if (responseCode == 401 && body.contains("access token") &&
+                api != null && api.automaticRefresh) {
             api.refreshToken()
             return execute(*additionalHeaders)
         }
