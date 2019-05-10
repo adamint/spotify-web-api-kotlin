@@ -78,4 +78,4 @@ class PlaylistURI(input: String) : SpotifyUri(input, "playlist")
 /**
  * Represents a Spotify **local track** URI
  */
-class LocalTrackURI(input: String) :SpotifyUri(input,"local")
+class LocalTrackURI(input: String) : SpotifyUri(input, "local")
