@@ -89,6 +89,11 @@ data class ErrorResponse(val error: ErrorObject)
  */
 data class ErrorObject(val status: Int, val message: String)
 
+data class AuthenticationError(
+        val error: String,
+        @Json(name="error_description") val description: String
+)
+
 class SpotifyUriException(message: String) : BadRequestException(message)
 
 /**
@@ -96,6 +101,8 @@ class SpotifyUriException(message: String) : BadRequestException(message)
  */
 open class BadRequestException(message: String) : Exception(message) {
     constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}")
+    constructor(authenticationError: AuthenticationError)
+            : this("Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}")
 }
 
 typealias Market = CountryCode
