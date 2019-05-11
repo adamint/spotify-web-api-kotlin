@@ -2,8 +2,11 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 internal data class HttpHeader(val key: String, val value: String)
@@ -45,6 +48,24 @@ internal class HttpConnection(
         }
 
         if (responseCode == 502 && !retryIf502) api?.logger?.logWarning("502 retry successful for $this")
+
+        if (responseCode == 429) {
+            val ratelimit = connection.getHeaderField("Retry-After").toLong() + 1L
+            if (api?.retryWhenRateLimited == true) {
+                api.logger.logError(false, "The request ($url) was ratelimited for $ratelimit seconds at ${System.currentTimeMillis()}", null)
+
+                var response: HttpResponse? = null
+                (api.executor ?: Executors.newSingleThreadScheduledExecutor()).schedule({
+                    response = try {
+                        execute(*additionalHeaders, retryIf502 = retryIf502)
+                    } catch (e: Throwable) {
+                        throw e
+                    }
+                }, ratelimit, TimeUnit.SECONDS).get()
+
+                return response!!
+            } else throw SpotifyRatelimitedException(ratelimit)
+        }
 
         val body = (connection.errorStream ?: connection.inputStream).bufferedReader().use {
             val text = it.readText()
