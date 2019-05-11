@@ -63,7 +63,9 @@ abstract class SpotifyAPI internal constructor(
     val clientSecret: String,
     var token: Token,
     useCache: Boolean,
-    var automaticRefresh: Boolean
+    var automaticRefresh: Boolean,
+    var retryWhenRateLimited: Boolean,
+    enableLogger: Boolean
 ) {
     private var refreshFuture: ScheduledFuture<*>? = null
 
@@ -71,6 +73,8 @@ abstract class SpotifyAPI internal constructor(
         set(value) {
             if (!useCache && value) refreshFuture = startCacheRefreshRunnable()
             else if (useCache && !value) refreshFuture?.cancel(false)
+
+            if (!value) clearCache()
 
             field = value
         }
@@ -87,7 +91,7 @@ abstract class SpotifyAPI internal constructor(
     abstract val tracks: TracksAPI
     abstract val following: FollowingAPI
 
-    internal val logger = SpotifyLogger(true)
+    internal val logger = SpotifyLogger(enableLogger)
 
     abstract val klaxon: Klaxon
 
@@ -157,9 +161,10 @@ class SpotifyAppAPI internal constructor(
     clientSecret: String,
     token: Token,
     useCache: Boolean,
-    automaticRefresh: Boolean
-) :
-        SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh) {
+    automaticRefresh: Boolean,
+    retryWhenRateLimited: Boolean,
+    enableLogger: Boolean
+) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh, retryWhenRateLimited, enableLogger) {
 
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -229,8 +234,10 @@ class SpotifyClientAPI internal constructor(
     token: Token,
     automaticRefresh: Boolean,
     var redirectUri: String,
-    useCache: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh) {
+    useCache: Boolean,
+    retryWhenRateLimited: Boolean,
+    enableLogger: Boolean
+) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh, retryWhenRateLimited, enableLogger) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)

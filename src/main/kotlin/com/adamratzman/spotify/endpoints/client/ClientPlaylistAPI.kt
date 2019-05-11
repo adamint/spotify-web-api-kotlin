@@ -1,13 +1,14 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.endpoints.public.PlaylistAPI
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.endpoints.public.PlaylistAPI
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
@@ -252,7 +253,13 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
     /**
      * Replace the image used to represent a specific playlist. Image type **must** be jpeg.
      *
-     * Must specify a JPEG image path or image data, maximum payload size is 256 KB
+     * You must specify a JPEG image path or image data, maximum payload size is 256 KB
+     *
+     * **Required conditions**: This access token must be tied to the user who owns the playlist,
+     * and must have the scope [ugc-image-upload][SpotifyScope.UGC_IMAGE_UPLOAD] granted. In addition, the token must also
+     * contain [playlist-modify-public][SpotifyScope.PLAYLIST_MODIFY_PUBLIC] and/or
+     * [playlist-modify-private][SpotifyScope.PLAYLIST_MODIFY_PRIVATE], depending on the
+     * public status of the playlist you want to update.
      *
      * @param playlist the spotify id or uri for the playlist.
      * @param imagePath Optionally specify the full local path to the image

@@ -16,14 +16,16 @@ fun spotifyApi(block: SpotifyApiBuilderDsl.() -> Unit) = SpotifyApiBuilderDsl().
  * Spotify traditional Java style API builder
  */
 class SpotifyApiBuilder(
-        val clientId: String,
-        val clientSecret: String,
-        var redirectUri: String? = null,
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null,
-        var useCache: Boolean = true,
-        var automaticRefresh: Boolean = true
+    val clientId: String,
+    val clientSecret: String,
+    var redirectUri: String? = null,
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null,
+    var useCache: Boolean = true,
+    var automaticRefresh: Boolean = true,
+    var retryWhenRateLimited: Boolean = false,
+    var enableLogger: Boolean = false
 ) {
     /**
      * Instantiate the builder with the application [clientId] and [clientSecret]
@@ -93,6 +95,16 @@ class SpotifyApiBuilder(
     fun automaticRefresh(automaticRefresh: Boolean) = apply { this.automaticRefresh = automaticRefresh }
 
     /**
+     * Set whether to block the current thread and wait until the API can retry the request
+     */
+    fun retryWhenRateLimited(retryWhenRateLimited: Boolean) = apply { this.retryWhenRateLimited = retryWhenRateLimited }
+
+    /**
+     * Set whether to enable to the exception logger
+     */
+    fun enableLogger(enableLogger: Boolean) = apply { this.enableLogger = enableLogger }
+
+    /**
      * Create a [SpotifyAPI] instance with the given [SpotifyApiBuilder] parameters and the type -
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
@@ -120,6 +132,8 @@ class SpotifyApiBuilder(
         }
 
         automaticRefresh = this@SpotifyApiBuilder.automaticRefresh
+        retryWhenRateLimited = this@SpotifyApiBuilder.retryWhenRateLimited
+        enableLogger = this@SpotifyApiBuilder.enableLogger
     }.buildCredentialed()
 
     /**
@@ -139,6 +153,8 @@ class SpotifyApiBuilder(
         }
 
         automaticRefresh = this@SpotifyApiBuilder.automaticRefresh
+        retryWhenRateLimited = this@SpotifyApiBuilder.retryWhenRateLimited
+        enableLogger = this@SpotifyApiBuilder.enableLogger
     }.buildClient()
 }
 
@@ -172,16 +188,29 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null
 )
 
+/**
+ * Spotify API mutable parameters
+ *
+ * @property credentials A holder for application-specific credentials
+ * @property authentication A holder for authentication methods. At least one needs to be provided in order to create
+ * a **client** api
+ * @property useCache Set whether to cache requests. Default: true
+ * @property automaticRefresh Enable or disable automatic refresh of the Spotify access token
+ * @property retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request
+ * @property enableLogger Set whether to enable to the exception logger
+ */
 class SpotifyApiBuilderDsl {
     private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
     private var authentication = SpotifyUserAuthorizationBuilder()
     var useCache: Boolean = true
     var automaticRefresh: Boolean = true
+    var retryWhenRateLimited: Boolean = false
+    var enableLogger: Boolean = false
 
     /**
      * A block in which Spotify application credentials (accessible via the Spotify [dashboard](https://developer.spotify.com/dashboard/applications))
@@ -232,7 +261,7 @@ class SpotifyApiBuilderDsl {
         return when {
             authentication.token != null -> {
                 SpotifyAppAPI(clientId ?: "not-set", clientSecret
-                        ?: "not-set", authentication.token!!, useCache, false)
+                        ?: "not-set", authentication.token!!, useCache, false, retryWhenRateLimited, enableLogger)
             }
             authentication.tokenString != null -> {
                 SpotifyAppAPI(
@@ -243,13 +272,15 @@ class SpotifyApiBuilderDsl {
                                 60000, null, null
                         ),
                         useCache,
-                        automaticRefresh
+                        automaticRefresh,
+                        retryWhenRateLimited,
+                        enableLogger
                 )
             }
             else -> try {
                 if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
                 val token = getCredentialedToken(clientId, clientSecret, null)
-                SpotifyAppAPI(clientId, clientSecret, token, useCache, automaticRefresh)
+                SpotifyAppAPI(clientId, clientSecret, token, useCache, automaticRefresh, retryWhenRateLimited, enableLogger)
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
@@ -286,9 +317,9 @@ class SpotifyApiBuilderDsl {
      * [authorizationCode] or [token] is provided
      */
     private fun buildClient(
-            authorizationCode: String? = null,
-            tokenString: String? = null,
-            token: Token? = null
+        authorizationCode: String? = null,
+        tokenString: String? = null,
+        token: Token? = null
     ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
@@ -317,7 +348,9 @@ class SpotifyApiBuilderDsl {
                         response.body.toObject(null),
                         automaticRefresh,
                         redirectUri ?: throw IllegalArgumentException(),
-                        useCache
+                        useCache,
+                        retryWhenRateLimited,
+                        enableLogger
                 )
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
@@ -328,7 +361,9 @@ class SpotifyApiBuilderDsl {
                     token,
                     automaticRefresh,
                     redirectUri ?: "not-set",
-                    useCache
+                    useCache,
+                    retryWhenRateLimited,
+                    enableLogger
             )
             tokenString != null -> SpotifyClientAPI(
                     clientId ?: "not-set",
@@ -342,7 +377,9 @@ class SpotifyApiBuilderDsl {
                     ),
                     false,
                     redirectUri ?: "not-set",
-                    useCache
+                    useCache,
+                    retryWhenRateLimited,
+                    enableLogger
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +

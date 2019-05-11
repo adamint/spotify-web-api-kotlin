@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyException
 import com.beust.klaxon.Json
 import com.neovisionaries.i18n.CountryCode
 
@@ -97,9 +98,19 @@ data class AuthenticationError(
 class SpotifyUriException(message: String) : BadRequestException(message)
 
 /**
+ * Thrown when [SpotifyAPI.retryWhenRateLimited] is false and requests have been ratelimited
+ *
+ * @param time the time, in seconds, until the next request can be sent
+ */
+class SpotifyRatelimitedException(time: Long) :
+    UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${System.currentTimeMillis() + time * 1000}ms")
+
+abstract class UnNullableException(message: String) : SpotifyException(message)
+
+/**
  * Thrown when a request fails
  */
-open class BadRequestException(message: String) : Exception(message) {
+open class BadRequestException(message: String) : SpotifyException(message) {
     constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}")
     constructor(authenticationError: AuthenticationError) :
             this("Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}")
