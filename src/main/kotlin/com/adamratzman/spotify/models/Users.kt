@@ -71,5 +71,6 @@ data class SpotifyPublicUser(
  */
 data class Followers(
     val href: String?,
-    val total: Int
+    @Json(name = "total", ignored = false) private val _total: Int,
+    @Json(ignored = true) val total: Int = _total ?: -1
 )

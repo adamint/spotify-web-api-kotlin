@@ -26,4 +26,4 @@ class SpotifyLogger(var enabled: Boolean) {
     }
 }
 
-class SpotifyException(message: String, cause: Throwable) : Exception(message, cause)
+open class SpotifyException(message: String, cause: Throwable? = null) : Exception(message, cause)

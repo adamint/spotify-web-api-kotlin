@@ -1,12 +1,13 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.BadRequestException
@@ -55,6 +56,8 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get tracks from the current user’s recently played tracks.
+     *
+     * **Requires** the [SpotifyScope.USER_READ_RECENTLY_PLAYED] scope
      *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param before The timestamp (retrieved via cursor) **not including**, but before which, tracks will have been played. This can be combined with [limit]
