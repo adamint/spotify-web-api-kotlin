@@ -34,7 +34,7 @@ import java.util.function.Supplier
  */
 class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
-     * Get available genre seeds for recommendations
+     * Retrieve a list of available genres seed parameter values for recommendations.
      *
      * @return List of genre ids
      */
@@ -56,6 +56,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * If omitted, the returned items will be relevant to all countries.
      *
      * @throws BadRequestException if filter parameters are illegal
+     * @return [PagingObject] of new album released, ordered by release date (descending)
      */
     fun getNewReleases(
         limit: Int? = null,
@@ -90,6 +91,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * date and time in the day. If not provided, the response defaults to the current UTC time.
      *
      * @throws BadRequestException if filter parameters are illegal or [locale] does not exist
+     * @return [FeaturedPlaylists] object with the current featured message and featured playlists
      */
     fun getFeaturedPlaylists(
         limit: Int? = null,
@@ -179,6 +181,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
+     * @return [PagingObject] of top playlists tagged with [categoryId]
      */
     fun getPlaylistsForCategory(
         categoryId: String,
@@ -256,7 +259,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 /**
  * Describes a track attribute
  *
- * @param attribute the spotify id for the track attribute
+ * @param attribute The spotify id for the track attribute
  */
 enum class TuneableTrackAttribute(private val attribute: String) {
     /**

@@ -4,6 +4,7 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
@@ -27,8 +28,14 @@ import java.util.function.Supplier
  */
 open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
-     * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return empty [PagingObject]s
-     * (blame Spotify)
+     * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
+     * [PagingObject] (blame Spotify)
+     *
+     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope
+     * to have been authorized by the user. Note that this scope alone will not return a collaborative playlist, even
+     * though they are always private.
+     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
+     * scope to have been authorized by the user.
      *
      * @param user The user’s Spotify user ID.
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
@@ -57,7 +64,9 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get a playlist owned by a Spotify user.
      *
-     * @param playlist the spotify id or uri for the playlist.
+     * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+     *
+     * @param playlist The spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @throws BadRequestException if the playlist is not found
@@ -76,7 +85,9 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     /**
      * Get full details of the tracks of a playlist owned by a Spotify user.
      *
-     * @param playlist the spotify id or uri for the playlist.
+     * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+     *
+     * @param playlist The spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -99,8 +110,12 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Get the current image associated with a specific playlist.
-     * @param playlist the spotify id or uri for the playlist.
+     * Get the current image(s) associated with a specific playlist.
+     *
+     * This access token must be issued on behalf of the user. Current playlist image for both Public and Private
+     * playlists of any user are retrievable on provision of a valid access token.
+     *
+     * @param playlist The spotify id or uri for the playlist.
      *
      * @throws BadRequestException if the playlist cannot be found
      */
