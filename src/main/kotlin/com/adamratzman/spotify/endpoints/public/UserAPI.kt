@@ -1,11 +1,11 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.SpotifyAPI
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.models.SpotifyPublicUser
 import com.adamratzman.spotify.models.UserURI
 import com.adamratzman.spotify.models.serialization.toObject
@@ -21,7 +21,7 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      * @param user The user’s Spotify user ID.
      *
-     * @return publicly-available information about the user
+     * @return All publicly-available information about the user
      */
     fun getProfile(user: String): SpotifyRestAction<SpotifyPublicUser?> {
         return toAction(Supplier {

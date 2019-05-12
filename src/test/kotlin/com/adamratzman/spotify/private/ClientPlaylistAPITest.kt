@@ -14,16 +14,16 @@ import org.spekframework.spek2.style.specification.describe
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
         val cp = (api as? SpotifyClientAPI)?.playlists
-        val playlistsBefore = cp?.getClientPlaylists()?.complete()
+        val playlistsBefore = cp?.getPlaylists()?.complete()
         val createdPlaylist = cp?.createPlaylist("this is a test playlist", "description")
             ?.complete()
 
         createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
-            assertTrue(cp.getClientPlaylists().complete().size - 1 == playlistsBefore?.size)
+            assertTrue(cp.getPlaylists().complete().size - 1 == playlistsBefore?.size)
         }
         it("edit playlists") {
-            cp.changePlaylistDescription(
+            cp.changePlaylistDetails(
                 createdPlaylist.id, "test playlist", false,
                 true, "description 2"
             ).complete()
@@ -35,7 +35,7 @@ class ClientPlaylistAPITest : Spek({
                 imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
             ).complete()
 
-            var updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!
+            var updatedPlaylist = cp.getPlaylist(createdPlaylist.id).complete()!!
             val fullPlaylist = updatedPlaylist.toFullPlaylist().complete()!!
 
             assertTrue(
@@ -47,13 +47,13 @@ class ClientPlaylistAPITest : Spek({
 
             cp.reorderPlaylistTracks(updatedPlaylist.id, 1, insertionPoint = 0).complete()
 
-            updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!
+            updatedPlaylist = cp.getPlaylist(createdPlaylist.id).complete()!!
 
             assertTrue(updatedPlaylist.toFullPlaylist().complete()?.tracks?.items?.get(0)?.track?.id == "7FjZU7XFs7P9jHI9Z0yRhK")
 
             cp.removeAllPlaylistTracks(updatedPlaylist.id).complete()
 
-            updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!
+            updatedPlaylist = cp.getPlaylist(createdPlaylist.id).complete()!!
 
             assertTrue(updatedPlaylist.tracks.total == 0)
         }
@@ -104,7 +104,7 @@ class ClientPlaylistAPITest : Spek({
 
         it("destroy (unfollow) playlist") {
             cp.deletePlaylist(createdPlaylist.id).complete()
-            assertTrue(cp.getClientPlaylist(createdPlaylist.id).complete() == null)
+            assertTrue(cp.getPlaylist(createdPlaylist.id).complete() == null)
         }
     }
 })

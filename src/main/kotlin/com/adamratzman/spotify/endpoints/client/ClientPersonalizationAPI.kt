@@ -1,10 +1,11 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.http.EndpointBuilder
-import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.http.EndpointBuilder
+import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
@@ -28,6 +29,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get the current user’s top artists based on calculated affinity.
+     *
      * Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user
      * behavior, including play history, but does not include actions made while in incognito mode. Light or infrequent
      * users of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
@@ -36,9 +38,11 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
      *
+     * **Requires** the [SpotifyScope.USER_TOP_READ] scope
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
-     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
+     * @param timeRange The time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
@@ -58,6 +62,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
 
     /**
      * Get the current user’s top tracks based on calculated affinity.
+     *
      * Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user
      * behavior, including play history, but does not include actions made while in incognito mode. Light or infrequent
      * users of Spotify may not have sufficient play history to generate a full affinity data set. As a user’s behavior
@@ -66,9 +71,11 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * for each user. In the future, it is likely that this restriction will be relaxed. This data is typically updated
      * once each day for each user.
      *
+     * **Requires** the [SpotifyScope.USER_TOP_READ] scope
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
-     * @param timeRange the time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
+     * @param timeRange The time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
