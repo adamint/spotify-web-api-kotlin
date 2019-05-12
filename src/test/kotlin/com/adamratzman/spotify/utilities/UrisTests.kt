@@ -1,12 +1,12 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.utils.AlbumURI
-import com.adamratzman.spotify.utils.ArtistURI
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.PlaylistURI
-import com.adamratzman.spotify.utils.TrackURI
-import com.adamratzman.spotify.utils.UserURI
+import com.adamratzman.spotify.models.AlbumURI
+import com.adamratzman.spotify.models.ArtistURI
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.UserURI
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows

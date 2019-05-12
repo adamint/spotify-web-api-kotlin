@@ -1,10 +1,10 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.models.BadRequestException
+import com.neovisionaries.i18n.CountryCode
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -22,31 +22,31 @@ class BrowseAPITest : Spek({
 
         it("get category list") {
             assertEquals(b.getCategoryList(locale = "BAD_LOCALE").complete()[0], b.getCategoryList().complete()[0])
-            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = Market.CA).complete().isNotEmpty())
+            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = CountryCode.CA).complete().isNotEmpty())
         }
 
         it("get category") {
             assertNotNull(b.getCategory("pop").complete())
-            assertNotNull(b.getCategory("pop", Market.FR).complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = "en_US").complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = "KSDJFJKSJDKF").complete())
-            assertThrows<BadRequestException> { b.getCategory("no u", Market.US).complete() }
+            assertNotNull(b.getCategory("pop", CountryCode.FR).complete())
+            assertNotNull(b.getCategory("pop", CountryCode.FR, locale = "en_US").complete())
+            assertNotNull(b.getCategory("pop", CountryCode.FR, locale = "KSDJFJKSJDKF").complete())
+            assertThrows<BadRequestException> { b.getCategory("no u", CountryCode.US).complete() }
         }
 
         it("get playlists by category") {
             assertThrows<BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
-            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, Market.FR).complete().isNotEmpty())
+            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, CountryCode.FR).complete().isNotEmpty())
         }
 
         it("get featured playlists") {
-            assertTrue(b.getFeaturedPlaylists(5, 4, market = Market.US, timestamp = System.currentTimeMillis() - 1000000).complete().playlists.total > 0)
+            assertTrue(b.getFeaturedPlaylists(5, 4, market = CountryCode.US, timestamp = System.currentTimeMillis() - 1000000).complete().playlists.total > 0)
             assertTrue(b.getFeaturedPlaylists(offset = 32).complete().playlists.total > 0)
         }
 
         it("get new releases") {
-            assertTrue(b.getNewReleases(market = Market.CA).complete().isNotEmpty())
+            assertTrue(b.getNewReleases(market = CountryCode.CA).complete().isNotEmpty())
             assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().isNotEmpty())
-            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = Market.US).complete().isNotEmpty())
+            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = CountryCode.US).complete().isNotEmpty())
         }
 
         describe("get recommendations") {

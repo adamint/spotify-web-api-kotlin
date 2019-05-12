@@ -1,9 +1,13 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 @file:Suppress("UNCHECKED_CAST")
 
-package com.adamratzman.spotify.utils
+package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.main.SpotifyAPI
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
+import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.utils.catch
 import com.beust.klaxon.Json
 import java.util.function.Supplier
 
@@ -168,12 +172,12 @@ class CursorBasedPagingObject<T>(
             val url = endpoint.get(it)
             when {
                 itemClazz == PlayHistory::class.java -> url.toCursorBasedPagingObject<PlayHistory>(
-                    null,
-                    endpoint
+                        null,
+                        endpoint
                 )
                 itemClazz == Artist::class.java -> url.toCursorBasedPagingObject<Artist>(
-                    null,
-                    endpoint
+                        null,
+                        endpoint
                 )
                 else -> throw IllegalArgumentException("Unknown type in $href")
             } as? CursorBasedPagingObject<T>
@@ -184,6 +188,14 @@ class CursorBasedPagingObject<T>(
         return generateSequence(this) { it.getImpl(PagingTraversalType.FORWARDS) as? CursorBasedPagingObject<T> }
     }
 }
+
+/**
+ * The cursor to use as key to find the next (or previous) page of items.
+ *
+ * @property before The cursor to use as key to find the previous page of items.
+ * @property after The cursor to use as key to find the next page of items.
+ */
+data class Cursor(val before: String? = null, val after: String? = null)
 
 /**
  * @property href A link to the Web API endpoint returning the full result of the request.

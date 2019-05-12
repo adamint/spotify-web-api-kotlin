@@ -1,10 +1,10 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.ArtistsAPI
-import com.adamratzman.spotify.utils.BadRequestException
-import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.models.BadRequestException
+import com.neovisionaries.i18n.CountryCode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -62,7 +62,7 @@ class PublicArtistsAPITest : Spek({
             }
             it("valid artist") {
                 assertTrue(a.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW").complete().isNotEmpty())
-                assertTrue(a.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", Market.FR).complete().isNotEmpty())
+                assertTrue(a.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", CountryCode.FR).complete().isNotEmpty())
             }
         }
     }
