@@ -1,5 +1,5 @@
-/* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+package com.adamratzman.spotify.models
 
 private fun String.matchType(type: String): String? {
     val typeRegex = "^spotify:(?:.*:)*$type:([^:]+)(?::.*)*$|^([^:]+)$".toRegex()
@@ -37,49 +37,45 @@ sealed class SpotifyUri(input: String, type: String) {
             this.id = it.remove(type)
         }
     }
-    
+
     override fun equals(other: Any?): Boolean {
         val spotifyUri = other as? SpotifyUri ?: return false
         return spotifyUri.uri == this.uri
+    }
+
+    override fun hashCode(): Int {
+        var result = uri.hashCode()
+        result = 31 * result + id.hashCode()
+        return result
     }
 }
 
 /**
  * Represents a Spotify **Album** URI, parsed from either a Spotify ID or taken from an endpoint.
- *
- * @property uri retrieve this URI as a string
- * @property id representation of this uri as an id
  */
 class AlbumURI(input: String) : SpotifyUri(input, "album")
 
 /**
  * Represents a Spotify **Artist** URI, parsed from either a Spotify ID or taken from an endpoint.
- *
- * @property uri retrieve this URI as a string
- * @property id representation of this uri as an id
  */
 class ArtistURI(input: String) : SpotifyUri(input, "artist")
 
 /**
  * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
- *
- * @property uri retrieve this URI as a string
- * @property id representation of this uri as an id
  */
 class TrackURI(input: String) : SpotifyUri(input, "track")
 
 /**
  * Represents a Spotify **User** URI, parsed from either a Spotify ID or taken from an endpoint.
- *
- * @property uri retrieve this URI as a string
- * @property id representation of this uri as an id
  */
 class UserURI(input: String) : SpotifyUri(input, "user")
 
 /**
  * Represents a Spotify **Playlist** URI, parsed from either a Spotify ID or taken from an endpoint.
- *
- * @property uri retrieve this URI as a string
- * @property id representation of this uri as an id
  */
 class PlaylistURI(input: String) : SpotifyUri(input, "playlist")
+
+/**
+ * Represents a Spotify **local track** URI
+ */
+class LocalTrackURI(input: String) : SpotifyUri(input, "local")

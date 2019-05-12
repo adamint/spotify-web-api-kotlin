@@ -1,10 +1,9 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
+import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.main.SpotifyClientAPI
-import com.adamratzman.spotify.main.spotifyApi
-
+import com.adamratzman.spotify.spotifyApi
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek

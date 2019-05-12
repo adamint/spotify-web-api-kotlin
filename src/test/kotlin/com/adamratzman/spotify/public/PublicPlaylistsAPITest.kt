@@ -1,8 +1,8 @@
-/* Created by Adam Ratzman (2018) */
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.utils.BadRequestException
+import com.adamratzman.spotify.models.BadRequestException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -20,8 +20,8 @@ class PublicPlaylistsAPITest : Spek({
                 assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
                 assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
             }
-            it("unknown user should throw exception but doesn't. if the id is valid, the list should be empty") {
-                assertEquals(0, p.getPlaylists("non-existant-user").complete().size)
+            it("unknown user should throw exception") {
+                assertThrows<BadRequestException> { p.getPlaylists("non-existant-user").complete().size }
             }
         }
         describe("get playlist") {

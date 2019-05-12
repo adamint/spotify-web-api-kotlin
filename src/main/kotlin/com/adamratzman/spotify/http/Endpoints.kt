@@ -1,12 +1,19 @@
-/* Created by Adam Ratzman (2018) */
-package com.adamratzman.spotify.utils
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.main.SpotifyAPI
-import com.adamratzman.spotify.main.SpotifyAppAPI
-import com.adamratzman.spotify.main.SpotifyRestAction
-import com.adamratzman.spotify.main.SpotifyRestActionPaging
-import com.adamratzman.spotify.main.base
+import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyAppAPI
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.base
+import com.adamratzman.spotify.models.AbstractPagingObject
+import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.ErrorObject
+import com.adamratzman.spotify.models.ErrorResponse
+import com.adamratzman.spotify.models.serialization.toObject
 import java.net.HttpURLConnection
+import java.net.URLEncoder
+import java.util.Base64
 import java.util.function.Supplier
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
@@ -50,17 +57,17 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         }
 
         val document = createConnection(url, body, method, contentType).execute(
-            cacheState?.eTag?.let {
-                HttpHeader("If-None-Match", it)
-            }
+                cacheState?.eTag?.let {
+                    HttpHeader("If-None-Match", it)
+                }
         )
 
         return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
-            url,
-            body,
-            method,
-            false,
-            contentType
+                url,
+                body,
+                method,
+                false,
+                contentType
         )
     }
 
@@ -82,7 +89,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         document.headers.find { it.key == "Cache-Control" }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
-                    responseBody, document.headers
+                        responseBody, document.headers
                         .find { it.key == "ETag" }?.value
                 )).update(cacheControlHeader.value)
             }
@@ -105,11 +112,12 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         method: HttpRequestMethod = HttpRequestMethod.GET,
         contentType: String? = null
     ) = HttpConnection(
-        url,
-        method,
-        body,
-        contentType,
-        HttpHeader("Authorization", "Bearer ${api.token.accessToken}")
+            url,
+            method,
+            body,
+            contentType,
+            HttpHeader("Authorization", "Bearer ${api.token.accessToken}"),
+            api = api
     )
 
     internal fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(api, supplier)
@@ -164,7 +172,13 @@ internal data class CacheState(val data: String, val eTag: String?, val expireBy
         val time = group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
-            expireBy = System.currentTimeMillis() + 1000 * time
+                expireBy = System.currentTimeMillis() + 1000 * time
         )
     }
 }
+
+internal fun String.byteEncode(): String {
+    return String(Base64.getEncoder().encode(toByteArray()))
+}
+
+internal fun String.encode() = URLEncoder.encode(this, "UTF-8")!!
