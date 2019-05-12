@@ -23,7 +23,30 @@ If you have a question, you can:
 ## Downloading
 This library is available via Maven Central [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
-### Maven:
+### Gradle
+```
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.2.0'
+```
+
+To use the latest snapshot instead, you must add the Jitpack repository as well
+```
+repositories {
+    maven { url 'https://jitpack.io' }
+    jcenter()
+}
+```
+Then, you can use the following:
+```
+dependencies {
+	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
+}
+```
+
+### Maven
 ```
 <dependency>
     <groupId>com.adamratzman</groupId>
@@ -38,31 +61,8 @@ This library is available via Maven Central [here](https://search.maven.org/arti
 </repository>
 ```
 
-### Gradle
-```
-repositories {
-    jcenter()
-}
-
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.2.0'
-```
-
-To use the latest snapshot instead, you must add the Jitpack repository as well
-```
-repositories {
-    jcenter()
-    maven { url 'https://jitpack.io' }
-}
-```
-Then, you can use the following:
-```
-dependencies {
-	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
-}
-```
-
 #### Android
-This library should work out of the box on Android.
+This library will work out of the box on Android.
 
 ## Documentation
 The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin
@@ -71,11 +71,14 @@ The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/sp
 In order to use the methods in this library, you must create either a `SpotifyAPI` or `SpotifyClientAPI` object using their respective exposed builders. Client-specific methods are unable to be accessed with the generic SpotifyAPI, rather you must create an instance of the Client API.
 
 ### SpotifyAPI
-The SpotifyAPI `Token` automatically regenerates when needed.
-To build it, you must pass the application id and secret.
+By default, the SpotifyAPI `Token` automatically regenerates when needed. This can be changed 
+through the `automaticRefresh` parameter in all builders.
+
+To build a new `SpotifyAPI`, you must pass the application id and secret.
+
 ```kotlin
-import com.adamratzman.spotify.main.SpotifyScope
-import com.adamratzman.spotify.main.spotifyApi
+import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.spotifyApi
 
 spotifyApi {
     credentials {
@@ -86,25 +89,25 @@ spotifyApi {
 ```
 *Note:* You are **unable** to use any client endpoint without authenticating with the methods below. 
 
-### SpotifyClientAPI
-All endpoints inside `SpotifyAPI` can be accessed within the `SpotifyClientAPI`.
+#### SpotifyClientAPI
+The `SpotifyClientAPI` is a superset of `SpotifyAPI`.
+
 Its automatic refresh is available *only* when building with
-an authorization code or a `Token` object. Otherwise, it will expire `Token#expires_in` seconds after creation.
+an authorization code or a `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
 You have two options when building the Client API.
-1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) with 
-`Builder.buildToken(token: String)`. However, this is a one-time token that cannot be refreshed.
-2. You can use the [Authorization code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow). We provide a method
-with `Builder.buildAuthCode(code: String, automaticRefresh: Boolean)`to generate the flow url with Builder.getAuthUrl(vararg spotifyScopes: Scope), allowing you to request specific 
-spotifyScopes. This library does not provide a method to retrieve the code from your 
-callback URL. You must implement that with a web server. This method allows you 
-to choose whether to use automatic token refresh.
+1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) by
+setting the value of `tokenString` in the builder `authentication` block. However, this is a one-time token that cannot be refreshed.
+2. You can use the [Authorization code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow) by 
+setting the value of `authorizationCode` in a builder. You may generate an authentication flow url allowing you to request specific 
+Spotify scopes using the `getAuthorizationUrl` method in any builder. This library does not provide a method to retrieve the code from your 
+callback URL; you must implement that with a web server.
 
 ## What is the SpotifyRestAction class?
-I wanted users of this library to have as much flexibility as possible. This 
-includes options for asynchronous and blocking execution in all endpoints. However, 
+Abstracting requests into a `SpotifyRestAction` class allows for a lot of flexibility in sending and receiving requests. 
+This class includes options for asynchronous and blocking execution in all endpoints. However, 
  due to this, you **must** call one of the provided methods in order for the call 
- to execute! The `SpotifyRestAction` provides four methods for use: 1 blocking and 3 async.
+ to execute! The `SpotifyRestAction` provides many methods for use, including blocking and asynchronous ones. For example,
 - `complete()` blocks the current thread and returns the result
 - `queue()` executes and immediately returns
 - `queue(consumer: (T) -> Unit)` executes the provided callback as soon as the request 
@@ -142,7 +145,7 @@ Just like with PagingObjects, you can get the next page of items with `getNext`.
 provided implementation of `after` in this library. You will need to do it yourself, if necessary.
 
 #### LinkedResults
-Some endpoints, like `PlaylistsAPI.getPlaylistTracks`, return a LinkedResult, which is a simple wrapper around the 
+Some endpoints, like `PlaylistAPI.getPlaylistTracks`, return a LinkedResult, which is a simple wrapper around the 
 list of objects. With this, we have access to its Spotify API url (with `href`), and we provide simple methods to parse 
 that url.
 
@@ -151,10 +154,10 @@ For obvious reasons, in most cases, making asynchronous requests via `queue` or 
 the synchronous format is also shown.
 
 ```kotlin
-import com.adamratzman.spotify.main.SpotifyScope
-import com.adamratzman.spotify.main.spotifyApi
+import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.spotifyApi
 
-val spotifyApi = spotifyApi {
+val api = spotifyApi {
     credentials {
         clientId = "YOUR_CLIENT_ID"
         clientSecret = "YOUR_CLIENT_SECRET"
@@ -162,20 +165,20 @@ val spotifyApi = spotifyApi {
 }.buildCredentialed()
 
 // block and print out the names of the twenty most similar songs to the search
-spotifyApi.search.searchTrack("Début de la Suite").complete().map { it.name }.joinToString().let { println(it) }
+println(api.search.searchTrack("Début de la Suite").complete().map { it.name }.joinToString())
 
 // now, let's do it asynchronously
-spotifyApi.search.searchTrack("Début de la Suite").queue { it.map { it.name }.joinToString().let { println(it) } }
+api.search.searchTrack("Début de la Suite").queue { println(it.map { it.name }.joinToString()) }
 
-// simple, right? what about if we want to print ou the featured playlists message from the "Overview" tab?
-spotifyApi.browse.getFeaturedPlaylists().complete().message.let { println(it )}
+// simple, right? what about if we want to print out the featured playlists message from the "Overview" tab?
+println(api.browse.getFeaturedPlaylists().complete().message)
 
 // easy! let's try something a little harder
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
 
-spotifyApi.search.searchArtist("Bénabar").complete()[0].id.let { id -> 
-    spotifyApi.artists.getArtistTopTracks(id).complete().joinToString { it.name }.let { println(it) }
- }
+val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
+
+println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
 ```
 
 ### Track Relinking
@@ -187,7 +190,7 @@ In both Track and SimpleTrack objects in an endpoint response, there is a nullab
 If the track is unable to be played in the specified market and there is an alternative that *is* playable, this 
 will be populated with the href, uri, and, most importantly, the id of the track.
 
-You can then use this track in clientApi actions such as playing or saving the track, knowing that it will be playable 
+You can then use this track in `SpotifyClientAPI` actions such as playing or saving the track, knowing that it will be playable 
 in your market!
 
 ### Contributing
@@ -213,9 +216,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
         5. `getPlaylistsForCategory` returns a `PagingObject` of top simple playlists for the specified category id
         6. `getRecommendations` returns a RecommendationResponse. Parameters include seed artists, genres, tracks, and 
         tuneable track attributes listed [here](https://developer.spotify.com/web-api/complete-recommendations/)
-   - **[PublicFollowingAPI (SpotifyAPI.publicFollowing)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
+   - **[PublicFollowingAPI (SpotifyAPI.following)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
         1. `doUsersFollowPlaylist` returns a List of Booleans corresponding to the order in which ids were specified
-   - **[PlaylistsAPI (SpotifyAPI.playlists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
+   - **[PlaylistAPI (SpotifyAPI.playlist)](https://developer.spotify.com/web-api/playlist-endpoints/)**
         1. `getPlaylists` returns a `PagingObject` of SimplePlaylists the user has
         2. `getPlaylist` returns a full Playlist object of the specified user and playlist id
         3. `getPlaylistTracks` returns a `LinkedResult` (linked with the playlist url) of **PlaylistTrack**s
@@ -243,9 +246,9 @@ links provided for each API below
    - **[PersonalizationAPI (SpotifyClientAPI.personalization)](https://developer.spotify.com/web-api/web-api-personalization-endpoints/)**
         1. `getTopArtists` returns an Artist `PagingObject` representing the most played Artists by the user
         2. `getTopTracks` returns a Track `PagingObject` representing the most played Tracks by the user
-   - **[ClientUserAPI (SpotifyClientAPI.userProfile)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
+   - **[ClientUserAPI (SpotifyClientAPI.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
         1. `getUserInformation` returns SpotifyUserInformation object, a much more detailed version of the public user object.
-   - **[UserLibraryAPI (SpotifyClientAPI.userLibrary)](https://developer.spotify.com/web-api/library-endpoints/)**
+   - **[UserLibraryAPI (SpotifyClientAPI.library)](https://developer.spotify.com/web-api/library-endpoints/)**
         1. `getSavedTracks` returns a `PagingObject` of saved tracks in the user's library
         2. `getSavedAlbums` returns a `PagingObject` of saved albums in the user's library
         3. `savedTracksContains` returns an ordered List of Booleans of whether the track exists in the user's library 
@@ -256,7 +259,7 @@ links provided for each API below
         6. `saveAlbums` saves the entered albums to the user's library. Returns nothing
         7. `removeSavedTracks` removes the entered tracks from the user's library. Nothing happens if the track is not found. Returns nothing
         8. `removeSavedAlbums` removes the entered albums from the user's library. Nothing happens if the album is not found in the library. Returns nothing
-   - **[FollowingAPI (SpotifyClientAPI.userFollowing)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
+   - **[FollowingAPI (SpotifyClientAPI.following)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
         1. `followingUsers` returns an ordered List of Booleans representing if the user follows the specified users
         2. `followingArtists` returns an ordered List of Booleans representing if the user follows the specified artists
         3. `getFollowedArtists` returns a [Cursor-Based Paging Object](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object) of followed Artists.
@@ -268,7 +271,7 @@ links provided for each API below
         9. `unfollowPlaylist` unfollows the specified playlist. Returns nothing
    - **[PlayerAPI (SpotifyClientAPI.player)](https://developer.spotify.com/web-api/web-api-connect-endpoint-reference/)**
         The methods in this API are in beta and in flux as per Spotify. They will be documented in the near future.
-   - **[ClientPlaylistsAPI (SpotifyClientAPI.clientPlaylists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
+   - **[ClientPlaylistsAPI (SpotifyClientAPI.playlists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
         1. `createPlaylist` creates the playlist and returns its full Playlist representation
         2. `addTrackToPlaylist` adds the entered tracks to the playlist. Returns nothing
         3. `changePlaylistDescription` changes the description of the playlist. Returns nothing
