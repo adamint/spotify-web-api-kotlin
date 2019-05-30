@@ -46,6 +46,7 @@ internal val base = "https://api.spotify.com/v1"
  * @property token The access token associated with this API instance
  * @property useCache Whether to use the built-in cache to avoid making unnecessary calls to
  * the Spotify API
+ * @property cacheLimit The maximum amount of cached requests allowed at one time. Null means no limit
  *
  * @property search Provides access to the Spotify [search endpoint](https://developer.spotify.com/documentation/web-api/reference/search/search/)
  * @property albums Provides access to Spotify [album endpoints](https://developer.spotify.com/documentation/web-api/reference/albums/)
@@ -62,6 +63,7 @@ abstract class SpotifyAPI internal constructor(
     val clientSecret: String,
     var token: Token,
     useCache: Boolean,
+    var cacheLimit: Int?,
     var automaticRefresh: Boolean,
     var retryWhenRateLimited: Boolean,
     enableLogger: Boolean
@@ -72,6 +74,11 @@ abstract class SpotifyAPI internal constructor(
 
             field = value
         }
+
+    /**
+     * Obtain a map of all currently-cached requests
+     */
+    fun getCache() = endpoints.map { it.cache.cachedRequests.toList() }.flatten().toMap()
 
     val expireTime: Long get() = System.currentTimeMillis() + token.expiresIn * 1000
 
@@ -100,9 +107,14 @@ abstract class SpotifyAPI internal constructor(
     abstract fun refreshToken(): Token
 
     /**
+     * A list of all endpoints included in this api type
+     */
+    abstract val endpoints: List<SpotifyEndpoint>
+
+    /**
      * If the cache is enabled, clear all stored queries in the cache
      */
-    abstract fun clearCache()
+    fun clearCache() = clearCaches(*endpoints.toTypedArray())
 
     /**
      * Return a new [SpotifyApiBuilder] with the parameters provided to this api instance
@@ -114,7 +126,7 @@ abstract class SpotifyAPI internal constructor(
      */
     abstract fun getApiBuilderDsl(): SpotifyApiBuilderDsl
 
-    internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
+    private fun clearCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
     }
 
@@ -150,10 +162,11 @@ class SpotifyAppAPI internal constructor(
     clientSecret: String,
     token: Token,
     useCache: Boolean,
+    cacheLimit: Int?,
     automaticRefresh: Boolean,
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh, retryWhenRateLimited, enableLogger) {
+) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
 
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -189,16 +202,17 @@ class SpotifyAppAPI internal constructor(
         throw BadRequestException("Either the client id or the client secret is not set")
     }
 
-    override fun clearCache() = clearAllCaches(
-            search,
-            albums,
-            browse,
-            artists,
-            playlists,
-            users,
-            tracks,
-            following
-    )
+    override val endpoints: List<SpotifyEndpoint>
+        get() = listOf(
+                search,
+                albums,
+                browse,
+                artists,
+                playlists,
+                users,
+                tracks,
+                following
+        )
 
     override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, useCache)
 
@@ -223,9 +237,10 @@ class SpotifyClientAPI internal constructor(
     automaticRefresh: Boolean,
     var redirectUri: String,
     useCache: Boolean,
+    cacheLimit: Int?,
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache, automaticRefresh, retryWhenRateLimited, enableLogger) {
+) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -316,19 +331,20 @@ class SpotifyClientAPI internal constructor(
         } else throw BadRequestException(response.body.toObject<AuthenticationError>(this))
     }
 
-    override fun clearCache() = clearAllCaches(
-            search,
-            albums,
-            browse,
-            artists,
-            playlists,
-            users,
-            tracks,
-            following,
-            personalization,
-            library,
-            player
-    )
+    override val endpoints: List<SpotifyEndpoint>
+        get() = listOf(
+                search,
+                albums,
+                browse,
+                artists,
+                playlists,
+                users,
+                tracks,
+                following,
+                personalization,
+                library,
+                player
+        )
 
     override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, redirectUri, useCache = useCache)
 

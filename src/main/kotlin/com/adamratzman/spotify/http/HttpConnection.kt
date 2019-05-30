@@ -8,8 +8,8 @@ import java.net.URL
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-internal enum class HttpRequestMethod { GET, POST, PUT, DELETE }
-internal data class HttpHeader(val key: String, val value: String)
+enum class HttpRequestMethod { GET, POST, PUT, DELETE }
+data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
     private val url: String,
