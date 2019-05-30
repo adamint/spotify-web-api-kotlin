@@ -48,7 +48,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     ): String {
         if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
 
-        val spotifyRequest = SpotifyRequest(url, method, body)
+        val spotifyRequest = SpotifyRequest(url, method, body, api)
         val cacheState = if (api.useCache) cache[spotifyRequest] else null
 
         if (cacheState?.isStillValid() == true) return cacheState.data
@@ -142,25 +142,33 @@ internal class EndpointBuilder(private val path: String) {
 internal class SpotifyCache {
     private val cachedRequests = hashMapOf<SpotifyRequest, CacheState>()
 
-    internal operator fun get(spotifyRequest: SpotifyRequest): CacheState? {
-        return cachedRequests[spotifyRequest]
+    internal operator fun get(request: SpotifyRequest): CacheState? {
+        checkCache(request)
+        return cachedRequests[request]
     }
 
     internal operator fun set(request: SpotifyRequest, state: CacheState) {
-        cachedRequests[request] = state
+        checkCache(request)
+        if (request.api.useCache) cachedRequests[request] = state
     }
 
-    internal operator fun minusAssign(spotifyRequest: SpotifyRequest) {
-        cachedRequests.remove(spotifyRequest)
+    internal operator fun minusAssign(request: SpotifyRequest) {
+        checkCache(request)
+        cachedRequests.remove(request)
     }
 
     fun clear() = cachedRequests.clear()
+
+    private fun checkCache(request: SpotifyRequest) {
+        if (!request.api.useCache) clear()
+    }
 }
 
 internal data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
-    val body: String?
+    val body: String?,
+    val api: SpotifyAPI
 )
 
 internal data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
