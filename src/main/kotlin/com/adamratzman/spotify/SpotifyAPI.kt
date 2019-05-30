@@ -32,8 +32,7 @@ import com.adamratzman.spotify.models.serialization.getSavedTrackConverter
 import com.adamratzman.spotify.models.serialization.toObject
 import com.beust.klaxon.Klaxon
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.ScheduledExecutorService
 
 internal val base = "https://api.spotify.com/v1"
 
@@ -67,20 +66,16 @@ abstract class SpotifyAPI internal constructor(
     var retryWhenRateLimited: Boolean,
     enableLogger: Boolean
 ) {
-    private var refreshFuture: ScheduledFuture<*>? = null
-
     var useCache = useCache
         set(value) {
-            if (!useCache && value) refreshFuture = startCacheRefreshRunnable()
-            else if (useCache && !value) refreshFuture?.cancel(false)
-
             if (!value) clearCache()
 
             field = value
         }
 
-    internal var expireTime = System.currentTimeMillis() + token.expiresIn * 1000
-    internal val executor = Executors.newScheduledThreadPool(0)
+    val expireTime: Long get() = System.currentTimeMillis() + token.expiresIn * 1000
+
+    val executor: ScheduledExecutorService = Executors.newScheduledThreadPool(0)
 
     abstract val search: SearchAPI
     abstract val albums: AlbumAPI
@@ -91,9 +86,9 @@ abstract class SpotifyAPI internal constructor(
     abstract val tracks: TracksAPI
     abstract val following: FollowingAPI
 
-    internal val logger = SpotifyLogger(enableLogger)
+    val logger = SpotifyLogger(enableLogger)
 
-    abstract val klaxon: Klaxon
+    internal abstract val klaxon: Klaxon
 
     /**
      * If the method used to create the [token] supports token refresh and
@@ -118,12 +113,6 @@ abstract class SpotifyAPI internal constructor(
      * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
      */
     abstract fun getApiBuilderDsl(): SpotifyApiBuilderDsl
-
-    init {
-        if (useCache) refreshFuture = startCacheRefreshRunnable()
-    }
-
-    private fun startCacheRefreshRunnable() = executor.scheduleAtFixedRate(::clearCache, 10, 10, TimeUnit.MINUTES)
 
     internal fun clearAllCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
@@ -194,7 +183,6 @@ class SpotifyAppAPI internal constructor(
             val currentToken = this.token
 
             token = getCredentialedToken(clientId, clientSecret, this)
-            expireTime = System.currentTimeMillis() + token.expiresIn * 1000
 
             return currentToken
         }
@@ -304,7 +292,7 @@ class SpotifyClientAPI internal constructor(
      * Stop all automatic functions like refreshToken or clearCache and shut down the scheduled
      * executor
      * */
-    fun cancelAutomatics() = executor.shutdown()
+    fun shutdown() = executor.shutdown()
 
     override fun refreshToken(): Token {
         val currentToken = this.token
