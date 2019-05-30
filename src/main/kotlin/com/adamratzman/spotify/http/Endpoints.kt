@@ -15,9 +15,10 @@ import java.net.HttpURLConnection
 import java.net.URLEncoder
 import java.util.Base64
 import java.util.function.Supplier
+import kotlin.math.ceil
 
 abstract class SpotifyEndpoint(val api: SpotifyAPI) {
-    internal val cache = SpotifyCache()
+    val cache = SpotifyCache()
 
     internal fun get(url: String): String {
         return execute(url)
@@ -139,8 +140,8 @@ internal class EndpointBuilder(private val path: String) {
     override fun toString() = builder.toString()
 }
 
-internal class SpotifyCache {
-    private val cachedRequests = hashMapOf<SpotifyRequest, CacheState>()
+class SpotifyCache {
+    val cachedRequests = mutableMapOf<SpotifyRequest, CacheState>()
 
     internal operator fun get(request: SpotifyRequest): CacheState? {
         checkCache(request)
@@ -148,8 +149,9 @@ internal class SpotifyCache {
     }
 
     internal operator fun set(request: SpotifyRequest, state: CacheState) {
-        checkCache(request)
         if (request.api.useCache) cachedRequests[request] = state
+
+        checkCache(request)
     }
 
     internal operator fun minusAssign(request: SpotifyRequest) {
@@ -161,17 +163,34 @@ internal class SpotifyCache {
 
     private fun checkCache(request: SpotifyRequest) {
         if (!request.api.useCache) clear()
+        else {
+            cachedRequests.entries.removeIf { !it.value.isStillValid() }
+
+            val cacheLimit = request.api.cacheLimit
+            val cacheUse = request.api.endpoints.sumBy { it.cache.cachedRequests.size }
+
+            if (cacheLimit != null && cacheUse > cacheLimit) {
+                val amountRemoveFromEach = ceil((cacheUse - cacheLimit).toDouble() / request.api.endpoints.size).toInt()
+
+                request.api.endpoints.forEach { endpoint ->
+                    val entries = endpoint.cache.cachedRequests.entries
+                    val toRemove = entries.sortedBy { it.value.expireBy }.take(amountRemoveFromEach)
+
+                    if (toRemove.isNotEmpty()) entries.removeAll(toRemove)
+                }
+            }
+        }
     }
 }
 
-internal data class SpotifyRequest(
+data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
     val api: SpotifyAPI
 )
 
-internal data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
+data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
     private val cacheRegex = "max-age=(\\d+)".toRegex()
     internal fun isStillValid(): Boolean = System.currentTimeMillis() <= this.expireBy
 
