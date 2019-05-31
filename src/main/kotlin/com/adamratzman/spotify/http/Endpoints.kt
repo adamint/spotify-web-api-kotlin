@@ -87,11 +87,11 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
         val responseBody = document.body
 
-        document.headers.find { it.key == "Cache-Control" }?.also { cacheControlHeader ->
+        document.headers.find { it.key.equals("Cache-Control", true) }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
                         responseBody, document.headers
-                        .find { it.key == "ETag" }?.value
+                        .find { it.key.equals("ETag", true) }?.value
                 )).update(cacheControlHeader.value)
             }
         }
@@ -115,6 +115,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     ) = HttpConnection(
             url,
             method,
+            null,
             body,
             contentType,
             listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),

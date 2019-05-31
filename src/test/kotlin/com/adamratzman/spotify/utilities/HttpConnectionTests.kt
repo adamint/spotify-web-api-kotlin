@@ -6,6 +6,7 @@ import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -16,6 +17,7 @@ class HttpConnectionTests : Spek({
                     "https://httpbin.org/get?query=string",
                     HttpRequestMethod.GET,
                     null,
+                    null,
                     "text/html"
             ).execute().let { it to JSONObject(it.body) }
 
@@ -25,15 +27,16 @@ class HttpConnectionTests : Spek({
 
             it("get request header") {
                 val requestHeader = body.getJSONObject("headers")
-                assertEquals(
-                        mapOf(
-                                "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                                "Host" to "httpbin.org",
-                                "Content-Type" to "text/html"
-                        ).toSortedMap(),
-                        // ignore the user-agent because of the version in it
-                        requestHeader.toMap().filterKeys { it.length >= 3 && it != "User-Agent" }.toSortedMap()
-                )
+                assertTrue {
+                    // ignore the user-agent because of the version in it
+                    requestHeader.toMap().toList().containsAll(
+                            mapOf(
+                                    "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                                    "Host" to "httpbin.org",
+                                    "Content-Type" to "text/html"
+                            ).toList()
+                    )
+                }
             }
 
             it("get request query string") {
@@ -45,6 +48,7 @@ class HttpConnectionTests : Spek({
             val (response, body) = HttpConnection(
                     "https://httpbin.org/post?query=string",
                     HttpRequestMethod.POST,
+                    null,
                     "body",
                     "text/html"
             ).execute().let { it to JSONObject(it.body) }
@@ -55,16 +59,16 @@ class HttpConnectionTests : Spek({
 
             it("post request header") {
                 val requestHeader = body.getJSONObject("headers")
-                assertEquals(
-                        mapOf(
-                                "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                                "Host" to "httpbin.org",
-                                "Content-Type" to "text/html",
-                                "Content-Length" to "4"
-                        ).toSortedMap(),
-                        // ignore the user-agent because of the version in it
-                        requestHeader.toMap().filterKeys { it.length >= 4 && it != "User-Agent" }.toSortedMap()
-                )
+                assertTrue {
+                    requestHeader.toMap().toList().containsAll(
+                            mapOf(
+                                    "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                                    "Host" to "httpbin.org",
+                                    "Content-Type" to "text/html",
+                                    "Content-Length" to "4"
+                            ).toList()
+                    )
+                }
             }
 
             it("post request query string") {
@@ -80,34 +84,13 @@ class HttpConnectionTests : Spek({
             val (response, body) = HttpConnection(
                     "https://httpbin.org/delete?query=string",
                     HttpRequestMethod.DELETE,
-                    "body",
+                    null,
+                    null,
                     "text/html"
             ).execute().let { it to JSONObject(it.body) }
 
             it("delete request response code") {
                 assertEquals(200, response.responseCode)
-            }
-
-            it("delete request header") {
-                val requestHeader = body.getJSONObject("headers")
-                assertEquals(
-                        mapOf(
-                                "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                                "Host" to "httpbin.org",
-                                "Content-Type" to "text/html",
-                                "Content-Length" to "4"
-                        ).toSortedMap(),
-                        // ignore the user-agent because of the version in it
-                        requestHeader.toMap().filterKeys { it.length >= 4 && it != "User-Agent" }.toSortedMap()
-                )
-            }
-
-            it("delete request query string") {
-                assertEquals("string", body.getJSONObject("args").getString("query"))
-            }
-
-            it("delete request body") {
-                assertEquals("body", body.getString("data"))
             }
         }
 
@@ -118,6 +101,7 @@ class HttpConnectionTests : Spek({
                             "https://apple.com",
                             HttpRequestMethod.GET,
                             null,
+                            null,
                             null
                     ).execute().responseCode
             )
@@ -127,7 +111,7 @@ class HttpConnectionTests : Spek({
             api.useCache = false
             api.retryWhenRateLimited = true
             api.clearCache()
-            (1..250).forEach {
+            for (it in 1..250) {
                 api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()
             }
             api.useCache = true
