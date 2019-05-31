@@ -33,19 +33,19 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     internal fun delete(
-        url: String,
-        body: String? = null,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            contentType: String? = null
     ): String {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     private fun execute(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        retry202: Boolean = true,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            retry202: Boolean = true,
+            contentType: String? = null
     ): String {
         if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
 
@@ -59,7 +59,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
 
         val document = createConnection(url, body, method, contentType).execute(
                 cacheState?.eTag?.let {
-                    HttpHeader("If-None-Match", it)
+                    listOf(HttpHeader("If-None-Match", it))
                 }
         )
 
@@ -73,10 +73,10 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun handleResponse(
-        document: HttpResponse,
-        cacheState: CacheState?,
-        spotifyRequest: SpotifyRequest,
-        retry202: Boolean
+            document: HttpResponse,
+            cacheState: CacheState?,
+            spotifyRequest: SpotifyRequest,
+            retry202: Boolean
     ): String? {
         val statusCode = document.responseCode
 
@@ -108,16 +108,16 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun createConnection(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            contentType: String? = null
     ) = HttpConnection(
             url,
             method,
             body,
             contentType,
-            HttpHeader("Authorization", "Bearer ${api.token.accessToken}"),
+            listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
             api = api
     )
 
@@ -184,10 +184,10 @@ class SpotifyCache {
 }
 
 data class SpotifyRequest(
-    val url: String,
-    val method: HttpRequestMethod,
-    val body: String?,
-    val api: SpotifyAPI
+        val url: String,
+        val method: HttpRequestMethod,
+        val body: String?,
+        val api: SpotifyAPI
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
