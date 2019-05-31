@@ -346,7 +346,8 @@ class SpotifyApiBuilderDsl {
                 val response = executeTokenRequest(HttpConnection(
                         url = "https://accounts.spotify.com/api/token",
                         method = HttpRequestMethod.POST,
-                        body = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
+                        bodyMap = null,
+                        bodyString = "grant_type=authorization_code&code=$authorizationCode&redirect_uri=$redirectUri",
                         contentType = "application/x-www-form-urlencoded",
                         api = null
                 ), clientId, clientSecret)
