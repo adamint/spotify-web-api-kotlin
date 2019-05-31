@@ -59,14 +59,14 @@ internal val base = "https://api.spotify.com/v1"
  *
  */
 abstract class SpotifyAPI internal constructor(
-    val clientId: String,
-    val clientSecret: String,
-    var token: Token,
-    useCache: Boolean,
-    var cacheLimit: Int?,
-    var automaticRefresh: Boolean,
-    var retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
+        val clientId: String,
+        val clientSecret: String,
+        var token: Token,
+        useCache: Boolean,
+        var cacheLimit: Int?,
+        var automaticRefresh: Boolean,
+        var retryWhenRateLimited: Boolean,
+        enableLogger: Boolean
 ) {
     var useCache = useCache
         set(value) {
@@ -158,14 +158,14 @@ abstract class SpotifyAPI internal constructor(
  * client authentication
  */
 class SpotifyAppAPI internal constructor(
-    clientId: String,
-    clientSecret: String,
-    token: Token,
-    useCache: Boolean,
-    cacheLimit: Int?,
-    automaticRefresh: Boolean,
-    retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
+        clientId: String,
+        clientSecret: String,
+        token: Token,
+        useCache: Boolean,
+        cacheLimit: Int?,
+        automaticRefresh: Boolean,
+        retryWhenRateLimited: Boolean,
+        enableLogger: Boolean
 ) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
 
     override val search: SearchAPI = SearchAPI(this)
@@ -231,15 +231,15 @@ class SpotifyAppAPI internal constructor(
  * managed through the scopes exposed in [token]
  */
 class SpotifyClientAPI internal constructor(
-    clientId: String,
-    clientSecret: String,
-    token: Token,
-    automaticRefresh: Boolean,
-    var redirectUri: String,
-    useCache: Boolean,
-    cacheLimit: Int?,
-    retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
+        clientId: String,
+        clientSecret: String,
+        token: Token,
+        automaticRefresh: Boolean,
+        var redirectUri: String,
+        useCache: Boolean,
+        cacheLimit: Int?,
+        retryWhenRateLimited: Boolean,
+        enableLogger: Boolean
 ) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -401,5 +401,5 @@ private fun getKlaxon(api: SpotifyAPI) = Klaxon()
         .converter(getPublicUserConverter(api))
 
 internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {
-    return httpConnection.execute(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}"))
+    return httpConnection.execute(listOf(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")))
 }
