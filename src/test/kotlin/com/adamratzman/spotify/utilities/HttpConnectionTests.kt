@@ -4,10 +4,8 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
-import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -136,17 +134,17 @@ class HttpConnectionTests : Spek({
             api.retryWhenRateLimited = false
         }
 
-        it("thrown exception when can't retry") {
-            api.retryWhenRateLimited = false
-            api.useCache = false
-            assertThrows<SpotifyRatelimitedException> {
-                (1..50000).forEach {
-                    println(it + 1)
-                    println(System.currentTimeMillis())
-                    println(api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()?.name)
-                }
-            }
-            api.useCache = true
-        }
+        /* it("thrown exception when can't retry") {
+             api.retryWhenRateLimited = false
+             api.useCache = false
+             assertThrows<SpotifyRatelimitedException> {
+                 (1..50000).forEach {
+                     println(it + 1)
+                     println(System.currentTimeMillis())
+                     println(api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()?.name)
+                 }
+             }
+             api.useCache = true
+         } */
     }
 })
