@@ -21,8 +21,8 @@ abstract class Identifiable(
  * @property id The Spotify id of the associated object
  */
 abstract class IdentifiableNullable(
-        @Transient val href: String?,
-        @Transient open val id: String?
+    @Transient val href: String?,
+    @Transient open val id: String?
 ) : NeedsApi()
 
 /**
@@ -32,20 +32,20 @@ abstract class IdentifiableNullable(
  * @property externalUrls Known external URLs for this object
  */
 abstract class CoreObject(
-        _href: String,
-        _id: String,
-        @Transient val uri: SpotifyUri,
-        _externalUrls: Map<String, String>
+    _href: String,
+    _id: String,
+    @Transient val uri: SpotifyUri,
+    _externalUrls: Map<String, String>
 ) : Identifiable(_href, _id) {
     @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
 }
 
 abstract class RelinkingAvailableResponse(
-        @Transient val linkedTrack: LinkedTrack? = null,
-        _href: String,
-        _id: String,
-        _uri: SpotifyUri,
-        _externalUrls: Map<String, String>
+    @Transient val linkedTrack: LinkedTrack? = null,
+    _href: String,
+    _id: String,
+    _uri: SpotifyUri,
+    _externalUrls: Map<String, String>
 ) : CoreObject(_href, _id, _uri, _externalUrls) {
     fun isRelinked() = linkedTrack != null
 }

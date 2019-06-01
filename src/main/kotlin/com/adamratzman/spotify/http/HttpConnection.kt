@@ -13,13 +13,13 @@ enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-        private val url: String,
-        private val method: HttpRequestMethod,
-        private val bodyMap: Map<Any, Any>?,
-        private val bodyString: String?,
-        private val contentType: String?,
-        private val headers: List<HttpHeader> = listOf(),
-        val api: SpotifyAPI? = null
+    private val url: String,
+    private val method: HttpRequestMethod,
+    private val bodyMap: Map<Any, Any>?,
+    private val bodyString: String?,
+    private val contentType: String?,
+    private val headers: List<HttpHeader> = listOf(),
+    val api: SpotifyAPI? = null
 ) {
 
     companion object {
@@ -49,7 +49,7 @@ internal class HttpConnection(
         }
 
         if (method == HttpRequestMethod.DELETE && bodyString != null) {
-            //request.content = ByteArrayContent.fromString(contentType, bodyString)
+            // request.content = ByteArrayContent.fromString(contentType, bodyString)
         }
 
         if (contentType != null && method != HttpRequestMethod.POST) request.headers.contentType = contentType

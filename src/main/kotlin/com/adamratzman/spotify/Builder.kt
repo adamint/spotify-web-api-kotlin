@@ -16,17 +16,17 @@ fun spotifyApi(block: SpotifyApiBuilderDsl.() -> Unit) = SpotifyApiBuilderDsl().
  * Spotify traditional Java style API builder
  */
 class SpotifyApiBuilder(
-        val clientId: String,
-        val clientSecret: String,
-        var redirectUri: String? = null,
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null,
-        var useCache: Boolean = true,
-        var cacheLimit: Int? = 1000,
-        var automaticRefresh: Boolean = true,
-        var retryWhenRateLimited: Boolean = false,
-        var enableLogger: Boolean = false
+    val clientId: String,
+    val clientSecret: String,
+    var redirectUri: String? = null,
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null,
+    var useCache: Boolean = true,
+    var cacheLimit: Int? = 1000,
+    var automaticRefresh: Boolean = true,
+    var retryWhenRateLimited: Boolean = false,
+    var enableLogger: Boolean = false
 ) {
     /**
      * Instantiate the builder with the application [clientId] and [clientSecret]
@@ -194,9 +194,9 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null
 )
 
 /**
@@ -326,9 +326,9 @@ class SpotifyApiBuilderDsl {
      * [authorizationCode] or [token] is provided
      */
     private fun buildClient(
-            authorizationCode: String? = null,
-            tokenString: String? = null,
-            token: Token? = null
+        authorizationCode: String? = null,
+        tokenString: String? = null,
+        token: Token? = null
     ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
