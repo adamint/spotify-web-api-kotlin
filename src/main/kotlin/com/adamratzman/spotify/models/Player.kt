@@ -11,11 +11,11 @@ import com.squareup.moshi.Json
  * @property href A link to the Web API endpoint providing full details of the track.
  */
 data class PlayHistoryContext(
-        @Json(name = "href") private val _href: String,
-        @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-        @Json(name = "uri") private val _uri: String,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "uri") private val _uri: String,
 
-        val type: String
+    val type: String
 ) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
 
 /**

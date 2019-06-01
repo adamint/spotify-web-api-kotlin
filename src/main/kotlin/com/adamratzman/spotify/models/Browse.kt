@@ -12,11 +12,11 @@ import com.squareup.moshi.Json
  * @property name The name of the category.
  */
 data class SpotifyCategory(
-        @Json(name = "href") private val _href: String,
-        @Json(name = "id") private val _id: String,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
 
-        val icons: List<SpotifyImage>,
-        val name: String
+    val icons: List<SpotifyImage>,
+    val name: String
 ) : Identifiable(_href, _id)
 
 /**

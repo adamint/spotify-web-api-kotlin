@@ -41,17 +41,17 @@ data class SimpleArtist(
  * @property type The object type: "artist"
  */
 data class Artist(
-        @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-        @Json(name = "href") private val _href: String,
-        @Json(name = "id") private val _id: String,
-        @Json(name = "uri") private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
-        val followers: Followers,
-        val genres: List<String>,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val popularity: Int,
-        val type: String
+    val followers: Followers,
+    val genres: List<String>,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val popularity: Int,
+    val type: String
 ) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls)
 
 internal data class ArtistList(val artists: List<Artist?>)

@@ -28,20 +28,20 @@ import com.squareup.moshi.Json
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
-        @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-        @Json(name = "href") private val _href: String,
-        @Json(name = "id") private val _id: String,
-        @Json(name = "uri") private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
-        val collaborative: Boolean,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val owner: SpotifyPublicUser,
-        @Json(name = "primary_color") val primaryColor: String? = null,
-        val public: Boolean? = null,
-        @Json(name = "snapshot_id") private val _snapshotId: String,
-        val tracks: PlaylistTrackInfo,
-        val type: String
+    val collaborative: Boolean,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val owner: SpotifyPublicUser,
+    @Json(name = "primary_color") val primaryColor: String? = null,
+    val public: Boolean? = null,
+    @Json(name = "snapshot_id") private val _snapshotId: String,
+    val tracks: PlaylistTrackInfo,
+    val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
     @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)

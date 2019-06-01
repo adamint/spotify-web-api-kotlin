@@ -29,22 +29,22 @@ import com.squareup.moshi.Json
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleAlbum(
-        @Json(name = "album_type") private val _albumType: String,
-        @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-        @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-        @Json(name = "href") private val _href: String,
-        @Json(name = "id") private val _id: String,
-        @Json(name = "uri") private val _uri: String,
+    @Json(name = "album_type") private val _albumType: String,
+    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
-        val artists: List<SimpleArtist>,
-        val images: List<SpotifyImage>,
-        val name: String,
-        val type: String,
-        val restrictions: Restrictions? = null,
-        @Json(name = "release_date") val releaseDate: String,
-        @Json(name = "release_date_precision") val releaseDatePrecision: String,
-        @Json(name = "total_tracks") val totalTracks: Int? = null,
-        @Json(name = "album_group") private val albumGroupString: String? = null
+    val artists: List<SimpleArtist>,
+    val images: List<SpotifyImage>,
+    val name: String,
+    val type: String,
+    val restrictions: Restrictions? = null,
+    @Json(name = "release_date") val releaseDate: String,
+    @Json(name = "release_date_precision") val releaseDatePrecision: String,
+    @Json(name = "total_tracks") val totalTracks: Int? = null,
+    @Json(name = "album_group") private val albumGroupString: String? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
