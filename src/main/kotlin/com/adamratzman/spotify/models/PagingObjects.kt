@@ -8,7 +8,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 import java.util.function.Supplier
 
 /*
@@ -47,13 +47,13 @@ enum class PagingTraversalType { BACKWARDS, FORWARDS }
  * @property offset The offset of the items returned (as set in the query or by default).
  */
 class PagingObject<T>(
-    href: String,
-    items: List<T>,
-    limit: Int,
-    next: String?,
-    offset: Int,
-    previous: String?,
-    total: Int
+        href: String,
+        items: List<T>,
+        limit: Int,
+        next: String?,
+        offset: Int,
+        previous: String?,
+        total: Int
 ) : AbstractPagingObject<T>(href, items, limit, next, offset, previous, total) {
     /**
      * Get the next set of [T] items
@@ -134,12 +134,12 @@ class PagingObject<T>(
  * @property cursor The cursors used to find the next set of items..
  */
 class CursorBasedPagingObject<T>(
-    href: String,
-    items: List<T>,
-    limit: Int,
-    next: String?,
-    @Json(name = "cursors") val cursor: Cursor,
-    total: Int
+        href: String,
+        items: List<T>,
+        limit: Int,
+        next: String?,
+        @Json(name = "cursors") val cursor: Cursor,
+        total: Int
 ) : AbstractPagingObject<T>(href, items, limit, next, 0, null, total) {
     /**
      * Get the next set of [T] items
@@ -207,18 +207,18 @@ data class Cursor(val before: String? = null, val after: String? = null)
  * @property offset The offset of the items returned (as set in the query or by default).
  */
 abstract class AbstractPagingObject<T>(
-    val href: String,
-    val items: List<T>,
-    val limit: Int,
-    val next: String? = null,
-    val offset: Int = 0,
-    val previous: String? = null,
-    val total: Int
+        val href: String,
+        val items: List<T>,
+        val limit: Int,
+        val next: String? = null,
+        val offset: Int = 0,
+        val previous: String? = null,
+        val total: Int
 ) : ArrayList<T>(items) {
-    @Json(ignored = true)
+    @Transient
     internal lateinit var endpoint: SpotifyEndpoint
 
-    @Json(ignored = true)
+    @Transient
     lateinit var itemClazz: Class<T>
 
     internal abstract fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?

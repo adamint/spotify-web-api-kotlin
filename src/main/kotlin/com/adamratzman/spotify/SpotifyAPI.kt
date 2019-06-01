@@ -24,13 +24,9 @@ import com.adamratzman.spotify.http.byteEncode
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Token
-import com.adamratzman.spotify.models.serialization.getAlbumConverter
-import com.adamratzman.spotify.models.serialization.getFeaturedPlaylistsConverter
-import com.adamratzman.spotify.models.serialization.getPlaylistConverter
-import com.adamratzman.spotify.models.serialization.getPublicUserConverter
-import com.adamratzman.spotify.models.serialization.getSavedTrackConverter
 import com.adamratzman.spotify.models.serialization.toObject
-import com.beust.klaxon.Klaxon
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
@@ -95,8 +91,6 @@ abstract class SpotifyAPI internal constructor(
 
     val logger = SpotifyLogger(enableLogger)
 
-    internal abstract val klaxon: Klaxon
-
     /**
      * If the method used to create the [token] supports token refresh and
      * the information in [token] is accurate, attempt to refresh the token
@@ -125,6 +119,11 @@ abstract class SpotifyAPI internal constructor(
      * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
      */
     abstract fun getApiBuilderDsl(): SpotifyApiBuilderDsl
+
+    internal val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
 
     private fun clearCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
@@ -188,8 +187,6 @@ class SpotifyAppAPI internal constructor(
      * Provides access to **public** playlist [follower information](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)
      */
     override val following: FollowingAPI = FollowingAPI(this)
-
-    override val klaxon: Klaxon = getKlaxon(this)
 
     override fun refreshToken(): Token {
         if (clientId != "not-set" && clientSecret != "not-set") {
@@ -292,8 +289,6 @@ class SpotifyClientAPI internal constructor(
      */
     val player: ClientPlayerAPI = ClientPlayerAPI(this)
 
-    override val klaxon: Klaxon = getKlaxon(this)
-
     /**
      * The Spotify user id to which the api instance is connected
      */
@@ -395,12 +390,6 @@ fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyAPI
     throw BadRequestException(response.body.toObject<AuthenticationError>(null))
 }
 
-private fun getKlaxon(api: SpotifyAPI) = Klaxon()
-        .converter(getFeaturedPlaylistsConverter(api))
-        .converter(getPlaylistConverter(api))
-        .converter(getAlbumConverter(api))
-        .converter(getSavedTrackConverter(api))
-        .converter(getPublicUserConverter(api))
 
 internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {
     return httpConnection.execute(listOf(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")))
