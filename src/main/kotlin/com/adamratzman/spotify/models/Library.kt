@@ -10,8 +10,8 @@ import com.squareup.moshi.Json
  * @property album Information about the album.
  */
 data class SavedAlbum(
-        @Json(name = "added_at") val addedAt: String,
-        val album: Album
+    @Json(name = "added_at") val addedAt: String,
+    val album: Album
 )
 
 /**

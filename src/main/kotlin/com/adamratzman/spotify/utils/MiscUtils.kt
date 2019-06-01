@@ -4,7 +4,7 @@ package com.adamratzman.spotify.utils
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ResultEnum
 
-internal fun jsonMap(vararg pairs: Pair<String,Any>) = pairs.toMap().toMutableMap()
+internal fun jsonMap(vararg pairs: Pair<String, Any>) = pairs.toMap().toMutableMap()
 
 internal fun <T> catch(function: () -> T): T? {
     return try {

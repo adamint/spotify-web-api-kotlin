@@ -15,7 +15,6 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.lang.reflect.Type
 
-
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
@@ -60,11 +59,11 @@ internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
 }
 
 internal inline fun <reified T> String.toPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): PagingObject<T> {
     if (innerObjectName != null) {
-        val map = fromJsonMap<String,PagingObject<T>>(
+        val map = fromJsonMap<String, PagingObject<T>>(
                 String::class.java,
                 Types.newParameterizedType(PagingObject::class.java, T::class.java),
                 this)!!
@@ -94,11 +93,11 @@ internal inline fun <reified T> String.toPagingObject(
 }
 
 internal inline fun <reified T> String.toCursorBasedPagingObject(
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint
 ): CursorBasedPagingObject<T> {
     if (innerObjectName != null) {
-        val map = fromJsonMap<String,CursorBasedPagingObject<T>>(
+        val map = fromJsonMap<String, CursorBasedPagingObject<T>>(
                 String::class.java,
                 Types.newParameterizedType(CursorBasedPagingObject::class.java, T::class.java),
                 this)!!
@@ -128,7 +127,7 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
 }
 
 internal inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): T {
-    val map = fromJsonMap<String,T>(
+    val map = fromJsonMap<String, T>(
             String::class.java,
             T::class.java,
             this)!!
@@ -137,14 +136,13 @@ internal inline fun <reified T> String.toInnerObject(innerName: String, api: Spo
 }
 
 internal inline fun <reified T> String.toInnerArray(innerName: String, api: SpotifyAPI): List<T> {
-    val map = fromJsonMap<String,Array<T>>(
+    val map = fromJsonMap<String, Array<T>>(
             String::class.java,
             Array<T>::class.java,
             this)!!
 
     return map[innerName]!!.toList()
 }
-
 
 private fun <K, V> fromJsonMap(keyType: Type, valueType: Type, json: String): Map<K, V>? {
     val mapJsonAdapter = mapAdapter<K, V>(keyType, valueType)
@@ -155,6 +153,6 @@ internal fun <K, V> mapAdapter(keyType: Type, valueType: Type): JsonAdapter<Map<
     return moshi.adapter<Map<K, V>>(Types.newParameterizedType(Map::class.java, keyType, valueType))
 }
 
-internal fun mapAdapterJson():JsonAdapter<Map<String,Any>> = mapAdapter(String::class.java, Any::class.java)
+internal fun mapAdapterJson(): JsonAdapter<Map<String, Any>> = mapAdapter(String::class.java, Any::class.java)
 
 internal fun Map<String, Any>.toJson() = mapAdapterJson().toJson(this)
