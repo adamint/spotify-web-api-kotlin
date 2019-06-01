@@ -43,8 +43,12 @@ internal class HttpConnection(
             }
         }
 
-        if (method == HttpRequestMethod.DELETE && bodyString != null) {
+        if (request.content != null) request.headers.contentLength = request.content.length
+        else if (request.content == null && method in listOf(HttpRequestMethod.POST, HttpRequestMethod.PUT)) {
+            request.content = ByteArrayContent.fromString(null, "")
+        }
 
+        if (method == HttpRequestMethod.DELETE && bodyString != null) {
             //request.content = ByteArrayContent.fromString(contentType, bodyString)
         }
 

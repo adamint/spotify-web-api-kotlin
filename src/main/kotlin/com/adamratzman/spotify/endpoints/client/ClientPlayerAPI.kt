@@ -20,9 +20,10 @@ import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
+import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
-import com.beust.klaxon.JsonObject
+import com.adamratzman.spotify.utils.jsonMap
 import java.util.function.Supplier
 
 /**
@@ -69,9 +70,9 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      *
      */
     fun getRecentlyPlayed(
-        limit: Int? = null,
-        before: String? = null,
-        after: String? = null
+            limit: Int? = null,
+            before: String? = null,
+            after: String? = null
     ): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
         return toActionPaging(Supplier {
             get(
@@ -231,17 +232,17 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     fun startPlayback(
-        album: String? = null,
-        artist: String? = null,
-        playlist: PlaylistURI? = null,
-        offsetNum: Int? = null,
-        offsetTrackId: String? = null,
-        deviceId: String? = null,
-        vararg tracksToPlay: String
+            album: String? = null,
+            artist: String? = null,
+            playlist: PlaylistURI? = null,
+            offsetNum: Int? = null,
+            offsetTrackId: String? = null,
+            deviceId: String? = null,
+            vararg tracksToPlay: String
     ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
-            val body = JsonObject()
+            val body = jsonMap()
             when {
                 album != null -> body["context_uri"] = AlbumURI(album).uri
                 artist != null -> body["context_uri"] = ArtistURI(artist).uri
@@ -249,10 +250,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 tracksToPlay.isNotEmpty() -> body["uris"] = tracksToPlay.map { TrackURI(it).uri }
             }
             if (body.keys.isNotEmpty()) {
-                if (offsetNum != null) body["offset"] = JsonObject().apply { this["position"] = offsetNum }
+                if (offsetNum != null) body["offset"] = jsonMap().apply { this["position"] = offsetNum }
                 else if (offsetTrackId != null) body["offset"] =
-                        JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
-                put(url, body.toJsonString())
+                        jsonMap().apply { this["uri"] = TrackURI(offsetTrackId).uri }
+                put(url, body.toJson())
             } else put(url)
             Unit
         })

@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 
 /**
  * Spotify music category
@@ -12,11 +12,11 @@ import com.beust.klaxon.Json
  * @property name The name of the category.
  */
 data class SpotifyCategory(
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
+        @Json(name = "href") private val _href: String,
+        @Json(name = "id") private val _id: String,
 
-    val icons: List<SpotifyImage>,
-    val name: String
+        val icons: List<SpotifyImage>,
+        val name: String
 ) : Identifiable(_href, _id)
 
 /**
@@ -32,8 +32,8 @@ data class SpotifyCategory(
  * @property type The entity type of this seed. One of artist , track or genre.
  */
 data class RecommendationSeed(
-    @Json(name = "href", ignored = false) private val _href: String?,
-    @Json(name = "id", ignored = false) private val _id: String,
+    @Json(name = "href") private val _href: String?,
+    @Json(name = "id") private val _id: String,
 
     val initialPoolSize: Int,
     val afterFilteringSize: Int,

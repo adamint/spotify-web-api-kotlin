@@ -100,6 +100,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
             val message = try {
                 document.body.toObject<ErrorResponse>(api).error
             } catch (e: Exception) {
+                e.printStackTrace()
                 ErrorObject(400, "malformed request sent")
             }
             throw BadRequestException(message)

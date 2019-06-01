@@ -3,15 +3,15 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyException
-import com.beust.klaxon.Json
 import com.neovisionaries.i18n.CountryCode
+import com.squareup.moshi.Json
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
  */
 abstract class Identifiable(
     href: String?,
-    @Json(ignored = true) override val id: String
+    @Transient override val id: String
 ) : IdentifiableNullable(href, id)
 
 /**
@@ -21,8 +21,8 @@ abstract class Identifiable(
  * @property id The Spotify id of the associated object
  */
 abstract class IdentifiableNullable(
-    @Json(ignored = true) val href: String?,
-    @Json(ignored = true) open val id: String?
+        @Transient val href: String?,
+        @Transient open val id: String?
 ) : NeedsApi()
 
 /**
@@ -32,20 +32,20 @@ abstract class IdentifiableNullable(
  * @property externalUrls Known external URLs for this object
  */
 abstract class CoreObject(
-    _href: String,
-    _id: String,
-    @Json(ignored = true) val uri: SpotifyUri,
-    _externalUrls: Map<String, String>
+        _href: String,
+        _id: String,
+        @Transient val uri: SpotifyUri,
+        _externalUrls: Map<String, String>
 ) : Identifiable(_href, _id) {
-    @Json(ignored = true) val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
+    @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
 }
 
 abstract class RelinkingAvailableResponse(
-    @Json(ignored = true) val linkedTrack: LinkedTrack? = null,
-    _href: String,
-    _id: String,
-    _uri: SpotifyUri,
-    _externalUrls: Map<String, String>
+        @Transient val linkedTrack: LinkedTrack? = null,
+        _href: String,
+        _id: String,
+        _uri: SpotifyUri,
+        _externalUrls: Map<String, String>
 ) : CoreObject(_href, _id, _uri, _externalUrls) {
     fun isRelinked() = linkedTrack != null
 }
@@ -69,7 +69,7 @@ class ExternalId(val key: String, val id: String)
  * @property api The API client associated with the request
  */
 abstract class NeedsApi {
-    @Json(ignored = true)
+    @Transient
     lateinit var api: SpotifyAPI
 }
 
