@@ -1,7 +1,6 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.api
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import org.json.JSONObject
@@ -107,16 +106,17 @@ class HttpConnectionTests : Spek({
             )
         }
 
-        it("retry") {
+        /* (it("retry") {
             api.useCache = false
             api.retryWhenRateLimited = true
             api.clearCache()
-            for (it in 1..250) {
+            for (it in 1..2500) {
+                println(System.currentTimeMillis())
                 api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()
             }
             api.useCache = true
             api.retryWhenRateLimited = false
-        }
+        }*/
 
         /* it("thrown exception when can't retry") {
              api.retryWhenRateLimited = false
