@@ -3,8 +3,8 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
-import com.beust.klaxon.Json
 import com.neovisionaries.i18n.CountryCode
+import com.squareup.moshi.Json
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -28,22 +28,22 @@ import com.neovisionaries.i18n.CountryCode
  * requests to target a specific playlist version
  */
 data class SimplePlaylist(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+        @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+        @Json(name = "href") private val _href: String,
+        @Json(name = "id") private val _id: String,
+        @Json(name = "uri") private val _uri: String,
 
-    val collaborative: Boolean,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val owner: SpotifyPublicUser,
-    @Json(name = "primary_color") val primaryColor: String? = null,
-    val public: Boolean? = null,
-    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
-    val tracks: PlaylistTrackInfo,
-    val type: String
+        val collaborative: Boolean,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val owner: SpotifyPublicUser,
+        @Json(name = "primary_color") val primaryColor: String? = null,
+        val public: Boolean? = null,
+        @Json(name = "snapshot_id") private val _snapshotId: String,
+        val tracks: PlaylistTrackInfo,
+        val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
-    @Json(ignored = true)
+    @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 
     /**
@@ -96,10 +96,10 @@ data class PlaylistTrack(
  * @property type The object type: “playlist”
  */
 data class Playlist(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val collaborative: Boolean,
     val description: String,
@@ -109,11 +109,11 @@ data class Playlist(
     val name: String,
     val owner: SpotifyPublicUser,
     val public: Boolean? = null,
-    @Json(name = "snapshot_id", ignored = false) private val _snapshotId: String,
+    @Json(name = "snapshot_id") private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
-    @Json(ignored = true)
+    @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 }
 
