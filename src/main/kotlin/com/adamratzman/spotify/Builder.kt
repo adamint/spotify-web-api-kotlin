@@ -23,7 +23,7 @@ class SpotifyApiBuilder(
     var tokenString: String? = null,
     var token: Token? = null,
     var useCache: Boolean = true,
-    var cacheLimit: Int? = 1000,
+    var cacheLimit: Int? = 200,
     var automaticRefresh: Boolean = true,
     var retryWhenRateLimited: Boolean = false,
     var enableLogger: Boolean = false
@@ -215,7 +215,7 @@ class SpotifyApiBuilderDsl {
     private var credentials: SpotifyCredentials = SpotifyCredentials(null, null, null)
     private var authentication = SpotifyUserAuthorizationBuilder()
     var useCache: Boolean = true
-    var cacheLimit: Int? = 1000
+    var cacheLimit: Int? = 200
     var automaticRefresh: Boolean = true
     var retryWhenRateLimited: Boolean = false
     var enableLogger: Boolean = false
