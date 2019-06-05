@@ -1,9 +1,9 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
+import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
-import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.models.BadRequestException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -65,6 +65,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertTrue(cp.getPlaylistTracks(createdPlaylist.id).complete().items.size == 4)
 
+            println(cp.getPlaylistTracks(createdPlaylist.id).complete())
             cp.removeTrackFromPlaylist(createdPlaylist.id, trackIdOne).complete()
 
             assertEquals(

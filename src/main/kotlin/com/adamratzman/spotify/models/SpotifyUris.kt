@@ -33,8 +33,13 @@ sealed class SpotifyUri(input: String, type: String) {
 
     init {
         input.replace(" ", "").let {
-            this.uri = it.add(type)
-            this.id = it.remove(type)
+            if (input == "spotify:user:") {
+                this.uri = input
+                this.id = input
+            } else {
+                this.uri = it.add(type)
+                this.id = it.remove(type)
+            }
         }
     }
 
