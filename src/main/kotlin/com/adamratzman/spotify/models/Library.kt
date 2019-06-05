@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 
 /**
  * Represents an album saved in a user's library

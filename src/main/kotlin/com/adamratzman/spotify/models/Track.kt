@@ -1,8 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.beust.klaxon.Json
 import com.neovisionaries.i18n.CountryCode
+import com.squareup.moshi.Json
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -35,19 +35,19 @@ import com.neovisionaries.i18n.CountryCode
  * "restrictions" : {"reason" : "market"}
  */
 data class SimpleTrack(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "available_markets", ignored = false) private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_ids", ignored = false) private val _externalIds: Map<String, String> = hashMapOf(),
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val artists: List<SimpleArtist>,
     @Json(name = "disc_number") val discNumber: Int,
     @Json(name = "duration_ms") val durationMs: Int,
     val explicit: Boolean,
     @Json(name = "is_playable") val isPlayable: Boolean = true,
-    @Json(name = "linked_from", ignored = false) private val linkedFrom: LinkedTrack? = null,
+    @Json(name = "linked_from") private val linkedFrom: LinkedTrack? = null,
     val name: String,
     @Json(name = "preview_url") val previewUrl: String?,
     @Json(name = "track_number") val trackNumber: Int,
@@ -56,10 +56,10 @@ data class SimpleTrack(
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linkedFrom, _href, _id, TrackURI(_uri), _externalUrls) {
-    @Json(ignored = true)
+    @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
-    @Json(ignored = true)
+    @Transient
     val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
 
     /**
@@ -108,12 +108,12 @@ data class SimpleTrack(
  * "restrictions" : {"reason" : "market"}
  */
 data class Track(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "external_ids", ignored = false) private val _externalIds: Map<String, String> = hashMapOf(),
-    @Json(name = "available_markets", ignored = false) private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
@@ -121,7 +121,7 @@ data class Track(
     @Json(name = "disc_number") val discNumber: Int,
     @Json(name = "duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "linked_from", ignored = false) private val linked_from: LinkedTrack? = null,
+    @Json(name = "linked_from") private val linked_from: LinkedTrack? = null,
     val name: String,
     val popularity: Int,
     @Json(name = "preview_url") val previewUrl: String?,
@@ -130,10 +130,10 @@ data class Track(
     @Json(name = "is_local") val isLocal: Boolean?,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linked_from, _href, _id, if (_uri.contains("local:")) LocalTrackURI(_uri) else TrackURI(_uri), _externalUrls) {
-    @Json(ignored = true)
+    @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
-    @Json(ignored = true)
+    @Transient
     val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
 }
 
@@ -146,10 +146,10 @@ data class Track(
  * @property type The object type: “track”.
  */
 data class LinkedTrack(
-    @Json(name = "external_urls", ignored = false) val _externalUrls: Map<String, String>,
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val type: String
 ) : CoreObject(_href, _id, TrackURI(_uri), _externalUrls) {
@@ -396,10 +396,10 @@ data class AudioFeatures(
     @Json(name = "time_signature") val timeSignature: Int,
     @Json(name = "track_href") val trackHref: String,
     val type: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "uri") private val _uri: String,
     val valence: Float
 ) {
-    @Json(ignored = true)
+    @Transient
     val uri: TrackURI = TrackURI(_uri)
 }
 

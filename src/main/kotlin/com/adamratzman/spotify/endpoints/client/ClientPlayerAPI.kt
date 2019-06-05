@@ -20,9 +20,10 @@ import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
+import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
-import com.beust.klaxon.JsonObject
+import com.adamratzman.spotify.utils.jsonMap
 import java.util.function.Supplier
 
 /**
@@ -241,7 +242,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     ): SpotifyRestAction<Unit> {
         return toAction(Supplier {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
-            val body = JsonObject()
+            val body = jsonMap()
             when {
                 album != null -> body["context_uri"] = AlbumURI(album).uri
                 artist != null -> body["context_uri"] = ArtistURI(artist).uri
@@ -249,10 +250,10 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 tracksToPlay.isNotEmpty() -> body["uris"] = tracksToPlay.map { TrackURI(it).uri }
             }
             if (body.keys.isNotEmpty()) {
-                if (offsetNum != null) body["offset"] = JsonObject().apply { this["position"] = offsetNum }
+                if (offsetNum != null) body["offset"] = jsonMap().apply { this["position"] = offsetNum }
                 else if (offsetTrackId != null) body["offset"] =
-                        JsonObject().apply { this["uri"] = TrackURI(offsetTrackId).uri }
-                put(url, body.toJsonString())
+                        jsonMap().apply { this["uri"] = TrackURI(offsetTrackId).uri }
+                put(url, body.toJson())
             } else put(url)
             Unit
         })

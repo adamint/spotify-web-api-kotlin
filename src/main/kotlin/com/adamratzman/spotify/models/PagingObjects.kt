@@ -8,7 +8,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 import java.util.function.Supplier
 
 /*
@@ -215,10 +215,10 @@ abstract class AbstractPagingObject<T>(
     val previous: String? = null,
     val total: Int
 ) : ArrayList<T>(items) {
-    @Json(ignored = true)
+    @Transient
     internal lateinit var endpoint: SpotifyEndpoint
 
-    @Json(ignored = true)
+    @Transient
     lateinit var itemClazz: Class<T>
 
     internal abstract fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
