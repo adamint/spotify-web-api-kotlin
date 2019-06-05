@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 
 /**
  * Simplified Artist object that can be used to retrieve a full [Artist]
@@ -12,10 +12,10 @@ import com.beust.klaxon.Json
  * @property type The object type: "artist"
  */
 data class SimpleArtist(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val name: String,
     val type: String
@@ -41,10 +41,10 @@ data class SimpleArtist(
  * @property type The object type: "artist"
  */
 data class Artist(
-    @Json(name = "external_urls", ignored = false) private val _externalUrls: Map<String, String>,
-    @Json(name = "href", ignored = false) private val _href: String,
-    @Json(name = "id", ignored = false) private val _id: String,
-    @Json(name = "uri", ignored = false) private val _uri: String,
+    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
+    @Json(name = "href") private val _href: String,
+    @Json(name = "id") private val _id: String,
+    @Json(name = "uri") private val _uri: String,
 
     val followers: Followers,
     val genres: List<String>,
