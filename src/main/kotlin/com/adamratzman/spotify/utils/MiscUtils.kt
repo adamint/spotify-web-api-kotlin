@@ -10,6 +10,7 @@ internal fun <T> catch(function: () -> T): T? {
     return try {
         function()
     } catch (e: BadRequestException) {
+        if (e.statusCode != 400) throw e // we should only ignore the exception if it's a bad request (400)
         null
     }
 }

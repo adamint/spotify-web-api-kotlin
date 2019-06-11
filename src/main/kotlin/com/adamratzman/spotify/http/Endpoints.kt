@@ -10,6 +10,7 @@ import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
+import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.serialization.toObject
 import java.net.HttpURLConnection
 import java.net.URLEncoder
@@ -33,21 +34,24 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     internal fun delete(
-            url: String,
-            body: String? = null,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        contentType: String? = null
     ): String {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     private fun execute(
-            url: String,
-            body: String? = null,
-            method: HttpRequestMethod = HttpRequestMethod.GET,
-            retry202: Boolean = true,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        method: HttpRequestMethod = HttpRequestMethod.GET,
+        retry202: Boolean = true,
+        contentType: String? = null
     ): String {
-        if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) api.refreshToken()
+        if (api is SpotifyAppAPI && System.currentTimeMillis() >= api.expireTime) {
+            if (!api.automaticRefresh) throw SpotifyAuthenticationException("The access token has expired.")
+            else api.refreshToken()
+        }
 
         val spotifyRequest = SpotifyRequest(url, method, body, api)
         val cacheState = if (api.useCache) cache[spotifyRequest] else null
@@ -73,15 +77,15 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun handleResponse(
-            document: HttpResponse,
-            cacheState: CacheState?,
-            spotifyRequest: SpotifyRequest,
-            retry202: Boolean
+        document: HttpResponse,
+        cacheState: CacheState?,
+        spotifyRequest: SpotifyRequest,
+        retry202: Boolean
     ): String? {
         val statusCode = document.responseCode
 
         if (statusCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
-            if (cacheState?.eTag == null) throw BadRequestException("304 status only allowed on Etag-able endpoints")
+            if (cacheState?.eTag == null) throw IllegalArgumentException("304 status only allowed on Etag-able endpoints")
             return cacheState.data
         }
 
@@ -109,10 +113,10 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
     }
 
     private fun createConnection(
-            url: String,
-            body: String? = null,
-            method: HttpRequestMethod = HttpRequestMethod.GET,
-            contentType: String? = null
+        url: String,
+        body: String? = null,
+        method: HttpRequestMethod = HttpRequestMethod.GET,
+        contentType: String? = null
     ) = HttpConnection(
             url,
             method,
@@ -185,10 +189,10 @@ class SpotifyCache {
 }
 
 data class SpotifyRequest(
-        val url: String,
-        val method: HttpRequestMethod,
-        val body: String?,
-        val api: SpotifyAPI
+    val url: String,
+    val method: HttpRequestMethod,
+    val body: String?,
+    val api: SpotifyAPI
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
