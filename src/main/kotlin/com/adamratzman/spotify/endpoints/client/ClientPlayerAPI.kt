@@ -39,7 +39,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
             get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<List<Device>>(
-                    "devices", api
+                    "devices"
             )
         })
     }
