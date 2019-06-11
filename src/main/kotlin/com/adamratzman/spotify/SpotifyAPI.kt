@@ -24,6 +24,7 @@ import com.adamratzman.spotify.http.byteEncode
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Token
+import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -148,6 +149,26 @@ abstract class SpotifyAPI internal constructor(
      */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
+    }
+
+    /**
+     * Tests whether the current [token] is actually valid. By default, an endpoint is called *once* to verify
+     * validity.
+     *
+     * @param makeTestRequest Whether to also make an endpoint request to verify authentication.
+     *
+     * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
+     */
+    fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse {
+        if (!token.shouldRefresh()) return TokenValidityResponse(false, SpotifyException("Token expired"))
+        if (!makeTestRequest) return TokenValidityResponse(true, null)
+
+        return try {
+            browse.getAvailableGenreSeeds().complete()
+            TokenValidityResponse(true, null)
+        } catch (e: Exception) {
+            TokenValidityResponse(false, e)
+        }
     }
 }
 
@@ -365,6 +386,17 @@ class SpotifyClientAPI internal constructor(
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
+
+    /**
+     * Whether the current access token allows access to scope [scope]
+     */
+    fun hasScope(scope: SpotifyScope): Boolean = hasScopes(scope)
+
+    /**
+     * Whether the current access token allows access to all of the provided scopes
+     */
+    fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean =
+            !isTokenValid(false).isValid && (scopes.toList() + scope).all { token.scopes.contains(it) }
 }
 
 fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {

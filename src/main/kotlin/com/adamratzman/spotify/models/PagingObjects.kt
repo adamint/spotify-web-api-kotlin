@@ -1,6 +1,4 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
-@file:Suppress("UNCHECKED_CAST")
-
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyAPI
@@ -73,6 +71,7 @@ class PagingObject<T>(
         }
     })
 
+    @Suppress("UNCHECKED_CAST")
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint.get(it) }?.let { json ->
             when (itemClazz) {
@@ -113,6 +112,7 @@ class PagingObject<T>(
     /**
      * Get all PagingObjects associated with the request
      */
+    @Suppress("UNCHECKED_CAST")
     fun getAll() = endpoint.toAction(Supplier { (getAllImpl() as Sequence<PagingObject<T>>).toList() })
 
     /**
@@ -153,6 +153,7 @@ class CursorBasedPagingObject<T>(
     /**
      * Get all CursorBasedPagingObjects associated with the request
      */
+    @Suppress("UNCHECKED_CAST")
     fun getAll() = endpoint.toAction(Supplier {
         getAllImpl() as Sequence<CursorBasedPagingObject<T>>
     })
@@ -164,6 +165,7 @@ class CursorBasedPagingObject<T>(
         getAll().complete().map { it.items }.flatten().toList()
     })
 
+    @Suppress("UNCHECKED_CAST")
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         if (type == PagingTraversalType.BACKWARDS) {
             throw IllegalArgumentException("CursorBasedPagingObjects only can go forwards")
