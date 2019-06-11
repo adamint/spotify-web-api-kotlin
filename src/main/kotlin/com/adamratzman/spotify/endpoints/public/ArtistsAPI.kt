@@ -117,7 +117,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "country",
                             market.name
                     ).toString()
-            ).toInnerArray<Track>("tracks", api)
+            ).toInnerArray<Track>("tracks")
         })
     }
 

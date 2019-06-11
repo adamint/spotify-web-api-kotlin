@@ -72,5 +72,5 @@ data class SpotifyPublicUser(
 data class Followers(
     val href: String?,
     @Json(name = "total") private val _total: Int,
-    @Transient val total: Int = _total ?: -1
+    @Transient val total: Int = _total
 )
