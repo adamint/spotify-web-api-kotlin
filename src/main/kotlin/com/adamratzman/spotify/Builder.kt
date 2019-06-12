@@ -194,8 +194,7 @@ class SpotifyUserAuthorizationBuilder(
     var tokenString: String? = null,
     var token: Token? = null
 ) {
-    fun build() = if (authorizationCode == null && tokenString == null && token == null) throw IllegalArgumentException("An authorization method must be supplied")
-    else SpotifyUserAuthorization(authorizationCode, tokenString, token)
+    fun build() = SpotifyUserAuthorization(authorizationCode, tokenString, token)
 }
 
 data class SpotifyUserAuthorization(
