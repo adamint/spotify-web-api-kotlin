@@ -22,11 +22,9 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
 group 'com.adamratzman'
-version '2.3.01'
+version '2.3.02'
 
 archivesBaseName = 'spotify-api-kotlin'
-
-sourceCompatibility = 1.8
 
 repositories {
     jcenter()
