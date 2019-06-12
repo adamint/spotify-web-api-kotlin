@@ -52,7 +52,7 @@ internal val base = "https://api.spotify.com/v1"
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
  *
  * @property logger The Spotify event logger
- * @property klaxon The serializer/deserializer associated with this API instance
+ * @property moshi The serializer/deserializer associated with this API instance
  *
  */
 abstract class SpotifyAPI internal constructor(
@@ -63,7 +63,8 @@ abstract class SpotifyAPI internal constructor(
     var cacheLimit: Int?,
     var automaticRefresh: Boolean,
     var retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
+    enableLogger: Boolean,
+    testTokenValidity: Boolean
 ) {
     var useCache = useCache
         set(value) {
@@ -72,10 +73,7 @@ abstract class SpotifyAPI internal constructor(
             field = value
         }
 
-    /**
-     * Obtain a map of all currently-cached requests
-     */
-    fun getCache() = endpoints.map { it.cache.cachedRequests.toList() }.flatten().toMap()
+    val logger = SpotifyLogger(enableLogger)
 
     val expireTime: Long get() = System.currentTimeMillis() + token.expiresIn * 1000
 
@@ -90,7 +88,20 @@ abstract class SpotifyAPI internal constructor(
     abstract val tracks: TracksAPI
     abstract val following: FollowingAPI
 
-    val logger = SpotifyLogger(enableLogger)
+    init {
+        if (testTokenValidity) {
+            try {
+                isTokenValid(true)
+            } catch (e: Exception) {
+                throw SpotifyException("Invalid token provided on initialization", e)
+            }
+        }
+    }
+
+    /**
+     * Obtain a map of all currently-cached requests
+     */
+    fun getCache() = endpoints.map { it.cache.cachedRequests.toList() }.flatten().toMap()
 
     /**
      * If the method used to create the [token] supports token refresh and
@@ -184,8 +195,19 @@ class SpotifyAppAPI internal constructor(
     cacheLimit: Int?,
     automaticRefresh: Boolean,
     retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
+    enableLogger: Boolean,
+    testTokenValidity: Boolean
+) : SpotifyAPI(
+        clientId,
+        clientSecret,
+        token,
+        useCache,
+        cacheLimit,
+        automaticRefresh,
+        retryWhenRateLimited,
+        enableLogger,
+        testTokenValidity
+) {
 
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -231,7 +253,10 @@ class SpotifyAppAPI internal constructor(
                 following
         )
 
-    override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, useCache)
+    override fun getApiBuilder() = SpotifyApiBuilder(
+            clientId,
+            clientSecret
+    ).apply { useCache(useCache) }
 
     override fun getApiBuilderDsl() = spotifyApi {
         credentials {
@@ -256,8 +281,19 @@ class SpotifyClientAPI internal constructor(
     useCache: Boolean,
     cacheLimit: Int?,
     retryWhenRateLimited: Boolean,
-    enableLogger: Boolean
-) : SpotifyAPI(clientId, clientSecret, token, useCache, cacheLimit, automaticRefresh, retryWhenRateLimited, enableLogger) {
+    enableLogger: Boolean,
+    testTokenValidity: Boolean
+) : SpotifyAPI(
+        clientId,
+        clientSecret,
+        token,
+        useCache,
+        cacheLimit,
+        automaticRefresh,
+        retryWhenRateLimited,
+        enableLogger,
+        testTokenValidity
+) {
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
     override val browse: BrowseAPI = BrowseAPI(this)
@@ -362,7 +398,13 @@ class SpotifyClientAPI internal constructor(
                 player
         )
 
-    override fun getApiBuilder() = SpotifyApiBuilder(clientId, clientSecret, redirectUri, useCache = useCache)
+    override fun getApiBuilder() = SpotifyApiBuilder(
+            clientId,
+            clientSecret
+    ).apply {
+        redirectUri(redirectUri)
+        useCache(useCache)
+    }
 
     override fun getApiBuilderDsl() = spotifyApi {
         credentials {
