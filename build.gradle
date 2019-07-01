@@ -53,7 +53,7 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin'
     }
     
-    testCompile('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testCompile('org.junit.jupiter:junit-jupiter-api:5.5.0')
     testCompile(group: 'org.json', name: 'json', version: '20180130')
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
