@@ -41,8 +41,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction(Supplier {
             get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>(
-                    "genres",
-                    api
+                    "genres"
             )
         })
     }

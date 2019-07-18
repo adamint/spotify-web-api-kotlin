@@ -37,7 +37,8 @@ abstract class CoreObject(
     @Transient val uri: SpotifyUri,
     _externalUrls: Map<String, String>
 ) : Identifiable(_href, _id) {
-    @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
+    @Transient
+    val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
 }
 
 abstract class RelinkingAvailableResponse(
@@ -90,6 +91,8 @@ data class ErrorResponse(val error: ErrorObject)
  */
 data class ErrorObject(val status: Int, val message: String)
 
+class SpotifyAuthenticationException(message: String) : Exception(message)
+
 data class AuthenticationError(
     val error: String,
     @Json(name = "error_description") val description: String
@@ -103,17 +106,17 @@ class SpotifyUriException(message: String) : BadRequestException(message)
  * @param time the time, in seconds, until the next request can be sent
  */
 class SpotifyRatelimitedException(time: Long) :
-    UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${System.currentTimeMillis() + time * 1000}ms")
+        UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${System.currentTimeMillis() + time * 1000}ms")
 
 abstract class UnNullableException(message: String) : SpotifyException(message)
 
 /**
  * Thrown when a request fails
  */
-open class BadRequestException(message: String) : SpotifyException(message) {
-    constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}")
+open class BadRequestException(message: String, val statusCode: Int? = null) : SpotifyException(message) {
+    constructor(error: ErrorObject) : this("Received Status Code ${error.status}. Error cause: ${error.message}", error.status)
     constructor(authenticationError: AuthenticationError) :
-            this("Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}")
+            this("Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}", 401)
 }
 
 typealias Market = CountryCode

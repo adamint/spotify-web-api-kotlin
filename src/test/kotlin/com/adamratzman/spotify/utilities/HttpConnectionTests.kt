@@ -80,7 +80,7 @@ class HttpConnectionTests : Spek({
         }
 
         describe("delete request") {
-            val (response, body) = HttpConnection(
+            val (response, _) = HttpConnection(
                     "https://httpbin.org/delete?query=string",
                     HttpRequestMethod.DELETE,
                     null,
