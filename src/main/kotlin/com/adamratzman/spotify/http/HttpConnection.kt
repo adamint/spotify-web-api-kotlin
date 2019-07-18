@@ -5,7 +5,6 @@ import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.GenericUrl
-import com.google.api.client.http.UrlEncodedContent
 import com.google.api.client.http.javanet.NetHttpTransport
 import java.util.concurrent.TimeUnit
 
@@ -13,13 +12,13 @@ enum class HttpRequestMethod { GET, POST, PUT, DELETE }
 data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-    private val url: String,
-    private val method: HttpRequestMethod,
-    private val bodyMap: Map<Any, Any>?,
-    private val bodyString: String?,
-    private val contentType: String?,
-    private val headers: List<HttpHeader> = listOf(),
-    val api: SpotifyAPI? = null
+        private val url: String,
+        private val method: HttpRequestMethod,
+        private val bodyMap: Map<*, *>?,
+        private val bodyString: String?,
+        private val contentType: String?,
+        private val headers: List<HttpHeader> = listOf(),
+        val api: SpotifyAPI? = null
 ) {
 
     companion object {
@@ -33,9 +32,8 @@ internal class HttpConnection(
             HttpRequestMethod.DELETE -> requestFactory.buildDeleteRequest(genericUrl)
             HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
                 val content = if (contentType == "application/x-www-form-urlencoded") {
-                    bodyMap?.let { body ->
-                        UrlEncodedContent(body.map { it.key.toString() to it.value.toString() }.toMap())
-                    } ?: ByteArrayContent.fromString(contentType, bodyString)
+                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let { ByteArrayContent.fromString(contentType, it) }
+                            ?: ByteArrayContent.fromString(contentType, bodyString)
                 } else bodyString?.let { ByteArrayContent.fromString(contentType, bodyString) }
 
                 if (method == HttpRequestMethod.PUT) requestFactory.buildPutRequest(genericUrl, content)
