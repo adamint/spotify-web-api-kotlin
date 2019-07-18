@@ -366,8 +366,11 @@ class SpotifyClientAPI internal constructor(
         val response = executeTokenRequest(HttpConnection(
                 url = "https://accounts.spotify.com/api/token",
                 method = HttpRequestMethod.POST,
-                bodyMap = null,
-                bodyString = "grant_type=refresh_token&refresh_token=${token.refreshToken ?: ""}",
+                bodyMap = mapOf(
+                        "grant_type" to "refresh_token",
+                        "refresh_token" to token.refreshToken
+                ),
+                bodyString = null,
                 contentType = "application/x-www-form-urlencoded",
                 api = this
         ), clientId, clientSecret)
@@ -452,8 +455,8 @@ fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyAPI
     val response = executeTokenRequest(HttpConnection(
             url = "https://accounts.spotify.com/api/token",
             method = HttpRequestMethod.POST,
-            bodyMap = null,
-            bodyString = "grant_type=client_credentials",
+            bodyMap = mapOf("grant_type" to "client_credentials"),
+            bodyString = null,
             contentType = "application/x-www-form-urlencoded",
             api = api
     ), clientId, clientSecret)
