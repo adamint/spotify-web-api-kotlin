@@ -126,22 +126,22 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
     }
 }
 
-internal inline fun <reified T> String.toInnerObject(innerName: String, api: SpotifyAPI): T {
+internal inline fun <reified T> String.toInnerObject(innerName: String): T {
     val map = fromJsonMap<String, T>(
             String::class.java,
             T::class.java,
             this)!!
 
-    return map[innerName]!!
+    return map[innerName] ?: error("Inner object with name $innerName doesn't exist in $map")
 }
 
-internal inline fun <reified T> String.toInnerArray(innerName: String, api: SpotifyAPI): List<T> {
+internal inline fun <reified T> String.toInnerArray(innerName: String): List<T> {
     val map = fromJsonMap<String, Array<T>>(
             String::class.java,
             Array<T>::class.java,
             this)!!
 
-    return map[innerName]!!.toList()
+    return (map[innerName] ?: error("Inner object with name $innerName doesn't exist in $map")).toList()
 }
 
 private fun <K, V> fromJsonMap(keyType: Type, valueType: Type, json: String): Map<K, V>? {
