@@ -37,7 +37,7 @@ dependencies {
     compile "com.squareup.moshi:moshi:1.8.0"
     compile "com.squareup.moshi:moshi-kotlin:1.8.0"
 
-    compile group: 'com.google.http-client', name: 'google-http-client', version: '1.30.2'
+    compile group: 'com.google.http-client', name: 'google-http-client', version: '1.31.0'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
