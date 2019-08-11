@@ -290,6 +290,20 @@ class SpotifyApiBuilderDsl {
     }
 
     /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun config(block: SpotifyUtilitiesBuilder.() -> Unit) {
+        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    }
+
+    /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun options(block: SpotifyUtilitiesBuilder.() -> Unit) {
+        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    }
+
+    /**
      * Create a Spotify authorization URL from which client access can be obtained
      *
      * @param scopes The scopes that the application should have access to
@@ -413,7 +427,7 @@ class SpotifyApiBuilderDsl {
             authorizationCode != null -> try {
                 clientId ?: throw IllegalArgumentException()
                 clientSecret ?: throw IllegalArgumentException()
-                redirectUri ?: IllegalArgumentException()
+                redirectUri ?: throw IllegalArgumentException()
 
                 val response = executeTokenRequest(HttpConnection(
                         url = "https://accounts.spotify.com/api/token",
