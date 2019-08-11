@@ -95,7 +95,10 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param keyword The spotify id of the strategy
      */
     enum class AlbumInclusionStrategy(val keyword: String) {
-        ALBUM("album"), SINGLE("single"), APPEARS_ON("appears_on"), COMPILATION("compilation")
+        ALBUM("album"),
+        SINGLE("single"),
+        APPEARS_ON("appears_on"),
+        COMPILATION("compilation");
     }
 
     /**

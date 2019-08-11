@@ -423,6 +423,25 @@ sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integ
 
         return TrackAttribute(this, value)
     }
+
+    companion object {
+        fun values() = listOf(
+                ACOUSTICNESS,
+                DANCEABILITY,
+                DURATION_IN_MILLISECONDS,
+                ENERGY,
+                INSTRUMENTALNESS,
+                KEY,
+                LIVENESS,
+                LOUDNESS,
+                MODE,
+                POPULARITY,
+                SPEECHINESS,
+                TEMPO,
+                TIME_SIGNATURE,
+                VALENCE
+        )
+    }
 }
 
 data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {

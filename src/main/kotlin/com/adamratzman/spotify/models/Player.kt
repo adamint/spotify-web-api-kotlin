@@ -72,7 +72,7 @@ enum class DeviceType(val identifier: String) {
     CAST_VIDEO("CastVideo"),
     CAST_AUDIO("CastAudio"),
     AUTOMOBILE("Automobile"),
-    UNKNOWN("Unknown")
+    UNKNOWN("Unknown");
 }
 
 /**
@@ -108,8 +108,7 @@ data class CurrentlyPlayingContext(
 enum class RepeatState(val identifier: String) : ResultEnum {
     OFF("off"),
     TRACK("track"),
-    CONTEXT("context")
-    ;
+    CONTEXT("context");
 
     override fun retrieveIdentifier() = identifier
 }
@@ -180,8 +179,7 @@ enum class PlaybackAction(private val identifier: String) : ResultEnum {
     TOGGLING_REPEAT_CONTEXT("toggling_repeat_context"),
     TOGGLING_SHUFFLE("toggling_shuffle"),
     TOGGLING_REPEAT_TRACK("toggling_repeat_track"),
-    TRANSFERRING_PLAYBACK("transferring_playback")
-    ;
+    TRANSFERRING_PLAYBACK("transferring_playback");
 
     override fun retrieveIdentifier() = identifier
 }
