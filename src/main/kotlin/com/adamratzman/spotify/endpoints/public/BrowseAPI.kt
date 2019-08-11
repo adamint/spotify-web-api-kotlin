@@ -25,7 +25,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.neovisionaries.i18n.CountryCode
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.util.*
+import java.util.Date
 import java.util.function.Supplier
 
 /**
@@ -230,14 +230,14 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     @Suppress("DEPRECATION")
     fun getTrackRecommendations(
-            seedArtists: List<String>? = null,
-            seedGenres: List<String>? = null,
-            seedTracks: List<String>? = null,
-            limit: Int? = null,
-            market: CountryCode? = null,
-            targetAttributes: List<TrackAttribute<*>> = listOf(),
-            minAttributes: List<TrackAttribute<*>> = listOf(),
-            maxAttributes: List<TrackAttribute<*>> = listOf()
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = null,
+        market: CountryCode? = null,
+        targetAttributes: List<TrackAttribute<*>> = listOf(),
+        minAttributes: List<TrackAttribute<*>> = listOf(),
+        maxAttributes: List<TrackAttribute<*>> = listOf()
     ): SpotifyRestAction<RecommendationResponse> =
             getRecommendations(
                     seedArtists,
@@ -249,7 +249,6 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     minAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
                     maxAttributes.map { it.tuneableTrackAttribute to it.value }.toMap()
             )
-
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -308,8 +307,6 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(builder.toString()).toObject<RecommendationResponse>(api)
         })
     }
-
-
 }
 
 /**
@@ -317,22 +314,25 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
  *
  * @param attribute The spotify id for the track attribute
  */
-sealed class TuneableTrackAttribute <T: Number>(val attribute: String, val integerOnly: Boolean, val min: T?, val max: T?) {
+sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integerOnly: Boolean, val min: T?, val max: T?) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
      * 1.0 represents high confidence the track is acoustic.
      */
-    object ACOUSTICNESS : TuneableTrackAttribute<Float>("acousticness", false,0f, 1f)
+    object ACOUSTICNESS : TuneableTrackAttribute<Float>("acousticness", false, 0f, 1f)
+
     /**
      * Danceability describes how suitable a track is for dancing based on a combination of musical
      * elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is
      * least danceable and 1.0 is most danceable.
      */
-    object DANCEABILITY : TuneableTrackAttribute<Float>("danceability", false,0f, 1f)
+    object DANCEABILITY : TuneableTrackAttribute<Float>("danceability", false, 0f, 1f)
+
     /**
      * The duration of the track in milliseconds.
      */
-    object DURATION_IN_MILLISECONDS : TuneableTrackAttribute<Int>("duration_ms", true,0, null)
+    object DURATION_IN_MILLISECONDS : TuneableTrackAttribute<Int>("duration_ms", true, 0, null)
+
     /**
      * Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
      * Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy,
@@ -340,6 +340,7 @@ sealed class TuneableTrackAttribute <T: Number>(val attribute: String, val integ
      * include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
      */
     object ENERGY : TuneableTrackAttribute<Float>("energy", false, 0f, 1f)
+
     /**
      * Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as
      * instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The
@@ -347,30 +348,35 @@ sealed class TuneableTrackAttribute <T: Number>(val attribute: String, val integ
      * no vocal content. Values above 0.5 are intended to represent instrumental tracks, but
      * confidence is higher as the value approaches 1.0.
      */
-    object INSTRUMENTALNESS : TuneableTrackAttribute<Float>("instrumentalness", false,0f, 1f)
+    object INSTRUMENTALNESS : TuneableTrackAttribute<Float>("instrumentalness", false, 0f, 1f)
+
     /**
      * The key the track is in. Integers map to pitches using standard Pitch Class notation.
      * E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
      */
-   object KEY : TuneableTrackAttribute<Int>("key", true,0, null)
+    object KEY : TuneableTrackAttribute<Int>("key", true, 0, null)
+
     /**
      * Detects the presence of an audience in the recording. Higher liveness values represent an increased
      * probability that the track was performed live. A value above 0.8 provides strong likelihood
      * that the track is live.
      */
-    object LIVENESS : TuneableTrackAttribute<Float>("liveness", false,0f, 1f)
+    object LIVENESS : TuneableTrackAttribute<Float>("liveness", false, 0f, 1f)
+
     /**
      * The overall loudness of a track in decibels (dB). Loudness values are averaged across the
      * entire track and are useful for comparing relative loudness of tracks. Loudness is the
      * quality of a sound that is the primary psychological correlate of physical strength (amplitude).
      * Values typically range between -60 and 0 db.
      */
-    object LOUDNESS : TuneableTrackAttribute<Float>("loudness", false,null, null)
+    object LOUDNESS : TuneableTrackAttribute<Float>("loudness", false, null, null)
+
     /**
      * Mode indicates the modality (major or minor) of a track, the type of scale from which its
      * melodic content is derived. Major is represented by 1 and minor is 0.
      */
-    object MODE : TuneableTrackAttribute<Int>("mode", true,0, 1)
+    object MODE : TuneableTrackAttribute<Int>("mode", true, 0, 1)
+
     /**
      * The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.
      * The popularity is calculated by algorithm and is based, in the most part, on the total number of
@@ -378,7 +384,8 @@ sealed class TuneableTrackAttribute <T: Number>(val attribute: String, val integ
      * the market parameter, it is expected to find relinked tracks with popularities that do not match
      * min_*, max_*and target_* popularities. These relinked tracks are accurate replacements for unplayable tracks with the expected popularity scores. Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.
      */
-    object POPULARITY : TuneableTrackAttribute<Int>("popularity", true,0, 100)
+    object POPULARITY : TuneableTrackAttribute<Int>("popularity", true, 0, 100)
+
     /**
      * Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the
      * recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above
@@ -387,23 +394,26 @@ sealed class TuneableTrackAttribute <T: Number>(val attribute: String, val integ
      * such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like
      * tracks.
      */
-    object SPEECHINESS : TuneableTrackAttribute<Float>("speechiness", false,0f, 1f)
+    object SPEECHINESS : TuneableTrackAttribute<Float>("speechiness", false, 0f, 1f)
+
     /**
      * The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the
      * speed or pace of a given piece and derives directly from the average beat duration.
      */
-    object TEMPO : TuneableTrackAttribute<Float>("tempo", false,0f, null)
+    object TEMPO : TuneableTrackAttribute<Float>("tempo", false, 0f, null)
+
     /**
      * An estimated overall time signature of a track. The time signature (meter)
      * is a notational convention to specify how many beats are in each bar (or measure).
      */
-    object TIME_SIGNATURE  :TuneableTrackAttribute<Int>("time_signature", true,null, null)
+    object TIME_SIGNATURE : TuneableTrackAttribute<Int>("time_signature", true, null, null)
+
     /**
      * A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high
      * valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence
      * sound more negative (e.g. sad, depressed, angry).
      */
-    object VALENCE : TuneableTrackAttribute<Float>("valence", false,0f, 1f)
+    object VALENCE : TuneableTrackAttribute<Float>("valence", false, 0f, 1f)
 
     override fun toString() = attribute
 
