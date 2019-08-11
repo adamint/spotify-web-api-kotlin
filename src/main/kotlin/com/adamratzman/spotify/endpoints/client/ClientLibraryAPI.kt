@@ -185,7 +185,8 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
  * @param id How to transform an id (or uri) input into its Spotify id
  */
 enum class LibraryType(private val value: String, internal val id: (String) -> String) {
-    TRACK("tracks", { TrackURI(it).id }), ALBUM("albums", { AlbumURI(it).id });
+    TRACK("tracks", { TrackURI(it).id }),
+    ALBUM("albums", { AlbumURI(it).id });
 
     override fun toString() = value
 }

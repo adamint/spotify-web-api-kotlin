@@ -28,7 +28,10 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @param id The internal spotify id
      */
     enum class SearchType(internal val id: String) {
-        ALBUM("album"), TRACK("track"), ARTIST("artist"), PLAYLIST("playlist")
+        ALBUM("album"),
+        TRACK("track"),
+        ARTIST("artist"),
+        PLAYLIST("playlist");
     }
 
     /**
