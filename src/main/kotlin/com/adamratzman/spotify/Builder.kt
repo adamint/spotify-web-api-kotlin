@@ -496,5 +496,6 @@ class SpotifyApiBuilderDsl {
 }
 
 enum class AuthorizationType {
-    CLIENT, APPLICATION
+    CLIENT,
+    APPLICATION;
 }
