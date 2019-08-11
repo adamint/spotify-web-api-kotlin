@@ -1,6 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.3.41'
     ext.dokka_version = '0.9.17'
+    ext.junit_version = '5.5.1'
 
     repositories { jcenter() }
 
@@ -12,7 +13,7 @@ buildscript {
 
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.23.1"
+    id "com.diffplug.gradle.spotless" version "3.24.0"
     id "base"
     id "io.codearte.nexus-staging" version "0.21.0"
     id "com.bmuschko.nexus" version "2.3.1"
@@ -22,7 +23,7 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
 group 'com.adamratzman'
-version '2.3.03'
+version '2.3.04'
 
 archivesBaseName = 'spotify-api-kotlin'
 
@@ -37,7 +38,7 @@ dependencies {
     compile "com.squareup.moshi:moshi:1.8.0"
     compile "com.squareup.moshi:moshi-kotlin:1.8.0"
 
-    compile group: 'com.google.http-client', name: 'google-http-client', version: '1.30.2'
+    compile "com.google.http-client:google-http-client:1.31.0"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
@@ -51,9 +52,9 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin'
     }
     
-    testCompile('org.junit.jupiter:junit-jupiter-api:5.4.2')
-    testCompile(group: 'org.json', name: 'json', version: '20180130')
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testCompile "org.json:json:20180130"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
 }
 
 dokka {
