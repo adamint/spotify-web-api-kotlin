@@ -354,7 +354,7 @@ sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integ
      * The key the track is in. Integers map to pitches using standard Pitch Class notation.
      * E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
      */
-    object KEY : TuneableTrackAttribute<Int>("key", true, 0, null)
+    object KEY : TuneableTrackAttribute<Int>("key", true, 0, 11)
 
     /**
      * Detects the presence of an audience in the recording. Higher liveness values represent an increased
@@ -405,8 +405,10 @@ sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integ
     /**
      * An estimated overall time signature of a track. The time signature (meter)
      * is a notational convention to specify how many beats are in each bar (or measure).
+     * The time signature ranges from 3 to 7 indicating time signatures of 3/4, to 7/4.
+     * A value of -1 may indicate no time signature, while a value of 1 indicates a rather complex or changing time signature.
      */
-    object TIME_SIGNATURE : TuneableTrackAttribute<Int>("time_signature", true, null, null)
+    object TIME_SIGNATURE : TuneableTrackAttribute<Int>("time_signature", true, -1, 7)
 
     /**
      * A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high

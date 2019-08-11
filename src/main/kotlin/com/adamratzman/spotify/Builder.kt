@@ -447,7 +447,7 @@ class SpotifyApiBuilderDsl {
                         clientSecret,
                         response.body.toObject(null),
                         utilities.automaticRefresh,
-                        redirectUri ?: throw IllegalArgumentException("No redirect uri provided"),
+                        redirectUri,
                         utilities.useCache,
                         utilities.cacheLimit,
                         utilities.retryWhenRateLimited,
