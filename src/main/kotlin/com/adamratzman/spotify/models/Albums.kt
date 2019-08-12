@@ -75,7 +75,7 @@ enum class AlbumResultType(internal val id: String) {
     ALBUM("album"),
     SINGLE("single"),
     COMPILATION("compilation"),
-    APPEARS_ON("appears_on")
+    APPEARS_ON("appears_on");
 }
 
 /**
@@ -169,8 +169,7 @@ internal data class AlbumsResponse(val albums: List<Album?>)
  */
 enum class CopyrightType(val identifier: String) : ResultEnum {
     COPYRIGHT("C"),
-    SOUND_PERFORMANCE_COPYRIGHT("P")
-    ;
+    SOUND_PERFORMANCE_COPYRIGHT("P");
 
     override fun retrieveIdentifier() = identifier
 }

@@ -29,7 +29,10 @@ import java.util.function.Supplier
 
  */
 
-enum class PagingTraversalType { BACKWARDS, FORWARDS }
+enum class PagingTraversalType {
+    BACKWARDS,
+    FORWARDS;
+}
 
 /**
  * The offset-based paging object is a container for a set of objects. It contains a key called items
