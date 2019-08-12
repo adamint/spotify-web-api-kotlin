@@ -8,17 +8,23 @@ import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.javanet.NetHttpTransport
 import java.util.concurrent.TimeUnit
 
-enum class HttpRequestMethod { GET, POST, PUT, DELETE }
+enum class HttpRequestMethod {
+    GET,
+    POST,
+    PUT,
+    DELETE;
+}
+
 data class HttpHeader(val key: String, val value: String)
 
 internal class HttpConnection(
-        private val url: String,
-        private val method: HttpRequestMethod,
-        private val bodyMap: Map<*, *>?,
-        private val bodyString: String?,
-        private val contentType: String?,
-        private val headers: List<HttpHeader> = listOf(),
-        val api: SpotifyAPI? = null
+    private val url: String,
+    private val method: HttpRequestMethod,
+    private val bodyMap: Map<*, *>?,
+    private val bodyString: String?,
+    private val contentType: String?,
+    private val headers: List<HttpHeader> = listOf(),
+    val api: SpotifyAPI? = null
 ) {
 
     companion object {

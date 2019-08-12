@@ -317,6 +317,6 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         /**
          * Will turn repeat off
          */
-        OFF
+        OFF;
     }
 }
