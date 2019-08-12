@@ -16,8 +16,8 @@ fun spotifyApi(block: SpotifyApiBuilderDsl.() -> Unit) = SpotifyApiBuilderDsl().
  * Spotify traditional Java style API builder
  */
 class SpotifyApiBuilder(
-        private var clientId: String,
-        private var clientSecret: String
+    private var clientId: String,
+    private var clientSecret: String
 ) {
     private var redirectUri: String? = null
     private var authorizationCode: String? = null
@@ -190,17 +190,17 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null
 ) {
     fun build() = SpotifyUserAuthorization(authorizationCode, tokenString, token)
 }
 
 data class SpotifyUserAuthorization(
-        val authorizationCode: String?,
-        val tokenString: String?,
-        val token: Token?
+    val authorizationCode: String?,
+    val tokenString: String?,
+    val token: Token?
 )
 
 /**
@@ -215,13 +215,13 @@ data class SpotifyUserAuthorization(
  * @property enableAllUtilities Whether to enable all provided utilities
  */
 class SpotifyUtilitiesBuilder(
-        var useCache: Boolean = true,
-        var cacheLimit: Int? = 200,
-        var automaticRefresh: Boolean = true,
-        var retryWhenRateLimited: Boolean = true,
-        var enableLogger: Boolean = true,
-        var testTokenValidity: Boolean = false,
-        var enableAllUtilities: Boolean = false
+    var useCache: Boolean = true,
+    var cacheLimit: Int? = 200,
+    var automaticRefresh: Boolean = true,
+    var retryWhenRateLimited: Boolean = true,
+    var enableLogger: Boolean = true,
+    var testTokenValidity: Boolean = false,
+    var enableAllUtilities: Boolean = false
 ) {
     fun build() =
             if (enableAllUtilities)
@@ -245,12 +245,12 @@ class SpotifyUtilitiesBuilder(
 }
 
 data class SpotifyUtilities(
-        val useCache: Boolean,
-        val cacheLimit: Int?,
-        val automaticRefresh: Boolean,
-        val retryWhenRateLimited: Boolean,
-        val enableLogger: Boolean,
-        val testTokenValidity: Boolean
+    val useCache: Boolean,
+    val cacheLimit: Int?,
+    val automaticRefresh: Boolean,
+    val retryWhenRateLimited: Boolean,
+    val enableLogger: Boolean,
+    val testTokenValidity: Boolean
 )
 
 /**
@@ -286,6 +286,20 @@ class SpotifyApiBuilderDsl {
      * Allows you to override default values for caching, token refresh, and logging
      */
     fun utilities(block: SpotifyUtilitiesBuilder.() -> Unit) {
+        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    }
+
+    /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun config(block: SpotifyUtilitiesBuilder.() -> Unit) {
+        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    }
+
+    /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun options(block: SpotifyUtilitiesBuilder.() -> Unit) {
         utilities = SpotifyUtilitiesBuilder().apply(block).build()
     }
 
@@ -398,9 +412,9 @@ class SpotifyApiBuilderDsl {
      * @param token [Token] object (useful if you already have exchanged an authorization code yourself
      */
     private fun buildClient(
-            authorizationCode: String? = null,
-            tokenString: String? = null,
-            token: Token? = null
+        authorizationCode: String? = null,
+        tokenString: String? = null,
+        token: Token? = null
     ): SpotifyClientAPI {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
@@ -413,7 +427,7 @@ class SpotifyApiBuilderDsl {
             authorizationCode != null -> try {
                 clientId ?: throw IllegalArgumentException()
                 clientSecret ?: throw IllegalArgumentException()
-                redirectUri ?: IllegalArgumentException()
+                redirectUri ?: throw IllegalArgumentException()
 
                 val response = executeTokenRequest(HttpConnection(
                         url = "https://accounts.spotify.com/api/token",
@@ -433,7 +447,7 @@ class SpotifyApiBuilderDsl {
                         clientSecret,
                         response.body.toObject(null),
                         utilities.automaticRefresh,
-                        redirectUri ?: throw IllegalArgumentException("No redirect uri provided"),
+                        redirectUri,
                         utilities.useCache,
                         utilities.cacheLimit,
                         utilities.retryWhenRateLimited,
@@ -482,5 +496,6 @@ class SpotifyApiBuilderDsl {
 }
 
 enum class AuthorizationType {
-    CLIENT, APPLICATION
+    CLIENT,
+    APPLICATION;
 }
