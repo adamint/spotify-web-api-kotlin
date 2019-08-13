@@ -35,7 +35,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.name).toString())
-                        .toObject<Album>(api)
+                        .toObject(api)
             }
         })
     }
@@ -82,7 +82,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             offset
                     ).with("market", market?.name)
                             .toString()
-            ).toPagingObject<SimpleTrack>(endpoint = this)
+            ).toPagingObject(endpoint = this)
         })
     }
 }

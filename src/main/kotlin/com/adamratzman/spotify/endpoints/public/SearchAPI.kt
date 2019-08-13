@@ -53,7 +53,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         market: CountryCode? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging(Supplier {
-            get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject<SimplePlaylist>(
+            get(build(SearchType.PLAYLIST, query, limit, offset, market)).toPagingObject(
                     "playlists", this
             )
         })
@@ -78,7 +78,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         market: CountryCode? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging(Supplier {
-            get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject<Artist>(
+            get(build(SearchType.ARTIST, query, limit, offset, market)).toPagingObject(
                     "artists", this
             )
         })
@@ -103,7 +103,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         market: CountryCode? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging(Supplier {
-            get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject<SimpleAlbum>(
+            get(build(SearchType.ALBUM, query, limit, offset, market)).toPagingObject(
                     "albums", this
             )
         })
@@ -128,7 +128,7 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         market: CountryCode? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging(Supplier {
-            get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject<Track>(
+            get(build(SearchType.TRACK, query, limit, offset, market)).toPagingObject(
                     "tracks", this
             )
         })

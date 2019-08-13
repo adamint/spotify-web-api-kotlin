@@ -37,7 +37,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
                             .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toArray<Boolean>(api)
+            ).toArray(api)
         })
     }
 

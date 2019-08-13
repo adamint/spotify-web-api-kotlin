@@ -38,7 +38,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject<List<Device>>(
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(
                     "devices"
             )
         })
@@ -78,7 +78,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/player/recently-played")
                             .with("limit", limit).with("before", before).with("after", after).toString()
-            ).toCursorBasedPagingObject<PlayHistory>(
+            ).toCursorBasedPagingObject(
                     endpoint = this
             )
         })

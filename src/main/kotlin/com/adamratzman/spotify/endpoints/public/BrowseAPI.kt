@@ -39,7 +39,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>(
+            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
                     "genres"
             )
         })
@@ -67,7 +67,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "country",
                             market?.name
                     ).toString()
-            ).toPagingObject<SimpleAlbum>(
+            ).toPagingObject(
                     "albums", endpoint = this
             )
         })
@@ -107,7 +107,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             .with("locale", locale).with("timestamp", timestamp?.let {
                                 SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(Date.from(Instant.ofEpochMilli(timestamp)))
                             }).toString()
-            ).toObject<FeaturedPlaylists>(api)
+            ).toObject(api)
         })
     }
 
@@ -138,7 +138,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "market",
                             market?.name
                     ).with("locale", locale).toString()
-            ).toPagingObject<SpotifyCategory>(
+            ).toPagingObject(
                     "categories", endpoint = this
             )
         })
@@ -166,7 +166,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/browse/categories/${categoryId.encode()}").with("market", market?.name)
                             .with("locale", locale).toString()
-            ).toObject<SpotifyCategory>(api)
+            ).toObject(api)
         })
     }
 
@@ -194,7 +194,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             limit
                     ).with("offset", offset)
                             .with("market", market?.name).toString()
-            ).toPagingObject<SimplePlaylist>("playlists", endpoint = this)
+            ).toPagingObject("playlists", endpoint = this)
         })
     }
 
@@ -301,10 +301,10 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     .with("seed_artists", seedArtists?.joinToString(",") { ArtistURI(it).id.encode() })
                     .with("seed_genres", seedGenres?.joinToString(",") { it.encode() })
                     .with("seed_tracks", seedTracks?.joinToString(",") { TrackURI(it).id.encode() })
-            targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
-            minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
-            maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }
-            get(builder.toString()).toObject<RecommendationResponse>(api)
+            targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
+            minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
+            maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
+            get(builder.toString()).toObject(api)
         })
     }
 }

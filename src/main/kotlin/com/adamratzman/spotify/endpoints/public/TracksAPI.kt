@@ -34,7 +34,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/tracks/${TrackURI(track).id.encode()}").with("market", market?.name).toString())
-                        .toObject<Track>(api)
+                        .toObject(api)
             }
         })
     }
@@ -74,7 +74,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-analysis/${TrackURI(track).id.encode()}").toString())
-                    .toObject<AudioAnalysis>(api)
+                    .toObject(api)
         })
     }
 
@@ -88,7 +88,7 @@ class TracksAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction(Supplier {
             get(EndpointBuilder("/audio-features/${TrackURI(track).id.encode()}").toString())
-                    .toObject<AudioFeatures>(api)
+                    .toObject(api)
         })
     }
 

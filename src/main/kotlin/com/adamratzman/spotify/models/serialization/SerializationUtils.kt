@@ -150,7 +150,7 @@ private fun <K, V> fromJsonMap(keyType: Type, valueType: Type, json: String): Ma
 }
 
 internal fun <K, V> mapAdapter(keyType: Type, valueType: Type): JsonAdapter<Map<K, V>> {
-    return moshi.adapter<Map<K, V>>(Types.newParameterizedType(Map::class.java, keyType, valueType))
+    return moshi.adapter(Types.newParameterizedType(Map::class.java, keyType, valueType))
 }
 
 internal fun mapAdapterJson(): JsonAdapter<Map<String, Any>> = mapAdapter(String::class.java, Any::class.java)
