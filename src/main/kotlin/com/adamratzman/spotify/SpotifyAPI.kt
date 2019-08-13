@@ -171,7 +171,7 @@ abstract class SpotifyAPI internal constructor(
      * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
      */
     fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse {
-        if (!token.shouldRefresh()) return TokenValidityResponse(false, SpotifyException("Token expired"))
+        if (token.shouldRefresh()) return TokenValidityResponse(false, SpotifyException("Token needs to be refreshed (is it expired?)"))
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
         return try {
