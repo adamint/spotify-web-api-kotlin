@@ -57,7 +57,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(
                             "offset", offset
                     ).toString()
-            ).toPagingObject<SimplePlaylist>(endpoint = this)
+            ).toPagingObject(endpoint = this)
         })
     }
 
@@ -77,7 +77,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
                                 .with("market", market?.name).toString()
-                ).toObject<Playlist>(api)
+                ).toObject(api)
             }
         })
     }
@@ -105,7 +105,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
                             .with("offset", offset).with("market", market?.name).toString()
             )
-                    .toPagingObject<PlaylistTrack>(null, this)
+                    .toPagingObject(null, this)
         })
     }
 

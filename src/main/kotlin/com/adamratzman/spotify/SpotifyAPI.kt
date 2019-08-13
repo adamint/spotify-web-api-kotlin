@@ -31,7 +31,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
-internal val base = "https://api.spotify.com/v1"
+internal const val base = "https://api.spotify.com/v1"
 
 /**
  * Represents an instance of the Spotify API client, with common
