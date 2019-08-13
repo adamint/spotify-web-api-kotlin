@@ -43,7 +43,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
-            ).toPagingObject<SavedTrack>(endpoint = this)
+            ).toPagingObject(endpoint = this)
         })
     }
 
@@ -68,7 +68,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
-            ).toPagingObject<SavedAlbum>(endpoint = this)
+            ).toPagingObject(endpoint = this)
         })
     }
 
@@ -103,7 +103,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                             .toString()
-            ).toArray<Boolean>(api)
+            ).toArray(api)
         })
     }
 

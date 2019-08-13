@@ -37,7 +37,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString())
-                        .toObject<Artist>(api)
+                        .toObject(api)
             }
         })
     }
@@ -85,7 +85,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             offset
                     ).with("market", market?.name)
                             .with("include_groups", include.joinToString(",") { it.keyword }).toString()
-            ).toPagingObject<SimpleAlbum>(null, this)
+            ).toPagingObject(null, this)
         })
     }
 
@@ -120,7 +120,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "country",
                             market.name
                     ).toString()
-            ).toInnerArray<Track>("tracks")
+            ).toInnerArray("tracks")
         })
     }
 

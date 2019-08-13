@@ -27,7 +27,7 @@ open class UserAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         return toAction(Supplier {
             catch {
                 get(EndpointBuilder("/users/${UserURI(user).id.encode()}").toString())
-                        .toObject<SpotifyPublicUser>(api)
+                        .toObject(api)
             }
         })
     }
