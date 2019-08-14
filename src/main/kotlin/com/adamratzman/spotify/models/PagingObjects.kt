@@ -175,12 +175,12 @@ class CursorBasedPagingObject<T>(
         }
         return next?.let {
             val url = endpoint.get(it)
-            when {
-                itemClazz == PlayHistory::class.java -> url.toCursorBasedPagingObject<PlayHistory>(
+            when (itemClazz) {
+                PlayHistory::class.java -> url.toCursorBasedPagingObject<PlayHistory>(
                         null,
                         endpoint
                 )
-                itemClazz == Artist::class.java -> url.toCursorBasedPagingObject<Artist>(
+                Artist::class.java -> url.toCursorBasedPagingObject<Artist>(
                         null,
                         endpoint
                 )
