@@ -70,7 +70,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             post(
                     EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").toString(),
                     json.toJson()
-            ).toObject(api)
+            ).toObject<Playlist>(api)
         })
     }
 
@@ -173,7 +173,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
         return toActionPaging(Supplier {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                    .toPagingObject(endpoint = this)
+                    .toPagingObject<SimplePlaylist>(endpoint = this)
         })
     }
 
@@ -244,7 +244,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             put(
                     EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").toString(),
                     json.toJson()
-            ).toObject(api)
+            ).toObject<Snapshot>(api)
         })
     }
 
@@ -423,7 +423,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             }.let { json.put("tracks", it) }
             delete(
                     EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), body = json.toJson()
-            ).toObject(api)
+            ).toObject<Snapshot>(api)
         })
     }
 

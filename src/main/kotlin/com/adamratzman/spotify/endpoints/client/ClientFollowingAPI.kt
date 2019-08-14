@@ -14,7 +14,7 @@ import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.UserURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import java.util.function.Supplier
 
@@ -77,7 +77,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                     EndpointBuilder("/me/following/contains").with("type", "user")
                             .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toArray(api)
+            ).toList<Boolean>(api)
         })
     }
 
@@ -112,7 +112,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
             get(
                     EndpointBuilder("/me/following/contains").with("type", "artist")
                             .with("ids", artists.joinToString(",") { ArtistURI(it).id.encode() }).toString()
-            ).toArray(api)
+            ).toList<Boolean>(api)
         })
     }
 
@@ -137,7 +137,7 @@ class ClientFollowingAPI(api: SpotifyAPI) : FollowingAPI(api) {
                             "after",
                             after
                     ).toString()
-            ).toCursorBasedPagingObject("artists", this)
+            ).toCursorBasedPagingObject<Artist>("artists", this)
         })
     }
 
