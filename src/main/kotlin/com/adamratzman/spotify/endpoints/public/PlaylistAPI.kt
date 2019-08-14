@@ -16,7 +16,7 @@ import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SpotifyImage
 import com.adamratzman.spotify.models.UserURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
@@ -122,7 +122,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
             get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString())
-                    .toArray<SpotifyImage>(api).toList()
+                    .toList<SpotifyImage>(api).toList()
         })
     }
 }

@@ -13,7 +13,7 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.TrackURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
@@ -103,7 +103,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                             .toString()
-            ).toArray<Boolean>(api)
+            ).toList<Boolean>(api)
         })
     }
 

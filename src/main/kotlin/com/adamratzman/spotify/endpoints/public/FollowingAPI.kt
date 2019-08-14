@@ -9,7 +9,7 @@ import com.adamratzman.spotify.http.encode
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.UserURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import java.util.function.Supplier
 
 /**
@@ -37,7 +37,7 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
                             .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toArray<Boolean>(api)
+            ).toList<Boolean>(api)
         })
     }
 

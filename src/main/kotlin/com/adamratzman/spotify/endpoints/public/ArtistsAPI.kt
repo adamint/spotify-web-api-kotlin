@@ -36,8 +36,7 @@ class ArtistsAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getArtist(artist: String): SpotifyRestAction<Artist?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString())
-                        .toObject<Artist>(api)
+                get(EndpointBuilder("/artists/${ArtistURI(artist).id.encode()}").toString()).toObject<Artist>(api)
             }
         })
     }
