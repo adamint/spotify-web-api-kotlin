@@ -13,7 +13,7 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.TrackURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.neovisionaries.i18n.CountryCode
 import java.util.function.Supplier
@@ -43,7 +43,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
-            ).toPagingObject(endpoint = this)
+            ).toPagingObject<SavedTrack>(endpoint = this)
         })
     }
 
@@ -68,7 +68,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
                             .toString()
-            ).toPagingObject(endpoint = this)
+            ).toPagingObject<SavedAlbum>(endpoint = this)
         })
     }
 
@@ -103,7 +103,7 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encode() })
                             .toString()
-            ).toArray(api)
+            ).toList<Boolean>(api)
         })
     }
 
