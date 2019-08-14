@@ -39,9 +39,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction(Supplier {
-            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>(
-                    "genres"
-            )
+            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>("genres")
         })
     }
 
@@ -67,9 +65,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "country",
                             market?.name
                     ).toString()
-            ).toPagingObject<SimpleAlbum>(
-                    "albums", endpoint = this
-            )
+            ).toPagingObject<SimpleAlbum>("albums", endpoint = this)
         })
     }
 
@@ -138,9 +134,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             "market",
                             market?.name
                     ).with("locale", locale).toString()
-            ).toPagingObject<SpotifyCategory>(
-                    "categories", endpoint = this
-            )
+            ).toPagingObject<SpotifyCategory>("categories", endpoint = this)
         })
     }
 
@@ -301,9 +295,9 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     .with("seed_artists", seedArtists?.joinToString(",") { ArtistURI(it).id.encode() })
                     .with("seed_genres", seedGenres?.joinToString(",") { it.encode() })
                     .with("seed_tracks", seedTracks?.joinToString(",") { TrackURI(it).id.encode() })
-            targetAttributes.forEach { attribute, value -> builder.with("target_$attribute", value) }
-            minAttributes.forEach { attribute, value -> builder.with("min_$attribute", value) }
-            maxAttributes.forEach { attribute, value -> builder.with("max_$attribute", value) }
+            targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
+            minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
+            maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
             get(builder.toString()).toObject<RecommendationResponse>(api)
         })
     }

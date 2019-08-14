@@ -31,7 +31,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
-internal val base = "https://api.spotify.com/v1"
+internal const val base = "https://api.spotify.com/v1"
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -171,7 +171,7 @@ abstract class SpotifyAPI internal constructor(
      * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
      */
     fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse {
-        if (!token.shouldRefresh()) return TokenValidityResponse(false, SpotifyException("Token expired"))
+        if (token.shouldRefresh()) return TokenValidityResponse(false, SpotifyException("Token needs to be refreshed (is it expired?)"))
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
         return try {
