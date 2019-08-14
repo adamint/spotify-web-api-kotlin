@@ -22,7 +22,7 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
 group 'com.adamratzman'
-version '2.3.07'
+version '2.3.08'
 
 archivesBaseName = 'spotify-api-kotlin'
 
