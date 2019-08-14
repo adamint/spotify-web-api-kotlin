@@ -13,6 +13,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.json.JSONObject
 import java.lang.reflect.Type
 
 private val moshi = Moshi.Builder()
@@ -43,7 +44,7 @@ internal inline fun <reified T : Any> String.toObject(o: SpotifyAPI?): T {
     }
 }
 
-internal inline fun <reified T> String.toArray(o: SpotifyAPI?): List<T> {
+internal inline fun <reified T> String.toList(o: SpotifyAPI?): List<T> {
     val moshi = o?.moshi ?: moshi
     return moshi.adapter(Array<T>::class.java).fromJson(this)?.toList()?.apply {
         if (o != null) {
@@ -125,6 +126,9 @@ internal inline fun <reified T> String.toCursorBasedPagingObject(
         }
     }
 }
+
+internal fun String.asJSONObject() = JSONObject(this)
+internal fun JSONObject.asJsonString(key: String): String? = if (has(key)) getJSONObject(key)?.toString() else null
 
 internal inline fun <reified T> String.toInnerObject(innerName: String): T {
     val map = fromJsonMap<String, T>(

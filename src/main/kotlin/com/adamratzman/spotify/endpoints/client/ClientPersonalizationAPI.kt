@@ -57,8 +57,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
                             .with("time_range", timeRange).toString()
-            )
-                    .toPagingObject(endpoint = this)
+            ).toPagingObject<Artist>(endpoint = this)
         })
     }
 
@@ -90,8 +89,7 @@ class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             get(
                     EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
                             .with("time_range", timeRange).toString()
-            )
-                    .toPagingObject(endpoint = this)
+            ).toPagingObject<Track>(endpoint = this)
         })
     }
 }

@@ -34,8 +34,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getAlbum(album: String, market: CountryCode? = null): SpotifyRestAction<Album?> {
         return toAction(Supplier {
             catch {
-                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.name).toString())
-                        .toObject(api)
+                get(EndpointBuilder("/albums/${AlbumURI(album).id}").with("market", market?.name).toString()).toObject<Album>(api)
             }
         })
     }
@@ -82,7 +81,7 @@ class AlbumAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                             offset
                     ).with("market", market?.name)
                             .toString()
-            ).toPagingObject(endpoint = this)
+            ).toPagingObject<SimpleTrack>(endpoint = this)
         })
     }
 }

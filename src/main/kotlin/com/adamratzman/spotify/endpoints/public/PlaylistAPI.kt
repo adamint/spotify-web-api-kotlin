@@ -16,7 +16,7 @@ import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SpotifyImage
 import com.adamratzman.spotify.models.UserURI
-import com.adamratzman.spotify.models.serialization.toArray
+import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
@@ -57,7 +57,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     EndpointBuilder("/users/${UserURI(user).id.encode()}/playlists").with("limit", limit).with(
                             "offset", offset
                     ).toString()
-            ).toPagingObject(endpoint = this)
+            ).toPagingObject<SimplePlaylist>(endpoint = this)
         })
     }
 
@@ -77,7 +77,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}")
                                 .with("market", market?.name).toString()
-                ).toObject(api)
+                ).toObject<Playlist>(api)
             }
         })
     }
@@ -105,7 +105,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
                     EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/tracks").with("limit", limit)
                             .with("offset", offset).with("market", market?.name).toString()
             )
-                    .toPagingObject(null, this)
+                    .toPagingObject<PlaylistTrack>(null, this)
         })
     }
 
@@ -122,7 +122,7 @@ open class PlaylistAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction(Supplier {
             get(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encode()}/images").toString())
-                    .toArray<SpotifyImage>(api).toList()
+                    .toList<SpotifyImage>(api).toList()
         })
     }
 }
