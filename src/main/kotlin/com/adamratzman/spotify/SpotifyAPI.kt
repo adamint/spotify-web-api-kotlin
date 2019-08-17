@@ -130,7 +130,7 @@ abstract class SpotifyAPI internal constructor(
     /**
      * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
      */
-    abstract fun getApiBuilderDsl(): SpotifyApiBuilderDsl
+    abstract fun getApiBuilderDsl(): ISpotifyApiBuilder
 
     internal val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -274,10 +274,11 @@ class SpotifyAppAPI internal constructor(
 
     override fun getApiBuilder() = SpotifyApiBuilder(
         clientId,
-        clientSecret
+        clientSecret,
+        null
     ).apply { useCache(useCache) }
 
-    override fun getApiBuilderDsl() = spotifyApi {
+    override fun getApiBuilderDsl() = spotifyAppApi {
         credentials {
             clientId = this@SpotifyAppAPI.clientId
             clientSecret = this@SpotifyAppAPI.clientSecret
@@ -331,7 +332,6 @@ class SpotifyClientAPI internal constructor(
         options.enableLogger,
         options.testTokenValidity
     )
-
 
     override val search: SearchAPI = SearchAPI(this)
     override val albums: AlbumAPI = AlbumAPI(this)
@@ -444,13 +444,14 @@ class SpotifyClientAPI internal constructor(
 
     override fun getApiBuilder() = SpotifyApiBuilder(
         clientId,
-        clientSecret
+        clientSecret,
+        redirectUri
     ).apply {
         redirectUri(redirectUri)
         useCache(useCache)
     }
 
-    override fun getApiBuilderDsl() = spotifyApi {
+    override fun getApiBuilderDsl() = spotifyClientApi {
         credentials {
             clientId = this@SpotifyClientAPI.clientId
             clientSecret = this@SpotifyClientAPI.clientSecret
