@@ -36,7 +36,7 @@ dependencies {
 
     compile "com.squareup.moshi:moshi:1.8.0"
     compile "com.squareup.moshi:moshi-kotlin:1.8.0"
-    compile group: 'org.json', name: 'json', version: '20190722'
+    compile "org.json:json:20190722"
 
     compile "com.google.http-client:google-http-client:1.31.0"
 
@@ -53,7 +53,7 @@ dependencies {
     }
     
     testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testCompile "org.json:json:20180130"
+    testCompile "com.google.code.gson:gson:2.8.5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
 }
 
