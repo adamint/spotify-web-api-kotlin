@@ -214,7 +214,7 @@ data class SpotifyUserAuthorization(
  * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
  * @property enableAllUtilities Whether to enable all provided utilities
  */
-class SpotifyUtilitiesBuilder(
+class SpotifyApiOptionsBuilder(
     var useCache: Boolean = true,
     var cacheLimit: Int? = 200,
     var automaticRefresh: Boolean = true,
@@ -225,7 +225,7 @@ class SpotifyUtilitiesBuilder(
 ) {
     fun build() =
             if (enableAllUtilities)
-                SpotifyUtilities(
+                SpotifyApiOptions(
                         true,
                         200,
                         automaticRefresh = true,
@@ -234,7 +234,7 @@ class SpotifyUtilitiesBuilder(
                         testTokenValidity = true
                 )
             else
-                SpotifyUtilities(
+                SpotifyApiOptions(
                         useCache,
                         cacheLimit,
                         automaticRefresh,
@@ -244,7 +244,7 @@ class SpotifyUtilitiesBuilder(
                 )
 }
 
-data class SpotifyUtilities(
+data class SpotifyApiOptions(
     val useCache: Boolean,
     val cacheLimit: Int?,
     val automaticRefresh: Boolean,
@@ -252,6 +252,9 @@ data class SpotifyUtilities(
     val enableLogger: Boolean,
     val testTokenValidity: Boolean
 )
+
+typealias SpotifyUtilities = SpotifyApiOptions
+typealias SpotifyUtilitiesBuilder = SpotifyApiOptionsBuilder
 
 /**
  * Spotify API mutable parameters
@@ -264,7 +267,7 @@ data class SpotifyUtilities(
 class SpotifyApiBuilderDsl {
     private var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build()
     private var authentication: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build()
-    private var utilities: SpotifyUtilities = SpotifyUtilitiesBuilder().build()
+    private var utilities: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 
     /**
      * A block in which Spotify application credentials (accessible via the Spotify [dashboard](https://developer.spotify.com/dashboard/applications))
@@ -285,22 +288,22 @@ class SpotifyApiBuilderDsl {
     /**
      * Allows you to override default values for caching, token refresh, and logging
      */
-    fun utilities(block: SpotifyUtilitiesBuilder.() -> Unit) {
-        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    fun utilities(block: SpotifyApiOptionsBuilder.() -> Unit) {
+        utilities = SpotifyApiOptionsBuilder().apply(block).build()
     }
 
     /**
      * Allows you to override default values for caching, token refresh, and logging
      */
-    fun config(block: SpotifyUtilitiesBuilder.() -> Unit) {
-        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    fun config(block: SpotifyApiOptionsBuilder.() -> Unit) {
+        utilities = SpotifyApiOptionsBuilder().apply(block).build()
     }
 
     /**
      * Allows you to override default values for caching, token refresh, and logging
      */
-    fun options(block: SpotifyUtilitiesBuilder.() -> Unit) {
-        utilities = SpotifyUtilitiesBuilder().apply(block).build()
+    fun options(block: SpotifyApiOptionsBuilder.() -> Unit) {
+        utilities = SpotifyApiOptionsBuilder().apply(block).build()
     }
 
     /**
@@ -443,49 +446,49 @@ class SpotifyApiBuilderDsl {
                 ), clientId, clientSecret)
 
                 SpotifyClientAPI(
-                        clientId,
-                        clientSecret,
-                        response.body.toObject(null),
-                        utilities.automaticRefresh,
-                        redirectUri,
-                        utilities.useCache,
-                        utilities.cacheLimit,
-                        utilities.retryWhenRateLimited,
-                        utilities.enableLogger,
-                        utilities.testTokenValidity
+                    clientId,
+                    clientSecret,
+                    redirectUri,
+                    response.body.toObject(null),
+                    utilities.useCache,
+                    utilities.cacheLimit,
+                    utilities.automaticRefresh,
+                    utilities.retryWhenRateLimited,
+                    utilities.enableLogger,
+                    utilities.testTokenValidity
                 )
             } catch (e: Exception) {
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
             token != null -> SpotifyClientAPI(
-                    clientId ?: "not-set",
-                    clientSecret ?: "not-set",
-                    token,
-                    utilities.automaticRefresh,
-                    redirectUri ?: "not-set",
-                    utilities.useCache,
-                    utilities.cacheLimit,
-                    utilities.retryWhenRateLimited,
-                    utilities.enableLogger,
-                    utilities.testTokenValidity
+                clientId ?: "not-set",
+                clientSecret ?: "not-set",
+                redirectUri ?: "not-set",
+                token,
+                utilities.useCache,
+                utilities.cacheLimit,
+                utilities.automaticRefresh,
+                utilities.retryWhenRateLimited,
+                utilities.enableLogger,
+                utilities.testTokenValidity
             )
             tokenString != null -> SpotifyClientAPI(
-                    clientId ?: "not-set",
-                    clientSecret ?: "not-set",
-                    Token(
-                            tokenString,
-                            "client_credentials",
-                            1000,
-                            null,
-                            null
-                    ),
-                    false,
-                    redirectUri ?: "not-set",
-                    utilities.useCache,
-                    utilities.cacheLimit,
-                    utilities.retryWhenRateLimited,
-                    utilities.enableLogger,
-                    utilities.testTokenValidity
+                clientId ?: "not-set",
+                clientSecret ?: "not-set",
+                redirectUri ?: "not-set",
+                Token(
+                        tokenString,
+                        "client_credentials",
+                        1000,
+                        null,
+                        null
+                ),
+                utilities.useCache,
+                utilities.cacheLimit,
+                false,
+                utilities.retryWhenRateLimited,
+                utilities.enableLogger,
+                utilities.testTokenValidity
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +
