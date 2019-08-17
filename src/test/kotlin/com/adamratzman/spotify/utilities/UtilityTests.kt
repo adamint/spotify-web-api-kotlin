@@ -3,7 +3,8 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.spotifyApi
+import com.adamratzman.spotify.spotifyAppApi
+import com.adamratzman.spotify.spotifyClientApi
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
@@ -14,42 +15,42 @@ class UtilityTests : Spek({
         describe("Builder tests") {
             it("API invalid parameters") {
                 assertThrows<IllegalArgumentException> {
-                    spotifyApi { }.buildCredentialed()
+                    spotifyAppApi { }.build()
                 }
 
                 assertThrows<IllegalArgumentException> {
-                    spotifyApi {
+                    spotifyClientApi {
                         credentials {
                             clientId = System.getProperty("clientId")
                         }
-                    }.buildCredentialed()
+                    }.build()
                 }
                 assertThrows<IllegalArgumentException> {
-                    spotifyApi { }.buildClient()
+                    spotifyClientApi { }.build()
                 }
 
                 if (api is SpotifyClientAPI) {
                     assertThrows<IllegalArgumentException> {
-                        spotifyApi {
+                        spotifyClientApi {
                             credentials {
                                 clientId = System.getProperty("clientId")
                                 clientSecret = System.getProperty("clientSecret")
                             }
-                        }.buildClient()
+                        }.build()
                     }
                 }
             }
 
             it("App API valid parameters") {
                 assertDoesNotThrow {
-                    val api = spotifyApi {
+                    val api = spotifyAppApi {
                         credentials {
                             clientId = System.getProperty("clientId")
                             clientSecret = System.getProperty("clientSecret")
                         }
                     }
-                    api.buildCredentialed()
-                    api.buildCredentialedAsync { }
+                    api.build()
+                    api.buildAsync { }
                 }
             }
         }
