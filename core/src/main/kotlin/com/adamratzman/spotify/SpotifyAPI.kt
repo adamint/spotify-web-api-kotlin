@@ -30,6 +30,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
+import java.util.function.Supplier
 
 internal const val base = "https://api.spotify.com/v1"
 
@@ -44,6 +45,8 @@ internal const val base = "https://api.spotify.com/v1"
  * @property useCache Whether to use the built-in cache to avoid making unnecessary calls to
  * the Spotify API
  * @property cacheLimit The maximum amount of cached requests allowed at one time. Null means no limit
+ * @property automaticRefresh Whether the [token] should be refreshed automatically
+ * @property retryWhenRateLimited Whether to request again after a rate limit
  *
  * @property search Provides access to the Spotify [search endpoint](https://developer.spotify.com/documentation/web-api/reference/search/search/)
  * @property albums Provides access to Spotify [album endpoints](https://developer.spotify.com/documentation/web-api/reference/albums/)
@@ -181,6 +184,8 @@ abstract class SpotifyAPI internal constructor(
             TokenValidityResponse(false, e)
         }
     }
+
+    internal fun <T> toAction(supplier: Supplier<T>) = SpotifyRestAction(this, supplier)
 }
 
 /**
@@ -271,6 +276,8 @@ class SpotifyAppAPI internal constructor(
 /**
  * An API instance created through client authentication, with access to private information
  * managed through the scopes exposed in [token]
+ *
+ * @property redirectUri The URI to redirect to after authorization
  */
 class SpotifyClientAPI internal constructor(
     clientId: String,
@@ -363,17 +370,12 @@ class SpotifyClientAPI internal constructor(
     override fun refreshToken(): Token {
         val currentToken = this.token
 
-        val response = executeTokenRequest(HttpConnection(
-                url = "https://accounts.spotify.com/api/token",
-                method = HttpRequestMethod.POST,
-                bodyMap = mapOf(
-                        "grant_type" to "refresh_token",
-                        "refresh_token" to token.refreshToken
-                ),
-                bodyString = null,
-                contentType = "application/x-www-form-urlencoded",
-                api = this
-        ), clientId, clientSecret)
+        val response = executeTokenRequest(
+            clientId,
+            clientSecret,
+            "grant_type" to "refresh_token",
+            "refresh_token" to token.refreshToken
+        )
 
         if (response.responseCode / 200 == 1) {
             val tempToken = response.body.toObject<Token>(this)
@@ -444,6 +446,9 @@ class SpotifyClientAPI internal constructor(
             !isTokenValid(false).isValid && (scopes.toList() + scope).all { token.scopes.contains(it) }
 }
 
+/**
+ * @return The full authorization url to send the user to
+ */
 fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
             "&response_type=code" +
@@ -451,21 +456,37 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
+/**
+ * @return [Token] from Spotify api
+ * @throws BadRequestException status code of response isn't 2XX
+ */
 fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyAPI?): Token {
-    val response = executeTokenRequest(HttpConnection(
-            url = "https://accounts.spotify.com/api/token",
-            method = HttpRequestMethod.POST,
-            bodyMap = mapOf("grant_type" to "client_credentials"),
-            bodyString = null,
-            contentType = "application/x-www-form-urlencoded",
-            api = api
-    ), clientId, clientSecret)
+    val response = executeTokenRequest(clientId, clientSecret, "grant_type" to "client_credentials", api = api)
 
     if (response.responseCode / 200 == 1) return response.body.toObject(null)
 
     throw BadRequestException(response.body.toObject<AuthenticationError>(null))
 }
 
-internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {
-    return httpConnection.execute(listOf(HttpHeader("Authorization", "Basic ${"$clientId:$clientSecret".byteEncode()}")))
+internal fun executeTokenRequest(
+    clientId: String,
+    clientSecret: String,
+    vararg body: Pair<*, *>,
+    api: SpotifyAPI? = null
+): HttpResponse {
+    return HttpConnection(
+        url = "https://accounts.spotify.com/api/token",
+        method = HttpRequestMethod.POST,
+        bodyMap = body.toMap(),
+        bodyString = null,
+        contentType = "application/x-www-form-urlencoded",
+        api = api
+    ).execute(
+        listOf(
+            HttpHeader(
+                "Authorization",
+                "Basic ${"$clientId:$clientSecret".byteEncode()}"
+            )
+        )
+    )
 }

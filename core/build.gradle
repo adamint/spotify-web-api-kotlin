@@ -1,0 +1,88 @@
+plugins {
+    id "base"
+    id "com.bmuschko.nexus" version "2.3.1"
+}
+
+apply plugin: 'kotlin'
+
+archivesBaseName = 'spotify-api-kotlin'
+
+dependencies {
+    // Actual library dependencies
+    compile 'com.neovisionaries:nv-i18n:1.25'
+
+    compile "com.squareup.moshi:moshi:1.8.0"
+    compile "com.squareup.moshi:moshi-kotlin:1.8.0"
+    compile group: 'org.json', name: 'json', version: '20190722'
+
+    compile "com.google.http-client:google-http-client:1.31.0"
+
+    compile deps.kotlin.stdlib.jdk
+    compile deps.kotlin.reflect
+
+    // Spek testing requirements
+    testCompile(deps.spek.dsl) {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+    testRuntimeOnly(deps.spek.runner) {
+        exclude group: 'org.junit.platform'
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    testCompile deps.junit.jupiter.api
+    testRuntimeOnly deps.junit.jupiter.engine
+}
+
+test {
+    systemProperties project.properties.subMap(
+            ["clientId", "clientSecret", "spotifyTokenString", "spotifyRedirectUri"]
+    )
+    useJUnitPlatform {
+        includeEngines 'spek2'
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+modifyPom {
+    project {
+        name 'spotify-api-kotlin'
+        description 'A Kotlin wrapper for the Spotify Web API.'
+        url 'https://github.com/adamint/spotify-web-api-kotlin'
+        inceptionYear '2018'
+        scm {
+            url 'https://github.com/adamint/spotify-web-api-kotlin'
+            connection 'scm:https://github.com/adamint/spotify-web-api-kotlin.git'
+            developerConnection 'scm:git://github.com/adamint/spotify-web-api-kotlin.git'
+        }
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'adamratzman'
+                name 'Adam Ratzman'
+                email 'adam@adamratzman.com'
+            }
+        }
+    }
+}
+extraArchive {
+    sources = true
+    tests = true
+    javadoc = true
+}
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+}

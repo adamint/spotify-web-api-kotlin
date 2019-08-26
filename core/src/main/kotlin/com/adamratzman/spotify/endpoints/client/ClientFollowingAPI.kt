@@ -14,8 +14,8 @@ import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.UserURI
-import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
+import com.adamratzman.spotify.models.serialization.toList
 import java.util.function.Supplier
 
 /**

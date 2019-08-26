@@ -1,8 +1,6 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import com.adamratzman.spotify.http.HttpConnection
-import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
 
@@ -322,7 +320,7 @@ class SpotifyApiBuilderDsl {
      *
      * Provide a consumer object to be executed after the api has been successfully built
      */
-    fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Runnable { consumer(buildCredentialed()) }.run()
+    fun buildCredentialedAsync(consumer: (SpotifyAPI) -> Unit) = Thread { consumer(buildCredentialed()) }.run()
 
     /**
      * Build a public [SpotifyAppAPI] using the provided credentials
@@ -390,7 +388,7 @@ class SpotifyApiBuilderDsl {
      * Provide a consumer object to be executed after the client has been successfully built
      */
     fun buildClientAsync(consumer: (SpotifyClientAPI) -> Unit) =
-            Runnable { consumer(buildClient()) }.run()
+        Thread { consumer(buildClient()) }.run()
 
     /**
      * Build the client api using a provided authorization code, token string, or token object (only one of which
@@ -429,18 +427,13 @@ class SpotifyApiBuilderDsl {
                 clientSecret ?: throw IllegalArgumentException()
                 redirectUri ?: throw IllegalArgumentException()
 
-                val response = executeTokenRequest(HttpConnection(
-                        url = "https://accounts.spotify.com/api/token",
-                        method = HttpRequestMethod.POST,
-                        bodyMap = mapOf(
-                                "grant_type" to "authorization_code",
-                                "code" to authorizationCode,
-                                "redirect_uri" to redirectUri
-                        ),
-                        bodyString = null,
-                        contentType = "application/x-www-form-urlencoded",
-                        api = null
-                ), clientId, clientSecret)
+                val response = executeTokenRequest(
+                    clientId,
+                    clientSecret,
+                    "grant_type" to "authorization_code",
+                    "code" to authorizationCode,
+                    "redirect_uri" to redirectUri
+                )
 
                 SpotifyClientAPI(
                         clientId,

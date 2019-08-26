@@ -8,5 +8,6 @@ pluginManagement {
     }
 }
 rootProject.name = 'SpotifyKotlinWrapper'
-include 'spotify.examples'
+include 'core'
+include 'extensions:coroutine'
 
