@@ -104,7 +104,7 @@ data class Playlist(
     @Json(name = "uri") private val _uri: String,
 
     val collaborative: Boolean,
-    val description: String,
+    val description: String?,
     val followers: Followers,
     @Json(name = "primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
