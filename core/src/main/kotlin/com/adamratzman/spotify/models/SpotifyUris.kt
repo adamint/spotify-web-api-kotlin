@@ -53,6 +53,10 @@ sealed class SpotifyURI(input: String, type: String) {
         result = 31 * result + id.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}($uri)"
+    }
 }
 
 /**

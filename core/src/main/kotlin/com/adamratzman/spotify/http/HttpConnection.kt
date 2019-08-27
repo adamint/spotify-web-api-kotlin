@@ -86,16 +86,13 @@ internal class HttpConnection(
             if (api?.retryWhenRateLimited == true) {
                 api.logger.logError(false, "The request ($url) was ratelimited for $ratelimit seconds at ${System.currentTimeMillis()}", null)
 
-                var retryResponse: HttpResponse? = null
-                api.executor.schedule({
-                    retryResponse = try {
+                return api.executor.schedule<HttpResponse>({
+                    try {
                         execute(additionalHeaders, retryIf502 = retryIf502)
                     } catch (e: Throwable) {
                         throw e
                     }
                 }, ratelimit, TimeUnit.SECONDS).get()
-
-                return retryResponse!!
             } else throw SpotifyRatelimitedException(ratelimit)
         }
 
@@ -108,7 +105,9 @@ internal class HttpConnection(
         if (responseCode == 401 && body.contains("access token") &&
                 api != null && api.automaticRefresh) {
             api.refreshToken()
-            return execute(additionalHeaders)
+            val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
+            newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
+            return execute(newAdditionalHeaders, retryIf502)
         }
 
         return HttpResponse(

@@ -78,7 +78,7 @@ abstract class SpotifyAPI internal constructor(
 
     val logger = SpotifyLogger(enableLogger)
 
-    val expireTime: Long get() = System.currentTimeMillis() + token.expiresIn * 1000
+    val expireTime: Long get() = token.expiresAt
 
     val executor: ScheduledExecutorService = Executors.newScheduledThreadPool(0)
 
