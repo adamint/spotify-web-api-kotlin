@@ -27,7 +27,7 @@ private fun String.remove(type: String): String {
  * @property uri retrieve this URI as a string
  * @property id representation of this uri as an id
  */
-sealed class SpotifyUri(input: String, type: String) {
+sealed class SpotifyURI(input: String, type: String) {
     val uri: String
     val id: String
 
@@ -44,7 +44,7 @@ sealed class SpotifyUri(input: String, type: String) {
     }
 
     override fun equals(other: Any?): Boolean {
-        val spotifyUri = other as? SpotifyUri ?: return false
+        val spotifyUri = other as? SpotifyURI ?: return false
         return spotifyUri.uri == this.uri
     }
 
@@ -58,29 +58,51 @@ sealed class SpotifyUri(input: String, type: String) {
 /**
  * Represents a Spotify **Album** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
-class AlbumURI(input: String) : SpotifyUri(input, "album")
+class AlbumURI(input: String) : SpotifyURI(input, "album")
 
 /**
  * Represents a Spotify **Artist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
-class ArtistURI(input: String) : SpotifyUri(input, "artist")
-
-/**
- * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
- */
-class TrackURI(input: String) : SpotifyUri(input, "track")
+class ArtistURI(input: String) : SpotifyURI(input, "artist")
 
 /**
  * Represents a Spotify **User** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
-class UserURI(input: String) : SpotifyUri(input, "user")
+class UserURI(input: String) : SpotifyURI(input, "user")
 
 /**
  * Represents a Spotify **Playlist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
-class PlaylistURI(input: String) : SpotifyUri(input, "playlist")
+class PlaylistURI(input: String) : SpotifyURI(input, "playlist")
 
 /**
- * Represents a Spotify **local track** URI
+ * Represents a Spotify **Track** URI, ether LocalTrack or SpotifyTrack, parsed from either a Spotify ID or taken
+ * from an endpoint
+ * */
+sealed class TrackURI(input: String, type: String) : SpotifyURI(input, type) {
+    companion object {
+        /**
+         * Creates a abstract TrackURI of given input. Prefers SpotifyTrackURI if the input is ambiguous.
+         * */
+        operator fun invoke(input: String): TrackURI {
+            val constructors: List<(String) -> TrackURI> = listOf(::SpotifyTrackURI, ::LocalTrackURI)
+            for (constructor in constructors) {
+                try {
+                    return constructor(input)
+                } catch (ignore: SpotifyUriException) {
+                }
+            }
+            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to 'track' or 'local' id")
+        }
+    }
+}
+
+/**
+ * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
-class LocalTrackURI(input: String) : SpotifyUri(input, "local")
+class SpotifyTrackURI(input: String) : TrackURI(input, "track")
+
+/**
+ * Represents a Spotify **local track** URI, parsed from either a Spotify ID or taken from an endpoint
+ */
+class LocalTrackURI(input: String) : TrackURI(input, "local")

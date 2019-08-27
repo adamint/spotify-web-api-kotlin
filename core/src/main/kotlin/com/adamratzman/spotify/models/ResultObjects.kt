@@ -34,7 +34,7 @@ abstract class IdentifiableNullable(
 abstract class CoreObject(
     _href: String,
     _id: String,
-    @Transient val uri: SpotifyUri,
+    @Transient open val uri: SpotifyURI,
     _externalUrls: Map<String, String>
 ) : Identifiable(_href, _id) {
     @Transient
@@ -45,7 +45,7 @@ abstract class RelinkingAvailableResponse(
     @Transient val linkedTrack: LinkedTrack? = null,
     _href: String,
     _id: String,
-    _uri: SpotifyUri,
+    _uri: SpotifyURI,
     _externalUrls: Map<String, String>
 ) : CoreObject(_href, _id, _uri, _externalUrls) {
     fun isRelinked() = linkedTrack != null

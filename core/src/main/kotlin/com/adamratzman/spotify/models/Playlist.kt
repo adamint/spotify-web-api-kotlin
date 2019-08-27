@@ -44,6 +44,8 @@ data class SimplePlaylist(
     val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
     @Transient
+    override val uri: PlaylistURI = super.uri as PlaylistURI
+    @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 
     /**
@@ -113,6 +115,8 @@ data class Playlist(
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: PlaylistURI = super.uri as PlaylistURI
     @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 }

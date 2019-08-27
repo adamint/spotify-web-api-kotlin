@@ -20,6 +20,8 @@ data class SimpleArtist(
     val name: String,
     val type: String
 ) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: ArtistURI = super.uri as ArtistURI
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
@@ -52,6 +54,9 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String
-) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls)
+) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: ArtistURI = super.uri as ArtistURI
+}
 
 internal data class ArtistList(val artists: List<Artist?>)

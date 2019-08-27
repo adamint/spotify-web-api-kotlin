@@ -57,6 +57,8 @@ data class SimpleTrack(
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linkedFrom, _href, _id, TrackURI(_uri), _externalUrls) {
     @Transient
+    override val uri: TrackURI = super.uri as TrackURI
+    @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
     @Transient
@@ -129,7 +131,9 @@ data class Track(
     val type: String,
     @Json(name = "is_local") val isLocal: Boolean?,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linked_from, _href, _id, if (_uri.contains("local:")) LocalTrackURI(_uri) else TrackURI(_uri), _externalUrls) {
+) : RelinkingAvailableResponse(linked_from, _href, _id, TrackURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: TrackURI = super.uri as TrackURI
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -153,6 +157,8 @@ data class LinkedTrack(
 
     val type: String
 ) : CoreObject(_href, _id, TrackURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: TrackURI = super.uri as TrackURI
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market

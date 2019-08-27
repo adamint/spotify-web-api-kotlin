@@ -411,7 +411,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         snapshotId: String?
     ): SpotifyRestAction<Snapshot> {
         return toAction(Supplier {
-            if (tracks.isEmpty()) throw IllegalArgumentException("You need to provide at least one track to remove")
+            require(tracks.isNotEmpty()) { "You need to provide at least one track to remove" }
 
             val json = jsonMap().apply { if (snapshotId != null) this["snapshot_id"] = snapshotId }
 

@@ -37,7 +37,10 @@ data class SpotifyUserInformation(
     val images: List<SpotifyImage>,
     val product: String?,
     val type: String
-) : CoreObject(_href, _id, UserURI(_uri), _externalUrls)
+) : CoreObject(_href, _id, UserURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: UserURI = super.uri as UserURI
+}
 
 /**
  * Public information about a Spotify user
@@ -59,7 +62,10 @@ data class SpotifyPublicUser(
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(_href, _id, UserURI(_uri), _externalUrls)
+) : CoreObject(_href, _id, UserURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: UserURI = super.uri as UserURI
+}
 
 /**
  * Information about a Spotify user's followers

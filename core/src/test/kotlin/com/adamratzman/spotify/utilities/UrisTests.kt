@@ -3,8 +3,10 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.ArtistURI
-import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.LocalTrackURI
 import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.SpotifyTrackURI
+import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.UserURI
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
@@ -15,49 +17,189 @@ import org.spekframework.spek2.style.specification.describe
 
 class UrisTests : Spek({
     describe("Uris tests") {
-        describe("TrackURI tests") {
-            it("Create track with invalid input") {
+        describe("SpotifyTrackURI tests") {
+            it("Create spotify track with invalid input") {
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
+                    SpotifyTrackURI("a:invalid")
+                }
+
+                assertThrows<SpotifyUriException> {
+                    SpotifyTrackURI("a:invalid").uri
+                }
+
+                assertThrows<SpotifyUriException> {
+                    SpotifyTrackURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                }
+            }
+
+            it("Create spotify track with valid input") {
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                        SpotifyTrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "1Z9UVqWuRJ7zToOiVnlXRO",
+                        SpotifyTrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                        SpotifyTrackURI("1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "1Z9UVqWuRJ7zToOiVnlXRO",
+                        SpotifyTrackURI("1Z9UVqWuRJ7zToOiVnlXRO").id
+                    )
+                }
+            }
+        }
+
+        describe("LocalTrackURI tests") {
+            it("Create local track with invalid input") {
+
+                assertThrows<SpotifyUriException> {
+                    LocalTrackURI("a:invalid")
+                }
+
+                assertThrows<SpotifyUriException> {
+                    LocalTrackURI("a:invalid").uri
+                }
+
+                assertThrows<SpotifyUriException> {
+                    LocalTrackURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                }
+            }
+
+            it("Create local track with valid input") {
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
+                        LocalTrackURI("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "1Z9UVqWuRJ7zToOiVnlXRO",
+                        LocalTrackURI("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").id
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
+                        LocalTrackURI("1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    assertEquals(
+                        "1Z9UVqWuRJ7zToOiVnlXRO",
+                        LocalTrackURI("1Z9UVqWuRJ7zToOiVnlXRO").id
+                    )
+                }
+            }
+        }
+
+        describe("TrackURI tests") {
+            it("Create any track with invalid input") {
+
+                assertThrows<SpotifyUriException> {
                     TrackURI("a:invalid")
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     TrackURI("a:invalid").uri
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     TrackURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
-            it("Create track with valid input") {
+            it("Create any track with valid input") {
 
                 assertDoesNotThrow {
+                    val trackUri = TrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        SpotifyTrackURI::class,
+                        trackUri::class
+                    )
                     assertEquals(
                         "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                        TrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                        trackUri.uri
                     )
                 }
 
                 assertDoesNotThrow {
+                    val trackUri = TrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        SpotifyTrackURI::class,
+                        trackUri::class
+                    )
                     assertEquals(
                         "1Z9UVqWuRJ7zToOiVnlXRO",
-                        TrackURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
+                        trackUri.id
                     )
                 }
 
                 assertDoesNotThrow {
+                    val trackUri = TrackURI("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        LocalTrackURI::class,
+                        trackUri::class
+                    )
+                    assertEquals(
+                        "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
+                        trackUri.uri
+                    )
+                }
+
+                assertDoesNotThrow {
+                    val trackUri = TrackURI("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        LocalTrackURI::class,
+                        trackUri::class
+                    )
+                    assertEquals(
+                        "1Z9UVqWuRJ7zToOiVnlXRO",
+                        trackUri.id
+                    )
+                }
+
+                assertDoesNotThrow {
+                    val trackUri = TrackURI("1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        SpotifyTrackURI::class,
+                        trackUri::class
+                    )
                     assertEquals(
                         "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                        TrackURI("1Z9UVqWuRJ7zToOiVnlXRO").uri
+                        trackUri.uri
                     )
                 }
 
                 assertDoesNotThrow {
+                    val trackUri = TrackURI("1Z9UVqWuRJ7zToOiVnlXRO")
+                    assertEquals(
+                        SpotifyTrackURI::class,
+                        trackUri::class
+                    )
                     assertEquals(
                         "1Z9UVqWuRJ7zToOiVnlXRO",
-                        TrackURI("1Z9UVqWuRJ7zToOiVnlXRO").id
+                        trackUri.id
                     )
                 }
             }
@@ -66,19 +208,19 @@ class UrisTests : Spek({
         describe("UserURI") {
             it("Create user with invalid input") {
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     UserURI("a:invalid")
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     UserURI("a:invalid").uri
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     UserURI("a:invalid").id
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     UserURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
@@ -132,19 +274,19 @@ class UrisTests : Spek({
         describe("PlaylistURI") {
             it("Create playlist with invalid input") {
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     PlaylistURI("a:invalid")
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     PlaylistURI("a:invalid").uri
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     PlaylistURI("a:invalid").id
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
@@ -197,19 +339,19 @@ class UrisTests : Spek({
         describe("AlbumURI tests") {
             it("Create album with invalid input") {
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     AlbumURI("a:invalid")
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     AlbumURI("a:invalid").uri
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     AlbumURI("a:invalid").id
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     AlbumURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
@@ -249,19 +391,19 @@ class UrisTests : Spek({
         describe("ArtistURI tests") {
             it("Create artist with invalid input") {
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     ArtistURI("a:invalid")
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     ArtistURI("a:invalid").uri
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     ArtistURI("a:invalid").id
                 }
 
-                assertThrows<BadRequestException> {
+                assertThrows<SpotifyUriException> {
                     ArtistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }

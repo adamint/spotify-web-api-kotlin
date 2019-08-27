@@ -16,7 +16,10 @@ data class PlayHistoryContext(
     @Json(name = "uri") private val _uri: String,
 
     val type: String
-) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
+) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: TrackURI = super.uri as TrackURI
+}
 
 /**
  * Information about a previously-played track

@@ -47,6 +47,9 @@ data class SimpleAlbum(
     @Json(name = "album_group") private val albumGroupString: String? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Transient
+    override val uri: AlbumURI = super.uri as AlbumURI
+
+    @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
     @Transient
@@ -132,6 +135,9 @@ data class Album(
     @Json(name = "total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
+    @Transient
+    override val uri: AlbumURI = super.uri as AlbumURI
+
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
