@@ -233,9 +233,12 @@ abstract class AbstractPagingObject<T>(
     internal fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 }
 
-internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
-    this is FeaturedPlaylists -> this.playlists
-    this is Album -> this.tracks
-    this is Playlist -> this.tracks
+internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when (this) {
+    is FeaturedPlaylists -> this.playlists
+    is Album -> this.tracks
+    is Playlist -> this.tracks
     else -> null
 }.let { it?.endpoint = spotifyAPI.tracks; this }
+
+fun <T> AbstractPagingObject<T>.getNext(): AbstractPagingObject<T>? = getNextImpl()
+fun <T> AbstractPagingObject<T>.getPrevious(): AbstractPagingObject<T>? = getPreviousImpl()
