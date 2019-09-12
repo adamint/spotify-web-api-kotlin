@@ -38,7 +38,7 @@ dependencies {
     compile "com.squareup.moshi:moshi-kotlin:1.8.0"
     compile group: 'org.json', name: 'json', version: '20190722'
 
-    compile "com.google.http-client:google-http-client:1.31.0"
+    compile "com.google.http-client:google-http-client:1.32.0"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
