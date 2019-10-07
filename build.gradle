@@ -44,7 +44,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     
     // Spek testing requirements
-    testCompile('org.spekframework.spek2:spek-dsl-jvm:2.0.0') {
+    testCompile('org.spekframework.spek2:spek-dsl-jvm:2.0.8') {
         exclude group: 'org.jetbrains.kotlin'
     }
     testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0') {
