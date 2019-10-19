@@ -5,7 +5,7 @@ buildscript {
     ext.moshi_version = '1.8.0'
     ext.json_version = '20190722'
     ext.google_http_client_version = '1.32.1'
-    ext.spek_verson = '2.0.8'
+    ext.spek_version = '2.0.8'
 
     repositories { jcenter() }
 
@@ -51,6 +51,7 @@ dependencies {
     testCompile("org.spekframework.spek2:spek-dsl-jvm:$spek_version") {
         exclude group: 'org.jetbrains.kotlin'
     }
+
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version") {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
@@ -65,14 +66,20 @@ dokka {
     outputFormat = 'javadoc'
     outputDirectory = 'docs'
 
-    jdkVersion = 8
-    includeNonPublic = false
-    impliedPlatforms = ["JVM"]
+    configuration {
+        jdkVersion = 8
+        includeNonPublic = false
+        impliedPlatforms = ["JVM"]
 
-    linkMapping {
-        dir = "src/main/kotlin"
-        url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/src/main/kotlin"
-        suffix = "#L"
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/src/main/kotlin"
+            lineSuffix = "#L"
+        }
+
+        externalDocumentationLink {
+            url = new URL("https://adamint.github.io/spotify-web-api-kotlin/")
+        }
     }
 }
 
