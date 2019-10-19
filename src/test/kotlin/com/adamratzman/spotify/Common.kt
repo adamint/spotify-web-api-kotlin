@@ -3,23 +3,23 @@ package com.adamratzman.spotify
 
 val api = when {
     System.getProperty("spotifyRedirectUri") == null -> {
-        spotifyApi {
+        spotifyAppApi {
             credentials {
                 clientId = System.getProperty("clientId")
                 clientSecret = System.getProperty("clientSecret")
             }
-        }.buildCredentialed()
+        }.build()
     }
     else -> {
-        spotifyApi {
+        spotifyClientApi {
             credentials {
                 clientId = System.getProperty("clientId")
                 clientSecret = System.getProperty("clientSecret")
                 redirectUri = System.getProperty("spotifyRedirectUri")
             }
-            authentication {
+            authorization {
                 tokenString = System.getProperty("spotifyTokenString")
             }
-        }.buildClient()
+        }.build()
     }
 }

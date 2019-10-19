@@ -15,6 +15,8 @@ import com.adamratzman.spotify.models.serialization.toObject
 import java.net.HttpURLConnection
 import java.net.URLEncoder
 import java.util.Base64
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 import java.util.function.Supplier
 import kotlin.math.ceil
 
@@ -147,7 +149,7 @@ internal class EndpointBuilder(private val path: String) {
 }
 
 class SpotifyCache {
-    val cachedRequests = mutableMapOf<SpotifyRequest, CacheState>()
+    val cachedRequests: ConcurrentMap<SpotifyRequest, CacheState> = ConcurrentHashMap()
 
     internal operator fun get(request: SpotifyRequest): CacheState? {
         checkCache(request)
