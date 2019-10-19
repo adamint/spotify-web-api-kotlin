@@ -28,7 +28,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '2.3.08'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.0.0'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -50,7 +50,7 @@ dependencies {
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>2.3.08</version>
+    <version>3.0.0</version>
 </dependency>
 
 <repository>
@@ -79,12 +79,12 @@ To build a new `SpotifyAPI`, you must pass the application id and secret.
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.spotifyApi
 
-spotifyApi {
+val spotifyApi: SpotifyAPI = spotifyAppApi {
     credentials {
         clientId = "YOUR_CLIENT_ID"
         clientSecret = "YOUR_CLIENT_SECRET"
     }
-}.buildCredentialed()
+}.build()
 ```
 *Note:* You are **unable** to use any client endpoint without authenticating with the methods below. 
 
@@ -97,7 +97,7 @@ an authorization code or a `Token` object. Otherwise, it will expire `Token.expi
 You have two options when building the Client API.
 1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) by
 setting the value of `tokenString` in the builder `authentication` block. However, this is a one-time token that cannot be refreshed.
-2. You can use the [Authorization code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow) by 
+2. You can use the [Authorization   code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow) by 
 setting the value of `authorizationCode` in a builder. You may generate an authentication flow url allowing you to request specific 
 Spotify scopes using the `getAuthorizationUrl` method in any builder. This library does not provide a method to retrieve the code from your 
 callback URL; you must implement that with a web server.
@@ -156,18 +156,18 @@ the synchronous format is also shown.
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.spotifyApi
 
-val api = spotifyApi {
+val api: SpotifyAPI = spotifyAppApi {
     credentials {
         clientId = "YOUR_CLIENT_ID"
         clientSecret = "YOUR_CLIENT_SECRET"
     }
-}.buildCredentialed()
+}.build()
 
 // block and print out the names of the twenty most similar songs to the search
-println(api.search.searchTrack("Début de la Suite").complete().map { it.name }.joinToString())
+println(api.search.searchTrack("Début de la Suite").complete().joinToString { it.name })
 
 // now, let's do it asynchronously
-api.search.searchTrack("Début de la Suite").queue { println(it.map { it.name }.joinToString()) }
+api.search.searchTrack("Début de la Suite").queue { tracks -> println(tracks.joinToString { track -> track.name }) }
 
 // simple, right? what about if we want to print out the featured playlists message from the "Overview" tab?
 println(api.browse.getFeaturedPlaylists().complete().message)
@@ -176,6 +176,7 @@ println(api.browse.getFeaturedPlaylists().complete().message)
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
 
 val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
+// this works, but a better way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
 
 println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
 ```
@@ -189,7 +190,7 @@ In both Track and SimpleTrack objects in an endpoint response, there is a nullab
 If the track is unable to be played in the specified market and there is an alternative that *is* playable, this 
 will be populated with the href, uri, and, most importantly, the id of the track.
 
-You can then use this track in `SpotifyClientAPI` actions such as playing or saving the track, knowing that it will be playable 
+You can then use this track in `SpotifyClientAPI` endpoints such as playing or saving the track, knowing that it will be playable 
 in your market!
 
 ### Contributing

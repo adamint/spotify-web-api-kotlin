@@ -1,7 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.3.41'
-    ext.dokka_version = '0.9.17'
+    ext.kotlin_version = '1.3.50'
+    ext.dokka_version = '0.10.0'
     ext.junit_version = '5.5.1'
+    ext.moshi_version = '1.8.0'
+    ext.json_version = '20190722'
+    ext.google_http_client_version = '1.32.1'
+    ext.spek_version = '2.0.8'
 
     repositories { jcenter() }
 
@@ -12,9 +16,9 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.24.0"
+    id "com.diffplug.gradle.spotless" version "3.25.0"
     id "base"
-    id "io.codearte.nexus-staging" version "0.21.0"
+    id "io.codearte.nexus-staging" version "0.21.1"
     id "com.bmuschko.nexus" version "2.3.1"
 }
 
@@ -22,7 +26,7 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
 group 'com.adamratzman'
-version '2.3.08'
+version '3.0.0-rc.2'
 
 archivesBaseName = 'spotify-api-kotlin'
 
@@ -32,28 +36,29 @@ repositories {
 
 dependencies {
     // Actual library dependencies
-    compile 'com.neovisionaries:nv-i18n:1.25'
+    compile 'com.neovisionaries:nv-i18n:1.26'
 
-    compile "com.squareup.moshi:moshi:1.8.0"
-    compile "com.squareup.moshi:moshi-kotlin:1.8.0"
-    compile group: 'org.json', name: 'json', version: '20190722'
+    compile "com.squareup.moshi:moshi:$moshi_version"
+    compile "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    compile "org.json:json:$json_version"
 
-    compile "com.google.http-client:google-http-client:1.31.0"
+    compile "com.google.http-client:google-http-client:$google_http_client_version"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    
+
     // Spek testing requirements
-    testCompile('org.spekframework.spek2:spek-dsl-jvm:2.0.0') {
+    testCompile("org.spekframework.spek2:spek-dsl-jvm:$spek_version") {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0') {
+
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version") {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
-    
+
     testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testCompile "org.json:json:20180130"
+    testCompile "com.google.code.gson:gson:2.8.5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
 }
 
@@ -61,21 +66,28 @@ dokka {
     outputFormat = 'javadoc'
     outputDirectory = 'docs'
 
-    jdkVersion = 8
-    includeNonPublic = false
-    impliedPlatforms = ["JVM"]
+    configuration {
+        jdkVersion = 8
+        includeNonPublic = false
+        impliedPlatforms = ["JVM"]
 
-    linkMapping {
-        dir = "src/main/kotlin"
-        url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/src/main/kotlin"
-        suffix = "#L"
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/src/main/kotlin"
+            lineSuffix = "#L"
+        }
+
+        externalDocumentationLink {
+            url = new URL("https://adamint.github.io/spotify-web-api-kotlin/")
+        }
     }
 }
 
 spotless {
     kotlin {
         ktlint()
-        licenseHeader '/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */'    // License header
+        licenseHeader '/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */'
+        // License header
     }
 }
 
