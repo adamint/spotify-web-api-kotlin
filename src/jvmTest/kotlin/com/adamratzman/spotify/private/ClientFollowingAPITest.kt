@@ -1,16 +1,16 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
-import com.adamratzman.spotify.api
 import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.BadRequestException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ClientFollowingAPITest : Spek({
     describe("Client following tests") {
@@ -42,10 +42,10 @@ class ClientFollowingAPITest : Spek({
 
             assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 
-            assertThrows<BadRequestException> { api.following.isFollowingArtist("no u").complete() }
-            assertThrows<BadRequestException> { api.following.followArtist("no u").complete() }
-            assertThrows<BadRequestException> { api.following.followArtists(testArtistId, "no u").complete() }
-            assertThrows<BadRequestException> { api.following.unfollowArtist("no u").complete() }
+            assertFailsWith<BadRequestException> { api.following.isFollowingArtist("no u").complete() }
+            assertFailsWith<BadRequestException> { api.following.followArtist("no u").complete() }
+            assertFailsWith<BadRequestException> { api.following.followArtists(testArtistId, "no u").complete() }
+            assertFailsWith<BadRequestException> { api.following.unfollowArtist("no u").complete() }
         }
 
         it("follow/unfollow users") {
@@ -77,9 +77,9 @@ class ClientFollowingAPITest : Spek({
 
             assertTrue(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
 
-            assertThrows<BadRequestException> { api.following.isFollowingPlaylist(" no u", "no u").complete() }
-            assertThrows<BadRequestException> { api.following.unfollowPlaylist("no-u").complete() }
-            assertThrows<BadRequestException> { api.following.followPlaylist("nou").complete() }
+            assertFailsWith<BadRequestException> { api.following.isFollowingPlaylist(" no u", "no u").complete() }
+            assertFailsWith<BadRequestException> { api.following.unfollowPlaylist("no-u").complete() }
+            assertFailsWith<BadRequestException> { api.following.followPlaylist("nou").complete() }
         }
     }
 })

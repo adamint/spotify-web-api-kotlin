@@ -5,11 +5,11 @@ import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.BadRequestException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.assertThrows
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
@@ -20,7 +20,7 @@ class ClientPlaylistAPITest : Spek({
 
         createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
-            assertTrue(cp.getPlaylists().complete().size - 1 == playlistsBefore?.size)
+            assertEquals(cp.getPlaylists().complete().items.size - 1, playlistsBefore?.items?.size)
         }
         it("edit playlists") {
             cp.changePlaylistDetails(
@@ -98,7 +98,7 @@ class ClientPlaylistAPITest : Spek({
                 listOf(trackIdOne, trackIdTwo, trackIdTwo),
                 cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
 
-            assertThrows<BadRequestException> {
+            assertFailsWith<BadRequestException> {
                 cp.removeTracksFromPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3))).complete()
             }
         }

@@ -1,5 +1,5 @@
 package com.adamratzman.spotify
 
-actual fun getEnvironmentalVariable(name: String): String? {
+actual fun getEnvironmentVariable(name: String): String? {
     return System.getenv(name)
 }
