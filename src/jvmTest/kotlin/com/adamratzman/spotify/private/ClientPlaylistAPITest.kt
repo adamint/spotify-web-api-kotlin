@@ -5,11 +5,11 @@ import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.BadRequestException
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
@@ -24,8 +24,8 @@ class ClientPlaylistAPITest : Spek({
         }
         it("edit playlists") {
             cp.changePlaylistDetails(
-                createdPlaylist.id, "test playlist", false,
-                true, "description 2"
+                createdPlaylist.id, "test playlist", public = false,
+                collaborative = true, description = "description 2"
             ).complete()
 
             cp.addTracksToPlaylist(createdPlaylist.id, "3WDIhWoRWVcaHdRwMEHkkS", "7FjZU7XFs7P9jHI9Z0yRhK").complete()

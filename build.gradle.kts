@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
+    id("com.diffplug.gradle.spotless") version "3.25.0"
 }
 
 group = "spotify-web-api-kotlin"
@@ -68,5 +69,16 @@ kotlin {
 }
 
 tasks.named<Test>("jvmTest") {
+    systemProperty("clientId", System.getProperty("clientId"))
+    systemProperty("clientSecret", System.getProperty("clientSecret"))
+
     useJUnitPlatform()
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        licenseHeader("/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */")
+        ktlint()
+    }
 }
