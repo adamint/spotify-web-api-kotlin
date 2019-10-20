@@ -7,6 +7,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name = 'SpotifyKotlinWrapper'
-include 'spotify.examples'
-
+rootProject.name = 'spotify-web-api-kotlin'
