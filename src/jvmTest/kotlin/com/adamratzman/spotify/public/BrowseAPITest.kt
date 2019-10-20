@@ -4,14 +4,13 @@ package com.adamratzman.spotify.public
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
 import com.adamratzman.spotify.models.BadRequestException
-import com.neovisionaries.i18n.CountryCode
-import org.junit.jupiter.api.Assertions.assertDoesNotThrow
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.assertThrows
+import com.adamratzman.spotify.utils.Market
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class BrowseAPITest : Spek({
     describe("Browse test") {
@@ -21,62 +20,61 @@ class BrowseAPITest : Spek({
         }
 
         it("get category list") {
-            assertEquals(b.getCategoryList(locale = "BAD_LOCALE").complete()[0], b.getCategoryList().complete()[0])
-            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = CountryCode.CA).complete().isNotEmpty())
+            assertEquals(b.getCategoryList(locale = "BAD_LOCALE").complete().items[0], b.getCategoryList().complete().items[0])
+            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = Market.CA).complete().items.isNotEmpty())
         }
 
         it("get category") {
             assertNotNull(b.getCategory("pop").complete())
-            assertNotNull(b.getCategory("pop", CountryCode.FR).complete())
-            assertNotNull(b.getCategory("pop", CountryCode.FR, locale = "en_US").complete())
-            assertNotNull(b.getCategory("pop", CountryCode.FR, locale = "KSDJFJKSJDKF").complete())
-            assertThrows<BadRequestException> { b.getCategory("no u", CountryCode.US).complete() }
+            assertNotNull(b.getCategory("pop", Market.FR).complete())
+            assertNotNull(b.getCategory("pop", Market.FR, locale = "en_US").complete())
+            assertNotNull(b.getCategory("pop", Market.FR, locale = "KSDJFJKSJDKF").complete())
+            assertFailsWith<BadRequestException> { b.getCategory("no u", Market.US).complete() }
         }
 
         it("get playlists by category") {
-            assertThrows<BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
-            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, CountryCode.FR).complete().isNotEmpty())
+            assertFailsWith<BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
+            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, Market.FR).complete().items.isNotEmpty())
         }
 
         it("get featured playlists") {
-            assertTrue(b.getFeaturedPlaylists(5, 4, market = CountryCode.US, timestamp = System.currentTimeMillis() - 1000000).complete().playlists.total > 0)
+            assertTrue(b.getFeaturedPlaylists(5, 4, market = Market.US, timestamp = System.currentTimeMillis() - 1000000).complete().playlists.total > 0)
             assertTrue(b.getFeaturedPlaylists(offset = 32).complete().playlists.total > 0)
         }
 
         it("get new releases") {
-            assertTrue(b.getNewReleases(market = CountryCode.CA).complete().isNotEmpty())
-            assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().isNotEmpty())
-            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = CountryCode.US).complete().isNotEmpty())
+            assertTrue(b.getNewReleases(market = Market.CA).complete().items.isNotEmpty())
+            assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().items.isNotEmpty())
+            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = Market.US).complete().items.isNotEmpty())
         }
 
         describe("get recommendations") {
             it("no parameters") {
-                assertThrows<BadRequestException> { b.getTrackRecommendations().complete() }
+                assertFailsWith<BadRequestException> { b.getTrackRecommendations().complete() }
             }
             it("seed artists") {
-                assertThrows<BadRequestException> { b.getTrackRecommendations(seedArtists = listOf("abc")).complete() }
+                assertFailsWith<BadRequestException> { b.getTrackRecommendations(seedArtists = listOf("abc")).complete() }
                 assertTrue(b.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).complete().tracks.isNotEmpty())
                 assertTrue(b.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89", "7lMgpN1tEBQKpRoUMKB8iw")).complete().tracks.isNotEmpty())
             }
             it("seed tracks") {
-                assertThrows<BadRequestException> { b.getTrackRecommendations(seedTracks = listOf("abc")).complete() }
+                assertFailsWith<BadRequestException> { b.getTrackRecommendations(seedTracks = listOf("abc")).complete() }
                 assertTrue(b.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
                 assertTrue(b.getTrackRecommendations(seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
             }
             it("seed genres") {
-                assertDoesNotThrow { b.getTrackRecommendations(seedGenres = listOf("abc")).complete() }
+                 b.getTrackRecommendations(seedGenres = listOf("abc")).complete()
                 assertTrue(b.getTrackRecommendations(seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
                 assertTrue(b.getTrackRecommendations(seedGenres = listOf("pop", "latinx")).complete().tracks.isNotEmpty())
             }
             it("multiple seed types") {
-                assertDoesNotThrow {
+
                     b.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89"),
                             seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl"),
                             seedGenres = listOf("pop")).complete()
-                }
             }
             it("target attributes") {
-                assertThrows<IllegalArgumentException> {
+                assertFailsWith<IllegalArgumentException> {
                     b.getTrackRecommendations(targetAttributes = listOf(TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(3f))).complete()
                 }
                 assertTrue(b.getTrackRecommendations(
@@ -84,7 +82,7 @@ class BrowseAPITest : Spek({
                         seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
             }
             it("min attributes") {
-                assertThrows<IllegalArgumentException> {
+                assertFailsWith<IllegalArgumentException> {
                     b.getTrackRecommendations(minAttributes = listOf(TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(3f))).complete()
                 }
                 assertTrue(b.getTrackRecommendations(
@@ -92,7 +90,7 @@ class BrowseAPITest : Spek({
                         seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
             }
             it("max attributes") {
-                assertThrows<BadRequestException> {
+                assertFailsWith<BadRequestException> {
                     b.getTrackRecommendations(maxAttributes = listOf(TuneableTrackAttribute.SPEECHINESS.asTrackAttribute(0.9f))).complete()
                 }
                 assertTrue(b.getTrackRecommendations(

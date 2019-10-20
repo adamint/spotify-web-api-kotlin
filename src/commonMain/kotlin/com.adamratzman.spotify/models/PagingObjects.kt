@@ -51,13 +51,13 @@ enum class PagingTraversalType {
  */
 @Serializable
 class PagingObject<T : Any>(
-    val _href: String,
-    val _items: List<T>,
-    val _limit: Int,
-    val _next: String?,
-    val _offset: Int,
-    val _previous: String?,
-    val _total: Int
+    private val _href: String,
+    private val _items: List<T>,
+    private val _limit: Int,
+    private val _next: String?,
+    private val _offset: Int,
+    private val _previous: String?,
+    private val _total: Int
 ) : AbstractPagingObject<T>(_href, _items, _limit, _next, _offset, _previous, _total) {
     /**
      * Get the next set of [T] items
@@ -142,12 +142,12 @@ class PagingObject<T : Any>(
  */
 @Serializable
 class CursorBasedPagingObject<T : Any>(
-    val _href: String,
-    val _items: List<T>,
-    val _limit: Int,
-    val _next: String?,
+    private val _href: String,
+    private val _items: List<T>,
+    private val _limit: Int,
+    private val _next: String?,
     @SerialName("cursors") val cursor: Cursor,
-    val _total: Int
+    private val _total: Int
 ) : AbstractPagingObject<T>(_href, _items, _limit, _next, 0, null, _total) {
     /**
      * Get the next set of [T] items

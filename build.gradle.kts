@@ -19,6 +19,7 @@ kotlin {
     sourceSets {
         val coroutineVersion = "1.3.2"
         val serializationVersion = "0.13.0"
+        val spekVersion = "2.0.8"
 
         val commonMain by getting {
             dependencies {
@@ -31,6 +32,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("org.spekframework.spek2:spek-dsl-metadata:$spekVersion")
             }
         }
 
@@ -56,6 +58,9 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+                implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+                runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+                runtimeOnly(kotlin("reflect"))
             }
         }
     }

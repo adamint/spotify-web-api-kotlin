@@ -3,7 +3,15 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
+@UnstableDefault
 class HttpConnectionTests : Spek({
     describe("http connection testing") {
         describe("get request") {
@@ -13,17 +21,17 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).execute().let { it to JSONObject(it.body) }
+            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("get request response code") {
                 assertEquals(200, response.responseCode)
             }
 
             it("get request header") {
-                val requestHeader = body.getJSONObject("headers")
+                val requestHeader = body["headers"]
                 assertTrue {
                     // ignore the user-agent because of the version in it
-                    requestHeader.toMap().toList().containsAll(
+                    requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
                             mapOf(
                                     "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
                                     "Host" to "httpbin.org",
@@ -34,7 +42,7 @@ class HttpConnectionTests : Spek({
             }
 
             it("get request query string") {
-                assertEquals("string", body.getJSONObject("args").getString("query"))
+                assertEquals("string", body["args"]!!.jsonObject.getObject("query").primitive.content)
             }
         }
 
@@ -45,16 +53,16 @@ class HttpConnectionTests : Spek({
                     null,
                     "body",
                     "text/html"
-            ).execute().let { it to JSONObject(it.body) }
+            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("post request response code") {
                 assertEquals(200, response.responseCode)
             }
 
             it("post request header") {
-                val requestHeader = body.getJSONObject("headers")
+                val requestHeader = body["headers"]
                 assertTrue {
-                    requestHeader.toMap().toList().containsAll(
+                    requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
                             mapOf(
                                     "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
                                     "Host" to "httpbin.org",
@@ -66,11 +74,11 @@ class HttpConnectionTests : Spek({
             }
 
             it("post request query string") {
-                assertEquals("string", body.getJSONObject("args").getString("query"))
+                assertEquals("string", body["args"]!!.jsonObject.getObject("query").primitive.content)
             }
 
             it("post request body") {
-                assertEquals("body", body.getString("data"))
+                assertEquals("body", body.jsonObject.getObject("data").primitive.content)
             }
         }
 
@@ -81,7 +89,7 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).execute().let { it to JSONObject(it.body) }
+            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("delete request response code") {
                 assertEquals(200, response.responseCode)
