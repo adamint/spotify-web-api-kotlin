@@ -2,12 +2,20 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
-import com.google.api.client.http.ByteArrayContent
-import com.google.api.client.http.GenericUrl
-import com.google.api.client.http.javanet.NetHttpTransport
+import com.adamratzman.spotify.utils.getCurrentTimeMs
+import io.ktor.client.HttpClient
+import io.ktor.client.features.ResponseException
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
+import io.ktor.client.request.url
+import io.ktor.client.response.readText
+import io.ktor.content.ByteArrayContent
+import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
+import io.ktor.util.toMap
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.net.HttpURLConnection
 
@@ -22,108 +30,116 @@ actual class HttpConnection actual constructor(
 ) {
 
     companion object {
-        private val requestFactory = NetHttpTransport().createRequestFactory()
+        private val client = HttpClient()
     }
 
     actual fun execute(additionalHeaders: List<HttpHeader>?, retryIf502: Boolean): HttpResponse {
-        val genericUrl = GenericUrl(url)
-        val request = when (method) {
-            HttpRequestMethod.GET -> requestFactory.buildGetRequest(genericUrl)
-            HttpRequestMethod.DELETE -> requestFactory.buildDeleteRequest(genericUrl)
-            HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
-                val content = if (contentType == "application/x-www-form-urlencoded") {
-                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let {
-                        ByteArrayContent.fromString(
-                            contentType,
-                            it
-                        )
-                    }
-                        ?: ByteArrayContent.fromString(contentType, bodyString)
-                } else bodyString?.let { ByteArrayContent.fromString(contentType, bodyString) }
+        val ktorContentType = contentType?.let { ContentType.parse(contentType) }
 
-                if (method == HttpRequestMethod.PUT) requestFactory.buildPutRequest(genericUrl, content)
-                else requestFactory.buildPostRequest(genericUrl, content)
+        val httpRequestBuilder = HttpRequestBuilder().apply {
+            url(this@HttpConnection.url)
+
+            when (this@HttpConnection.method) {
+                HttpRequestMethod.GET -> method = HttpMethod.Get
+                HttpRequestMethod.DELETE -> {
+                    method = HttpMethod.Delete
+                    bodyString?.let { body = ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
+                }
+                HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
+                    val content = if (contentType == "application/x-www-form-urlencoded") {
+                        bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let {
+                            ByteArrayContent(it.toByteArray(), ktorContentType)
+                        } ?: bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
+                    } else bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
+
+                    method = if (this@HttpConnection.method == HttpRequestMethod.PUT) HttpMethod.Put
+                    else HttpMethod.Post
+
+                    content?.let { body = content }
+                }
             }
-        }
 
-        if (request.content != null) request.headers.contentLength = request.content.length
-        else if (request.content == null && method in listOf(HttpRequestMethod.POST, HttpRequestMethod.PUT)) {
-            request.content = ByteArrayContent.fromString(null, "")
-        }
-
-        if (method == HttpRequestMethod.DELETE && bodyString != null) {
-            // request.content = ByteArrayContent.fromString(contentType, bodyString)
-        }
-
-        if (contentType != null && method != HttpRequestMethod.POST) request.headers.contentType = contentType
-
-        val allHeaders = (additionalHeaders ?: listOf()) + headers
-
-        allHeaders.filter { !it.key.equals("Authorization", true) }.forEach { (key, value) ->
-            request.headers[key] = value
-        }
-
-        allHeaders.find { it.key.equals("Authorization", true) }?.let { authHeader ->
-            request.headers.authorization = authHeader.value
-        }
-
-        request.throwExceptionOnExecuteError = false
-
-        val response = request.execute()
-
-        val responseCode = response.statusCode
-
-        if (responseCode == 502 && retryIf502) {
-            api?.logger?.logError(false, "Received 502 (Invalid response) for URL $url and $this\nRetrying..", null)
-            return execute(additionalHeaders, retryIf502 = false)
-        }
-
-        if (responseCode == 502 && !retryIf502) api?.logger?.logWarning("502 retry successful for $this")
-
-        if (responseCode == 429) {
-            val ratelimit = response.headers["Retry-After"]!!.toString().toLong() + 1L
-            if (api?.retryWhenRateLimited == true) {
-                api.logger.logError(
-                    false,
-                    "The request ($url) was ratelimited for $ratelimit seconds at ${System.currentTimeMillis()}",
-                    null
+            if (body !is ByteArrayContent && this@HttpConnection.method in listOf(
+                    HttpRequestMethod.POST,
+                    HttpRequestMethod.PUT
                 )
+            ) {
+                body = ByteArrayContent("".toByteArray(), ktorContentType)
+            }
 
-                var retryResponse: HttpResponse? = null
 
-                runBlocking {
-                    launch {
+            val allHeaders = (additionalHeaders ?: listOf()) + this@HttpConnection.headers
+
+            allHeaders.filter { !it.key.equals("Authorization", true) }.forEach { (key, value) ->
+                header(key, value)
+            }
+
+            allHeaders.find { it.key.equals("Authorization", true) }?.let { authHeader ->
+                header("Authorization", authHeader.value)
+            }
+
+        }
+
+        return runBlocking {
+            try {
+                val call = client.execute(httpRequestBuilder)
+
+                val responseCode = call.response.status.value
+
+                if (responseCode == 502 && retryIf502) {
+                    api?.logger?.logError(
+                        false,
+                        "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
+                        null
+                    )
+                    return@runBlocking execute(additionalHeaders, retryIf502 = false)
+                }
+
+                if (responseCode == 502 && !retryIf502) api?.logger?.logWarning("502 retry successful for $this")
+
+                if (responseCode == 429) {
+                    val ratelimit = call.response.headers["Retry-After"]!!.toLong() + 1L
+                    if (api?.retryWhenRateLimited == true) {
+                        api.logger.logError(
+                            false,
+                            "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
+                            null
+                        )
+
                         delay(ratelimit * 1000)
-                        retryResponse = try {
+                        val retryResponse = try {
                             execute(additionalHeaders, retryIf502 = retryIf502)
                         } catch (e: Throwable) {
                             throw e
                         }
-                    }
+
+                        return@runBlocking retryResponse
+                    } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
-                return retryResponse!!
-            } else throw SpotifyRatelimitedException(ratelimit)
+                val body = call.response.readText()
+
+                if (responseCode == 401 && body.contains("access token") &&
+                    api != null && api.automaticRefresh
+                ) {
+                    api.refreshToken()
+                    return@runBlocking execute(additionalHeaders)
+                }
+
+                return@runBlocking HttpResponse(
+                    responseCode = responseCode,
+                    body = body,
+                    headers = call.response.headers.toMap().toList().map {
+                        HttpHeader(
+                            it.first,
+                            it.second.getOrNull(0) ?: "null"
+                        )
+                    }
+                ).also { call.close() }
+            } catch (e: ResponseException) {
+                throw BadRequestException(e)
+            }
         }
-
-        val contentReader = response.content.bufferedReader()
-        val body = contentReader.readText()
-
-        contentReader.close()
-        response.content.close()
-
-        if (responseCode == 401 && body.contains("access token") &&
-            api != null && api.automaticRefresh
-        ) {
-            api.refreshToken()
-            return execute(additionalHeaders)
-        }
-
-        return HttpResponse(
-            responseCode = responseCode,
-            body = body,
-            headers = response.headers.map { HttpHeader(it.key, it.value?.toString() ?: "null") }
-        ).also { response.disconnect() }
     }
 
     override fun toString(): String {
