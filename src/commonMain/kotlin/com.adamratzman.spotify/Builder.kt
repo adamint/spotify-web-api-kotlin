@@ -4,6 +4,7 @@ package com.adamratzman.spotify
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
+import com.adamratzman.spotify.models.serialization.toObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -265,7 +266,7 @@ class SpotifyClientApiBuilder(
                     clientId,
                     clientSecret,
                     redirectUri,
-                    response.body.toObject(null),
+                    response.body.toObject(Token.serializer(),null),
                     options.useCache,
                     options.cacheLimit,
                     options.automaticRefresh,

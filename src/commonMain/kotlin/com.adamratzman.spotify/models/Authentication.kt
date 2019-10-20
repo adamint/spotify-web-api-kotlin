@@ -3,6 +3,9 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlin.jvm.Transient
 
 /**
  * Represents a Spotify Token, retrieved through instantiating a [SpotifyAPI]
@@ -17,17 +20,18 @@ import com.adamratzman.spotify.utils.getCurrentTimeMs
  * empty list means that the token can only be used to acces public information.
  * @property expiresAt The time, in milliseconds, at which this Token expires
  */
+@Serializable
 data class Token(
-    val accessToken: String,
-    val tokenType: String,
-    val expiresIn: Int,
-    val refreshToken: String? = null,
-    private val scopeString: String? = null,
-    val scopes: List<SpotifyScope> = scopeString?.let { str ->
+    @SerialName("access_token") val accessToken: String,
+    @SerialName("token_type") val tokenType: String,
+    @SerialName("expires_in") val expiresIn: Int,
+    @SerialName("refresh_token") val refreshToken: String? = null,
+    @SerialName("scope") private val scopeString: String? = null
+) {
+    @Transient val scopes: List<SpotifyScope> = scopeString?.let { str ->
         str.split(" ").mapNotNull { scope -> SpotifyScope.values().find { it.uri.equals(scope, true) } }
     } ?: listOf()
-) {
-    val expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
+    @Transient val expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
 
     fun shouldRefresh(): Boolean = getCurrentTimeMs() > expiresAt
 }

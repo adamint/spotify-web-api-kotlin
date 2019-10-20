@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.3.50"
+    kotlin("plugin.serialization") version "1.3.50"
 }
 
 group = "spotify-web-api-kotlin"
@@ -7,6 +8,8 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 kotlin {
@@ -15,11 +18,13 @@ kotlin {
 
     sourceSets {
         val coroutineVersion = "1.3.2"
+        val serializationVersion = "0.13.0"
 
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
             }
         }
         val commonTest by getting {
@@ -44,6 +49,7 @@ kotlin {
                 implementation("com.google.http-client:google-http-client:$googleHttpClientVersion")
                 implementation("com.squareup.moshi:moshi:$moshiVersion")
                 implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                 implementation(kotlin("stdlib-jdk8"))
             }
         }

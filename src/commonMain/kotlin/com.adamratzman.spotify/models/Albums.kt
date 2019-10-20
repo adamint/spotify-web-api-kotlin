@@ -2,8 +2,9 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.utils.match
-import com.neovisionaries.i18n.CountryCode
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Simplified Album object that can be used to retrieve a full [Album]
@@ -28,23 +29,24 @@ import com.squareup.moshi.Json
  * metadata for the original track, and a restrictions object containing the reason why the track is not available:
  * "restrictions" : {"reason" : "market"}
  */
+@Serializable
 data class SimpleAlbum(
-    @Json(name = "album_type") private val _albumType: String,
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("album_type") private val _albumType: String,
+    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
+    @SerialName("external_urls") private val _externalUrls: Map<String, String>,
+    @SerialName("href") private val _href: String,
+    @SerialName("id") private val _id: String,
+    @SerialName("uri") private val _uri: String,
 
     val artists: List<SimpleArtist>,
     val images: List<SpotifyImage>,
     val name: String,
     val type: String,
     val restrictions: Restrictions? = null,
-    @Json(name = "release_date") val releaseDate: String,
-    @Json(name = "release_date_precision") val releaseDatePrecision: String,
-    @Json(name = "total_tracks") val totalTracks: Int? = null,
-    @Json(name = "album_group") private val albumGroupString: String? = null
+    @SerialName("release_date") val releaseDate: String,
+    @SerialName("release_date_precision") val releaseDatePrecision: String,
+    @SerialName("total_tracks") val totalTracks: Int? = null,
+    @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
@@ -110,13 +112,13 @@ enum class AlbumResultType(internal val id: String) {
  * restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}
  */
 data class Album(
-    @Json(name = "album_type") private val _albumType: String,
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("album_type") private val _albumType: String,
+    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
+    @SerialName("external_urls") private val _externalUrls: Map<String, String>,
+    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @SerialName("href") private val _href: String,
+    @SerialName("id") private val _id: String,
+    @SerialName("uri") private val _uri: String,
 
     val artists: List<SimpleArtist>,
     val copyrights: List<SpotifyCopyright>,
@@ -125,11 +127,11 @@ data class Album(
     val label: String,
     val name: String,
     val popularity: Int,
-    @Json(name = "release_date") val releaseDate: String,
-    @Json(name = "release_date_precision") val releaseDatePrecision: String,
+    @SerialName("release_date") val releaseDate: String,
+    @SerialName("release_date_precision") val releaseDatePrecision: String,
     val tracks: PagingObject<SimpleTrack>,
     val type: String,
-    @Json(name = "total_tracks") val totalTracks: Int,
+    @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
 ) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
     @Transient
@@ -150,14 +152,14 @@ data class Album(
  * P = the sound recording (performance) copyright.
  */
 data class SpotifyCopyright(
-    @Json(name = "text") private val _text: String,
-    @Json(name = "type") private val _type: String
+    @SerialName("text") private val _text: String,
+    @SerialName("type") private val _type: String
 ) {
     @Transient
     val text = _text
-            .removePrefix("(P)")
-            .removePrefix("(C)")
-            .trim()
+        .removePrefix("(P)")
+        .removePrefix("(C)")
+        .trim()
     @Transient
     val type = CopyrightType.values().match(_type)!!
 }
