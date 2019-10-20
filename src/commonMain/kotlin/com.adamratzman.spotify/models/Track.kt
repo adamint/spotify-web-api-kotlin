@@ -131,7 +131,10 @@ data class Track(
     @SerialName("track_number") val trackNumber: Int,
     val type: String,
     @SerialName("is_local") val isLocal: Boolean?,
-    val restrictions: Restrictions? = null
+    val restrictions: Restrictions? = null,
+
+    val episode: Boolean? = null,
+    val track: Boolean? = null
 ) : RelinkingAvailableResponse(
     linked_from,
     _href,

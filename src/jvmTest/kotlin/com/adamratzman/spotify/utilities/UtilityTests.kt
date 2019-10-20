@@ -3,6 +3,7 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
+import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import org.spekframework.spek2.Spek
@@ -20,7 +21,7 @@ class UtilityTests : Spek({
                 assertFailsWith<IllegalArgumentException> {
                     spotifyClientApi {
                         credentials {
-                            clientId = System.getProperty("clientId")
+                            clientId = getEnvironmentVariable("clientId")
                         }
                     }.build()
                 }
@@ -32,8 +33,8 @@ class UtilityTests : Spek({
                     assertFailsWith<IllegalArgumentException> {
                         spotifyClientApi {
                             credentials {
-                                clientId = System.getProperty("clientId")
-                                clientSecret = System.getProperty("clientSecret")
+                                clientId = getEnvironmentVariable("clientId")
+                                clientSecret = getEnvironmentVariable("clientSecret")
                             }
                         }.build()
                     }
@@ -43,8 +44,8 @@ class UtilityTests : Spek({
             it("App API valid parameters") {
                 val api = spotifyAppApi {
                     credentials {
-                        clientId = System.getProperty("clientId")
-                        clientSecret = System.getProperty("clientSecret")
+                        clientId = getEnvironmentVariable("clientId")
+                        clientSecret = getEnvironmentVariable("clientSecret")
                     }
                 }
                 api.build()

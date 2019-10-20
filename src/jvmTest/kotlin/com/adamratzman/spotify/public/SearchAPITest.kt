@@ -18,7 +18,6 @@ class SearchAPITest : Spek({
                 val query = s.search("lo", *SearchApi.SearchType.values()).complete()
                 assertTrue(query.albums?.items?.isNotEmpty() == true && query.tracks?.items?.isNotEmpty() == true && query.artists?.items?.isNotEmpty() == true &&
                         query.playlists?.items?.isNotEmpty() == true)
-
                 val query2 = s.search("lo", SearchApi.SearchType.ARTIST, SearchApi.SearchType.PLAYLIST).complete()
                 assertTrue(query2.albums == null && query2.tracks == null && query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true)
             }
