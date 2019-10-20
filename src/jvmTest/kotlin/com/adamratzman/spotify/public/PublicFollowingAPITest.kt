@@ -3,21 +3,25 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.BadRequestException
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class PublicFollowingAPITest : Spek({
     describe("Public Following test") {
         val f = api.following
         describe("do users follow playlist") {
             it("invalid users, valid playlist") {
-                assertThrows<BadRequestException> { f.areFollowingPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "udontexist89").complete()[0] }
+                assertFailsWith<BadRequestException> { f.areFollowingPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "udontexist89").complete()[0] }
             }
             it("no users, valid playlist") {
-                assertThrows<BadRequestException> {
+                assertFailsWith<BadRequestException> {
                     f.areFollowingPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M").complete()
                 }
             }
             it("valid users, invalid playlist") {
-                assertThrows<BadRequestException> {
+                assertFailsWith<BadRequestException> {
                     f.areFollowingPlaylist("spotify", "asdkfjajksdfjkasdf", "adamratzman1").complete()
                 }
             }
@@ -26,7 +30,7 @@ class PublicFollowingAPITest : Spek({
                         f.areFollowingPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "adamratzman1", "adamratzman").complete())
             }
             it("mix of valid and invalid users, valid playlist") {
-                assertThrows<BadRequestException> {
+                assertFailsWith<BadRequestException> {
                     f.areFollowingPlaylist("spotify", "37i9dQZF1DXcBWIGoYBM5M", "udontexist89", "adamratzman1").complete()
                 }
             }

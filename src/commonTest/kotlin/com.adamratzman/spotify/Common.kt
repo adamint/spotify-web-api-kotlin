@@ -2,26 +2,26 @@
 package com.adamratzman.spotify
 
 val api = when {
-    getEnvironmentalVariable("spotifyRedirectUri") == null -> {
+    getEnvironmentVariable("spotifyRedirectUri") == null -> {
         spotifyAppApi {
             credentials {
-                clientId = getEnvironmentalVariable("clientId")
-                clientSecret = getEnvironmentalVariable("clientSecret")
+                clientId = getEnvironmentVariable("clientId")
+                clientSecret = getEnvironmentVariable("clientSecret")
             }
         }.build()
     }
     else -> {
         spotifyClientApi {
             credentials {
-                clientId = getEnvironmentalVariable("clientId")
-                clientSecret = getEnvironmentalVariable("clientSecret")
-                redirectUri = getEnvironmentalVariable("spotifyRedirectUri")
+                clientId = getEnvironmentVariable("clientId")
+                clientSecret = getEnvironmentVariable("clientSecret")
+                redirectUri = getEnvironmentVariable("spotifyRedirectUri")
             }
             authorization {
-                tokenString = getEnvironmentalVariable("spotifyTokenString")
+                tokenString = getEnvironmentVariable("spotifyTokenString")
             }
         }.build()
     }
 }
 
-expect fun getEnvironmentalVariable(name: String): String?
+expect fun getEnvironmentVariable(name: String): String?

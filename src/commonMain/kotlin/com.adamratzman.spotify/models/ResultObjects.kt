@@ -45,7 +45,7 @@ abstract class CoreObject(
     @Transient override val href: String = TRANSIENT_EMPTY_STRING,
     @Transient override val id: String = TRANSIENT_EMPTY_STRING,
     @Transient open val uri: SpotifyUri = TRANSIENT_URI,
-    @Transient open val _externalUrls: Map<String, String> = mapOf()
+    @Transient internal open val _externalUrls: Map<String, String> = mapOf()
 ) : Identifiable(href, id) {
     @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
 }
@@ -56,7 +56,7 @@ abstract class RelinkingAvailableResponse(
     @Transient override val href: String = TRANSIENT_EMPTY_STRING,
     @Transient override val id: String = TRANSIENT_EMPTY_STRING,
     @Transient override val uri: SpotifyUri = TRANSIENT_URI,
-    @Transient val __externalUrls: Map<String, String> = mapOf()
+    @Transient internal val __externalUrls: Map<String, String> = mapOf()
 ) : CoreObject(href, id, uri, __externalUrls) {
     fun isRelinked() = linkedTrack != null
 }

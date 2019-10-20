@@ -3,19 +3,25 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.BadRequestException
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class PublicPlaylistsAPITest : Spek({
     describe("Public playlists test") {
         val p = api.playlists
         describe("get user's playlists") {
             it("available user should return playlists") {
-                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
             }
             it("unknown user should throw exception") {
-                assertThrows<BadRequestException> { p.getPlaylists("non-existant-user").complete().size }
+                assertFailsWith<BadRequestException> { p.getPlaylists("non-existant-user").complete().items.size }
             }
         }
         describe("get playlist") {
@@ -31,7 +37,7 @@ class PublicPlaylistsAPITest : Spek({
                 assertTrue(p.getPlaylistTracks("37i9dQZF1DXcBWIGoYBM5M", offset = 1).complete().items.isNotEmpty())
             }
             it("invalid playlist") {
-                assertThrows<BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
+                assertFailsWith<BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
             }
         }
         describe("get playlist cover") {
@@ -39,7 +45,7 @@ class PublicPlaylistsAPITest : Spek({
                 assertTrue(p.getPlaylistCovers("37i9dQZF1DXcBWIGoYBM5M").complete().isNotEmpty())
             }
             it("invalid playlist") {
-                assertThrows<BadRequestException> { p.getPlaylistCovers("adskjfjkasdf").complete() }
+                assertFailsWith<BadRequestException> { p.getPlaylistCovers("adskjfjkasdf").complete() }
             }
         }
     }

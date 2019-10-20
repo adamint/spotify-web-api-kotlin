@@ -3,8 +3,14 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.utils.Market
+import org.spekframework.spek2.Spek
 
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class PublicTracksAPITest : Spek({
     describe("Track API (Public View) test") {
@@ -19,7 +25,7 @@ class PublicTracksAPITest : Spek({
         }
         describe("get tracks") {
             it("unknown tracks") {
-                assertEquals(listOf(null, null), t.getTracks("hi", "dad", market = CountryCode.US).complete())
+                assertEquals(listOf(null, null), t.getTracks("hi", "dad", market = Market.US).complete())
             }
             it("mix of known tracks") {
                 assertEquals(listOf("Alors souris", null), t.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").complete().map { it?.name })
@@ -27,7 +33,7 @@ class PublicTracksAPITest : Spek({
         }
         describe("audio analysis") {
             it("unknown track") {
-                assertThrows<BadRequestException> { t.getAudioAnalysis("bad track").complete() }
+                assertFailsWith<BadRequestException> { t.getAudioAnalysis("bad track").complete() }
             }
             it("known track") {
                 assertEquals("165.61333", t.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").complete().track.duration.toString())
@@ -35,7 +41,7 @@ class PublicTracksAPITest : Spek({
         }
         describe("audio features") {
             it("unknown track") {
-                assertThrows<BadRequestException> { t.getAudioFeatures("bad track").complete() }
+                assertFailsWith<BadRequestException> { t.getAudioFeatures("bad track").complete() }
             }
             it("known track") {
                 assertEquals("0.0589", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())
