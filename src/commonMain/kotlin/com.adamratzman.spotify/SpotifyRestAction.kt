@@ -81,7 +81,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     fun queueAfter(quantity: Int, timeUnit: TimeUnit = TimeUnit.SECONDS, consumer: (T) -> Unit): SpotifyRestAction<T> {
         val runAt = getCurrentTimeMs() + timeUnit.toMillis(quantity.toLong())
         queue { result ->
-            GlobalScope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result)}
+            GlobalScope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result) }
         }
         return this
     }
@@ -95,19 +95,19 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     /**
      * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
      */
-    fun getAll() = api.tracks.toAction({ complete().getAllImpl() })
+    fun getAll() = api.tracks.toAction { complete().getAllImpl() }
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action
      */
-    fun getAllItems() = api.tracks.toAction({ complete().getAllImpl().toList().map { it.items }.flatten() })
+    fun getAllItems() = api.tracks.toAction { complete().getAllImpl().toList().map { it.items }.flatten() }
 
     /**
      * Consume each [Z] by [consumer] as it is retrieved
      */
     fun streamAllItems(consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
-        return api.tracks.toAction({
+        return api.tracks.toAction {
             complete().getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
-        })
+        }
     }
 }

@@ -7,10 +7,10 @@ import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.UserURI
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class UrisTests : Spek({
     describe("Uris tests") {

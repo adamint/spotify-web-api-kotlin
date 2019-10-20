@@ -105,7 +105,7 @@ class SearchApi(api: SpotifyApi) : SpotifyEndpoint(api) {
         market: Market? = null,
         includeExternal: Boolean? = null
     ): SpotifyRestAction<SpotifySearchResult> {
-        if (searchTypes.isEmpty()) throw IllegalArgumentException("At least one search type must be provided")
+        require(!searchTypes.isEmpty()) { "At least one search type must be provided" }
         return toAction {
             val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
             val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)

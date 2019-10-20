@@ -422,8 +422,8 @@ sealed class TuneableTrackAttribute<T : Number>(
     override fun toString() = attribute
 
     fun asTrackAttribute(value: T): TrackAttribute<T> {
-        if (min != null && min.toDouble() > value.toDouble()) throw IllegalArgumentException("Attribute value for $this must be greater than $min!")
-        if (max != null && max.toDouble() < value.toDouble()) throw IllegalArgumentException("Attribute value for $this must be less than $max!")
+        require(!(min != null && min.toDouble() > value.toDouble())) { "Attribute value for $this must be greater than $min!" }
+        require(!(max != null && max.toDouble() < value.toDouble())) { "Attribute value for $this must be less than $max!" }
 
         return TrackAttribute(this, value)
     }

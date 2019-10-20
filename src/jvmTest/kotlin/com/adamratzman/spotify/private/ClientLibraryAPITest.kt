@@ -5,15 +5,16 @@ import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.LibraryType
 import com.adamratzman.spotify.models.BadRequestException
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class ClientLibraryAPITest : Spek({
     describe("Client Library tests") {
         if (api !is SpotifyClientAPI) return@describe
+
         it("library track tests") {
             val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
             if (api.library.contains(LibraryType.TRACK, testTrack).complete()) {
@@ -21,22 +22,25 @@ class ClientLibraryAPITest : Spek({
             }
 
             assertFalse(api.library.contains(LibraryType.TRACK, testTrack).complete())
-            assertFalse(api.library.getSavedTracks().getAllItems().complete()
-                .map { it.track.id }.contains(testTrack)
+            assertFalse(
+                api.library.getSavedTracks().getAllItems().complete()
+                    .map { it.track.id }.contains(testTrack)
             )
 
             api.library.add(LibraryType.TRACK, testTrack).complete()
 
             assertTrue(api.library.contains(LibraryType.TRACK, testTrack).complete())
-            assertTrue(api.library.getSavedTracks().getAllItems().complete()
-                .map { it.track.id }.contains(testTrack)
+            assertTrue(
+                api.library.getSavedTracks().getAllItems().complete()
+                    .map { it.track.id }.contains(testTrack)
             )
 
             api.library.remove(LibraryType.TRACK, testTrack).complete()
 
             assertFalse(api.library.contains(LibraryType.TRACK, testTrack).complete())
-            assertFalse(api.library.getSavedTracks().getAllItems().complete()
-                .map { it.track.id }.contains(testTrack)
+            assertFalse(
+                api.library.getSavedTracks().getAllItems().complete()
+                    .map { it.track.id }.contains(testTrack)
             )
         }
 
@@ -47,22 +51,25 @@ class ClientLibraryAPITest : Spek({
             }
 
             assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
-            assertFalse(api.library.getSavedAlbums().getAllItems().complete()
-                .map { it.album.id }.contains(testAlbum)
+            assertFalse(
+                api.library.getSavedAlbums().getAllItems().complete()
+                    .map { it.album.id }.contains(testAlbum)
             )
 
             api.library.add(LibraryType.ALBUM, testAlbum).complete()
 
             assertTrue(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
-            assertTrue(api.library.getSavedAlbums().getAllItems().complete()
-                .map { it.album.id }.contains(testAlbum)
+            assertTrue(
+                api.library.getSavedAlbums().getAllItems().complete()
+                    .map { it.album.id }.contains(testAlbum)
             )
 
             api.library.remove(LibraryType.ALBUM, testAlbum).complete()
 
             assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum).complete())
-            assertFalse(api.library.getSavedAlbums().getAllItems().complete()
-                .map { it.album.id }.contains(testAlbum)
+            assertFalse(
+                api.library.getSavedAlbums().getAllItems().complete()
+                    .map { it.album.id }.contains(testAlbum)
             )
         }
 

@@ -147,7 +147,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         if (public != null) body += json { "public" to public }
         if (collaborative != null) body += json { "collaborative" to collaborative }
         if (description != null) body += json { "description" to description }
-        if (body.isEmpty()) throw IllegalArgumentException("At least one option must not be null")
+        require(!body.isEmpty()) { "At least one option must not be null" }
         return toAction {
             put(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
             Unit
@@ -172,8 +172,8 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         limit: Int? = null,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
-        if (limit != null && limit !in 1..50) throw IllegalArgumentException("Limit must be between 1 and 50. Provided $limit")
-        if (offset != null && offset !in 0..100000) throw IllegalArgumentException("Offset must be between 0 and 100,000. Provided $limit")
+        require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
+        require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
         return toActionPaging {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
                 .toPagingObject(SimplePlaylist.serializer(), endpoint = this)
@@ -414,7 +414,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         snapshotId: String?
     ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
-            if (tracks.isEmpty()) throw IllegalArgumentException("You need to provide at least one track to remove")
+            require(!tracks.isEmpty()) { "You need to provide at least one track to remove" }
 
             val body = jsonMap()
             if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
@@ -441,7 +441,6 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
  */
 @Serializable
 data class PlaylistSnapshot(@SerialName("snapshot_id") val snapshotId: String)
-
 
 /**
  * Represents the positions inside a playlist's items list of where to locate the track
