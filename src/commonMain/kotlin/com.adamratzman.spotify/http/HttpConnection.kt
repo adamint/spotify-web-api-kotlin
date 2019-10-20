@@ -31,7 +31,6 @@ data class HttpHeader(val key: String, val value: String)
 
 data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
-
 class HttpConnection constructor(
     private val url: String,
     private val method: HttpRequestMethod,
@@ -56,7 +55,7 @@ class HttpConnection constructor(
                 HttpRequestMethod.GET -> method = HttpMethod.Get
                 HttpRequestMethod.DELETE -> {
                     method = HttpMethod.Delete
-                    bodyString?.let { body = ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
+                    bodyString?.let { body = ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
                 }
                 HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
                     val content = if (contentType == "application/x-www-form-urlencoded") {
@@ -83,7 +82,6 @@ class HttpConnection constructor(
             if (ktorContentType != null && body !is ByteArrayContent && this@HttpConnection.method != HttpRequestMethod.POST) {
                 body = TextContent("", ktorContentType)
             }
-
 
             val allHeaders = (additionalHeaders ?: listOf()) + this@HttpConnection.headers
 
