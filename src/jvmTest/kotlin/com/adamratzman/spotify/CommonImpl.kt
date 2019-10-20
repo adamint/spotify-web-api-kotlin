@@ -2,6 +2,5 @@
 package com.adamratzman.spotify
 
 actual fun getEnvironmentVariable(name: String): String? {
-    println("$name ${System.getProperty(name)} ${System.getenv(name)}")
     return System.getProperty(name)
 }

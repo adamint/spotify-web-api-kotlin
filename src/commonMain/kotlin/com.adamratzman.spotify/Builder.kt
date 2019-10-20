@@ -257,7 +257,8 @@ class SpotifyClientApiBuilder(
                         ),
                         null,
                         "application/x-www-form-urlencoded",
-                        listOf()
+                        listOf(),
+                        null
                     ), clientId, clientSecret
                 )
 
