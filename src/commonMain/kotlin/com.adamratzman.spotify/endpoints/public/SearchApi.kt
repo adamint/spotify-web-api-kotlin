@@ -1,12 +1,12 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
+import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PagingObject
@@ -16,16 +16,18 @@ import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
-import com.adamratzman.spotify.models.serialization.asJSONObject
-import com.adamratzman.spotify.models.serialization.asJsonString
+import com.adamratzman.spotify.models.serialization.createMapSerializer
+import com.adamratzman.spotify.models.serialization.json
 import com.adamratzman.spotify.models.serialization.toPagingObject
-import com.neovisionaries.i18n.CountryCode
-import java.util.function.Supplier
+import com.adamratzman.spotify.utils.Market
+import kotlinx.serialization.serializer
+
+typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
  */
-class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class SearchApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *
@@ -94,28 +96,37 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     - Users can view the country that is associated with their account in the account settings. A user must grant access to the user-read-private scope prior to when the access token is issued.
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
-    fun search(query: String, vararg searchTypes: SearchType, limit: Int? = null, offset: Int? = null, market: CountryCode? = null, includeExternal: Boolean? = null): SpotifyRestAction<SpotifySearchResult> {
+    fun search(
+        query: String,
+        vararg searchTypes: SearchType,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null,
+        includeExternal: Boolean? = null
+    ): SpotifyRestAction<SpotifySearchResult> {
         if (searchTypes.isEmpty()) throw IllegalArgumentException("At least one search type must be provided")
-        return toAction(Supplier {
-            val json = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal)).asJSONObject()
+        return toAction {
+            val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
+            val map = json.parse(createMapSerializer(String.serializer(), String.serializer()), jsonString)
+
             SpotifySearchResult(
-                    json.asJsonString("artists")?.toPagingObject(endpoint = this),
-                    json.asJsonString("albums")?.toPagingObject(endpoint = this),
-                    json.asJsonString("tracks")?.toPagingObject(endpoint = this),
-                    json.asJsonString("playlists")?.toPagingObject(endpoint = this)
+                map["artists"]?.toPagingObject(Artist.serializer(), endpoint = this),
+                map["albums"]?.toPagingObject(SimpleAlbum.serializer(), endpoint = this),
+                map["tracks"]?.toPagingObject(Track.serializer(), endpoint = this),
+                map["playlists"]?.toPagingObject(SimplePlaylist.serializer(), endpoint = this)
             )
-        })
+        }
     }
 
     /**
-     * Get Spotify Catalog information about playlists that match the keyword string. See [SearchAPI.search] for more information
+     * Get Spotify Catalog information about playlists that match the keyword string. See [SearchApi.search] for more information
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
-     * @see [SearchAPI.search]
+     * @see [SearchApi.search]
      *
      * @return [PagingObject] of full [Playlist] objects ordered by likelihood of correct match
      * @throws BadRequestException if filters are illegal or query is malformed
@@ -124,24 +135,23 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
-        return toActionPaging(Supplier {
-            get(build(query, market, limit, offset, SearchType.PLAYLIST)).toPagingObject<SimplePlaylist>(
-                    "playlists", this
-            )
-        })
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.PLAYLIST))
+                .toPagingObject(SimplePlaylist.serializer(), "playlists", this)
+        }
     }
 
     /**
-     * Get Spotify Catalog information about artists that match the keyword string. See [SearchAPI.search] for more information
+     * Get Spotify Catalog information about artists that match the keyword string. See [SearchApi.search] for more information
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
-     * @see [SearchAPI.search]
+     * @see [SearchApi.search]
      *
      * @return [PagingObject] of full [Artist] objects ordered by likelihood of correct match
      *
@@ -151,24 +161,23 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
-        return toActionPaging(Supplier {
-            get(build(query, market, limit, offset, SearchType.ARTIST)).toPagingObject<Artist>(
-                    "artists", this
-            )
-        })
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.ARTIST))
+                .toPagingObject(Artist.serializer(), "artists", this)
+        }
     }
 
     /**
-     * Get Spotify Catalog information about albums that match the keyword string. See [SearchAPI.search] for more information
+     * Get Spotify Catalog information about albums that match the keyword string. See [SearchApi.search] for more information
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
-     * @see [SearchAPI.search]
+     * @see [SearchApi.search]
      *
      * @return [PagingObject] of non-full [SimpleAlbum] objects ordered by likelihood of correct match
      *
@@ -178,24 +187,23 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
-        return toActionPaging(Supplier {
-            get(build(query, market, limit, offset, SearchType.ALBUM)).toPagingObject<SimpleAlbum>(
-                    "albums", this
-            )
-        })
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.ALBUM))
+                .toPagingObject(SimpleAlbum.serializer(), "albums", this)
+        }
     }
 
     /**
-     * Get Spotify Catalog information about tracks that match the keyword string. See [SearchAPI.search] for more information
+     * Get Spotify Catalog information about tracks that match the keyword string. See [SearchApi.search] for more information
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
-     * @see [SearchAPI.search]
+     * @see [SearchApi.search]
      *
      * @return [PagingObject] of non-full [SimpleTrack] objects ordered by likelihood of correct match
      *
@@ -205,17 +213,24 @@ class SearchAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
-        return toActionPaging(Supplier {
-            get(build(query, market, limit, offset, SearchType.TRACK)).toPagingObject<Track>(
-                    "tracks", this
-            )
-        })
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.TRACK))
+                .toPagingObject(Track.serializer(), "tracks", this)
+        }
     }
 
-    private fun build(query: String, market: CountryCode?, limit: Int?, offset: Int?, vararg types: SearchType, includeExternal: Boolean? = null): String {
-        return EndpointBuilder("/search").with("q", query.encode()).with("type", types.joinToString(",") { it.id })
-                .with("market", market?.name).with("limit", limit).with("offset", offset).with("include_external", if (includeExternal == true) "audio" else null).toString()
+    private fun build(
+        query: String,
+        market: Market?,
+        limit: Int?,
+        offset: Int?,
+        vararg types: SearchType,
+        includeExternal: Boolean? = null
+    ): String {
+        return EndpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
+            .with("market", market?.name).with("limit", limit).with("offset", offset)
+            .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }

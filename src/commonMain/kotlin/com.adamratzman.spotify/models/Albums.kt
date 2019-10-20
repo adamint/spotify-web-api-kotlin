@@ -47,7 +47,7 @@ data class SimpleAlbum(
     @SerialName("release_date_precision") val releaseDatePrecision: String,
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
-) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
+) : CoreObject(_href, _id, AlbumUri(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -134,7 +134,7 @@ data class Album(
     val type: String,
     @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
-) : CoreObject(_href, _id, AlbumURI(_uri), _externalUrls) {
+) : CoreObject(_href, _id, AlbumUri(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 

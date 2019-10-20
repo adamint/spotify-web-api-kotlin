@@ -21,7 +21,7 @@ data class SimpleArtist(
 
     val name: String,
     val type: String
-) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls) {
+) : CoreObject(_href, _id, ArtistUri(_uri), _externalUrls) {
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
@@ -55,6 +55,7 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String
-) : CoreObject(_href, _id, ArtistURI(_uri), _externalUrls)
+) : CoreObject(_href, _id, ArtistUri(_uri), _externalUrls)
 
+@Serializable
 internal data class ArtistList(val artists: List<Artist?>)

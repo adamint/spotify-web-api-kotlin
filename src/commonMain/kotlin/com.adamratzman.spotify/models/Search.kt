@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class SpotifySearchResult(
-    val artists: List<Artist>?,
-    val albums: List<SimpleAlbum>?,
-    val tracks: List<Track>?,
-    val playlists: List<SimplePlaylist>?
+    val artists: PagingObject<Artist>?,
+    val albums: PagingObject<SimpleAlbum>?,
+    val tracks: PagingObject<Track>?,
+    val playlists: PagingObject<SimplePlaylist>?
 )

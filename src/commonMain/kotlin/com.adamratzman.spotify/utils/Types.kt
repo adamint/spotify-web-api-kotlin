@@ -10,6 +10,8 @@ expect class ConcurrentHashMap<K, V>() {
     val entries: MutableSet<MutableMap.MutableEntry<K, V>>
 }
 
+expect fun <K, V> ConcurrentHashMap<K, V>.toList(): List<Pair<K, V>>
+
 expect class BufferedImage
 
 expect class File

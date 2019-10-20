@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
@@ -11,7 +11,7 @@ import kotlinx.serialization.Transient
 
 private const val TRANSIENT_EMPTY_STRING = ""
 private val TRANSIENT_NULL = null
-private val TRANSIENT_URI = UserURI("spotify:user:")
+private val TRANSIENT_URI = UserUri("spotify:user:")
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
@@ -45,9 +45,10 @@ abstract class CoreObject(
     @Transient override val href: String = TRANSIENT_EMPTY_STRING,
     @Transient override val id: String = TRANSIENT_EMPTY_STRING,
     @Transient open val uri: SpotifyUri = TRANSIENT_URI,
-    @Transient open val _externalUrls: Map<String, String> = mapOf(),
+    @Transient open val _externalUrls: Map<String, String> = mapOf()
+) : Identifiable(href, id) {
     @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
-) : Identifiable(href, id)
+}
 
 @Serializable
 abstract class RelinkingAvailableResponse(
@@ -55,8 +56,8 @@ abstract class RelinkingAvailableResponse(
     @Transient override val href: String = TRANSIENT_EMPTY_STRING,
     @Transient override val id: String = TRANSIENT_EMPTY_STRING,
     @Transient override val uri: SpotifyUri = TRANSIENT_URI,
-    @Transient override val _externalUrls: Map<String, String> = mapOf()
-) : CoreObject(href, id, uri, _externalUrls) {
+    @Transient val __externalUrls: Map<String, String> = mapOf()
+) : CoreObject(href, id, uri, __externalUrls) {
     fun isRelinked() = linkedTrack != null
 }
 
@@ -75,13 +76,13 @@ class ExternalUrl(val name: String, val url: String)
 class ExternalId(val key: String, val id: String)
 
 /**
- * Provide access to the underlying [SpotifyAPI]
+ * Provide access to the underlying [SpotifyApi]
  *
  * @property api The API client associated with the request
  */
 abstract class NeedsApi {
     @Transient
-    lateinit var api: SpotifyAPI
+    lateinit var api: SpotifyApi
 }
 
 interface ResultEnum {
@@ -105,6 +106,7 @@ data class ErrorObject(val status: Int, val message: String)
 
 class SpotifyAuthenticationException(message: String) : Exception(message)
 
+@Serializable
 data class AuthenticationError(
     val error: String,
     @SerialName("error_description") val description: String
@@ -113,7 +115,7 @@ data class AuthenticationError(
 class SpotifyUriException(message: String) : BadRequestException(message)
 
 /**
- * Thrown when [SpotifyAPI.retryWhenRateLimited] is false and requests have been ratelimited
+ * Thrown when [SpotifyApi.retryWhenRateLimited] is false and requests have been ratelimited
  *
  * @param time the time, in seconds, until the next request can be sent
  */

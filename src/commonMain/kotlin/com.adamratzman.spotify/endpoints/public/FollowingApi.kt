@@ -1,21 +1,24 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
+import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.BadRequestException
-import com.adamratzman.spotify.models.PlaylistURI
-import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.PlaylistUri
+import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
-import java.util.function.Supplier
+import kotlinx.serialization.list
+import kotlinx.serialization.serializer
+
+typealias FollowingAPI = FollowingApi
 
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
  */
-open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+open class FollowingApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *
@@ -32,13 +35,13 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         playlist: String,
         vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
-        return toAction(Supplier {
-            val user = UserURI(playlistOwner)
+        return toAction {
+            val user = UserUri(playlistOwner)
             get(
-                    EndpointBuilder("/users/${user.id.encode()}/playlists/${PlaylistURI(playlist).id.encode()}/followers/contains")
-                            .with("ids", users.joinToString(",") { UserURI(it).id.encode() }).toString()
-            ).toList<Boolean>(api)
-        })
+                EndpointBuilder("/users/${user.id.encodeUrl()}/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
+                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+            ).toList(Boolean.serializer().list, api)
+        }
     }
 
     /**
@@ -53,12 +56,12 @@ open class FollowingAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found or if the user does not exist
      */
     fun isFollowingPlaylist(playlistOwner: String, playlist: String, user: String): SpotifyRestAction<Boolean> {
-        return toAction(Supplier {
+        return toAction {
             areFollowingPlaylist(
-                    playlistOwner,
-                    playlist,
-                    users = *arrayOf(user)
+                playlistOwner,
+                playlist,
+                users = *arrayOf(user)
             ).complete()[0]
-        })
+        }
     }
 }

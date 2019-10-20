@@ -1,23 +1,23 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
-import com.adamratzman.spotify.models.AlbumURI
-import com.adamratzman.spotify.models.ArtistURI
+import com.adamratzman.spotify.models.AlbumUri
+import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
 import com.adamratzman.spotify.models.CurrentlyPlayingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Device
 import com.adamratzman.spotify.models.PlayHistory
-import com.adamratzman.spotify.models.PlaylistURI
-import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.PlaylistUri
+import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
 import com.adamratzman.spotify.models.serialization.toJson
@@ -27,11 +27,13 @@ import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.json.json
 import kotlinx.serialization.list
 
+typealias ClientPlayerAPI = ClientPlayerApi
+
 /**
  * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.spotify.com/web-api/working-with-connect/)
  * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work
  */
-class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get information about a user’s available devices.
      *
@@ -231,7 +233,7 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun startPlayback(
         album: String? = null,
         artist: String? = null,
-        playlist: PlaylistURI? = null,
+        playlist: PlaylistUri? = null,
         offsetNum: Int? = null,
         offsetTrackId: String? = null,
         deviceId: String? = null,
@@ -241,15 +243,15 @@ class ClientPlayerAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = jsonMap()
             when {
-                album != null -> body += json { "context_uri" to AlbumURI(album).uri }
-                artist != null -> body += json { "context_uri" to ArtistURI(artist).uri }
+                album != null -> body += json { "context_uri" to AlbumUri(album).uri }
+                artist != null -> body += json { "context_uri" to ArtistUri(artist).uri }
                 playlist != null -> body += json { "context_uri" to playlist.uri }
-                tracksToPlay.isNotEmpty() -> body += json { "uris" to tracksToPlay.map { TrackURI(it).uri } }
+                tracksToPlay.isNotEmpty() -> body += json { "uris" to tracksToPlay.map { TrackUri(it).uri } }
             }
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }
                 else if (offsetTrackId != null) body += json {
-                    "offset" to json { "uri" to TrackURI(offsetTrackId).uri }
+                    "offset" to json { "uri" to TrackUri(offsetTrackId).uri }
                 }
                 put(url, body.toJson())
             } else put(url)

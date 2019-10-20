@@ -1,24 +1,39 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
+import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
+import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
+import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
+import com.adamratzman.spotify.endpoints.client.ClientPlaylistApi
+import com.adamratzman.spotify.endpoints.client.ClientProfileApi
+import com.adamratzman.spotify.endpoints.public.AlbumApi
+import com.adamratzman.spotify.endpoints.public.ArtistApi
+import com.adamratzman.spotify.endpoints.public.BrowseApi
+import com.adamratzman.spotify.endpoints.public.FollowingApi
+import com.adamratzman.spotify.endpoints.public.PlaylistApi
+import com.adamratzman.spotify.endpoints.public.SearchApi
+import com.adamratzman.spotify.endpoints.public.TrackApi
+import com.adamratzman.spotify.endpoints.public.UserApi
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpHeader
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.byteEncode
+import com.adamratzman.spotify.http.base64ByteEncode
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import com.adamratzman.spotify.utils.toList
 
 internal const val base = "https://api.spotify.com/v1"
 
 /**
  * Represents an instance of the Spotify API client, with common
- * functionality and information between the [SpotifyClientAPI] and [SpotifyAppAPI]
+ * functionality and information between the [SpotifyClientApi] and [SpotifyAppApi]
  * implementations of the API
  *
  * @property clientId The application client id found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
@@ -38,7 +53,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property moshi The serializer/deserializer associated with this API instance
  *
  */
-abstract class SpotifyAPI internal constructor(
+abstract class SpotifyApi internal constructor(
     val clientId: String,
     val clientSecret: String,
     var token: Token,
@@ -59,14 +74,14 @@ abstract class SpotifyAPI internal constructor(
     val expireTime: Long get() = getCurrentTimeMs() + token.expiresIn * 1000
     var runExecutableFunctions = true
 
-    abstract val search: SearchAPI
-    abstract val albums: AlbumAPI
-    abstract val browse: BrowseAPI
-    abstract val artists: ArtistsAPI
-    abstract val playlists: PlaylistAPI
-    abstract val users: UserAPI
-    abstract val tracks: TracksAPI
-    abstract val following: FollowingAPI
+    abstract val search: SearchApi
+    abstract val albums: AlbumApi
+    abstract val browse: BrowseApi
+    abstract val artists: ArtistApi
+    abstract val playlists: PlaylistApi
+    abstract val users: UserApi
+    abstract val tracks: TrackApi
+    abstract val following: FollowingApi
 
     init {
         if (testTokenValidity) {
@@ -166,7 +181,7 @@ abstract class SpotifyAPI internal constructor(
  * An API instance created with application credentials, not through
  * client authentication
  */
-class SpotifyAppAPI internal constructor(
+class SpotifyAppApi internal constructor(
     clientId: String,
     clientSecret: String,
     token: Token,
@@ -176,7 +191,7 @@ class SpotifyAppAPI internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean
-) : SpotifyAPI(
+) : SpotifyApi(
     clientId,
     clientSecret,
     token,
@@ -204,26 +219,26 @@ class SpotifyAppAPI internal constructor(
         options.testTokenValidity
     )
 
-    override val search: SearchAPI = SearchAPI(this)
-    override val albums: AlbumAPI = AlbumAPI(this)
-    override val browse: BrowseAPI = BrowseAPI(this)
-    override val artists: ArtistsAPI = ArtistsAPI(this)
-    override val tracks: TracksAPI = TracksAPI(this)
+    override val search: SearchApi = SearchApi(this)
+    override val albums: AlbumApi = AlbumApi(this)
+    override val browse: BrowseApi = BrowseApi(this)
+    override val artists: ArtistApi = ArtistApi(this)
+    override val tracks: TrackApi = TrackApi(this)
 
     /**
      * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
      */
-    override val playlists: PlaylistAPI = PlaylistAPI(this)
+    override val playlists: PlaylistApi = PlaylistApi(this)
 
     /**
      * Provides access to **public** Spotify [user information](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)
      */
-    override val users: UserAPI = UserAPI(this)
+    override val users: UserApi = UserApi(this)
 
     /**
      * Provides access to **public** playlist [follower information](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)
      */
-    override val following: FollowingAPI = FollowingAPI(this)
+    override val following: FollowingApi = FollowingApi(this)
 
     override fun refreshToken(): Token {
         if (clientId != "not-set" && clientSecret != "not-set") {
@@ -256,11 +271,11 @@ class SpotifyAppAPI internal constructor(
 
     override fun getApiBuilderDsl() = spotifyAppApi {
         credentials {
-            clientId = this@SpotifyAppAPI.clientId
-            clientSecret = this@SpotifyAppAPI.clientSecret
+            clientId = this@SpotifyAppApi.clientId
+            clientSecret = this@SpotifyAppApi.clientSecret
         }
 
-        useCache = this@SpotifyAppAPI.useCache
+        useCache = this@SpotifyAppApi.useCache
     }
 }
 
@@ -268,7 +283,7 @@ class SpotifyAppAPI internal constructor(
  * An API instance created through client authentication, with access to private information
  * managed through the scopes exposed in [token]
  */
-class SpotifyClientAPI internal constructor(
+class SpotifyClientApi internal constructor(
     clientId: String,
     clientSecret: String,
     var redirectUri: String,
@@ -279,7 +294,7 @@ class SpotifyClientAPI internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean
-) : SpotifyAPI(
+) : SpotifyApi(
     clientId,
     clientSecret,
     token,
@@ -309,45 +324,45 @@ class SpotifyClientAPI internal constructor(
         options.testTokenValidity
     )
 
-    override val search: SearchAPI = SearchAPI(this)
-    override val albums: AlbumAPI = AlbumAPI(this)
-    override val browse: BrowseAPI = BrowseAPI(this)
-    override val artists: ArtistsAPI = ArtistsAPI(this)
-    override val tracks: TracksAPI = TracksAPI(this)
+    override val search: SearchApi = SearchApi(this)
+    override val albums: AlbumApi = AlbumApi(this)
+    override val browse: BrowseApi = BrowseApi(this)
+    override val artists: ArtistApi = ArtistApi(this)
+    override val tracks: TrackApi = TrackApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving
      * information about a user’s playlists and for managing a user’s playlists.
-     * *Superset of [PlaylistAPI]*
+     * *Superset of [PlaylistApi]*
      */
-    override val playlists: ClientPlaylistAPI = ClientPlaylistAPI(this)
+    override val playlists: ClientPlaylistApi = ClientPlaylistApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/users-profile/) for
      * retrieving information about a user’s profile.
-     * *Superset of [UserAPI]*
+     * *Superset of [UserApi]*
      */
-    override val users: ClientUserAPI = ClientUserAPI(this)
+    override val users: ClientProfileApi = ClientProfileApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/follow/) for managing
      * the artists, users, and playlists that a Spotify user follows.
-     * *Superset of [FollowingAPI]*
+     * *Superset of [FollowingApi]*
      */
-    override val following: ClientFollowingAPI = ClientFollowingAPI(this)
+    override val following: ClientFollowingApi = ClientFollowingApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/personalization/) for
      * retrieving information about the user’s listening habits.
 
      */
-    val personalization: ClientPersonalizationAPI = ClientPersonalizationAPI(this)
+    val personalization: ClientPersonalizationApi = ClientPersonalizationApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/library/) for
      * retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
      */
-    val library: ClientLibraryAPI = ClientLibraryAPI(this)
+    val library: ClientLibraryApi = ClientLibraryApi(this)
 
     /**
      * Provides access to the **beta** [player api](https://developer.spotify.com/documentation/web-api/reference/player/),
@@ -358,7 +373,7 @@ class SpotifyClientAPI internal constructor(
      *
      * **These endpoints may break at any time.**
      */
-    val player: ClientPlayerAPI = ClientPlayerAPI(this)
+    val player: ClientPlayerApi = ClientPlayerApi(this)
 
     /**
      * The Spotify user id to which the api instance is connected
@@ -396,14 +411,14 @@ class SpotifyClientAPI internal constructor(
         )
 
         if (response.responseCode / 200 == 1) {
-            val tempToken = response.body.toObject<Token>(this)
+            val tempToken = response.body.toObject(Token.serializer(), this)
             this.token = tempToken.copy(
-                refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
-                scopes = tempToken.scopes
-            )
+                refreshToken = tempToken.refreshToken ?: this.token.refreshToken
+                ).apply { scopes = tempToken.scopes }
+
             logger.logInfo("Successfully refreshed the Spotify token")
             return currentToken
-        } else throw BadRequestException(response.body.toObject<AuthenticationError>(this))
+        } else throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), this))
     }
 
     override val endpoints: List<SpotifyEndpoint>
@@ -432,12 +447,12 @@ class SpotifyClientAPI internal constructor(
 
     override fun getApiBuilderDsl() = spotifyClientApi {
         credentials {
-            clientId = this@SpotifyClientAPI.clientId
-            clientSecret = this@SpotifyClientAPI.clientSecret
-            redirectUri = this@SpotifyClientAPI.redirectUri
+            clientId = this@SpotifyClientApi.clientId
+            clientSecret = this@SpotifyClientApi.clientSecret
+            redirectUri = this@SpotifyClientApi.redirectUri
         }
 
-        useCache = this@SpotifyClientAPI.useCache
+        useCache = this@SpotifyClientApi.useCache
     }
 
     /**
@@ -465,6 +480,10 @@ class SpotifyClientAPI internal constructor(
         !isTokenValid(false).isValid && (scopes.toList() + scope).all { token.scopes.contains(it) }
 }
 
+typealias SpotifyAPI = SpotifyApi
+typealias SpotifyClientAPI = SpotifyClientApi
+typealias SpotifyAppAPI = SpotifyAppApi
+
 fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
     return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
             "&response_type=code" +
@@ -472,7 +491,7 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyAPI?): Token {
+fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi?): Token {
     val response = executeTokenRequest(
         HttpConnection(
             "https://accounts.spotify.com/api/token",
@@ -485,9 +504,9 @@ fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyAPI
         ), clientId, clientSecret
     )
 
-    if (response.responseCode / 200 == 1) return response.body.toObject(null)
+    if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null)
 
-    throw BadRequestException(response.body.toObject<AuthenticationError>(null))
+    throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), null))
 }
 
 internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {
@@ -495,7 +514,7 @@ internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: Strin
         listOf(
             HttpHeader(
                 "Authorization",
-                "Basic ${"$clientId:$clientSecret".byteEncode()}"
+                "Basic ${"$clientId:$clientSecret".base64ByteEncode()}"
             )
         )
     )
