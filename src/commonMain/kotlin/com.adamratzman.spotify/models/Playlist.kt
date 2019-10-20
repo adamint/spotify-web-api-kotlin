@@ -102,8 +102,8 @@ data class PlaylistTrack(
 @Serializable
 data class Playlist(
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("href") private val _href: String,
-    @SerialName("id") private val _id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
     @SerialName("uri") private val _uri: String,
 
     val collaborative: Boolean,
@@ -117,7 +117,7 @@ data class Playlist(
     @SerialName("snapshot_id") private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
-) : CoreObject(_href, _id, PlaylistUri(_uri), _externalUrls) {
+) : CoreObject(href, id, PlaylistUri(_uri), _externalUrls) {
     @Transient
     val snapshot: PlaylistSnapshot = PlaylistSnapshot(_snapshotId)
 }

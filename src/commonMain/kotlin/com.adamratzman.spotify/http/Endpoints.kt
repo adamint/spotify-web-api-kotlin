@@ -23,8 +23,8 @@ abstract class SpotifyEndpoint(val api: SpotifyApi) {
         return execute(url)
     }
 
-    internal fun post(url: String, body: String? = null): String {
-        return execute(url, body, HttpRequestMethod.POST)
+    internal fun post(url: String, body: String? = null, contentType: String? = null): String {
+        return execute(url, body, HttpRequestMethod.POST, contentType = contentType)
     }
 
     internal fun put(url: String, body: String? = null, contentType: String? = null): String {

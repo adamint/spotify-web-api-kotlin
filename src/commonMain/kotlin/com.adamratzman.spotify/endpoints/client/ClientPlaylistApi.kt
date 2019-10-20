@@ -29,6 +29,8 @@ import com.adamratzman.spotify.utils.encodeBufferedImageToBase64String
 import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.json
 
 typealias ClientPlaylistAPI = ClientPlaylistApi
@@ -110,8 +112,9 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
      */
     fun addTracksToPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
         val body = jsonMap()
-        body += json { "uris" to tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri } }
+        body += json { "uris" to JsonArray(tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
         if (position != null) body += json { "position" to position }
+        println(body)
         return toAction {
             post(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
@@ -266,7 +269,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
     fun setPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction {
             val body = jsonMap()
-            body += json { "uris" to tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri } }
+            body += json { "uris" to JsonArray(tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
             put(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
@@ -423,7 +426,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
                 "tracks" to tracks.map { (track, positions) ->
                     val json = jsonMap()
                     json += json { "uri" to TrackUri(track).uri }
-                    if (positions?.positions?.isNotEmpty() == true) json += json { "positions" to positions.positions }
+                    if (positions?.positions?.isNotEmpty() == true) json += json { "positions" to JsonArray(positions.positions.map(::JsonPrimitive)) }
                 }
             }
 
