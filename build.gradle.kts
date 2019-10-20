@@ -50,7 +50,6 @@ kotlin {
 
                 implementation("com.neovisionaries:nv-i18n:1.26")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                implementation("com.google.http-client:google-http-client:$googleHttpClientVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                 implementation("io.ktor:ktor-client-apache:$ktorVersion")
                 implementation(kotlin("stdlib-jdk8"))

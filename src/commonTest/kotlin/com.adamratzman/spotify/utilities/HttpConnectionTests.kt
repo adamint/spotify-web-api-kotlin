@@ -30,11 +30,10 @@ class HttpConnectionTests : Spek({
             it("get request header") {
                 val requestHeader = body["headers"]
                 assertTrue {
-                    println(requestHeader!!.jsonObject.map { it.key to it.value.primitive.content })
                     // ignore the user-agent because of the version in it
                     requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
                             mapOf(
-                                    "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                                    "Accept" to "*/*",
                                     "Host" to "httpbin.org",
                                     "Content-Type" to "text/html"
                             ).toList()
@@ -65,7 +64,7 @@ class HttpConnectionTests : Spek({
                 assertTrue {
                     requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
                             mapOf(
-                                    "Accept" to "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                                    "Accept" to "*/*",
                                     "Host" to "httpbin.org",
                                     "Content-Type" to "text/html",
                                     "Content-Length" to "4"
