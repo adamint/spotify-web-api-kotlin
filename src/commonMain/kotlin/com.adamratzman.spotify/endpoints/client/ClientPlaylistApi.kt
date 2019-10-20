@@ -150,7 +150,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         if (public != null) body += json { "public" to public }
         if (collaborative != null) body += json { "collaborative" to collaborative }
         if (description != null) body += json { "description" to description }
-        require(!body.isEmpty()) { "At least one option must not be null" }
+        require(body.isNotEmpty()) { "At least one option must not be null" }
         return toAction {
             put(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
             Unit
@@ -417,7 +417,7 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         snapshotId: String?
     ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
-            require(!tracks.isEmpty()) { "You need to provide at least one track to remove" }
+            require(tracks.isNotEmpty()) { "You need to provide at least one track to remove" }
 
             val body = jsonMap()
             if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
