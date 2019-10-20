@@ -5,12 +5,12 @@ import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.Album
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.Track
+import kotlin.test.assertTrue
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.internal.nullable
 import kotlinx.serialization.json.Json
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertTrue
 
 @UnstableDefault
 class JsonTests : Spek({

@@ -49,7 +49,7 @@ class TrackApi(api: SpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return List of possibly-null full [Track] objects.
      */
-    fun getTracks(vararg tracks: String, market:  Market? = null): SpotifyRestAction<List<Track?>> {
+    fun getTracks(vararg tracks: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
         return toAction {
             get(EndpointBuilder("/tracks").with("ids", tracks.joinToString(",") { TrackUri(it).id.encodeUrl() })
                 .with("market", market?.name).toString())

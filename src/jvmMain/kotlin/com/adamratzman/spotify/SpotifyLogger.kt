@@ -21,7 +21,6 @@ actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
         sb.append(if (fatal) "FATAL" else "Error")
         if (message != null) sb.append(": $message")
         sb.append(resetString)
-        println(sb)
         throwable?.printStackTrace()
     }
 }

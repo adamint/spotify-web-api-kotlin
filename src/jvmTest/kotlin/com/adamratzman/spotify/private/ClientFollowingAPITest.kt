@@ -4,13 +4,13 @@ package com.adamratzman.spotify.private
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.BadRequestException
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class ClientFollowingAPITest : Spek({
     describe("Client following tests") {
@@ -38,7 +38,7 @@ class ClientFollowingAPITest : Spek({
             api.following.unfollowArtist(testArtistId).complete()
             api.following.unfollowArtist(testArtistId).complete()
 
-            assertTrue(beforeFollowing.size == api.following.getFollowedArtists().getAllItems().complete().size)
+            assertEquals(beforeFollowing.size, api.following.getFollowedArtists().getAllItems().complete().size)
 
             assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 

@@ -2,10 +2,10 @@
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class PublicUserAPITest : Spek({
     describe("Public User test") {

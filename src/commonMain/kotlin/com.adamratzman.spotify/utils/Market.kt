@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 /*
@@ -15,7 +16,6 @@ package com.adamratzman.spotify.utils
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 /**
  * [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) country code.
@@ -100,7 +100,7 @@ package com.adamratzman.spotify.utils
  *
  * @author Takahiko Kawasaki
  */
-enum class Market private constructor(
+enum class Market(
     /**
      * Get the country name.
      *

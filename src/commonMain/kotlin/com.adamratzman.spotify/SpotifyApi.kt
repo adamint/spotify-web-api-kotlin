@@ -50,7 +50,6 @@ internal const val base = "https://api.spotify.com/v1"
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
  *
  * @property logger The Spotify event logger
- * @property moshi The serializer/deserializer associated with this API instance
  *
  */
 abstract class SpotifyApi internal constructor(

@@ -20,7 +20,7 @@ import kotlinx.serialization.map
 import kotlinx.serialization.serializer
 
 @Suppress("EXPERIMENTAL_API_USAGE")
-internal val json = Json(JsonConfiguration.Stable,spotifyUriSerializersModule)
+internal val json = Json(JsonConfiguration.Stable, spotifyUriSerializersModule)
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi?): T? = try {
     toObject(serializer, api)
@@ -74,7 +74,7 @@ internal inline fun <reified T : Any> String.toPagingObject(
     if (innerObjectName != null) {
         val map = json.parse((String.serializer() to PagingObject.serializer(tSerializer)).map, this)
 
-        return map[innerObjectName]!!
+        return (map[innerObjectName] ?: error(""))
             .apply {
                 this.endpoint = endpoint
                 this.itemClazz = T::class
@@ -105,7 +105,7 @@ internal inline fun <reified T : Any> String.toCursorBasedPagingObject(
     if (innerObjectName != null) {
         val map = json.parse((String.serializer() to CursorBasedPagingObject.serializer(tSerializer)).map, this)
 
-        return map[innerObjectName]!!
+        return (map[innerObjectName] ?: error(""))
             .apply {
                 this.endpoint = endpoint
                 this.itemClazz = T::class

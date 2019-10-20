@@ -230,9 +230,7 @@ class SpotifyClientApiBuilder(
     override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 ) : ISpotifyClientApiBuilder {
     override fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
-        if (credentials.redirectUri == null || credentials.clientId == null) {
-            throw IllegalArgumentException("You didn't specify a redirect uri or client id in the credentials block!")
-        }
+        require(!(credentials.redirectUri == null || credentials.clientId == null)) { "You didn't specify a redirect uri or client id in the credentials block!" }
         return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
@@ -241,9 +239,7 @@ class SpotifyClientApiBuilder(
         val clientSecret = credentials.clientSecret
         val redirectUri = credentials.redirectUri
 
-        if ((clientId == null || clientSecret == null || redirectUri == null) && (authorization.token == null && authorization.tokenString == null)) {
-            throw IllegalArgumentException("You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!")
-        }
+        require(!((clientId == null || clientSecret == null || redirectUri == null) && (authorization.token == null && authorization.tokenString == null))) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
             authorization.authorizationCode != null -> try {
                 clientId ?: throw IllegalArgumentException()
@@ -269,7 +265,7 @@ class SpotifyClientApiBuilder(
                     clientId,
                     clientSecret,
                     redirectUri,
-                    response.body.toObject(Token.serializer(),null),
+                    response.body.toObject(Token.serializer(), null),
                     options.useCache,
                     options.cacheLimit,
                     options.automaticRefresh,
@@ -361,9 +357,7 @@ class SpotifyAppApiBuilder(
     override fun build(): SpotifyApi {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
-        if ((clientId == null || clientSecret == null) && (authorization.token == null && authorization.tokenString == null)) {
-            throw IllegalArgumentException("You didn't specify a client id or client secret in the credentials block!")
-        }
+        require(!((clientId == null || clientSecret == null) && (authorization.token == null && authorization.tokenString == null))) { "You didn't specify a client id or client secret in the credentials block!" }
         return when {
             authorization.token != null -> {
                 SpotifyAppApi(
@@ -395,7 +389,7 @@ class SpotifyAppApiBuilder(
                 )
             }
             else -> try {
-                if (clientId == null || clientSecret == null) throw IllegalArgumentException("Illegal credentials provided")
+                require(!(clientId == null || clientSecret == null)) { "Illegal credentials provided" }
                 val token = getCredentialedToken(clientId, clientSecret, null)
                 SpotifyAppApi(
                     clientId,

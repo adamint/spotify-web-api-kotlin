@@ -164,7 +164,7 @@ class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     fun setVolume(volume: Int, deviceId: String? = null): SpotifyRestAction<Unit> {
-        if (volume !in 0..100) throw IllegalArgumentException("Volume must be within 0 to 100 inclusive. Provided: $volume")
+        require(volume in 0..100) { "Volume must be within 0 to 100 inclusive. Provided: $volume" }
         return toAction {
             put(
                 EndpointBuilder("/me/player/volume").with("volume_percent", volume).with(
@@ -292,7 +292,7 @@ class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
      * @param play Whether to immediately start playback on the transferred device
      */
     fun transferPlayback(vararg deviceId: String, play: Boolean = true): SpotifyRestAction<Unit> {
-        if (deviceId.size > 1) throw IllegalArgumentException("Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request")
+        require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
         return toAction {
             put(
                 EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") { it.encodeUrl() })

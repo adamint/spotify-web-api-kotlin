@@ -6,10 +6,10 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
+import kotlin.reflect.KClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -175,9 +175,7 @@ class CursorBasedPagingObject<T : Any>(
 
     @Suppress("UNCHECKED_CAST")
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
-        if (type == PagingTraversalType.BACKWARDS) {
-            throw IllegalArgumentException("CursorBasedPagingObjects only can go forwards")
-        }
+        require(type != PagingTraversalType.BACKWARDS) { "CursorBasedPagingObjects only can go forwards" }
         return next?.let {
             val url = endpoint!!.get(it)
             when (itemClazz) {
@@ -242,9 +240,9 @@ abstract class AbstractPagingObject<T : Any>(
     internal fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 }
 
-internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyApi) = when {
-    this is FeaturedPlaylists -> this.playlists
-    this is Album -> this.tracks
-    this is Playlist -> this.tracks
+internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyApi) = when (this) {
+    is FeaturedPlaylists -> this.playlists
+    is Album -> this.tracks
+    is Playlist -> this.tracks
     else -> null
 }.let { it?.endpoint = spotifyAPI.tracks; this }
