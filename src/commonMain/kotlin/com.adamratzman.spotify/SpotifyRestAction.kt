@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
  */
-open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyAPI, val supplier: () -> T) {
+open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi, val supplier: () -> T) {
     private var hasRunBacking: Boolean = false
     private var hasCompletedBacking: Boolean = false
 
@@ -89,7 +89,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     override fun toString() = complete().toString()
 }
 
-class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyAPI, supplier: () -> T) :
+class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi, supplier: () -> T) :
     SpotifyRestAction<T>(api, supplier) {
 
     /**

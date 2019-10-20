@@ -47,8 +47,6 @@ kotlin {
                 implementation("com.neovisionaries:nv-i18n:1.26")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                 implementation("com.google.http-client:google-http-client:$googleHttpClientVersion")
-                implementation("com.squareup.moshi:moshi:$moshiVersion")
-                implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                 implementation(kotlin("stdlib-jdk8"))
             }
@@ -56,6 +54,7 @@ kotlin {
 
         jvm().compilations["test"].defaultSourceSet {
             dependencies {
+                implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
             }
         }

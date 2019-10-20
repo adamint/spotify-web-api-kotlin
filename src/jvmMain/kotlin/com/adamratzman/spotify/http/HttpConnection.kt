@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.GenericUrl
@@ -18,7 +18,7 @@ actual class HttpConnection actual constructor(
     private val bodyString: String?,
     private val contentType: String?,
     private val headers: List<HttpHeader>,
-    val api: SpotifyAPI?
+    val api: SpotifyApi?
 ) {
 
     companion object {

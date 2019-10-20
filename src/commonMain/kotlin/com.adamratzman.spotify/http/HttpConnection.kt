@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 
 enum class HttpRequestMethod {
     GET,
@@ -19,7 +19,7 @@ expect class HttpConnection(
     bodyString: String?,
     contentType: String?,
     headers: List<HttpHeader> = listOf(),
-    api: SpotifyAPI? = null
+    api: SpotifyApi? = null
 ) {
     fun execute(additionalHeaders: List<HttpHeader>? = null, retryIf502: Boolean = true): HttpResponse
 }

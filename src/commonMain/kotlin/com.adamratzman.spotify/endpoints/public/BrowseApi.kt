@@ -1,13 +1,13 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encode
-import com.adamratzman.spotify.models.ArtistURI
+import com.adamratzman.spotify.http.encodeUrl
+import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.FeaturedPlaylists
@@ -18,29 +18,33 @@ import com.adamratzman.spotify.models.SimpleAlbum
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifyCategory
-import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
-import com.neovisionaries.i18n.CountryCode
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.util.Date
-import java.util.function.Supplier
+import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.formatDate
+import kotlinx.serialization.list
+import kotlinx.serialization.serializer
+
+typealias BrowseAPI = BrowseApi
 
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
  */
-class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class BrowseApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Retrieve a list of available genres seed parameter values for recommendations.
      *
      * @return List of genre ids
      */
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
-        return toAction(Supplier {
-            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray<String>("genres")
-        })
+        return toAction {
+            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
+                String.serializer().list,
+                "genres"
+            )
+        }
     }
 
     /**
@@ -57,16 +61,16 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
     fun getNewReleases(
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
-        return toActionPaging(Supplier {
+        return toActionPaging {
             get(
-                    EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
-                            "country",
-                            market?.name
-                    ).toString()
-            ).toPagingObject<SimpleAlbum>("albums", endpoint = this)
-        })
+                EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
+                    "country",
+                    market?.name
+                ).toString()
+            ).toPagingObject(SimpleAlbum.serializer(), "albums", endpoint = this)
+        }
     }
 
     /**
@@ -91,20 +95,19 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         locale: String? = null,
-        market: CountryCode? = null,
+        market: Market? = null,
         timestamp: Long? = null
     ): SpotifyRestAction<FeaturedPlaylists> {
-        return toAction(Supplier {
+        return toAction {
             get(
-                    EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
-                            "market",
-                            market?.name
-                    )
-                            .with("locale", locale).with("timestamp", timestamp?.let {
-                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(Date.from(Instant.ofEpochMilli(timestamp)))
-                            }).toString()
-            ).toObject<FeaturedPlaylists>(api)
-        })
+                EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
+                    "market",
+                    market?.name
+                ).with("locale", locale).with("timestamp", timestamp?.let {
+                    formatDate("yyyy-MM-dd'T'HH:mm:ss", it)
+                }).toString()
+            ).toObject(FeaturedPlaylists.serializer(), api)
+        }
     }
 
     /**
@@ -126,16 +129,16 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         limit: Int? = null,
         offset: Int? = null,
         locale: String? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SpotifyCategory, PagingObject<SpotifyCategory>> {
-        return toActionPaging(Supplier {
+        return toActionPaging {
             get(
-                    EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
-                            "market",
-                            market?.name
-                    ).with("locale", locale).toString()
-            ).toPagingObject<SpotifyCategory>("categories", endpoint = this)
-        })
+                EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
+                    "market",
+                    market?.name
+                ).with("locale", locale).toString()
+            ).toPagingObject(SpotifyCategory.serializer(), "categories", endpoint = this)
+        }
     }
 
     /**
@@ -153,15 +156,15 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
      */
     fun getCategory(
         categoryId: String,
-        market: CountryCode? = null,
+        market: Market? = null,
         locale: String? = null
     ): SpotifyRestAction<SpotifyCategory> {
-        return toAction(Supplier {
+        return toAction {
             get(
-                    EndpointBuilder("/browse/categories/${categoryId.encode()}").with("market", market?.name)
-                            .with("locale", locale).toString()
-            ).toObject<SpotifyCategory>(api)
-        })
+                EndpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
+                    .with("locale", locale).toString()
+            ).toObject(SpotifyCategory.serializer(), api)
+        }
     }
 
     /**
@@ -179,17 +182,17 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         categoryId: String,
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
-        return toActionPaging(Supplier {
+        return toActionPaging {
             get(
-                    EndpointBuilder("/browse/categories/${categoryId.encode()}/playlists").with(
-                            "limit",
-                            limit
-                    ).with("offset", offset)
-                            .with("market", market?.name).toString()
-            ).toPagingObject<SimplePlaylist>("playlists", endpoint = this)
-        })
+                EndpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists").with(
+                    "limit",
+                    limit
+                ).with("offset", offset)
+                    .with("market", market?.name).toString()
+            ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this)
+        }
     }
 
     /**
@@ -228,21 +231,21 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
         limit: Int? = null,
-        market: CountryCode? = null,
+        market: Market? = null,
         targetAttributes: List<TrackAttribute<*>> = listOf(),
         minAttributes: List<TrackAttribute<*>> = listOf(),
         maxAttributes: List<TrackAttribute<*>> = listOf()
     ): SpotifyRestAction<RecommendationResponse> =
-            getRecommendations(
-                    seedArtists,
-                    seedGenres,
-                    seedTracks,
-                    limit,
-                    market,
-                    targetAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
-                    minAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
-                    maxAttributes.map { it.tuneableTrackAttribute to it.value }.toMap()
-            )
+        getRecommendations(
+            seedArtists,
+            seedGenres,
+            seedTracks,
+            limit,
+            market,
+            targetAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
+            minAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
+            maxAttributes.map { it.tuneableTrackAttribute to it.value }.toMap()
+        )
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -281,7 +284,7 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
         limit: Int? = null,
-        market: CountryCode? = null,
+        market: Market? = null,
         targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
         minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
         maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
@@ -290,16 +293,16 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
             throw BadRequestException(ErrorObject(400, "At least one seed (genre, artist, track) must be provided."))
         }
 
-        return toAction(Supplier {
+        return toAction {
             val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.name)
-                    .with("seed_artists", seedArtists?.joinToString(",") { ArtistURI(it).id.encode() })
-                    .with("seed_genres", seedGenres?.joinToString(",") { it.encode() })
-                    .with("seed_tracks", seedTracks?.joinToString(",") { TrackURI(it).id.encode() })
+                .with("seed_artists", seedArtists?.joinToString(",") { ArtistUri(it).id.encodeUrl() })
+                .with("seed_genres", seedGenres?.joinToString(",") { it.encodeUrl() })
+                .with("seed_tracks", seedTracks?.joinToString(",") { TrackUri(it).id.encodeUrl() })
             targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
             minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
-            get(builder.toString()).toObject<RecommendationResponse>(api)
-        })
+            get(builder.toString()).toObject(RecommendationResponse.serializer(), api)
+        }
     }
 }
 
@@ -308,7 +311,12 @@ class BrowseAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
  *
  * @param attribute The spotify id for the track attribute
  */
-sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integerOnly: Boolean, val min: T?, val max: T?) {
+sealed class TuneableTrackAttribute<T : Number>(
+    val attribute: String,
+    val integerOnly: Boolean,
+    val min: T?,
+    val max: T?
+) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
      * 1.0 represents high confidence the track is acoustic.
@@ -422,26 +430,27 @@ sealed class TuneableTrackAttribute<T : Number>(val attribute: String, val integ
 
     companion object {
         fun values() = listOf(
-                ACOUSTICNESS,
-                DANCEABILITY,
-                DURATION_IN_MILLISECONDS,
-                ENERGY,
-                INSTRUMENTALNESS,
-                KEY,
-                LIVENESS,
-                LOUDNESS,
-                MODE,
-                POPULARITY,
-                SPEECHINESS,
-                TEMPO,
-                TIME_SIGNATURE,
-                VALENCE
+            ACOUSTICNESS,
+            DANCEABILITY,
+            DURATION_IN_MILLISECONDS,
+            ENERGY,
+            INSTRUMENTALNESS,
+            KEY,
+            LIVENESS,
+            LOUDNESS,
+            MODE,
+            POPULARITY,
+            SPEECHINESS,
+            TEMPO,
+            TIME_SIGNATURE,
+            VALENCE
         )
     }
 }
 
 data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {
     companion object {
-        fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T) = tuneableTrackAttribute.asTrackAttribute(value)
+        fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T) =
+            tuneableTrackAttribute.asTrackAttribute(value)
     }
 }

@@ -1,22 +1,22 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyAPI
-import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.endpoints.public.PlaylistAPI
+import com.adamratzman.spotify.endpoints.public.PlaylistApi
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
-import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SimplePlaylist
-import com.adamratzman.spotify.models.TrackURI
-import com.adamratzman.spotify.models.UserURI
+import com.adamratzman.spotify.models.TrackUri
+import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
@@ -31,10 +31,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.json
 
+typealias ClientPlaylistAPI = ClientPlaylistApi
+
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  */
-class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
+class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *
@@ -58,7 +60,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         description: String? = null,
         public: Boolean? = null,
         collaborative: Boolean? = null,
-        user: String = (api as SpotifyClientAPI).userId
+        user: String = (api as SpotifyClientApi).userId
     ): SpotifyRestAction<Playlist> {
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction {
@@ -68,7 +70,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             if (public != null) body += json { "public" to public }
             if (collaborative != null) body += json { "collaborative" to collaborative }
             post(
-                EndpointBuilder("/users/${UserURI(user).id.encodeUrl()}/playlists").toString(),
+                EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").toString(),
                 body.toJson()
             ).toObject(Playlist.serializer(), api)
         }
@@ -108,11 +110,11 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
      */
     fun addTracksToPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
         val body = jsonMap()
-        body += json { "uris" to tracks.map { TrackURI(TrackURI(it).id.encodeUrl()).uri } }
+        body += json { "uris" to tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri } }
         if (position != null) body += json { "position" to position }
         return toAction {
             post(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encodeUrl()}/tracks").toString(),
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
             )
             Unit
@@ -147,7 +149,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         if (description != null) body += json { "description" to description }
         if (body.isEmpty()) throw IllegalArgumentException("At least one option must not be null")
         return toAction {
-            put(EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encodeUrl()}").toString(), body.toJson())
+            put(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
             Unit
         }
     }
@@ -206,7 +208,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
      * @param playlist playlist id
      */
     fun deletePlaylist(playlist: String): SpotifyRestAction<Unit> {
-        return (api as SpotifyClientAPI).following.unfollowPlaylist(PlaylistURI(playlist).id)
+        return (api as SpotifyClientApi).following.unfollowPlaylist(PlaylistUri(playlist).id)
     }
 
     /**
@@ -235,7 +237,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         reorderRangeLength: Int? = null,
         insertionPoint: Int,
         snapshotId: String? = null
-    ): SpotifyRestAction<Snapshot> {
+    ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
             val body = jsonMap()
             body += json { "range_start" to reorderRangeStart }
@@ -243,9 +245,9 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             if (reorderRangeLength != null) body += json { "range_length" to reorderRangeLength }
             if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
             put(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encodeUrl()}/tracks").toString(),
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
-            ).toObject(Snapshot.serializer(), api)
+            ).toObject(PlaylistSnapshot.serializer(), api)
         }
     }
 
@@ -264,9 +266,9 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
     fun setPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction {
             val body = jsonMap()
-            body += json { "uris" to tracks.map { TrackURI(TrackURI(it).id.encodeUrl()).uri } }
+            body += json { "uris" to tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri } }
             put(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encodeUrl()}/tracks").toString(),
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
             )
             Unit
@@ -333,7 +335,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
                 else -> throw IllegalArgumentException("No cover image was specified")
             }
             put(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id.encodeUrl()}/images").toString(),
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString(),
                 data, contentType = "image/jpeg"
             )
             Unit
@@ -410,7 +412,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
         playlist: String,
         tracks: Array<Pair<String, SpotifyTrackPositions?>>,
         snapshotId: String?
-    ): SpotifyRestAction<Snapshot> {
+    ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
             if (tracks.isEmpty()) throw IllegalArgumentException("You need to provide at least one track to remove")
 
@@ -420,14 +422,14 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
             body += json {
                 "tracks" to tracks.map { (track, positions) ->
                     val json = jsonMap()
-                    json += json { "uri" to TrackURI(track).uri }
+                    json += json { "uri" to TrackUri(track).uri }
                     if (positions?.positions?.isNotEmpty() == true) json += json { "positions" to positions.positions }
                 }
             }
 
             delete(
-                EndpointBuilder("/playlists/${PlaylistURI(playlist).id}/tracks").toString(), body = body.toJson()
-            ).toObject(Snapshot.serializer(), api)
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
+            ).toObject(PlaylistSnapshot.serializer(), api)
         }
     }
 }
@@ -438,7 +440,7 @@ class ClientPlaylistAPI(api: SpotifyAPI) : PlaylistAPI(api) {
  * @param snapshotId The playlist state identifier
  */
 @Serializable
-data class Snapshot(@SerialName("snapshot_id") val snapshotId: String)
+data class PlaylistSnapshot(@SerialName("snapshot_id") val snapshotId: String)
 
 
 /**

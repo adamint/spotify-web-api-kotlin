@@ -57,7 +57,7 @@ data class SimpleTrack(
     @SerialName("is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linkedFrom, href, id, TrackURI(_uri), _externalUrls) {
+) : RelinkingAvailableResponse(linkedFrom, href, id, TrackUri(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -136,7 +136,7 @@ data class Track(
     linked_from,
     _href,
     _id,
-    if (_uri.contains("local:")) LocalTrackURI(_uri) else TrackURI(_uri),
+    if (_uri.contains("local:")) LocalTrackUri(_uri) else TrackUri(_uri),
     _externalUrls
 ) {
     @Transient
@@ -162,7 +162,7 @@ data class LinkedTrack(
     @SerialName("uri") private val _uri: String,
 
     val type: String
-) : CoreObject(_href, _id, TrackURI(_uri), _externalUrls) {
+) : CoreObject(_href, _id, TrackUri(_uri), _externalUrls) {
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
@@ -417,7 +417,7 @@ data class AudioFeatures(
     val valence: Float
 ) {
     @Transient
-    val uri: TrackURI = TrackURI(_uri)
+    val uri: TrackUri = TrackUri(_uri)
 }
 
 /**

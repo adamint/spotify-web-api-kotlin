@@ -1,8 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.SpotifyAPI
-import com.adamratzman.spotify.SpotifyAppAPI
+import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.base
@@ -16,7 +16,7 @@ import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
 
-abstract class SpotifyEndpoint(val api: SpotifyAPI) {
+abstract class SpotifyEndpoint(val api: SpotifyApi) {
     val cache = SpotifyCache()
 
     internal fun get(url: String): String {
@@ -46,7 +46,7 @@ abstract class SpotifyEndpoint(val api: SpotifyAPI) {
         retry202: Boolean = true,
         contentType: String? = null
     ): String {
-        if (api is SpotifyAppAPI && getCurrentTimeMs() >= api.expireTime) {
+        if (api is SpotifyAppApi && getCurrentTimeMs() >= api.expireTime) {
             if (!api.automaticRefresh) throw SpotifyAuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
@@ -190,7 +190,7 @@ data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
-    val api: SpotifyAPI
+    val api: SpotifyApi
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {

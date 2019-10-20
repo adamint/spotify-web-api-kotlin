@@ -19,7 +19,7 @@ data class PlayHistoryContext(
     @SerialName("uri") private val _uri: String,
 
     val type: String
-) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
+) : CoreObject(_href, _href, TrackUri(_uri), _externalUrls)
 
 /**
  * Information about a previously-played track
@@ -55,9 +55,10 @@ data class Device(
     @SerialName("is_restricted") val isRestricted: Boolean,
     val name: String,
     val _type: String,
-    @SerialName("volume_percent") val volumePercent: Int,
-    val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
-) : IdentifiableNullable(null, _id)
+    @SerialName("volume_percent") val volumePercent: Int
+) : IdentifiableNullable(null, _id) {
+    @Transient val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
+}
 
 /**
  * Electronic type of registered Spotify device

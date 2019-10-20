@@ -1,28 +1,30 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
-import com.adamratzman.spotify.models.AlbumURI
+import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.CountryCode
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
-import com.adamratzman.spotify.models.TrackURI
+import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
 
+typealias ClientLibraryAPI = ClientLibraryApi
+
 /**
  * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
  */
-class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientLibraryApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
@@ -190,8 +192,8 @@ class ClientLibraryAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
  * @param id How to transform an id (or uri) input into its Spotify id
  */
 enum class LibraryType(private val value: String, internal val id: (String) -> String) {
-    TRACK("tracks", { TrackURI(it).id }),
-    ALBUM("albums", { AlbumURI(it).id });
+    TRACK("tracks", { TrackUri(it).id }),
+    ALBUM("albums", { AlbumUri(it).id });
 
     override fun toString() = value
 }
