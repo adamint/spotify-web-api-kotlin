@@ -5,11 +5,11 @@ import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.LibraryType
 import com.adamratzman.spotify.models.BadRequestException
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class ClientLibraryAPITest : Spek({
     describe("Client Library tests") {

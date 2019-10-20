@@ -3,13 +3,13 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @UnstableDefault
 class HttpConnectionTests : Spek({

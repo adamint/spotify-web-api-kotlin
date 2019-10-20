@@ -30,6 +30,7 @@ import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.json
 
@@ -114,7 +115,6 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
         val body = jsonMap()
         body += json { "uris" to JsonArray(tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
         if (position != null) body += json { "position" to position }
-        println(body)
         return toAction {
             post(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
@@ -421,15 +421,19 @@ class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
 
             val body = jsonMap()
             if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
-
             body += json {
-                "tracks" to tracks.map { (track, positions) ->
-                    val json = jsonMap()
-                    json += json { "uri" to TrackUri(track).uri }
-                    if (positions?.positions?.isNotEmpty() == true) json += json { "positions" to JsonArray(positions.positions.map(::JsonPrimitive)) }
-                }
+                "tracks" to JsonArray(
+                    tracks.map { (track, positions) ->
+                        val json = jsonMap()
+                        json += json { "uri" to TrackUri(track).uri }
+                        if (positions?.positions?.isNotEmpty() == true) json += json {
+                            "positions" to JsonArray(
+                                positions.positions.map(::JsonPrimitive)
+                            )
+                        }
+                        JsonObject(json)
+                    })
             }
-
             delete(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
             ).toObject(PlaylistSnapshot.serializer(), api)
