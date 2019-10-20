@@ -58,10 +58,15 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+                implementation("org.junit.jupiter:junit-jupiter:5.5.2")
                 implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                 runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                 runtimeOnly(kotlin("reflect"))
             }
         }
     }
+}
+
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
 }
