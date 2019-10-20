@@ -49,7 +49,7 @@ data class RecommendationSeed(
  * @property tracks An array of track object (simplified) ordered according to the parameters supplied.
  */
 @Serializable
-data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
+data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<Track>)
 
 /**
  * Spotify featured playlists (on the Browse tab)

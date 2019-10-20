@@ -42,7 +42,7 @@ class HttpConnectionTests : Spek({
             }
 
             it("get request query string") {
-                assertEquals("string", body["args"]!!.jsonObject.getObject("query").primitive.content)
+                assertEquals("string", body["args"]!!.jsonObject.getPrimitive("query").content)
             }
         }
 
@@ -74,11 +74,11 @@ class HttpConnectionTests : Spek({
             }
 
             it("post request query string") {
-                assertEquals("string", body["args"]!!.jsonObject.getObject("query").primitive.content)
+                assertEquals("string", body["args"]!!.jsonObject.getPrimitive("query").content)
             }
 
             it("post request body") {
-                assertEquals("body", body.jsonObject.getObject("data").primitive.content)
+                assertEquals("body", body.jsonObject.getPrimitive("data").content)
             }
         }
 

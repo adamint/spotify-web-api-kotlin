@@ -19,7 +19,8 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.map
 import kotlinx.serialization.serializer
 
-internal val json = Json(JsonConfiguration.Stable, spotifyUriSerializersModule)
+@Suppress("EXPERIMENTAL_API_USAGE")
+internal val json = Json(JsonConfiguration.Stable,spotifyUriSerializersModule)
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi?): T? = try {
     toObject(serializer, api)

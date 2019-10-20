@@ -51,14 +51,14 @@ enum class PagingTraversalType {
  */
 @Serializable
 class PagingObject<T : Any>(
-    private val _href: String,
-    private val _items: List<T>,
-    private val _limit: Int,
-    private val _next: String?,
-    private val _offset: Int,
-    private val _previous: String?,
-    private val _total: Int
-) : AbstractPagingObject<T>(_href, _items, _limit, _next, _offset, _previous, _total) {
+    override val href: String,
+    override val items: List<T>,
+    override val limit: Int,
+    override val next: String?,
+    override val offset: Int,
+    override val previous: String?,
+    override val total: Int
+) : AbstractPagingObject<T>(href, items, limit, next, offset, previous, total) {
     /**
      * Get the next set of [T] items
      */
@@ -142,13 +142,13 @@ class PagingObject<T : Any>(
  */
 @Serializable
 class CursorBasedPagingObject<T : Any>(
-    private val _href: String,
-    private val _items: List<T>,
-    private val _limit: Int,
-    private val _next: String?,
+    override val href: String,
+    override val items: List<T>,
+    override val limit: Int,
+    override val next: String?,
     @SerialName("cursors") val cursor: Cursor,
-    private val _total: Int
-) : AbstractPagingObject<T>(_href, _items, _limit, _next, 0, null, _total) {
+    override val total: Int
+) : AbstractPagingObject<T>(href, items, limit, next, 0, null, total) {
     /**
      * Get the next set of [T] items
      */
@@ -221,13 +221,13 @@ data class Cursor(val before: String? = null, val after: String? = null)
  */
 @Serializable
 abstract class AbstractPagingObject<T : Any>(
-    val href: String,
-    val items: List<T>,
-    val limit: Int,
-    val next: String? = null,
-    val offset: Int = 0,
-    val previous: String? = null,
-    val total: Int
+    @Transient open val href: String = TRANSIENT_EMPTY_STRING,
+    @Transient open val items: List<T> = listOf(),
+    @Transient open val limit: Int = -1,
+    @Transient open val next: String? = null,
+    @Transient open val offset: Int = 0,
+    @Transient open val previous: String? = null,
+    @Transient open val total: Int = -1
 ) {
     @Transient
     internal var endpoint: SpotifyEndpoint? = null
