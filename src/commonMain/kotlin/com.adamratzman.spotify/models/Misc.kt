@@ -1,6 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import kotlinx.serialization.Serializable
+
 /**
  * A Spotify image
  *
@@ -8,6 +10,7 @@ package com.adamratzman.spotify.models
  * @property url The source URL of the image.
  * @property width The image width in pixels. If unknown: null or not returned.
  */
+@Serializable
 data class SpotifyImage(
     val height: Int? = null,
     val url: String,
@@ -19,4 +22,5 @@ data class SpotifyImage(
  *
  * @property reason why the track is not available
  */
+@Serializable
 data class Restrictions(val reason: String)

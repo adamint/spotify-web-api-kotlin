@@ -1,8 +1,9 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.neovisionaries.i18n.CountryCode
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -34,28 +35,29 @@ import com.squareup.moshi.Json
  * metadata for the original track, and a restrictions object containing the reason why the track is not available:
  * "restrictions" : {"reason" : "market"}
  */
+@Serializable
 data class SimpleTrack(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
+    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
+    @SerialName("uri") val _uri: String,
 
     val artists: List<SimpleArtist>,
-    @Json(name = "disc_number") val discNumber: Int,
-    @Json(name = "duration_ms") val durationMs: Int,
+    @SerialName("disc_number") val discNumber: Int,
+    @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "is_playable") val isPlayable: Boolean = true,
-    @Json(name = "linked_from") private val linkedFrom: LinkedTrack? = null,
+    @SerialName("is_playable") val isPlayable: Boolean = true,
+    @SerialName("linked_from") private val linkedFrom: LinkedTrack? = null,
     val name: String,
-    @Json(name = "preview_url") val previewUrl: String?,
-    @Json(name = "track_number") val trackNumber: Int,
+    @SerialName("preview_url") val previewUrl: String?,
+    @SerialName("track_number") val trackNumber: Int,
     val type: String,
-    @Json(name = "is_local") val isLocal: Boolean? = null,
+    @SerialName("is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linkedFrom, _href, _id, TrackURI(_uri), _externalUrls) {
+) : RelinkingAvailableResponse(linkedFrom, href, id, TrackURI(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -107,29 +109,36 @@ data class SimpleTrack(
  * metadata for the original track, and a restrictions object containing the reason why the track is not available:
  * "restrictions" : {"reason" : "market"}
  */
+@Serializable
 data class Track(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
-    @Json(name = "available_markets") private val _availableMarkets: List<String> = listOf(),
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
+    @SerialName("href") private val _href: String,
+    @SerialName("id") private val _id: String,
+    @SerialName("uri") private val _uri: String,
 
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
-    @Json(name = "is_playable") val isPlayable: Boolean = true,
-    @Json(name = "disc_number") val discNumber: Int,
-    @Json(name = "duration_ms") val durationMs: Int,
+    @SerialName("is_playable") val isPlayable: Boolean = true,
+    @SerialName("disc_number") val discNumber: Int,
+    @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @Json(name = "linked_from") private val linked_from: LinkedTrack? = null,
+    @SerialName("linked_from") private val linked_from: LinkedTrack? = null,
     val name: String,
     val popularity: Int,
-    @Json(name = "preview_url") val previewUrl: String?,
-    @Json(name = "track_number") val trackNumber: Int,
+    @SerialName("preview_url") val previewUrl: String?,
+    @SerialName("track_number") val trackNumber: Int,
     val type: String,
-    @Json(name = "is_local") val isLocal: Boolean?,
+    @SerialName("is_local") val isLocal: Boolean?,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linked_from, _href, _id, if (_uri.contains("local:")) LocalTrackURI(_uri) else TrackURI(_uri), _externalUrls) {
+) : RelinkingAvailableResponse(
+    linked_from,
+    _href,
+    _id,
+    if (_uri.contains("local:")) LocalTrackURI(_uri) else TrackURI(_uri),
+    _externalUrls
+) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -145,11 +154,12 @@ data class Track(
  * @property id The Spotify ID for the track.
  * @property type The object type: “track”.
  */
+@Serializable
 data class LinkedTrack(
-    @Json(name = "external_urls") val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("href") private val _href: String,
+    @SerialName("id") private val _id: String,
+    @SerialName("uri") private val _uri: String,
 
     val type: String
 ) : CoreObject(_href, _id, TrackURI(_uri), _externalUrls) {
@@ -163,8 +173,9 @@ data class LinkedTrack(
     fun toFullTrack(market: CountryCode? = null) = api.tracks.getTrack(id, market)
 }
 
+@Serializable
 internal data class AudioFeaturesResponse(
-    @Json(name = "audio_features") val audioFeatures: List<AudioFeatures?>
+    @SerialName("audio_features") val audioFeatures: List<AudioFeatures?>
 )
 
 /**
@@ -191,6 +202,7 @@ internal data class AudioFeaturesResponse(
  * of perceived musical events (segments).
  * @property track An analysis of the track as a whole. Undocumented on Spotify's side.
  */
+@Serializable
 data class AudioAnalysis(
     val bars: List<TimeInterval>,
     val beats: List<TimeInterval>,
@@ -212,14 +224,15 @@ data class AudioAnalysis(
  * @property analysisTime How long, in milliseconds, this analysis took to run
  * @property inputProcess The process used in the analysis
  */
+@Serializable
 data class AudioAnalysisMeta(
-    @Json(name = "analyzer_version") val analyzerVersion: String,
+    @SerialName("analyzer_version") val analyzerVersion: String,
     val platform: String,
-    @Json(name = "detailed_status") val detailedStatus: String,
-    @Json(name = "status_code") val statusCode: Int,
+    @SerialName("detailed_status") val detailedStatus: String,
+    @SerialName("status_code") val statusCode: Int,
     val timestamp: Long,
-    @Json(name = "analysis_time") val analysisTime: Float,
-    @Json(name = "input_process") val inputProcess: String
+    @SerialName("analysis_time") val analysisTime: Float,
+    @SerialName("input_process") val inputProcess: String
 )
 
 /**
@@ -251,19 +264,20 @@ data class AudioAnalysisMeta(
  * @property timeSignatureConfidence The confidence, from 0.0 to 1.0, of the reliability of the time_signature.
  * Sections with time signature changes may correspond to low values in this field.
  */
+@Serializable
 data class AudioSection(
     val start: Float,
     val duration: Float,
     val confidence: Float,
     val loudness: Float,
     val tempo: Float,
-    @Json(name = "tempo_confidence") val tempoConfidence: Float,
+    @SerialName("tempo_confidence") val tempoConfidence: Float,
     val key: Int,
-    @Json(name = "key_confidence") val keyConfidence: Float,
+    @SerialName("key_confidence") val keyConfidence: Float,
     val mode: Int,
-    @Json(name = "mode_confidence") val modeConfidence: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float
+    @SerialName("mode_confidence") val modeConfidence: Float,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("time_signature_confidence") val timeSignatureConfidence: Float
 )
 
 /**
@@ -287,14 +301,15 @@ data class AudioSection(
  * @property timbre Timbre is the quality of a musical note or sound that distinguishes different types of musical
  * instruments, or voices. Timbre vectors are best used in comparison with each other.
  */
+@Serializable
 data class AudioSegment(
     val start: Float,
     val duration: Float,
     val confidence: Float,
-    @Json(name = "loudness_start") val loudnessStart: Float,
-    @Json(name = "loudness_max_time") val loudnessMaxTime: Float,
-    @Json(name = "loudness_max") val loudnessMax: Float,
-    @Json(name = "loudness_end") val loudnessEnd: Float? = null,
+    @SerialName("loudness_start") val loudnessStart: Float,
+    @SerialName("loudness_max_time") val loudnessMaxTime: Float,
+    @SerialName("loudness_max") val loudnessMax: Float,
+    @SerialName("loudness_end") val loudnessEnd: Float? = null,
     val pitches: List<Float>,
     val timbre: List<Float>
 )
@@ -302,33 +317,34 @@ data class AudioSegment(
 /**
  * General information about the track as a whole
  */
+@Serializable
 data class TrackAnalysis(
-    @Json(name = "num_samples") val numSamples: Int,
+    @SerialName("num_samples") val numSamples: Int,
     val duration: Float,
-    @Json(name = "sample_md5") val sampleMd5: String,
-    @Json(name = "offset_seconds") val offsetSeconds: Int,
-    @Json(name = "window_seconds") val windowSeconds: Int,
-    @Json(name = "analysis_sample_rate") val analysisSampleRate: Int,
-    @Json(name = "analysis_channels") val analysisChannels: Int,
-    @Json(name = "end_of_fade_in") val endOfFadeIn: Float,
-    @Json(name = "start_of_fade_out") val startOfFadeOut: Float,
+    @SerialName("sample_md5") val sampleMd5: String,
+    @SerialName("offset_seconds") val offsetSeconds: Int,
+    @SerialName("window_seconds") val windowSeconds: Int,
+    @SerialName("analysis_sample_rate") val analysisSampleRate: Int,
+    @SerialName("analysis_channels") val analysisChannels: Int,
+    @SerialName("end_of_fade_in") val endOfFadeIn: Float,
+    @SerialName("start_of_fade_out") val startOfFadeOut: Float,
     val loudness: Float,
     val tempo: Float,
-    @Json(name = "tempo_confidence") val tempoConfidence: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "time_signature_confidence") val timeSignatureConfidence: Float,
+    @SerialName("tempo_confidence") val tempoConfidence: Float,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("time_signature_confidence") val timeSignatureConfidence: Float,
     val key: Int,
-    @Json(name = "key_confidence") val keyConfidence: Float,
+    @SerialName("key_confidence") val keyConfidence: Float,
     val mode: Int,
-    @Json(name = "mode_confidence") val modeConfidence: Float,
+    @SerialName("mode_confidence") val modeConfidence: Float,
     val codestring: String,
-    @Json(name = "code_version") val codeVersion: Float,
+    @SerialName("code_version") val codeVersion: Float,
     val echoprintstring: String,
-    @Json(name = "echoprint_version") val echoprintVersion: Float,
+    @SerialName("echoprint_version") val echoprintVersion: Float,
     val synchstring: String,
-    @Json(name = "synch_version") val synchVersion: Float,
+    @SerialName("synch_version") val synchVersion: Float,
     val rhythmstring: String,
-    @Json(name = "rhythm_version") val rhythmVersion: Float
+    @SerialName("rhythm_version") val rhythmVersion: Float
 )
 
 /**
@@ -379,11 +395,12 @@ data class TrackAnalysis(
  * Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low
  * valence sound more negative (e.g. sad, depressed, angry).
  */
+@Serializable
 data class AudioFeatures(
     val acousticness: Float,
-    @Json(name = "analysis_url") val analysisUrl: String,
+    @SerialName("analysis_url") val analysisUrl: String,
     val danceability: Float,
-    @Json(name = "duration_ms") val durationMs: Int,
+    @SerialName("duration_ms") val durationMs: Int,
     val energy: Float,
     val id: String,
     val instrumentalness: Float,
@@ -393,10 +410,10 @@ data class AudioFeatures(
     val mode: Int,
     val speechiness: Float,
     val tempo: Float,
-    @Json(name = "time_signature") val timeSignature: Int,
-    @Json(name = "track_href") val trackHref: String,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("track_href") val trackHref: String,
     val type: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("uri") private val _uri: String,
     val valence: Float
 ) {
     @Transient
@@ -410,6 +427,8 @@ data class AudioFeatures(
  * @property duration The duration (in seconds) of the time interval.
  * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the interval
  */
+@Serializable
 data class TimeInterval(val start: Float, val duration: Float, val confidence: Float)
 
+@Serializable
 internal data class TrackList(val tracks: List<Track?>)

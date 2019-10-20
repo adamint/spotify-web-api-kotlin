@@ -1,7 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Spotify music category
@@ -11,13 +12,14 @@ import com.squareup.moshi.Json
  * @property id The Spotify category ID of the category.
  * @property name The name of the category.
  */
+@Serializable
 data class SpotifyCategory(
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
+    @SerialName("href")override val href: String,
+    @SerialName("id")override val id: String,
 
     val icons: List<SpotifyImage>,
     val name: String
-) : Identifiable(_href, _id)
+) : Identifiable(href, id)
 
 /**
  * Seed from which the recommendation was constructed
@@ -31,9 +33,10 @@ data class SpotifyCategory(
  * seed_artists , seed_tracks or seed_genres parameter.
  * @property type The entity type of this seed. One of artist , track or genre.
  */
+@Serializable
 data class RecommendationSeed(
-    @Json(name = "href") private val _href: String?,
-    @Json(name = "id") private val _id: String,
+    @SerialName("href")private val _href: String?,
+    @SerialName("id")private val _id: String,
 
     val initialPoolSize: Int,
     val afterFilteringSize: Int,
@@ -45,6 +48,7 @@ data class RecommendationSeed(
  * @property seeds An array of recommendation seed objects.
  * @property tracks An array of track object (simplified) ordered according to the parameters supplied.
  */
+@Serializable
 data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<SimpleTrack>)
 
 /**
@@ -53,4 +57,5 @@ data class RecommendationResponse(val seeds: List<RecommendationSeed>, val track
  * @property message the featured message in "Overview"
  * @property playlists [PagingObject] of returned items
  */
+@Serializable
 data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)

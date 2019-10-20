@@ -1,7 +1,9 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Private information about a Spotify user. Each field may require a specific scope.
@@ -23,21 +25,22 @@ import com.squareup.moshi.Json
  * current user has granted access to the user-read-private scope.
  * @property type The object type: “user”
  */
+@Serializable
 data class SpotifyUserInformation(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
+    @SerialName("uri") private val _uri: String,
 
     val birthdate: String? = null,
     val country: String? = null,
-    @Json(name = "display_name") val displayName: String? = null,
+    @SerialName("display_name") val displayName: String? = null,
     val email: String? = null,
     val followers: Followers,
     val images: List<SpotifyImage>,
     val product: String?,
     val type: String
-) : CoreObject(_href, _id, UserURI(_uri), _externalUrls)
+) : CoreObject(href, id, UserURI(_uri), _externalUrls)
 
 /**
  * Public information about a Spotify user
@@ -49,17 +52,18 @@ data class SpotifyUserInformation(
  * @property images The user’s profile image.
  * @property type The object type: “user”
  */
+@Serializable
 data class SpotifyPublicUser(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
+    @SerialName("uri") private val _uri: String,
 
-    @Json(name = "display_name") val displayName: String? = null,
+    @SerialName("display_name") val displayName: String? = null,
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(_href, _id, UserURI(_uri), _externalUrls)
+) : CoreObject(href, id, UserURI(_uri), _externalUrls)
 
 /**
  * Information about a Spotify user's followers
@@ -69,8 +73,10 @@ data class SpotifyPublicUser(
  *
  * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
+@Serializable
 data class Followers(
     val href: String?,
-    @Json(name = "total") private val _total: Int,
+    @SerialName("total") private val _total: Int
+) {
     @Transient val total: Int = _total
-)
+}
