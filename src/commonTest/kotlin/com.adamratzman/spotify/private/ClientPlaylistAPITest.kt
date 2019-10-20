@@ -5,11 +5,11 @@ import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.BadRequestException
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
@@ -65,7 +65,6 @@ class ClientPlaylistAPITest : Spek({
 
             assertTrue(cp.getPlaylistTracks(createdPlaylist.id).complete().items.size == 4)
 
-            println(cp.getPlaylistTracks(createdPlaylist.id).complete())
             cp.removeTrackFromPlaylist(createdPlaylist.id, trackIdOne).complete()
 
             assertEquals(

@@ -35,14 +35,14 @@ data class SpotifyCategory(
  */
 @Serializable
 data class RecommendationSeed(
-    @SerialName("href")private val _href: String?,
-    @SerialName("id")private val _id: String,
+    @SerialName("href")override val href: String?,
+    @SerialName("id")override val id: String,
 
     val initialPoolSize: Int,
     val afterFilteringSize: Int,
     val afterRelinkingSize: Int?,
     val type: String
-) : Identifiable(_href, _id)
+) : Identifiable(href, id)
 
 /**
  * @property seeds An array of recommendation seed objects.

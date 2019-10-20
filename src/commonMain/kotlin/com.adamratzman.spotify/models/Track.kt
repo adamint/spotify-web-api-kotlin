@@ -114,8 +114,8 @@ data class Track(
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
     @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
     @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("href") private val _href: String,
-    @SerialName("id") private val _id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
     @SerialName("uri") private val _uri: String,
 
     val album: SimpleAlbum,
@@ -137,8 +137,8 @@ data class Track(
     val track: Boolean? = null
 ) : RelinkingAvailableResponse(
     linked_from,
-    _href,
-    _id,
+    href,
+    id,
     if (_uri.contains("local:")) LocalTrackUri(_uri) else TrackUri(_uri),
     _externalUrls
 ) {
@@ -160,12 +160,12 @@ data class Track(
 @Serializable
 data class LinkedTrack(
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("href") private val _href: String,
-    @SerialName("id") private val _id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
     @SerialName("uri") private val _uri: String,
 
     val type: String
-) : CoreObject(_href, _id, TrackUri(_uri), _externalUrls) {
+) : CoreObject(href, id, TrackUri(_uri), _externalUrls) {
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
