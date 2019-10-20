@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -11,10 +11,12 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toPagingObject
 
+typealias ClientPersonalizationAPI = ClientPersonalizationApi
+
 /**
  * Endpoints for retrieving information about the user’s listening habits.
  */
-class ClientPersonalizationAPI(api: SpotifyAPI) : SpotifyEndpoint(api) {
+class ClientPersonalizationApi(api: SpotifyApi) : SpotifyEndpoint(api) {
     /**
      * The time frame for which attribute affinities are computed.
      *

@@ -40,7 +40,7 @@ data class SpotifyUserInformation(
     val images: List<SpotifyImage>,
     val product: String?,
     val type: String
-) : CoreObject(href, id, UserURI(_uri), _externalUrls)
+) : CoreObject(href, id, UserUri(_uri), _externalUrls)
 
 /**
  * Public information about a Spotify user
@@ -63,7 +63,7 @@ data class SpotifyPublicUser(
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(href, id, UserURI(_uri), _externalUrls)
+) : CoreObject(href, id, UserUri(_uri), _externalUrls)
 
 /**
  * Information about a Spotify user's followers

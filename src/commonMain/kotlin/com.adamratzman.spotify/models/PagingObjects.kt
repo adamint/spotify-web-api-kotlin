@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyAPI
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
@@ -242,7 +242,7 @@ abstract class AbstractPagingObject<T : Any>(
     internal fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 }
 
-internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyAPI) = when {
+internal fun Any.instantiatePagingObjects(spotifyAPI: SpotifyApi) = when {
     this is FeaturedPlaylists -> this.playlists
     this is Album -> this.tracks
     this is Playlist -> this.tracks

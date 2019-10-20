@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
-import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
+import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -44,9 +44,9 @@ data class SimplePlaylist(
     @SerialName("snapshot_id") private val _snapshotId: String,
     val tracks: PlaylistTrackInfo,
     val type: String
-) : CoreObject(href, id, PlaylistURI(_uri), _externalUrls) {
+) : CoreObject(href, id, PlaylistUri(_uri), _externalUrls) {
     @Transient
-    val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val snapshot: PlaylistSnapshot = PlaylistSnapshot(_snapshotId)
 
     /**
      * Converts this [SimplePlaylist] into a full [Playlist] object with the given
@@ -117,9 +117,9 @@ data class Playlist(
     @SerialName("snapshot_id") private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
-) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
+) : CoreObject(_href, _id, PlaylistUri(_uri), _externalUrls) {
     @Transient
-    val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
+    val snapshot: PlaylistSnapshot = PlaylistSnapshot(_snapshotId)
 }
 
 /**
