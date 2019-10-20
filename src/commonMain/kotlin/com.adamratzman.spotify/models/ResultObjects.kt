@@ -9,9 +9,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
-private const val TRANSIENT_EMPTY_STRING = ""
-private val TRANSIENT_NULL = null
-private val TRANSIENT_URI = UserUri("spotify:user:")
+internal const val TRANSIENT_EMPTY_STRING = ""
+internal val TRANSIENT_NULL = null
+internal val TRANSIENT_URI = UserUri("spotify:user:")
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
@@ -47,7 +47,7 @@ abstract class CoreObject(
     @Transient open val uri: SpotifyUri = TRANSIENT_URI,
     @Transient internal open val _externalUrls: Map<String, String> = mapOf()
 ) : Identifiable(href, id) {
-    @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
+    val externalUrls: List<ExternalUrl> get() = _externalUrls.map { ExternalUrl(it.key, it.value) }
 }
 
 @Serializable
