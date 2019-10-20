@@ -39,6 +39,7 @@ data class SpotifyUserInformation(
     val followers: Followers,
     val images: List<SpotifyImage>,
     val product: String?,
+    @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings?,
     val type: String
 ) : CoreObject(href, id, UserUri(_uri), _externalUrls)
 
@@ -78,5 +79,12 @@ data class Followers(
     val href: String?,
     @SerialName("total") private val _total: Int
 ) {
-    @Transient val total: Int = _total
+    @Transient
+    val total: Int = _total
 }
+
+@Serializable
+data class ExplicitContentSettings(
+    @SerialName("filter_enabled") val filterEnabled: Boolean,
+    @SerialName("filter_locked") val filterLocked: Boolean
+)
