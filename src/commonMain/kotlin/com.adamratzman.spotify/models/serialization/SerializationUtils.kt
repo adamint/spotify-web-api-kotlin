@@ -9,14 +9,17 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.NeedsApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
+import com.adamratzman.spotify.models.spotifyUriSerializersModule
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.map
 import kotlinx.serialization.serializer
 
-val json = Json(JsonConfiguration.Stable)
+val json = Json(JsonConfiguration.Stable, spotifyUriSerializersModule)
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyAPI?): T? = try {
     toObject(serializer, api)
@@ -133,3 +136,5 @@ internal inline fun <reified T> String.toInnerArray(serializer: KSerializer<List
     val map = json.parse((String.serializer() to serializer).map, this)
     return (map[innerName] ?: error("Inner object with name $innerName doesn't exist in $map")).toList()
 }
+
+internal fun Map<String, JsonElement>.toJson() = JsonObject(this).toString()
