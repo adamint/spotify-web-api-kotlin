@@ -21,12 +21,14 @@ kotlin {
         val coroutineVersion = "1.3.2"
         val serializationVersion = "0.13.0"
         val spekVersion = "2.0.8"
+        val ktorVersion = "1.2.5"
 
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
             }
         }
         val commonTest by getting {
@@ -44,14 +46,15 @@ kotlin {
             }
 
             dependencies {
-                val moshiVersion = "1.8.0"
                 val googleHttpClientVersion = "1.32.1"
 
                 implementation("com.neovisionaries:nv-i18n:1.26")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                 implementation("com.google.http-client:google-http-client:$googleHttpClientVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                implementation("io.ktor:ktor-client-apache:$ktorVersion")
                 implementation(kotlin("stdlib-jdk8"))
+
             }
         }
 

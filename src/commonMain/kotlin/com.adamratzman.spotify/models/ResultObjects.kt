@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import io.ktor.client.features.ResponseException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -139,6 +140,12 @@ open class BadRequestException(message: String, val statusCode: Int? = null, cau
             this(
                 "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
                 401
+            )
+    constructor(responseException: ResponseException) :
+            this(
+                responseException.message ?: "Bad Request",
+                responseException.response.status.value,
+                responseException
             )
 }
 
