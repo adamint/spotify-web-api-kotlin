@@ -29,7 +29,9 @@ fun main(args: Array<String>) {
             }
         }.build().token
 
-        println(token)
+        println(token.accessToken)
+        println(token.scopes)
+        print(token.refreshToken)
     }
 
 }
