@@ -5,9 +5,9 @@ import com.adamratzman.spotify.SpotifyAPI
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import com.neovisionaries.i18n.CountryCode
-import com.squareup.moshi.Json
-import kotlin.jvm.Transient
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
@@ -84,7 +84,8 @@ interface ResultEnum {
 /**
  * Wraps around [ErrorObject]
  */
-data class ErrorResponse(val error: ErrorObject, val exception: Exception? = null)
+@Serializable
+data class ErrorResponse(val error: ErrorObject, @Transient val exception: Exception? = null)
 
 /**
  * An endpoint exception from Spotify
@@ -92,13 +93,14 @@ data class ErrorResponse(val error: ErrorObject, val exception: Exception? = nul
  * @property status The HTTP status code
  * @property message A short description of the cause of the error.
  */
+@Serializable
 data class ErrorObject(val status: Int, val message: String)
 
 class SpotifyAuthenticationException(message: String) : Exception(message)
 
 data class AuthenticationError(
     val error: String,
-    val description: String
+    @SerialName("error_description") val description: String
 )
 
 class SpotifyUriException(message: String) : BadRequestException(message)

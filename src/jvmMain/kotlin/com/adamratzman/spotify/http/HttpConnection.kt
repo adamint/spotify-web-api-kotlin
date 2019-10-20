@@ -9,6 +9,7 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.net.HttpURLConnection
 
 actual class HttpConnection actual constructor(
     private val url: String,
@@ -31,8 +32,13 @@ actual class HttpConnection actual constructor(
             HttpRequestMethod.DELETE -> requestFactory.buildDeleteRequest(genericUrl)
             HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
                 val content = if (contentType == "application/x-www-form-urlencoded") {
-                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let { ByteArrayContent.fromString(contentType, it) }
-                            ?: ByteArrayContent.fromString(contentType, bodyString)
+                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let {
+                        ByteArrayContent.fromString(
+                            contentType,
+                            it
+                        )
+                    }
+                        ?: ByteArrayContent.fromString(contentType, bodyString)
                 } else bodyString?.let { ByteArrayContent.fromString(contentType, bodyString) }
 
                 if (method == HttpRequestMethod.PUT) requestFactory.buildPutRequest(genericUrl, content)
@@ -77,7 +83,11 @@ actual class HttpConnection actual constructor(
         if (responseCode == 429) {
             val ratelimit = response.headers["Retry-After"]!!.toString().toLong() + 1L
             if (api?.retryWhenRateLimited == true) {
-                api.logger.logError(false, "The request ($url) was ratelimited for $ratelimit seconds at ${System.currentTimeMillis()}", null)
+                api.logger.logError(
+                    false,
+                    "The request ($url) was ratelimited for $ratelimit seconds at ${System.currentTimeMillis()}",
+                    null
+                )
 
                 var retryResponse: HttpResponse? = null
 
@@ -103,15 +113,16 @@ actual class HttpConnection actual constructor(
         response.content.close()
 
         if (responseCode == 401 && body.contains("access token") &&
-                api != null && api.automaticRefresh) {
+            api != null && api.automaticRefresh
+        ) {
             api.refreshToken()
             return execute(additionalHeaders)
         }
 
         return HttpResponse(
-                responseCode = responseCode,
-                body = body,
-                headers = response.headers.map { HttpHeader(it.key, it.value?.toString() ?: "null") }
+            responseCode = responseCode,
+            body = body,
+            headers = response.headers.map { HttpHeader(it.key, it.value?.toString() ?: "null") }
         ).also { response.disconnect() }
     }
 
@@ -124,4 +135,10 @@ actual class HttpConnection actual constructor(
             |headers=${headers.toList()}
             |  )""".trimMargin()
     }
+}
+
+actual enum class HttpConnectionStatus(val code: Int) {
+    HTTP_NOT_MODIFIED(HttpURLConnection.HTTP_NOT_MODIFIED);
+
+    actual fun getStatusCode() = code
 }

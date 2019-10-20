@@ -25,3 +25,9 @@ expect class HttpConnection(
 }
 
 data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
+
+expect enum class HttpConnectionStatus {
+    HTTP_NOT_MODIFIED;
+
+    fun getStatusCode(): Int
+}
