@@ -9,13 +9,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
+private const val TRANSIENT_EMPTY_STRING = ""
+private val TRANSIENT_NULL = null
+private val TRANSIENT_URI = UserURI("spotify:user:")
+
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
  */
+@Serializable
 abstract class Identifiable(
-    href: String?,
-    @Transient override val id: String
-) : IdentifiableNullable(href, id)
+    @Transient override val href: String? = TRANSIENT_NULL,
+    @Transient override val id: String = TRANSIENT_EMPTY_STRING
+) : IdentifiableNullable(id, href)
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed
@@ -23,9 +28,10 @@ abstract class Identifiable(
  * @property href A link to the Spotify web api endpoint associated with this request
  * @property id The Spotify id of the associated object
  */
+@Serializable
 abstract class IdentifiableNullable(
-    @Transient val href: String?,
-    @Transient open val id: String?
+    @Transient open val href: String? = TRANSIENT_NULL,
+    @Transient open val id: String? = TRANSIENT_NULL
 ) : NeedsApi()
 
 /**
@@ -34,26 +40,27 @@ abstract class IdentifiableNullable(
  * @property uri The URI associated with the object
  * @property externalUrls Known external URLs for this object
  */
+@Serializable
 abstract class CoreObject(
-    _href: String,
-    _id: String,
-    @Transient val uri: SpotifyUri,
-    _externalUrls: Map<String, String>
-) : Identifiable(_href, _id) {
-    @Transient
-    val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
-}
+    @Transient override val href: String = TRANSIENT_EMPTY_STRING,
+    @Transient override val id: String = TRANSIENT_EMPTY_STRING,
+    @Transient open val uri: SpotifyUri = TRANSIENT_URI,
+    @Transient open val _externalUrls: Map<String, String> = mapOf(),
+    @Transient val externalUrls: List<ExternalUrl> = _externalUrls.map { ExternalUrl(it.key, it.value) }
+) : Identifiable(href, id)
 
+@Serializable
 abstract class RelinkingAvailableResponse(
-    @Transient val linkedTrack: LinkedTrack? = null,
-    _href: String,
-    _id: String,
-    _uri: SpotifyUri,
-    _externalUrls: Map<String, String>
-) : CoreObject(_href, _id, _uri, _externalUrls) {
+    @Transient val linkedTrack: LinkedTrack? = TRANSIENT_NULL,
+    @Transient override val href: String = TRANSIENT_EMPTY_STRING,
+    @Transient override val id: String = TRANSIENT_EMPTY_STRING,
+    @Transient override val uri: SpotifyUri = TRANSIENT_URI,
+    @Transient override val _externalUrls: Map<String, String> = mapOf()
+) : CoreObject(href, id, uri, _externalUrls) {
     fun isRelinked() = linkedTrack != null
 }
 
+@Serializable
 class ExternalUrl(val name: String, val url: String)
 
 /**

@@ -3,8 +3,9 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistAPI
-import com.neovisionaries.i18n.CountryCode
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -27,22 +28,23 @@ import com.squareup.moshi.Json
  * @property snapshot The version identifier for the current playlist. Can be supplied in other
  * requests to target a specific playlist version
  */
+@Serializable
 data class SimplePlaylist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
+    @SerialName("uri") private val _uri: String,
 
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
-    @Json(name = "primary_color") val primaryColor: String? = null,
+    @SerialName("primary_color") val primaryColor: String? = null,
     val public: Boolean? = null,
-    @Json(name = "snapshot_id") private val _snapshotId: String,
+    @SerialName("snapshot_id") private val _snapshotId: String,
     val tracks: PlaylistTrackInfo,
     val type: String
-) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
+) : CoreObject(href, id, PlaylistURI(_uri), _externalUrls) {
     @Transient
     val snapshot: ClientPlaylistAPI.Snapshot = ClientPlaylistAPI.Snapshot(_snapshotId)
 
@@ -52,7 +54,8 @@ data class SimplePlaylist(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullPlaylist(market: CountryCode? = null): SpotifyRestAction<Playlist?> = api.playlists.getPlaylist(id, market)
+    fun toFullPlaylist(market: CountryCode? = null): SpotifyRestAction<Playlist?> =
+        api.playlists.getPlaylist(id, market)
 }
 
 /**
@@ -64,13 +67,14 @@ data class SimplePlaylist(
  * @property isLocal Whether this track is a local file or not.
  * @property track Information about the track. In rare occasions, this field may be null if this track's API entry is broken.
  */
+@Serializable
 data class PlaylistTrack(
-    @Json(name = "primary_color") val primaryColor: String? = null,
-    @Json(name = "added_at") val addedAt: String?,
-    @Json(name = "added_by") val addedBy: SpotifyPublicUser?,
-    @Json(name = "is_local") val isLocal: Boolean?,
+    @SerialName("primary_color") val primaryColor: String? = null,
+    @SerialName("added_at") val addedAt: String?,
+    @SerialName("added_by") val addedBy: SpotifyPublicUser?,
+    @SerialName("is_local") val isLocal: Boolean?,
     val track: Track,
-    @Json(name = "video_thumbnail") val videoThumbnail: VideoThumbnail? = null
+    @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
 /**
@@ -95,21 +99,22 @@ data class PlaylistTrack(
  * @property tracks Information about the tracks of the playlist.
  * @property type The object type: “playlist”
  */
+@Serializable
 data class Playlist(
-    @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
-    @Json(name = "href") private val _href: String,
-    @Json(name = "id") private val _id: String,
-    @Json(name = "uri") private val _uri: String,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("href") private val _href: String,
+    @SerialName("id") private val _id: String,
+    @SerialName("uri") private val _uri: String,
 
     val collaborative: Boolean,
     val description: String,
     val followers: Followers,
-    @Json(name = "primary_color") val primaryColor: String? = null,
+    @SerialName("primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
     val name: String,
     val owner: SpotifyPublicUser,
     val public: Boolean? = null,
-    @Json(name = "snapshot_id") private val _snapshotId: String,
+    @SerialName("snapshot_id") private val _snapshotId: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
 ) : CoreObject(_href, _id, PlaylistURI(_uri), _externalUrls) {
@@ -125,9 +130,11 @@ data class Playlist(
  * can be retrieved
  * @property total the total number of tracks in the playlist.
  */
+@Serializable
 data class PlaylistTrackInfo(
     val href: String,
     val total: Int
 )
 
+@Serializable
 data class VideoThumbnail(val url: String?)

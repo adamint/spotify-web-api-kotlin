@@ -6,11 +6,9 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.catch
-import com.squareup.moshi.Json
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import java.util.function.Supplier
 import kotlin.reflect.KClass
 
 /*
@@ -64,34 +62,35 @@ class PagingObject<T : Any>(
     /**
      * Get the next set of [T] items
      */
-    fun getNext() = endpoint!!.toAction( {
+    fun getNext() = endpoint!!.toAction {
         catch {
             getImpl(PagingTraversalType.FORWARDS) as? PagingObject<T>
         }
-    })
+    }
 
     /**
      * Get the previous set of [T] items
      */
-    fun getPrevious() = endpoint!!.toAction(Supplier {
+    fun getPrevious() = endpoint!!.toAction {
         catch {
             getImpl(PagingTraversalType.BACKWARDS) as? PagingObject<T>
         }
-    })
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
-        return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint.get(it) }?.let { json ->
+        val endpointFinal = endpoint!!
+        return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
             when (itemClazz) {
-                SimpleTrack::class -> json.toPagingObject<SimpleTrack>(null, endpoint)
-                SpotifyCategory::class -> json.toPagingObject<SpotifyCategory>(null, endpoint)
-                SimpleAlbum::class -> json.toPagingObject<SimpleAlbum>(null, endpoint)
-                SimplePlaylist::class -> json.toPagingObject<SimplePlaylist>(null, endpoint)
-                SavedTrack::class -> json.toPagingObject<SavedTrack>(null, endpoint)
-                SavedAlbum::class -> json.toPagingObject<SavedAlbum>(null, endpoint)
-                Artist::class -> json.toPagingObject<Artist>(null, endpoint)
-                Track::class -> json.toPagingObject<Track>(null, endpoint)
-                PlaylistTrack::class -> json.toPagingObject<PlaylistTrack>(null, endpoint)
+                SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal)
+                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), null, endpointFinal)
+                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), null, endpointFinal)
+                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), null, endpointFinal)
+                SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal)
+                SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal)
+                Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal)
+                Track::class -> json.toPagingObject(Track.serializer(), null, endpointFinal)
+                PlaylistTrack::class -> json.toPagingObject(PlaylistTrack.serializer(), null, endpointFinal)
                 else -> throw IllegalArgumentException("Unknown type in $href response")
             } as? PagingObject<T>
         }
@@ -121,12 +120,12 @@ class PagingObject<T : Any>(
      * Get all PagingObjects associated with the request
      */
     @Suppress("UNCHECKED_CAST")
-    fun getAll() = endpoint!!.toAction(Supplier { (getAllImpl() as Sequence<PagingObject<T>>).toList() })
+    fun getAll() = endpoint!!.toAction { (getAllImpl() as Sequence<PagingObject<T>>).toList() }
 
     /**
      * Get all items of type [T] associated with the request
      */
-    fun getAllItems() = endpoint!!.toAction(Supplier { getAll().complete().map { it.items }.flatten() })
+    fun getAllItems() = endpoint!!.toAction { getAll().complete().map { it.items }.flatten() }
 }
 
 /**
@@ -153,26 +152,26 @@ class CursorBasedPagingObject<T : Any>(
     /**
      * Get the next set of [T] items
      */
-    fun getNext() = endpoint!!.toAction(Supplier {
+    fun getNext() = endpoint!!.toAction {
         catch {
             getImpl(PagingTraversalType.FORWARDS) as? CursorBasedPagingObject<T>
         }
-    })
+    }
 
     /**
      * Get all CursorBasedPagingObjects associated with the request
      */
     @Suppress("UNCHECKED_CAST")
-    fun getAll() = endpoint!!.toAction(Supplier {
+    fun getAll() = endpoint!!.toAction {
         getAllImpl() as Sequence<CursorBasedPagingObject<T>>
-    })
+    }
 
     /**
      * Get all items of type [T] associated with the request
      */
-    fun getAllItems() = endpoint!!.toAction(Supplier {
+    fun getAllItems() = endpoint!!.toAction {
         getAll().complete().map { it.items }.flatten().toList()
-    })
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
@@ -182,13 +181,15 @@ class CursorBasedPagingObject<T : Any>(
         return next?.let {
             val url = endpoint!!.get(it)
             when (itemClazz) {
-                PlayHistory::class -> url.toCursorBasedPagingObject<PlayHistory>(
-                        null,
-                        endpoint!!
+                PlayHistory::class -> url.toCursorBasedPagingObject(
+                    PlayHistory.serializer(),
+                    null,
+                    endpoint!!
                 )
-                Artist::class -> url.toCursorBasedPagingObject<Artist>(
-                        null,
-                        endpoint!!
+                Artist::class -> url.toCursorBasedPagingObject(
+                    Artist.serializer(),
+                    null,
+                    endpoint!!
                 )
                 else -> throw IllegalArgumentException("Unknown type in $href")
             } as? CursorBasedPagingObject<T>

@@ -33,7 +33,7 @@ import kotlinx.serialization.Transient
 data class SimpleAlbum(
     @SerialName("album_type") private val _albumType: String,
     @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("external_urls") private val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
     @SerialName("href") private val _href: String,
     @SerialName("id") private val _id: String,
     @SerialName("uri") private val _uri: String,
@@ -111,10 +111,11 @@ enum class AlbumResultType(internal val id: String) {
  * The track response will still contain metadata for the original track, and a
  * restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}
  */
+@Serializable
 data class Album(
     @SerialName("album_type") private val _albumType: String,
     @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("external_urls") private val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
     @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
     @SerialName("href") private val _href: String,
     @SerialName("id") private val _id: String,
@@ -151,6 +152,7 @@ data class Album(
  * @property type The type of copyright: C = the copyright,
  * P = the sound recording (performance) copyright.
  */
+@Serializable
 data class SpotifyCopyright(
     @SerialName("text") private val _text: String,
     @SerialName("type") private val _type: String
@@ -164,6 +166,7 @@ data class SpotifyCopyright(
     val type = CopyrightType.values().match(_type)!!
 }
 
+@Serializable
 internal data class AlbumsResponse(val albums: List<Album?>)
 
 /**

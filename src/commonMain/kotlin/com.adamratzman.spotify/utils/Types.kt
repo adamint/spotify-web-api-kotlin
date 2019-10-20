@@ -9,3 +9,7 @@ expect class ConcurrentHashMap<K, V>() {
     val size: Int
     val entries: MutableSet<MutableMap.MutableEntry<K, V>>
 }
+
+expect class BufferedImage
+
+expect class File
