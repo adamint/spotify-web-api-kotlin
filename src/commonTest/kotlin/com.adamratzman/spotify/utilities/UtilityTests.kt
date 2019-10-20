@@ -6,9 +6,9 @@ import com.adamratzman.spotify.api
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
-import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertFailsWith
 
 class UtilityTests : Spek({
     describe("Utility tests") {
