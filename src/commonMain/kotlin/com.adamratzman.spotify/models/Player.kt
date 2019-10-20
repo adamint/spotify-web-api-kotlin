@@ -14,12 +14,12 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class PlayHistoryContext(
-    @SerialName("href") private val _href: String,
+    @SerialName("href") override val href: String,
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
     @SerialName("uri") private val _uri: String,
 
     val type: String
-) : CoreObject(_href, _href, TrackUri(_uri), _externalUrls)
+) : CoreObject(href, href, TrackUri(_uri), _externalUrls)
 
 /**
  * Information about a previously-played track
@@ -48,7 +48,7 @@ data class PlayHistory(
  */
 @Serializable
 data class Device(
-    @SerialName("id") private val _id: String?,
+    @SerialName("id") override val id: String?,
 
     @SerialName("is_active") val isActive: Boolean,
     @SerialName("is_private_session") val isPrivateSession: Boolean,
@@ -56,7 +56,7 @@ data class Device(
     val name: String,
     val _type: String,
     @SerialName("volume_percent") val volumePercent: Int
-) : IdentifiableNullable(null, _id) {
+) : IdentifiableNullable(null, id) {
     @Transient val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
 }
 

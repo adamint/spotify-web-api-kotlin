@@ -24,6 +24,8 @@ import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.json
 import kotlinx.serialization.list
 
@@ -246,7 +248,7 @@ class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
                 album != null -> body += json { "context_uri" to AlbumUri(album).uri }
                 artist != null -> body += json { "context_uri" to ArtistUri(artist).uri }
                 playlist != null -> body += json { "context_uri" to playlist.uri }
-                tracksToPlay.isNotEmpty() -> body += json { "uris" to tracksToPlay.map { TrackUri(it).uri } }
+                tracksToPlay.isNotEmpty() -> body += json { "uris" to JsonArray(tracksToPlay.map { TrackUri(it).uri }.map(::JsonPrimitive)) }
             }
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }

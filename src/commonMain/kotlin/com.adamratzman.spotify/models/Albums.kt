@@ -34,8 +34,8 @@ data class SimpleAlbum(
     @SerialName("album_type") private val _albumType: String,
     @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("href") private val _href: String,
-    @SerialName("id") private val _id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
     @SerialName("uri") private val _uri: String,
 
     val artists: List<SimpleArtist>,
@@ -47,7 +47,7 @@ data class SimpleAlbum(
     @SerialName("release_date_precision") val releaseDatePrecision: String,
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
-) : CoreObject(_href, _id, AlbumUri(_uri), _externalUrls) {
+) : CoreObject(href, id, AlbumUri(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 
@@ -117,8 +117,8 @@ data class Album(
     @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
     @SerialName("external_urls") override val _externalUrls: Map<String, String>,
     @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
-    @SerialName("href") private val _href: String,
-    @SerialName("id") private val _id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
     @SerialName("uri") private val _uri: String,
 
     val artists: List<SimpleArtist>,
@@ -134,7 +134,7 @@ data class Album(
     val type: String,
     @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
-) : CoreObject(_href, _id, AlbumUri(_uri), _externalUrls) {
+) : CoreObject(href, id, AlbumUri(_uri), _externalUrls) {
     @Transient
     val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
 

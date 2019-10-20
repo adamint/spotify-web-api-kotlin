@@ -62,8 +62,8 @@ class HttpConnection constructor(
                     val content = if (contentType == "application/x-www-form-urlencoded") {
                         bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let {
                             ByteArrayContent(it.toByteArray(), ktorContentType)
-                        } ?: bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
-                    } else bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType) }
+                        } ?: bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
+                    } else bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
 
                     method = if (this@HttpConnection.method == HttpRequestMethod.PUT) HttpMethod.Put
                     else HttpMethod.Post
