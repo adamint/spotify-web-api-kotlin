@@ -30,10 +30,10 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class SimplePlaylist(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
@@ -41,12 +41,12 @@ data class SimplePlaylist(
     val owner: SpotifyPublicUser,
     @SerialName("primary_color") val primaryColor: String? = null,
     val public: Boolean? = null,
-    @SerialName("snapshot_id") private val _snapshotId: String,
+    @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PlaylistTrackInfo,
     val type: String
-) : CoreObject(href, id, PlaylistUri(_uri), _externalUrls) {
+) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
     @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(_snapshotId)
+    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
 
     /**
      * Converts this [SimplePlaylist] into a full [Playlist] object with the given
@@ -101,10 +101,10 @@ data class PlaylistTrack(
  */
 @Serializable
 data class Playlist(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val collaborative: Boolean,
     val description: String,
@@ -114,12 +114,12 @@ data class Playlist(
     val name: String,
     val owner: SpotifyPublicUser,
     val public: Boolean? = null,
-    @SerialName("snapshot_id") private val _snapshotId: String,
+    @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
-) : CoreObject(href, id, PlaylistUri(_uri), _externalUrls) {
+) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
     @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(_snapshotId)
+    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
 }
 
 /**

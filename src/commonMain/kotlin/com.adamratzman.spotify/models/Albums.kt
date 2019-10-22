@@ -31,12 +31,12 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class SimpleAlbum(
-    @SerialName("album_type") private val _albumType: String,
-    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("album_type") private val albumTypeString: String,
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val artists: List<SimpleArtist>,
     val images: List<SpotifyImage>,
@@ -47,13 +47,13 @@ data class SimpleAlbum(
     @SerialName("release_date_precision") val releaseDatePrecision: String,
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
-) : CoreObject(href, id, AlbumUri(_uri), _externalUrls) {
+) : CoreObject(href, id, AlbumUri(uriString), externalUrlsString) {
     @Transient
-    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
     @Transient
-    val albumType: AlbumResultType = _albumType.let { _ ->
-        AlbumResultType.values().first { it.id.equals(_albumType, true) }
+    val albumType: AlbumResultType = albumTypeString.let { _ ->
+        AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
     }
 
     @Transient
@@ -113,13 +113,13 @@ enum class AlbumResultType(internal val id: String) {
  */
 @Serializable
 data class Album(
-    @SerialName("album_type") private val _albumType: String,
-    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @SerialName("album_type") private val albumTypeString: String,
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val artists: List<SimpleArtist>,
     val copyrights: List<SpotifyCopyright>,
@@ -134,15 +134,15 @@ data class Album(
     val type: String,
     @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
-) : CoreObject(href, id, AlbumUri(_uri), _externalUrls) {
+) : CoreObject(href, id, AlbumUri(uriString), externalUrlsString) {
     @Transient
-    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
     @Transient
-    val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
+    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
 
     @Transient
-    val albumType: AlbumResultType = AlbumResultType.values().first { it.id == _albumType }
+    val albumType: AlbumResultType = AlbumResultType.values().first { it.id == albumTypeString }
 }
 
 /**
@@ -154,16 +154,16 @@ data class Album(
  */
 @Serializable
 data class SpotifyCopyright(
-    @SerialName("text") private val _text: String,
-    @SerialName("type") private val _type: String
+    @SerialName("text") private val textString: String,
+    @SerialName("type") private val typeString: String
 ) {
     @Transient
-    val text = _text
+    val text = textString
         .removePrefix("(P)")
         .removePrefix("(C)")
         .trim()
     @Transient
-    val type = CopyrightType.values().match(_type)!!
+    val type = CopyrightType.values().match(typeString)!!
 }
 
 @Serializable
