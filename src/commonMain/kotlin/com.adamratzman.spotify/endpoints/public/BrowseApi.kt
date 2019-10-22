@@ -2,13 +2,13 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ArtistUri
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.FeaturedPlaylists
 import com.adamratzman.spotify.models.PagingObject
@@ -290,7 +290,12 @@ class BrowseApi(api: SpotifyApi) : SpotifyEndpoint(api) {
         maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
     ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
-            throw BadRequestException(ErrorObject(400, "At least one seed (genre, artist, track) must be provided."))
+            throw SpotifyException.BadRequestException(
+                ErrorObject(
+                    400,
+                    "At least one seed (genre, artist, track) must be provided."
+                )
+            )
         }
 
         return toAction {

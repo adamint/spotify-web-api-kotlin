@@ -2,14 +2,14 @@
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.LibraryType
-import com.adamratzman.spotify.models.BadRequestException
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class ClientLibraryAPITest : Spek({
     describe("Client Library tests") {
@@ -74,13 +74,13 @@ class ClientLibraryAPITest : Spek({
         }
 
         it("invalid inputs") {
-            assertFailsWith<BadRequestException> { api.library.remove(LibraryType.TRACK, "ajksdfkjasjfd").complete() }
-            assertFailsWith<BadRequestException> { api.library.contains(LibraryType.TRACK, "adsfjk").complete() }
-            assertFailsWith<BadRequestException> { api.library.add(LibraryType.TRACK, "wer").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.remove(LibraryType.TRACK, "ajksdfkjasjfd").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.contains(LibraryType.TRACK, "adsfjk").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.add(LibraryType.TRACK, "wer").complete() }
 
-            assertFailsWith<BadRequestException> { api.library.remove(LibraryType.ALBUM, "elkars").complete() }
-            assertFailsWith<BadRequestException> { api.library.contains(LibraryType.ALBUM, "").complete() }
-            assertFailsWith<BadRequestException> { api.library.add(LibraryType.ALBUM, "oieriwkjrjkawer").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.remove(LibraryType.ALBUM, "elkars").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.contains(LibraryType.ALBUM, "").complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { api.library.add(LibraryType.ALBUM, "oieriwkjrjkawer").complete() }
         }
     }
 })

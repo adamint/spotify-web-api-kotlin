@@ -10,7 +10,6 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistList
 import com.adamratzman.spotify.models.ArtistUri
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleAlbum

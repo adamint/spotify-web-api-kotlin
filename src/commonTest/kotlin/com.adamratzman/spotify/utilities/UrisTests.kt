@@ -1,30 +1,30 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.ArtistURI
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PlaylistURI
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.UserURI
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class UrisTests : Spek({
     describe("Uris tests") {
         describe("TrackURI tests") {
             it("Create track with invalid input") {
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     TrackURI("a:invalid")
                 }
 
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     TrackURI("a:invalid").uri
                 }
 
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     TrackURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
@@ -54,19 +54,19 @@ class UrisTests : Spek({
 
         describe("UserURI") {
             it("Create user with invalid input") {
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     UserURI("a:invalid")
                 }
 
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     UserURI("a:invalid").uri
                 }
 
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     UserURI("a:invalid").id
                 }
 
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     UserURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
@@ -107,19 +107,19 @@ class UrisTests : Spek({
 
     describe("PlaylistURI") {
         it("Create playlist with invalid input") {
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 PlaylistURI("a:invalid")
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 PlaylistURI("a:invalid").uri
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 PlaylistURI("a:invalid").id
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
             }
         }
@@ -159,19 +159,19 @@ class UrisTests : Spek({
 
     describe("AlbumURI tests") {
         it("Create album with invalid input") {
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 AlbumURI("a:invalid")
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 AlbumURI("a:invalid").uri
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 AlbumURI("a:invalid").id
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 AlbumURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
         }
@@ -201,19 +201,19 @@ class UrisTests : Spek({
 
     describe("ArtistURI tests") {
         it("Create artist with invalid input") {
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 ArtistURI("a:invalid")
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 ArtistURI("a:invalid").uri
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 ArtistURI("a:invalid").id
             }
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 ArtistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
         }

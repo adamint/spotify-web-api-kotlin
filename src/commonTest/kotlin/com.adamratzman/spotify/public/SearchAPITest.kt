@@ -1,14 +1,14 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.SearchApi
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.utils.Market
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class SearchAPITest : Spek({
     describe("Search API test") {
@@ -27,7 +27,7 @@ class SearchAPITest : Spek({
                 assertTrue(s.searchTrack("hello", 1, 1, Market.US).complete().items.isNotEmpty())
             }
             it("invalid request") {
-                assertFailsWith<BadRequestException> { s.searchTrack("").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { s.searchTrack("").complete().items.size }
             }
         }
         describe("search album") {
@@ -35,7 +35,7 @@ class SearchAPITest : Spek({
                 assertTrue(s.searchAlbum("le début").complete().items.isNotEmpty())
             }
             it("invalid request") {
-                assertFailsWith<BadRequestException> { s.searchAlbum("").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { s.searchAlbum("").complete().items.size }
             }
         }
         describe("search playlist") {
@@ -43,7 +43,7 @@ class SearchAPITest : Spek({
                 assertTrue(s.searchPlaylist("test").complete().items.isNotEmpty())
             }
             it("invalid request") {
-                assertFailsWith<BadRequestException> { s.searchPlaylist("").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { s.searchPlaylist("").complete().items.size }
             }
         }
         describe("search artist") {
@@ -51,7 +51,7 @@ class SearchAPITest : Spek({
                 assertTrue(s.searchArtist("amir").complete().items.isNotEmpty())
             }
             it("invalid request") {
-                assertFailsWith<BadRequestException> { s.searchArtist("").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { s.searchArtist("").complete().items.size }
             }
         }
     }

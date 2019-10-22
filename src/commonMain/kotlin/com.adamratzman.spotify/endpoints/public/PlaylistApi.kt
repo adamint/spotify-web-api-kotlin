@@ -8,7 +8,6 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.PlaylistTrack

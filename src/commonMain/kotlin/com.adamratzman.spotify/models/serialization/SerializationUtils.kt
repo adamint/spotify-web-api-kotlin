@@ -43,7 +43,7 @@ internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>
         }
         return obj
     } catch (e: Exception) {
-        throw SpotifyException(
+        throw SpotifyException.SpotifyParseException(
             "Unable to parse $this",
             e
         )
@@ -61,7 +61,7 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
             }
         }
     } catch (e: Exception) {
-        throw SpotifyException(
+        throw SpotifyException.SpotifyParseException(
             "Unable to parse $this",
             e
         )
