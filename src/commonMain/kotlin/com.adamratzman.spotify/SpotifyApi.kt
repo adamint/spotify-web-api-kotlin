@@ -53,8 +53,8 @@ internal const val base = "https://api.spotify.com/v1"
  *
  */
 abstract class SpotifyApi internal constructor(
-    val clientId: String,
-    val clientSecret: String,
+    val clientId: String?,
+    val clientSecret: String?,
     var token: Token,
     useCache: Boolean,
     var cacheLimit: Int?,
@@ -149,6 +149,7 @@ abstract class SpotifyApi internal constructor(
      * @return Authorization URL that can be used in a browser
      */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String): String {
+        require(clientId != null)
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
 
@@ -181,8 +182,8 @@ abstract class SpotifyApi internal constructor(
  * client authentication
  */
 class SpotifyAppApi internal constructor(
-    clientId: String,
-    clientSecret: String,
+    clientId: String?,
+    clientSecret: String?,
     token: Token,
     useCache: Boolean,
     cacheLimit: Int?,
@@ -240,14 +241,12 @@ class SpotifyAppApi internal constructor(
     override val following: FollowingApi = FollowingApi(this)
 
     override fun refreshToken(): Token {
-        if (clientId != "not-set" && clientSecret != "not-set") {
-            val currentToken = this.token
+        require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
+        val currentToken = this.token
 
-            token = getCredentialedToken(clientId, clientSecret, this)
+        token = getCredentialedToken(clientId, clientSecret, this)
 
-            return currentToken
-        }
-        throw BadRequestException("Either the client id or the client secret is not set")
+        return currentToken
     }
 
     override val endpoints: List<SpotifyEndpoint>
@@ -283,9 +282,9 @@ class SpotifyAppApi internal constructor(
  * managed through the scopes exposed in [token]
  */
 class SpotifyClientApi internal constructor(
-    clientId: String,
-    clientSecret: String,
-    var redirectUri: String,
+    clientId: String?,
+    clientSecret: String?,
+    var redirectUri: String?,
     token: Token,
     useCache: Boolean,
     cacheLimit: Int?,
@@ -392,6 +391,8 @@ class SpotifyClientApi internal constructor(
     }
 
     override fun refreshToken(): Token {
+        require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
+
         val currentToken = this.token
 
         val response = executeTokenRequest(
@@ -413,7 +414,7 @@ class SpotifyClientApi internal constructor(
             val tempToken = response.body.toObject(Token.serializer(), this)
             this.token = tempToken.copy(
                 refreshToken = tempToken.refreshToken ?: this.token.refreshToken
-                ).apply { scopes = tempToken.scopes }
+            ).apply { scopes = tempToken.scopes }
 
             logger.logInfo("Successfully refreshed the Spotify token")
             return currentToken
@@ -464,7 +465,8 @@ class SpotifyClientApi internal constructor(
      * @return Authorization URL that can be used in a browser
      */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
-        return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
+        require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
+        return redirectUri?.let { getAuthUrlFull(*scopes, clientId = clientId, redirectUri = it) } ?: throw IllegalArgumentException("The redirect uri must be set")
     }
 
     /**

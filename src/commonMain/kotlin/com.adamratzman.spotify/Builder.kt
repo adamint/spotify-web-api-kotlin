@@ -21,8 +21,8 @@ fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientA
  *  Spotify API builder
  */
 class SpotifyApiBuilder(
-    private var clientId: String,
-    private var clientSecret: String,
+    private var clientId: String?,
+    private var clientSecret: String?,
     private var redirectUri: String?
 ) {
     var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build()
@@ -239,9 +239,11 @@ class SpotifyClientApiBuilder(
         val clientSecret = credentials.clientSecret
         val redirectUri = credentials.redirectUri
 
-        require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+        require((clientId != null && clientSecret != null && redirectUri != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
             authorization.authorizationCode != null -> try {
+                require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+
                 val response = executeTokenRequest(
                     HttpConnection(
                         "https://accounts.spotify.com/api/token",
@@ -274,9 +276,9 @@ class SpotifyClientApiBuilder(
                 throw SpotifyException("Invalid credentials provided in the login process", e)
             }
             authorization.token != null -> SpotifyClientApi(
-                clientId ?: "",
-                clientSecret ?: "",
-                redirectUri ?: "",
+                clientId,
+                clientSecret,
+                redirectUri,
                 authorization.token!!,
                 options.useCache,
                 options.cacheLimit,
@@ -286,9 +288,9 @@ class SpotifyClientApiBuilder(
                 options.testTokenValidity
             )
             authorization.tokenString != null -> SpotifyClientApi(
-                clientId ?: "",
-                clientSecret ?: "",
-                redirectUri ?: "",
+                clientId,
+                clientSecret,
+                redirectUri,
                 Token(
                     authorization.tokenString!!,
                     "client_credentials",
@@ -358,8 +360,8 @@ class SpotifyAppApiBuilder(
         return when {
             authorization.token != null -> {
                 SpotifyAppApi(
-                    clientId ?: "not-set",
-                    clientSecret ?: "not-set",
+                    clientId,
+                    clientSecret,
                     authorization.token!!,
                     options.useCache,
                     options.cacheLimit,
@@ -371,8 +373,8 @@ class SpotifyAppApiBuilder(
             }
             authorization.tokenString != null -> {
                 SpotifyAppApi(
-                    clientId ?: "not-set",
-                    clientSecret ?: "not-set",
+                    clientId,
+                    clientSecret,
                     Token(
                         authorization.tokenString!!, "client_credentials",
                         60000, null, null
