@@ -3,7 +3,6 @@ package com.adamratzman.spotify.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Private information about a Spotify user. Each field may require a specific scope.
@@ -27,10 +26,10 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class SpotifyUserInformation(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val birthdate: String? = null,
     val country: String? = null,
@@ -41,7 +40,7 @@ data class SpotifyUserInformation(
     val product: String?,
     @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings?,
     val type: String
-) : CoreObject(href, id, UserUri(_uri), _externalUrls)
+) : CoreObject(href, id, UserUri(uriString), externalUrlsString)
 
 /**
  * Public information about a Spotify user
@@ -55,16 +54,16 @@ data class SpotifyUserInformation(
  */
 @Serializable
 data class SpotifyPublicUser(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     @SerialName("display_name") val displayName: String? = null,
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(href, id, UserUri(_uri), _externalUrls)
+) : CoreObject(href, id, UserUri(uriString), externalUrlsString)
 
 /**
  * Information about a Spotify user's followers
@@ -77,11 +76,8 @@ data class SpotifyPublicUser(
 @Serializable
 data class Followers(
     val href: String?,
-    @SerialName("total") private val _total: Int
-) {
-    @Transient
-    val total: Int = _total
-}
+    @SerialName("total") val total: Int
+)
 
 @Serializable
 data class ExplicitContentSettings(

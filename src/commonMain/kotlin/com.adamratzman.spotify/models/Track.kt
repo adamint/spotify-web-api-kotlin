@@ -37,12 +37,12 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class SimpleTrack(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
-    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") val _uri: String,
+    @SerialName("uri") val uriString: String,
 
     val artists: List<SimpleArtist>,
     @SerialName("disc_number") val discNumber: Int,
@@ -57,12 +57,12 @@ data class SimpleTrack(
     @SerialName("is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linkedFrom, href, id, TrackUri(_uri), _externalUrls) {
+) : RelinkingAvailableResponse(linkedFrom, href, id, TrackUri(uriString), externalUrlsString) {
     @Transient
-    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
     @Transient
-    val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
+    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
 
     /**
      * Converts this [SimpleTrack] into a full [Track] object with the given
@@ -111,12 +111,12 @@ data class SimpleTrack(
  */
 @Serializable
 data class Track(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("external_ids") private val _externalIds: Map<String, String> = hashMapOf(),
-    @SerialName("available_markets") private val _availableMarkets: List<String> = listOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
@@ -139,14 +139,14 @@ data class Track(
     linked_from,
     href,
     id,
-    if (_uri.contains("local:")) LocalTrackUri(_uri) else TrackUri(_uri),
-    _externalUrls
+    if (uriString.contains("local:")) LocalTrackUri(uriString) else TrackUri(uriString),
+    externalUrlsString
 ) {
     @Transient
-    val availableMarkets = _availableMarkets.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
     @Transient
-    val externalIds = _externalIds.map { ExternalId(it.key, it.value) }
+    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
 }
 
 /**
@@ -159,13 +159,13 @@ data class Track(
  */
 @Serializable
 data class LinkedTrack(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val type: String
-) : CoreObject(href, id, TrackUri(_uri), _externalUrls) {
+) : CoreObject(href, id, TrackUri(uriString), externalUrlsString) {
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
@@ -416,11 +416,11 @@ data class AudioFeatures(
     @SerialName("time_signature") val timeSignature: Int,
     @SerialName("track_href") val trackHref: String,
     val type: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
     val valence: Float
 ) {
     @Transient
-    val uri: TrackUri = TrackUri(_uri)
+    val uri: TrackUri = TrackUri(uriString)
 }
 
 /**

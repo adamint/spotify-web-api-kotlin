@@ -14,14 +14,14 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SimpleArtist(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val name: String,
     val type: String
-) : CoreObject(href, id, ArtistUri(_uri), _externalUrls) {
+) : CoreObject(href, id, ArtistUri(uriString), externalUrlsString) {
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
@@ -44,10 +44,10 @@ data class SimpleArtist(
  */
 @Serializable
 data class Artist(
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("href") override val href: String,
     @SerialName("id") override val id: String,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("uri") private val uriString: String,
 
     val followers: Followers,
     val genres: List<String>,
@@ -55,7 +55,7 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String
-) : CoreObject(href, id, ArtistUri(_uri), _externalUrls)
+) : CoreObject(href, id, ArtistUri(uriString), externalUrlsString)
 
 @Serializable
 internal data class ArtistList(val artists: List<Artist?>)

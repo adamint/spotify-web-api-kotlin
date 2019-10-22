@@ -82,7 +82,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi) {
     ): String? {
         val statusCode = document.responseCode
 
-        if (statusCode == HttpConnectionStatus.HTTP_NOT_MODIFIED.getStatusCode()) {
+        if (statusCode == HttpConnectionStatus.HTTP_NOT_MODIFIED.code) {
             requireNotNull(cacheState?.eTag) { "304 status only allowed on Etag-able endpoints" }
             return cacheState?.data
         }

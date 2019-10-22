@@ -16,7 +16,6 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.content.TextContent
 import io.ktor.util.toMap
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.io.core.toByteArray
 
@@ -168,8 +167,6 @@ class HttpConnection constructor(
 
 enum class HttpConnectionStatus(val code: Int) {
     HTTP_NOT_MODIFIED(304);
-
-    fun getStatusCode() = code
 }
 
 expect fun <T> runBlocking(coroutineCode: suspend () -> T): T
