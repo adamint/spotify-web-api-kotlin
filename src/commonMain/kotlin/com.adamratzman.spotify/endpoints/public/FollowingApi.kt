@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList

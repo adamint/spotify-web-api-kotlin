@@ -9,7 +9,6 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AudioAnalysis
 import com.adamratzman.spotify.models.AudioFeatures
 import com.adamratzman.spotify.models.AudioFeaturesResponse
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.TrackList
 import com.adamratzman.spotify.models.TrackUri

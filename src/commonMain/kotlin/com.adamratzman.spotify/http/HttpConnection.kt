@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
-import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import io.ktor.client.HttpClient
@@ -149,7 +149,7 @@ class HttpConnection constructor(
                     }
                 ).also { call.close() }
             } catch (e: ResponseException) {
-                throw BadRequestException(e)
+                throw SpotifyException.BadRequestException(e)
             }
         }
     }

@@ -5,7 +5,6 @@ import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import io.ktor.client.features.ResponseException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -105,7 +104,7 @@ data class ErrorResponse(val error: ErrorObject, @Transient val exception: Excep
 @Serializable
 data class ErrorObject(val status: Int, val message: String)
 
-class SpotifyAuthenticationException(message: String) : Exception(message)
+class SpotifyAuthenticationException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
 @Serializable
 data class AuthenticationError(
@@ -113,7 +112,7 @@ data class AuthenticationError(
     @SerialName("error_description") val description: String
 )
 
-class SpotifyUriException(message: String) : BadRequestException(message)
+class SpotifyUriException(message: String) : SpotifyException.BadRequestException(message)
 
 /**
  * Thrown when [SpotifyApi.retryWhenRateLimited] is false and requests have been ratelimited
@@ -121,32 +120,7 @@ class SpotifyUriException(message: String) : BadRequestException(message)
  * @param time the time, in seconds, until the next request can be sent
  */
 class SpotifyRatelimitedException(time: Long) :
-    UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
+    SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
 
-abstract class UnNullableException(message: String) : SpotifyException(message)
-
-/**
- * Thrown when a request fails
- */
-open class BadRequestException(message: String, val statusCode: Int? = null, cause: Throwable? = null) :
-    SpotifyException(message, cause) {
-    constructor(error: ErrorObject, cause: Throwable? = null) : this(
-        "Received Status Code ${error.status}. Error cause: ${error.message}",
-        error.status,
-        cause
-    )
-
-    constructor(authenticationError: AuthenticationError) :
-            this(
-                "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
-                401
-            )
-    constructor(responseException: ResponseException) :
-            this(
-                responseException.message ?: "Bad Request",
-                responseException.response.status.value,
-                responseException
-            )
-}
 
 typealias CountryCode = Market

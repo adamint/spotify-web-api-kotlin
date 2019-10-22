@@ -3,6 +3,7 @@ package com.adamratzman.spotify
 
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
+import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
 import kotlinx.coroutines.Dispatchers
@@ -273,7 +274,7 @@ class SpotifyClientApiBuilder(
                     options.testTokenValidity
                 )
             } catch (e: Exception) {
-                throw SpotifyException("Invalid credentials provided in the login process", e)
+                throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
             }
             authorization.token != null -> SpotifyClientApi(
                 clientId,
@@ -402,7 +403,7 @@ class SpotifyAppApiBuilder(
                     options.testTokenValidity
                 )
             } catch (e: Exception) {
-                throw SpotifyException("Invalid credentials provided in the login process", e)
+                throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
             }
         }
     }
