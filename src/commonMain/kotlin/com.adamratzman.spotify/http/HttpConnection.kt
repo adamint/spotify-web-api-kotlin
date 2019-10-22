@@ -172,4 +172,4 @@ enum class HttpConnectionStatus(val code: Int) {
     fun getStatusCode() = code
 }
 
-expect fun <T> runBlocking(coroutineCode: suspend CoroutineScope.() -> T): T
+expect fun <T> runBlocking(coroutineCode: suspend () -> T): T
