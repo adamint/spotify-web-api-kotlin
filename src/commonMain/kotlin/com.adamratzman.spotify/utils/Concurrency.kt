@@ -8,4 +8,4 @@ expect enum class TimeUnit {
     fun toMillis(duration: Long): Long
 }
 
-expect fun CoroutineScope.schedule(quantity: Int, timeUnit: TimeUnit, consumer: () -> Unit)
+internal expect fun CoroutineScope.schedule(quantity: Int, timeUnit: TimeUnit, consumer: () -> Unit)

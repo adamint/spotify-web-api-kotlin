@@ -2,7 +2,7 @@
 package com.adamratzman.spotify
 
 val api = when {
-    getEnvironmentVariable("spotifyRedirectUri") == null -> {
+    getEnvironmentVariable("spotifyRedirectUri")?.isNotBlank() != true -> {
         spotifyAppApi {
             credentials {
                 clientId = getEnvironmentVariable("clientId")
@@ -11,6 +11,7 @@ val api = when {
         }.build()
     }
     else -> {
+        println(getEnvironmentVariable("spotifyRedirectUri")?.isBlank())
         spotifyClientApi {
             credentials {
                 clientId = getEnvironmentVariable("clientId")
