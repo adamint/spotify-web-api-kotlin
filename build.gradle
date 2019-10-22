@@ -58,7 +58,7 @@ dependencies {
     }
 
     testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
-    testCompile "com.google.code.gson:gson:2.8.5"
+    testCompile "com.google.code.gson:gson:2.8.6"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
 }
 
