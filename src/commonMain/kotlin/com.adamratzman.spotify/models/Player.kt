@@ -15,11 +15,11 @@ import kotlinx.serialization.Transient
 @Serializable
 data class PlayHistoryContext(
     @SerialName("href") override val href: String,
-    @SerialName("external_urls") override val _externalUrls: Map<String, String>,
-    @SerialName("uri") private val _uri: String,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("uri") private val uriString: String,
 
     val type: String
-) : CoreObject(href, href, TrackUri(_uri), _externalUrls)
+) : CoreObject(href, href, TrackUri(uriString), externalUrlsString)
 
 /**
  * Information about a previously-played track
@@ -54,10 +54,10 @@ data class Device(
     @SerialName("is_private_session") val isPrivateSession: Boolean,
     @SerialName("is_restricted") val isRestricted: Boolean,
     val name: String,
-    val _type: String,
+    val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable(null, id) {
-    @Transient val type: DeviceType = DeviceType.values().first { it.identifier.equals(_type, true) }
+    @Transient val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
 }
 
 /**
@@ -102,11 +102,11 @@ data class CurrentlyPlayingContext(
     @SerialName("is_playing") val isPlaying: Boolean,
     @SerialName("item") val track: Track?,
     @SerialName("shuffle_state") val shuffleState: Boolean,
-    @SerialName("repeat_state") val _repeatState: String,
+    @SerialName("repeat_state") val repeatStateString: String,
     val context: Context
 ) {
     @Transient
-    val repeatState: RepeatState = RepeatState.values().match(_repeatState)!!
+    val repeatState: RepeatState = RepeatState.values().match(repeatStateString)!!
 }
 
 /**
@@ -139,11 +139,11 @@ data class CurrentlyPlayingObject(
     @SerialName("progress_ms") val progressMs: Int?,
     @SerialName("is_playing") val isPlaying: Boolean,
     @SerialName("item") val track: Track,
-    @SerialName("currently_playing_type") private val _currentlyPlayingType: String,
+    @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {
     @Transient
-    val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(_currentlyPlayingType)!!
+    val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
 }
 
 /**
@@ -154,10 +154,10 @@ data class CurrentlyPlayingObject(
  */
 @Serializable
 data class PlaybackActions(
-    @SerialName("disallows") val _disallows: Map<String, Boolean?>
+    @SerialName("disallows") val disallowsString: Map<String, Boolean?>
 ) {
     @Transient
-    val disallows: List<DisallowablePlaybackAction> = _disallows.map {
+    val disallows: List<DisallowablePlaybackAction> = disallowsString.map {
         DisallowablePlaybackAction(
             PlaybackAction.values().match(it.key)!!,
             it.value ?: false
@@ -211,8 +211,8 @@ enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
  */
 @Serializable
 data class Context(
-    @SerialName("external_urls") private val _externalUrls: Map<String, String>
+    @SerialName("external_urls") private val externalUrlsString: Map<String, String>
 ) {
     @Transient
-    val externalUrls = _externalUrls.map { ExternalUrl(it.key, it.value) }
+    val externalUrls = externalUrlsString.map { ExternalUrl(it.key, it.value) }
 }

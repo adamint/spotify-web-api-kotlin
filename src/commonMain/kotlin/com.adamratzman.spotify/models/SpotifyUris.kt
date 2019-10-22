@@ -89,40 +89,40 @@ sealed class SpotifyUri(val input: String, val type: UriType) {
  * Represents a Spotify **Album** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class AlbumUri(val _input: String) : SpotifyUri(_input, UriType.ALBUM)
+class AlbumUri(private val inputString: String) : SpotifyUri(inputString, UriType.ALBUM)
 typealias AlbumURI = AlbumUri
 
 /**
  * Represents a Spotify **Artist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class ArtistUri(val _input: String) : SpotifyUri(_input, UriType.ARTIST)
+class ArtistUri(private val inputString: String) : SpotifyUri(inputString, UriType.ARTIST)
 typealias ArtistURI = ArtistUri
 
 /**
  * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class TrackUri(val _input: String) : SpotifyUri(_input, UriType.TRACK)
+class TrackUri(private val inputString: String) : SpotifyUri(inputString, UriType.TRACK)
 typealias TrackURI = TrackUri
 
 /**
  * Represents a Spotify **User** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class UserUri(val _input: String) : SpotifyUri(_input, UriType.USER)
+class UserUri(private val inputString: String) : SpotifyUri(inputString, UriType.USER)
 typealias UserURI = UserUri
 
 /**
  * Represents a Spotify **Playlist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class PlaylistUri(val _input: String) : SpotifyUri(_input, UriType.PLAYLIST)
+class PlaylistUri(private val inputString: String) : SpotifyUri(inputString, UriType.PLAYLIST)
 typealias PlaylistURI = PlaylistUri
 
 /**
  * Represents a Spotify **local track** URI
  */
 @Serializable
-class LocalTrackUri(val _input: String) : SpotifyUri(_input, UriType.LOCAL_TRACK)
+class LocalTrackUri(private val inputString: String) : SpotifyUri(inputString, UriType.LOCAL_TRACK)
 typealias LocalTrackURI = LocalTrackUri
