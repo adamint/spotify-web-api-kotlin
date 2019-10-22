@@ -1,7 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
 import kotlinx.serialization.json.JsonElement
 
@@ -12,7 +12,7 @@ internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().to
 internal fun <T> catch(function: () -> T): T? {
     return try {
         function()
-    } catch (e: BadRequestException) {
+    } catch (e: SpotifyException.BadRequestException) {
         if (e.statusCode !in listOf(400, 404)) throw e
         // we should only ignore the exception if it's 400 or 404. Otherwise, it's a larger issue
         null

@@ -1,15 +1,15 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.utils.Market
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class PublicTracksAPITest : Spek({
     describe("Track API (Public View) test") {
@@ -32,7 +32,7 @@ class PublicTracksAPITest : Spek({
         }
         describe("audio analysis") {
             it("unknown track") {
-                assertFailsWith<BadRequestException> { t.getAudioAnalysis("bad track").complete() }
+                assertFailsWith<SpotifyException.BadRequestException> { t.getAudioAnalysis("bad track").complete() }
             }
             it("known track") {
                 assertEquals("165.61333", t.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").complete().track.duration.toString())
@@ -40,7 +40,7 @@ class PublicTracksAPITest : Spek({
         }
         describe("audio features") {
             it("unknown track") {
-                assertFailsWith<BadRequestException> { t.getAudioFeatures("bad track").complete() }
+                assertFailsWith<SpotifyException.BadRequestException> { t.getAudioFeatures("bad track").complete() }
             }
             it("known track") {
                 assertEquals("0.0589", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())

@@ -2,9 +2,9 @@
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
-import com.adamratzman.spotify.models.BadRequestException
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -97,7 +97,7 @@ class ClientPlaylistAPITest : Spek({
                 listOf(trackIdOne, trackIdTwo, trackIdTwo),
                 cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
 
-            assertFailsWith<BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 cp.removeTracksFromPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3))).complete()
             }
         }

@@ -22,7 +22,7 @@ import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.base64ByteEncode
 import com.adamratzman.spotify.models.AuthenticationError
-import com.adamratzman.spotify.models.BadRequestException
+import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
@@ -87,7 +87,7 @@ abstract class SpotifyApi internal constructor(
             try {
                 isTokenValid(true)
             } catch (e: Exception) {
-                throw SpotifyException("Invalid token provided on initialization", e)
+                throw SpotifyAuthenticationException("Invalid token provided on initialization", e)
             }
         }
     }
@@ -164,7 +164,7 @@ abstract class SpotifyApi internal constructor(
     fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse {
         if (token.shouldRefresh()) return TokenValidityResponse(
             false,
-            SpotifyException("Token needs to be refreshed (is it expired?)")
+            SpotifyAuthenticationException("Token needs to be refreshed (is it expired?)")
         )
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
@@ -418,7 +418,12 @@ class SpotifyClientApi internal constructor(
 
             logger.logInfo("Successfully refreshed the Spotify token")
             return currentToken
-        } else throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), this))
+        } else throw SpotifyException.BadRequestException(
+            response.body.toObject(
+                AuthenticationError.serializer(),
+                this
+            )
+        )
     }
 
     override val endpoints: List<SpotifyEndpoint>
@@ -466,7 +471,8 @@ class SpotifyClientApi internal constructor(
      */
     fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
-        return redirectUri?.let { getAuthUrlFull(*scopes, clientId = clientId, redirectUri = it) } ?: throw IllegalArgumentException("The redirect uri must be set")
+        return redirectUri?.let { getAuthUrlFull(*scopes, clientId = clientId, redirectUri = it) }
+            ?: throw IllegalArgumentException("The redirect uri must be set")
     }
 
     /**
@@ -507,7 +513,7 @@ fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi
 
     if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null)
 
-    throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), null))
+    throw SpotifyException.BadRequestException(response.body.toObject(AuthenticationError.serializer(), null))
 }
 
 internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {

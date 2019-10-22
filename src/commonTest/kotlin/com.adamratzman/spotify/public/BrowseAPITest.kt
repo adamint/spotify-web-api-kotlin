@@ -1,9 +1,9 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
-import com.adamratzman.spotify.models.BadRequestException
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import org.spekframework.spek2.Spek
@@ -33,11 +33,11 @@ class BrowseAPITest : Spek({
             assertNotNull(b.getCategory("pop", Market.FR).complete())
             assertNotNull(b.getCategory("pop", Market.FR, locale = "en_US").complete())
             assertNotNull(b.getCategory("pop", Market.FR, locale = "KSDJFJKSJDKF").complete())
-            assertFailsWith<BadRequestException> { b.getCategory("no u", Market.US).complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { b.getCategory("no u", Market.US).complete() }
         }
 
         it("get playlists by category") {
-            assertFailsWith<BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
+            assertFailsWith<SpotifyException.BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
             assertTrue(b.getPlaylistsForCategory("pop", 10, 0, Market.FR).complete().items.isNotEmpty())
         }
 
@@ -61,10 +61,10 @@ class BrowseAPITest : Spek({
 
         describe("get recommendations") {
             it("no parameters") {
-                assertFailsWith<BadRequestException> { b.getTrackRecommendations().complete() }
+                assertFailsWith<SpotifyException.BadRequestException> { b.getTrackRecommendations().complete() }
             }
             it("seed artists") {
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     b.getTrackRecommendations(seedArtists = listOf("abc")).complete()
                 }
                 assertTrue(b.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).complete().tracks.isNotEmpty())
@@ -78,7 +78,7 @@ class BrowseAPITest : Spek({
                 )
             }
             it("seed tracks") {
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     b.getTrackRecommendations(seedTracks = listOf("abc")).complete()
                 }
                 assertTrue(b.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
@@ -152,7 +152,7 @@ class BrowseAPITest : Spek({
                 )
             }
             it("max attributes") {
-                assertFailsWith<BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     b.getTrackRecommendations(
                         maxAttributes = listOf(
                             TuneableTrackAttribute.SPEECHINESS.asTrackAttribute(
