@@ -26,7 +26,6 @@ import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.toList
 
 internal const val base = "https://api.spotify.com/v1"
@@ -70,7 +69,7 @@ abstract class SpotifyApi internal constructor(
             field = value
         }
     val logger = SpotifyLogger(enableLogger)
-    val expireTime: Long get() = getCurrentTimeMs() + token.expiresIn * 1000
+    val expireTime: Long get() = token.expiresAt
     var runExecutableFunctions = true
 
     abstract val search: SearchApi

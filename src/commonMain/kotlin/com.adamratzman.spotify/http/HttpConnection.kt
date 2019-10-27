@@ -135,7 +135,9 @@ class HttpConnection constructor(
                     api != null && api.automaticRefresh
                 ) {
                     api.refreshToken()
-                    return@runBlocking execute(additionalHeaders)
+                    val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
+                    newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
+                    return@runBlocking execute(newAdditionalHeaders, retryIf502)
                 }
 
                 return@runBlocking HttpResponse(
