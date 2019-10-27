@@ -107,7 +107,7 @@ data class Playlist(
     @SerialName("uri") private val uriString: String,
 
     val collaborative: Boolean,
-    val description: String,
+    val description: String?,
     val followers: Followers,
     @SerialName("primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
