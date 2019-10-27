@@ -69,6 +69,10 @@ sealed class SpotifyUri(val input: String, val type: UriType) {
         return result
     }
 
+    override fun toString(): String {
+        return "${this::class.simpleName}($uri)"
+    }
+
     enum class UriType(private val typeStr: String) {
         ALBUM("album"),
         ARTIST("artist"),
