@@ -1,14 +1,17 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 
 plugins {
+    `maven-publish`
+    signing
+    `java-library`
     kotlin("multiplatform") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
     id("com.diffplug.gradle.spotless") version "3.25.0"
     id("com.moowork.node") version "1.3.1"
 }
 
-group = "spotify-web-api-kotlin"
-version = "1.0-SNAPSHOT"
+group = "com.adamratzman"
+version = "3.0.0-rc.2"
 
 repositories {
     mavenCentral()
@@ -110,5 +113,87 @@ spotless {
         target("**/*.kt")
         licenseHeader("/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */")
         ktlint()
+    }
+}
+
+publishing {
+    publications {
+        val jvm by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin"
+
+            pom {
+                name.set("spotify-api-kotlin")
+                description.set("A Kotlin wrapper for the Spotify Web API.")
+                url.set("https://github.com/adamint/spotify-web-api-kotlin")
+                inceptionYear.set("2018")
+                scm {
+                    url.set("https://github.com/adamint/spotify-web-api-kotlin")
+                    connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
+                    developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
+                }
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("adamratzman")
+                        name.set("Adam Ratzman")
+                        email.set("adam@adamratzman.com")
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "nexus"
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+
+            credentials {
+                val nexusUsername: String? by project.extra
+                val nexusPassword: String? by project.extra
+                username = nexusUsername
+                password = nexusPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["jvm"])
+}
+
+
+// get signing confs interactivly if needed
+gradle.taskGraph.whenReady {
+    val alreadyConfigured = with(project.extra) {
+        (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
+                || (has("signing.notNeeded") && get("signing.notNeeded") == "true")
+    }
+    if (!alreadyConfigured && allTasks.any { it is Sign }) {
+        // Use Java's console to read from the console (no good for
+        // a CI environment)
+        val console = System.console()
+        requireNotNull(console) { "Could not get signing config: please provide yours in the gradle.properties file." }
+        console.printf("\n\nWe have to sign some things in this build." +
+                "\n\nPlease enter your signing details.\n\n")
+
+        val id = console.readLine("PGP Key Id: ")
+        val file = console.readLine("PGP Secret Key Ring File (absolute path): ")
+        val password = console.readPassword("PGP Private Key Password: ")
+
+        allprojects {
+            project.extra["signing.keyId"] = id
+            project.extra["signing.secretKeyRingFile"] = file
+            project.extra["signing.password"] = password
+        }
+
+        console.printf("\nThanks.\n\n")
     }
 }
