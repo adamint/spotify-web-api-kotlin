@@ -39,5 +39,5 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle.kts" }}
 
       # run tests!
-      - run: gradle test -PclientId=$SPOTIFY_CLIENT_ID -PclientSecret=$SPOTIFY_CLIENT_SECRET
+      - run: gradle check -PclientId=$SPOTIFY_CLIENT_ID -PclientSecret=$SPOTIFY_CLIENT_SECRET
 
