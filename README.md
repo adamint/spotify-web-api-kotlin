@@ -51,7 +51,7 @@ dependencies {
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0-rc.2</version>
 </dependency>
 
 <repository>
