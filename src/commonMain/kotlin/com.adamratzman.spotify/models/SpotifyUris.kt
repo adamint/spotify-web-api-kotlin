@@ -70,7 +70,7 @@ sealed class SpotifyUri(val input: String, val type: UriType) {
     }
 
     override fun toString(): String {
-        return "${this::class.simpleName}($uri)"
+        return "SpotifyUri($uri)"
     }
 
     enum class UriType(private val typeStr: String) {
