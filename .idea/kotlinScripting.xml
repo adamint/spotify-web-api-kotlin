@@ -2,5 +2,12 @@
 <project version="4">
   <component name="KotlinScriptingSettings">
     <option name="isAutoReloadEnabled" value="true" />
+    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.GradleScriptDefinitionsContributor.ErrorGradleScriptDefinition.LegacyDefinition" definitionName="Default Kotlin Gradle Script">
+      <order>2</order>
+      <isEnabled>false</isEnabled>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.StandardIdeScriptDefinition" definitionName="Kotlin Script">
+      <order>3</order>
+    </scriptDefinition>
   </component>
 </project>
