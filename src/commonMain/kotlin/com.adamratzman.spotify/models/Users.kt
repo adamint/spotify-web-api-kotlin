@@ -40,7 +40,9 @@ data class SpotifyUserInformation(
     val product: String?,
     @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings?,
     val type: String
-) : CoreObject(href, id, UserUri(uriString), externalUrlsString)
+) : CoreObject(href, id, UserUri(uriString), externalUrlsString) {
+    override val uri: UserUri get() = super.uri as UserUri
+}
 
 /**
  * Public information about a Spotify user
@@ -63,7 +65,9 @@ data class SpotifyPublicUser(
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(href, id, UserUri(uriString), externalUrlsString)
+) : CoreObject(href, id, UserUri(uriString), externalUrlsString) {
+    override val uri: UserUri get() = super.uri as UserUri
+}
 
 /**
  * Information about a Spotify user's followers

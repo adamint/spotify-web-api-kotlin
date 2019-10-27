@@ -19,7 +19,9 @@ data class PlayHistoryContext(
     @SerialName("uri") private val uriString: String,
 
     val type: String
-) : CoreObject(href, href, TrackUri(uriString), externalUrlsString)
+) : CoreObject(href, href, TrackUri(uriString), externalUrlsString) {
+    override val uri: TrackUri get() = super.uri as TrackUri
+}
 
 /**
  * Information about a previously-played track

@@ -48,6 +48,8 @@ data class SimpleAlbum(
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject(href, id, AlbumUri(uriString), externalUrlsString) {
+    override val uri: AlbumUri get() = super.uri as AlbumUri
+
     @Transient
     val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
@@ -135,6 +137,8 @@ data class Album(
     @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
 ) : CoreObject(href, id, AlbumUri(uriString), externalUrlsString) {
+    override val uri: AlbumUri get() = super.uri as AlbumUri
+
     @Transient
     val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 

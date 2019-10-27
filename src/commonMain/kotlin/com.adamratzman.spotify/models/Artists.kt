@@ -22,6 +22,8 @@ data class SimpleArtist(
     val name: String,
     val type: String
 ) : CoreObject(href, id, ArtistUri(uriString), externalUrlsString) {
+    override val uri: ArtistUri get() = super.uri as ArtistUri
+
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
@@ -55,7 +57,9 @@ data class Artist(
     val name: String,
     val popularity: Int,
     val type: String
-) : CoreObject(href, id, ArtistUri(uriString), externalUrlsString)
+) : CoreObject(href, id, ArtistUri(uriString), externalUrlsString) {
+    override val uri: ArtistUri get() = super.uri as ArtistUri
+}
 
 @Serializable
 internal data class ArtistList(val artists: List<Artist?>)

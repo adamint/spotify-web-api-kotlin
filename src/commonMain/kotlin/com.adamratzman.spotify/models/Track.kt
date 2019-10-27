@@ -58,6 +58,8 @@ data class SimpleTrack(
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse(linkedFrom, href, id, TrackUri(uriString), externalUrlsString) {
+    override val uri: TrackUri get() = super.uri as TrackUri
+
     @Transient
     val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
@@ -142,6 +144,8 @@ data class Track(
     if (uriString.contains("local:")) LocalTrackUri(uriString) else TrackUri(uriString),
     externalUrlsString
 ) {
+    override val uri: TrackUri get() = super.uri as TrackUri
+
     @Transient
     val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
 
@@ -166,6 +170,7 @@ data class LinkedTrack(
 
     val type: String
 ) : CoreObject(href, id, TrackUri(uriString), externalUrlsString) {
+    override val uri: TrackUri get() = super.uri as TrackUri
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
