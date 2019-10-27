@@ -3,14 +3,15 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 plugins {
     `maven-publish`
     signing
+    `java-library`
     kotlin("multiplatform") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
     id("com.diffplug.gradle.spotless") version "3.25.0"
     id("com.moowork.node") version "1.3.1"
 }
 
-group = "spotify-web-api-kotlin"
-version = "1.0-SNAPSHOT"
+group = "com.adamratzman"
+version = "3.0.0-rc.2"
 
 repositories {
     mavenCentral()
@@ -118,6 +119,8 @@ spotless {
 publishing {
     publications {
         val jvm by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin"
+
             pom {
                 name.set("spotify-api-kotlin")
                 description.set("A Kotlin wrapper for the Spotify Web API.")
@@ -153,9 +156,9 @@ publishing {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                val nexusUser: String? by project.extra
+                val nexusUsername: String? by project.extra
                 val nexusPassword: String? by project.extra
-                username = nexusUser
+                username = nexusUsername
                 password = nexusPassword
             }
         }
@@ -166,10 +169,11 @@ signing {
     sign(publishing.publications["jvm"])
 }
 
+
 // get signing confs interactivly if needed
 gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
-        (has("singing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
+        (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
                 || (has("signing.notNeeded") && get("signing.notNeeded") == "true")
     }
     if (!alreadyConfigured && allTasks.any { it is Sign }) {
