@@ -5,12 +5,16 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.AlbumURI
 import com.adamratzman.spotify.models.ArtistURI
 import com.adamratzman.spotify.models.PlaylistURI
+import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.TrackURI
 import com.adamratzman.spotify.models.UserURI
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class UrisTests : Spek({
     describe("Uris tests") {
@@ -103,141 +107,153 @@ class UrisTests : Spek({
                 )
             }
         }
+
+        describe("PlaylistURI") {
+            it("Create playlist with invalid input") {
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    PlaylistURI("a:invalid")
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    PlaylistURI("a:invalid").uri
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    PlaylistURI("a:invalid").id
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                }
+            }
+
+            it("Create playlist with valid input") {
+                assertEquals(
+                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                )
+
+                assertEquals(
+                    "66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
+                )
+
+                assertEquals(
+                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("66wcLiS5R50akaQ3onDyZd").uri
+                )
+
+                assertEquals(
+                    "66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("66wcLiS5R50akaQ3onDyZd").id
+                )
+
+                assertEquals(
+                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                )
+
+                assertEquals(
+                    "66wcLiS5R50akaQ3onDyZd",
+                    PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                )
+            }
+        }
+
+        describe("AlbumURI tests") {
+            it("Create album with invalid input") {
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    AlbumURI("a:invalid")
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    AlbumURI("a:invalid").uri
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    AlbumURI("a:invalid").id
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    AlbumURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                }
+            }
+
+            it("Create album with valid input") {
+                assertEquals(
+                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                    AlbumURI("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
+                )
+
+                assertEquals(
+                    "0W0ag2P4h1Fmp7PnGJVvIJ",
+                    AlbumURI("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
+                )
+
+                assertEquals(
+                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                    AlbumURI("0W0ag2P4h1Fmp7PnGJVvIJ").uri
+                )
+
+                assertEquals(
+                    "0W0ag2P4h1Fmp7PnGJVvIJ",
+                    AlbumURI("0W0ag2P4h1Fmp7PnGJVvIJ").id
+                )
+            }
+        }
+
+        describe("ArtistURI tests") {
+            it("Create artist with invalid input") {
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    ArtistURI("a:invalid")
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    ArtistURI("a:invalid").uri
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    ArtistURI("a:invalid").id
+                }
+
+                assertFailsWith<SpotifyException.BadRequestException> {
+                    ArtistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                }
+            }
+
+            it("Create artist with valid input") {
+                assertEquals(
+                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                    ArtistURI("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
+                )
+
+                assertEquals(
+                    "1XLjkBxFokuDTlHt0mQkRe",
+                    ArtistURI("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
+                )
+
+                assertEquals(
+                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                    ArtistURI("1XLjkBxFokuDTlHt0mQkRe").uri
+                )
+
+                assertEquals(
+                    "1XLjkBxFokuDTlHt0mQkRe",
+                    ArtistURI("1XLjkBxFokuDTlHt0mQkRe").id
+                )
+            }
+        }
     }
-
-    describe("PlaylistURI") {
-        it("Create playlist with invalid input") {
-            assertFailsWith<SpotifyException.BadRequestException> {
-                PlaylistURI("a:invalid")
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                PlaylistURI("a:invalid").uri
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                PlaylistURI("a:invalid").id
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                PlaylistURI("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
-            }
+    describe("uri serialization test") {
+        val json = Json(JsonConfiguration.Stable)
+        it("create UserURI from json by using SpotifyUri.serializer()") {
+            val spotifyUri: SpotifyUri = json.parse(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            assertTrue(spotifyUri is UserURI)
+            assertEquals(UserURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83"), spotifyUri)
         }
-
-        it("Create playlist with valid input") {
-            assertEquals(
-                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
-            )
-
-            assertEquals(
-                "66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
-            )
-
-            assertEquals(
-                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("66wcLiS5R50akaQ3onDyZd").uri
-            )
-
-            assertEquals(
-                "66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("66wcLiS5R50akaQ3onDyZd").id
-            )
-
-            assertEquals(
-                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
-            )
-
-            assertEquals(
-                "66wcLiS5R50akaQ3onDyZd",
-                PlaylistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
-            )
-        }
-    }
-
-    describe("AlbumURI tests") {
-        it("Create album with invalid input") {
-            assertFailsWith<SpotifyException.BadRequestException> {
-                AlbumURI("a:invalid")
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                AlbumURI("a:invalid").uri
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                AlbumURI("a:invalid").id
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                AlbumURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
-            }
-        }
-
-        it("Create album with valid input") {
-            assertEquals(
-                "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
-                AlbumURI("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
-            )
-
-            assertEquals(
-                "0W0ag2P4h1Fmp7PnGJVvIJ",
-                AlbumURI("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
-            )
-
-            assertEquals(
-                "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
-                AlbumURI("0W0ag2P4h1Fmp7PnGJVvIJ").uri
-            )
-
-            assertEquals(
-                "0W0ag2P4h1Fmp7PnGJVvIJ",
-                AlbumURI("0W0ag2P4h1Fmp7PnGJVvIJ").id
-            )
-        }
-    }
-
-    describe("ArtistURI tests") {
-        it("Create artist with invalid input") {
-            assertFailsWith<SpotifyException.BadRequestException> {
-                ArtistURI("a:invalid")
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                ArtistURI("a:invalid").uri
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                ArtistURI("a:invalid").id
-            }
-
-            assertFailsWith<SpotifyException.BadRequestException> {
-                ArtistURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
-            }
-        }
-
-        it("Create artist with valid input") {
-            assertEquals(
-                "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
-                ArtistURI("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
-            )
-
-            assertEquals(
-                "1XLjkBxFokuDTlHt0mQkRe",
-                ArtistURI("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
-            )
-
-            assertEquals(
-                "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
-                ArtistURI("1XLjkBxFokuDTlHt0mQkRe").uri
-            )
-
-            assertEquals(
-                "1XLjkBxFokuDTlHt0mQkRe",
-                ArtistURI("1XLjkBxFokuDTlHt0mQkRe").id
-            )
+        it("create UserURI from json by using UserURI.serializer()") {
+            val userUri = json.parse(UserURI.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            assertEquals(UserURI("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83"), userUri)
         }
     }
 })
