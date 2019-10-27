@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="spotify-web-api-kotlin.spotify-web-api-kotlin.jvmMain" target="1.6" />
+      <module name="spotify-web-api-kotlin.spotify-web-api-kotlin.jvmTest" target="1.6" />
+      <module name="SpotifyKotlinWrapper.core.main" target="1.8" />
+      <module name="SpotifyKotlinWrapper.core.test" target="1.8" />
+      <module name="SpotifyKotlinWrapper.extensions.coroutine.main" target="1.8" />
+      <module name="SpotifyKotlinWrapper.extensions.coroutine.test" target="1.8" />
+      <module name="SpotifyKotlinWrapper.extensions.main" target="1.8" />
+      <module name="SpotifyKotlinWrapper.extensions.test" target="1.8" />
+      <module name="SpotifyKotlinWrapper.main" target="1.8" />
+      <module name="SpotifyKotlinWrapper.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
