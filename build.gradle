@@ -4,7 +4,7 @@ buildscript {
     ext.junit_version = '5.5.1'
     ext.moshi_version = '1.8.0'
     ext.json_version = '20190722'
-    ext.google_http_client_version = '1.32.1'
+    ext.google_http_client_version = '1.33.0'
     ext.spek_version = '2.0.8'
 
     repositories { jcenter() }
