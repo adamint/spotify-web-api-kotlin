@@ -28,9 +28,9 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.toList
-import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
+import kotlinx.coroutines.Dispatchers
 
 internal const val base = "https://api.spotify.com/v1"
 
@@ -55,7 +55,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property logger The Spotify event logger
  *
  */
-sealed class SpotifyApi<T: SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
+sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     val clientId: String?,
     val clientSecret: String?,
     var token: Token,
