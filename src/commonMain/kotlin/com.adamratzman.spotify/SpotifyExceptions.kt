@@ -25,6 +25,7 @@ sealed class SpotifyException(message: String, cause: Throwable? = null) : Excep
                     "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
                     401
                 )
+
         constructor(responseException: ResponseException) :
                 this(
                     responseException.message ?: "Bad Request",
