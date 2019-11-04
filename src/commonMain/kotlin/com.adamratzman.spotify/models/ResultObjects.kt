@@ -82,7 +82,7 @@ class ExternalId(val key: String, val id: String)
  */
 abstract class NeedsApi {
     @Transient
-    lateinit var api: SpotifyApi
+    lateinit var api: SpotifyApi<*, *>
 }
 
 interface ResultEnum {

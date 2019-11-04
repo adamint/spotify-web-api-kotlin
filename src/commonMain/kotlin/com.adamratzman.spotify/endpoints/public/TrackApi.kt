@@ -22,7 +22,7 @@ typealias TrackAPI = TrackApi
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
  */
-class TrackApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *

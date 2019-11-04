@@ -27,7 +27,7 @@ typealias PlaylistAPI = PlaylistApi
 /**
  * Endpoints for retrieving information about a user’s playlists
  */
-open class PlaylistApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
      * [PagingObject] (blame Spotify)

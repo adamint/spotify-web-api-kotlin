@@ -22,7 +22,7 @@ typealias AlbumAPI = AlbumApi
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
  */
-class AlbumApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single album.
      *

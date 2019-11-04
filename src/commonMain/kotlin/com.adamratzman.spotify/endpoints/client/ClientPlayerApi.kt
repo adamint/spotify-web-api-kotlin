@@ -34,7 +34,7 @@ typealias ClientPlayerAPI = ClientPlayerApi
  * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.spotify.com/web-api/working-with-connect/)
  * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work
  */
-class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get information about a user’s available devices.
      *

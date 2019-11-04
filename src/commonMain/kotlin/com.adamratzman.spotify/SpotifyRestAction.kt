@@ -28,7 +28,7 @@ import kotlin.jvm.JvmOverloads
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
  */
-open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi, val supplier: suspend () -> T) {
+open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi<*, *>, val supplier: suspend () -> T) {
     private var hasRunBacking: Boolean = false
     private var hasCompletedBacking: Boolean = false
 
@@ -126,7 +126,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     override fun toString() = complete().toString()
 }
 
-class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi, supplier: suspend () -> T) :
+class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi<*, *>, supplier: suspend () -> T) :
     SpotifyRestAction<T>(api, supplier) {
 
     /**

@@ -39,7 +39,7 @@ typealias ClientPlaylistAPI = ClientPlaylistApi
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  */
-class ClientPlaylistApi(api: SpotifyApi) : PlaylistApi(api) {
+class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *

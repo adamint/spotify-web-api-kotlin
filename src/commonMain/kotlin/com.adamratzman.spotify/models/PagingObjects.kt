@@ -262,7 +262,7 @@ abstract class AbstractPagingObject<T : Any>(
     fun flowEndOrdered(): Flow<AbstractPagingObject<T>> = flowForward()
 }
 
-internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi) = when (this) {
+internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi<*, *>) = when (this) {
     is FeaturedPlaylists -> this.playlists
     is Album -> this.tracks
     is Playlist -> this.tracks
