@@ -106,7 +106,7 @@ sealed class SpotifyUri(val input: String, type: String) {
          *     SpotifyUri.isType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T: SpotifyUri> isType(input: String): Boolean {
+        inline fun <reified T : SpotifyUri> isType(input: String): Boolean {
             return safeInitiate(input, ::invoke)?.let { it is T } ?: false
         }
 
@@ -119,7 +119,7 @@ sealed class SpotifyUri(val input: String, type: String) {
          *     SpotifyUri.canBeType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T: SpotifyUri> canBeType(input: String): Boolean {
+        inline fun <reified T : SpotifyUri> canBeType(input: String): Boolean {
             return isType<T>(input) || !input.contains(':')
         }
     }
