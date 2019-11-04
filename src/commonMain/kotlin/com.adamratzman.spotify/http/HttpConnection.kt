@@ -38,7 +38,7 @@ internal class HttpConnection constructor(
     private val bodyString: String?,
     contentType: String?,
     private val headers: List<HttpHeader> = listOf(),
-    val api: SpotifyApi? = null
+    val api: SpotifyApi<*, *>? = null
 ) {
     private val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 

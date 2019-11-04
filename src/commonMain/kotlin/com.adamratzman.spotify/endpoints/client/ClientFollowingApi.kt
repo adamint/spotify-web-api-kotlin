@@ -24,7 +24,7 @@ typealias ClientFollowingAPI = ClientFollowingApi
 /**
  * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
  */
-class ClientFollowingApi(api: SpotifyApi) : FollowingApi(api) {
+class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     /**
      * Check to see if the current user is following another Spotify user.
      *

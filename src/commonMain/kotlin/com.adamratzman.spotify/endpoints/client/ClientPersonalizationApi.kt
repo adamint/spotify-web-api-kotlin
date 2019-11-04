@@ -16,7 +16,7 @@ typealias ClientPersonalizationAPI = ClientPersonalizationApi
 /**
  * Endpoints for retrieving information about the user’s listening habits.
  */
-class ClientPersonalizationApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * The time frame for which attribute affinities are computed.
      *

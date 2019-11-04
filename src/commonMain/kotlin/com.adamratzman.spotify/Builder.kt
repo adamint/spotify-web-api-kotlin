@@ -7,19 +7,16 @@ import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 // Kotlin DSL builders
 
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
 fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
 
-/** //TODO add suspend functions
+/**
  *  Spotify API builder
  */
 class SpotifyApiBuilder(
@@ -101,7 +98,7 @@ class SpotifyApiBuilder(
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
-    fun build(type: AuthorizationType): SpotifyApi {
+    fun build(type: AuthorizationType): SpotifyApi<*, *> {
         return if (type == AuthorizationType.CLIENT) buildClient()
         else buildCredentialed()
     }
@@ -114,7 +111,7 @@ class SpotifyApiBuilder(
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
-    fun buildCredentialed(): SpotifyApi = spotifyAppApi {
+    fun buildCredentialed(): SpotifyAppApi = spotifyAppApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -143,7 +140,7 @@ enum class AuthorizationType {
     APPLICATION;
 }
 
-interface ISpotifyApiBuilder {
+interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B: ISpotifyApiBuilder<T, B>> {
     var credentials: SpotifyCredentials
     var authorization: SpotifyUserAuthorization
     var options: SpotifyApiOptions
@@ -196,27 +193,35 @@ interface ISpotifyApiBuilder {
     }
 
     fun options(options: SpotifyApiOptions) = apply { this.options = options }
+
+    /**
+     * Build the [T] by provided information
+     */
+    suspend fun suspendBuild(): T
+
+    /**
+     * Build the [T] by provided information
+     */
+    fun build(): T = runBlocking { suspendBuild() }
+
+    /**
+     * Build the [T] by provided information
+     *
+     * Provide a consumer object to be executed after the api has been successfully built
+     */
+    fun buildAsyncAt(scope: CoroutineScope, consumer: (T) -> Unit): Job = with(scope) { buildAsync(consumer) }
+
+    /**
+     * Build the [T] by provided information
+     *
+     * Provide a consumer object to be executed after the api has been successfully built
+     */
+    fun CoroutineScope.buildAsync(consumer: (T) -> Unit): Job = launch {
+        consumer(suspendBuild())
+    }
 }
 
-interface ISpotifyClientApiBuilder : ISpotifyApiBuilder {
-    /**
-     * Build the client api by providing an authorization code, token string, or token object. Only one of the following
-     * needs to be provided
-     *
-     * @param authorizationCode Spotify authorization code retrieved after authentication
-     * @param tokenString Spotify authorization token
-     * @param token [Token] object (useful if you already have exchanged an authorization code yourself
-     */
-    fun build(): SpotifyClientApi
-
-    /**
-     * Build the client api using a provided authorization code, token string, or token object (only one of which
-     * is necessary)
-     *
-     * Provide a consumer object to be executed after the client has been successfully built
-     */
-    suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit)
-
+interface ISpotifyClientApiBuilder : ISpotifyApiBuilder<SpotifyClientApi, SpotifyClientApiBuilder> {
     /**
      * Create a Spotify authorization URL from which API access can be obtained
      *
@@ -236,15 +241,14 @@ class SpotifyClientApiBuilder(
         return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
-    override fun build(): SpotifyClientApi {
+    override suspend fun suspendBuild(): SpotifyClientApi {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         val redirectUri = credentials.redirectUri
 
         require((clientId != null && clientSecret != null && redirectUri != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
-            authorization.authorizationCode != null -> runBlocking {
-                try {
+            authorization.authorizationCode != null -> try {
                     require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
                     val response = executeTokenRequest(
@@ -278,7 +282,6 @@ class SpotifyClientApiBuilder(
                 } catch (e: Exception) {
                     throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
                 }
-            }
             authorization.token != null -> SpotifyClientApi(
                 clientId,
                 clientSecret,
@@ -315,25 +318,9 @@ class SpotifyClientApiBuilder(
             )
         }
     }
-
-    override suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit) = coroutineScope {
-        withContext(Dispatchers.Default) { consumer(build()) }
-    }
 }
 
-interface ISpotifyAppApiBuilder : ISpotifyApiBuilder {
-    /**
-     * Build a public [SpotifyAppApi] using the provided credentials
-     *
-     * @param consumer Consumer to be executed after the api has been successfully built
-     */
-    fun buildAsync(consumer: (SpotifyApi) -> Unit): Job
-
-    /**
-     * Build a public [SpotifyAppApi] using the provided credentials
-     */
-    fun build(): SpotifyApi
-}
+interface ISpotifyAppApiBuilder : ISpotifyApiBuilder<SpotifyAppApi, SpotifyAppApiBuilder>
 
 class SpotifyAppApiBuilder(
     override var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build(),
@@ -341,23 +328,9 @@ class SpotifyAppApiBuilder(
     override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 ) : ISpotifyAppApiBuilder {
     /**
-     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
-     */
-    fun buildPublic() = build()
-
-    /**
-     * Build a public [SpotifyAppApi] using the provided credentials
-     *
-     * Provide a consumer object to be executed after the api has been successfully built
-     */
-    override fun buildAsync(consumer: (SpotifyApi) -> Unit) = GlobalScope.launch {
-        withContext(Dispatchers.Default) { consumer(build()) }
-    }
-
-    /**
      * Build a public [SpotifyAppApi] using the provided credentials
      */
-    override fun build(): SpotifyApi {
+    override suspend fun suspendBuild(): SpotifyAppApi {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }
@@ -393,7 +366,7 @@ class SpotifyAppApiBuilder(
             }
             else -> try {
                 require(clientId != null && clientSecret != null) { "Illegal credentials provided" }
-                val token = runBlocking { getCredentialedToken(clientId, clientSecret, null) }
+                val token = getCredentialedToken(clientId, clientSecret, null)
                 SpotifyAppApi(
                     clientId,
                     clientSecret,

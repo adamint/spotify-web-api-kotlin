@@ -28,6 +28,9 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.toList
+import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 internal const val base = "https://api.spotify.com/v1"
 
@@ -52,7 +55,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property logger The Spotify event logger
  *
  */
-abstract class SpotifyApi internal constructor(
+sealed class SpotifyApi<T: SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     val clientId: String?,
     val clientSecret: String?,
     var token: Token,
@@ -126,7 +129,7 @@ abstract class SpotifyApi internal constructor(
     /**
      * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
      */
-    abstract fun getApiBuilderDsl(): ISpotifyApiBuilder
+    abstract fun getApiBuilderDsl(): B
 
     private fun clearCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
@@ -155,7 +158,7 @@ abstract class SpotifyApi internal constructor(
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
 
-    /** //TODO add suspend version of it
+    /**
      * Tests whether the current [token] is actually valid. By default, an endpoint is called *once* to verify
      * validity.
      *
@@ -163,7 +166,13 @@ abstract class SpotifyApi internal constructor(
      *
      * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
      */
-    fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse {
+    @JvmOverloads
+    fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse = runBlocking {
+        suspendIsTokenValid(makeTestRequest)
+    }
+
+    @JvmOverloads
+    suspend fun suspendIsTokenValid(makeTestRequest: Boolean = true, context: CoroutineContext = Dispatchers.Default): TokenValidityResponse {
         if (token.shouldRefresh()) return TokenValidityResponse(
             false,
             SpotifyAuthenticationException("Token needs to be refreshed (is it expired?)")
@@ -171,7 +180,7 @@ abstract class SpotifyApi internal constructor(
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
         return try {
-            browse.getAvailableGenreSeeds().complete()
+            browse.getAvailableGenreSeeds().suspendComplete(context)
             TokenValidityResponse(true, null)
         } catch (e: Exception) {
             TokenValidityResponse(false, e)
@@ -202,7 +211,7 @@ class SpotifyAppApi internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean
-) : SpotifyApi(
+) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
     clientId,
     clientSecret,
     token,
@@ -303,7 +312,7 @@ class SpotifyClientApi internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean
-) : SpotifyApi(
+) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
     clientId,
     clientSecret,
     token,
@@ -500,7 +509,7 @@ class SpotifyClientApi internal constructor(
                 scopes.all { token.scopes.contains(it) }
 }
 
-typealias SpotifyAPI = SpotifyApi
+typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
 typealias SpotifyClientAPI = SpotifyClientApi
 typealias SpotifyAppAPI = SpotifyAppApi
 
@@ -511,7 +520,7 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi?): Token {
+suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?): Token {
     val response = executeTokenRequest(
         HttpConnection(
             "https://accounts.spotify.com/api/token",
