@@ -2,10 +2,10 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
+import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.runBlocking as kRunBlocking
 
 internal actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
