@@ -18,5 +18,6 @@ internal actual fun CoroutineScope.schedule(
 ) {
     launch {
         delay(timeUnit.toMillis(quantity.toLong()))
+        consumer()
     }
 }
