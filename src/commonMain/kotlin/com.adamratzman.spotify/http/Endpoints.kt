@@ -16,7 +16,7 @@ import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
 
-abstract class SpotifyEndpoint(val api: SpotifyApi) {
+abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
 
     internal suspend fun get(url: String): String {
@@ -190,7 +190,7 @@ data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
-    val api: SpotifyApi
+    val api: SpotifyApi<*, *>
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {

@@ -27,7 +27,7 @@ typealias ArtistAPI = ArtistApi
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
  */
-class ArtistApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID.
      *

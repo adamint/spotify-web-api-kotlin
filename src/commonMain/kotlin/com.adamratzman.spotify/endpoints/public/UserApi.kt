@@ -16,7 +16,7 @@ typealias UserAPI = UserApi
 /**
  * Endpoints for retrieving information about a user’s profile.
  */
-open class UserApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+open class UserApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *
