@@ -6,6 +6,7 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -18,7 +19,7 @@ import kotlinx.coroutines.withContext
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
 fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
 
-/**
+/** //TODO add suspend functions
  *  Spotify API builder
  */
 class SpotifyApiBuilder(
@@ -242,39 +243,41 @@ class SpotifyClientApiBuilder(
 
         require((clientId != null && clientSecret != null && redirectUri != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
-            authorization.authorizationCode != null -> try {
-                require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+            authorization.authorizationCode != null -> runBlocking {
+                try {
+                    require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
-                val response = executeTokenRequest(
-                    HttpConnection(
-                        "https://accounts.spotify.com/api/token",
-                        HttpRequestMethod.POST,
-                        mapOf(
-                            "grant_type" to "authorization_code",
-                            "code" to authorization.authorizationCode,
-                            "redirect_uri" to redirectUri
-                        ),
-                        null,
-                        "application/x-www-form-urlencoded",
-                        listOf(),
-                        null
-                    ), clientId, clientSecret
-                )
+                    val response = executeTokenRequest(
+                        HttpConnection(
+                            "https://accounts.spotify.com/api/token",
+                            HttpRequestMethod.POST,
+                            mapOf(
+                                "grant_type" to "authorization_code",
+                                "code" to authorization.authorizationCode,
+                                "redirect_uri" to redirectUri
+                            ),
+                            null,
+                            "application/x-www-form-urlencoded",
+                            listOf(),
+                            null
+                        ), clientId, clientSecret
+                    )
 
-                SpotifyClientApi(
-                    clientId,
-                    clientSecret,
-                    redirectUri,
-                    response.body.toObject(Token.serializer(), null),
-                    options.useCache,
-                    options.cacheLimit,
-                    options.automaticRefresh,
-                    options.retryWhenRateLimited,
-                    options.enableLogger,
-                    options.testTokenValidity
-                )
-            } catch (e: Exception) {
-                throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
+                    SpotifyClientApi(
+                        clientId,
+                        clientSecret,
+                        redirectUri,
+                        response.body.toObject(Token.serializer(), null),
+                        options.useCache,
+                        options.cacheLimit,
+                        options.automaticRefresh,
+                        options.retryWhenRateLimited,
+                        options.enableLogger,
+                        options.testTokenValidity
+                    )
+                } catch (e: Exception) {
+                    throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
+                }
             }
             authorization.token != null -> SpotifyClientApi(
                 clientId,
@@ -390,7 +393,7 @@ class SpotifyAppApiBuilder(
             }
             else -> try {
                 require(clientId != null && clientSecret != null) { "Illegal credentials provided" }
-                val token = getCredentialedToken(clientId, clientSecret, null)
+                val token = runBlocking { getCredentialedToken(clientId, clientSecret, null) }
                 SpotifyAppApi(
                     clientId,
                     clientSecret,

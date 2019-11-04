@@ -1,3 +1,4 @@
+/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import kotlinx.io.core.String
@@ -9,6 +10,7 @@ private val BASE64_PAD: Char = '='
 private val BASE64_INVERSE_ALPHABET = IntArray(256) {
     BASE64_ALPHABET.indexOf(it.toChar())
 }
+
 private fun Int.toBase64(): Char = BASE64_ALPHABET[this]
 
 fun encodeToBase64(src: ByteArray): ByteArray {

@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 
 expect enum class TimeUnit {
     MILLISECONDS, SECONDS;
+
     fun toMillis(duration: Long): Long
 }
 

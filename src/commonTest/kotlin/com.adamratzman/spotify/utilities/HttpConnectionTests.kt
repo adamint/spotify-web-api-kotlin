@@ -3,13 +3,15 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import com.adamratzman.spotify.http.HttpResponse
+import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @UnstableDefault
 class HttpConnectionTests : Spek({
@@ -21,7 +23,7 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("get request response code") {
                 assertEquals(200, response.responseCode)
@@ -53,7 +55,7 @@ class HttpConnectionTests : Spek({
                     null,
                     "body",
                     "text/html"
-            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("post request response code") {
                 assertEquals(200, response.responseCode)
@@ -89,7 +91,7 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).execute().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
 
             it("delete request response code") {
                 assertEquals(200, response.responseCode)
@@ -105,7 +107,7 @@ class HttpConnectionTests : Spek({
                             null,
                             null,
                             null
-                    ).execute().responseCode
+                    ).executeBlocking().responseCode
             )
         }
 
@@ -135,3 +137,5 @@ class HttpConnectionTests : Spek({
          } */
     }
 })
+
+private fun HttpConnection.executeBlocking(): HttpResponse = runBlocking { execute() }

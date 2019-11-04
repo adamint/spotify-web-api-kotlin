@@ -9,7 +9,7 @@ internal expect fun getCurrentTimeMs(): Long
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
-internal fun <T> catch(function: () -> T): T? {
+internal inline fun <T> catch(function: () -> T): T? {
     return try {
         function()
     } catch (e: SpotifyException.BadRequestException) {
@@ -23,3 +23,5 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
 internal expect fun formatDate(format: String, date: Long): String
+
+internal expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

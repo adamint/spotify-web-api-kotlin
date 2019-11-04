@@ -26,6 +26,7 @@ import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.toList
 
 internal const val base = "https://api.spotify.com/v1"
@@ -103,7 +104,9 @@ abstract class SpotifyApi internal constructor(
      * @return The old access token if refresh was successful
      * @throws BadRequestException if refresh fails
      */
-    abstract fun refreshToken(): Token
+    fun refreshToken(): Token = runBlocking {
+        suspendRefreshToken()
+    }
 
     /**
      * A list of all endpoints included in this api type
@@ -152,7 +155,7 @@ abstract class SpotifyApi internal constructor(
         return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
     }
 
-    /**
+    /** //TODO add suspend version of it
      * Tests whether the current [token] is actually valid. By default, an endpoint is called *once* to verify
      * validity.
      *
@@ -174,6 +177,15 @@ abstract class SpotifyApi internal constructor(
             TokenValidityResponse(false, e)
         }
     }
+
+    /**
+     * If the method used to create the [token] supports token refresh and
+     * the information in [token] is accurate, attempt to refresh the token
+     *
+     * @return The old access token if refresh was successful
+     * @throws BadRequestException if refresh fails
+     */
+    abstract suspend fun suspendRefreshToken(): Token
 }
 
 /**
@@ -239,7 +251,7 @@ class SpotifyAppApi internal constructor(
      */
     override val following: FollowingApi = FollowingApi(this)
 
-    override fun refreshToken(): Token {
+    override suspend fun suspendRefreshToken(): Token {
         require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
         val currentToken = this.token
 
@@ -389,7 +401,7 @@ class SpotifyClientApi internal constructor(
         runExecutableFunctions = false
     }
 
-    override fun refreshToken(): Token {
+    override suspend fun suspendRefreshToken(): Token {
         require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
 
         val currentToken = this.token
@@ -483,7 +495,9 @@ class SpotifyClientApi internal constructor(
      * Whether the current access token allows access to all of the provided scopes
      */
     fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean =
-        !isTokenValid(false).isValid && (scopes.toList() + scope).all { token.scopes.contains(it) }
+        !isTokenValid(false).isValid &&
+                token.scopes.contains(scope) &&
+                scopes.all { token.scopes.contains(it) }
 }
 
 typealias SpotifyAPI = SpotifyApi
@@ -497,7 +511,7 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi?): Token {
+suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi?): Token {
     val response = executeTokenRequest(
         HttpConnection(
             "https://accounts.spotify.com/api/token",
@@ -515,7 +529,11 @@ fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi
     throw SpotifyException.BadRequestException(response.body.toObject(AuthenticationError.serializer(), null))
 }
 
-internal fun executeTokenRequest(httpConnection: HttpConnection, clientId: String, clientSecret: String): HttpResponse {
+internal suspend fun executeTokenRequest(
+    httpConnection: HttpConnection,
+    clientId: String,
+    clientSecret: String
+): HttpResponse {
     return httpConnection.execute(
         listOf(
             HttpHeader(
