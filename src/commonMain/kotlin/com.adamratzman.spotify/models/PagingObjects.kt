@@ -241,7 +241,6 @@ abstract class AbstractPagingObject<T : Any>(
     private fun getNextImpl() = getImpl(PagingTraversalType.FORWARDS)
     private fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 
-
     fun getNext(): AbstractPagingObject<T>? = getNextImpl()
     fun getPrevious(): AbstractPagingObject<T>? = getPreviousImpl()
 
@@ -282,12 +281,11 @@ abstract class AbstractPagingObject<T : Any>(
 
     @ExperimentalCoroutinesApi
     fun flowEndOrdered(): Flow<AbstractPagingObject<T>> = flowForward()
-
 }
 
 internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi) = when (this) {
-     is FeaturedPlaylists -> this.playlists
+    is FeaturedPlaylists -> this.playlists
     is Album -> this.tracks
-     is Playlist -> this.tracks
+    is Playlist -> this.tracks
     else -> null
 }.let { it?.endpoint = spotifyApi.tracks; this }
