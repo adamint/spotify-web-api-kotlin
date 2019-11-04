@@ -6,12 +6,9 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 // Kotlin DSL builders
 
@@ -214,7 +211,7 @@ interface ISpotifyClientApiBuilder : ISpotifyApiBuilder {
      *
      * Provide a consumer object to be executed after the client has been successfully built
      */
-    suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit)
+    suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit): Job
 
     /**
      * Create a Spotify authorization URL from which API access can be obtained
@@ -313,8 +310,8 @@ class SpotifyClientApiBuilder(
         }
     }
 
-    override suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit) = coroutineScope {
-        withContext(Dispatchers.Default) { consumer(build()) }
+    override suspend fun buildAsync(consumer: (SpotifyClientApi) -> Unit) = GlobalScope.launch {
+        consumer(build())
     }
 }
 
@@ -348,7 +345,7 @@ class SpotifyAppApiBuilder(
      * Provide a consumer object to be executed after the api has been successfully built
      */
     override fun buildAsync(consumer: (SpotifyApi) -> Unit) = GlobalScope.launch {
-        withContext(Dispatchers.Default) { consumer(build()) }
+        consumer(build())
     }
 
     /**
