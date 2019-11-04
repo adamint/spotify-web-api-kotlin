@@ -16,6 +16,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.content.TextContent
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.io.core.toByteArray
 import kotlinx.io.core.use
@@ -138,6 +139,8 @@ internal class HttpConnection constructor(
                     }
                 )
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ResponseException) {
             throw SpotifyException.BadRequestException(e)
         }

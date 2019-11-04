@@ -7,6 +7,7 @@ import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -279,6 +280,8 @@ class SpotifyClientApiBuilder(
                         options.enableLogger,
                         options.testTokenValidity
                     )
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
                 }
@@ -378,6 +381,8 @@ class SpotifyAppApiBuilder(
                     options.enableLogger,
                     options.testTokenValidity
                 )
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 throw SpotifyAuthenticationException("Invalid credentials provided in the login process", e)
             }

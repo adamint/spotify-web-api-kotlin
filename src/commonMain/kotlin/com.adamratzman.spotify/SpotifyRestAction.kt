@@ -11,6 +11,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import kotlin.jvm.JvmOverloads
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -73,6 +74,8 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
         hasRunBacking = true
         return@withContext try {
             supplier().also { hasCompletedBacking = true }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Throwable) {
             throw e
         }
@@ -91,6 +94,8 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
             try {
                 val result = suspendComplete()
                 consumer(result)
+            } catch (e: CancellationException) {
+                throw e
             } catch (t: Throwable) {
                 failure(t)
             }
