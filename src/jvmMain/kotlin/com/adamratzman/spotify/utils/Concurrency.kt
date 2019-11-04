@@ -2,10 +2,10 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
+import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.CompletableFuture
 
 actual typealias TimeUnit = java.util.concurrent.TimeUnit
 
