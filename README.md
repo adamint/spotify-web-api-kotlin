@@ -1,5 +1,5 @@
 # Kotlin Spotify Web API 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+[![Download](https://api.bintray.com/packages/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/images/download.svg?version=3.0.0-rc.1) ](https://bintray.com/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/3.0.0-rc.1/link)
 [![](https://img.shields.io/badge/Wiki-Docs-red.svg)](https://adamint.github.io/spotify-web-api-kotlin/-spotify-kotlin-wrapper/)
 [![CircleCI](https://circleci.com/gh/adamint/spotify-web-api-kotlin.svg?style=shield)](https://circleci.com/gh/adamint/spotify-web-api-kotlin) 
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
@@ -29,7 +29,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.0.0'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: 'SPOTIFY_API_VERSION'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -51,9 +51,11 @@ dependencies {
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>spotify-api-kotlin</artifactId>
-    <version>3.0.0-rc.2</version>
+    <version>SPOTIFY_API_VERSION</version>
 </dependency>
-
+```
+JCenter Maven Repository:
+```
 <repository>
     <id>jcenter</id>
     <name>jcenter-bintray</name>
