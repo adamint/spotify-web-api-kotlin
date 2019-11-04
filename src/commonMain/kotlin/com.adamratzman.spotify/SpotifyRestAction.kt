@@ -5,6 +5,9 @@ import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.schedule
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,9 +21,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
