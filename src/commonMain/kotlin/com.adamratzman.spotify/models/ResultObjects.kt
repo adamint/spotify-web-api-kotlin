@@ -11,7 +11,7 @@ import kotlinx.serialization.Transient
 
 internal const val TRANSIENT_EMPTY_STRING = ""
 internal val TRANSIENT_NULL = null
-internal val TRANSIENT_URI = UserUri("spotify:user:")
+internal val TRANSIENT_URI = UserUri("TRANSIENT_URI")
 
 /**
  * Represents an identifiable Spotify object such as an Album or Recommendation Seed

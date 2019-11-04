@@ -207,7 +207,7 @@ abstract class AbstractPagingObject<T : Any>(
     @Transient open val previous: String? = null,
     @Transient open val total: Int = -1
 ) : List<T> {
-    override val size: Int = items.size
+    override val size: Int get() = items.size
 
     override fun contains(element: T) = items.contains(element)
 
