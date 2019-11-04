@@ -20,9 +20,10 @@ actual enum class TimeUnit(val multiplier: Int) {
 internal actual inline fun CoroutineScope.schedule(
     quantity: Int,
     timeUnit: TimeUnit,
-    consumer: () -> Unit
+    crossinline consumer: () -> Unit
 ) {
     launch {
         delay(timeUnit.toMillis(quantity.toLong()))
+        consumer()
     }
 }
