@@ -6,10 +6,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.CompletableFuture
+import kotlinx.coroutines.runBlocking as kRunBlocking
+
+internal actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
+    coroutineCode()
+}
 
 actual typealias TimeUnit = java.util.concurrent.TimeUnit
 
-actual fun CoroutineScope.schedule(
+internal actual fun CoroutineScope.schedule(
     quantity: Int,
     timeUnit: TimeUnit,
     consumer: () -> Unit
@@ -20,4 +25,4 @@ actual fun CoroutineScope.schedule(
     }
 }
 
-fun <T> SpotifyRestAction<T>.asFuture() = CompletableFuture.supplyAsync(supplier)
+fun <T> SpotifyRestAction<T>.asFuture() = CompletableFuture.supplyAsync(::complete)

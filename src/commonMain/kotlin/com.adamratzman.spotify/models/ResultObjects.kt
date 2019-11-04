@@ -122,5 +122,4 @@ class SpotifyUriException(message: String) : SpotifyException.BadRequestExceptio
 class SpotifyRatelimitedException(time: Long) :
     SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
 
-
 typealias CountryCode = Market

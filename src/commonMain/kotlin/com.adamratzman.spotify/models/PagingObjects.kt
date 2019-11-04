@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -67,7 +68,7 @@ class PagingObject<T : Any>(
     override val total: Int
 ) : AbstractPagingObject<T>(href, items, limit, next, offset, previous, total) {
     @Suppress("UNCHECKED_CAST")
-    override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
+    override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         val endpointFinal = endpoint!!
         return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
             when (itemClazz) {
@@ -85,7 +86,7 @@ class PagingObject<T : Any>(
         }
     }
 
-    override fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
+    override suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
         val pagingObjects = mutableListOf<AbstractPagingObject<T>>()
         var prev = previous?.let { getPrevious() }
         while (prev != null) {
@@ -109,12 +110,12 @@ class PagingObject<T : Any>(
      * Get all PagingObjects associated with the request
      */
     @Suppress("UNCHECKED_CAST")
-    fun getAll() = endpoint!!.toAction { (getAllImpl() as Sequence<PagingObject<T>>).toList() }
+    suspend fun getAll() = endpoint!!.toAction { (getAllImpl() as Sequence<PagingObject<T>>).toList() }
 
     /**
      * Get all items of type [T] associated with the request
      */
-    fun getAllItems() = endpoint!!.toAction { getAll().complete().map { it.items }.flatten() }
+    suspend fun getAllItems() = endpoint!!.toAction { getAll().complete().map { it.items }.flatten() }
 }
 
 /**
@@ -154,7 +155,7 @@ class CursorBasedPagingObject<T : Any>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
+    override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         require(type != PagingTraversalType.BACKWARDS) { "CursorBasedPagingObjects only can go forwards" }
         return next?.let {
             val url = endpoint!!.get(it)
@@ -174,8 +175,8 @@ class CursorBasedPagingObject<T : Any>(
         }
     }
 
-    override fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
-        return generateSequence(this) { it.getImpl(PagingTraversalType.FORWARDS) as? CursorBasedPagingObject<T> }
+    override suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
+        return generateSequence(this) { runBlocking { it.getImpl(PagingTraversalType.FORWARDS) as? CursorBasedPagingObject<T> } }
     }
 }
 
@@ -206,44 +207,21 @@ abstract class AbstractPagingObject<T : Any>(
     @Transient open val offset: Int = 0,
     @Transient open val previous: String? = null,
     @Transient open val total: Int = -1
-) : List<T> {
-    override val size: Int = items.size
-
-    override fun contains(element: T) = items.contains(element)
-
-    override fun containsAll(elements: Collection<T>) = items.containsAll(elements)
-
-    override fun get(index: Int) = items[index]
-
-    override fun indexOf(element: T) = items.indexOf(element)
-
-    override fun isEmpty() = items.isEmpty()
-
-    override fun iterator() = items.iterator()
-
-    override fun lastIndexOf(element: T) = items.lastIndexOf(element)
-
-    override fun listIterator() = items.listIterator()
-
-    override fun listIterator(index: Int) = items.listIterator(index)
-
-    override fun subList(fromIndex: Int, toIndex: Int) = items.subList(fromIndex, toIndex)
-
+) : List<T> by items {
     @Transient
     internal var endpoint: SpotifyEndpoint? = null
 
     @Transient
     internal var itemClazz: KClass<T>? = null
 
-    internal abstract fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
-    internal abstract fun getAllImpl(): Sequence<AbstractPagingObject<T>>
+    internal abstract suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
+    internal abstract suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>>
 
-    private fun getNextImpl() = getImpl(PagingTraversalType.FORWARDS)
-    private fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
+    private suspend fun getNextImpl() = getImpl(PagingTraversalType.FORWARDS)
+    private suspend fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 
-
-    fun getNext(): AbstractPagingObject<T>? = getNextImpl()
-    fun getPrevious(): AbstractPagingObject<T>? = getPreviousImpl()
+    suspend fun getNext(): AbstractPagingObject<T>? = getNextImpl()
+    suspend fun getPrevious(): AbstractPagingObject<T>? = getPreviousImpl()
 
     /**
      * Flow from current page backwards.
@@ -282,12 +260,11 @@ abstract class AbstractPagingObject<T : Any>(
 
     @ExperimentalCoroutinesApi
     fun flowEndOrdered(): Flow<AbstractPagingObject<T>> = flowForward()
-
 }
 
 internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi) = when (this) {
-     is FeaturedPlaylists -> this.playlists
+    is FeaturedPlaylists -> this.playlists
     is Album -> this.tracks
-     is Playlist -> this.tracks
+    is Playlist -> this.tracks
     else -> null
 }.let { it?.endpoint = spotifyApi.tracks; this }

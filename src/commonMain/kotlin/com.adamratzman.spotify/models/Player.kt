@@ -57,7 +57,8 @@ data class Device(
     val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable(null, id) {
-    @Transient val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
+    @Transient
+    val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
 }
 
 /**

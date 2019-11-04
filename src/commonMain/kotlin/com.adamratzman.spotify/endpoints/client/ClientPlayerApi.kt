@@ -247,7 +247,13 @@ class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
                 album != null -> body += json { "context_uri" to AlbumUri(album).uri }
                 artist != null -> body += json { "context_uri" to ArtistUri(artist).uri }
                 playlist != null -> body += json { "context_uri" to playlist.uri }
-                tracksToPlay.isNotEmpty() -> body += json { "uris" to JsonArray(tracksToPlay.map { TrackUri(it).uri }.map(::JsonPrimitive)) }
+                tracksToPlay.isNotEmpty() -> body += json {
+                    "uris" to JsonArray(
+                        tracksToPlay.map { TrackUri(it).uri }.map(
+                            ::JsonPrimitive
+                        )
+                    )
+                }
             }
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }
