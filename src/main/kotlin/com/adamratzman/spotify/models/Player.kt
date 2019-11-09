@@ -27,7 +27,7 @@ data class PlayHistoryContext(
 data class PlayHistory(
     val track: SimpleTrack,
     @Json(name = "played_at") val playedAt: String,
-    val context: PlayHistoryContext
+    val context: PlayHistoryContext?
 )
 
 /**
