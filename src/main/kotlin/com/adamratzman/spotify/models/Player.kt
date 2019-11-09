@@ -14,9 +14,8 @@ data class PlayHistoryContext(
     @Json(name = "href") private val _href: String,
     @Json(name = "external_urls") private val _externalUrls: Map<String, String>,
     @Json(name = "uri") private val _uri: String,
-
     val type: String
-) : CoreObject(_href, _href, TrackURI(_uri), _externalUrls)
+) : CoreObject(_href, _href, if (type == "artist") ArtistURI(_uri) else if (type == "playlist") PlaylistURI(_uri) else AlbumURI(_uri), _externalUrls)
 
 /**
  * Information about a previously-played track
