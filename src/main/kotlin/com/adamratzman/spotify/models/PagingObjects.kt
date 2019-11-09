@@ -142,7 +142,7 @@ class CursorBasedPagingObject<T>(
     limit: Int,
     next: String?,
     @Json(name = "cursors") val cursor: Cursor,
-    total: Int
+    total: Int = items.size
 ) : AbstractPagingObject<T>(href, items, limit, next, 0, null, total) {
     /**
      * Get the next set of [T] items
