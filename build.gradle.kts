@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.serialization") version "1.3.50"
     id("com.diffplug.gradle.spotless") version "3.25.0"
     id("com.moowork.node") version "1.3.1"
+    id("org.jetbrains.dokka") version "0.10.0"
 }
 
 group = "com.adamratzman"
@@ -108,6 +109,8 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
+
+
 spotless {
     kotlin {
         target("**/*.kt")
@@ -195,5 +198,12 @@ gradle.taskGraph.whenReady {
         }
 
         console.printf("\nThanks.\n\n")
+    }
+}
+
+tasks {
+    val dokka by getting(DokkaTask::class) {
+        outputFormat = "html"
+        outputDirectory = "/docs"
     }
 }
