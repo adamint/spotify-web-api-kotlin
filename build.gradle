@@ -16,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id "com.diffplug.gradle.spotless" version "3.26.0"
     id "base"
     id "io.codearte.nexus-staging" version "0.21.1"
     id "com.bmuschko.nexus" version "2.3.1"
