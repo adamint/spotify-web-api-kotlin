@@ -14,8 +14,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SpotifyCategory(
-    @SerialName("href")override val href: String,
-    @SerialName("id")override val id: String,
+    @SerialName("href") override val href: String,
+    @SerialName("id") override val id: String,
 
     val icons: List<SpotifyImage>,
     val name: String
@@ -35,8 +35,8 @@ data class SpotifyCategory(
  */
 @Serializable
 data class RecommendationSeed(
-    @SerialName("href")override val href: String?,
-    @SerialName("id")override val id: String,
+    @SerialName("href") override val href: String?,
+    @SerialName("id") override val id: String,
 
     val initialPoolSize: Int,
     val afterFilteringSize: Int,

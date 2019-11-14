@@ -11,106 +11,100 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.url
 import io.ktor.client.response.readText
+import io.ktor.client.utils.EmptyContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.content.TextContent
-import io.ktor.util.toMap
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.io.core.toByteArray
+import kotlinx.io.core.use
 
-enum class HttpRequestMethod {
-    GET,
-    POST,
-    PUT,
-    DELETE;
+enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
+    GET(HttpMethod.Get),
+    POST(HttpMethod.Post),
+    PUT(HttpMethod.Put),
+    DELETE(HttpMethod.Delete);
 }
 
-data class HttpHeader(val key: String, val value: String)
+internal data class HttpHeader(val key: String, val value: String)
 
-data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
+internal data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
-class HttpConnection constructor(
+internal class HttpConnection constructor(
     private val url: String,
     private val method: HttpRequestMethod,
     private val bodyMap: Map<*, *>?,
     private val bodyString: String?,
-    private val contentType: String?,
+    contentType: String?,
     private val headers: List<HttpHeader> = listOf(),
-    val api: SpotifyApi? = null
+    val api: SpotifyApi<*, *>? = null
 ) {
+    private val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
     companion object {
         private val client = HttpClient()
     }
 
-    fun execute(additionalHeaders: List<HttpHeader>? = null, retryIf502: Boolean = true): HttpResponse {
-        val ktorContentType = contentType?.let { ContentType.parse(contentType) }
+    private fun String?.toByteArrayContent(): ByteArrayContent? {
+        return if (this == null) null else ByteArrayContent(this.toByteArray(), contentType)
+    }
 
-        val httpRequestBuilder = HttpRequestBuilder().apply {
-            url(this@HttpConnection.url)
+    private fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
+        url(this@HttpConnection.url)
+        method = this@HttpConnection.method.externalMethod
 
-            when (this@HttpConnection.method) {
-                HttpRequestMethod.GET -> method = HttpMethod.Get
-                HttpRequestMethod.DELETE -> {
-                    method = HttpMethod.Delete
-                    bodyString?.let { body = ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
-                }
-                HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
-                    val content = if (contentType == "application/x-www-form-urlencoded") {
-                        bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&")?.let {
-                            ByteArrayContent(it.toByteArray(), ktorContentType)
-                        } ?: bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
-                    } else bodyString?.let { ByteArrayContent(bodyString.toByteArray(), ktorContentType ?: ContentType.parse("application/json")) }
-
-                    method = if (this@HttpConnection.method == HttpRequestMethod.PUT) HttpMethod.Put
-                    else HttpMethod.Post
-
-                    content?.let { body = content }
-                }
+        body = when (this@HttpConnection.method) {
+            HttpRequestMethod.DELETE -> {
+                bodyString.toByteArrayContent() ?: body
             }
+            HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
+                val contentString = if (contentType == ContentType.Application.FormUrlEncoded) {
+                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&") ?: bodyString
+                } else bodyString
 
-            if (body !is ByteArrayContent && this@HttpConnection.method in listOf(
-                    HttpRequestMethod.POST,
-                    HttpRequestMethod.PUT
-                )
-            ) {
-                body = ByteArrayContent("".toByteArray(), ktorContentType)
+                contentString.toByteArrayContent() ?: ByteArrayContent("".toByteArray(), contentType)
             }
-
-            if (ktorContentType != null && body !is ByteArrayContent && this@HttpConnection.method != HttpRequestMethod.POST) {
-                body = TextContent("", ktorContentType)
-            }
-
-            val allHeaders = (additionalHeaders ?: listOf()) + this@HttpConnection.headers
-
-            allHeaders.filter { !it.key.equals("Authorization", true) }.forEach { (key, value) ->
-                header(key, value)
-            }
-
-            allHeaders.find { it.key.equals("Authorization", true) }?.let { authHeader ->
-                header("Authorization", authHeader.value)
-            }
+            else -> body
         }
 
-        return runBlocking {
-            try {
-                val call = client.execute(httpRequestBuilder)
-                val responseCode = call.response.status.value
+        if (body === EmptyContent && this@HttpConnection.method != HttpRequestMethod.POST) {
+            body = TextContent("", contentType)
+        }
 
-                if (responseCode == 502 && retryIf502) {
+        // let additionalHeaders overwrite headers
+        val allHeaders = this@HttpConnection.headers + (additionalHeaders ?: listOf())
+
+        allHeaders.forEach { (key, value) ->
+            header(key, value)
+        }
+    }
+
+    internal suspend fun execute(
+        additionalHeaders: List<HttpHeader>? = null,
+        retryIf502: Boolean = true
+    ): HttpResponse {
+        val httpRequest = buildRequest(additionalHeaders)
+
+        try {
+            return client.execute(httpRequest).use {
+                val resp = it.response
+                val respCode = resp.status.value
+
+                if (respCode == 502 && retryIf502) {
                     api?.logger?.logError(
                         false,
                         "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
                         null
                     )
-                    return@runBlocking execute(additionalHeaders, retryIf502 = false)
+                    return@use execute(additionalHeaders, retryIf502 = false)
+                } else if (respCode == 502 && !retryIf502) {
+                    api?.logger?.logWarning("Recieved 502 (Invalid response) for URL $url and $this\nNot retrying")
                 }
 
-                if (responseCode == 502 && !retryIf502) api?.logger?.logWarning("502 retry successful for $this")
-
-                if (responseCode == 429) {
-                    val ratelimit = call.response.headers["Retry-After"]!!.toLong() + 1L
+                if (respCode == 429) {
+                    val ratelimit = resp.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.retryWhenRateLimited == true) {
                         api.logger.logError(
                             false,
@@ -119,40 +113,36 @@ class HttpConnection constructor(
                         )
 
                         delay(ratelimit * 1000)
-                        val retryResponse = try {
-                            execute(additionalHeaders, retryIf502 = retryIf502)
-                        } catch (e: Throwable) {
-                            throw e
-                        }
-
-                        return@runBlocking retryResponse
+                        return@use execute(additionalHeaders, retryIf502 = retryIf502)
                     } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
-                val body = call.response.readText()
+                val body = resp.readText()
 
-                if (responseCode == 401 && body.contains("access token") &&
+                if (respCode == 401 && body.contains("access token") &&
                     api != null && api.automaticRefresh
                 ) {
-                    api.refreshToken()
+                    api.suspendRefreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
                     newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
-                    return@runBlocking execute(newAdditionalHeaders, retryIf502)
+                    return execute(newAdditionalHeaders, retryIf502)
                 }
 
-                return@runBlocking HttpResponse(
-                    responseCode = responseCode,
+                return HttpResponse(
+                    responseCode = respCode,
                     body = body,
-                    headers = call.response.headers.toMap().toList().map {
+                    headers = resp.headers.entries().map { (key, value) ->
                         HttpHeader(
-                            it.first,
-                            it.second.getOrNull(0) ?: "null"
+                            key,
+                            value.getOrNull(0) ?: "null"
                         )
                     }
-                ).also { call.close() }
-            } catch (e: ResponseException) {
-                throw SpotifyException.BadRequestException(e)
+                )
             }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: ResponseException) {
+            throw SpotifyException.BadRequestException(e)
         }
     }
 
@@ -167,8 +157,6 @@ class HttpConnection constructor(
     }
 }
 
-enum class HttpConnectionStatus(val code: Int) {
+internal enum class HttpConnectionStatus(val code: Int) {
     HTTP_NOT_MODIFIED(304);
 }
-
-expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

@@ -14,7 +14,7 @@ typealias ClientUserAPI = ClientProfileApi
 /**
  * Endpoints for retrieving information about a user’s profile.
  */
-class ClientProfileApi(api: SpotifyApi) : UserApi(api) {
+class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
     /**
      * Get detailed profile information about the current user (including the current user’s username).
      *
