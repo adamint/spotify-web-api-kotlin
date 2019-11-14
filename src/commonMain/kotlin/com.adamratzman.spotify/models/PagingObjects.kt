@@ -65,7 +65,7 @@ class PagingObject<T : Any>(
     override val next: String?,
     override val offset: Int,
     override val previous: String?,
-    override val total: Int
+    override val total: Int = 0
 ) : AbstractPagingObject<T>(href, items, limit, next, offset, previous, total) {
     @Suppress("UNCHECKED_CAST")
     override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
@@ -137,7 +137,7 @@ class CursorBasedPagingObject<T : Any>(
     override val limit: Int,
     override val next: String?,
     @SerialName("cursors") val cursor: Cursor,
-    override val total: Int = items.size
+    override val total: Int = 0
 ) : AbstractPagingObject<T>(href, items, limit, next, 0, null, total) {
     /**
      * Get all CursorBasedPagingObjects associated with the request
