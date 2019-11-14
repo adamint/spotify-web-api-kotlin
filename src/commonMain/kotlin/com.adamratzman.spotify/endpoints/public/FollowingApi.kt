@@ -17,7 +17,7 @@ typealias FollowingAPI = FollowingApi
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
  */
-open class FollowingApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *

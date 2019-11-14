@@ -10,6 +10,7 @@ private val BASE64_PAD: Char = '='
 private val BASE64_INVERSE_ALPHABET = IntArray(256) {
     BASE64_ALPHABET.indexOf(it.toChar())
 }
+
 private fun Int.toBase64(): Char = BASE64_ALPHABET[this]
 
 fun encodeToBase64(src: ByteArray): ByteArray {

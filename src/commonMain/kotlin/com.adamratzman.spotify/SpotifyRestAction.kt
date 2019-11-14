@@ -4,11 +4,15 @@ package com.adamratzman.spotify
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.schedule
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlin.jvm.JvmOverloads
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -25,7 +29,7 @@ import kotlinx.coroutines.withContext
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
  */
-open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi, val supplier: () -> T) {
+open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi<*, *>, val supplier: suspend () -> T) {
     private var hasRunBacking: Boolean = false
     private var hasCompletedBacking: Boolean = false
 
@@ -44,21 +48,18 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     /**
      * Invoke [supplier] and synchronously retrieve [T]
      */
-    fun complete(): T {
-        hasRunBacking = true
-        return supplier().also { hasCompletedBacking = true }
+    fun complete(): T = runBlocking {
+        suspendComplete()
     }
 
     /**
      * Suspend the coroutine, invoke [SpotifyRestAction.supplier] asynchronously/queued and resume with result [T]
      * */
-    suspend fun <T> SpotifyRestAction<T>.suspendQueue(): T {
-        return suspendCoroutine { continuation ->
-            queue({ throwable ->
-                continuation.resumeWithException(throwable)
-            }) { result ->
-                continuation.resume(result)
-            }
+    suspend fun suspendQueue(): T = suspendCoroutine { continuation ->
+        queue({ throwable ->
+            continuation.resumeWithException(throwable)
+        }) { result ->
+            continuation.resume(result)
         }
     }
 
@@ -68,22 +69,17 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
      * @param dispatcher The context to execute the [SpotifyRestAction.complete] in
      * */
     @Suppress("UNCHECKED_CAST")
-    suspend fun <T> suspendComplete(dispatcher: CoroutineDispatcher = Dispatchers.Default): T =
-        withContext(dispatcher) {
-            complete() as T
+    @JvmOverloads
+    suspend fun suspendComplete(context: CoroutineContext = Dispatchers.Default): T = withContext(context) {
+        hasRunBacking = true
+        return@withContext try {
+            supplier().also { hasCompletedBacking = true }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Throwable) {
+            throw e
         }
-
-    /**
-     * Invoke [supplier] asynchronously with no consumer
-     */
-    fun queue(): SpotifyRestAction<T> = queue({ throw it }, {})
-
-    /**
-     * Invoke [supplier] asynchronously and consume [consumer] with the [T] value returned
-     *
-     * @param consumer to be invoked with [T] after successful completion of [supplier]
-     */
-    fun queue(consumer: (T) -> Unit): SpotifyRestAction<T> = queue({ throw it }, consumer)
+    }
 
     /**
      * Invoke [supplier] asynchronously and consume [consumer] with the [T] value returned
@@ -91,12 +87,15 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
      * @param failure Consumer to invoke when an exception is thrown by [supplier]
      * @param consumer to be invoked with [T] after successful completion of [supplier]
      */
-    fun queue(failure: ((Throwable) -> Unit), consumer: ((T) -> Unit)): SpotifyRestAction<T> {
+    @JvmOverloads
+    fun queue(failure: ((Throwable) -> Unit) = { throw it }, consumer: ((T) -> Unit) = {}): SpotifyRestAction<T> {
         hasRunBacking = true
         GlobalScope.launch {
             try {
-                val result = complete()
+                val result = suspendComplete()
                 consumer(result)
+            } catch (e: CancellationException) {
+                throw e
             } catch (t: Throwable) {
                 failure(t)
             }
@@ -112,10 +111,19 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
      * @param timeUnit the unit that [quantity] is in
      * @param consumer to be invoked with [T] after successful completion of [supplier]
      */
-    fun queueAfter(quantity: Int, timeUnit: TimeUnit = TimeUnit.SECONDS, consumer: (T) -> Unit): SpotifyRestAction<T> {
+    @JvmOverloads
+    fun queueAfter(
+        quantity: Int,
+        timeUnit: TimeUnit = TimeUnit.SECONDS,
+        scope: CoroutineScope = GlobalScope,
+        failure: (Throwable) -> Unit = { throw it },
+        consumer: (T) -> Unit
+    ): SpotifyRestAction<T> {
         val runAt = getCurrentTimeMs() + timeUnit.toMillis(quantity.toLong())
-        queue { result ->
-            GlobalScope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result) }
+        queue({ exception ->
+            scope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { failure(exception) }
+        }) { result ->
+            scope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result) }
         }
         return this
     }
@@ -123,7 +131,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     override fun toString() = complete().toString()
 }
 
-class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi, supplier: () -> T) :
+class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi<*, *>, supplier: suspend () -> T) :
     SpotifyRestAction<T>(api, supplier) {
 
     /**
@@ -144,49 +152,52 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
             complete().getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
         }
     }
+
+    /**
+     * Flow the paging action ordered. This can be less performant than [flow] if you are in the middle of the pages.
+     * */
+    @FlowPreview
+    @JvmOverloads
+    @ExperimentalCoroutinesApi
+    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+        emitAll(flowPagingObjectsOrdered().flatMapConcat { it.asFlow() })
+    }.flowOn(context)
+
+    /**
+     * Flow the paging objects ordered. This can be less performant than [flowPagingObjects] if you are in the middle of the pages.
+     * */
+    @JvmOverloads
+    @ExperimentalCoroutinesApi
+    fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
+        flow<AbstractPagingObject<Z>> {
+            complete().also { master ->
+                emitAll(master.flowStartOrdered())
+                emit(master)
+                emitAll(master.flowEndOrdered())
+            }
+        }.flowOn(context)
+
+    /**
+     * Flow the Paging action.
+     * */
+    @FlowPreview
+    @JvmOverloads
+    @ExperimentalCoroutinesApi
+    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+        emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
+    }.flowOn(context)
+
+    /**
+     * Flow the paging objects.
+     * */
+    @JvmOverloads
+    @ExperimentalCoroutinesApi
+    fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
+        flow<AbstractPagingObject<Z>> {
+            complete().also { master ->
+                emitAll(master.flowBackward())
+                emit(master)
+                emitAll(master.flowForward())
+            }
+        }.flowOn(context)
 }
-
-/**
- * Flow the paging action ordered. This can be less performant than [flow] if you are in the middle of the pages.
- * */
-@Suppress("UNCHECKED_CAST")
-@FlowPreview
-@ExperimentalCoroutinesApi
-fun <Z : Any, T : AbstractPagingObject<Z>> SpotifyRestActionPaging<Z, T>.flowOrdered(): Flow<T> = flow<T> {
-    emitAll(flowPagingObjectsOrdered().flatMapConcat { it.asFlow() as Flow<T> })
-}.flowOn(Dispatchers.Default)
-
-/**
- * Flow the paging objects ordered. This can be less performant than [flowPagingObjects] if you are in the middle of the pages.
- * */
-@ExperimentalCoroutinesApi
-fun <Z : Any, T : AbstractPagingObject<Z>> SpotifyRestActionPaging<Z, T>.flowPagingObjectsOrdered(): Flow<AbstractPagingObject<Z>> =
-    flow<AbstractPagingObject<Z>> {
-        complete().also { master ->
-            emitAll(master.flowStartOrdered())
-            emit(master)
-            emitAll(master.flowEndOrdered())
-        }
-    }.flowOn(Dispatchers.Default)
-
-/**
- * Flow the Paging action.
- * */
-@FlowPreview
-@ExperimentalCoroutinesApi
-fun <Z : Any, T : AbstractPagingObject<Z>> SpotifyRestActionPaging<Z, T>.flow(): Flow<Z> = flow<Z> {
-    emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
-}.flowOn(Dispatchers.Default)
-
-/**
- * Flow the paging objects.
- * */
-@ExperimentalCoroutinesApi
-fun <Z : Any, T : AbstractPagingObject<Z>> SpotifyRestActionPaging<Z, T>.flowPagingObjects(): Flow<AbstractPagingObject<Z>> =
-    flow<AbstractPagingObject<Z>> {
-        complete().also { master ->
-            emitAll(master.flowBackward())
-            emit(master)
-            emitAll(master.flowForward())
-        }
-    }.flowOn(Dispatchers.Default)
