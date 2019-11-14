@@ -27,7 +27,7 @@ typealias SearchAPI = SearchApi
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
  */
-class SearchApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *

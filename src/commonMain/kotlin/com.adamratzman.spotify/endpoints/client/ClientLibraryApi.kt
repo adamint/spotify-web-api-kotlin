@@ -24,7 +24,7 @@ typealias ClientLibraryAPI = ClientLibraryApi
 /**
  * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
  */
-class ClientLibraryApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *

@@ -23,7 +23,7 @@ internal val json =
     Json(JsonConfiguration.Stable)
     // Json(JsonConfiguration.Stable.copy(strictMode = false, useArrayPolymorphism = true), spotifyUriSerializersModule)
 
-internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi?): T? = try {
+internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi<*, *>?): T? = try {
     toObject(serializer, api)
 } catch (e: Exception) {
     null
@@ -32,7 +32,7 @@ internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSeria
 @Serializable
 data class Tt(val d: String)
 
-internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>, api: SpotifyApi?): T {
+internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>, api: SpotifyApi<*, *>?): T {
     try {
         val obj = json.parse(serializer, this)
         api?.let {
@@ -49,7 +49,7 @@ internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>
     }
 }
 
-internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, api: SpotifyApi?): List<T> {
+internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, api: SpotifyApi<*, *>?): List<T> {
     return try {
         json.parse(serializer, this).apply {
             if (api != null) {

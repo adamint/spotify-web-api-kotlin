@@ -16,22 +16,22 @@ import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
 
-abstract class SpotifyEndpoint(val api: SpotifyApi) {
+abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
 
-    internal fun get(url: String): String {
+    internal suspend fun get(url: String): String {
         return execute(url)
     }
 
-    internal fun post(url: String, body: String? = null, contentType: String? = null): String {
+    internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
         return execute(url, body, HttpRequestMethod.POST, contentType = contentType)
     }
 
-    internal fun put(url: String, body: String? = null, contentType: String? = null): String {
+    internal suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
         return execute(url, body, HttpRequestMethod.PUT, contentType = contentType)
     }
 
-    internal fun delete(
+    internal suspend fun delete(
         url: String,
         body: String? = null,
         contentType: String? = null
@@ -39,7 +39,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi) {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
-    private fun execute(
+    private suspend fun execute(
         url: String,
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
@@ -124,8 +124,8 @@ abstract class SpotifyEndpoint(val api: SpotifyApi) {
         api
     )
 
-    internal fun <T> toAction(supplier: () -> T) = SpotifyRestAction(api, supplier)
-    internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: () -> T) =
+    internal fun <T> toAction(supplier: suspend () -> T) = SpotifyRestAction(api, supplier)
+    internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: suspend () -> T) =
         SpotifyRestActionPaging(api, supplier)
 }
 
@@ -190,7 +190,7 @@ data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
-    val api: SpotifyApi
+    val api: SpotifyApi<*, *>
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {

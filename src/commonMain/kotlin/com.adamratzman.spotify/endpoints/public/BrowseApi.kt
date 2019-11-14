@@ -32,7 +32,7 @@ typealias BrowseAPI = BrowseApi
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
  */
-class BrowseApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Retrieve a list of available genres seed parameter values for recommendations.
      *

@@ -34,7 +34,7 @@ typealias ClientPlayerAPI = ClientPlayerApi
  * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.spotify.com/web-api/working-with-connect/)
  * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work
  */
-class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
+class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get information about a user’s available devices.
      *
@@ -247,7 +247,13 @@ class ClientPlayerApi(api: SpotifyApi) : SpotifyEndpoint(api) {
                 album != null -> body += json { "context_uri" to AlbumUri(album).uri }
                 artist != null -> body += json { "context_uri" to ArtistUri(artist).uri }
                 playlist != null -> body += json { "context_uri" to playlist.uri }
-                tracksToPlay.isNotEmpty() -> body += json { "uris" to JsonArray(tracksToPlay.map { TrackUri(it).uri }.map(::JsonPrimitive)) }
+                tracksToPlay.isNotEmpty() -> body += json {
+                    "uris" to JsonArray(
+                        tracksToPlay.map { TrackUri(it).uri }.map(
+                            ::JsonPrimitive
+                        )
+                    )
+                }
             }
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }

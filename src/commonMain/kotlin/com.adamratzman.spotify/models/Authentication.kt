@@ -28,11 +28,14 @@ data class Token(
     @SerialName("refresh_token") val refreshToken: String? = null,
     @SerialName("scope") private val scopeString: String? = null
 ) {
-    @Transient val expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
-    @Transient var scopes: List<SpotifyScope> = scopeString?.let { str ->
+    @Transient
+    val expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
+    @Transient
+    var scopes: List<SpotifyScope> = scopeString?.let { str ->
         str.split(" ").mapNotNull { scope -> SpotifyScope.values().find { it.uri.equals(scope, true) } }
     } ?: listOf()
 
     fun shouldRefresh(): Boolean = getCurrentTimeMs() > expiresAt
 }
+
 data class TokenValidityResponse(val isValid: Boolean, val exception: Exception?)
