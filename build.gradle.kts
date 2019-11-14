@@ -200,10 +200,3 @@ gradle.taskGraph.whenReady {
         console.printf("\nThanks.\n\n")
     }
 }
-
-tasks {
-    val dokka by getting(DokkaTask::class) {
-        outputFormat = "html"
-        outputDirectory = "/docs"
-    }
-}
