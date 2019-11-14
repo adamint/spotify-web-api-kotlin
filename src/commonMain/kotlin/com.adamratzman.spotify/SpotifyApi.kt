@@ -26,11 +26,11 @@ import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import com.adamratzman.spotify.utils.toList
+import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
-import kotlinx.coroutines.Dispatchers
 
 internal const val base = "https://api.spotify.com/v1"
 
@@ -98,7 +98,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     /**
      * Obtain a map of all currently-cached requests
      */
-    fun getCache() = endpoints.map { it.cache.cachedRequests.toList() }.flatten().toMap()
+    fun getCache() = endpoints.map { it.cache.cachedRequests.asList() }.flatten().toMap()
 
     /**
      * If the method used to create the [token] supports token refresh and
