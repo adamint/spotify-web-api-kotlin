@@ -19,7 +19,13 @@ data class PlayHistoryContext(
     @SerialName("uri") private val uriString: String,
 
     val type: String
-) : CoreObject(href, href, TrackUri(uriString), externalUrlsString) {
+) : CoreObject(
+    href, href, when (type) {
+        "artist" -> ArtistUri(uriString)
+        "playlist" -> PlaylistUri(uriString)
+        else -> AlbumUri(uriString)
+    }, externalUrlsString
+) {
     override val uri: TrackUri get() = super.uri as TrackUri
 }
 
@@ -34,7 +40,7 @@ data class PlayHistoryContext(
 data class PlayHistory(
     val track: SimpleTrack,
     @SerialName("played_at") val playedAt: String,
-    val context: PlayHistoryContext
+    val context: PlayHistoryContext?
 )
 
 /**

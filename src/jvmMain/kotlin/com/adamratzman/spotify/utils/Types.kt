@@ -7,4 +7,4 @@ actual typealias BufferedImage = java.awt.image.BufferedImage
 
 actual typealias File = java.io.File
 
-actual fun <K, V> ConcurrentHashMap<K, V>.toList(): List<Pair<K, V>> = entries.map { (key, value) -> key to value }
+actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()
