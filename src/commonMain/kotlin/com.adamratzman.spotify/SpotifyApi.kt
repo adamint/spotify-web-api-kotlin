@@ -29,6 +29,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
 
@@ -64,7 +65,8 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     var automaticRefresh: Boolean,
     var retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
-    testTokenValidity: Boolean
+    testTokenValidity: Boolean,
+    var json: Json
 ) {
     var useCache = useCache
         set(value) {
@@ -87,11 +89,15 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
 
     init {
         if (testTokenValidity) {
-            try {
-                isTokenValid(true)
-            } catch (e: Exception) {
-                throw SpotifyAuthenticationException("Invalid token provided on initialization", e)
-            }
+            if (!isTokenValid().isValid)
+                try {
+                    refreshToken()
+                } catch (e: SpotifyException.BadRequestException) {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid token and refresh token supplied. Cannot refresh to a fresh token.",
+                        e
+                    )
+                }
         }
     }
 
@@ -172,10 +178,13 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     }
 
     @JvmOverloads
-    suspend fun suspendIsTokenValid(makeTestRequest: Boolean = true, context: CoroutineContext = Dispatchers.Default): TokenValidityResponse {
+    suspend fun suspendIsTokenValid(
+        makeTestRequest: Boolean = true,
+        context: CoroutineContext = Dispatchers.Default
+    ): TokenValidityResponse {
         if (token.shouldRefresh()) return TokenValidityResponse(
             false,
-            SpotifyAuthenticationException("Token needs to be refreshed (is it expired?)")
+            SpotifyException.AuthenticationException("Token needs to be refreshed (is it expired?)")
         )
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
@@ -210,7 +219,8 @@ class SpotifyAppApi internal constructor(
     automaticRefresh: Boolean,
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
-    testTokenValidity: Boolean
+    testTokenValidity: Boolean,
+    json: Json
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
     clientId,
     clientSecret,
@@ -220,7 +230,8 @@ class SpotifyAppApi internal constructor(
     automaticRefresh,
     retryWhenRateLimited,
     enableLogger,
-    testTokenValidity
+    testTokenValidity,
+    json
 ) {
     constructor(
         clientId: String,
@@ -236,7 +247,8 @@ class SpotifyAppApi internal constructor(
         options.automaticRefresh,
         options.retryWhenRateLimited,
         options.enableLogger,
-        options.testTokenValidity
+        options.testTokenValidity,
+        options.json
     )
 
     override val search: SearchApi = SearchApi(this)
@@ -264,7 +276,7 @@ class SpotifyAppApi internal constructor(
         require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
         val currentToken = this.token
 
-        token = getCredentialedToken(clientId, clientSecret, this)
+        token = getCredentialedToken(clientId, clientSecret, this, json)
 
         return currentToken
     }
@@ -311,7 +323,8 @@ class SpotifyClientApi internal constructor(
     automaticRefresh: Boolean,
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
-    testTokenValidity: Boolean
+    testTokenValidity: Boolean,
+    json: Json
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
     clientId,
     clientSecret,
@@ -321,7 +334,8 @@ class SpotifyClientApi internal constructor(
     automaticRefresh,
     retryWhenRateLimited,
     enableLogger,
-    testTokenValidity
+    testTokenValidity,
+    json
 ) {
     constructor(
         clientId: String,
@@ -339,7 +353,8 @@ class SpotifyClientApi internal constructor(
         options.automaticRefresh,
         options.retryWhenRateLimited,
         options.enableLogger,
-        options.testTokenValidity
+        options.testTokenValidity,
+        options.json
     )
 
     override val search: SearchApi = SearchApi(this)
@@ -431,7 +446,7 @@ class SpotifyClientApi internal constructor(
         )
 
         if (response.responseCode / 200 == 1) {
-            val tempToken = response.body.toObject(Token.serializer(), this)
+            val tempToken = response.body.toObject(Token.serializer(), this, json)
             this.token = tempToken.copy(
                 refreshToken = tempToken.refreshToken ?: this.token.refreshToken
             ).apply { scopes = tempToken.scopes }
@@ -441,7 +456,8 @@ class SpotifyClientApi internal constructor(
         } else throw SpotifyException.BadRequestException(
             response.body.toObject(
                 AuthenticationError.serializer(),
-                this
+                this,
+                json
             )
         )
     }
@@ -520,7 +536,7 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
             if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
 }
 
-suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?): Token {
+suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?, json: Json): Token {
     val response = executeTokenRequest(
         HttpConnection(
             "https://accounts.spotify.com/api/token",
@@ -533,9 +549,9 @@ suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: Sp
         ), clientId, clientSecret
     )
 
-    if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null)
+    if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null, json)
 
-    throw SpotifyException.BadRequestException(response.body.toObject(AuthenticationError.serializer(), null))
+    throw SpotifyException.BadRequestException(response.body.toObject(AuthenticationError.serializer(), null, json))
 }
 
 internal suspend fun executeTokenRequest(
