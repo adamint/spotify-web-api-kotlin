@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.reorderPlaylistTracks - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./reorder-playlist-tracks.html">reorderPlaylistTracks</a><br/>
+<br/>
+<h1>reorderPlaylistTracks</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">reorderPlaylistTracks</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)/reorderRangeStart">reorderRangeStart</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)/reorderRangeLength">reorderRangeLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)/insertionPoint">insertionPoint</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$reorderPlaylistTracks(kotlin.String, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.String)/snapshotId">snapshotId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../-playlist-snapshot/index.html"><span class="identifier">PlaylistSnapshot</span></a><span class="symbol">&gt;</span></code>
+<p>Reorder a track or a group of tracks in a playlist.</p>
+<p>When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
+untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
+when the tracks are reordered.</p>
+<p>Reordering tracks in the current user’s public playlists requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+reordering tracks in the current user’s private playlist (including collaborative playlists) requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The spotify id or uri for the playlist.</p>
+<p><a name="reorderRangeStart"></a>
+<code>reorderRangeStart</code> - The position of the first track to be reordered.</p>
+<p><a name="reorderRangeLength"></a>
+<code>reorderRangeLength</code> - The amount of tracks to be reordered. Defaults to 1 if not set.
+The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
+Example: To move the tracks at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.</p>
+<p><a name="insertionPoint"></a>
+<code>insertionPoint</code> - The position where the tracks should be inserted. To reorder the tracks to the end of the playlist, simply set insert_before to the position after the last track.</p>
+<p><a name="snapshotId"></a>
+<code>snapshotId</code> - the playlist snapshot against which to apply this action. <strong>recommended to have</strong></p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the playlist is not found or illegal filters are applied</p>
+</BODY>
+</HTML>
