@@ -75,7 +75,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
             post(
                 EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").toString(),
                 body.toJson()
-            ).toObject(Playlist.serializer(), api)
+            ).toObject(Playlist.serializer(), api, json)
         }
     }
 
@@ -179,7 +179,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
         require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
         return toActionPaging {
             get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                .toPagingObject(SimplePlaylist.serializer(), endpoint = this)
+                .toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
         }
     }
 
@@ -250,7 +250,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
             put(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
-            ).toObject(PlaylistSnapshot.serializer(), api)
+            ).toObject(PlaylistSnapshot.serializer(), api, json)
         }
     }
 
@@ -436,7 +436,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
             }
             delete(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
-            ).toObject(PlaylistSnapshot.serializer(), api)
+            ).toObject(PlaylistSnapshot.serializer(), api, json)
         }
     }
 }

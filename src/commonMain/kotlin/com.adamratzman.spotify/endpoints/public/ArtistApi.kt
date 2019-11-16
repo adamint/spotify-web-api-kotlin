@@ -40,7 +40,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             catch {
                 get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}").toString()).toObject(
                     Artist.serializer(),
-                    api
+                    api,
+                    json
                 )
             }
         }
@@ -59,7 +60,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 EndpointBuilder("/artists").with(
                     "ids",
                     artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-            ).toObject(ArtistList.serializer(), api).artists
+            ).toObject(ArtistList.serializer(), api, json).artists
         }
     }
 
@@ -89,7 +90,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     offset
                 ).with("market", market?.name)
                     .with("include_groups", include.joinToString(",") { it.keyword }).toString()
-            ).toPagingObject(SimpleAlbum.serializer(), null, this)
+            ).toPagingObject(SimpleAlbum.serializer(), null, this, json)
         }
     }
 
@@ -124,7 +125,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     "country",
                     market.name
                 ).toString()
-            ).toInnerArray(Track.serializer().list, "tracks")
+            ).toInnerArray(Track.serializer().list, "tracks", json)
         }
     }
 
@@ -140,7 +141,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getRelatedArtists(artist: String): SpotifyRestAction<List<Artist>> {
         return toAction {
             get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/related-artists").toString())
-                .toObject(ArtistList.serializer(), api).artists.filterNotNull()
+                .toObject(ArtistList.serializer(), api, json).artists.filterNotNull()
         }
     }
 }

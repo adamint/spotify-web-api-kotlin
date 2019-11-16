@@ -58,7 +58,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
                     "offset", offset
                 ).toString()
-            ).toPagingObject(SimplePlaylist.serializer(), endpoint = this)
+            ).toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
         }
     }
 
@@ -78,7 +78,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 get(
                     EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
                         .with("market", market?.name).toString()
-                ).toObject(Playlist.serializer(), api)
+                ).toObject(Playlist.serializer(), api, json)
             }
         }
     }
@@ -106,7 +106,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
                     .with("offset", offset).with("market", market?.name).toString()
             )
-                .toPagingObject(PlaylistTrack.serializer(), null, this)
+                .toPagingObject(PlaylistTrack.serializer(), null, this, json)
         }
     }
 
@@ -123,7 +123,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction {
             get(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
-                .toList(SpotifyImage.serializer().list, api).toList()
+                .toList(SpotifyImage.serializer().list, api, json).toList()
         }
     }
 }
