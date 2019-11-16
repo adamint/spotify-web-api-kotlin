@@ -8,7 +8,7 @@ plugins {
     id("io.codearte.nexus-staging") version "0.21.1"
     kotlin("multiplatform") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
-    id("com.diffplug.gradle.spotless") version "3.25.0"
+    id("com.diffplug.gradle.spotless") version "3.26.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.0"
 }
