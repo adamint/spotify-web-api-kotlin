@@ -10,7 +10,6 @@ import com.adamratzman.spotify.base
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
-import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
@@ -18,6 +17,7 @@ import kotlin.math.ceil
 
 abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
+    internal val json get() = api.json
 
     internal suspend fun get(url: String): String {
         return execute(url)
@@ -47,7 +47,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         contentType: String? = null
     ): String {
         if (api is SpotifyAppApi && getCurrentTimeMs() >= api.expireTime) {
-            if (!api.automaticRefresh) throw SpotifyAuthenticationException("The access token has expired.")
+            if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
 
@@ -100,7 +100,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
 
         if (document.responseCode / 200 != 1 /* Check if status is 2xx or 3xx */) {
             val response = try {
-                document.body.toObject(ErrorResponse.serializer(), api)
+                document.body.toObject(ErrorResponse.serializer(), api, json)
             } catch (e: Exception) {
                 ErrorResponse(ErrorObject(400, "malformed request sent"), e)
             }

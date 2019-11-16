@@ -42,7 +42,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
                 String.serializer().list,
-                "genres"
+                "genres",
+                json
             )
         }
     }
@@ -69,7 +70,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     "country",
                     market?.name
                 ).toString()
-            ).toPagingObject(SimpleAlbum.serializer(), "albums", endpoint = this)
+            ).toPagingObject(SimpleAlbum.serializer(), "albums", endpoint = this, json = json)
         }
     }
 
@@ -106,7 +107,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 ).with("locale", locale).with("timestamp", timestamp?.let {
                     formatDate("yyyy-MM-dd'T'HH:mm:ss", it)
                 }).toString()
-            ).toObject(FeaturedPlaylists.serializer(), api)
+            ).toObject(FeaturedPlaylists.serializer(), api, json)
         }
     }
 
@@ -137,7 +138,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     "market",
                     market?.name
                 ).with("locale", locale).toString()
-            ).toPagingObject(SpotifyCategory.serializer(), "categories", endpoint = this)
+            ).toPagingObject(SpotifyCategory.serializer(), "categories", endpoint = this, json = json)
         }
     }
 
@@ -163,7 +164,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
                     .with("locale", locale).toString()
-            ).toObject(SpotifyCategory.serializer(), api)
+            ).toObject(SpotifyCategory.serializer(), api, json)
         }
     }
 
@@ -191,7 +192,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     limit
                 ).with("offset", offset)
                     .with("market", market?.name).toString()
-            ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this)
+            ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this, json = json)
         }
     }
 
@@ -306,7 +307,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
             minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
-            get(builder.toString()).toObject(RecommendationResponse.serializer(), api)
+            get(builder.toString()).toObject(RecommendationResponse.serializer(), api, json)
         }
     }
 }

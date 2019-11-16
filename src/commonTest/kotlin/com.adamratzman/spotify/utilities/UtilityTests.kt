@@ -6,10 +6,10 @@ import com.adamratzman.spotify.api
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.GlobalScope
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertFailsWith
 
 class UtilityTests : Spek({
     describe("Utility tests") {
@@ -51,6 +51,16 @@ class UtilityTests : Spek({
                 }
                 api.build()
                 api.buildAsyncAt(GlobalScope) { }
+            }
+
+            it("Refresh on invalid token") {
+                val api = spotifyAppApi {
+                    credentials {
+                        clientId = getEnvironmentVariable("clientId")
+                        clientSecret = getEnvironmentVariable("clientSecret")
+                    }
+                }.build()
+                TODO()
             }
         }
     }

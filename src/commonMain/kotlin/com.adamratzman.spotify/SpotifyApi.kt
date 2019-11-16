@@ -22,7 +22,6 @@ import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.base64ByteEncode
 import com.adamratzman.spotify.models.AuthenticationError
-import com.adamratzman.spotify.models.SpotifyAuthenticationException
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject

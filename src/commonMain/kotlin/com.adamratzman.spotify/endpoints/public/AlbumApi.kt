@@ -39,7 +39,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                         "market",
                         market?.name
                     ).toString()
-                ).toObject(Album.serializer(), api)
+                ).toObject(Album.serializer(), api, json)
             }
         }
     }
@@ -58,7 +58,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumUri(it).id.encodeUrl() })
                     .with("market", market?.name).toString()
-            ).toObject(AlbumsResponse.serializer(), api).albums
+            ).toObject(AlbumsResponse.serializer(), api, json).albums
         }
     }
 
@@ -86,7 +86,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     offset
                 ).with("market", market?.name)
                     .toString()
-            ).toPagingObject(SimpleTrack.serializer(), endpoint = this)
+            ).toPagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
         }
     }
 }

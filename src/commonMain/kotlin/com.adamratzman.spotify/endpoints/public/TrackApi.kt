@@ -39,8 +39,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                         "market",
                         market?.name
                     ).toString()
-                )
-                    .toObject(Track.serializer(), api)
+                ).toObject(Track.serializer(), api, json)
             }
         }
     }
@@ -59,7 +58,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 EndpointBuilder("/tracks").with("ids", tracks.joinToString(",") { TrackUri(it).id.encodeUrl() })
                     .with("market", market?.name).toString()
             )
-                .toObject(TrackList.serializer(), api).tracks
+                .toObject(TrackList.serializer(), api, json).tracks
         }
     }
 
@@ -82,7 +81,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction {
             get(EndpointBuilder("/audio-analysis/${TrackUri(track).id.encodeUrl()}").toString())
-                .toObject(AudioAnalysis.serializer(), api)
+                .toObject(AudioAnalysis.serializer(), api, json)
         }
     }
 
@@ -96,7 +95,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction {
             get(EndpointBuilder("/audio-features/${TrackUri(track).id.encodeUrl()}").toString())
-                .toObject(AudioFeatures.serializer(), api)
+                .toObject(AudioFeatures.serializer(), api, json)
         }
     }
 
@@ -114,7 +113,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     "ids",
                     tracks.joinToString(",") { TrackUri(it).id.encodeUrl() }).toString()
             )
-                .toObject(AudioFeaturesResponse.serializer(), api).audioFeatures
+                .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
         }
     }
 }

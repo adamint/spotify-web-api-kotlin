@@ -58,7 +58,7 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
                     .with("time_range", timeRange).toString()
-            ).toPagingObject(Artist.serializer(), endpoint = this)
+            ).toPagingObject(Artist.serializer(), endpoint = this, json = json)
         }
     }
 
@@ -90,7 +90,7 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
                     .with("time_range", timeRange).toString()
-            ).toPagingObject(Track.serializer(), endpoint = this)
+            ).toPagingObject(Track.serializer(), endpoint = this, json = json)
         }
     }
 }

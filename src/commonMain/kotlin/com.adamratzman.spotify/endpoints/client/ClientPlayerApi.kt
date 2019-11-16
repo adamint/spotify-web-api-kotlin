@@ -42,7 +42,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(Device.serializer().list, "devices")
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(Device.serializer().list, "devices", json)
         }
     }
 
@@ -55,7 +55,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             val obj = catch {
                 get(EndpointBuilder("/me/player").toString())
-                    .toObject(CurrentlyPlayingContext.serializer(), api)
+                    .toObject(CurrentlyPlayingContext.serializer(), api, json)
             }
             if (obj?.timestamp == null) null else obj
         }
@@ -80,7 +80,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             get(
                 EndpointBuilder("/me/player/recently-played")
                     .with("limit", limit).with("before", before).with("after", after).toString()
-            ).toCursorBasedPagingObject(PlayHistory.serializer(), endpoint = this)
+            ).toCursorBasedPagingObject(PlayHistory.serializer(), endpoint = this, json = json)
         }
     }
 
@@ -94,7 +94,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             val obj =
                 catch {
                     get(EndpointBuilder("/me/player/currently-playing").toString())
-                        .toObject(CurrentlyPlayingObject.serializer(), api)
+                        .toObject(CurrentlyPlayingObject.serializer(), api, json)
                 }
             if (obj?.timestamp == null) null else obj
         }
