@@ -1,5 +1,5 @@
 # Kotlin Spotify Web API 
-[![Download](https://api.bintray.com/packages/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/images/download.svg?version=3.0.0-rc.1) ](https://bintray.com/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/3.0.0-rc.1/link)
+[ ![JCenter Download](https://api.bintray.com/packages/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/images/download.svg) ](https://bintray.com/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/_latestVersion)
 [![](https://img.shields.io/badge/Wiki-Docs-red.svg)](https://adamint.github.io/spotify-web-api-kotlin/-spotify-kotlin-wrapper/)
 [![CircleCI](https://circleci.com/gh/adamint/spotify-web-api-kotlin.svg?style=shield)](https://circleci.com/gh/adamint/spotify-web-api-kotlin) 
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
