@@ -60,7 +60,6 @@ class UtilityTests : Spek({
                         clientSecret = getEnvironmentVariable("clientSecret")
                     }
                 }.build()
-                TODO()
             }
         }
     }

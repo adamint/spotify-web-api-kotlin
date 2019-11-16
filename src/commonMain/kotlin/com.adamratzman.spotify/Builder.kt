@@ -364,7 +364,7 @@ class SpotifyAppApiBuilder(
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }
         return when {
             authorization.token != null -> SpotifyAppApi(
-                clientId ,
+                clientId,
                 clientSecret,
                 authorization.token!!,
                 options.useCache,
@@ -383,6 +383,20 @@ class SpotifyAppApiBuilder(
                         authorization.tokenString!!, "client_credentials",
                         60000, null, null
                     ),
+                    options.useCache,
+                    options.cacheLimit,
+                    false,
+                    options.retryWhenRateLimited,
+                    options.enableLogger,
+                    options.testTokenValidity,
+                    options.json
+                )
+            }
+            authorization.refreshTokenString != null -> {
+                SpotifyAppApi(
+                    clientId,
+                    clientSecret,
+                    Token("", "", 0, authorization.refreshTokenString!!),
                     options.useCache,
                     options.cacheLimit,
                     false,
@@ -448,15 +462,17 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
 class SpotifyUserAuthorizationBuilder(
     var authorizationCode: String? = null,
     var tokenString: String? = null,
-    var token: Token? = null
+    var token: Token? = null,
+    var refreshTokenString: String? = null
 ) {
-    fun build() = SpotifyUserAuthorization(authorizationCode, tokenString, token)
+    fun build() = SpotifyUserAuthorization(authorizationCode, tokenString, token, refreshTokenString)
 }
 
 data class SpotifyUserAuthorization(
     var authorizationCode: String?,
     var tokenString: String?,
-    var token: Token?
+    var token: Token?,
+    var refreshTokenString: String?
 )
 
 /**
