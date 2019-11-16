@@ -25,4 +25,7 @@ internal actual fun CoroutineScope.schedule(
     }
 }
 
+/**
+ * Return this [SpotifyRestAction] as a normal [CompletableFuture]
+ */
 fun <T> SpotifyRestAction<T>.asFuture() = CompletableFuture.supplyAsync(::complete)

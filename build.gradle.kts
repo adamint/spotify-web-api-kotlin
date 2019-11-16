@@ -1,3 +1,4 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 
 plugins {
@@ -172,7 +173,6 @@ signing {
     sign(publishing.publications["jvm"])
 }
 
-
 // get signing confs interactivly if needed
 gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
@@ -184,8 +184,10 @@ gradle.taskGraph.whenReady {
         // a CI environment)
         val console = System.console()
         requireNotNull(console) { "Could not get signing config: please provide yours in the gradle.properties file." }
-        console.printf("\n\nWe have to sign some things in this build." +
-                "\n\nPlease enter your signing details.\n\n")
+        console.printf(
+            "\n\nWe have to sign some things in this build." +
+                    "\n\nPlease enter your signing details.\n\n"
+        )
 
         val id = console.readLine("PGP Key Id: ")
         val file = console.readLine("PGP Secret Key Ring File (absolute path): ")
@@ -198,5 +200,38 @@ gradle.taskGraph.whenReady {
         }
 
         console.printf("\nThanks.\n\n")
+    }
+}
+
+tasks {
+    val dokka by getting(DokkaTask::class) {
+        outputDirectory = "docs"
+        outputFormat = "html"
+
+        multiplatform {
+            val js by creating {}
+            val jvm by creating {}
+
+            register("common") {}
+
+            register("global") {
+                sourceLink {
+                    path = "./"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    lineSuffix = "#L"
+                }
+
+                sourceRoot {
+                    path = kotlin.sourceSets.getByName("jvmMain").kotlin.srcDirs.first().toString()
+                }
+                sourceRoot {
+                    path = kotlin.sourceSets.getByName("commonMain").kotlin.srcDirs.first().toString()
+                }
+            }
+        }
+    }
+
+    "publish" {
+        dependsOn(dokka)
     }
 }
