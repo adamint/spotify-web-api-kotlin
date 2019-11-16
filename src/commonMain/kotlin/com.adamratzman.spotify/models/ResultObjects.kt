@@ -104,8 +104,6 @@ data class ErrorResponse(val error: ErrorObject, @Transient val exception: Excep
 @Serializable
 data class ErrorObject(val status: Int, val message: String)
 
-class SpotifyAuthenticationException(message: String, cause: Throwable? = null) : Exception(message, cause)
-
 @Serializable
 data class AuthenticationError(
     val error: String,

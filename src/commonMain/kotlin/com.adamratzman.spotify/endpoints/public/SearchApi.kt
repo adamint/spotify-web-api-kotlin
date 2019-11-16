@@ -16,7 +16,6 @@ import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.createMapSerializer
-import com.adamratzman.spotify.models.serialization.json
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.json.JsonObject
@@ -110,10 +109,10 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
             SpotifySearchResult(
-                map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this),
-                map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this),
-                map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this),
-                map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this)
+                map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
+                map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
+                map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
+                map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json)
             )
         }
     }
@@ -139,7 +138,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.PLAYLIST))
-                .toPagingObject(SimplePlaylist.serializer(), "playlists", this)
+                .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
         }
     }
 
@@ -165,7 +164,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ARTIST))
-                .toPagingObject(Artist.serializer(), "artists", this)
+                .toPagingObject(Artist.serializer(), "artists", this, json)
         }
     }
 
@@ -191,7 +190,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ALBUM))
-                .toPagingObject(SimpleAlbum.serializer(), "albums", this)
+                .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
         }
     }
 
@@ -217,7 +216,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.TRACK))
-                .toPagingObject(Track.serializer(), "tracks", this)
+                .toPagingObject(Track.serializer(), "tracks", this, json)
         }
     }
 

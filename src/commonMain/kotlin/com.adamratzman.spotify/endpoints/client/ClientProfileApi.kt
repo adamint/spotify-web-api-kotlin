@@ -27,7 +27,7 @@ class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
      */
     fun getUserProfile(): SpotifyRestAction<SpotifyUserInformation> {
         return toAction {
-            get(EndpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api)
+            get(EndpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
         }
     }
 }
