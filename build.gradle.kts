@@ -222,7 +222,7 @@ gradle.taskGraph.whenReady {
 
 tasks {
     val dokka by getting(DokkaTask::class) {
-        outputDirectory = "docs"
+        outputDirectory = "docs/docs"
         outputFormat = "html"
 
         multiplatform {
