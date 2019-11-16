@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.getPlaylist - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./get-playlist.html">getPlaylist</a><br/>
+<br/>
+<h1>getPlaylist</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$getPlaylist(kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$getPlaylist(kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Find a client playlist by its id. If you want to find multiple playlists, consider using <a href="get-playlists.html#com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$getPlaylists(kotlin.Int, kotlin.Int)">getPlaylists</a></p>
+<p><strong>Note that</strong> private playlists are only retrievable for the current user and require the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-r-e-a-d_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_READ_PRIVATE">SpotifyScope.PLAYLIST_READ_PRIVATE</a> scope
+to have been authorized by the user. Note that this scope alone will not return a collaborative playlist, even
+though they are always private.
+Collaborative playlists are only retrievable for the current user and require the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-r-e-a-d_-c-o-l-l-a-b-o-r-a-t-i-v-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_READ_COLLABORATIVE">SpotifyScope.PLAYLIST_READ_COLLABORATIVE</a>
+scope to have been authorized by the user.</p>
+<h3>Parameters</h3>
+<p><a name="id"></a>
+<code>id</code> - Playlist id or uri</p>
+<p><strong>Return</strong><br/>
+A possibly-null <a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html#com.adamratzman.spotify.models.SimplePlaylist">SimplePlaylist</a> if the playlist doesn't exist</p>
+</BODY>
+</HTML>

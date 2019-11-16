@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.changePlaylistDetails - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./change-playlist-details.html">changePlaylistDetails</a><br/>
+<br/>
+<h1>changePlaylistDetails</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">changePlaylistDetails</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/public">public</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/collaborative">collaborative</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$changePlaylistDetails(kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)</p>
+<p>Modifying a public playlist requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+modifying a private playlist (including collaborative playlists) requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The spotify id or uri for the playlist.</p>
+<p><a name="name"></a>
+<code>name</code> - Optional. The name to change the playlist to.</p>
+<p><a name="public"></a>
+<code>public</code> - Optional. Whether to make the playlist public or not.</p>
+<p><a name="collaborative"></a>
+<code>collaborative</code> - Optional. Whether to make the playlist collaborative or not.</p>
+<p><a name="description"></a>
+<code>description</code> - Optional. Whether to change the description or not.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the playlist is not found or parameters exceed the max length</p>
+</BODY>
+</HTML>

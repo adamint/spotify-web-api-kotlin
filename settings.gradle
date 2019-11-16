@@ -1,12 +1,26 @@
 pluginManagement {
-    repositories {
-        mavenCentral()
-
-        maven {
-            url 'https://plugins.gradle.org/m2/'
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "kotlin-multiplatform") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+            }
+            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+            }
+            if (requested.id.id == "kotlinx-serialization") {
+                useModule("org.jetbrains.kotlin:kotlin-serialization:$mainKotlinVersion")
+            }
         }
     }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
 }
-rootProject.name = 'SpotifyKotlinWrapper'
-include 'spotify.examples'
+
+enableFeaturePreview('GRADLE_METADATA')
+
+rootProject.name = 'spotify-web-api-kotlin'
 

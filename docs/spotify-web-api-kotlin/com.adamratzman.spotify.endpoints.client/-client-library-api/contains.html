@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientLibraryApi.contains - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientLibraryApi</a>&nbsp;/&nbsp;<a href="./contains.html">contains</a><br/>
+<br/>
+<h1>contains</h1>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code>
+<p>Check if the <a href="../-library-type/index.html#com.adamratzman.spotify.endpoints.client.LibraryType">LibraryType</a> with id <a href="contains.html#com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</a> is already saved in the current Spotify user’s ‘Your Music’ library.</p>
+<p><strong>Requires</strong> the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d.html#com.adamratzman.spotify.SpotifyScope.USER_LIBRARY_READ">SpotifyScope.USER_LIBRARY_READ</a> scope</p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - The type of object (album or track)</p>
+<p><a name="id"></a>
+<code>id</code> - The spotify id or uri of the object</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if <a href="contains.html#com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</a> is not found</p>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$contains(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/ids">ids</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Check if one or more of <a href="../-library-type/index.html#com.adamratzman.spotify.endpoints.client.LibraryType">LibraryType</a> is already saved in the current Spotify user’s ‘Your Music’ library.</p>
+<p><strong>Requires</strong> the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d.html#com.adamratzman.spotify.SpotifyScope.USER_LIBRARY_READ">SpotifyScope.USER_LIBRARY_READ</a> scope</p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - The type of objects (album or track)</p>
+<p><a name="ids"></a>
+<code>ids</code> - The spotify ids or uris of the objects</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if any of the provided ids is invalid</p>
+</BODY>
+</HTML>
