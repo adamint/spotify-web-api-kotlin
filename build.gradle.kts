@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
     signing
     `java-library`
+    id("io.codearte.nexus-staging") version "0.21.1"
     kotlin("multiplatform") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
     id("com.diffplug.gradle.spotless") version "3.25.0"
@@ -14,6 +15,11 @@ plugins {
 
 group = "com.adamratzman"
 version = "3.0.0-rc.2"
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
     mavenCentral()
@@ -110,8 +116,6 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-
-
 spotless {
     kotlin {
         target("**/*.kt")
@@ -120,10 +124,23 @@ spotless {
     }
 }
 
+nexusStaging {
+    packageGroup = "com.adamratzman"
+}
+
 publishing {
     publications {
         val jvm by getting(MavenPublication::class) {
             artifactId = "spotify-api-kotlin"
+            artifact(tasks.getByName("javadocJar"))
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
 
             pom {
                 name.set("spotify-api-kotlin")
@@ -185,8 +202,8 @@ gradle.taskGraph.whenReady {
         val console = System.console()
         requireNotNull(console) { "Could not get signing config: please provide yours in the gradle.properties file." }
         console.printf(
-            "\n\nWe have to sign some things in this build." +
-                    "\n\nPlease enter your signing details.\n\n"
+                "\n\nWe have to sign some things in this build." +
+                        "\n\nPlease enter your signing details.\n\n"
         )
 
         val id = console.readLine("PGP Key Id: ")
@@ -229,6 +246,16 @@ tasks {
                 }
             }
         }
+    }
+
+    val javadocJar by getting(Jar::class) {
+        dependsOn.add(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc)
+    }
+
+    artifacts {
+        archives(javadocJar)
     }
 
     "publish" {
