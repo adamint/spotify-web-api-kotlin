@@ -1,0 +1,214 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.Album - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">Album</a><br/>
+<br/>
+<h1>Album</h1>
+<a name="com.adamratzman.spotify.models.Album"></a>
+(common, js, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Album</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-core-object/index.html"><span class="identifier">CoreObject</span></a></code>
+<p>Represents an Album on Spotify</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Represents an Album on Spotify</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/albumTypeString">albumTypeString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/availableMarketsString">availableMarketsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;listOf()<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/externalUrlsString">externalUrlsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/externalIdsString">externalIdsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;hashMapOf()<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/uriString">uriString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/artists">artists</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-simple-artist/index.html"><span class="identifier">SimpleArtist</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/copyrights">copyrights</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-copyright/index.html"><span class="identifier">SpotifyCopyright</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/genres">genres</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/images">images</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-image/index.html"><span class="identifier">SpotifyImage</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/label">label</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/popularity">popularity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/releaseDate">releaseDate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/releaseDatePrecision">releaseDatePrecision</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="../-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../-simple-track/index.html"><span class="identifier">SimpleTrack</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/type">type</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/totalTracks">totalTracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Album$<init>(kotlin.String, kotlin.collections.List((kotlin.String)), kotlin.collections.Map((kotlin.String, )), kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.SimpleArtist)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyCopyright)), kotlin.collections.List((kotlin.String)), kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, kotlin.Int, kotlin.String, kotlin.String, com.adamratzman.spotify.models.PagingObject((com.adamratzman.spotify.models.SimpleTrack)), kotlin.String, kotlin.Int, com.adamratzman.spotify.models.Restrictions)/restrictions">restrictions</span><span class="symbol">:</span>&nbsp;<a href="../-restrictions/index.html"><span class="identifier">Restrictions</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="album-type.html">albumType</a></h4>
+</td>
+<td>
+<p>The type of the album: one of "album" , "single" , or "compilation".</p>
+<code><span class="keyword">val </span><span class="identifier">albumType</span><span class="symbol">: </span><a href="../-album-result-type/index.html"><span class="identifier">AlbumResultType</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="artists.html">artists</a></h4>
+</td>
+<td>
+<p>The artists of the album. Each artist object includes a link in href to more detailed
+information about the artist.</p>
+<code><span class="keyword">val </span><span class="identifier">artists</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-simple-artist/index.html"><span class="identifier">SimpleArtist</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="available-markets.html">availableMarkets</a></h4>
+</td>
+<td>
+<p>The markets in which the album is available:
+ISO 3166-1 alpha-2 country codes. Note that an album is considered
+available in a market when at least 1 of its tracks is available in that market.</p>
+<code><span class="keyword">val </span><span class="identifier">availableMarkets</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="copyrights.html">copyrights</a></h4>
+</td>
+<td>
+<p>The copyright statements of the album.</p>
+<code><span class="keyword">val </span><span class="identifier">copyrights</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-copyright/index.html"><span class="identifier">SpotifyCopyright</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="external-ids.html">externalIds</a></h4>
+</td>
+<td>
+<p>Known external IDs for the album.</p>
+<code><span class="keyword">val </span><span class="identifier">externalIds</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-external-id/index.html"><span class="identifier">ExternalId</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="genres.html">genres</a></h4>
+</td>
+<td>
+<p>A list of the genres used to classify the album. For example: "Prog Rock" ,
+"Post-Grunge". (If not yet classified, the array is empty.)</p>
+<code><span class="keyword">val </span><span class="identifier">genres</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="href.html">href</a></h4>
+</td>
+<td>
+<p>A link to the Web API endpoint providing full details of the album.</p>
+<code><span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>The Spotify ID for the album.</p>
+<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="images.html">images</a></h4>
+</td>
+<td>
+<p>The cover art for the album in various sizes, widest first.</p>
+<code><span class="keyword">val </span><span class="identifier">images</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-image/index.html"><span class="identifier">SpotifyImage</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="label.html">label</a></h4>
+</td>
+<td>
+<p>The label for the album.</p>
+<code><span class="keyword">val </span><span class="identifier">label</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="name.html">name</a></h4>
+</td>
+<td>
+<p>The name of the album. In case of an album takedown, the value may be an empty string.</p>
+<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="popularity.html">popularity</a></h4>
+</td>
+<td>
+<p>The popularity of the album. The value will be between 0 and 100, with 100 being the most
+popular. The popularity is calculated from the popularity of the album’s individual tracks.</p>
+<code><span class="keyword">val </span><span class="identifier">popularity</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="release-date.html">releaseDate</a></h4>
+</td>
+<td>
+<p>The date the album was first released, for example 1981. Depending on the precision,
+it might be shown as 1981-12 or 1981-12-15.</p>
+<code><span class="keyword">val </span><span class="identifier">releaseDate</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="release-date-precision.html">releaseDatePrecision</a></h4>
+</td>
+<td>
+<p>The precision with which release_date value is known: year , month , or day.</p>
+<code><span class="keyword">val </span><span class="identifier">releaseDatePrecision</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="restrictions.html">restrictions</a></h4>
+</td>
+<td>
+<p>Part of the response when Track Relinking is applied, the original track is not available
+in the given market, and Spotify did not have any tracks to relink it with.
+The track response will still contain metadata for the original track, and a
+restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}</p>
+<code><span class="keyword">val </span><span class="identifier">restrictions</span><span class="symbol">: </span><a href="../-restrictions/index.html"><span class="identifier">Restrictions</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="total-tracks.html">totalTracks</a></h4>
+</td>
+<td>
+<p>the total amount of tracks in this album</p>
+<code><span class="keyword">val </span><span class="identifier">totalTracks</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="tracks.html">tracks</a></h4>
+</td>
+<td>
+<p>The tracks of the album.</p>
+<code><span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../-simple-track/index.html"><span class="identifier">SimpleTrack</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="type.html">type</a></h4>
+</td>
+<td>
+<p>The object type: “album”</p>
+<code><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="uri.html">uri</a></h4>
+</td>
+<td>
+<p>The URI associated with the object</p>
+<code><span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-album-uri/index.html"><span class="identifier">AlbumUri</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

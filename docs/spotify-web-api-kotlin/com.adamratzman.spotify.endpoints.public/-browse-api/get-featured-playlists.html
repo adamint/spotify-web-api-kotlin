@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.BrowseApi.getFeaturedPlaylists - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">BrowseApi</a>&nbsp;/&nbsp;<a href="./get-featured-playlists.html">getFeaturedPlaylists</a><br/>
+<br/>
+<h1>getFeaturedPlaylists</h1>
+<a name="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getFeaturedPlaylists</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/locale">locale</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/timestamp">timestamp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-featured-playlists/index.html"><span class="identifier">FeaturedPlaylists</span></a><span class="symbol">&gt;</span></code>
+<p>Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).</p>
+<h3>Parameters</h3>
+<p><a name="limit"></a>
+<code>limit</code> - The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
+<p><a name="locale"></a>
+<code>locale</code> - The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+Provide this parameter if you want the results returned in a particular language (where available).
+Note that, if locale is not supplied, or if the specified language is not available,
+all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
+For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.</p>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want the list of returned items to be relevant to a particular country.
+If omitted, the returned items will be relevant to all countries.</p>
+<p><a name="timestamp"></a>
+<code>timestamp</code> - Use this parameter (time in milliseconds) to specify the user’s local time to get results tailored for that specific
+date and time in the day. If not provided, the response defaults to the current UTC time.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if filter parameters are illegal or <a href="get-featured-playlists.html#com.adamratzman.spotify.endpoints.public.BrowseApi$getFeaturedPlaylists(kotlin.Int, kotlin.Int, kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Long)/locale">locale</a> does not exist</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.adamratzman.spotify.models/-featured-playlists/index.html#com.adamratzman.spotify.models.FeaturedPlaylists">FeaturedPlaylists</a> object with the current featured message and featured playlists</p>
+</BODY>
+</HTML>

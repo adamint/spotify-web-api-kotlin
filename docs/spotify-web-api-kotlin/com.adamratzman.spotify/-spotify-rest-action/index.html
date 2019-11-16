@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.SpotifyRestAction - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyRestAction</a><br/>
+<br/>
+<h1>SpotifyRestAction</h1>
+<a name="com.adamratzman.spotify.SpotifyRestAction"></a>
+(common, js, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyRestAction</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+<p>Provides a uniform interface to retrieve, whether synchronously or asynchronously, <a href="index.html#T">T</a> from Spotify</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="api.html">api</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="supplier.html">supplier</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">supplier</span><span class="symbol">: </span><span class="keyword">suspend </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="complete.html">complete</a></h4>
+</td>
+<td>
+<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> and synchronously retrieve <a href="index.html#T">T</a></p>
+<code><span class="keyword">fun </span><span class="identifier">complete</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="has-completed.html">hasCompleted</a></h4>
+</td>
+<td>
+<p>Whether this REST action has been fully <em>completed</em></p>
+<code><span class="keyword">fun </span><span class="identifier">hasCompleted</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="has-run.html">hasRun</a></h4>
+</td>
+<td>
+<p>Whether this REST action has been <em>commenced</em>.</p>
+<code><span class="keyword">fun </span><span class="identifier">hasRun</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="queue.html">queue</a></h4>
+</td>
+<td>
+<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously and consume <a href="queue.html#com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> with the <a href="index.html#T">T</a> value returned</p>
+<code><span class="keyword">fun </span><span class="identifier">queue</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="queue-after.html">queueAfter</a></h4>
+</td>
+<td>
+<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously immediately and invoke <a href="queue-after.html#com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> after the specified quantity of time</p>
+(jvm) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span>&nbsp;<span class="symbol">=</span>&nbsp;GlobalScope<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code><br/>
+(common, js) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span>&nbsp;<span class="symbol">=</span>&nbsp;GlobalScope<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="suspend-complete.html">suspendComplete</a></h4>
+</td>
+<td>
+<p>Switch to given <a href="#">context</a>, invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">SpotifyRestAction.supplier</a> and synchronously retrieve <a href="index.html#T">T</a></p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendComplete</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$suspendComplete(kotlin.coroutines.CoroutineContext)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="suspend-queue.html">suspendQueue</a></h4>
+</td>
+<td>
+<p>Suspend the coroutine, invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">SpotifyRestAction.supplier</a> asynchronously/queued and resume with result <a href="index.html#T">T</a></p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendQueue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="to-string.html">toString</a></h4>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(jvm) 
+<h4><a href="../../com.adamratzman.spotify.utils/as-future.html">asFuture</a></h4>
+</td>
+<td>
+<p>Return this <a href="index.html#com.adamratzman.spotify.SpotifyRestAction">SpotifyRestAction</a> as a normal <a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a></p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asFuture</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html"><span class="identifier">CompletableFuture</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">!</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-rest-action-paging/index.html">SpotifyRestActionPaging</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SpotifyRestActionPaging</span><span class="symbol">&lt;</span><span class="identifier">Z</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">Z</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

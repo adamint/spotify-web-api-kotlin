@@ -1,0 +1,416 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">TuneableTrackAttribute</a><br/>
+<br/>
+<h1>TuneableTrackAttribute</h1>
+<a name="com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute"></a>
+(common, js, jvm) <code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">TuneableTrackAttribute</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">&gt;</span></code>
+<p>Describes a track attribute</p>
+<h3>Parameters</h3>
+<p><a name="attribute"></a>
+<code>attribute</code> - The spotify id for the track attribute</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-a-c-o-u-s-t-i-c-n-e-s-s.html">ACOUSTICNESS</a></h4>
+</td>
+<td>
+<p>A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
+1.0 represents high confidence the track is acoustic.</p>
+<code><span class="keyword">object </span><span class="identifier">ACOUSTICNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-d-a-n-c-e-a-b-i-l-i-t-y.html">DANCEABILITY</a></h4>
+</td>
+<td>
+<p>Danceability describes how suitable a track is for dancing based on a combination of musical
+elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is
+least danceable and 1.0 is most danceable.</p>
+<code><span class="keyword">object </span><span class="identifier">DANCEABILITY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-d-u-r-a-t-i-o-n_-i-n_-m-i-l-l-i-s-e-c-o-n-d-s.html">DURATION_IN_MILLISECONDS</a></h4>
+</td>
+<td>
+<p>The duration of the track in milliseconds.</p>
+<code><span class="keyword">object </span><span class="identifier">DURATION_IN_MILLISECONDS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-e-n-e-r-g-y.html">ENERGY</a></h4>
+</td>
+<td>
+<p>Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
+Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy,
+while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute
+include dynamic range, perceived loudness, timbre, onset rate, and general entropy.</p>
+<code><span class="keyword">object </span><span class="identifier">ENERGY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-i-n-s-t-r-u-m-e-n-t-a-l-n-e-s-s.html">INSTRUMENTALNESS</a></h4>
+</td>
+<td>
+<p>Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as
+instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The
+closer the instrumentalness value is to 1.0, the greater likelihood the track contains
+no vocal content. Values above 0.5 are intended to represent instrumental tracks, but
+confidence is higher as the value approaches 1.0.</p>
+<code><span class="keyword">object </span><span class="identifier">INSTRUMENTALNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-k-e-y.html">KEY</a></h4>
+</td>
+<td>
+<p>The key the track is in. Integers map to pitches using standard Pitch Class notation.
+E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.</p>
+<code><span class="keyword">object </span><span class="identifier">KEY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-l-i-v-e-n-e-s-s.html">LIVENESS</a></h4>
+</td>
+<td>
+<p>Detects the presence of an audience in the recording. Higher liveness values represent an increased
+probability that the track was performed live. A value above 0.8 provides strong likelihood
+that the track is live.</p>
+<code><span class="keyword">object </span><span class="identifier">LIVENESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-l-o-u-d-n-e-s-s.html">LOUDNESS</a></h4>
+</td>
+<td>
+<p>The overall loudness of a track in decibels (dB). Loudness values are averaged across the
+entire track and are useful for comparing relative loudness of tracks. Loudness is the
+quality of a sound that is the primary psychological correlate of physical strength (amplitude).
+Values typically range between -60 and 0 db.</p>
+<code><span class="keyword">object </span><span class="identifier">LOUDNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-m-o-d-e.html">MODE</a></h4>
+</td>
+<td>
+<p>Mode indicates the modality (major or minor) of a track, the type of scale from which its
+melodic content is derived. Major is represented by 1 and minor is 0.</p>
+<code><span class="keyword">object </span><span class="identifier">MODE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-p-o-p-u-l-a-r-i-t-y.html">POPULARITY</a></h4>
+</td>
+<td>
+<p>The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.
+The popularity is calculated by algorithm and is based, in the most part, on the total number of
+plays the track has had and how recent those plays are. Note: When applying track relinking via
+the market parameter, it is expected to find relinked tracks with popularities that do not match
+min_*, max_<em>and target</em> popularities. These relinked tracks are accurate replacements for unplayable tracks with the expected popularity scores. Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.</p>
+<code><span class="keyword">object </span><span class="identifier">POPULARITY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-s-p-e-e-c-h-i-n-e-s-s.html">SPEECHINESS</a></h4>
+</td>
+<td>
+<p>Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the
+recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above
+0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66
+describe tracks that may contain both music and speech, either in sections or layered, including
+such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like
+tracks.</p>
+<code><span class="keyword">object </span><span class="identifier">SPEECHINESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-t-e-m-p-o.html">TEMPO</a></h4>
+</td>
+<td>
+<p>The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the
+speed or pace of a given piece and derives directly from the average beat duration.</p>
+<code><span class="keyword">object </span><span class="identifier">TEMPO</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-t-i-m-e_-s-i-g-n-a-t-u-r-e.html">TIME_SIGNATURE</a></h4>
+</td>
+<td>
+<p>An estimated overall time signature of a track. The time signature (meter)
+is a notational convention to specify how many beats are in each bar (or measure).
+The time signature ranges from 3 to 7 indicating time signatures of 3/4, to 7/4.
+A value of -1 may indicate no time signature, while a value of 1 indicates a rather complex or changing time signature.</p>
+<code><span class="keyword">object </span><span class="identifier">TIME_SIGNATURE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-v-a-l-e-n-c-e.html">VALENCE</a></h4>
+</td>
+<td>
+<p>A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high
+valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence
+sound more negative (e.g. sad, depressed, angry).</p>
+<code><span class="keyword">object </span><span class="identifier">VALENCE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="attribute.html">attribute</a></h4>
+</td>
+<td>
+<p>The spotify id for the track attribute</p>
+<code><span class="keyword">val </span><span class="identifier">attribute</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="integer-only.html">integerOnly</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">integerOnly</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="max.html">max</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">max</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="min.html">min</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">min</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="as-track-attribute.html">asTrackAttribute</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">asTrackAttribute</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute$asTrackAttribute(com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute.T)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-track-attribute/index.html"><span class="identifier">TrackAttribute</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="to-string.html">toString</a></h4>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="values.html">values</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">values</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-a-c-o-u-s-t-i-c-n-e-s-s.html">ACOUSTICNESS</a></h4>
+</td>
+<td>
+<p>A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
+1.0 represents high confidence the track is acoustic.</p>
+<code><span class="keyword">object </span><span class="identifier">ACOUSTICNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-d-a-n-c-e-a-b-i-l-i-t-y.html">DANCEABILITY</a></h4>
+</td>
+<td>
+<p>Danceability describes how suitable a track is for dancing based on a combination of musical
+elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is
+least danceable and 1.0 is most danceable.</p>
+<code><span class="keyword">object </span><span class="identifier">DANCEABILITY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-d-u-r-a-t-i-o-n_-i-n_-m-i-l-l-i-s-e-c-o-n-d-s.html">DURATION_IN_MILLISECONDS</a></h4>
+</td>
+<td>
+<p>The duration of the track in milliseconds.</p>
+<code><span class="keyword">object </span><span class="identifier">DURATION_IN_MILLISECONDS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-e-n-e-r-g-y.html">ENERGY</a></h4>
+</td>
+<td>
+<p>Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
+Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy,
+while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute
+include dynamic range, perceived loudness, timbre, onset rate, and general entropy.</p>
+<code><span class="keyword">object </span><span class="identifier">ENERGY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-i-n-s-t-r-u-m-e-n-t-a-l-n-e-s-s.html">INSTRUMENTALNESS</a></h4>
+</td>
+<td>
+<p>Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as
+instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The
+closer the instrumentalness value is to 1.0, the greater likelihood the track contains
+no vocal content. Values above 0.5 are intended to represent instrumental tracks, but
+confidence is higher as the value approaches 1.0.</p>
+<code><span class="keyword">object </span><span class="identifier">INSTRUMENTALNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-k-e-y.html">KEY</a></h4>
+</td>
+<td>
+<p>The key the track is in. Integers map to pitches using standard Pitch Class notation.
+E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.</p>
+<code><span class="keyword">object </span><span class="identifier">KEY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-l-i-v-e-n-e-s-s.html">LIVENESS</a></h4>
+</td>
+<td>
+<p>Detects the presence of an audience in the recording. Higher liveness values represent an increased
+probability that the track was performed live. A value above 0.8 provides strong likelihood
+that the track is live.</p>
+<code><span class="keyword">object </span><span class="identifier">LIVENESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-l-o-u-d-n-e-s-s.html">LOUDNESS</a></h4>
+</td>
+<td>
+<p>The overall loudness of a track in decibels (dB). Loudness values are averaged across the
+entire track and are useful for comparing relative loudness of tracks. Loudness is the
+quality of a sound that is the primary psychological correlate of physical strength (amplitude).
+Values typically range between -60 and 0 db.</p>
+<code><span class="keyword">object </span><span class="identifier">LOUDNESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-m-o-d-e.html">MODE</a></h4>
+</td>
+<td>
+<p>Mode indicates the modality (major or minor) of a track, the type of scale from which its
+melodic content is derived. Major is represented by 1 and minor is 0.</p>
+<code><span class="keyword">object </span><span class="identifier">MODE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-p-o-p-u-l-a-r-i-t-y.html">POPULARITY</a></h4>
+</td>
+<td>
+<p>The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.
+The popularity is calculated by algorithm and is based, in the most part, on the total number of
+plays the track has had and how recent those plays are. Note: When applying track relinking via
+the market parameter, it is expected to find relinked tracks with popularities that do not match
+min_*, max_<em>and target</em> popularities. These relinked tracks are accurate replacements for unplayable tracks with the expected popularity scores. Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.</p>
+<code><span class="keyword">object </span><span class="identifier">POPULARITY</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-s-p-e-e-c-h-i-n-e-s-s.html">SPEECHINESS</a></h4>
+</td>
+<td>
+<p>Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the
+recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above
+0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66
+describe tracks that may contain both music and speech, either in sections or layered, including
+such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like
+tracks.</p>
+<code><span class="keyword">object </span><span class="identifier">SPEECHINESS</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-t-e-m-p-o.html">TEMPO</a></h4>
+</td>
+<td>
+<p>The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the
+speed or pace of a given piece and derives directly from the average beat duration.</p>
+<code><span class="keyword">object </span><span class="identifier">TEMPO</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-t-i-m-e_-s-i-g-n-a-t-u-r-e.html">TIME_SIGNATURE</a></h4>
+</td>
+<td>
+<p>An estimated overall time signature of a track. The time signature (meter)
+is a notational convention to specify how many beats are in each bar (or measure).
+The time signature ranges from 3 to 7 indicating time signatures of 3/4, to 7/4.
+A value of -1 may indicate no time signature, while a value of 1 indicates a rather complex or changing time signature.</p>
+<code><span class="keyword">object </span><span class="identifier">TIME_SIGNATURE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-v-a-l-e-n-c-e.html">VALENCE</a></h4>
+</td>
+<td>
+<p>A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high
+valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence
+sound more negative (e.g. sad, depressed, angry).</p>
+<code><span class="keyword">object </span><span class="identifier">VALENCE</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TuneableTrackAttribute</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
