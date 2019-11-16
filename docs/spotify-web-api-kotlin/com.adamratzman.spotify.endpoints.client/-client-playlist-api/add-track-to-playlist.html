@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.addTrackToPlaylist - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./add-track-to-playlist.html">addTrackToPlaylist</a><br/>
+<br/>
+<h1>addTrackToPlaylist</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$addTrackToPlaylist(kotlin.String, kotlin.String, kotlin.Int)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">addTrackToPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$addTrackToPlaylist(kotlin.String, kotlin.String, kotlin.Int)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$addTrackToPlaylist(kotlin.String, kotlin.String, kotlin.Int)/track">track</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$addTrackToPlaylist(kotlin.String, kotlin.String, kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Add a track to a user’s playlist.</p>
+<p>Adding tracks to the current user’s public playlists requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+adding tracks to the current user’s private playlist (including collaborative playlists) requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The spotify id or uri for the playlist.</p>
+<p><a name="track"></a>
+<code>track</code> - Track id or uri</p>
+<p><a name="position"></a>
+<code>position</code> - The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
+first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
+be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if any invalid track ids is provided or the playlist is not found</p>
+</BODY>
+</HTML>
