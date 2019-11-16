@@ -11,7 +11,6 @@ val api = when {
         }.build()
     }
     else -> {
-        println(getEnvironmentVariable("spotifyRedirectUri")?.isBlank())
         spotifyClientApi {
             credentials {
                 clientId = getEnvironmentVariable("clientId")
