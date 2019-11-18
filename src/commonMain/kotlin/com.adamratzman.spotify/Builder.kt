@@ -306,7 +306,7 @@ class SpotifyClientApiBuilder(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process", e)
+                throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})", e)
             }
             authorization.token != null -> SpotifyClientApi(
                 clientId,
@@ -424,7 +424,7 @@ class SpotifyAppApiBuilder(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process", e)
+                throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)", e)
             }
         }
     }
