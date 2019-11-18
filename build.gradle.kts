@@ -1,6 +1,8 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 
+println(System.getenv("SPOTIFY_CLIENT_ID"))
+
 plugins {
     `maven-publish`
     signing
