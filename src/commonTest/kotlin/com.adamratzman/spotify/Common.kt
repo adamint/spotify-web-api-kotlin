@@ -13,6 +13,8 @@ val api = when {
         }.build()
     }
     else -> {
+        println("CLIENT ID: ${getEnvironmentVariable("clientId")}")
+        println("CLIENT SECRET: ${getEnvironmentVariable("clientSecret")}")
         spotifyClientApi {
             credentials {
                 clientId = getEnvironmentVariable("clientId")
