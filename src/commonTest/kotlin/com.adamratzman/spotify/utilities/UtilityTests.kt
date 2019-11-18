@@ -22,7 +22,7 @@ class UtilityTests : Spek({
                 assertFailsWith<IllegalArgumentException> {
                     spotifyClientApi {
                         credentials {
-                            clientId = getEnvironmentVariable("clientId")
+                            clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
                         }
                     }.build()
                 }
@@ -34,8 +34,8 @@ class UtilityTests : Spek({
                     assertFailsWith<IllegalArgumentException> {
                         spotifyClientApi {
                             credentials {
-                                clientId = getEnvironmentVariable("clientId")
-                                clientSecret = getEnvironmentVariable("clientSecret")
+                                clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+                                clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
                             }
                         }.build()
                     }
@@ -45,8 +45,8 @@ class UtilityTests : Spek({
             it("App API valid parameters") {
                 val api = spotifyAppApi {
                     credentials {
-                        clientId = getEnvironmentVariable("clientId")
-                        clientSecret = getEnvironmentVariable("clientSecret")
+                        clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+                        clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
                     }
                 }
                 api.build()
@@ -56,8 +56,8 @@ class UtilityTests : Spek({
             it("Refresh on invalid token") {
                 val api = spotifyAppApi {
                     credentials {
-                        clientId = getEnvironmentVariable("clientId")
-                        clientSecret = getEnvironmentVariable("clientSecret")
+                        clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+                        clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
                     }
                 }.build()
             }
