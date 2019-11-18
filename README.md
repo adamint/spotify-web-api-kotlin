@@ -1,7 +1,7 @@
 # Kotlin Spotify Web API 
 [ ![JCenter Download](https://api.bintray.com/packages/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/images/download.svg) ](https://bintray.com/bintray/jcenter/com.adamratzman%3Aspotify-api-kotlin/_latestVersion)
 [![](https://img.shields.io/badge/Wiki-Docs-red.svg)](https://adamint.github.io/spotify-web-api-kotlin/-spotify-kotlin-wrapper/)
-[![CircleCI](https://circleci.com/gh/adamint/spotify-web-api-kotlin.svg?style=shield)](https://circleci.com/gh/adamint/spotify-web-api-kotlin) 
+[![Build Status](http://144.217.240.243:8111/app/rest/builds/aggregated/strob:(buildType:(project:(id:SpotifyWebApiKotlin)))/statusIcon.svg)](http://144.217.240.243:8111/project.html?projectId=SpotifyWebApiKotlin) 
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
