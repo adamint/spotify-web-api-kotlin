@@ -15,6 +15,8 @@ val api = when {
     else -> {
         println("CLIENT ID: ${getEnvironmentVariable("clientId")}")
         println("CLIENT SECRET: ${getEnvironmentVariable("clientSecret")}")
+        println("REDIRECT URI: ${getEnvironmentVariable("spotifyRedirectUri")}")
+        println("TOKEN: ${getEnvironmentVariable("spotifyTokenString")}")
         spotifyClientApi {
             credentials {
                 clientId = getEnvironmentVariable("clientId")
