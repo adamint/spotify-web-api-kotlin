@@ -110,11 +110,6 @@ tasks.getByName<KotlinJsCompile>("compileKotlinJs") {
     }
 }
 tasks.named<Test>("jvmTest") {
-    systemProperty("clientId", System.getProperty("clientId"))
-    systemProperty("clientSecret", System.getProperty("clientSecret"))
-    systemProperty("spotifyRedirectUri", System.getProperty("spotifyRedirectUri"))
-    systemProperty("spotifyTokenString", System.getProperty("spotifyTokenString"))
-
     useJUnitPlatform()
 }
 
