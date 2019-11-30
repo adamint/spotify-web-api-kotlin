@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.0.0-rc.3"
+version = "3.0.0-rc.4"
 
 java {
     withSourcesJar()
@@ -253,7 +253,10 @@ tasks {
         archives(javadocJar)
     }
 
-    "publish" {
-        dependsOn(dokka)
+    val publishJvm by registering(Task::class) {
+        dependsOn.add(check)
+        dependsOn.add(dokka)
+        dependsOn.add("publishJvmPublicationToNexusRepository")
     }
+
 }
