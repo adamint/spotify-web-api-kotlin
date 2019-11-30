@@ -120,4 +120,5 @@ class SpotifyUriException(message: String) : SpotifyException.BadRequestExceptio
 class SpotifyRatelimitedException(time: Long) :
     SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
 
+@Deprecated("Country enum has been updated to preserve consistency with Spotify documentation", ReplaceWith("Market"))
 typealias CountryCode = Market

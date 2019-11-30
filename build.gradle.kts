@@ -258,5 +258,4 @@ tasks {
         dependsOn.add(dokka)
         dependsOn.add("publishJvmPublicationToNexusRepository")
     }
-
 }

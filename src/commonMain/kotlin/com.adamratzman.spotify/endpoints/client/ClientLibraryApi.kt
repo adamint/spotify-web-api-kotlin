@@ -19,6 +19,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientLibraryApi"))
 typealias ClientLibraryAPI = ClientLibraryApi
 
 /**
