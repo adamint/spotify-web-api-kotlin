@@ -17,10 +17,17 @@ actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
     actual fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {
         if (!enabled) return
 
-        val sb = StringBuilder("${redString}Spotify Logger ")
-        sb.append(if (fatal) "FATAL" else "Error")
-        if (message != null) sb.append(": $message")
-        sb.append(resetString)
+        val error = StringBuilder(redString).apply {
+            append("Spotify Logger ")
+            if (fatal) append("FATAL")
+            else append("Error")
+            if (message != null) {
+                append(": ")
+                append(message)
+            }
+            append(resetString)
+        }.toString()
+        System.err.println(error)
         throwable?.printStackTrace()
     }
 }
