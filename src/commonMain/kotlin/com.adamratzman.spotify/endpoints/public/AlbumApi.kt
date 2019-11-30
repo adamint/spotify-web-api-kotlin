@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("AlbumApi"))
 typealias AlbumAPI = AlbumApi
 
 /**

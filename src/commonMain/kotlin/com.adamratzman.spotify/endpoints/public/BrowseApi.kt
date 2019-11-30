@@ -28,6 +28,7 @@ import kotlin.reflect.KClass
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
 typealias BrowseAPI = BrowseApi
 
 /**

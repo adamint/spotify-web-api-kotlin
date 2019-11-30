@@ -524,8 +524,10 @@ class SpotifyClientApi internal constructor(
                 scopes.all { token.scopes.contains(it) }
 }
 
+@Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyApi"))
 typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
 typealias SpotifyClientAPI = SpotifyClientApi
+@Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
 
 fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {

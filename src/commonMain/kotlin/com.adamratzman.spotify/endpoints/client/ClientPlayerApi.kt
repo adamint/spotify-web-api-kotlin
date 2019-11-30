@@ -28,6 +28,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.json
 import kotlinx.serialization.list
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlayerApi"))
 typealias ClientPlayerAPI = ClientPlayerApi
 
 /**
