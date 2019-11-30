@@ -11,6 +11,7 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toPagingObject
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPersonalizationApi"))
 typealias ClientPersonalizationAPI = ClientPersonalizationApi
 
 /**
