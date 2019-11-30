@@ -1,6 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -61,7 +62,7 @@ data class SimpleTrack(
     override val uri: TrackUri get() = super.uri as TrackUri
 
     @Transient
-    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
     val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
@@ -72,7 +73,7 @@ data class SimpleTrack(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullTrack(market: CountryCode? = null) = api.tracks.getTrack(id, market)
+    fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
 /**
@@ -138,16 +139,16 @@ data class Track(
     val episode: Boolean? = null,
     val track: Boolean? = null
 ) : RelinkingAvailableResponse(
-    linked_from,
-    href,
-    id,
-    if (uriString.contains("local:")) LocalTrackUri(uriString) else TrackUri(uriString),
-    externalUrlsString
+        linked_from,
+        href,
+        id,
+        if (uriString.contains("local:")) LocalTrackUri(uriString) else TrackUri(uriString),
+        externalUrlsString
 ) {
     override val uri: TrackUri get() = super.uri as TrackUri
 
     @Transient
-    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
     val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
@@ -178,7 +179,7 @@ data class LinkedTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
 
-    fun toFullTrack(market: CountryCode? = null) = api.tracks.getTrack(id, market)
+    fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
 @Serializable
