@@ -27,6 +27,7 @@ import kotlinx.serialization.Transient
  * @property type The object type: “playlist”
  * @property snapshot The version identifier for the current playlist. Can be supplied in other
  * requests to target a specific playlist version
+ * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
  */
 @Serializable
 data class SimplePlaylist(
@@ -38,6 +39,7 @@ data class SimplePlaylist(
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
     val name: String,
+    val description: String?,
     val owner: SpotifyPublicUser,
     @SerialName("primary_color") val primaryColor: String? = null,
     val public: Boolean? = null,
