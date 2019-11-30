@@ -9,13 +9,13 @@ import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AlbumUri
-import com.adamratzman.spotify.models.CountryCode
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
 
@@ -41,7 +41,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getSavedTracks(
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging {
             get(
@@ -66,7 +66,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getSavedAlbums(
         limit: Int? = null,
         offset: Int? = null,
-        market: CountryCode? = null
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging {
             get(
