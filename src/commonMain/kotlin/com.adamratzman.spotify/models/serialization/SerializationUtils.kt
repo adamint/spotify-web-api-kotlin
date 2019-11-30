@@ -11,7 +11,6 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.map
@@ -19,7 +18,7 @@ import kotlinx.serialization.serializer
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 internal val stableJson =
-        Json(JsonConfiguration.Stable)
+        Json.nonstrict
 // Json(JsonConfiguration.Stable.copy(strictMode = false, useArrayPolymorphism = true), spotifyUriSerializersModule)
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi<*, *>?, json: Json): T? = try {
