@@ -11,6 +11,7 @@ import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("UserApi"))
 typealias UserAPI = UserApi
 
 /**

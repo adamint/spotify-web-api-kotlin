@@ -21,7 +21,9 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.list
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
 typealias ArtistsAPI = ArtistApi
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
 typealias ArtistAPI = ArtistApi
 
 /**
