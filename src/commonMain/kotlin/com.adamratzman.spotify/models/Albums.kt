@@ -1,6 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -51,7 +52,7 @@ data class SimpleAlbum(
     override val uri: AlbumUri get() = super.uri as AlbumUri
 
     @Transient
-    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
     val albumType: AlbumResultType = albumTypeString.let { _ ->
@@ -69,7 +70,7 @@ data class SimpleAlbum(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullAlbum(market: CountryCode? = null) = api.albums.getAlbum(id, market)
+    fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
 
 /**
@@ -140,7 +141,7 @@ data class Album(
     override val uri: AlbumUri get() = super.uri as AlbumUri
 
     @Transient
-    val availableMarkets = availableMarketsString.map { CountryCode.valueOf(it) }
+    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
     val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
@@ -163,9 +164,9 @@ data class SpotifyCopyright(
 ) {
     @Transient
     val text = textString
-        .removePrefix("(P)")
-        .removePrefix("(C)")
-        .trim()
+            .removePrefix("(P)")
+            .removePrefix("(C)")
+            .trim()
     @Transient
     val type = CopyrightType.values().match(typeString)!!
 }
