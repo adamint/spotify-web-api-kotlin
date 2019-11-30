@@ -171,6 +171,9 @@ class BrowseAPITest : Spek({
                     ).complete().tracks.isNotEmpty()
                 )
             }
+            it("track attributes") {
+                TuneableTrackAttribute.values().first().asTrackAttribute(0f).value == 0f
+            }
         }
     }
 })
