@@ -54,10 +54,10 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
 }
 
 internal inline fun <reified T : Any> String.toPagingObject(
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json
 ): PagingObject<T> {
     if (innerObjectName != null) {
         val map = this.parseJson { json.parse((String.serializer() to PagingObject.serializer(tSerializer)).map, this) }
@@ -86,10 +86,10 @@ internal inline fun <reified T : Any> String.toPagingObject(
 }
 
 internal inline fun <reified T : Any> String.toCursorBasedPagingObject(
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json
 ): CursorBasedPagingObject<T> {
     if (innerObjectName != null) {
         val map = this.parseJson { json.parse((String.serializer() to CursorBasedPagingObject.serializer(tSerializer)).map, this) }
