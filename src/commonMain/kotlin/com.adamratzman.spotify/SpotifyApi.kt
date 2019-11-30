@@ -27,10 +27,10 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 internal const val base = "https://api.spotify.com/v1"
 
@@ -524,8 +524,10 @@ class SpotifyClientApi internal constructor(
                 scopes.all { token.scopes.contains(it) }
 }
 
+@Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyApi"))
 typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
 typealias SpotifyClientAPI = SpotifyClientApi
+@Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
 
 fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {

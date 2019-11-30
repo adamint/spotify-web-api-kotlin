@@ -9,6 +9,7 @@ import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.adamratzman.spotify.models.serialization.toObject
 
+@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientProfileApi"))
 typealias ClientUserAPI = ClientProfileApi
 
 /**

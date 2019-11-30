@@ -529,5 +529,7 @@ data class SpotifyApiOptions(
     var json: Json
 )
 
+@Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))
 typealias SpotifyUtilities = SpotifyApiOptions
+@Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptionsBuilder"))
 typealias SpotifyUtilitiesBuilder = SpotifyApiOptionsBuilder
