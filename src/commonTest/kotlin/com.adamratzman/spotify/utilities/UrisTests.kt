@@ -14,8 +14,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -187,6 +185,16 @@ class UrisTests : Spek({
                 )
 
                 assertEquals(
+                        "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                        SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                )
+
+                assertEquals(
+                        UserUri::class,
+                        SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")::class
+                )
+
+                assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
                     UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
                 )
@@ -255,7 +263,12 @@ class UrisTests : Spek({
 
                 assertEquals(
                     "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                )
+
+                assertEquals(
+                        PlaylistUri::class,
+                        SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd")::class
                 )
 
                 assertEquals(
@@ -349,40 +362,7 @@ class UrisTests : Spek({
             }
         }
     }
-    describe("Uri serialization test") {
-        val json = Json(JsonConfiguration.Stable)
-        it("create UserUri from json by using SpotifyUri.serializer()") {
-            val spotifyUri: SpotifyUri =
-                json.parse(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
-            assertEquals(
-                UserUri::class,
-                spotifyUri::class
-            )
-            assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                spotifyUri.uri
-            )
-        }
-        it("create UserUri from json by using UserUri.serializer()") {
-            val userUri = json.parse(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
-            assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                userUri.uri
-            )
-        }
-        it("try creating UserUri from json with id by using SpotifyUri.serializer()") {
-            assertFailsWith<SpotifyUriException> {
-                json.parse(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
-            }
-        }
-        it("create UserUri from json with id by using UserUri.serializer()") {
-            val userUri = json.parse(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
-            assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                userUri.uri
-            )
-        }
-    }
+
     describe("Uri types test") {
         it("test user uri string is a UserUri") {
             assertTrue {
