@@ -41,16 +41,16 @@ data class SimpleTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: TrackUri,
 
     val artists: List<SimpleArtist>,
     @SerialName("disc_number") val discNumber: Int,
     @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
     @SerialName("is_playable") val isPlayable: Boolean = true,
-    @SerialName("linked_from") private val linkedFrom: LinkedTrack? = null,
+    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
     val name: String,
     @SerialName("preview_url") val previewUrl: String?,
     @SerialName("track_number") val trackNumber: Int,
@@ -58,8 +58,7 @@ data class SimpleTrack(
     @SerialName("is_local") val isLocal: Boolean? = null,
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
-) : RelinkingAvailableResponse(linkedFrom, href, id, TrackUri(uriString), externalUrlsString) {
-    override val uri: TrackUri get() = super.uri as TrackUri
+) : RelinkingAvailableResponse() {
 
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
@@ -117,9 +116,9 @@ data class Track(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: TrackUri,
 
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
@@ -127,7 +126,7 @@ data class Track(
     @SerialName("disc_number") val discNumber: Int,
     @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
-    @SerialName("linked_from") private val linked_from: LinkedTrack? = null,
+    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
     val name: String,
     val popularity: Int,
     @SerialName("preview_url") val previewUrl: String?,
@@ -138,14 +137,7 @@ data class Track(
 
     val episode: Boolean? = null,
     val track: Boolean? = null
-) : RelinkingAvailableResponse(
-        linked_from,
-        href,
-        id,
-        if (uriString.contains("local:")) LocalTrackUri(uriString) else TrackUri(uriString),
-        externalUrlsString
-) {
-    override val uri: TrackUri get() = super.uri as TrackUri
+) : RelinkingAvailableResponse() {
 
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
@@ -165,13 +157,12 @@ data class Track(
 @Serializable
 data class LinkedTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: TrackUri,
 
     val type: String
-) : CoreObject(href, id, TrackUri(uriString), externalUrlsString) {
-    override val uri: TrackUri get() = super.uri as TrackUri
+) : CoreObject() {
 
     /**
      * Retrieves the full [Track] object associated with this [LinkedTrack] with the given market
@@ -422,12 +413,9 @@ data class AudioFeatures(
     @SerialName("time_signature") val timeSignature: Int,
     @SerialName("track_href") val trackHref: String,
     val type: String,
-    @SerialName("uri") private val uriString: String,
+    val uri: TrackUri,
     val valence: Float
-) {
-    @Transient
-    val uri: TrackUri = TrackUri(uriString)
-}
+)
 
 /**
  * This is a generic object used to represent various time intervals within Audio Analysis.

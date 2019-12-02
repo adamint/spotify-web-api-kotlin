@@ -33,9 +33,9 @@ import kotlinx.serialization.Transient
 @Serializable
 data class SimplePlaylist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: PlaylistUri,
 
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
@@ -47,8 +47,7 @@ data class SimplePlaylist(
     @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PlaylistTrackInfo,
     val type: String
-) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
-    override val uri: PlaylistUri get() = super.uri as PlaylistUri
+) : CoreObject() {
 
     @Transient
     val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
@@ -107,9 +106,9 @@ data class PlaylistTrack(
 @Serializable
 data class Playlist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: PlaylistUri,
 
     val collaborative: Boolean,
     val description: String?,
@@ -122,8 +121,7 @@ data class Playlist(
     @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
-) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
-    override val uri: PlaylistUri get() = super.uri as PlaylistUri
+) : CoreObject() {
 
     @Transient
     val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
