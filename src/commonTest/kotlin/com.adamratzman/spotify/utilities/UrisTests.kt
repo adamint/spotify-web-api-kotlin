@@ -10,12 +10,12 @@ import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.UserUri
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class UrisTests : Spek({
     describe("Uris tests") {
