@@ -1,3 +1,4 @@
+
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 
@@ -14,7 +15,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.0.0-rc.3"
+version = "3.0.0-rc.5"
 
 java {
     withSourcesJar()
@@ -34,9 +35,9 @@ kotlin {
     targets {
         sourceSets {
             val coroutineVersion = "1.3.2"
-            val serializationVersion = "0.13.0"
+            val serializationVersion = "0.14.0"
             val spekVersion = "2.0.8"
-            val ktorVersion = "1.2.5"
+            val ktorVersion = "1.2.6"
 
             val commonMain by getting {
                 dependencies {
@@ -122,6 +123,7 @@ spotless {
 nexusStaging {
     packageGroup = "com.adamratzman"
 }
+
 
 publishing {
     publications {
