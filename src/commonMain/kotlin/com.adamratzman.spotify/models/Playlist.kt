@@ -3,6 +3,7 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
+import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -58,8 +59,8 @@ data class SimplePlaylist(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullPlaylist(market: CountryCode? = null): SpotifyRestAction<Playlist?> =
-        api.playlists.getPlaylist(id, market)
+    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> =
+            api.playlists.getPlaylist(id, market)
 }
 
 /**
