@@ -1,7 +1,5 @@
-
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `maven-publish`
@@ -35,10 +33,10 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.2"
+            val coroutineVersion = "1.3.3"
             val serializationVersion = "0.14.0"
-            val spekVersion = "2.0.8"
-            val ktorVersion = "1.2.6"
+            val spekVersion = "2.0.9"
+            val ktorVersion = "1.3.0-rc2"
 
             val commonMain by getting {
                 dependencies {
@@ -63,7 +61,6 @@ kotlin {
                 }
 
                 dependencies {
-                    implementation("com.neovisionaries:nv-i18n:1.26")
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     implementation("io.ktor:ktor-client-apache:$ktorVersion")
@@ -75,7 +72,7 @@ kotlin {
                 dependencies {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
-                    implementation("org.junit.jupiter:junit-jupiter:5.5.2")
+                    implementation("org.junit.jupiter:junit-jupiter:5.6.0-M1")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -84,7 +81,7 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2")
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
                     implementation("io.ktor:ktor-client-js:$ktorVersion")
                     compileOnly(kotlin("stdlib-js"))
