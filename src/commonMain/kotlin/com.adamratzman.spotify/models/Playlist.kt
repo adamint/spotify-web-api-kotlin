@@ -40,7 +40,7 @@ data class SimplePlaylist(
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
     val name: String,
-    val description: String?,
+    val description: String? = null,
     val owner: SpotifyPublicUser,
     @SerialName("primary_color") val primaryColor: String? = null,
     val public: Boolean? = null,
@@ -75,9 +75,9 @@ data class SimplePlaylist(
 @Serializable
 data class PlaylistTrack(
     @SerialName("primary_color") val primaryColor: String? = null,
-    @SerialName("added_at") val addedAt: String?,
-    @SerialName("added_by") val addedBy: SpotifyPublicUser?,
-    @SerialName("is_local") val isLocal: Boolean?,
+    @SerialName("added_at") val addedAt: String? = null,
+    @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
+    @SerialName("is_local") val isLocal: Boolean? = null,
     val track: Track,
     @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
@@ -112,7 +112,7 @@ data class Playlist(
     @SerialName("uri") private val uriString: String,
 
     val collaborative: Boolean,
-    val description: String?,
+    val description: String? = null,
     val followers: Followers,
     @SerialName("primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
