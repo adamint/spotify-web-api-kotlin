@@ -3,6 +3,7 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
+import com.adamratzman.spotify.block
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
@@ -49,8 +50,11 @@ class UtilityTests : Spek({
                         clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
                     }
                 }
-                api.build()
-                api.buildAsyncAt(GlobalScope) { }
+
+                block {
+                    api.build()
+                    api.buildAsyncAt(GlobalScope) { }
+                }
             }
 
             it("Refresh on invalid token") {
