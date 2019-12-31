@@ -413,7 +413,7 @@ class SpotifyClientApi internal constructor(
     val userId: String
 
     init {
-        userId = users.getUserProfile().complete().id
+        userId = users.getClientProfile().complete().id
     }
 
     /**
