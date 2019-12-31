@@ -1,21 +1,22 @@
 
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `maven-publish`
     signing
     `java-library`
-    id("io.codearte.nexus-staging") version "0.21.1"
+    id("io.codearte.nexus-staging") version "0.21.2"
     kotlin("multiplatform") version "1.3.61"
     kotlin("plugin.serialization") version "1.3.61"
-    id("com.diffplug.gradle.spotless") version "3.26.0"
+    id("com.diffplug.gradle.spotless") version "3.26.1"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.0"
 }
 
 group = "com.adamratzman"
-version = "3.0.0-rc.5"
+version = "3.0.0"
 
 java {
     withSourcesJar()
