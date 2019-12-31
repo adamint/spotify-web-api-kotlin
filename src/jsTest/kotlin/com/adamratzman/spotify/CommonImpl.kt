@@ -8,6 +8,8 @@ actual fun getEnvironmentVariable(name: String): String? {
     return null
 }
 
+actual fun Exception.stackTrace() = println(this)
+
 @Test
 fun test() {
     println("asdf")
