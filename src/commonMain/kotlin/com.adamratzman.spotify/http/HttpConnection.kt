@@ -33,13 +33,13 @@ internal data class HttpHeader(val key: String, val value: String)
 internal data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
 internal class HttpConnection constructor(
-        private val url: String,
-        private val method: HttpRequestMethod,
-        private val bodyMap: Map<*, *>?,
-        private val bodyString: String?,
-        contentType: String?,
-        private val headers: List<HttpHeader> = listOf(),
-        val api: SpotifyApi<*, *>? = null
+    private val url: String,
+    private val method: HttpRequestMethod,
+    private val bodyMap: Map<*, *>?,
+    private val bodyString: String?,
+    contentType: String?,
+    private val headers: List<HttpHeader> = listOf(),
+    val api: SpotifyApi<*, *>? = null
 ) {
     private val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
@@ -82,8 +82,8 @@ internal class HttpConnection constructor(
     }
 
     internal suspend fun execute(
-            additionalHeaders: List<HttpHeader>? = null,
-            retryIf502: Boolean = true
+        additionalHeaders: List<HttpHeader>? = null,
+        retryIf502: Boolean = true
     ): HttpResponse {
         val httpRequest = buildRequest(additionalHeaders)
 
