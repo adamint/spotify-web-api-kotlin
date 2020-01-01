@@ -40,3 +40,12 @@ val api = when {
 }
 
 expect fun getEnvironmentVariable(name: String): String?
+
+expect fun Exception.stackTrace()
+
+fun block(code: () -> Unit) = try {
+    code
+} catch (e: Exception) {
+    e.stackTrace()
+    throw e
+}

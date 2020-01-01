@@ -33,7 +33,7 @@ data class PlayHistoryContext(
 data class PlayHistory(
     val track: SimpleTrack,
     @SerialName("played_at") val playedAt: String,
-    val context: PlayHistoryContext?
+    val context: PlayHistoryContext? = null
 )
 
 /**
@@ -49,8 +49,7 @@ data class PlayHistory(
  */
 @Serializable
 data class Device(
-    override val id: String?,
-
+    override val id: String? = null,
     @SerialName("is_active") val isActive: Boolean,
     @SerialName("is_private_session") val isPrivateSession: Boolean,
     @SerialName("is_restricted") val isRestricted: Boolean,
@@ -102,9 +101,9 @@ enum class DeviceType(val identifier: String) {
 data class CurrentlyPlayingContext(
     val timestamp: Long,
     val device: Device,
-    @SerialName("progress_ms") val progressMs: Int?,
+    @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @SerialName("item") val track: Track?,
+    @SerialName("item") val track: Track? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
     val context: Context
@@ -138,9 +137,9 @@ enum class RepeatState(val identifier: String) : ResultEnum {
  */
 @Serializable
 data class CurrentlyPlayingObject(
-    val context: PlayHistoryContext?,
+    val context: PlayHistoryContext? = null,
     val timestamp: Long,
-    @SerialName("progress_ms") val progressMs: Int?,
+    @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
     @SerialName("item") val track: Track,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,

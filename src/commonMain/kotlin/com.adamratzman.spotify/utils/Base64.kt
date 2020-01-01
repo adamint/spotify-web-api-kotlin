@@ -1,8 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-import kotlinx.io.core.String
-import kotlinx.io.core.toByteArray
+import io.ktor.utils.io.core.String
+import io.ktor.utils.io.core.toByteArray
 
 private val BASE64_ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 private val BASE64_MASK: Byte = 0x3f

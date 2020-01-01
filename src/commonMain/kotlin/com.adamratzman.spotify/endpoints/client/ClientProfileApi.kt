@@ -26,9 +26,12 @@ class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
      *
      * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
      */
-    fun getUserProfile(): SpotifyRestAction<SpotifyUserInformation> {
+    fun getClientProfile(): SpotifyRestAction<SpotifyUserInformation> {
         return toAction {
             get(EndpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
         }
     }
+
+    @Deprecated("Renamed to use `client` instead of `user`", ReplaceWith("getClientProfile"))
+    fun getUserProfile() = getClientProfile()
 }
