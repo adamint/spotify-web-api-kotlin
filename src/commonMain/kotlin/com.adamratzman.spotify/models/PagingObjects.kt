@@ -62,9 +62,9 @@ class PagingObject<T : Any>(
     override val href: String,
     override val items: List<T>,
     override val limit: Int,
-    override val next: String?,
+    override val next: String? = null,
     override val offset: Int,
-    override val previous: String?,
+    override val previous: String? = null,
     override val total: Int = 0
 ) : AbstractPagingObject<T>(href, items, limit, next, offset, previous, total) {
     @Suppress("UNCHECKED_CAST")
@@ -135,7 +135,7 @@ class CursorBasedPagingObject<T : Any>(
     override val href: String,
     override val items: List<T>,
     override val limit: Int,
-    override val next: String?,
+    override val next: String? = null,
     @SerialName("cursors") val cursor: Cursor,
     override val total: Int = 0
 ) : AbstractPagingObject<T>(href, items, limit, next, 0, null, total) {
