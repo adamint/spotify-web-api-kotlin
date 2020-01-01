@@ -37,8 +37,8 @@ data class SpotifyUserInformation(
     val email: String? = null,
     val followers: Followers,
     val images: List<SpotifyImage>,
-    val product: String?,
-    @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings?,
+    val product: String? = null,
+    @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings? = null,
     val type: String
 ) : CoreObject()
 
@@ -75,7 +75,7 @@ data class SpotifyPublicUser(
  */
 @Serializable
 data class Followers(
-    val href: String?,
+    val href: String? = null,
     @SerialName("total") val total: Int
 )
 
