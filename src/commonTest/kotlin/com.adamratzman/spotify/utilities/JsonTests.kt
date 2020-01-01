@@ -5,6 +5,8 @@ import com.adamratzman.spotify.api
 import com.adamratzman.spotify.models.Album
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistUri
+import com.adamratzman.spotify.models.CursorBasedPagingObject
+import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
@@ -42,6 +44,27 @@ class JsonTests : Spek({
             assertEquals("Sia", artist.name)
             assertEquals(88, artist.popularity)
             assertEquals("artist", artist.type)
+        }
+        it("paging object deserialization test") {
+            val json = """{"href": "href", "items": [], "limit": 50, "next": "nextHref", "offset": 3, "previous": "previousHref", "total": 5}"""
+            val pagingObject = Json.parse(PagingObject.serializer(Artist.serializer()), json)
+            assertEquals("href", pagingObject.href)
+            assertEquals(emptyList(), pagingObject.items)
+            assertEquals(50, pagingObject.limit)
+            assertEquals("nextHref", pagingObject.next)
+            assertEquals(3, pagingObject.offset)
+            assertEquals("previousHref", pagingObject.previous)
+            assertEquals(5, pagingObject.total)
+        }
+        it("cursor based paging object deserialization test") {
+            val json = """{"href": "href", "items": [], "limit": 50, "next": "nextHref", "cursors": {"after": "afterHref"}, "total": 5}"""
+            val pagingObject = Json.parse(CursorBasedPagingObject.serializer(Artist.serializer()), json)
+            assertEquals("href", pagingObject.href)
+            assertEquals(emptyList(), pagingObject.items)
+            assertEquals(50, pagingObject.limit)
+            assertEquals("nextHref", pagingObject.next)
+            assertEquals("afterHref", pagingObject.cursor.after)
+            assertEquals(5, pagingObject.total)
         }
     }
 })
