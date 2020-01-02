@@ -14,12 +14,12 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SpotifyCategory(
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
+    override val href: String,
+    override val id: String,
 
     val icons: List<SpotifyImage>,
     val name: String
-) : Identifiable(href, id)
+) : Identifiable()
 
 /**
  * Seed from which the recommendation was constructed
@@ -42,7 +42,7 @@ data class RecommendationSeed(
     val afterFilteringSize: Int,
     val afterRelinkingSize: Int? = null,
     val type: String
-) : Identifiable(href, id)
+) : Identifiable()
 
 /**
  * @property seeds An array of recommendation seed objects.
