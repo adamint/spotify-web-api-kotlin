@@ -6,8 +6,6 @@ import kotlinx.serialization.json.JsonConfiguration
 
 val api = when {
     getEnvironmentVariable("SPOTIFY_REDIRECT_URI")?.isNotBlank() != true -> {
-        println("CLIENT ID: ${getEnvironmentVariable("SPOTIFY_CLIENT_ID")}")
-        println("CLIENT SECRET: ${getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")}")
         spotifyAppApi {
             credentials {
                 clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
@@ -19,10 +17,6 @@ val api = when {
         }.build()
     }
     else -> {
-        println("CLIENT ID: ${getEnvironmentVariable("SPOTIFY_CLIENT_ID")}")
-        println("CLIENT SECRET: ${getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")}")
-        println("REDIRECT URI: ${getEnvironmentVariable("SPOTIFY_REDIRECT_URI")}")
-        println("TOKEN: ${getEnvironmentVariable("SPOTIFY_TOKEN_STRING")}")
         spotifyClientApi {
             credentials {
                 clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
