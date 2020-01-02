@@ -10,14 +10,14 @@ import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.UserUri
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class UrisTests : Spek({
     describe("Uris tests") {
@@ -219,6 +219,16 @@ class UrisTests : Spek({
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
                     UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                )
+
+                assertEquals(
+                    "spotify:user:",
+                    UserUri("spotify:user:").uri
+                )
+
+                assertEquals(
+                    "",
+                    UserUri("spotify:user:").id
                 )
             }
         }

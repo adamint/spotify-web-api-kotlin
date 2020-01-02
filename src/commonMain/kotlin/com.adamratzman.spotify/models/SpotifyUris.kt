@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializer
 import kotlinx.serialization.internal.StringDescriptor
 
 private fun String.matchType(type: String): String? {
-    val typeRegex = "^spotify:(?:.*:)*$type:([^:]+)(?::.*)*$|^([^:]+)$".toRegex()
+    val typeRegex = "^spotify:(?:.*:)*$type:([^:]*)(?::.*)*$|^([^:]+)$".toRegex()
     val match = typeRegex.matchEntire(this)?.groupValues ?: return null
-    return match[1].takeIf { it.isNotEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
+    return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
 private fun String.add(type: String): String {
