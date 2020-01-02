@@ -9,17 +9,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
+import io.ktor.client.request.request
 import io.ktor.client.request.url
-import io.ktor.client.response.readText
+import io.ktor.client.statement.readText
 import io.ktor.client.utils.EmptyContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.content.TextContent
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
-import kotlinx.io.core.toByteArray
-import kotlinx.io.core.use
 
 enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
     GET(HttpMethod.Get),
@@ -88,39 +88,38 @@ internal class HttpConnection constructor(
         val httpRequest = buildRequest(additionalHeaders)
 
         try {
-            return client.execute(httpRequest).use {
-                val resp = it.response
-                val respCode = resp.status.value
+            return client.request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
+                val respCode = response.status.value
 
                 if (respCode == 502 && retryIf502) {
                     api?.logger?.logError(
-                        false,
-                        "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
-                        null
+                            false,
+                            "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
+                            null
                     )
-                    return@use execute(additionalHeaders, retryIf502 = false)
+                    return@let execute(additionalHeaders, retryIf502 = false)
                 } else if (respCode == 502 && !retryIf502) {
                     api?.logger?.logWarning("Recieved 502 (Invalid response) for URL $url and $this\nNot retrying")
                 }
 
                 if (respCode == 429) {
-                    val ratelimit = resp.headers["Retry-After"]!!.toLong() + 1L
+                    val ratelimit = response.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.retryWhenRateLimited == true) {
                         api.logger.logError(
-                            false,
-                            "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
-                            null
+                                false,
+                                "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
+                                null
                         )
 
                         delay(ratelimit * 1000)
-                        return@use execute(additionalHeaders, retryIf502 = retryIf502)
+                        return@let execute(additionalHeaders, retryIf502 = retryIf502)
                     } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
-                val body = resp.readText()
+                val body = response.readText()
 
                 if (respCode == 401 && body.contains("access token") &&
-                    api != null && api.automaticRefresh
+                        api != null && api.automaticRefresh
                 ) {
                     api.suspendRefreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
@@ -129,14 +128,14 @@ internal class HttpConnection constructor(
                 }
 
                 return HttpResponse(
-                    responseCode = respCode,
-                    body = body,
-                    headers = resp.headers.entries().map { (key, value) ->
-                        HttpHeader(
-                            key,
-                            value.getOrNull(0) ?: "null"
-                        )
-                    }
+                        responseCode = respCode,
+                        body = body,
+                        headers = response.headers.entries().map { (key, value) ->
+                            HttpHeader(
+                                    key,
+                                    value.getOrNull(0) ?: "null"
+                            )
+                        }
                 )
             }
         } catch (e: CancellationException) {

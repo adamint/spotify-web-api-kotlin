@@ -12,22 +12,15 @@ import kotlinx.serialization.Transient
  * @property type The object type, e.g. “artist”, “playlist”, “album”.
  * @property href A link to the Web API endpoint providing full details of the track.
  */
-@Serializable
+@Serializable // TODO remove id. It's wrong to extend CoreObject here, as it doesn't has any id
 data class PlayHistoryContext(
-    @SerialName("href") override val href: String,
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val uri: SpotifyUri,
 
-    val type: String
-) : CoreObject(
-    href, href, when (type) {
-        "artist" -> ArtistUri(uriString)
-        "playlist" -> PlaylistUri(uriString)
-        else -> AlbumUri(uriString)
-    }, externalUrlsString
-) {
-    override val uri: TrackUri get() = super.uri as TrackUri
-}
+    val type: String,
+    override val id: String = TRANSIENT_EMPTY_STRING
+) : CoreObject()
 
 /**
  * Information about a previously-played track
@@ -40,7 +33,7 @@ data class PlayHistoryContext(
 data class PlayHistory(
     val track: SimpleTrack,
     @SerialName("played_at") val playedAt: String,
-    val context: PlayHistoryContext?
+    val context: PlayHistoryContext? = null
 )
 
 /**
@@ -56,17 +49,18 @@ data class PlayHistory(
  */
 @Serializable
 data class Device(
-    @SerialName("id") override val id: String?,
-
+    override val id: String? = null,
     @SerialName("is_active") val isActive: Boolean,
     @SerialName("is_private_session") val isPrivateSession: Boolean,
     @SerialName("is_restricted") val isRestricted: Boolean,
     val name: String,
     val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
-) : IdentifiableNullable(null, id) {
+) : IdentifiableNullable() {
     @Transient
     val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
+
+    override val href: String? = null
 }
 
 /**
@@ -107,9 +101,9 @@ enum class DeviceType(val identifier: String) {
 data class CurrentlyPlayingContext(
     val timestamp: Long,
     val device: Device,
-    @SerialName("progress_ms") val progressMs: Int?,
+    @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @SerialName("item") val track: Track?,
+    @SerialName("item") val track: Track? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
     val context: Context
@@ -143,9 +137,9 @@ enum class RepeatState(val identifier: String) : ResultEnum {
  */
 @Serializable
 data class CurrentlyPlayingObject(
-    val context: PlayHistoryContext?,
+    val context: PlayHistoryContext? = null,
     val timestamp: Long,
-    @SerialName("progress_ms") val progressMs: Int?,
+    @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
     @SerialName("item") val track: Track,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,

@@ -33,22 +33,21 @@ import kotlinx.serialization.Transient
 @Serializable
 data class SimplePlaylist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: PlaylistUri,
 
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
     val name: String,
-    val description: String?,
+    val description: String? = null,
     val owner: SpotifyPublicUser,
     @SerialName("primary_color") val primaryColor: String? = null,
     val public: Boolean? = null,
     @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PlaylistTrackInfo,
     val type: String
-) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
-    override val uri: PlaylistUri get() = super.uri as PlaylistUri
+) : CoreObject() {
 
     @Transient
     val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
@@ -75,9 +74,9 @@ data class SimplePlaylist(
 @Serializable
 data class PlaylistTrack(
     @SerialName("primary_color") val primaryColor: String? = null,
-    @SerialName("added_at") val addedAt: String?,
-    @SerialName("added_by") val addedBy: SpotifyPublicUser?,
-    @SerialName("is_local") val isLocal: Boolean?,
+    @SerialName("added_at") val addedAt: String? = null,
+    @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
+    @SerialName("is_local") val isLocal: Boolean? = null,
     val track: Track,
     @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
@@ -107,12 +106,12 @@ data class PlaylistTrack(
 @Serializable
 data class Playlist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: PlaylistUri,
 
     val collaborative: Boolean,
-    val description: String?,
+    val description: String? = null,
     val followers: Followers,
     @SerialName("primary_color") val primaryColor: String? = null,
     val images: List<SpotifyImage>,
@@ -122,8 +121,7 @@ data class Playlist(
     @SerialName("snapshot_id") private val snapshotIdString: String,
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
-) : CoreObject(href, id, PlaylistUri(uriString), externalUrlsString) {
-    override val uri: PlaylistUri get() = super.uri as PlaylistUri
+) : CoreObject() {
 
     @Transient
     val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
