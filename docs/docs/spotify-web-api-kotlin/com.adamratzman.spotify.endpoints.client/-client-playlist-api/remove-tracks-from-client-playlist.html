@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.removeTracksFromClientPlaylist - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./remove-tracks-from-client-playlist.html">removeTracksFromClientPlaylist</a><br/>
+<br/>
+<h1>removeTracksFromClientPlaylist</h1>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">removeTracksFromClientPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.String)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.String)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.String)), kotlin.String)/snapshotId">snapshotId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../-playlist-snapshot/index.html"><span class="identifier">PlaylistSnapshot</span></a><span class="symbol">&gt;</span></code>
+<p>Remove all occurrences of the specified tracks from the given playlist.</p>
+<p>Removing tracks from a user’s public playlist requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+removing tracks from a private playlist requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The playlist id</p>
+<p><a name="tracks"></a>
+<code>tracks</code> - An array of track ids</p>
+<p><a name="snapshotId"></a>
+<code>snapshotId</code> - The playlist snapshot against which to apply this action. <strong>recommended to have</strong></p>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.Pair((kotlin.String, com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions)))), kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">removeTracksFromClientPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.Pair((kotlin.String, com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions)))), kotlin.String)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.Pair((kotlin.String, com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions)))), kotlin.String)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html"><span class="identifier">Pair</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-track-positions/index.html"><span class="identifier">SpotifyTrackPositions</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$removeTracksFromClientPlaylist(kotlin.String, kotlin.Array((kotlin.Pair((kotlin.String, com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions)))), kotlin.String)/snapshotId">snapshotId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../-playlist-snapshot/index.html"><span class="identifier">PlaylistSnapshot</span></a><span class="symbol">&gt;</span></code>
+<p>Remove tracks (each with their own positions) from the given playlist.</p>
+<p>Removing tracks from a user’s public playlist requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+removing tracks from a private playlist requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The playlist id</p>
+<p><a name="tracks"></a>
+<code>tracks</code> - An array of <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a>s of track ids <em>and</em> track positions (zero-based)</p>
+<p><a name="snapshotId"></a>
+<code>snapshotId</code> - The playlist snapshot against which to apply this action. <strong>recommended to have</strong></p>
+</BODY>
+</HTML>
