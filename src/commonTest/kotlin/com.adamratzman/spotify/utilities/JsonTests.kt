@@ -8,6 +8,8 @@ import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.internal.nullable
@@ -15,8 +17,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.parse
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @ImplicitReflectionSerializer
 @UnstableDefault
