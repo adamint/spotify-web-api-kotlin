@@ -6,11 +6,6 @@ import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.schedule
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +20,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.JvmOverloads
 
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
@@ -159,7 +159,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
         emitAll(flowPagingObjectsOrdered().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -169,7 +169,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow<AbstractPagingObject<Z>> {
+        flow {
             complete().also { master ->
                 emitAll(master.flowStartOrdered())
                 emit(master)
@@ -183,7 +183,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
         emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -193,7 +193,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow<AbstractPagingObject<Z>> {
+        flow {
             complete().also { master ->
                 emitAll(master.flowBackward())
                 emit(master)
