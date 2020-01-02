@@ -1,9 +1,11 @@
 # Testing
 
-We use [Spek](https://github.com/spekframework/spek) to run unit tests. You must add Maven Central to the gradle repositories 
-in order to pull Spek.
+We use [Spek](https://github.com/spekframework/spek) to run unit tests. 
 
 To run any test, you must have two environment variables, `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` set to a Spotify application in your current shell.
+
+`export SPOTIFY_CLIENT_ID=your_client_id`
+`export SPOTIFY_CLIENT_SECRET=your_client_secret`
 
 To run **only** public endpoint and utility tests, run `gradle check`
 
