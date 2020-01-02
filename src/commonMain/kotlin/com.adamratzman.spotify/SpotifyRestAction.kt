@@ -194,7 +194,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @ExperimentalCoroutinesApi
     fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
         flow {
-            complete().also { master ->
+            suspendComplete(context).also { master ->
                 emitAll(master.flowBackward())
                 emit(master)
                 emitAll(master.flowForward())
