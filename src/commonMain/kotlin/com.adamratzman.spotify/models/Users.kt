@@ -27,9 +27,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SpotifyUserInformation(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: UserUri,
 
     val birthdate: String? = null,
     val country: String? = null,
@@ -37,12 +37,10 @@ data class SpotifyUserInformation(
     val email: String? = null,
     val followers: Followers,
     val images: List<SpotifyImage>,
-    val product: String?,
-    @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings?,
+    val product: String? = null,
+    @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings? = null,
     val type: String
-) : CoreObject(href, id, UserUri(uriString), externalUrlsString) {
-    override val uri: UserUri get() = super.uri as UserUri
-}
+) : CoreObject()
 
 /**
  * Public information about a Spotify user
@@ -57,17 +55,15 @@ data class SpotifyUserInformation(
 @Serializable
 data class SpotifyPublicUser(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("href") override val href: String,
-    @SerialName("id") override val id: String,
-    @SerialName("uri") private val uriString: String,
+    override val href: String,
+    override val id: String,
+    override val uri: UserUri,
 
     @SerialName("display_name") val displayName: String? = null,
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject(href, id, UserUri(uriString), externalUrlsString) {
-    override val uri: UserUri get() = super.uri as UserUri
-}
+) : CoreObject()
 
 /**
  * Information about a Spotify user's followers
@@ -79,7 +75,7 @@ data class SpotifyPublicUser(
  */
 @Serializable
 data class Followers(
-    val href: String?,
+    val href: String? = null,
     @SerialName("total") val total: Int
 )
 
