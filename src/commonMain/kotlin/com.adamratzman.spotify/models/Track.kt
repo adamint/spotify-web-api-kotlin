@@ -21,9 +21,6 @@ import kotlinx.serialization.Transient
  * @property id The Spotify ID for the track.
  * @property isPlayable Part of the response when Track Relinking is applied. If true ,
  * the track is playable in the given market. Otherwise false.
- * @property linkedTrack Part of the response when Track Relinking is applied and is only part of the response
- * if the track linking, in fact, exists. The requested track has been replaced with a different track. The track in
- * the [linkedFrom] object contains information about the originally requested track.
  * @property name The name of the track.
  * @property previewUrl A URL to a 30 second preview (MP3 format) of the track.
  * @property trackNumber The number of the track. If an album has several discs, the track number
