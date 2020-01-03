@@ -184,7 +184,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
-        emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
+        emitAll(flowPagingObjects().flatMapConcat { it.items.asFlow() })
     }.flowOn(context)
 
     /**
