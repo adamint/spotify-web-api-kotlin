@@ -1,6 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
 import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
 import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
@@ -499,8 +500,6 @@ class SpotifyClientApi internal constructor(
      * Create a Spotify authorization URL from which client access can be obtained
      *
      * @param scopes The scopes that the application should have access to
-     * @param redirectUri The redirect uri specified on the Spotify developer dashboard; where to
-     * redirect the browser after authentication
      *
      * @return Authorization URL that can be used in a browser
      */
