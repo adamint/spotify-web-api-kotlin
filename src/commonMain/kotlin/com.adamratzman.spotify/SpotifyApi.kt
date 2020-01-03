@@ -132,7 +132,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     abstract fun getApiBuilder(): SpotifyApiBuilder
 
     /**
-     * Return a new [SpotifyApiBuilderDsl] with the parameters provided to this api instance
+     * Return a new [B] with the parameters provided to this api instance
      */
     abstract fun getApiBuilderDsl(): B
 
