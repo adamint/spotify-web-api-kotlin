@@ -209,7 +209,7 @@ abstract class AbstractPagingObject<T : Any>(
     @Transient open val offset: Int = 0,
     @Transient open val previous: String? = null,
     @Transient open val total: Int = -1
-) {
+): List<T> by items {
     @Transient
     internal var endpoint: SpotifyEndpoint? = null
 
