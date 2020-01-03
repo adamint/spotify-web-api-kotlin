@@ -2,16 +2,17 @@
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import com.adamratzman.spotify.utils.catch
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class PublicUserAPITest : Spek({
     describe("Public User test") {
         describe("get user") {
             it("available user should return author name") {
-                assertEquals(0, api.users.getProfile("adamratzman1").complete()!!.followers.total)
+                assertTrue { catch {  api.users.getProfile("adamratzman1").complete()!!.followers.total } != null }
             }
             it("unknown user should throw exception") {
                 assertNull(api.users.getProfile("non-existant-user").complete())
