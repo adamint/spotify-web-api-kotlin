@@ -140,6 +140,7 @@ a roughly consistent sound throughout its duration.</p>
 <h4><a href="-authentication-error/index.html">AuthenticationError</a></h4>
 </td>
 <td>
+<p>An exception during the authentication process</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">AuthenticationError</span></code></td>
 </tr>
 <tr>
@@ -266,7 +267,7 @@ cursors that can be useful in future calls.</p>
 <h4><a href="-error-response/index.html">ErrorResponse</a></h4>
 </td>
 <td>
-<p>Wraps around <a href="-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a></p>
+<p>Wraps around <a href="-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a>. Serialized raw Spotify error response</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">ErrorResponse</span></code></td>
 </tr>
 <tr>
@@ -518,6 +519,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <h4><a href="-result-enum/index.html">ResultEnum</a></h4>
 </td>
 <td>
+<p>Interface that allows easy identifier retrieval for children with an implemented identifier</p>
 <code><span class="keyword">interface </span><span class="identifier">ResultEnum</span></code></td>
 </tr>
 <tr>
@@ -752,6 +754,7 @@ from an endpoint</p>
 <h4><a href="-spotify-uri-exception/index.html">SpotifyUriException</a></h4>
 </td>
 <td>
+<p>Exception instantiating or deserializing a uri perceived as invalid</p>
 <code><span class="keyword">class </span><span class="identifier">SpotifyUriException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify/-spotify-exception/-bad-request-exception/index.html"><span class="identifier">BadRequestException</span></a></code></td>
 </tr>
 </tbody>
