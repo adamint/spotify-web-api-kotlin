@@ -137,19 +137,21 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     /**
      * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
      */
-    fun getAll() = api.tracks.toAction { complete().getAllImpl() }
+    fun getAll(context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getAllImpl() }
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action
      */
-    fun getAllItems() = api.tracks.toAction { complete().getAllImpl().toList().map { it.items }.flatten() }
+    fun getAllItems(context: CoroutineContext = Dispatchers.Default) =
+            api.tracks.toAction { suspendComplete(context)
+            .getAllImpl().toList().map { it.items }.flatten() }
 
     /**
      * Consume each [Z] by [consumer] as it is retrieved
      */
-    fun streamAllItems(consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
+    fun streamAllItems(context: CoroutineContext = Dispatchers.Default, consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
         return api.tracks.toAction {
-            complete().getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
+            suspendComplete(context).getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
         }
     }
 
@@ -170,7 +172,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @ExperimentalCoroutinesApi
     fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
         flow {
-            complete().also { master ->
+            suspendComplete(context).also { master ->
                 emitAll(master.flowStartOrdered())
                 emit(master)
                 emitAll(master.flowEndOrdered())
