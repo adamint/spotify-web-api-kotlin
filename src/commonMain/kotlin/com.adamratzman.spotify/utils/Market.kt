@@ -30,21 +30,21 @@ package com.adamratzman.spotify.utils
  * code ([.getAlpha3]) and the
  * [ISO 3166-1 numeric](http://en.wikipedia.org/wiki/ISO_3166-1_numeric)
  * code ([.getNumeric]).
- * In addition, there are static methods to get a `CountryCode` instance that
+ * In addition, there are static methods to get a `Market` instance that
  * corresponds to a given alpha-2/alpha-3/numeric code ([.getByCode],
  * [.getByCode]).
  *
  *
  * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
  * <span style="color: darkgreen;">// List all the country codes.</span>
- * for (CountryCode code : CountryCode.values())
+ * for (Market code : Market.values())
  * {
  * <span style="color: darkgreen;">// For example, "[US] United States" is printed.</span>
  * System.out.format(<span style="color: darkred;">"[%s] %s\n"</span>, code, code.[.getName]);
  * }
  *
- * <span style="color: darkgreen;">// Get a CountryCode instance by ISO 3166-1 code.</span>
- * CountryCode code = CountryCode.[getByCode][.getByCode](<span style="color: darkred;">"JP"</span>);
+ * <span style="color: darkgreen;">// Get a Market instance by ISO 3166-1 code.</span>
+ * Market code = Market.[getByCode][.getByCode](<span style="color: darkred;">"JP"</span>);
  *
  * <span style="color: darkgreen;">// Print all the information. Output will be:</span>
  * <span style="color: darkgreen;">//</span>
@@ -63,8 +63,8 @@ package com.adamratzman.spotify.utils
  * <span style="color: darkgreen;">// Convert to a Locale instance.</span>
  * [Locale] locale = code.[.toLocale];
  *
- * <span style="color: darkgreen;">// Get a CountryCode by a Locale instance.</span>
- * code = CountryCode.[getByLocale][.getByLocale](locale);
+ * <span style="color: darkgreen;">// Get a Market by a Locale instance.</span>
+ * code = Market.[getByLocale][.getByLocale](locale);
  *
  * <span style="color: darkgreen;">// Get the currency of the country.</span>
  * [Currency] currency = code.[.getCurrency];
@@ -73,29 +73,29 @@ package com.adamratzman.spotify.utils
  * //
  * // The list will contain:
  * //
- * //     CountryCode.AE : United Arab Emirates
- * //     CountryCode.GB : United Kingdom
- * //     CountryCode.TZ : Tanzania, United Republic of
- * //     CountryCode.UK : United Kingdom
- * //     CountryCode.UM : United States Minor Outlying Islands
- * //     CountryCode.US : United States
+ * //     Market.AE : United Arab Emirates
+ * //     Market.GB : United Kingdom
+ * //     Market.TZ : Tanzania, United Republic of
+ * //     Market.UK : United Kingdom
+ * //     Market.UM : United States Minor Outlying Islands
+ * //     Market.US : United States
  * //</span>
- * List&lt;CountryCode&gt; list = CountryCode.[findByName][.findByName](<span style="color: darkred;">".*United.*"</span>);
+ * List&lt;Market&gt; list = Market.[findByName][.findByName](<span style="color: darkred;">".*United.*"</span>);
  *
  * <span style="color: darkgreen;">
  * // For backward compatibility for older versions than 1.16, some
  * // 4-letter ISO 3166-3 codes are accepted by getByCode(String, boolean)
  * // and its variants. To be concrete:
  * //
- * //     [ANHH](https://en.wikipedia.org/wiki/ISO_3166-3#ANHH) : CountryCode.AN
- * //     [BUMM](https://en.wikipedia.org/wiki/ISO_3166-3#BUMM) : CountryCode.BU
- * //     [CSXX](https://en.wikipedia.org/wiki/ISO_3166-3#CSXX) : CountryCode.CS
- * //     [NTHH](https://en.wikipedia.org/wiki/ISO_3166-3#NTHH) : CountryCode.NT
- * //     [TPTL](https://en.wikipedia.org/wiki/ISO_3166-3#TPTL) : CountryCode.TP
- * //     [YUCS](https://en.wikipedia.org/wiki/ISO_3166-3#YUCS) : CountryCode.YU
- * //     [ZRCD](https://en.wikipedia.org/wiki/ISO_3166-3#ZRCD) : CountryCode.ZR
+ * //     [ANHH](https://en.wikipedia.org/wiki/ISO_3166-3#ANHH) : Market.AN
+ * //     [BUMM](https://en.wikipedia.org/wiki/ISO_3166-3#BUMM) : Market.BU
+ * //     [CSXX](https://en.wikipedia.org/wiki/ISO_3166-3#CSXX) : Market.CS
+ * //     [NTHH](https://en.wikipedia.org/wiki/ISO_3166-3#NTHH) : Market.NT
+ * //     [TPTL](https://en.wikipedia.org/wiki/ISO_3166-3#TPTL) : Market.TP
+ * //     [YUCS](https://en.wikipedia.org/wiki/ISO_3166-3#YUCS) : Market.YU
+ * //     [ZRCD](https://en.wikipedia.org/wiki/ISO_3166-3#ZRCD) : Market.ZR
  * //</span>
- * code = CountryCode.[getByCode][.getByCode](<span style="color: darkred;">"ANHH"</span>);
+ * code = Market.[getByCode][.getByCode](<span style="color: darkred;">"ANHH"</span>);
 </pre> *
  *
  * @author Takahiko Kawasaki
@@ -115,7 +115,6 @@ enum class Market(
      * The [ISO 3166-1 alpha-3](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) code.
      * Some country codes reserved exceptionally (such as [.EU])
      * returns `null`.
-     * [CountryCode.UNDEFINED] returns `null`, too.
      */
     val alpha3: String?,
     /**
@@ -125,7 +124,6 @@ enum class Market(
      * The [ISO 3166-1 numeric](http://en.wikipedia.org/wiki/ISO_3166-1_numeric) code.
      * Country codes reserved exceptionally (such as [.EU])
      * returns `-1`.
-     * [CountryCode.UNDEFINED] returns `-1`, too.
      */
     val numeric: Int,
     /**

@@ -64,9 +64,9 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     }
 
     /**
-     * Switch to given [context][dispatcher], invoke [SpotifyRestAction.supplier] and synchronously retrieve [T]
+     * Switch to given [context][context], invoke [SpotifyRestAction.supplier] and synchronously retrieve [T]
      *
-     * @param dispatcher The context to execute the [SpotifyRestAction.complete] in
+     * @param context The context to execute the [SpotifyRestAction.complete] in
      * */
     @Suppress("UNCHECKED_CAST")
     @JvmOverloads

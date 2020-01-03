@@ -1,6 +1,7 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyException
 import kotlinx.serialization.Decoder
 import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
@@ -8,6 +9,11 @@ import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.internal.StringDescriptor
+
+/**
+ * Exception instantiating or deserializing a uri perceived as invalid
+ */
+class SpotifyUriException(message: String) : SpotifyException.BadRequestException(message)
 
 private fun String.matchType(type: String): String? {
     val typeRegex = "^spotify:(?:.*:)*$type:([^:]*)(?::.*)*$|^([^:]+)$".toRegex()
