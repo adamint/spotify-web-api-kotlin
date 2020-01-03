@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -67,7 +66,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
         collaborative: Boolean? = null,
         user: String = (api as SpotifyClientApi).userId
     ): SpotifyRestAction<Playlist> {
-        if (name.isEmpty()) throw SpotifyException.BadRequestException(ErrorObject(400, "Name cannot be empty"))
+        if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction {
             val body = jsonMap()
             body += json { "name" to name }

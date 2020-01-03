@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
-import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -25,9 +24,9 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
+import kotlin.reflect.KClass
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
-import kotlin.reflect.KClass
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
 typealias BrowseAPI = BrowseApi
@@ -294,7 +293,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
     ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
-            throw SpotifyException.BadRequestException(
+            throw BadRequestException(
                     ErrorObject(
                             400,
                             "At least one seed (genre, artist, track) must be provided."
@@ -325,7 +324,7 @@ sealed class TuneableTrackAttribute<T : Number>(
     val integerOnly: Boolean,
     val min: T?,
     val max: T?,
-    internal val tClazz: KClass<T>
+    private val tClazz: KClass<T>
 ) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.

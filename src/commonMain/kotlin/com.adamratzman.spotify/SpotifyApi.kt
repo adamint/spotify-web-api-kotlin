@@ -92,7 +92,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
             if (!isTokenValid().isValid)
                 try {
                     refreshToken()
-                } catch (e: SpotifyException.BadRequestException) {
+                } catch (e: BadRequestException) {
                     throw SpotifyException.AuthenticationException(
                         "Invalid token and refresh token supplied. Cannot refresh to a fresh token.",
                         e
@@ -453,7 +453,7 @@ class SpotifyClientApi internal constructor(
 
             logger.logInfo("Successfully refreshed the Spotify token")
             return currentToken
-        } else throw SpotifyException.BadRequestException(
+        } else throw BadRequestException(
             response.body.toObject(
                 AuthenticationError.serializer(),
                 this,
@@ -551,7 +551,7 @@ suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: Sp
 
     if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null, json)
 
-    throw SpotifyException.BadRequestException(response.body.toObject(AuthenticationError.serializer(), null, json))
+    throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), null, json))
 }
 
 internal suspend fun executeTokenRequest(
