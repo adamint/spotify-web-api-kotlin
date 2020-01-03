@@ -501,11 +501,11 @@ class SpotifyApiOptionsBuilder(
             SpotifyApiOptions(
                 true,
                 200,
-                false,
-                true,
-                true,
-                true,
-                json
+                    automaticRefresh = false,
+                    retryWhenRateLimited = true,
+                    enableLogger = true,
+                    testTokenValidity = true,
+                    json = json
             )
         else
             SpotifyApiOptions(

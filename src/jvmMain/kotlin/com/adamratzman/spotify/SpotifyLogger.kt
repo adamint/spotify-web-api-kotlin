@@ -2,9 +2,9 @@
 package com.adamratzman.spotify
 
 actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
-    val redString = "\u001B[31m"
-    val orangeString = "\u001B[33m"
-    val resetString = "\u001B[0m"
+    private val redString = "\u001B[31m"
+    private val orangeString = "\u001B[33m"
+    private val resetString = "\u001B[0m"
 
     actual fun logInfo(message: String) {
         if (enabled) println("Spotify Logger Info: $message")

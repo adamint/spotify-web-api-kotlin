@@ -253,7 +253,7 @@ abstract class AbstractPagingObject<T : Any>(
 
     @ExperimentalCoroutinesApi
     fun flowStartOrdered(): Flow<AbstractPagingObject<T>> =
-        flow<AbstractPagingObject<T>> {
+        flow {
             if (previous == null) return@flow
             flowBackward().toList().reversed().also {
                 emitAll(it.asFlow())
