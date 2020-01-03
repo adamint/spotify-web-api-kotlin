@@ -2,11 +2,11 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.runBlocking
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -102,6 +104,7 @@ class PagingObject<T : Any>(
             pagingObjects.add(nxt)
             nxt = nxt.next?.let { nxt?.getNext() }
         }
+
         // we don't need to reverse here, as it's in order
         return pagingObjects.asSequence()
     }
@@ -115,7 +118,8 @@ class PagingObject<T : Any>(
     /**
      * Get all items of type [T] associated with the request
      */
-    suspend fun getAllItems() = endpoint!!.toAction { getAll().complete().map { it.items }.flatten() }
+    override suspend fun getAllItems(context: CoroutineContext)
+            = endpoint!!.toAction { getAll().suspendComplete(context).map { it.items }.flatten().asSequence() }
 }
 
 /**
@@ -150,8 +154,8 @@ class CursorBasedPagingObject<T : Any>(
     /**
      * Get all items of type [T] associated with the request
      */
-    fun getAllItems() = endpoint!!.toAction {
-        getAll().complete().map { it.items }.flatten().toList()
+    override suspend fun getAllItems(context: CoroutineContext) = endpoint!!.toAction {
+        getAll().suspendComplete(context).map { it.items }.flatten().asSequence()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -219,6 +223,8 @@ abstract class AbstractPagingObject<T : Any>(
     internal abstract suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
     internal abstract suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>>
 
+    internal abstract suspend fun getAllItems(context: CoroutineContext = Dispatchers.Default): SpotifyRestAction<Sequence<T>>
+
     private suspend fun getNextImpl() = getImpl(PagingTraversalType.FORWARDS)
     private suspend fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 
@@ -253,7 +259,7 @@ abstract class AbstractPagingObject<T : Any>(
 
     @ExperimentalCoroutinesApi
     fun flowStartOrdered(): Flow<AbstractPagingObject<T>> =
-        flow<AbstractPagingObject<T>> {
+        flow {
             if (previous == null) return@flow
             flowBackward().toList().reversed().also {
                 emitAll(it.asFlow())
