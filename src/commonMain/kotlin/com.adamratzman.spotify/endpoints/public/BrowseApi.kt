@@ -25,9 +25,9 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
-import kotlin.reflect.KClass
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
 typealias BrowseAPI = BrowseApi
@@ -325,25 +325,25 @@ sealed class TuneableTrackAttribute<T : Number>(
     val integerOnly: Boolean,
     val min: T?,
     val max: T?,
-    val tClazz: KClass<T>
+    internal val tClazz: KClass<T>
 ) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
      * 1.0 represents high confidence the track is acoustic.
      */
-    object ACOUSTICNESS : TuneableTrackAttribute<Float>("acousticness", false, 0f, 1f, Float::class)
+    object Acousticness : TuneableTrackAttribute<Float>("acousticness", false, 0f, 1f, Float::class)
 
     /**
      * Danceability describes how suitable a track is for dancing based on a combination of musical
      * elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is
      * least danceable and 1.0 is most danceable.
      */
-    object DANCEABILITY : TuneableTrackAttribute<Float>("danceability", false, 0f, 1f, Float::class)
+    object Danceability : TuneableTrackAttribute<Float>("danceability", false, 0f, 1f, Float::class)
 
     /**
      * The duration of the track in milliseconds.
      */
-    object DURATION_IN_MILLISECONDS : TuneableTrackAttribute<Int>("duration_ms", true, 0, null, Int::class)
+    object DurationInMilliseconds : TuneableTrackAttribute<Int>("duration_ms", true, 0, null, Int::class)
 
     /**
      * Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
@@ -351,7 +351,7 @@ sealed class TuneableTrackAttribute<T : Number>(
      * while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute
      * include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
      */
-    object ENERGY : TuneableTrackAttribute<Float>("energy", false, 0f, 1f, Float::class)
+    object Energy : TuneableTrackAttribute<Float>("energy", false, 0f, 1f, Float::class)
 
     /**
      * Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as
@@ -360,20 +360,20 @@ sealed class TuneableTrackAttribute<T : Number>(
      * no vocal content. Values above 0.5 are intended to represent instrumental tracks, but
      * confidence is higher as the value approaches 1.0.
      */
-    object INSTRUMENTALNESS : TuneableTrackAttribute<Float>("instrumentalness", false, 0f, 1f, Float::class)
+    object Instrumentalness : TuneableTrackAttribute<Float>("instrumentalness", false, 0f, 1f, Float::class)
 
     /**
      * The key the track is in. Integers map to pitches using standard Pitch Class notation.
      * E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
      */
-    object KEY : TuneableTrackAttribute<Int>("key", true, 0, 11, Int::class)
+    object Key : TuneableTrackAttribute<Int>("key", true, 0, 11, Int::class)
 
     /**
      * Detects the presence of an audience in the recording. Higher liveness values represent an increased
      * probability that the track was performed live. A value above 0.8 provides strong likelihood
      * that the track is live.
      */
-    object LIVENESS : TuneableTrackAttribute<Float>("liveness", false, 0f, 1f, Float::class)
+    object Liveness : TuneableTrackAttribute<Float>("liveness", false, 0f, 1f, Float::class)
 
     /**
      * The overall loudness of a track in decibels (dB). Loudness values are averaged across the
@@ -381,13 +381,13 @@ sealed class TuneableTrackAttribute<T : Number>(
      * quality of a sound that is the primary psychological correlate of physical strength (amplitude).
      * Values typically range between -60 and 0 db.
      */
-    object LOUDNESS : TuneableTrackAttribute<Float>("loudness", false, null, null, Float::class)
+    object Loudness : TuneableTrackAttribute<Float>("loudness", false, null, null, Float::class)
 
     /**
      * Mode indicates the modality (major or minor) of a track, the type of scale from which its
      * melodic content is derived. Major is represented by 1 and minor is 0.
      */
-    object MODE : TuneableTrackAttribute<Int>("mode", true, 0, 1, Int::class)
+    object Mode : TuneableTrackAttribute<Int>("mode", true, 0, 1, Int::class)
 
     /**
      * The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.
@@ -396,7 +396,7 @@ sealed class TuneableTrackAttribute<T : Number>(
      * the market parameter, it is expected to find relinked tracks with popularities that do not match
      * min_*, max_*and target_* popularities. These relinked tracks are accurate replacements for unplayable tracks with the expected popularity scores. Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.
      */
-    object POPULARITY : TuneableTrackAttribute<Int>("popularity", true, 0, 100, Int::class)
+    object Popularity : TuneableTrackAttribute<Int>("popularity", true, 0, 100, Int::class)
 
     /**
      * Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the
@@ -406,13 +406,13 @@ sealed class TuneableTrackAttribute<T : Number>(
      * such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like
      * tracks.
      */
-    object SPEECHINESS : TuneableTrackAttribute<Float>("speechiness", false, 0f, 1f, Float::class)
+    object Speechiness : TuneableTrackAttribute<Float>("speechiness", false, 0f, 1f, Float::class)
 
     /**
      * The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the
      * speed or pace of a given piece and derives directly from the average beat duration.
      */
-    object TEMPO : TuneableTrackAttribute<Float>("tempo", false, 0f, null, Float::class)
+    object Tempo : TuneableTrackAttribute<Float>("tempo", false, 0f, null, Float::class)
 
     /**
      * An estimated overall time signature of a track. The time signature (meter)
@@ -420,14 +420,14 @@ sealed class TuneableTrackAttribute<T : Number>(
      * The time signature ranges from 3 to 7 indicating time signatures of 3/4, to 7/4.
      * A value of -1 may indicate no time signature, while a value of 1 indicates a rather complex or changing time signature.
      */
-    object TIME_SIGNATURE : TuneableTrackAttribute<Int>("time_signature", true, -1, 7, Int::class)
+    object TimeSignature : TuneableTrackAttribute<Int>("time_signature", true, -1, 7, Int::class)
 
     /**
      * A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high
      * valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence
      * sound more negative (e.g. sad, depressed, angry).
      */
-    object VALENCE : TuneableTrackAttribute<Float>("valence", false, 0f, 1f, Float::class)
+    object Valence : TuneableTrackAttribute<Float>("valence", false, 0f, 1f, Float::class)
 
     override fun toString() = attribute
 
@@ -446,20 +446,20 @@ sealed class TuneableTrackAttribute<T : Number>(
 
     companion object {
         fun values() = listOf(
-                ACOUSTICNESS,
-                DANCEABILITY,
-                DURATION_IN_MILLISECONDS,
-                ENERGY,
-                INSTRUMENTALNESS,
-                KEY,
-                LIVENESS,
-                LOUDNESS,
-                MODE,
-                POPULARITY,
-                SPEECHINESS,
-                TEMPO,
-                TIME_SIGNATURE,
-                VALENCE
+                Acousticness,
+                Danceability,
+                DurationInMilliseconds,
+                Energy,
+                Instrumentalness,
+                Key,
+                Liveness,
+                Loudness,
+                Mode,
+                Popularity,
+                Speechiness,
+                Tempo,
+                TimeSignature,
+                Valence
         )
     }
 }

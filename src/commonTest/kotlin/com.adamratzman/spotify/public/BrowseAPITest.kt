@@ -115,7 +115,7 @@ class BrowseAPITest : Spek({
                 assertFailsWith<IllegalArgumentException> {
                     b.getTrackRecommendations(
                         targetAttributes = listOf(
-                            TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(
+                            TuneableTrackAttribute.Acousticness.asTrackAttribute(
                                 3f
                             )
                         )
@@ -124,8 +124,8 @@ class BrowseAPITest : Spek({
                 assertTrue(
                     b.getTrackRecommendations(
                         targetAttributes = listOf(
-                            TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(1f),
-                            TuneableTrackAttribute.DANCEABILITY.asTrackAttribute(0.5f)
+                            TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
+                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
                         ),
                         seedGenres = listOf("pop")
                     ).complete().tracks.isNotEmpty()
@@ -135,7 +135,7 @@ class BrowseAPITest : Spek({
                 assertFailsWith<IllegalArgumentException> {
                     b.getTrackRecommendations(
                         minAttributes = listOf(
-                            TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(
+                            TuneableTrackAttribute.Acousticness.asTrackAttribute(
                                 3f
                             )
                         )
@@ -144,8 +144,8 @@ class BrowseAPITest : Spek({
                 assertTrue(
                     b.getTrackRecommendations(
                         minAttributes = listOf(
-                            TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(0.5f),
-                            TuneableTrackAttribute.DANCEABILITY.asTrackAttribute(0.5f)
+                            TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
+                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
                         ),
                         seedGenres = listOf("pop")
                     ).complete().tracks.isNotEmpty()
@@ -155,7 +155,7 @@ class BrowseAPITest : Spek({
                 assertFailsWith<SpotifyException.BadRequestException> {
                     b.getTrackRecommendations(
                         maxAttributes = listOf(
-                            TuneableTrackAttribute.SPEECHINESS.asTrackAttribute(
+                            TuneableTrackAttribute.Speechiness.asTrackAttribute(
                                 0.9f
                             )
                         )
@@ -164,8 +164,8 @@ class BrowseAPITest : Spek({
                 assertTrue(
                     b.getTrackRecommendations(
                         maxAttributes = listOf(
-                            TuneableTrackAttribute.ACOUSTICNESS.asTrackAttribute(0.9f),
-                            TuneableTrackAttribute.DANCEABILITY.asTrackAttribute(0.9f)
+                            TuneableTrackAttribute.Acousticness.asTrackAttribute(0.9f),
+                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.9f)
                         ),
                         seedGenres = listOf("pop")
                     ).complete().tracks.isNotEmpty()
