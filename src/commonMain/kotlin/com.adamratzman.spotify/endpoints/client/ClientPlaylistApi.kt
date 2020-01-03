@@ -4,6 +4,7 @@ package com.adamratzman.spotify.endpoints.client
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
@@ -319,7 +320,6 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @param image Optionally specify the image's [BufferedImage] object
      * @param imageData Optionally specify the Base64-encoded image data yourself
      *
-     * @throws IIOException if the image is not found
      * @throws BadRequestException if invalid data is provided
      */
     fun uploadClientPlaylistCover(

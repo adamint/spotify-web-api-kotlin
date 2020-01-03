@@ -61,13 +61,11 @@ package com.adamratzman.spotify.utils
  * System.out.println(<span style="color: darkred;">"Assignment state        = "</span> + code.[.getAssignment]);
  *
  * <span style="color: darkgreen;">// Convert to a Locale instance.</span>
- * [Locale] locale = code.[.toLocale];
  *
  * <span style="color: darkgreen;">// Get a Market by a Locale instance.</span>
  * code = Market.[getByLocale][.getByLocale](locale);
  *
  * <span style="color: darkgreen;">// Get the currency of the country.</span>
- * [Currency] currency = code.[.getCurrency];
  *
  * <span style="color: darkgreen;">// Get a list by a regular expression for names.
  * //

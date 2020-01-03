@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -71,7 +72,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
-     * @throws BadRequestException if the [album] is not found, or positioning of [limit] or [offset] is illegal.
+     * @throws [BadRequestException] if the [album] is not found, or positioning of [limit] or [offset] is illegal.
      * @return [PagingObject] of [SimpleTrack] objects
      */
     fun getAlbumTracks(
