@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
