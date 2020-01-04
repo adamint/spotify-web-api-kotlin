@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 
 // Kotlin DSL builders
 
-fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit) =
+fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
     SpotifyAppApiBuilder().apply(block).apply {
         credentials {
             this.clientId = clientId

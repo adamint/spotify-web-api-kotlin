@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamratzman:spotify-api-kotlin:3.0.0"
+    compile "com.adamratzman:spotify-api-kotlin:3.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
