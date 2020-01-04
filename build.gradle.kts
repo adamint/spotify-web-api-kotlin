@@ -1,5 +1,6 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import java.net.URI
 
 plugins {
     `maven-publish`
@@ -123,6 +124,10 @@ nexusStaging {
 }
 
 
+tasks.withType<GenerateModuleMetadata> {
+    enabled = false
+}
+
 publishing {
     publications {
         val jvm by getting(MavenPublication::class) {
@@ -165,17 +170,30 @@ publishing {
         }
     }
     repositories {
-        maven {
-            name = "nexus"
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+        if (project.hasProperty("publishToCentral")) {
+            maven {
+                name = "nexus"
+                val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
-            credentials {
-                val nexusUsername: String? by project.extra
-                val nexusPassword: String? by project.extra
-                username = nexusUsername
-                password = nexusPassword
+                credentials {
+                    val nexusUsername: String? by project.extra
+                    val nexusPassword: String? by project.extra
+                    username = nexusUsername
+                    password = nexusPassword
+                }
+            }
+        } else {
+            if (project.extra.has("spaceUser") && project.extra.has("spacePassword")) {
+                maven {
+                    credentials {
+                        username = project.extra["spaceUser"]?.toString()
+                        password = project.extra["spacePassword"]?.toString()
+                    }
+
+                    url = URI.create("https://maven.jetbrains.space/adam/ratzman")
+                }
             }
         }
     }
