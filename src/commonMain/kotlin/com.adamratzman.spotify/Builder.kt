@@ -1,6 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyAppApi
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyClientApi
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
@@ -15,29 +17,89 @@ import kotlinx.serialization.json.Json
 
 // Kotlin DSL builders
 
-fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
-    SpotifyAppApiBuilder().apply(block).apply {
-        credentials {
-            this.clientId = clientId
-            this.clientSecret = clientSecret
-        }
-    }
+/**
+ * Contains static methods to instantiate [SpotifyAppApi] and [SpotifyClientApi] instances
+ */
+class SpotifyBuilder {
+    companion object {
+        /*
+            App Api Builders
+         */
 
-fun spotifyClientApi(
-    clientId: String,
-    clientSecret: String,
-    redirectUri: String,
-    block: SpotifyClientApiBuilder.() -> Unit
-) = SpotifyClientApiBuilder().apply(block).apply {
-    credentials {
-        this.clientId = clientId
-        this.clientSecret = clientSecret
-        this.redirectUri = redirectUri
+        /**
+         * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret], with the ability to configure
+         * the api settings by providing a builder initialization [block]
+         *
+         * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param block Api settings block
+         *
+         * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
+         */
+        fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
+                SpotifyAppApiBuilder().apply(block).apply {
+                    credentials {
+                        this.clientId = clientId
+                        this.clientSecret = clientSecret
+                    }
+                }
+
+        /**
+         * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
+         *
+         * **Note**: You **must** provide your app credentials in the [SpotifyAppApiBuilder.credentials] block
+         *
+         * @param block Api settings block
+         *
+         * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
+         */
+        fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
+
+        /*
+            Client Api Builders
+         */
+
+        /**
+         * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri], with the ability to configure
+         * the api settings by providing a builder initialization [block]
+         *
+         * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
+         * block
+         *
+         * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param block Api settings block
+         *
+         * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+         */
+        fun spotifyClientApi(
+                clientId: String,
+                clientSecret: String,
+                redirectUri: String,
+                block: SpotifyClientApiBuilder.() -> Unit
+        ) = SpotifyClientApiBuilder().apply(block).apply {
+            credentials {
+                this.clientId = clientId
+                this.clientSecret = clientSecret
+                this.redirectUri = redirectUri
+            }
+        }
+
+        /**
+         * Instantiate a new [SpotifyClientApiBuilder] by providing a builder initialization [block]
+         *
+         * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
+         * block
+         *
+         * @param block Api settings block
+         *
+         * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+         */
+        fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
     }
 }
 
-fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
-fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
 
 /**
  *  Spotify API builder
