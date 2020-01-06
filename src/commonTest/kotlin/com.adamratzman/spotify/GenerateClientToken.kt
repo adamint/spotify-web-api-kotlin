@@ -1,6 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyClientApi
+
 fun main(args: Array<String>) {
     val _clientId = args[0]
     val _clientSecret = args[1]
