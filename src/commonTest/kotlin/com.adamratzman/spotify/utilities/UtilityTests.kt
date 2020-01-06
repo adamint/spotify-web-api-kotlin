@@ -1,16 +1,16 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyAppApi
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyClientApi
 import com.adamratzman.spotify.SpotifyClientAPI
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.block
 import com.adamratzman.spotify.getEnvironmentVariable
-import com.adamratzman.spotify.spotifyAppApi
-import com.adamratzman.spotify.spotifyClientApi
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.GlobalScope
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertFailsWith
 
 class UtilityTests : Spek({
     describe("Utility tests") {
