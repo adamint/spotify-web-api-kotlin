@@ -17,6 +17,23 @@ import kotlinx.serialization.json.Json
 
 // Kotlin DSL builders
 
+@Deprecated("Builder methods are now found in SpotifyBuilder", ReplaceWith("SpotifyBuilder.spotifyAppApi"))
+fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
+        SpotifyBuilder.spotifyAppApi(clientId, clientSecret, block)
+
+@Deprecated("Builder methods are now found in SpotifyBuilder", ReplaceWith("SpotifyBuilder.spotifyAppApi"))
+fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) =
+        SpotifyBuilder.spotifyAppApi(block)
+
+@Deprecated("Builder methods are now found in SpotifyBuilder", ReplaceWith("SpotifyBuilder.spotifyClientApi"))
+fun spotifyAppApi(clientId: String, clientSecret: String, redirectUri: String, block: SpotifyClientApiBuilder.() -> Unit = {}) =
+        SpotifyBuilder.spotifyClientApi(clientId, clientSecret,redirectUri, block)
+
+@Deprecated("Builder methods are now found in SpotifyBuilder", ReplaceWith("SpotifyBuilder.spotifyClientApi"))
+fun spotifyAppApi(block: SpotifyClientApiBuilder.() -> Unit) =
+        SpotifyBuilder.spotifyClientApi(block)
+
+
 /**
  * Contains static methods to instantiate [SpotifyAppApi] and [SpotifyClientApi] instances
  */
