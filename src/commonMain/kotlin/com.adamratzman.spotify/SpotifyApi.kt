@@ -1,6 +1,8 @@
 /* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyAppApi
+import com.adamratzman.spotify.SpotifyBuilder.Companion.spotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
 import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
@@ -28,10 +30,10 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 internal const val base = "https://api.spotify.com/v1"
 
