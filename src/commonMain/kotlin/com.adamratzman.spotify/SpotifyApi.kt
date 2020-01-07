@@ -30,10 +30,10 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
+import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 
 internal const val base = "https://api.spotify.com/v1"
 

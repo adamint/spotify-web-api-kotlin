@@ -22,6 +22,12 @@ java {
     withJavadocJar()
 }
 
+tasks.withType<Test> {
+    this.testLogging {
+        this.showStandardStreams = true
+    }
+}
+
 repositories {
     mavenCentral()
     jcenter()
