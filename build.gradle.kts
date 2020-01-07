@@ -120,7 +120,7 @@ tasks.named<Test>("jvmTest") {
 spotless {
     kotlin {
         target("**/*.kt")
-        licenseHeader("/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */")
+        licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
         ktlint()
     }
 }
