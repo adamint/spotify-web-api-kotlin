@@ -32,6 +32,9 @@ internal data class HttpHeader(val key: String, val value: String)
 
 internal data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
+/**
+ * Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests
+ */
 internal class HttpConnection constructor(
     private val url: String,
     private val method: HttpRequestMethod,
