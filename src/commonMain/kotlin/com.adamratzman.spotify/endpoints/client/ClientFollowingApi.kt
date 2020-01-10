@@ -55,7 +55,6 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
-     * @param playlistOwner id or uri of the creator of the playlist
      * @param playlistId playlist id or uri
      *
      * @return Boolean representing whether the user follows the playlist
@@ -63,10 +62,9 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * @throws [BadRequestException] if the playlist is not found
      * @return Whether the current user is following [playlistId]
      */
-    fun isFollowingPlaylist(playlistOwner: String, playlistId: String): SpotifyRestAction<Boolean> {
+    fun isFollowingPlaylist(playlistId: String): SpotifyRestAction<Boolean> {
         return toAction {
             isFollowingPlaylist(
-                playlistOwner,
                 playlistId,
                 (api as SpotifyClientApi).userId
             ).complete()

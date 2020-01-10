@@ -4,7 +4,7 @@ package com.adamratzman.spotify.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-class SpotifySearchResult(
+data class SpotifySearchResult(
     val albums: PagingObject<SimpleAlbum>? = null,
     val artists: PagingObject<Artist>? = null,
     val playlists: PagingObject<SimplePlaylist>? = null,

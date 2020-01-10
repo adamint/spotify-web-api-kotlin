@@ -27,7 +27,6 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
-     * @param playlistOwner id or uri of the creator of the playlist
      * @param playlist playlist id or uri
      * @param users user ids or uris to check
      *
@@ -36,14 +35,12 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-        playlistOwner: String,
         playlist: String,
         vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
         return toAction {
-            val user = UserUri(playlistOwner)
             get(
-                EndpointBuilder("/users/${user.id.encodeUrl()}/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
+                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
                     .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             ).toList(Boolean.serializer().list, api, json)
         }
@@ -54,7 +51,6 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
-     * @param playlistOwner id or uri of the creator of the playlist
      * @param playlist playlist id or uri
      * @param user Spotify user id
      *
@@ -62,10 +58,9 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @throws [BadRequestException] if the playlist is not found or if the user does not exist
      */
-    fun isFollowingPlaylist(playlistOwner: String, playlist: String, user: String): SpotifyRestAction<Boolean> {
+    fun isFollowingPlaylist(playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction {
             areFollowingPlaylist(
-                playlistOwner,
                 playlist,
                 users = *arrayOf(user)
             ).complete()[0]
