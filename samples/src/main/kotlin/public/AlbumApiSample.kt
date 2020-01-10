@@ -18,5 +18,4 @@ fun main() {
 
     // get album "Kids in Love"'s tracks
     println(api.albums.getAlbumTracks("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete().map { it.name })
-
 }
