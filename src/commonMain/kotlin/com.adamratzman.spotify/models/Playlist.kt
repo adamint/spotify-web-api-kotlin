@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
@@ -77,7 +77,7 @@ data class PlaylistTrack(
     @SerialName("added_at") val addedAt: String? = null,
     @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
     @SerialName("is_local") val isLocal: Boolean? = null,
-    val track: Track,
+    val track: Track?,
     @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 

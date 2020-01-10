@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models.serialization
 
 import com.adamratzman.spotify.SpotifyApi
@@ -60,7 +60,6 @@ internal inline fun <reified T : Any> String.toPagingObject(
 ): PagingObject<T> {
     if (innerObjectName != null) {
         val map = this.parseJson { json.parse((String.serializer() to PagingObject.serializer(tSerializer)).map, this) }
-
         return (map[innerObjectName] ?: error(""))
                 .apply {
                     this.endpoint = endpoint

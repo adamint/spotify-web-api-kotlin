@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
@@ -27,10 +27,14 @@ typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
 class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param id The internal spotify id
      */
@@ -79,6 +83,8 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * Depending on object types being searched for, other field filters, include genre (applicable to tracks and artists), upc, and isrc. For example: q=lil%20genre:%22southern%20hip%20hop%22&type=artist. Use double quotation marks around the genre keyword string if it contains spaces.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
      * @param query Search query keywords and optional field filters and operators.
      * @param searchTypes A list of item types to search across. Search results include hits from all the specified item types.
      * @param limit Maximum number of results to return.
@@ -122,6 +128,8 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about playlists that match the keyword string. See [SearchApi.search] for more information
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
@@ -146,6 +154,8 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get Spotify Catalog information about artists that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -173,6 +183,8 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about albums that match the keyword string. See [SearchApi.search] for more information
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
@@ -198,6 +210,8 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get Spotify Catalog information about tracks that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)

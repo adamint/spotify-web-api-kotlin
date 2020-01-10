@@ -1,6 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyApi.Companion.getCredentialedToken
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 import com.adamratzman.spotify.http.HttpConnection
@@ -198,7 +199,6 @@ interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>
      */
     var authorization: SpotifyUserAuthorization
 
-
     /**
      * Allows you to override default values for caching, token refresh, and logging
      */
@@ -308,7 +308,7 @@ class SpotifyClientApiBuilder(
 ) : ISpotifyClientApiBuilder {
     override fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
         require(credentials.redirectUri != null && credentials.clientId != null) { "You didn't specify a redirect uri or client id in the credentials block!" }
-        return getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
+        return SpotifyApi.getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
     }
 
     override suspend fun suspendBuild(): SpotifyClientApi {
@@ -396,12 +396,10 @@ class SpotifyClientApiBuilder(
     }
 }
 
-
 /**
  * App Api builder interface
  */
 interface ISpotifyAppApiBuilder : ISpotifyApiBuilder<SpotifyAppApi, SpotifyAppApiBuilder>
-
 
 /**
  * [SpotifyAppApi] builder for api creation using client authorization

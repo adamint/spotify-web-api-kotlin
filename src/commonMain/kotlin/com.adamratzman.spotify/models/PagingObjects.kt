@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyApi
@@ -6,6 +6,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.runBlocking
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -73,9 +73,9 @@ class PagingObject<T : Any>(
         return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
             when (itemClazz) {
                 SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), null, endpointFinal, endpointFinal.api.json)
+                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), "categories", endpointFinal, endpointFinal.api.json)
+                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), "albums", endpointFinal, endpointFinal.api.json)
+                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), "playlists", endpointFinal, endpointFinal.api.json)
                 SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal, endpointFinal.api.json)
                 SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal, endpointFinal.api.json)
                 Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal, endpointFinal.api.json)
@@ -263,7 +263,6 @@ abstract class AbstractPagingObject<T : Any>(
     @ExperimentalCoroutinesApi
     fun flowEndOrdered(): Flow<AbstractPagingObject<T>> = flowForward()
 
-
     // A paging object is also a list, and instantiation by deserialization doesn't properly store the items list internally
     // so we implement list methods
 
@@ -276,7 +275,7 @@ abstract class AbstractPagingObject<T : Any>(
     override fun iterator() = items.iterator()
     override fun lastIndexOf(element: T) = items.lastIndexOf(element)
     override fun listIterator() = items.listIterator()
-    override fun listIterator(index: Int) =items.listIterator(index)
+    override fun listIterator(index: Int) = items.listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int) = items.subList(fromIndex, toIndex)
 }
 

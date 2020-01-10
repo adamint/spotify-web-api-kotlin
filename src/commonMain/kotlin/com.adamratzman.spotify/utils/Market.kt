@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 /*
@@ -96,7 +96,7 @@ package com.adamratzman.spotify.utils
  * code = Market.[getByCode][.getByCode](<span style="color: darkred;">"ANHH"</span>);
 </pre> *
  *
- * @author Takahiko Kawasaki
+ * @author Takahiko Kawasaki (https://github.com/TakahikoKawasaki/nv-i18n)
  */
 enum class Market(
     /**

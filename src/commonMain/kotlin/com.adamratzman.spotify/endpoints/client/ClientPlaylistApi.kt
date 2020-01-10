@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
@@ -39,6 +39,8 @@ typealias ClientPlaylistAPI = ClientPlaylistApi
 
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/)**
  */
 class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     /**
@@ -46,6 +48,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * Creating a public playlist for a user requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * creating a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/)**
      *
      * @param user The user’s Spotify user ID.
      * @param name The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be
@@ -86,6 +90,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
+     *
      * @param playlist The spotify id or uri for the playlist.
      * @param track Track id or uri
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
@@ -103,6 +109,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The spotify id or uri for the playlist.
      * @param tracks Spotify track ids. A maximum of 100 tracks can be added in one request.
@@ -130,6 +138,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * Modifying a public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * modifying a private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/change-playlist-details/)**
      *
      * @param playlist The spotify id or uri for the playlist.
      * @param name Optional. The name to change the playlist to.
@@ -167,6 +177,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Collaborative playlists are only retrievable for the current user and requires the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
      * scope to have been authorized by the user.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -192,6 +204,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * though they are always private.
      * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
      * scope to have been authorized by the user.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
      *
      * @param id Playlist id or uri
      *
@@ -224,6 +238,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * Reordering tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * reordering tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/)**
      *
      * @param playlist The spotify id or uri for the playlist.
      * @param reorderRangeStart The position of the first track to be reordered.
@@ -262,6 +278,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
+     *
      * @param playlist The spotify id or uri for the playlist.
      * @param tracks The Spotify track ids.
      *
@@ -286,6 +304,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
+     *
      * @param playlist The spotify id or uri for the playlist.
      * @param tracks The Spotify track ids.
      *
@@ -295,6 +315,9 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
 
     /**
      * Remove all the tracks in a playlist
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
+     *
      * @param playlist the spotify id or uri for the playlist.
      */
     fun removeAllClientPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
@@ -311,6 +334,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * contain [playlist-modify-public][SpotifyScope.PLAYLIST_MODIFY_PUBLIC] and/or
      * [playlist-modify-private][SpotifyScope.PLAYLIST_MODIFY_PRIVATE], depending on the
      * public status of the playlist you want to update.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/upload-custom-playlist-cover/)**
      *
      * @param playlist the spotify id or uri for the playlist.
      * @param imagePath Optionally specify the full local path to the image
@@ -351,6 +376,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
+     *
      * @param playlist The playlist id
      * @param track The track id
      * @param positions The positions at which the track is located in the playlist
@@ -369,6 +396,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
+     *
      * @param playlist The playlist id
      * @param track The track id
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
@@ -385,6 +414,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
+     *
      * @param playlist The playlist id
      * @param tracks An array of track ids
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
@@ -400,6 +431,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
      * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based)

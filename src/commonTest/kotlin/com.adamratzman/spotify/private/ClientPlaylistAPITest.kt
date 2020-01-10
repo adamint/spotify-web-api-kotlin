@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
 import com.adamratzman.spotify.SpotifyClientAPI
@@ -69,7 +69,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.addTrackToClientPlaylist(createdPlaylist.id, trackIdOne).complete()
 
@@ -77,7 +77,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdTwo, trackIdOne),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.setClientPlaylistTracks(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo).complete()
 
@@ -95,7 +95,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdOne, trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             assertFailsWith<SpotifyException.BadRequestException> {
                 cp.removeTracksFromClientPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3))).complete()
