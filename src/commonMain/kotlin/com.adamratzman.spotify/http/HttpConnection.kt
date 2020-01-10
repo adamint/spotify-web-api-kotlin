@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
@@ -97,7 +97,7 @@ internal class HttpConnection constructor(
                 if (respCode == 502 && retryIf502) {
                     api?.logger?.logError(
                             false,
-                            "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
+                            "Received 502 (Invalid response) for URL $url and $this (${response.readText()})\nRetrying..",
                             null
                     )
                     return@let execute(additionalHeaders, retryIf502 = false)

@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
@@ -25,12 +25,16 @@ typealias ClientLibraryAPI = ClientLibraryApi
 
 /**
  * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
 class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
      *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -57,6 +61,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
@@ -82,6 +88,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
      * @param type The type of object (album or track)
      * @param id The spotify id or uri of the object
      *
@@ -97,6 +105,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects (album or track)
      * @param ids The spotify ids or uris of the objects
@@ -117,6 +127,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
      * @param type The type of object (album or track)
      * @param id The spotify id or uri of the object
      *
@@ -132,6 +144,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
      * @param ids The spotify ids or uris of the objects
@@ -152,6 +166,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
      * @param type The type of object to check against (album or track)
      * @param id The spotify id or uri of the object
      *
@@ -169,6 +185,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
 
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
      * @param ids The spotify ids or uris of the objects

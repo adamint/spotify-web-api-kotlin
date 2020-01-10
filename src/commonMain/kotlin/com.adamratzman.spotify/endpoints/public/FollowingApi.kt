@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
@@ -18,10 +18,14 @@ typealias FollowingAPI = FollowingApi
 
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
  */
 open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlistOwner id or uri of the creator of the playlist
      * @param playlist playlist id or uri
@@ -47,6 +51,8 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Check to see if a specific Spotify user is following the specified playlist.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlistOwner id or uri of the creator of the playlist
      * @param playlist playlist id or uri
