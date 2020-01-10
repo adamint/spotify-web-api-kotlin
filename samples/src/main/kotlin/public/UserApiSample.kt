@@ -13,7 +13,6 @@ fun main() {
     // get profile for adamratzman1
     println(api.users.getProfile("adamratzman1").complete())
 
-
     // get profile of non-existant user
     println(api.users.getProfile("nonexistantuserjjjjjjjjjjj"))
 }
