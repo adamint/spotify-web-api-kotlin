@@ -1,14 +1,16 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
+import com.adamratzman.spotify.utils.Locale
+import com.adamratzman.spotify.utils.Locale.ar_AE
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
+import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -21,18 +23,18 @@ class BrowseAPITest : Spek({
         }
 
         it("get category list") {
-            assertEquals(
-                b.getCategoryList(locale = "BAD_LOCALE").complete().items[0],
+            assertNotSame(
+                b.getCategoryList(locale = ar_AE).complete().items[0],
                 b.getCategoryList().complete().items[0]
             )
-            assertTrue(b.getCategoryList(4, 3, locale = "fr_FR", market = Market.CA).complete().items.isNotEmpty())
+            assertTrue(b.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).complete().items.isNotEmpty())
         }
 
         it("get category") {
             assertNotNull(b.getCategory("pop").complete())
             assertNotNull(b.getCategory("pop", Market.FR).complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = "en_US").complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = "KSDJFJKSJDKF").complete())
+            assertNotNull(b.getCategory("pop", Market.FR, locale = Locale.en_US).complete())
+            assertNotNull(b.getCategory("pop", Market.FR, locale = Locale.sr_ME).complete())
             assertFailsWith<SpotifyException.BadRequestException> { b.getCategory("no u", Market.US).complete() }
         }
 

@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
@@ -16,10 +16,14 @@ typealias UserAPI = UserApi
 
 /**
  * Endpoints for retrieving information about a user’s profile.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
 open class UserApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)**
      *
      * @param user The user’s Spotify user ID.
      *

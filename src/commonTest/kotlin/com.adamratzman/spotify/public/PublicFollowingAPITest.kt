@@ -1,12 +1,12 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class PublicFollowingAPITest : Spek({
     describe("Public Following test") {

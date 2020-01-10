@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
@@ -14,6 +14,8 @@ typealias ClientUserAPI = ClientProfileApi
 
 /**
  * Endpoints for retrieving information about a user’s profile.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
 class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
     /**
@@ -23,6 +25,8 @@ class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
      * Reading the user’s email address requires the [SpotifyScope.USER_READ_EMAIL] scope;
      * reading country and product subscription level requires the [SpotifyScope.USER_READ_PRIVATE] scope.
      * Reading the user’s birthdate requires the [SpotifyScope.USER_READ_BIRTHDATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
      *
      * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
      */
