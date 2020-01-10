@@ -69,9 +69,11 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     }
 
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
-    fun getPlaylists(user: String,
-                     limit: Int? = null,
-                     offset: Int? = null) = getUserPlaylists(user, limit, offset)
+    fun getPlaylists(
+        user: String,
+        limit: Int? = null,
+        offset: Int? = null
+    ) = getUserPlaylists(user, limit, offset)
 
     /**
      * Get a playlist owned by a Spotify user.

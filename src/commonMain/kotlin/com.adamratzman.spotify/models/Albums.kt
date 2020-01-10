@@ -44,8 +44,8 @@ data class SimpleAlbum(
     val name: String,
     val type: String,
     val restrictions: Restrictions? = null,
-    @SerialName("release_date") val releaseDate: String,
-    @SerialName("release_date_precision") val releaseDatePrecision: String,
+    @SerialName("release_date") private val releaseDateString: String,
+    @SerialName("release_date_precision") val releaseDatePrecisionString: String,
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject() {
@@ -56,6 +56,9 @@ data class SimpleAlbum(
     val albumType: AlbumResultType = albumTypeString.let { _ ->
         AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
     }
+
+    @Transient
+    val releaseDate = getReleaseDate(releaseDateString)
 
     @Transient
     val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
@@ -70,6 +73,8 @@ data class SimpleAlbum(
      */
     fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
 }
+
+data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
 
 /**
  * Album search type
@@ -129,7 +134,7 @@ data class Album(
     val label: String,
     val name: String,
     val popularity: Int,
-    @SerialName("release_date") val releaseDate: String,
+    @SerialName("release_date") private val releaseDateString: String,
     @SerialName("release_date_precision") val releaseDatePrecision: String,
     val tracks: PagingObject<SimpleTrack>,
     val type: String,
@@ -145,6 +150,9 @@ data class Album(
 
     @Transient
     val albumType: AlbumResultType = AlbumResultType.values().first { it.id == albumTypeString }
+
+    @Transient
+    val releaseDate = getReleaseDate(releaseDateString)
 }
 
 /**
@@ -179,4 +187,17 @@ enum class CopyrightType(val identifier: String) : ResultEnum {
     SOUND_PERFORMANCE_COPYRIGHT("P");
 
     override fun retrieveIdentifier() = identifier
+}
+
+private fun getReleaseDate(releaseDateString: String) = when (releaseDateString.count { it == '-' }) {
+    0 -> ReleaseDate(releaseDateString.toInt(), null, null)
+    1 -> {
+        val split = releaseDateString.split("-").map { it.toInt() }
+        ReleaseDate(split[0], split[1], null)
+    }
+    2 -> {
+        val split = releaseDateString.split("-").map { it.toInt() }
+        ReleaseDate(split[0], split[1], split[2])
+    }
+    else -> throw IllegalArgumentException()
 }
