@@ -15,13 +15,13 @@ class PublicPlaylistsAPITest : Spek({
         val p = api.playlists
         describe("get user's playlists") {
             it("available user should return playlists") {
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
             }
             it("unknown user should throw exception") {
-                assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylists("non-existant-user").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { p.getUserPlaylists("non-existant-user").complete().items.size }
             }
         }
         describe("get playlist") {

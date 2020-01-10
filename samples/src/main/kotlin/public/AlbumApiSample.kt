@@ -10,7 +10,8 @@ fun main() {
             System.getenv("SPOTIFY_CLIENT_SECRET")
     ).build()
 
-    // get album "Kids in Love" by the Mowgli's
+    // get album "Kids in Love" by the Mowgli's release date
     println(api.albums.getAlbum("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete()!!.releaseDate)
 
+    //
 }
