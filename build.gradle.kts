@@ -102,6 +102,9 @@ kotlin {
                 }
             }
 
+            all {
+                languageSettings.useExperimentalAnnotation("kotlin.Experimental")
+            }
         }
     }
 }
