@@ -1,16 +1,12 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.schedule
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +21,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.JvmOverloads
 
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
@@ -138,6 +139,24 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
      * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
      */
     fun getAll(context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getAllImpl() }
+
+    /**
+     * Synchronously retrieve the next [total] paging objects associated with this rest action, including the current one.
+     *
+     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    fun getWithNext(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getWithNextImpl(total) }
+
+    /**
+     * Synchronously retrieve the items associated with the next [total] paging objects associated with this rest action, including the current one.
+     *
+     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    fun getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { getWithNext(total, context).complete().map { it.items }.flatten() }
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action
