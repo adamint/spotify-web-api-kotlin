@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
+import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
@@ -21,7 +22,6 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
-import com.adamratzman.spotify.SpotifyScope
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
 typealias SearchAPI = SearchApi
