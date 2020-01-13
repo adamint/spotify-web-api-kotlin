@@ -28,10 +28,10 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 /**
  * Base url for Spotify web api calls
