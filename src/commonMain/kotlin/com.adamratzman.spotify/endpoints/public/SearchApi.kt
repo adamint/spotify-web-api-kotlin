@@ -21,6 +21,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
+import com.adamratzman.spotify.SpotifyScope
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
 typealias SearchAPI = SearchApi
@@ -100,7 +101,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only artists, albums, and tracks with content that is playable in that market is returned. Note:
     - Playlist results are not affected by the market parameter.
     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
-    - Users can view the country that is associated with their account in the account settings. A user must grant access to the user-read-private scope prior to when the access token is issued.
+    - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
     fun search(
