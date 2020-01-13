@@ -28,8 +28,18 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param id the Spotify id of the time frame
      */
     enum class TimeRange(val id: String) {
+        /**
+         * Calculated from several years of data and including all new data as it becomes available
+         */
         LONG_TERM("long_term"),
+        /**
+         * Approximately last 6 months
+         */
         MEDIUM_TERM("medium_term"),
+
+        /**
+         * Approximately last 4 weeks
+         */
         SHORT_TERM("short_term");
 
         override fun toString() = id
