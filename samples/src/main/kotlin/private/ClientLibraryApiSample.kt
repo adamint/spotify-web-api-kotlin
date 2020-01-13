@@ -15,7 +15,6 @@ fun main() {
         }
     }.build()
 
-
     // get all your saved tracks
     println(api.library.getSavedTracks(limit = 50).getAllItems().complete().map { it.track.name })
 
