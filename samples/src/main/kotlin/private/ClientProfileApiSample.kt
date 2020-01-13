@@ -14,4 +14,8 @@ fun main() {
         }
     }.build()
 
+    // get and print your follower count and, if the associated scope has been authorized, the user's birthday
+    val profile = api.users.getClientProfile().complete()
+
+    println("${profile.followers.total} | ${profile.birthdate}")
 }

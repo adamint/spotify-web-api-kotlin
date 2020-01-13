@@ -13,5 +13,4 @@ fun main() {
             tokenString = System.getenv("SPOTIFY_TOKEN_STRING")
         }
     }.build()
-
 }

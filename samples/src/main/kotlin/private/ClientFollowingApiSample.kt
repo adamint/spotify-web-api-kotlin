@@ -26,7 +26,6 @@ fun main() {
     // get all followed artists, limiting 1 each request
     println(api.following.getFollowedArtists(limit = 1).getAllItems().complete().map { it.name })
 
-
     // follow and unfollow, if you weren't previously following, the artist Louane
 
     val isFollowingLouane = api.following.isFollowingArtist("spotify:artist:7wjeXCtRND2ZdKfMJFu6JC").complete()
@@ -35,7 +34,6 @@ fun main() {
     api.following.followArtist("spotify:artist:7wjeXCtRND2ZdKfMJFu6JC").complete()
 
     if (!isFollowingLouane) api.following.unfollowArtist("spotify:artist:7wjeXCtRND2ZdKfMJFu6JC").complete()
-
 
     // follow and unfollow, if you weren't previously following, the user adamratzman1
 
@@ -46,7 +44,6 @@ fun main() {
 
     if (!isFollowingAdam) api.following.unfollowUser("adamratzman1").complete()
 
-
     // follow and unfollow, if you weren't previously following, the playlist Today's Top Hits
 
     val isFollowingTodaysTopHits = api.following.isFollowingPlaylist("spotify:playlist:37i9dQZF1DXcBWIGoYBM5M").complete()
@@ -55,5 +52,4 @@ fun main() {
     api.following.followPlaylist("spotify:playlist:37i9dQZF1DXcBWIGoYBM5M").complete()
 
     if (!isFollowingTodaysTopHits) api.following.unfollowPlaylist("spotify:playlist:37i9dQZF1DXcBWIGoYBM5M").complete()
-
 }
