@@ -6,9 +6,9 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
@@ -153,7 +153,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
+     * Set the repeat mode for the user’s playback. Options are [PlayerRepeatState.TRACK], [PlayerRepeatState.CONTEXT], and [PlayerRepeatState.OFF].
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
@@ -264,7 +264,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         offsetNum: Int? = null,
         offsetTrackId: String? = null,
         deviceId: String? = null,
-        vararg tracksToPlay: String
+        tracksToPlay: List<String> = listOf()
     ): SpotifyRestAction<Unit> {
         return toAction {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
@@ -330,13 +330,14 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      * @param play Whether to immediately start playback on the transferred device
      */
-    fun transferPlayback(vararg deviceId: String, play: Boolean = true): SpotifyRestAction<Unit> {
-        require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
+    @SpotifyExperimentalFunctionApi
+    fun transferPlayback(deviceId: String, play: Boolean? = null): SpotifyRestAction<Unit> {
+    //    require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
         return toAction {
-            put(
-                EndpointBuilder("/me/player").with("device_ids", deviceId.joinToString(",") { it.encodeUrl() })
-                    .with("play", play).toString()
-            )
+            val json = jsonMap()
+            play?.let { json += json { "play" to it } }
+            json += json { "device_ids" to JsonArray(listOf(deviceId).map(::JsonPrimitive)) }
+            put(EndpointBuilder("/me/player").toString(), json.toJson())
             Unit
         }
     }
