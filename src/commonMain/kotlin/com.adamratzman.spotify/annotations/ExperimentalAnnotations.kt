@@ -5,3 +5,8 @@ package com.adamratzman.spotify.annotations
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class SpotifyExperimentalHttpApi
+
+@Experimental
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+annotation class SpotifyExperimentalFunctionApi
