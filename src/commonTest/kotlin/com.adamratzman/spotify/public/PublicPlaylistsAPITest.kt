@@ -3,12 +3,12 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class PublicPlaylistsAPITest : Spek({
     describe("Public playlists test") {
@@ -33,15 +33,15 @@ class PublicPlaylistsAPITest : Spek({
             }
         }
         describe("get playlist tracks") {
-            it("valid playlist") {
-                assertTrue(p.getPlaylistTracks("37i9dQZF1DXcBWIGoYBM5M", offset = 1).complete().items.isNotEmpty())
+            it("valid playlist, get tracks") {
+                assertTrue(p.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").complete().items.isNotEmpty())
             }
             it("invalid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
             }
         }
         describe("get playlist cover") {
-            it("valid playlist") {
+            it("valid playlist, get cover") {
                 assertTrue(p.getPlaylistCovers("37i9dQZF1DXcBWIGoYBM5M").complete().isNotEmpty())
             }
             it("invalid playlist") {
