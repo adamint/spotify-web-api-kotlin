@@ -4,6 +4,7 @@ $dokka.location:com.adamratzman.spotify.utils$asList(java.util.concurrent.Concur
 $dokka.location:com.adamratzman.spotify.utils$asList(kotlin.collections.HashMap((com.adamratzman.spotify.utils.asList.K, com.adamratzman.spotify.utils.asList.V)))com.adamratzman.spotify.utils/kotlin.collections.-hash-map/as-list.html
 $dokka.location:com.adamratzman.spotify.utils$encodeToBase64(kotlin.String)com.adamratzman.spotify.utils/kotlin.-string/encode-to-base64.html
 com.adamratzman.spotify
+com.adamratzman.spotify.annotations
 com.adamratzman.spotify.endpoints.client
 com.adamratzman.spotify.endpoints.public
 com.adamratzman.spotify.http
