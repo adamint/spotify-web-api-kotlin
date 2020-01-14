@@ -4,13 +4,13 @@ package com.adamratzman.spotify.private
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class ClientFollowingAPITest : Spek({
     describe("Client following tests") {
@@ -66,16 +66,15 @@ class ClientFollowingAPITest : Spek({
 
         it("follow/unfollow playlists") {
             val playlistId = "37i9dQZF1DXcBWIGoYBM5M"
-            val playlistOwnerId = "spotify"
-            if (api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete()) {
+            if (api.following.isFollowingPlaylist(playlistId).complete()) {
                 api.following.unfollowPlaylist(playlistId).complete()
             }
 
-            assertFalse(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+            assertFalse(api.following.isFollowingPlaylist(playlistId).complete())
 
             api.following.followPlaylist(playlistId).complete()
 
-            assertTrue(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+            assertTrue(api.following.isFollowingPlaylist(playlistId).complete())
 
             assertFailsWith<SpotifyException.BadRequestException> { api.following.isFollowingPlaylist(" no u", "no u").complete() }
             assertFailsWith<SpotifyException.BadRequestException> { api.following.unfollowPlaylist("no-u").complete() }
