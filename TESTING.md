@@ -3,13 +3,20 @@
 We use [Spek](https://github.com/spekframework/spek) to run unit tests. You must add Maven Central to the gradle repositories 
 in order to pull Spek.
 
+You must create a Spotify application [here](https://developer.spotify.com/dashboard/applications) to get credentials.
+
 To run **only** public endpoint tests, run
 
-`gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET`
+`gradle check`
+
+Note: You must have `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` as environment variables.
 
 To run **all** tests, you need a valid Spotify application, redirect uri, and token string. use:
 
-`gradle test -PclientId=YOUR_CLIENT_ID -PclientSecret=YOUR_CLIENT_SECRET -PspotifyRedirectUri=SPOTIFY_REDIRECT_URI -PspotifyTokenString=SPOTIFY_TOKEN`
+`gradle check`
+
+Note: In addition to `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`, you also must have the following environment 
+variables set up: `SPOTIFY_REDIRECT_URI` and `SPOTIFY_TOKEN_STRING`
 
 Some tests may fail if you do not allow access to all required scopes. To mitigate this, you can individually grant 
 each scope or use the following code snippet to print out the Spotify token string (given a generated authorization code)
@@ -17,13 +24,14 @@ each scope or use the following code snippet to print out the Spotify token stri
 **How to generate an authorization URL**
 ```kotlin
 import com.adamratzman.spotify.main.SpotifyScope
-import com.adamratzman.spotify.main.spotifyApi
+import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 
-spotifyApi {
-    credentials {
-        clientId = "YOUR_CLIENT_ID"
-        clientSecret = "YOUR_CLIENT_SECRET"
-        redirectUri = "YOUR_REDIRECT_URI"
+val api = spotifyClientApi(
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "SPOTIFY_REDIRECT_URI") {
+    authorization {
+        tokenString = "SPOTIFY_TOKEN_STRING"
     }
 }.getAuthorizationUrl(*SpotifyScope.values())
 
@@ -31,16 +39,14 @@ spotifyApi {
 
 **How to get a Spotify token**
 ```kotlin
-import com.adamratzman.spotify.main.spotifyApi
+import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 
-spotifyApi { 
-    credentials { 
-        clientId = "YOUR_CLIENT_ID"
-        clientSecret = "YOUR_CLIENT_SECRET"
-        redirectUri = "YOUR_REDIRECT_URI"
+val api = spotifyClientApi(
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "SPOTIFY_REDIRECT_URI") {
+    authorization {
+        tokenString = "SPOTIFY_TOKEN_STRING"
     }
-    clientAuthentication { 
-        authorizationCode = "SPOTIFY_AUTHORIZATION_CODE"
-    }
-}.buildClient().token.access_token.let { println(it) }
+}.build().token.accessToken.let { println(it) }
 ```
