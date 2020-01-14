@@ -3,7 +3,7 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.block
 import com.adamratzman.spotify.getEnvironmentVariable
@@ -31,7 +31,7 @@ class UtilityTests : Spek({
                     spotifyClientApi { }.build()
                 }
 
-                if (api is SpotifyClientAPI) {
+                if (api is SpotifyClientApi) {
                     assertFailsWith<IllegalArgumentException> {
                         spotifyClientApi {
                             credentials {

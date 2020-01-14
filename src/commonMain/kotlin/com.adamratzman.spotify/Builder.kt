@@ -390,7 +390,7 @@ class SpotifyClientApiBuilder(
             )
             else -> throw IllegalArgumentException(
                 "At least one of: authorizationCode, tokenString, or token must be provided " +
-                        "to build a SpotifyClientAPI object"
+                        "to build a SpotifyClientApi object"
             )
         }
     }
