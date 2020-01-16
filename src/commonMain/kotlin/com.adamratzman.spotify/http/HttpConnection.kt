@@ -3,7 +3,10 @@ package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
+import com.adamratzman.spotify.models.serialization.stableJson
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
@@ -144,7 +147,9 @@ class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            throw SpotifyException.BadRequestException(e)
+            val errorBody = e.response.readText()
+            val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: stableJson).error
+            throw SpotifyException.BadRequestException(error)
         }
     }
 
