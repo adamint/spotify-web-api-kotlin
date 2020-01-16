@@ -104,10 +104,12 @@ a roughly consistent sound throughout its duration.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-authentication-error/index.html">com.adamratzman.spotify.models.AuthenticationError</a></h5>
+<p>An exception during the authentication process</p>
 </tr>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-authorization-type/index.html">com.adamratzman.spotify.AuthorizationType</a></h5>
+<p>The type of Spotify authorization used to build an Api instance</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -157,7 +159,7 @@ a roughly consistent sound throughout its duration.</p>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.endpoints.client/-client-player-api/index.html">com.adamratzman.spotify.endpoints.client.ClientPlayerApi</a></h5>
 <p>These endpoints allow for viewing and controlling user playback. Please view <a href="https://developer.spotify.com/web-api/working-with-connect/">the official documentation</a>
-for more information on how this works. This is in beta and is available for <strong>premium users only</strong>. Endpoints are <strong>not</strong> guaranteed to work</p>
+for more information on how this works. This is in beta and is available for <strong>premium users only</strong>. Endpoints are <strong>not</strong> guaranteed to work and are subject to change!</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -250,7 +252,7 @@ cursors that can be useful in future calls.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-error-response/index.html">com.adamratzman.spotify.models.ErrorResponse</a></h5>
-<p>Wraps around <a href="../com.adamratzman.spotify.models/-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a></p>
+<p>Wraps around <a href="../com.adamratzman.spotify.models/-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a>. Serialized raw Spotify error response</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -264,6 +266,7 @@ cursors that can be useful in future calls.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-external-url/index.html">com.adamratzman.spotify.models.ExternalUrl</a></h5>
+<p>Key/value pair mapping a name to an arbitrary url</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -290,7 +293,24 @@ cursors that can be useful in future calls.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.http/-http-connection/index.html">com.adamratzman.spotify.http.HttpConnection</a></h5>
+<p>Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.http/-http-connection-status/index.html">com.adamratzman.spotify.http.HttpConnectionStatus</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.http/-http-header/index.html">com.adamratzman.spotify.http.HttpHeader</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.http/-http-request-method/index.html">com.adamratzman.spotify.http.HttpRequestMethod</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.http/-http-response/index.html">com.adamratzman.spotify.http.HttpResponse</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -305,14 +325,23 @@ cursors that can be useful in future calls.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-i-spotify-api-builder/index.html">com.adamratzman.spotify.ISpotifyApiBuilder</a></h5>
+<p>Spotify Api builder interface</p>
 </tr>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-i-spotify-app-api-builder.html">com.adamratzman.spotify.ISpotifyAppApiBuilder</a></h5>
+<p>App Api builder interface</p>
 </tr>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-i-spotify-client-api-builder/index.html">com.adamratzman.spotify.ISpotifyClientApiBuilder</a></h5>
+<p>Client interface exposing <a href="../com.adamratzman.spotify/-i-spotify-client-api-builder/get-authorization-url.html#com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)))">getAuthorizationUrl</a></p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.utils/-language/index.html">com.adamratzman.spotify.utils.Language</a></h5>
+<p><a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>
+language code.</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -324,6 +353,11 @@ cursors that can be useful in future calls.</p>
 <h5><a href="../com.adamratzman.spotify.models/-linked-track/index.html">com.adamratzman.spotify.models.LinkedTrack</a></h5>
 <p>Represents a <a href="https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking">relinked track</a>. This is playable in the
 searched market. If null, the API result is playable in the market.</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.utils/-locale/index.html">com.adamratzman.spotify.utils.Locale</a></h5>
+<p>Locale code.</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -426,7 +460,12 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-release-date/index.html">com.adamratzman.spotify.models.ReleaseDate</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-relinking-available-response/index.html">com.adamratzman.spotify.models.RelinkingAvailableResponse</a></h5>
+<p>Represents a response for which a relinked track could be available</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -441,6 +480,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-result-enum/index.html">com.adamratzman.spotify.models.ResultEnum</a></h5>
+<p>Interface that allows easy identifier retrieval for children with an implemented identifier</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -500,6 +540,7 @@ implementations of the API</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-spotify-api-options/index.html">com.adamratzman.spotify.SpotifyApiOptions</a></h5>
+<p>API Utilities</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -519,6 +560,7 @@ client authentication</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-spotify-app-api-builder/index.html">com.adamratzman.spotify.SpotifyAppApiBuilder</a></h5>
+<p><a href="../com.adamratzman.spotify/-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a> builder for api creation using client authorization</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -542,6 +584,7 @@ managed through the scopes exposed in <a href="../com.adamratzman.spotify/-spoti
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-spotify-client-api-builder/index.html">com.adamratzman.spotify.SpotifyClientApiBuilder</a></h5>
+<p><a href="../com.adamratzman.spotify/-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> builder for api creation using client authorization</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -564,6 +607,14 @@ managed through the scopes exposed in <a href="../com.adamratzman.spotify/-spoti
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-spotify-exception/index.html">com.adamratzman.spotify.SpotifyException</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.annotations/-spotify-experimental-function-api/index.html">com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.annotations/-spotify-experimental-http-api/index.html">com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -625,10 +676,12 @@ that only the information they choose to share will be shared, and nothing more.
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-spotify-uri-exception/index.html">com.adamratzman.spotify.models.SpotifyUriException</a></h5>
+<p>Exception instantiating or deserializing a uri perceived as invalid</p>
 </tr>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify/-spotify-user-authorization/index.html">com.adamratzman.spotify.SpotifyUserAuthorization</a></h5>
+<p>User-defined authorization parameters</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -664,7 +717,7 @@ that only the information they choose to share will be shared, and nothing more.
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-token/index.html">com.adamratzman.spotify.models.Token</a></h5>
-<p>Represents a Spotify Token, retrieved through instantiating a <a href="#">SpotifyAPI</a></p>
+<p>Represents a Spotify Token, retrieved through instantiating a <a href="../com.adamratzman.spotify/-spotify-api/index.html#com.adamratzman.spotify.SpotifyApi">SpotifyApi</a></p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -692,6 +745,7 @@ that only the information they choose to share will be shared, and nothing more.
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.endpoints.public/-track-attribute/index.html">com.adamratzman.spotify.endpoints.public.TrackAttribute</a></h5>
+<p>The track attribute wrapper contains a set value for a specific <a href="../com.adamratzman.spotify.endpoints.public/-tuneable-track-attribute/index.html#com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute">TuneableTrackAttribute</a></p>
 </tr>
 <tr>
 (common, js, jvm) 

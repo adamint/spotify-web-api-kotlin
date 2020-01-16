@@ -21,7 +21,7 @@
 </td>
 <td>
 <p>Represents a core Spotify object such as a Track or Album</p>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.CoreObject$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_EMPTY_STRING<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CoreObject$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_EMPTY_STRING<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CoreObject$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_URI<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CoreObject$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/externalUrlsString">externalUrlsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;mapOf()<span class="symbol">)</span></code></td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -40,20 +40,19 @@
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="href.html">href</a></h4>
+<h4><a href="external-urls-string.html">externalUrlsString</a></h4>
 </td>
 <td>
-<p>A link to the Spotify web api endpoint associated with this request</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">externalUrlsString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="id.html">id</a></h4>
+<h4><a href="href.html">href</a></h4>
 </td>
 <td>
-<p>The Spotify id of the associated object</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+<p>A link to the Spotify web api endpoint associated with this request</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -62,7 +61,7 @@
 </td>
 <td>
 <p>The URI associated with the object</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
 </tr>
 </tbody>
 </table>
@@ -121,6 +120,7 @@ searched market. If null, the API result is playable in the market.</p>
 <h4><a href="../-relinking-available-response/index.html">RelinkingAvailableResponse</a></h4>
 </td>
 <td>
+<p>Represents a response for which a relinked track could be available</p>
 <code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">RelinkingAvailableResponse</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
 </tr>
 <tr>
