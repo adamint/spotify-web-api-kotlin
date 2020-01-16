@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import kotlinx.coroutines.CoroutineScope
@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
 
-internal actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): dynamic {
+actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): dynamic {
     return GlobalScope.promise { coroutineCode() }
 }
 

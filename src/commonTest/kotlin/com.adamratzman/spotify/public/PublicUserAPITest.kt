@@ -1,9 +1,10 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.api
-import kotlin.test.assertEquals
+import com.adamratzman.spotify.utils.catch
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -11,7 +12,7 @@ class PublicUserAPITest : Spek({
     describe("Public User test") {
         describe("get user") {
             it("available user should return author name") {
-                assertEquals(0, api.users.getProfile("adamratzman1").complete()!!.followers.total)
+                assertTrue { catch { api.users.getProfile("adamratzman1").complete()!!.followers.total } != null }
             }
             it("unknown user should throw exception") {
                 assertNull(api.users.getProfile("non-existant-user").complete())

@@ -140,6 +140,7 @@ a roughly consistent sound throughout its duration.</p>
 <h4><a href="-authentication-error/index.html">AuthenticationError</a></h4>
 </td>
 <td>
+<p>An exception during the authentication process</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">AuthenticationError</span></code></td>
 </tr>
 <tr>
@@ -266,7 +267,7 @@ cursors that can be useful in future calls.</p>
 <h4><a href="-error-response/index.html">ErrorResponse</a></h4>
 </td>
 <td>
-<p>Wraps around <a href="-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a></p>
+<p>Wraps around <a href="-error-object/index.html#com.adamratzman.spotify.models.ErrorObject">ErrorObject</a>. Serialized raw Spotify error response</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">ErrorResponse</span></code></td>
 </tr>
 <tr>
@@ -292,6 +293,7 @@ cursors that can be useful in future calls.</p>
 <h4><a href="-external-url/index.html">ExternalUrl</a></h4>
 </td>
 <td>
+<p>Key/value pair mapping a name to an arbitrary url</p>
 <code><span class="keyword">class </span><span class="identifier">ExternalUrl</span></code></td>
 </tr>
 <tr>
@@ -487,9 +489,18 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-release-date/index.html">ReleaseDate</a></h4>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">ReleaseDate</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-relinking-available-response/index.html">RelinkingAvailableResponse</a></h4>
 </td>
 <td>
+<p>Represents a response for which a relinked track could be available</p>
 <code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">RelinkingAvailableResponse</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a></code></td>
 </tr>
 <tr>
@@ -516,6 +527,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <h4><a href="-result-enum/index.html">ResultEnum</a></h4>
 </td>
 <td>
+<p>Interface that allows easy identifier retrieval for children with an implemented identifier</p>
 <code><span class="keyword">interface </span><span class="identifier">ResultEnum</span></code></td>
 </tr>
 <tr>
@@ -614,7 +626,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <h4><a href="-spotify-search-result/index.html">SpotifySearchResult</a></h4>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">SpotifySearchResult</span></code></td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SpotifySearchResult</span></code></td>
 </tr>
 <tr>
 <td>
@@ -658,7 +670,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <h4><a href="-token/index.html">Token</a></h4>
 </td>
 <td>
-<p>Represents a Spotify Token, retrieved through instantiating a <a href="#">SpotifyAPI</a></p>
+<p>Represents a Spotify Token, retrieved through instantiating a <a href="../com.adamratzman.spotify/-spotify-api/index.html#com.adamratzman.spotify.SpotifyApi">SpotifyApi</a></p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Token</span></code></td>
 </tr>
 <tr>
@@ -750,6 +762,7 @@ from an endpoint</p>
 <h4><a href="-spotify-uri-exception/index.html">SpotifyUriException</a></h4>
 </td>
 <td>
+<p>Exception instantiating or deserializing a uri perceived as invalid</p>
 <code><span class="keyword">class </span><span class="identifier">SpotifyUriException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify/-spotify-exception/-bad-request-exception/index.html"><span class="identifier">BadRequestException</span></a></code></td>
 </tr>
 </tbody>

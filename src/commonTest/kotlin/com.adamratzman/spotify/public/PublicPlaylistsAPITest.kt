@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
@@ -15,13 +15,13 @@ class PublicPlaylistsAPITest : Spek({
         val p = api.playlists
         describe("get user's playlists") {
             it("available user should return playlists") {
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
-                assertTrue(p.getPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
+                assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
             }
             it("unknown user should throw exception") {
-                assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylists("non-existant-user").complete().items.size }
+                assertFailsWith<SpotifyException.BadRequestException> { p.getUserPlaylists("non-existant-user").complete().items.size }
             }
         }
         describe("get playlist") {
@@ -33,15 +33,15 @@ class PublicPlaylistsAPITest : Spek({
             }
         }
         describe("get playlist tracks") {
-            it("valid playlist") {
-                assertTrue(p.getPlaylistTracks("37i9dQZF1DXcBWIGoYBM5M", offset = 1).complete().items.isNotEmpty())
+            it("valid playlist, get tracks") {
+                assertTrue(p.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").complete().items.isNotEmpty())
             }
             it("invalid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
             }
         }
         describe("get playlist cover") {
-            it("valid playlist") {
+            it("valid playlist, get cover") {
                 assertTrue(p.getPlaylistCovers("37i9dQZF1DXcBWIGoYBM5M").complete().isNotEmpty())
             }
             it("invalid playlist") {

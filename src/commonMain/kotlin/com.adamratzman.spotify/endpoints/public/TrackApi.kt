@@ -1,7 +1,8 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -24,10 +25,14 @@ typealias TrackAPI = TrackApi
 
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/)**
  */
 class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/)**
      *
      * @param track The spotify id or uri for the track.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -49,6 +54,8 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get Spotify catalog information for multiple tracks based on their Spotify IDs.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
      *
      * @param tracks The spotify id or uri for the tracks.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -77,6 +84,8 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * should be considered speculative. There may not be sufficient data in the audio to compute the attribute with
      * high certainty.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/)**
+     *
      * @param track The spotify id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
@@ -91,6 +100,8 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get audio feature information for a single track identified by its unique Spotify ID.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)**
+     *
      * @param track The spotify id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
@@ -104,6 +115,8 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get audio features for multiple tracks based on their Spotify IDs.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/)**
      *
      * @param tracks vararg of spotify track ids or uris.
      *

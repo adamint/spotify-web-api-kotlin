@@ -1,7 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
-import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.LibraryType
@@ -13,7 +13,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class ClientLibraryAPITest : Spek({
     describe("Client Library tests") {
-        if (api !is SpotifyClientAPI) return@describe
+        if (api !is SpotifyClientApi) return@describe
 
         it("library track tests") {
             val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"

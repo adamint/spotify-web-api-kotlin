@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.utils.match
@@ -54,7 +54,7 @@ data class Device(
     @SerialName("is_private_session") val isPrivateSession: Boolean,
     @SerialName("is_restricted") val isRestricted: Boolean,
     val name: String,
-    val typeString: String,
+    @SerialName("type") val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable() {
     @Transient
@@ -106,7 +106,7 @@ data class CurrentlyPlayingContext(
     @SerialName("item") val track: Track? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
-    val context: Context
+    val context: Context? = null
 ) {
     @Transient
     val repeatState: RepeatState = RepeatState.values().match(repeatStateString)!!

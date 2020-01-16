@@ -38,6 +38,25 @@
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-language/index.html">Language</a></h4>
+</td>
+<td>
+<p><a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>
+language code.</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Language</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-locale/index.html">Locale</a></h4>
+</td>
+<td>
+<p>Locale code.</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Locale</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-market/index.html">Market</a></h4>
 </td>
 <td>
@@ -93,7 +112,7 @@
 </td>
 <td>
 <p>Return this <a href="../com.adamratzman.spotify/-spotify-rest-action/index.html#com.adamratzman.spotify.SpotifyRestAction">SpotifyRestAction</a> as a normal <a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a></p>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asFuture</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html"><span class="identifier">CompletableFuture</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">!</span></code></td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asFuture</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html"><span class="identifier">CompletableFuture</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
@@ -118,6 +137,14 @@
 </td>
 <td>
 <code><span class="keyword">fun </span><span class="identifier">getCurrentTimeMs</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="run-blocking.html">runBlocking</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">runBlocking</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils$runBlocking(kotlin.coroutines.SuspendFunction0((com.adamratzman.spotify.utils.runBlocking.T)))/coroutineCode">coroutineCode</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
 </tr>
 </tbody>
 </table>

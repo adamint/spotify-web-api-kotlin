@@ -1,11 +1,15 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyRestAction
+import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.http.SpotifyEndpoint
+import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.runBlocking
+import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -70,20 +74,33 @@ class PagingObject<T : Any>(
     @Suppress("UNCHECKED_CAST")
     override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
         val endpointFinal = endpoint!!
-        return (if (type == PagingTraversalType.FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
+        return (if (type == FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
             when (itemClazz) {
-                SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal, endpointFinal.api.json)
-                SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal, endpointFinal.api.json)
-                Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal, endpointFinal.api.json)
-                Track::class -> json.toPagingObject(Track.serializer(), null, endpointFinal, endpointFinal.api.json)
-                PlaylistTrack::class -> json.toPagingObject(PlaylistTrack.serializer(), null, endpointFinal, endpointFinal.api.json)
+                SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), "categories", endpointFinal, endpointFinal.api.json, true)
+                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), "albums", endpointFinal, endpointFinal.api.json, true)
+                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), "playlists", endpointFinal, endpointFinal.api.json, true)
+                SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                Track::class -> json.toPagingObject(Track.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                PlaylistTrack::class -> json.toPagingObject(PlaylistTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
                 else -> throw IllegalArgumentException("Unknown type in $href response")
             } as? PagingObject<T>
         }
+    }
+
+    @SpotifyExperimentalHttpApi
+    override suspend fun getWithNextImpl(total: Int): Sequence<AbstractPagingObject<T>> {
+        val pagingObjects = mutableListOf<AbstractPagingObject<T>>(this)
+
+        var nxt = next?.let { getNext() }
+        while (pagingObjects.size < total && nxt != null) {
+            pagingObjects.add(nxt)
+            nxt = nxt.next?.let { nxt?.getNext() }
+        }
+
+        return pagingObjects.distinctBy { it.href }.asSequence()
     }
 
     override suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
@@ -102,6 +119,7 @@ class PagingObject<T : Any>(
             pagingObjects.add(nxt)
             nxt = nxt.next?.let { nxt?.getNext() }
         }
+
         // we don't need to reverse here, as it's in order
         return pagingObjects.asSequence()
     }
@@ -113,9 +131,20 @@ class PagingObject<T : Any>(
     suspend fun getAll() = endpoint!!.toAction { (getAllImpl() as Sequence<PagingObject<T>>).toList() }
 
     /**
+     * Synchronously retrieve the next [total] paging objects associated with this [PagingObject], including this [PagingObject].
+     *
+     * @param total The total amount of [PagingObject] to request, which includes this [PagingObject].
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    @Suppress("UNCHECKED_CAST")
+    suspend fun getWithNext(total: Int) = endpoint!!.toAction { getWithNextImpl(total) }
+
+    /**
      * Get all items of type [T] associated with the request
      */
-    suspend fun getAllItems() = endpoint!!.toAction { getAll().complete().map { it.items }.flatten() }
+    override suspend fun getAllItems(context: CoroutineContext) =
+            endpoint!!.toAction { getAll().suspendComplete(context).map { it.items }.flatten().asSequence() }
 }
 
 /**
@@ -148,37 +177,64 @@ class CursorBasedPagingObject<T : Any>(
     }
 
     /**
+     * Synchronously retrieve the next [total] paging objects associated with this [CursorBasedPagingObject], including this [CursorBasedPagingObject].
+     *
+     * @param total The total amount of [CursorBasedPagingObject] to request, which includes this [CursorBasedPagingObject].
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    @Suppress("UNCHECKED_CAST")
+    fun getWithNext(total: Int) = endpoint!!.toAction {
+        getWithNextImpl(total) as Sequence<CursorBasedPagingObject<T>>
+    }
+
+    /**
      * Get all items of type [T] associated with the request
      */
-    fun getAllItems() = endpoint!!.toAction {
-        getAll().complete().map { it.items }.flatten().toList()
+    override suspend fun getAllItems(context: CoroutineContext) = endpoint!!.toAction {
+        getAll().suspendComplete(context).map { it.items }.flatten().asSequence()
+    }
+
+    override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
+        require(type != PagingTraversalType.BACKWARDS) { "CursorBasedPagingObjects only can go forwards" }
+        return next?.let { getCursorBasedPagingObject(it) }
     }
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>? {
-        require(type != PagingTraversalType.BACKWARDS) { "CursorBasedPagingObjects only can go forwards" }
-        return next?.let {
-            val url = endpoint!!.get(it)
-            when (itemClazz) {
-                PlayHistory::class -> url.toCursorBasedPagingObject(
+    private suspend fun getCursorBasedPagingObject(url: String): CursorBasedPagingObject<T>? {
+        val json = endpoint!!.get(url)
+        return when (itemClazz) {
+            PlayHistory::class -> json.toCursorBasedPagingObject(
                     PlayHistory.serializer(),
                     null,
                     endpoint!!,
                     endpoint!!.api.json
-                )
-                Artist::class -> url.toCursorBasedPagingObject(
+            )
+            Artist::class -> json.toCursorBasedPagingObject(
                     Artist.serializer(),
                     null,
                     endpoint!!,
                     endpoint!!.api.json
-                )
-                else -> throw IllegalArgumentException("Unknown type in $href")
-            } as? CursorBasedPagingObject<T>
-        }
+            )
+            else -> throw IllegalArgumentException("Unknown type in $href")
+        } as? CursorBasedPagingObject<T>
     }
 
     override suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>> {
-        return generateSequence(this) { runBlocking { it.getImpl(PagingTraversalType.FORWARDS) as? CursorBasedPagingObject<T> } }
+        return generateSequence(this) { runBlocking { it.getImpl(FORWARDS) as? CursorBasedPagingObject<T> } }
+    }
+
+    @SpotifyExperimentalHttpApi
+    override suspend fun getWithNextImpl(total: Int): Sequence<AbstractPagingObject<T>> {
+        val pagingObjects = mutableListOf<AbstractPagingObject<T>>(this)
+
+        var nxt = getNext()
+        while (pagingObjects.size < total && nxt != null) {
+            pagingObjects.add(nxt)
+            nxt = nxt.next?.let { nxt?.getNext() }
+        }
+
+        return pagingObjects.distinctBy { it.href }.asSequence()
     }
 }
 
@@ -209,7 +265,7 @@ abstract class AbstractPagingObject<T : Any>(
     @Transient open val offset: Int = 0,
     @Transient open val previous: String? = null,
     @Transient open val total: Int = -1
-) : List<T> by items {
+) : List<T> {
     @Transient
     internal var endpoint: SpotifyEndpoint? = null
 
@@ -219,7 +275,18 @@ abstract class AbstractPagingObject<T : Any>(
     internal abstract suspend fun getImpl(type: PagingTraversalType): AbstractPagingObject<T>?
     internal abstract suspend fun getAllImpl(): Sequence<AbstractPagingObject<T>>
 
-    private suspend fun getNextImpl() = getImpl(PagingTraversalType.FORWARDS)
+    /**
+     * Synchronously retrieve the next [total] paging objects associated with this [AbstractPagingObject], including this [AbstractPagingObject].
+     *
+     * @param total The total amount of [AbstractPagingObject] to request, which includes this [AbstractPagingObject].
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    internal abstract suspend fun getWithNextImpl(total: Int): Sequence<AbstractPagingObject<T>>
+
+    internal abstract suspend fun getAllItems(context: CoroutineContext = Dispatchers.Default): SpotifyRestAction<Sequence<T>>
+
+    private suspend fun getNextImpl() = getImpl(FORWARDS)
     private suspend fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 
     suspend fun getNext(): AbstractPagingObject<T>? = getNextImpl()
@@ -253,15 +320,30 @@ abstract class AbstractPagingObject<T : Any>(
 
     @ExperimentalCoroutinesApi
     fun flowStartOrdered(): Flow<AbstractPagingObject<T>> =
-        flow<AbstractPagingObject<T>> {
-            if (previous == null) return@flow
-            flowBackward().toList().reversed().also {
-                emitAll(it.asFlow())
-            }
-        }.flowOn(Dispatchers.Default)
+            flow {
+                if (previous == null) return@flow
+                flowBackward().toList().reversed().also {
+                    emitAll(it.asFlow())
+                }
+            }.flowOn(Dispatchers.Default)
 
     @ExperimentalCoroutinesApi
     fun flowEndOrdered(): Flow<AbstractPagingObject<T>> = flowForward()
+
+    // A paging object is also a list, and instantiation by deserialization doesn't properly store the items list internally
+    // so we implement list methods
+
+    override val size: Int get() = items.size
+    override fun contains(element: T) = items.contains(element)
+    override fun containsAll(elements: Collection<T>) = items.containsAll(elements)
+    override fun get(index: Int) = items[index]
+    override fun indexOf(element: T) = items.indexOf(element)
+    override fun isEmpty() = items.isEmpty()
+    override fun iterator() = items.iterator()
+    override fun lastIndexOf(element: T) = items.lastIndexOf(element)
+    override fun listIterator() = items.listIterator()
+    override fun listIterator(index: Int) = items.listIterator(index)
+    override fun subList(fromIndex: Int, toIndex: Int) = items.subList(fromIndex, toIndex)
 }
 
 internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi<*, *>) = when (this) {

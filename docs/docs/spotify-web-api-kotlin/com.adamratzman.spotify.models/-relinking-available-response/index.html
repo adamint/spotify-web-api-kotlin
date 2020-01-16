@@ -10,6 +10,7 @@
 <h1>RelinkingAvailableResponse</h1>
 <a name="com.adamratzman.spotify.models.RelinkingAvailableResponse"></a>
 (common, js, jvm) <code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">RelinkingAvailableResponse</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-core-object/index.html"><span class="identifier">CoreObject</span></a></code>
+<p>Represents a response for which a relinked track could be available</p>
 <h3>Constructors</h3>
 <table>
 <tbody>
@@ -19,7 +20,8 @@
 <h4><a href="-init-.html">&lt;init&gt;</a></h4>
 </td>
 <td>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.RelinkingAvailableResponse$<init>(com.adamratzman.spotify.models.LinkedTrack, kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/linkedTrack">linkedTrack</span><span class="symbol">:</span>&nbsp;<a href="../-linked-track/index.html"><span class="identifier">LinkedTrack</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_NULL<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.RelinkingAvailableResponse$<init>(com.adamratzman.spotify.models.LinkedTrack, kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_EMPTY_STRING<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.RelinkingAvailableResponse$<init>(com.adamratzman.spotify.models.LinkedTrack, kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_EMPTY_STRING<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.RelinkingAvailableResponse$<init>(com.adamratzman.spotify.models.LinkedTrack, kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TRANSIENT_URI<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.RelinkingAvailableResponse$<init>(com.adamratzman.spotify.models.LinkedTrack, kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyUri, kotlin.collections.Map((kotlin.String, )))/externalUrlsString">externalUrlsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;mapOf()<span class="symbol">)</span></code></td>
+<p>Represents a response for which a relinked track could be available</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -29,37 +31,12 @@
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="href.html">href</a></h4>
-</td>
-<td>
-<p>A link to the Spotify web api endpoint associated with this request</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="id.html">id</a></h4>
-</td>
-<td>
-<p>The Spotify id of the associated object</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
 <h4><a href="linked-track.html">linkedTrack</a></h4>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">linkedTrack</span><span class="symbol">: </span><a href="../-linked-track/index.html"><span class="identifier">LinkedTrack</span></a><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="uri.html">uri</a></h4>
-</td>
-<td>
-<p>The URI associated with the object</p>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<p>Part of the response when Track Relinking is applied and is only part of the response
+if the track linking, in fact, exists. The requested track has been replaced with a different track. The track contains information about the originally requested track.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">linkedTrack</span><span class="symbol">: </span><a href="../-linked-track/index.html"><span class="identifier">LinkedTrack</span></a><span class="symbol">?</span></code></td>
 </tr>
 </tbody>
 </table>

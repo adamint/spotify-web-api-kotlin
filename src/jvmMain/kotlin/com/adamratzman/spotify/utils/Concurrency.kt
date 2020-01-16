@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking as kRunBlocking
 
-internal actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
+actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
     coroutineCode()
 }
 
@@ -28,4 +28,4 @@ internal actual fun CoroutineScope.schedule(
 /**
  * Return this [SpotifyRestAction] as a normal [CompletableFuture]
  */
-fun <T> SpotifyRestAction<T>.asFuture() = CompletableFuture.supplyAsync(::complete)
+fun <T> SpotifyRestAction<T>.asFuture(): CompletableFuture<T> = CompletableFuture.supplyAsync(::complete)

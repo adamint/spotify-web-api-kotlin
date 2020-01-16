@@ -103,11 +103,11 @@ cursors that can be useful in future calls.</p>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="get-all-items.html">getAllItems</a></h4>
+<h4><a href="get-with-next.html">getWithNext</a></h4>
 </td>
 <td>
-<p>Get all items of type <a href="index.html#T">T</a> associated with the request</p>
-<code><span class="keyword">fun </span><span class="identifier">getAllItems</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+<p>Synchronously retrieve the next <a href="get-with-next.html#com.adamratzman.spotify.models.CursorBasedPagingObject$getWithNext(kotlin.Int)/total">total</a> paging objects associated with this <a href="index.html#com.adamratzman.spotify.models.CursorBasedPagingObject">CursorBasedPagingObject</a>, including this <a href="index.html#com.adamratzman.spotify.models.CursorBasedPagingObject">CursorBasedPagingObject</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">getWithNext</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$getWithNext(kotlin.Int)/total">total</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html"><span class="identifier">Sequence</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">CursorBasedPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
 </tr>
 </tbody>
 </table>

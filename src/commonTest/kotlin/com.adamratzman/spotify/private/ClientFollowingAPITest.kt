@@ -1,7 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
-import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import kotlin.test.assertEquals
@@ -14,7 +14,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class ClientFollowingAPITest : Spek({
     describe("Client following tests") {
-        if (api !is SpotifyClientAPI) return@describe
+        if (api !is SpotifyClientApi) return@describe
         it("following/unfollowing artists") {
             val testArtistId = "7eCmccnRwPmRnWPw61x6jM"
 
@@ -66,16 +66,15 @@ class ClientFollowingAPITest : Spek({
 
         it("follow/unfollow playlists") {
             val playlistId = "37i9dQZF1DXcBWIGoYBM5M"
-            val playlistOwnerId = "spotify"
-            if (api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete()) {
+            if (api.following.isFollowingPlaylist(playlistId).complete()) {
                 api.following.unfollowPlaylist(playlistId).complete()
             }
 
-            assertFalse(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+            assertFalse(api.following.isFollowingPlaylist(playlistId).complete())
 
             api.following.followPlaylist(playlistId).complete()
 
-            assertTrue(api.following.isFollowingPlaylist(playlistOwnerId, playlistId).complete())
+            assertTrue(api.following.isFollowingPlaylist(playlistId).complete())
 
             assertFailsWith<SpotifyException.BadRequestException> { api.following.isFollowingPlaylist(" no u", "no u").complete() }
             assertFailsWith<SpotifyException.BadRequestException> { api.following.unfollowPlaylist("no-u").complete() }

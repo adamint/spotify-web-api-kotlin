@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.models.AlbumUri
@@ -213,12 +213,12 @@ class UrisTests : Spek({
 
                 assertEquals(
                     "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
                 )
 
                 assertEquals(
