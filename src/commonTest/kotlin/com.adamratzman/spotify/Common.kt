@@ -1,6 +1,8 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
+import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 

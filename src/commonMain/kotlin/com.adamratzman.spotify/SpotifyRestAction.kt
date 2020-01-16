@@ -1,6 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
@@ -64,9 +65,9 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     }
 
     /**
-     * Switch to given [context][dispatcher], invoke [SpotifyRestAction.supplier] and synchronously retrieve [T]
+     * Switch to given [context][context], invoke [SpotifyRestAction.supplier] and synchronously retrieve [T]
      *
-     * @param dispatcher The context to execute the [SpotifyRestAction.complete] in
+     * @param context The context to execute the [SpotifyRestAction.complete] in
      * */
     @Suppress("UNCHECKED_CAST")
     @JvmOverloads
@@ -137,19 +138,39 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     /**
      * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
      */
-    fun getAll() = api.tracks.toAction { complete().getAllImpl() }
+    fun getAll(context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getAllImpl() }
+
+    /**
+     * Synchronously retrieve the next [total] paging objects associated with this rest action, including the current one.
+     *
+     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    fun getWithNext(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getWithNextImpl(total) }
+
+    /**
+     * Synchronously retrieve the items associated with the next [total] paging objects associated with this rest action, including the current one.
+     *
+     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @since 3.0.0
+     */
+    @SpotifyExperimentalHttpApi
+    fun getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { getWithNext(total, context).complete().map { it.items }.flatten() }
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action
      */
-    fun getAllItems() = api.tracks.toAction { complete().getAllImpl().toList().map { it.items }.flatten() }
+    fun getAllItems(context: CoroutineContext = Dispatchers.Default) =
+            api.tracks.toAction { suspendComplete(context)
+            .getAllImpl().toList().map { it.items }.flatten() }
 
     /**
      * Consume each [Z] by [consumer] as it is retrieved
      */
-    fun streamAllItems(consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
+    fun streamAllItems(context: CoroutineContext = Dispatchers.Default, consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
         return api.tracks.toAction {
-            complete().getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
+            suspendComplete(context).getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
         }
     }
 
@@ -159,7 +180,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
         emitAll(flowPagingObjectsOrdered().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -169,8 +190,8 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow<AbstractPagingObject<Z>> {
-            complete().also { master ->
+        flow {
+            suspendComplete(context).also { master ->
                 emitAll(master.flowStartOrdered())
                 emit(master)
                 emitAll(master.flowEndOrdered())
@@ -183,7 +204,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow<Z> {
+    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
         emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -193,8 +214,8 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow<AbstractPagingObject<Z>> {
-            complete().also { master ->
+        flow {
+            suspendComplete(context).also { master ->
                 emitAll(master.flowBackward())
                 emit(master)
                 emitAll(master.flowForward())

@@ -1,8 +1,8 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
-import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -22,6 +22,7 @@ import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
 import kotlin.reflect.KClass
@@ -33,10 +34,14 @@ typealias BrowseAPI = BrowseApi
 
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/)**
  */
 class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Retrieve a list of available genres seed parameter values for recommendations.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
      *
      * @return List of genre ids
      */
@@ -52,6 +57,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/)**
      *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -79,6 +86,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)**
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
@@ -97,7 +106,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getFeaturedPlaylists(
         limit: Int? = null,
         offset: Int? = null,
-        locale: String? = null,
+        locale: Locale? = null,
         market: Market? = null,
         timestamp: Long? = null
     ): SpotifyRestAction<FeaturedPlaylists> {
@@ -116,6 +125,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
+     *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
@@ -131,7 +142,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getCategoryList(
         limit: Int? = null,
         offset: Int? = null,
-        locale: String? = null,
+        locale: Locale? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SpotifyCategory, PagingObject<SpotifyCategory>> {
         return toActionPaging {
@@ -147,6 +158,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-category/)**
+     *
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
@@ -160,7 +173,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getCategory(
         categoryId: String,
         market: Market? = null,
-        locale: String? = null
+        locale: Locale? = null
     ): SpotifyRestAction<SpotifyCategory> {
         return toAction {
             get(
@@ -172,6 +185,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get a list of Spotify playlists tagged with a particular category.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/)**
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -211,6 +226,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
      * and descriptions of tuneable track attributes and their ranges.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
      *
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
@@ -264,6 +281,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
      * and descriptions of tuneable track attributes and their ranges.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     *
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
      * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
@@ -293,7 +312,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
     ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
-            throw SpotifyException.BadRequestException(
+            throw BadRequestException(
                     ErrorObject(
                             400,
                             "At least one seed (genre, artist, track) must be provided."
@@ -317,6 +336,8 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 /**
  * Describes a track attribute
  *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+ *
  * @param attribute The spotify id for the track attribute
  */
 sealed class TuneableTrackAttribute<T : Number>(
@@ -324,25 +345,25 @@ sealed class TuneableTrackAttribute<T : Number>(
     val integerOnly: Boolean,
     val min: T?,
     val max: T?,
-    val tClazz: KClass<T>
+    private val tClazz: KClass<T>
 ) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
      * 1.0 represents high confidence the track is acoustic.
      */
-    object ACOUSTICNESS : TuneableTrackAttribute<Float>("acousticness", false, 0f, 1f, Float::class)
+    object Acousticness : TuneableTrackAttribute<Float>("acousticness", false, 0f, 1f, Float::class)
 
     /**
      * Danceability describes how suitable a track is for dancing based on a combination of musical
      * elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is
      * least danceable and 1.0 is most danceable.
      */
-    object DANCEABILITY : TuneableTrackAttribute<Float>("danceability", false, 0f, 1f, Float::class)
+    object Danceability : TuneableTrackAttribute<Float>("danceability", false, 0f, 1f, Float::class)
 
     /**
      * The duration of the track in milliseconds.
      */
-    object DURATION_IN_MILLISECONDS : TuneableTrackAttribute<Int>("duration_ms", true, 0, null, Int::class)
+    object DurationInMilliseconds : TuneableTrackAttribute<Int>("duration_ms", true, 0, null, Int::class)
 
     /**
      * Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
@@ -350,7 +371,7 @@ sealed class TuneableTrackAttribute<T : Number>(
      * while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute
      * include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
      */
-    object ENERGY : TuneableTrackAttribute<Float>("energy", false, 0f, 1f, Float::class)
+    object Energy : TuneableTrackAttribute<Float>("energy", false, 0f, 1f, Float::class)
 
     /**
      * Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as
@@ -359,20 +380,20 @@ sealed class TuneableTrackAttribute<T : Number>(
      * no vocal content. Values above 0.5 are intended to represent instrumental tracks, but
      * confidence is higher as the value approaches 1.0.
      */
-    object INSTRUMENTALNESS : TuneableTrackAttribute<Float>("instrumentalness", false, 0f, 1f, Float::class)
+    object Instrumentalness : TuneableTrackAttribute<Float>("instrumentalness", false, 0f, 1f, Float::class)
 
     /**
      * The key the track is in. Integers map to pitches using standard Pitch Class notation.
      * E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
      */
-    object KEY : TuneableTrackAttribute<Int>("key", true, 0, 11, Int::class)
+    object Key : TuneableTrackAttribute<Int>("key", true, 0, 11, Int::class)
 
     /**
      * Detects the presence of an audience in the recording. Higher liveness values represent an increased
      * probability that the track was performed live. A value above 0.8 provides strong likelihood
      * that the track is live.
      */
-    object LIVENESS : TuneableTrackAttribute<Float>("liveness", false, 0f, 1f, Float::class)
+    object Liveness : TuneableTrackAttribute<Float>("liveness", false, 0f, 1f, Float::class)
 
     /**
      * The overall loudness of a track in decibels (dB). Loudness values are averaged across the
@@ -380,13 +401,13 @@ sealed class TuneableTrackAttribute<T : Number>(
      * quality of a sound that is the primary psychological correlate of physical strength (amplitude).
      * Values typically range between -60 and 0 db.
      */
-    object LOUDNESS : TuneableTrackAttribute<Float>("loudness", false, null, null, Float::class)
+    object Loudness : TuneableTrackAttribute<Float>("loudness", false, null, null, Float::class)
 
     /**
      * Mode indicates the modality (major or minor) of a track, the type of scale from which its
      * melodic content is derived. Major is represented by 1 and minor is 0.
      */
-    object MODE : TuneableTrackAttribute<Int>("mode", true, 0, 1, Int::class)
+    object Mode : TuneableTrackAttribute<Int>("mode", true, 0, 1, Int::class)
 
     /**
      * The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.
@@ -395,7 +416,7 @@ sealed class TuneableTrackAttribute<T : Number>(
      * the market parameter, it is expected to find relinked tracks with popularities that do not match
      * min_*, max_*and target_* popularities. These relinked tracks are accurate replacements for unplayable tracks with the expected popularity scores. Original, non-relinked tracks are available via the linked_from attribute of the relinked track response.
      */
-    object POPULARITY : TuneableTrackAttribute<Int>("popularity", true, 0, 100, Int::class)
+    object Popularity : TuneableTrackAttribute<Int>("popularity", true, 0, 100, Int::class)
 
     /**
      * Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the
@@ -405,13 +426,13 @@ sealed class TuneableTrackAttribute<T : Number>(
      * such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like
      * tracks.
      */
-    object SPEECHINESS : TuneableTrackAttribute<Float>("speechiness", false, 0f, 1f, Float::class)
+    object Speechiness : TuneableTrackAttribute<Float>("speechiness", false, 0f, 1f, Float::class)
 
     /**
      * The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the
      * speed or pace of a given piece and derives directly from the average beat duration.
      */
-    object TEMPO : TuneableTrackAttribute<Float>("tempo", false, 0f, null, Float::class)
+    object Tempo : TuneableTrackAttribute<Float>("tempo", false, 0f, null, Float::class)
 
     /**
      * An estimated overall time signature of a track. The time signature (meter)
@@ -419,14 +440,14 @@ sealed class TuneableTrackAttribute<T : Number>(
      * The time signature ranges from 3 to 7 indicating time signatures of 3/4, to 7/4.
      * A value of -1 may indicate no time signature, while a value of 1 indicates a rather complex or changing time signature.
      */
-    object TIME_SIGNATURE : TuneableTrackAttribute<Int>("time_signature", true, -1, 7, Int::class)
+    object TimeSignature : TuneableTrackAttribute<Int>("time_signature", true, -1, 7, Int::class)
 
     /**
      * A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high
      * valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence
      * sound more negative (e.g. sad, depressed, angry).
      */
-    object VALENCE : TuneableTrackAttribute<Float>("valence", false, 0f, 1f, Float::class)
+    object Valence : TuneableTrackAttribute<Float>("valence", false, 0f, 1f, Float::class)
 
     override fun toString() = attribute
 
@@ -445,24 +466,27 @@ sealed class TuneableTrackAttribute<T : Number>(
 
     companion object {
         fun values() = listOf(
-                ACOUSTICNESS,
-                DANCEABILITY,
-                DURATION_IN_MILLISECONDS,
-                ENERGY,
-                INSTRUMENTALNESS,
-                KEY,
-                LIVENESS,
-                LOUDNESS,
-                MODE,
-                POPULARITY,
-                SPEECHINESS,
-                TEMPO,
-                TIME_SIGNATURE,
-                VALENCE
+                Acousticness,
+                Danceability,
+                DurationInMilliseconds,
+                Energy,
+                Instrumentalness,
+                Key,
+                Liveness,
+                Loudness,
+                Mode,
+                Popularity,
+                Speechiness,
+                Tempo,
+                TimeSignature,
+                Valence
         )
     }
 }
 
+/**
+ * The track attribute wrapper contains a set value for a specific [TuneableTrackAttribute]
+ */
 data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {
     companion object {
         fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T) =

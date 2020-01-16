@@ -1,9 +1,12 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
+import com.adamratzman.spotify.models.serialization.stableJson
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
@@ -28,30 +31,33 @@ enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
     DELETE(HttpMethod.Delete);
 }
 
-internal data class HttpHeader(val key: String, val value: String)
+data class HttpHeader(val key: String, val value: String)
 
-internal data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
+data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
-internal class HttpConnection constructor(
-    private val url: String,
-    private val method: HttpRequestMethod,
-    private val bodyMap: Map<*, *>?,
-    private val bodyString: String?,
+/**
+ * Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests
+ */
+class HttpConnection constructor(
+    val url: String,
+    val method: HttpRequestMethod,
+    val bodyMap: Map<*, *>?,
+    val bodyString: String?,
     contentType: String?,
-    private val headers: List<HttpHeader> = listOf(),
+    val headers: List<HttpHeader> = listOf(),
     val api: SpotifyApi<*, *>? = null
 ) {
-    private val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
+    val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
     companion object {
         private val client = HttpClient()
     }
 
-    private fun String?.toByteArrayContent(): ByteArrayContent? {
+    fun String?.toByteArrayContent(): ByteArrayContent? {
         return if (this == null) null else ByteArrayContent(this.toByteArray(), contentType)
     }
 
-    private fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
+    fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
         url(this@HttpConnection.url)
         method = this@HttpConnection.method.externalMethod
 
@@ -81,7 +87,7 @@ internal class HttpConnection constructor(
         }
     }
 
-    internal suspend fun execute(
+    suspend fun execute(
         additionalHeaders: List<HttpHeader>? = null,
         retryIf502: Boolean = true
     ): HttpResponse {
@@ -94,7 +100,7 @@ internal class HttpConnection constructor(
                 if (respCode == 502 && retryIf502) {
                     api?.logger?.logError(
                             false,
-                            "Received 502 (Invalid response) for URL $url and $this\nRetrying..",
+                            "Received 502 (Invalid response) for URL $url and $this (${response.readText()})\nRetrying..",
                             null
                     )
                     return@let execute(additionalHeaders, retryIf502 = false)
@@ -141,7 +147,9 @@ internal class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            throw SpotifyException.BadRequestException(e)
+            val errorBody = e.response.readText()
+            val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: stableJson).error
+            throw SpotifyException.BadRequestException(error)
         }
     }
 
@@ -156,6 +164,6 @@ internal class HttpConnection constructor(
     }
 }
 
-internal enum class HttpConnectionStatus(val code: Int) {
+enum class HttpConnectionStatus(val code: Int) {
     HTTP_NOT_MODIFIED(304);
 }

@@ -1,7 +1,8 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -28,10 +29,14 @@ typealias ArtistAPI = ArtistApi
 
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/)**
  */
 class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/)**
      *
      * @param artist The spotify id or uri for the artist.
      *
@@ -52,6 +57,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for several artists based on their Spotify IDs. **Artists not found are returned as null inside the ordered list**
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/)**
+     *
      * @param artists The spotify ids or uris representing the artists.
      *
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
@@ -68,6 +75,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
 
     /**
      * Get Spotify catalog information about an artist’s albums.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/)**
      *
      * @param artist The artist id or uri
      * @param market Supply this parameter to limit the response to one particular geographical market.
@@ -99,6 +108,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Describes object types to include when finding albums
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/)**
+     *
      * @param keyword The spotify id of the strategy
      */
     enum class AlbumInclusionStrategy(val keyword: String) {
@@ -113,6 +124,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * Contains only up to **10** tracks with *no* [CursorBasedPagingObject] to go between top track pages. Thus, only the top
      * 10 are exposed
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-top-tracks/)**
      *
      * @param artist The spotify id or uri for the artist.
      * @param market The country ([Market]) to search. Unlike endpoints with optional Track Relinking, the Market is **not** optional.
@@ -134,6 +147,8 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information about artists similar to a given artist.
      * Similarity is based on analysis of the Spotify community’s listening history.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-related-artists/)**
      *
      * @param artist The spotify id or uri for the artist.
      *

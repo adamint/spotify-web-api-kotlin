@@ -1,7 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.private
 
-import com.adamratzman.spotify.SpotifyClientAPI
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
@@ -13,7 +13,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
-        val cp = (api as? SpotifyClientAPI)?.playlists
+        val cp = (api as? SpotifyClientApi)?.playlists
         val playlistsBefore = cp?.getClientPlaylists()?.complete()
         val createdPlaylist = cp?.createClientPlaylist("this is a test playlist", "description")
             ?.complete()
@@ -69,7 +69,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.addTrackToClientPlaylist(createdPlaylist.id, trackIdOne).complete()
 
@@ -77,7 +77,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdTwo, trackIdOne),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.setClientPlaylistTracks(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo).complete()
 
@@ -95,7 +95,7 @@ class ClientPlaylistAPITest : Spek({
 
             assertEquals(
                 listOf(trackIdOne, trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track.id })
+                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             assertFailsWith<SpotifyException.BadRequestException> {
                 cp.removeTracksFromClientPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3))).complete()

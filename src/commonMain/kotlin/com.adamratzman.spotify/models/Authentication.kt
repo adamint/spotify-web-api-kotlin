@@ -1,6 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlinx.serialization.SerialName
@@ -8,7 +9,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 /**
- * Represents a Spotify Token, retrieved through instantiating a [SpotifyAPI]
+ * Represents a Spotify Token, retrieved through instantiating a [SpotifyApi]
  *
  * @property accessToken An access token that can be provided in subsequent calls,
  * for example to Spotify Web API services.

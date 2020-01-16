@@ -1,7 +1,8 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -22,10 +23,14 @@ typealias AlbumAPI = AlbumApi
 
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/)**
  */
 class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single album.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-album/)**
      *
      * @param album The spotify id or uri for the album.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -49,6 +54,8 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
      * **Albums not found are returned as null inside the ordered list**
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums/)**
+     *
      * @param albums The spotify ids or uris for the albums.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
@@ -66,12 +73,14 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information about an album’s tracks. Optional parameters can be used to limit the number of tracks returned.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-albums-tracks/)**
+     *
      * @param album The spotify id or uri for the album.
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
-     * @throws BadRequestException if the [album] is not found, or positioning of [limit] or [offset] is illegal.
+     * @throws [BadRequestException] if the [album] is not found, or positioning of [limit] or [offset] is illegal.
      * @return [PagingObject] of [SimpleTrack] objects
      */
     fun getAlbumTracks(

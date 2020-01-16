@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
@@ -24,4 +24,4 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
 
 internal expect fun formatDate(format: String, date: Long): String
 
-internal expect fun <T> runBlocking(coroutineCode: suspend () -> T): T
+expect fun <T> runBlocking(coroutineCode: suspend () -> T): T
