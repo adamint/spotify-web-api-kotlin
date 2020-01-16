@@ -179,7 +179,7 @@ publishing {
         }
     }
     repositories {
-        if (project.hasProperty("publishToCentral")) {
+        if (!project.hasProperty("publishToSpace")) {
             maven {
                 name = "nexus"
                 val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -248,14 +248,32 @@ tasks {
         outputFormat = "html"
 
         multiplatform {
-            val js by creating {}
-            val jvm by creating {}
+            val js by creating {
+                sourceLink {
+                    path = "/src"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    lineSuffix = "#L"
+                }
+            }
+            val jvm by creating {
+                sourceLink {
+                    path = "/src"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    lineSuffix = "#L"
+                }
+            }
 
-            register("common") {}
+            register("common") {
+                sourceLink {
+                    path = "/src"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    lineSuffix = "#L"
+                }
+            }
 
             register("global") {
                 sourceLink {
-                    path = "./"
+                    path = "/src"
                     url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
