@@ -213,12 +213,12 @@ class UrisTests : Spek({
 
                 assertEquals(
                     "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
                 )
 
                 assertEquals(

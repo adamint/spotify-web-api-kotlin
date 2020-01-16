@@ -39,7 +39,7 @@ fun main() {
     // for an example of re-ordering tracks
 
     // replace the tracks in a client playlist with two songs by Lorde
-    api.playlists.setClientPlaylistTracks(playlist.id, "spotify:track:6ie2Bw3xLj2JcGowOlcMhb", "").complete()
+    api.playlists.setClientPlaylistTracks(playlist.id, "spotify:track:6ie2Bw3xLj2JcGowOlcMhb", "spotify:track:2dLLR6qlu5UJ5gk0dKz0h3").complete()
 
     // remove the song we just added from our client playlist
     api.playlists.removeTrackFromClientPlaylist(playlist.id, "spotify:track:6ie2Bw3xLj2JcGowOlcMhb").complete()
