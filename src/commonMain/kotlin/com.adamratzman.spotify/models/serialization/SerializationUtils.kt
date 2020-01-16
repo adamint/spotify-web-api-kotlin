@@ -9,13 +9,13 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.NeedsApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
-import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.map
 import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 internal val stableJson =
@@ -102,6 +102,17 @@ internal fun <T : Any> String.toPagingObject(
     }
 }
 
+internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: AbstractPagingObject<T>, endpoint: SpotifyEndpoint) {
+    pagingObject.apply {
+        this.endpoint = endpoint
+        this.itemClazz = tClazz
+        this.items.map { obj ->
+            if (obj is NeedsApi) obj.api = endpoint.api
+            if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
+        }
+    }
+}
+
 internal inline fun <reified T : Any> String.toPagingObject(
     tSerializer: KSerializer<T>,
     innerObjectName: String? = null,
@@ -124,26 +135,14 @@ internal fun <T : Any> String.toCursorBasedPagingObject(
         val map = this.parseJson { json.parse((String.serializer() to CursorBasedPagingObject.serializer(tSerializer)).map, this) }
         return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
                 ?: error("") else error(""))
-                .apply {
-                    this.endpoint = endpoint
-                    this.itemClazz = tClazz
-                    this.items.map { obj ->
-                        if (obj is NeedsApi) obj.api = endpoint.api
-                        if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
-                    }
-                }
+                .apply { initPagingObject(tClazz, this, endpoint) }
     }
     return try {
         val pagingObject = this.parseJson { json.parse(CursorBasedPagingObject.serializer(tSerializer), this) }
 
-        pagingObject.apply {
-            this.endpoint = endpoint
-            this.itemClazz = tClazz
-            this.items.map { obj ->
-                if (obj is NeedsApi) obj.api = endpoint.api
-                if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
-            }
-        }
+        initPagingObject(tClazz, pagingObject, endpoint)
+
+        pagingObject
     } catch (jde: SpotifyException.ParseException) {
         if (!arbitraryInnerNameAllowed && jde.message?.contains("unable to parse", true) == true) {
             toCursorBasedPagingObject(
