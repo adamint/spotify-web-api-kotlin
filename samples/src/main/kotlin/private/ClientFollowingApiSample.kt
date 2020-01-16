@@ -2,7 +2,9 @@
 package private
 
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
+import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 
+@SpotifyExperimentalHttpApi
 fun main() {
     // instantiate api
     val api = spotifyClientApi(
@@ -24,7 +26,7 @@ fun main() {
     println(api.following.isFollowingArtist("spotify:artist:7wjeXCtRND2ZdKfMJFu6JC").complete())
 
     // get all followed artists, limiting 1 each request
-    println(api.following.getFollowedArtists(limit = 1).getAllItems().complete().map { it.name })
+    println(api.following.getFollowedArtists(limit = 1).getAllItems().complete())
 
     // follow and unfollow, if you weren't previously following, the artist Louane
 
@@ -37,12 +39,12 @@ fun main() {
 
     // follow and unfollow, if you weren't previously following, the user adamratzman1
 
-    val isFollowingAdam = api.following.isFollowingUser("adamratzman1").complete()
+    val isFollowingAdam = api.following.isFollowingUser("adamratzman").complete()
 
-    if (isFollowingAdam) api.following.unfollowUser("adamratzman1").complete()
-    api.following.followUser("adamratzman1").complete()
+    if (isFollowingAdam) api.following.unfollowUser("adamratzman").complete()
+    api.following.followUser("adamratzman").complete()
 
-    if (!isFollowingAdam) api.following.unfollowUser("adamratzman1").complete()
+    if (!isFollowingAdam) api.following.unfollowUser("adamratzman").complete()
 
     // follow and unfollow, if you weren't previously following, the playlist Today's Top Hits
 

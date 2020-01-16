@@ -109,7 +109,7 @@ data class ErrorResponse(val error: ErrorObject, @Transient val exception: Excep
  * @property message A short description of the cause of the error.
  */
 @Serializable
-data class ErrorObject(val status: Int, val message: String)
+data class ErrorObject(val status: Int, val message: String, val reason: String? = null)
 
 /**
  * An exception during the authentication process
