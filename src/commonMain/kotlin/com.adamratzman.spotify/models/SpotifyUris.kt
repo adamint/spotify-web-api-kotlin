@@ -1,6 +1,7 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyException
 import kotlinx.serialization.Decoder
 import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
@@ -8,6 +9,11 @@ import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.internal.StringDescriptor
+
+/**
+ * Exception instantiating or deserializing a uri perceived as invalid
+ */
+class SpotifyUriException(message: String) : SpotifyException.BadRequestException(message)
 
 private fun String.matchType(type: String): String? {
     val typeRegex = "^spotify:(?:.*:)*$type:([^:]*)(?::.*)*$|^([^:]+)$".toRegex()
@@ -35,6 +41,13 @@ private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSe
     override fun serialize(encoder: Encoder, obj: T) = encoder.encodeString(obj.uri)
 }
 
+@PublishedApi
+internal fun fixSpotifyUri(uri: String): String {
+    val matchesOldPlaylistUriFormat = "^spotify:user:(?:.*:)*playlist:(.+)\$".toRegex().matchEntire(uri)
+    return (matchesOldPlaylistUriFormat?.let { result -> "spotify:playlist:${result.groupValues[1]}" } ?: uri)
+            .replace(" ", "")
+}
+
 /**
  * Represents a Spotify URI, parsed from either a Spotify ID or taken from an endpoint.
  *
@@ -47,7 +60,7 @@ sealed class SpotifyUri(input: String, type: String) {
     val id: String
 
     init {
-        input.replace(" ", "").let {
+        fixSpotifyUri(input).let {
             this.uri = it.add(type)
             this.id = it.remove(type)
         }
@@ -65,7 +78,7 @@ sealed class SpotifyUri(input: String, type: String) {
     }
 
     override fun toString(): String {
-        return "SpotifyUri($uri)"
+        return "SpotifyUri(${fixSpotifyUri(uri)})"
     }
 
     @Serializer(forClass = SpotifyUri::class)
@@ -79,7 +92,7 @@ sealed class SpotifyUri(input: String, type: String) {
          * */
         inline fun <T : SpotifyUri> safeInitiate(uri: String, ctor: (String) -> T): T? {
             return try {
-                ctor(uri)
+                ctor(fixSpotifyUri(uri))
             } catch (e: SpotifyUriException) {
                 null
             }
@@ -88,7 +101,8 @@ sealed class SpotifyUri(input: String, type: String) {
         /**
          * Creates a abstract SpotifyUri of given input. Doesn't allow ambiguity by disallowing creation by id.
          * */
-        operator fun invoke(input: String): SpotifyUri {
+        operator fun invoke(inputTemp: String): SpotifyUri {
+            val input = fixSpotifyUri(inputTemp)
             val constructors = listOf(::AlbumUri, ::ArtistUri, TrackUri.Companion::invoke, ::UserUri, ::PlaylistUri)
             for (ctor in constructors) {
                 safeInitiate(input, ctor)?.takeIf { it.uri == input }?.also { return it }
@@ -106,7 +120,8 @@ sealed class SpotifyUri(input: String, type: String) {
          *     SpotifyUri.isType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T : SpotifyUri> isType(input: String): Boolean {
+        inline fun <reified T : SpotifyUri> isType(inputTemp: String): Boolean {
+            val input = fixSpotifyUri(inputTemp)
             return safeInitiate(input, ::invoke)?.let { it is T } ?: false
         }
 
@@ -119,7 +134,8 @@ sealed class SpotifyUri(input: String, type: String) {
          *     SpotifyUri.canBeType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T : SpotifyUri> canBeType(input: String): Boolean {
+        inline fun <reified T : SpotifyUri> canBeType(inputTemp: String): Boolean {
+            val input = fixSpotifyUri(inputTemp)
             return isType<T>(input) || !input.contains(':')
         }
     }

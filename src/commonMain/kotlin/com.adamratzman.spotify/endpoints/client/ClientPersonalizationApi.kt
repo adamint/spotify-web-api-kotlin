@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
@@ -16,16 +16,30 @@ typealias ClientPersonalizationAPI = ClientPersonalizationApi
 
 /**
  * Endpoints for retrieving information about the user’s listening habits.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/)**
  */
 class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     /**
      * The time frame for which attribute affinities are computed.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/)**
+     *
      * @param id the Spotify id of the time frame
      */
     enum class TimeRange(val id: String) {
+        /**
+         * Calculated from several years of data and including all new data as it becomes available
+         */
         LONG_TERM("long_term"),
+        /**
+         * Approximately last 6 months
+         */
         MEDIUM_TERM("medium_term"),
+
+        /**
+         * Approximately last 4 weeks
+         */
         SHORT_TERM("short_term");
 
         override fun toString() = id
@@ -43,6 +57,8 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * once each day for each user.
      *
      * **Requires** the [SpotifyScope.USER_TOP_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/)**
      *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -75,6 +91,8 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * once each day for each user.
      *
      * **Requires** the [SpotifyScope.USER_TOP_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/)**
      *
      * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items

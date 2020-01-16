@@ -1,4 +1,4 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyApi
@@ -45,12 +45,22 @@ abstract class CoreObject : Identifiable() {
     val externalUrls: List<ExternalUrl> get() = externalUrlsString.map { ExternalUrl(it.key, it.value) }
 }
 
+/**
+ *
+ * Represents a response for which a relinked track could be available
+ *
+ * @property linkedTrack Part of the response when Track Relinking is applied and is only part of the response
+ * if the track linking, in fact, exists. The requested track has been replaced with a different track. The track contains information about the originally requested track.
+ */
 @Serializable
 abstract class RelinkingAvailableResponse : CoreObject() {
     @SerialName("linked_from") abstract val linkedTrack: LinkedTrack?
     fun isRelinked() = linkedTrack != null
 }
 
+/**
+ * Key/value pair mapping a name to an arbitrary url
+ */
 @Serializable
 class ExternalUrl(val name: String, val url: String)
 
@@ -76,12 +86,18 @@ abstract class NeedsApi {
     lateinit var api: SpotifyApi<*, *>
 }
 
+/**
+ * Interface that allows easy identifier retrieval for children with an implemented identifier
+ */
 interface ResultEnum {
     fun retrieveIdentifier(): Any
 }
 
 /**
- * Wraps around [ErrorObject]
+ * Wraps around [ErrorObject]. Serialized raw Spotify error response
+ *
+ * @property error The error code and message, as returned by Spotify
+ * @property exception The associated Kotlin exception for this error
  */
 @Serializable
 data class ErrorResponse(val error: ErrorObject, @Transient val exception: Exception? = null)
@@ -93,15 +109,19 @@ data class ErrorResponse(val error: ErrorObject, @Transient val exception: Excep
  * @property message A short description of the cause of the error.
  */
 @Serializable
-data class ErrorObject(val status: Int, val message: String)
+data class ErrorObject(val status: Int, val message: String, val reason: String? = null)
 
+/**
+ * An exception during the authentication process
+ *
+ * @property error Short error message
+ * @property description More detailed description of the error
+ */
 @Serializable
 data class AuthenticationError(
     val error: String,
     @SerialName("error_description") val description: String
 )
-
-class SpotifyUriException(message: String) : SpotifyException.BadRequestException(message)
 
 /**
  * Thrown when [SpotifyApi.retryWhenRateLimited] is false and requests have been ratelimited

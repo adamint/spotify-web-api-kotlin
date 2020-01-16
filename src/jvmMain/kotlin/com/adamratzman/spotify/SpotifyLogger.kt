@@ -1,10 +1,10 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
-    val redString = "\u001B[31m"
-    val orangeString = "\u001B[33m"
-    val resetString = "\u001B[0m"
+    private val redString = "\u001B[31m"
+    private val orangeString = "\u001B[33m"
+    private val resetString = "\u001B[0m"
 
     actual fun logInfo(message: String) {
         if (enabled) println("Spotify Logger Info: $message")

@@ -1,8 +1,9 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
@@ -24,12 +25,16 @@ typealias ClientFollowingAPI = ClientFollowingApi
 
 /**
  * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
  */
 class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     /**
      * Check to see if the current user is following another Spotify user.
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param user The user id or uri to check.
      *
@@ -48,7 +53,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Checking if the user is privately following a playlist is only possible for the current user when
      * that user has granted access to the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope.
      *
-     * @param playlistOwner id or uri of the creator of the playlist
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     *
      * @param playlistId playlist id or uri
      *
      * @return Boolean representing whether the user follows the playlist
@@ -56,10 +62,9 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * @throws [BadRequestException] if the playlist is not found
      * @return Whether the current user is following [playlistId]
      */
-    fun isFollowingPlaylist(playlistOwner: String, playlistId: String): SpotifyRestAction<Boolean> {
+    fun isFollowingPlaylist(playlistId: String): SpotifyRestAction<Boolean> {
         return toAction {
             isFollowingPlaylist(
-                playlistOwner,
                 playlistId,
                 (api as SpotifyClientApi).userId
             ).complete()
@@ -70,6 +75,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Check to see if the current user is following one or more other Spotify users.
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param users List of the user Spotify IDs to check. Max 50
      *
@@ -90,6 +97,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
+     *
      * @param artist The artist id to check.
      *
      * @throws BadRequestException if [artist] is a non-existing id
@@ -105,6 +114,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Check to see if the current user is following one or more artists.
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param artists List of the artist ids or uris to check. Max 50
      *
@@ -124,6 +135,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Get the current user’s followed artists.
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)**
      *
      * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param after The last artist ID retrieved from the previous request.
@@ -150,6 +163,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     *
      * @throws BadRequestException if an invalid id is provided
      */
     fun followUser(user: String): SpotifyRestAction<Unit> {
@@ -162,6 +177,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Add the current user as a follower of other users
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -180,6 +197,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     *
      * @throws BadRequestException if an invalid id is provided
      */
     fun followArtist(artistId: String): SpotifyRestAction<Unit> {
@@ -192,6 +211,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Add the current user as a follower of other artists
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -215,6 +236,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * publicly or privately (i.e. show others what they are following), not whether the playlist itself is
      * public or private.
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/)**
+     *
      * @param playlist the spotify id or uri of the playlist. Any playlist can be followed, regardless of its
      * public/private status, as long as you know its playlist ID.
      * @param followPublicly Defaults to true. If true the playlist will be included in user’s public playlists,
@@ -237,6 +260,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     *
      * @param user The user to be unfollowed from
      *
      * @throws BadRequestException if [user] is not found
@@ -251,6 +276,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Remove the current user as a follower of other users
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param users The users to be unfollowed from
      *
@@ -271,6 +298,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     *
      * @param artist The artist to be unfollowed from
      *
      * @throws BadRequestException if an invalid id is provided
@@ -285,6 +314,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * Remove the current user as a follower of artists
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param artists The artists to be unfollowed from
      *
@@ -308,6 +339,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * Note that the scopes you provide relate only to whether the current user is following the playlist publicly or
      * privately (i.e. showing others what they are following), not whether the playlist itself is public or private.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/)**
      *
      * @param playlist The spotify id or uri of the playlist that is to be no longer followed.
      *

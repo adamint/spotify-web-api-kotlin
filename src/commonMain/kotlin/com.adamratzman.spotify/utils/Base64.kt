@@ -1,15 +1,12 @@
-/* Spotify Web API - Kotlin Wrapper; MIT License, 2019; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import io.ktor.utils.io.core.String
 import io.ktor.utils.io.core.toByteArray
 
-private val BASE64_ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-private val BASE64_MASK: Byte = 0x3f
-private val BASE64_PAD: Char = '='
-private val BASE64_INVERSE_ALPHABET = IntArray(256) {
-    BASE64_ALPHABET.indexOf(it.toChar())
-}
+private const val BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+private const val BASE64_MASK = 0x3f
+private const val BASE64_PAD = '='
 
 private fun Int.toBase64(): Char = BASE64_ALPHABET[this]
 
