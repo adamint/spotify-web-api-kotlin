@@ -37,6 +37,11 @@ data class Token(
     } ?: listOf()
 
     fun shouldRefresh(): Boolean = getCurrentTimeMs() > expiresAt
+
+    companion object {
+        fun from(accessToken: String?, refreshToken: String?, scopes: List<SpotifyScope>, expiresIn: Int = 1) =
+                Token(accessToken ?: "", "Bearer", expiresIn, refreshToken).apply { this.scopes = scopes }
+    }
 }
 
 data class TokenValidityResponse(val isValid: Boolean, val exception: Exception?)
