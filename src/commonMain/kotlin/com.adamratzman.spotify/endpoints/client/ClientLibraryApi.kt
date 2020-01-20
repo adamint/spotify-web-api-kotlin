@@ -36,7 +36,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -44,7 +44,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
@@ -63,7 +63,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -71,7 +71,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     fun getSavedAlbums(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {

@@ -107,7 +107,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun search(
         query: String,
         vararg searchTypes: SearchType,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
         includeExternal: Boolean? = null
@@ -133,7 +133,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @see [SearchApi.search]
@@ -143,7 +143,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchPlaylist(
         query: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
@@ -160,7 +160,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @see [SearchApi.search]
@@ -171,7 +171,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchArtist(
         query: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
@@ -188,7 +188,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @see [SearchApi.search]
@@ -199,7 +199,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchAlbum(
         query: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
@@ -216,7 +216,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @see [SearchApi.search]
@@ -227,7 +227,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchTrack(
         query: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {

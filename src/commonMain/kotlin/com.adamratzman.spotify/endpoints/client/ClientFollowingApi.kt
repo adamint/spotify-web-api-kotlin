@@ -138,14 +138,14 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)**
      *
-     * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The maximum number of items to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param after The last artist ID retrieved from the previous request.
      *
      * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
      * with full [Artist] objects
      */
     fun getFollowedArtists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         after: String? = null
     ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging {
