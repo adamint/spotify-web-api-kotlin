@@ -180,6 +180,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
+     * @param users User ids or uris. Maximum **50**.
+     *
      * @throws BadRequestException if an invalid id is provided
      */
     fun followUsers(vararg users: String): SpotifyRestAction<Unit> {
@@ -213,6 +215,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     *
+     * @param artists User ids or uris. Maximum **50**.
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -279,7 +283,7 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
-     * @param users The users to be unfollowed from
+     * @param users The users to be unfollowed from. Maximum **50**.
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -317,7 +321,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
-     * @param artists The artists to be unfollowed from
+     * @param artists The artists to be unfollowed from. Maximum **50**.
+     *
      *
      * @throws BadRequestException if an invalid id is provided
      */

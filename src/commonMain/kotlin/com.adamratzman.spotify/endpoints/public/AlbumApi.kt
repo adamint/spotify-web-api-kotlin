@@ -56,7 +56,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums/)**
      *
-     * @param albums The spotify ids or uris for the albums.
+     * @param albums The spotify ids or uris for the albums. Maximum **20**.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @return List of [Album] objects or null if the album could not be found, in the order requested
