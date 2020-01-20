@@ -6,12 +6,17 @@ import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
+val _clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+val _clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
+val _redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
+val _tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
+
 val api = when {
-    getEnvironmentVariable("SPOTIFY_REDIRECT_URI")?.isNotBlank() != true -> {
+    _redirectUri?.isNotBlank() != true -> {
         spotifyAppApi {
             credentials {
-                clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
-                clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
+                clientId = _clientId
+                clientSecret = _clientSecret
             }
             options {
                 json = Json(JsonConfiguration.Stable)
@@ -21,12 +26,12 @@ val api = when {
     else -> {
         spotifyClientApi {
             credentials {
-                clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
-                clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
-                redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
+                clientId = _clientId
+                clientSecret = _clientSecret
+                redirectUri = _redirectUri
             }
             authorization {
-                tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
+                tokenString = _tokenString
             }
             options {
                 json = Json(JsonConfiguration.Stable)

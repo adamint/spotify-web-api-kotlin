@@ -119,7 +119,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
             } catch (e: Exception) {
                 ErrorResponse(ErrorObject(400, "malformed request sent"), e)
             }
-            throw SpotifyException.BadRequestException(response.error)
+            throw BadRequestException(response.error)
         } else if (document.responseCode == 202 && retry202) return null
         return responseBody
     }
@@ -215,7 +215,7 @@ data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 
     internal fun update(expireBy: String): CacheState {
         val group = cacheRegex.find(expireBy)?.groupValues
         val time =
-            group?.getOrNull(1)?.toLongOrNull() ?: throw SpotifyException.BadRequestException("Unable to match regex")
+            group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
             expireBy = getCurrentTimeMs() + 1000 * time

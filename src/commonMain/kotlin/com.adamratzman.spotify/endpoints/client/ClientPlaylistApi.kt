@@ -179,13 +179,13 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the filters provided are illegal
      */
     fun getClientPlaylists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }

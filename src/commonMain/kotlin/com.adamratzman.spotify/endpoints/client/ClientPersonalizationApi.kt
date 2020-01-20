@@ -60,14 +60,14 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param timeRange The time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
     fun getTopArtists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
@@ -94,14 +94,14 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param timeRange The time range to which to compute this. The default is [TimeRange.MEDIUM_TERM]
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
     fun getTopTracks(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
