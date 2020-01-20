@@ -59,7 +59,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/)**
      *
-     * @param artists The spotify ids or uris representing the artists.
+     * @param artists The spotify ids or uris representing the artists. Maximum **50**.
      *
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
      */

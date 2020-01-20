@@ -281,7 +281,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The spotify id or uri for the playlist.
-     * @param tracks The Spotify track ids.
+     * @param tracks The Spotify track ids. Maximum **100**.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
@@ -307,7 +307,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The spotify id or uri for the playlist.
-     * @param tracks The Spotify track ids.
+     * @param tracks The Spotify track ids. Maximum **100**.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
@@ -417,7 +417,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of track ids
+     * @param tracks An array of track ids. Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(
@@ -435,7 +435,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based)
+     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based). Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(

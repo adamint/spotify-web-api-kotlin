@@ -57,7 +57,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
      *
-     * @param tracks The spotify id or uri for the tracks.
+     * @param tracks The spotify id or uri for the tracks. Maximum **50**.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
      * @return List of possibly-null full [Track] objects.
@@ -118,7 +118,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/)**
      *
-     * @param tracks vararg of spotify track ids or uris.
+     * @param tracks vararg of spotify track ids or uris. Maximum **100**.
      *
      * @return Ordered list of possibly-null [AudioFeatures] objects.
      */
