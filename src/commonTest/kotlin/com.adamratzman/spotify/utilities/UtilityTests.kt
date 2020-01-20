@@ -65,6 +65,13 @@ class UtilityTests : Spek({
                     }
                 }.build()
             }
+
+            describe("Automatic refresh") {
+                val newToken = api.token.copy(expiresIn = 0)
+
+                it("Refresh on token expiry date") {
+                }
+            }
         }
     }
 })

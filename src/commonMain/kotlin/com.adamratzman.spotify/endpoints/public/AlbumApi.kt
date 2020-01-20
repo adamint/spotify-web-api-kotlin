@@ -76,7 +76,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-albums-tracks/)**
      *
      * @param album The spotify id or uri for the album.
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      *
@@ -85,7 +85,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getAlbumTracks(
         album: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {

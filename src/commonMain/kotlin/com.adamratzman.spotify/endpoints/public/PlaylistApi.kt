@@ -45,7 +45,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-list-users-playlists/)**
      *
      * @param user The user’s Spotify user ID.
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @return [PagingObject] of [SimplePlaylist]s **ONLY if** the user can be found. Otherwise, an empty paging object is returned.
@@ -56,7 +56,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getUserPlaylists(
         user: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
@@ -71,7 +71,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
     fun getPlaylists(
         user: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ) = getUserPlaylists(user, limit, offset)
 
@@ -107,14 +107,14 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param playlist The spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getPlaylistTracks(
         playlist: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
