@@ -109,7 +109,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
@@ -148,7 +148,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
@@ -189,7 +189,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
