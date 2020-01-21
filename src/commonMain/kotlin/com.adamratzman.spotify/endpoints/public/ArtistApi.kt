@@ -59,7 +59,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/)**
      *
-     * @param artists The spotify ids or uris representing the artists.
+     * @param artists The spotify ids or uris representing the artists. Maximum **50**.
      *
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
      */
@@ -80,7 +80,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param artist The artist id or uri
      * @param market Supply this parameter to limit the response to one particular geographical market.
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param include List of keywords that will be used to filter the response. If not supplied, all album groups will be returned.
      *
@@ -89,7 +89,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getArtistAlbums(
         artist: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
         vararg include: AlbumInclusionStrategy

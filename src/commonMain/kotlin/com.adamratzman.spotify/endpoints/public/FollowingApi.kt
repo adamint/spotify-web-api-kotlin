@@ -28,7 +28,7 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlist playlist id or uri
-     * @param users user ids or uris to check
+     * @param users user ids or uris to check. Maximum **5**.
      *
      * @return List of Booleans representing whether the user follows the playlist. User IDs **not** found will return false
      *
