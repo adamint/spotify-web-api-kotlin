@@ -65,8 +65,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     fun isFollowingPlaylist(playlistId: String): SpotifyRestAction<Boolean> {
         return toAction {
             isFollowingPlaylist(
-                playlistId,
-                (api as SpotifyClientApi).userId
+                    playlistId,
+                    (api as SpotifyClientApi).userId
             ).complete()
         }
     }
@@ -86,8 +86,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     fun isFollowingUsers(vararg users: String): SpotifyRestAction<List<Boolean>> {
         return toAction {
             get(
-                EndpointBuilder("/me/following/contains").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                    EndpointBuilder("/me/following/contains").with("type", "user")
+                            .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             ).toList(Boolean.serializer().list, api, json)
         }
     }
@@ -125,8 +125,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     fun isFollowingArtists(vararg artists: String): SpotifyRestAction<List<Boolean>> {
         return toAction {
             get(
-                EndpointBuilder("/me/following/contains").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                    EndpointBuilder("/me/following/contains").with("type", "artist")
+                            .with("ids", artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
             ).toList(Boolean.serializer().list, api, json)
         }
     }
@@ -138,22 +138,22 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)**
      *
-     * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The maximum number of items to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param after The last artist ID retrieved from the previous request.
      *
      * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
      * with full [Artist] objects
      */
     fun getFollowedArtists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         after: String? = null
     ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
-                    "after",
-                    after
-                ).toString()
+                    EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
+                            "after",
+                            after
+                    ).toString()
             ).toCursorBasedPagingObject(Artist.serializer(), "artists", this, json)
         }
     }
@@ -180,14 +180,19 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
+     * @param users User ids or uris. Maximum **50**.
+     *
      * @throws BadRequestException if an invalid id is provided
      */
     fun followUsers(vararg users: String): SpotifyRestAction<Unit> {
+        if (users.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many users (${users.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many users were provided"))
         return toAction {
-            put(
-                EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-            )
+            users.toList().chunked(50).forEach { list ->
+                put(
+                        EndpointBuilder("/me/following").with("type", "user")
+                                .with("ids", list.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }
@@ -214,14 +219,19 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
+     * @param artists User ids or uris. Maximum **50**.
+     *
      * @throws BadRequestException if an invalid id is provided
      */
     fun followArtists(vararg artists: String): SpotifyRestAction<Unit> {
+        if (artists.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many artists (${artists.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many artists were provided"))
         return toAction {
-            put(
-                EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-            )
+            artists.toList().chunked(50).forEach { list ->
+                put(
+                        EndpointBuilder("/me/following").with("type", "artist")
+                                .with("ids", list.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }
@@ -248,8 +258,8 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
     fun followPlaylist(playlist: String, followPublicly: Boolean = true): SpotifyRestAction<Unit> {
         return toAction {
             put(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
-                "{\"public\": $followPublicly}"
+                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
+                    "{\"public\": $followPublicly}"
             )
             Unit
         }
@@ -279,16 +289,19 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
-     * @param users The users to be unfollowed from
+     * @param users The users to be unfollowed from. Maximum **50**.
      *
      * @throws BadRequestException if an invalid id is provided
      */
     fun unfollowUsers(vararg users: String): SpotifyRestAction<Unit> {
+        if (users.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many users (${users.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many users were provided"))
         return toAction {
-            delete(
-                EndpointBuilder("/me/following").with("type", "user")
-                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-            )
+            users.toList().chunked(50).forEach { list ->
+                delete(
+                        EndpointBuilder("/me/following").with("type", "user")
+                                .with("ids", list.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }
@@ -317,16 +330,20 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
-     * @param artists The artists to be unfollowed from
+     * @param artists The artists to be unfollowed from. Maximum **50**.
+     *
      *
      * @throws BadRequestException if an invalid id is provided
      */
     fun unfollowArtists(vararg artists: String): SpotifyRestAction<Unit> {
+        if (artists.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many artists (${artists.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many artists were provided"))
         return toAction {
-            delete(
-                EndpointBuilder("/me/following").with("type", "artist")
-                    .with("ids", artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-            )
+            artists.toList().chunked(50).forEach { list ->
+                delete(
+                        EndpointBuilder("/me/following").with("type", "artist")
+                                .with("ids", list.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }

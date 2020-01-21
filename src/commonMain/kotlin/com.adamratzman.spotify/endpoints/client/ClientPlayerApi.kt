@@ -76,13 +76,13 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param before The timestamp (retrieved via cursor) **not including**, but before which, tracks will have been played. This can be combined with [limit]
      * @param after The timestamp (retrieved via cursor) **not including**, after which, the retrieval starts. This can be combined with [limit]
      *
      */
     fun getRecentlyPlayed(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         before: String? = null,
         after: String? = null
     ): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {

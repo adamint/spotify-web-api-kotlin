@@ -64,6 +64,11 @@ class SpotifyApiBuilder(
     fun testTokenValidity(testTokenValidity: Boolean) = apply { this.options.testTokenValidity = testTokenValidity }
 
     /**
+     * Allows you to set the default amount of objects to retrieve in one request
+     */
+    fun defaultLimit(defaultLimit: Int) = apply { this.options.defaultLimit = defaultLimit }
+
+    /**
      * Set the application client id
      */
     fun clientId(clientId: String) = apply { this.clientId = clientId }
@@ -92,7 +97,7 @@ class SpotifyApiBuilder(
      * Set a returned [authorization code](https://developer.spotify.com/documentation/general/guides/authorization-guide/)
      */
     fun authorizationCode(authorizationCode: String?) =
-        apply { this.authorization.authorizationCode = authorizationCode }
+            apply { this.authorization.authorizationCode = authorizationCode }
 
     /**
      * If you only have an access token, the api can be instantiated with it
@@ -113,12 +118,17 @@ class SpotifyApiBuilder(
      * Set whether to block the current thread and wait until the API can retry the request
      */
     fun retryWhenRateLimited(retryWhenRateLimited: Boolean) =
-        apply { this.options.retryWhenRateLimited = retryWhenRateLimited }
+            apply { this.options.retryWhenRateLimited = retryWhenRateLimited }
 
     /**
      * Set whether to enable to the exception logger
      */
     fun enableLogger(enableLogger: Boolean) = apply { this.options.enableLogger = enableLogger }
+
+    /**
+     * Set whether you want to allow splitting too-large requests into smaller, allowable api requests
+     */
+    fun allowBulkRequests(allowBulkRequests: Boolean) = apply { this.options.allowBulkRequests = allowBulkRequests }
 
     /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
@@ -323,33 +333,35 @@ class SpotifyClientApiBuilder(
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
                 val response = executeTokenRequest(
-                    HttpConnection(
-                        "https://accounts.spotify.com/api/token",
-                        HttpRequestMethod.POST,
-                        mapOf(
-                            "grant_type" to "authorization_code",
-                            "code" to authorization.authorizationCode,
-                            "redirect_uri" to redirectUri
-                        ),
-                        null,
-                        "application/x-www-form-urlencoded",
-                        listOf(),
-                        null
-                    ), clientId, clientSecret
+                        HttpConnection(
+                                "https://accounts.spotify.com/api/token",
+                                HttpRequestMethod.POST,
+                                mapOf(
+                                        "grant_type" to "authorization_code",
+                                        "code" to authorization.authorizationCode,
+                                        "redirect_uri" to redirectUri
+                                ),
+                                null,
+                                "application/x-www-form-urlencoded",
+                                listOf(),
+                                null
+                        ), clientId, clientSecret
                 )
 
                 SpotifyClientApi(
-                    clientId,
-                    clientSecret,
-                    redirectUri,
-                    response.body.toObject(Token.serializer(), null, options.json),
-                    options.useCache,
-                    options.cacheLimit,
-                    options.automaticRefresh,
-                    options.retryWhenRateLimited,
-                    options.enableLogger,
-                    options.testTokenValidity,
-                    options.json
+                        clientId,
+                        clientSecret,
+                        redirectUri,
+                        response.body.toObject(Token.serializer(), null, options.json),
+                        options.useCache,
+                        options.cacheLimit,
+                        options.automaticRefresh,
+                        options.retryWhenRateLimited,
+                        options.enableLogger,
+                        options.testTokenValidity,
+                        options.defaultLimit,
+                        options.allowBulkRequests,
+                        options.json
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -357,40 +369,44 @@ class SpotifyClientApiBuilder(
                 throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})", e)
             }
             authorization.token != null -> SpotifyClientApi(
-                clientId,
-                clientSecret,
-                redirectUri,
-                authorization.token!!,
-                options.useCache,
-                options.cacheLimit,
-                options.automaticRefresh,
-                options.retryWhenRateLimited,
-                options.enableLogger,
-                options.testTokenValidity,
-                options.json
+                    clientId,
+                    clientSecret,
+                    redirectUri,
+                    authorization.token!!,
+                    options.useCache,
+                    options.cacheLimit,
+                    options.automaticRefresh,
+                    options.retryWhenRateLimited,
+                    options.enableLogger,
+                    options.testTokenValidity,
+                    options.defaultLimit,
+                    options.allowBulkRequests,
+                    options.json
             )
             authorization.tokenString != null -> SpotifyClientApi(
-                clientId,
-                clientSecret,
-                redirectUri,
-                Token(
-                    authorization.tokenString!!,
-                    "client_credentials",
-                    1000,
-                    null,
-                    null
-                ),
-                options.useCache,
-                options.cacheLimit,
-                false,
-                options.retryWhenRateLimited,
-                options.enableLogger,
-                options.testTokenValidity,
-                options.json
+                    clientId,
+                    clientSecret,
+                    redirectUri,
+                    Token(
+                            authorization.tokenString!!,
+                            "client_credentials",
+                            1000,
+                            null,
+                            null
+                    ),
+                    options.useCache,
+                    options.cacheLimit,
+                    false,
+                    options.retryWhenRateLimited,
+                    options.enableLogger,
+                    options.testTokenValidity,
+                    options.defaultLimit,
+                    options.allowBulkRequests,
+                    options.json
             )
             else -> throw IllegalArgumentException(
-                "At least one of: authorizationCode, tokenString, or token must be provided " +
-                        "to build a SpotifyClientApi object"
+                    "At least one of: authorizationCode, tokenString, or token must be provided " +
+                            "to build a SpotifyClientApi object"
             )
         }
     }
@@ -418,62 +434,70 @@ class SpotifyAppApiBuilder(
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }
         return when {
             authorization.token != null -> SpotifyAppApi(
-                clientId,
-                clientSecret,
-                authorization.token!!,
-                options.useCache,
-                options.cacheLimit,
-                false,
-                options.retryWhenRateLimited,
-                options.enableLogger,
-                options.testTokenValidity,
-                options.json
-            )
-            authorization.tokenString != null -> {
-                SpotifyAppApi(
                     clientId,
                     clientSecret,
-                    Token(
-                        authorization.tokenString!!, "client_credentials",
-                        60000, null, null
-                    ),
+                    authorization.token!!,
                     options.useCache,
                     options.cacheLimit,
                     false,
                     options.retryWhenRateLimited,
                     options.enableLogger,
                     options.testTokenValidity,
+                    options.defaultLimit,
+                    options.allowBulkRequests,
                     options.json
+            )
+            authorization.tokenString != null -> {
+                SpotifyAppApi(
+                        clientId,
+                        clientSecret,
+                        Token(
+                                authorization.tokenString!!, "client_credentials",
+                                60000, null, null
+                        ),
+                        options.useCache,
+                        options.cacheLimit,
+                        false,
+                        options.retryWhenRateLimited,
+                        options.enableLogger,
+                        options.testTokenValidity,
+                        options.defaultLimit,
+                        options.allowBulkRequests,
+                        options.json
                 )
             }
             authorization.refreshTokenString != null -> {
                 SpotifyAppApi(
-                    clientId,
-                    clientSecret,
-                    Token("", "", 0, authorization.refreshTokenString!!),
-                    options.useCache,
-                    options.cacheLimit,
-                    false,
-                    options.retryWhenRateLimited,
-                    options.enableLogger,
-                    options.testTokenValidity,
-                    options.json
+                        clientId,
+                        clientSecret,
+                        Token("", "", 0, authorization.refreshTokenString!!),
+                        options.useCache,
+                        options.cacheLimit,
+                        false,
+                        options.retryWhenRateLimited,
+                        options.enableLogger,
+                        options.testTokenValidity,
+                        options.defaultLimit,
+                        options.allowBulkRequests,
+                        options.json
                 )
             }
             else -> try {
                 require(clientId != null && clientSecret != null) { "Illegal credentials provided" }
                 val token = getCredentialedToken(clientId, clientSecret, null, options.json)
                 SpotifyAppApi(
-                    clientId,
-                    clientSecret,
-                    token,
-                    options.useCache,
-                    options.cacheLimit,
-                    false,
-                    options.retryWhenRateLimited,
-                    options.enableLogger,
-                    options.testTokenValidity,
-                    options.json
+                        clientId,
+                        clientSecret,
+                        token,
+                        options.useCache,
+                        options.cacheLimit,
+                        false,
+                        options.retryWhenRateLimited,
+                        options.enableLogger,
+                        options.testTokenValidity,
+                        options.defaultLimit,
+                        options.allowBulkRequests,
+                        options.json
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -497,8 +521,8 @@ class SpotifyCredentialsBuilder {
     var redirectUri: String? = null
 
     fun build() =
-        if (clientId?.isNotEmpty() == false || clientSecret?.isNotEmpty() == false) throw IllegalArgumentException("clientId or clientSecret is empty")
-        else SpotifyCredentials(clientId, clientSecret, redirectUri)
+            if (clientId?.isNotEmpty() == false || clientSecret?.isNotEmpty() == false) throw IllegalArgumentException("clientId or clientSecret is empty")
+            else SpotifyCredentials(clientId, clientSecret, redirectUri)
 }
 
 data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, val redirectUri: String?)
@@ -549,7 +573,10 @@ data class SpotifyUserAuthorization(
  * @property retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request
  * @property enableLogger Set whether to enable to the exception logger
  * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
+ * @property defaultLimit The default amount of objects to retrieve in one request
+ * @property json The Json serializer/deserializer instance
  * @property enableAllOptions Whether to enable all provided utilities
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  */
 class SpotifyApiOptionsBuilder(
     var useCache: Boolean = true,
@@ -559,29 +586,35 @@ class SpotifyApiOptionsBuilder(
     var enableLogger: Boolean = true,
     var testTokenValidity: Boolean = false,
     var enableAllOptions: Boolean = false,
+    var defaultLimit: Int = 50,
+    var allowBulkRequests: Boolean = true,
     var json: Json = stableJson
 ) {
     fun build() =
-        if (enableAllOptions)
-            SpotifyApiOptions(
-                true,
-                200,
-                    automaticRefresh = false,
-                    retryWhenRateLimited = true,
-                    enableLogger = true,
-                    testTokenValidity = true,
-                    json = json
-            )
-        else
-            SpotifyApiOptions(
-                useCache,
-                cacheLimit,
-                automaticRefresh,
-                retryWhenRateLimited,
-                enableLogger,
-                testTokenValidity,
-                json
-            )
+            if (enableAllOptions)
+                SpotifyApiOptions(
+                        true,
+                        200,
+                        automaticRefresh = false,
+                        retryWhenRateLimited = true,
+                        enableLogger = true,
+                        testTokenValidity = true,
+                        defaultLimit = 50,
+                        allowBulkRequests = true,
+                        json = json
+                )
+            else
+                SpotifyApiOptions(
+                        useCache,
+                        cacheLimit,
+                        automaticRefresh,
+                        retryWhenRateLimited,
+                        enableLogger,
+                        testTokenValidity,
+                        defaultLimit,
+                        allowBulkRequests,
+                        json
+                )
 }
 
 /**
@@ -593,7 +626,9 @@ class SpotifyApiOptionsBuilder(
  * @property retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request
  * @property enableLogger Set whether to enable to the exception logger
  * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
- * @property enableAllOptions Whether to enable all provided utilities
+ * @property defaultLimit The default amount of objects to retrieve in one request
+ * @property json The Json serializer/deserializer instance
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  */
 
 data class SpotifyApiOptions(
@@ -603,6 +638,8 @@ data class SpotifyApiOptions(
     var retryWhenRateLimited: Boolean,
     var enableLogger: Boolean,
     var testTokenValidity: Boolean,
+    var defaultLimit: Int,
+    var allowBulkRequests: Boolean,
     var json: Json
 )
 

@@ -60,7 +60,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -69,7 +69,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of new album released, ordered by release date (descending)
      */
     fun getNewReleases(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
@@ -88,7 +88,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
@@ -104,7 +104,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [FeaturedPlaylists] object with the current featured message and featured playlists
      */
     fun getFeaturedPlaylists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null,
@@ -127,7 +127,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
@@ -140,7 +140,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     fun getCategoryList(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null
@@ -190,7 +190,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if [categoryId] is not found or filters are illegal
@@ -198,7 +198,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getPlaylistsForCategory(
         categoryId: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
@@ -232,7 +232,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
      * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      * @param targetAttributes For each of the tunable track attributes a target value may be provided.
@@ -250,7 +250,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         market: Market? = null,
         targetAttributes: List<TrackAttribute<*>> = listOf(),
         minAttributes: List<TrackAttribute<*>> = listOf(),
@@ -286,7 +286,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
      * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      * @param targetAttributes For each of the tunable track attributes a target value may be provided.
@@ -305,7 +305,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         market: Market? = null,
         targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
         minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),

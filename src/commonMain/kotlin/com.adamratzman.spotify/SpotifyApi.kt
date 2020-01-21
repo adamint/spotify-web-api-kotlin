@@ -55,7 +55,8 @@ internal const val base = "https://api.spotify.com/v1"
  * @property browse Provides access to Spotify [browse endpoints](https://developer.spotify.com/documentation/web-api/reference/browse/)
  * @property artists Provides access to Spotify [artist endpoints](https://developer.spotify.com/documentation/web-api/reference/artists/)
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
- *
+ * @property defaultLimit The default amount of objects to retrieve in one request
+ * @property json The Json serializer/deserializer instance
  * @property logger The Spotify event logger
  *
  */
@@ -69,6 +70,8 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     var retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean,
+    var defaultLimit: Int,
+    var allowBulkRequests: Boolean,
     var json: Json
 ) {
     var useCache = useCache
@@ -349,6 +352,8 @@ class SpotifyAppApi internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean,
+    defaultLimit: Int,
+    allowBulkRequests: Boolean,
     json: Json
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
         clientId,
@@ -360,6 +365,8 @@ class SpotifyAppApi internal constructor(
         retryWhenRateLimited,
         enableLogger,
         testTokenValidity,
+        defaultLimit,
+        allowBulkRequests,
         json
 ) {
     constructor(
@@ -377,6 +384,8 @@ class SpotifyAppApi internal constructor(
             options.retryWhenRateLimited,
             options.enableLogger,
             options.testTokenValidity,
+            options.defaultLimit,
+            options.allowBulkRequests,
             options.json
     )
 
@@ -453,6 +462,8 @@ class SpotifyClientApi internal constructor(
     retryWhenRateLimited: Boolean,
     enableLogger: Boolean,
     testTokenValidity: Boolean,
+    defaultLimit: Int,
+    allowBulkRequests: Boolean,
     json: Json
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
@@ -464,6 +475,8 @@ class SpotifyClientApi internal constructor(
         retryWhenRateLimited,
         enableLogger,
         testTokenValidity,
+        defaultLimit,
+        allowBulkRequests,
         json
 ) {
     constructor(
@@ -483,6 +496,8 @@ class SpotifyClientApi internal constructor(
             options.retryWhenRateLimited,
             options.enableLogger,
             options.testTokenValidity,
+            options.defaultLimit,
+            options.allowBulkRequests,
             options.json
     )
 
