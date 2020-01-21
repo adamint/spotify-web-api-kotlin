@@ -179,13 +179,13 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the filters provided are illegal
      */
     fun getClientPlaylists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
@@ -281,7 +281,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The spotify id or uri for the playlist.
-     * @param tracks The Spotify track ids.
+     * @param tracks The Spotify track ids. Maximum **100**.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
@@ -307,7 +307,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The spotify id or uri for the playlist.
-     * @param tracks The Spotify track ids.
+     * @param tracks The Spotify track ids. Maximum **100**.
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
@@ -417,7 +417,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of track ids
+     * @param tracks An array of track ids. Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(
@@ -435,7 +435,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based)
+     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based). Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(

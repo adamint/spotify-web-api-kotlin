@@ -36,7 +36,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -44,7 +44,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
@@ -63,7 +63,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
-     * @param limit The number of objects to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -71,7 +71,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     fun getSavedAlbums(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
@@ -109,16 +109,19 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            get(
-                EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encodeUrl() })
-                    .toString()
-            ).toList(Boolean.serializer().list, api, json)
+            ids.toList().chunked(50).map { list ->
+                get(
+                        EndpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
+                                .toString()
+                ).toList(Boolean.serializer().list, api, json)
+            }.flatten()
         }
     }
 
@@ -148,13 +151,16 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { type.id(it).encodeUrl() }).toString())
+            ids.toList().chunked(50).forEach { list ->
+                put(EndpointBuilder("/me/$type").with("ids", list.joinToString(",") { type.id(it).encodeUrl() }).toString())
+            }
             Unit
         }
     }
@@ -189,17 +195,20 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
-     * @param ids The spotify ids or uris of the objects
+     * @param ids The spotify ids or uris of the objects. Maximum **50** ids.
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            delete(
-                EndpointBuilder("/me/$type").with(
-                    "ids",
-                    ids.joinToString(",") { type.id(it).encodeUrl() }).toString()
-            )
+            ids.toList().chunked(50).forEach { list ->
+                delete(
+                        EndpointBuilder("/me/$type").with(
+                                "ids",
+                                list.joinToString(",") { type.id(it).encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }

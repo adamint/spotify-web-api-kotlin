@@ -2,8 +2,9 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
-import com.adamratzman.spotify.SpotifyAppApi
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.base
@@ -44,9 +45,10 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
         retry202: Boolean = true,
-        contentType: String? = null
+        contentType: String? = null,
+        attemptedRefresh: Boolean = false
     ): String {
-        if (api is SpotifyAppApi && getCurrentTimeMs() >= api.expireTime) {
+        if (api is SpotifyClientApi && getCurrentTimeMs() >= api.expireTime) {
             if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
@@ -59,19 +61,32 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
             cache -= spotifyRequest
         }
 
-        val document = createConnection(url, body, method, contentType).execute(
-            cacheState?.eTag?.let {
-                listOf(HttpHeader("If-None-Match", it))
-            }
-        )
+        return try {
+            val document = createConnection(url, body, method, contentType).execute(
+                    cacheState?.eTag?.let {
+                        listOf(HttpHeader("If-None-Match", it))
+                    }
+            )
 
-        return handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
-            url,
-            body,
-            method,
-            false,
-            contentType
-        )
+            handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
+                    url,
+                    body,
+                    method,
+                    false,
+                    contentType
+            )
+        } catch (e: BadRequestException) {
+            if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
+                execute(
+                        url,
+                        body,
+                        method,
+                        retry202,
+                        contentType,
+                        true
+                )
+            } else throw e
+        }
     }
 
     private fun handleResponse(
@@ -104,7 +119,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
             } catch (e: Exception) {
                 ErrorResponse(ErrorObject(400, "malformed request sent"), e)
             }
-            throw SpotifyException.BadRequestException(response.error)
+            throw BadRequestException(response.error)
         } else if (document.responseCode == 202 && retry202) return null
         return responseBody
     }
@@ -200,7 +215,7 @@ data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 
     internal fun update(expireBy: String): CacheState {
         val group = cacheRegex.find(expireBy)?.groupValues
         val time =
-            group?.getOrNull(1)?.toLongOrNull() ?: throw SpotifyException.BadRequestException("Unable to match regex")
+            group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
             expireBy = getCurrentTimeMs() + 1000 * time
