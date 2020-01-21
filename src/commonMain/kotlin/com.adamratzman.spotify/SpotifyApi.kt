@@ -71,6 +71,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     enableLogger: Boolean,
     testTokenValidity: Boolean,
     var defaultLimit: Int,
+    var allowBulkRequests: Boolean,
     var json: Json
 ) {
     var useCache = useCache
@@ -352,6 +353,7 @@ class SpotifyAppApi internal constructor(
     enableLogger: Boolean,
     testTokenValidity: Boolean,
     defaultLimit: Int,
+    allowBulkRequests: Boolean,
     json: Json
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
         clientId,
@@ -364,6 +366,7 @@ class SpotifyAppApi internal constructor(
         enableLogger,
         testTokenValidity,
         defaultLimit,
+        allowBulkRequests,
         json
 ) {
     constructor(
@@ -382,6 +385,7 @@ class SpotifyAppApi internal constructor(
             options.enableLogger,
             options.testTokenValidity,
             options.defaultLimit,
+            options.allowBulkRequests,
             options.json
     )
 
@@ -459,6 +463,7 @@ class SpotifyClientApi internal constructor(
     enableLogger: Boolean,
     testTokenValidity: Boolean,
     defaultLimit: Int,
+    allowBulkRequests: Boolean,
     json: Json
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
@@ -471,6 +476,7 @@ class SpotifyClientApi internal constructor(
         enableLogger,
         testTokenValidity,
         defaultLimit,
+        allowBulkRequests,
         json
 ) {
     constructor(
@@ -491,6 +497,7 @@ class SpotifyClientApi internal constructor(
             options.enableLogger,
             options.testTokenValidity,
             options.defaultLimit,
+            options.allowBulkRequests,
             options.json
     )
 
