@@ -114,11 +114,14 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            get(
-                EndpointBuilder("/me/$type/contains").with("ids", ids.joinToString(",") { type.id(it).encodeUrl() })
-                    .toString()
-            ).toList(Boolean.serializer().list, api, json)
+            ids.toList().chunked(50).map { list ->
+                get(
+                        EndpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
+                                .toString()
+                ).toList(Boolean.serializer().list, api, json)
+            }.flatten()
         }
     }
 
@@ -153,8 +156,11 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            put(EndpointBuilder("/me/$type").with("ids", ids.joinToString(",") { type.id(it).encodeUrl() }).toString())
+            ids.toList().chunked(50).forEach { list ->
+                put(EndpointBuilder("/me/$type").with("ids", list.joinToString(",") { type.id(it).encodeUrl() }).toString())
+            }
             Unit
         }
     }
@@ -194,12 +200,15 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
-            delete(
-                EndpointBuilder("/me/$type").with(
-                    "ids",
-                    ids.joinToString(",") { type.id(it).encodeUrl() }).toString()
-            )
+            ids.toList().chunked(50).forEach { list ->
+                delete(
+                        EndpointBuilder("/me/$type").with(
+                                "ids",
+                                list.joinToString(",") { type.id(it).encodeUrl() }).toString()
+                )
+            }
             Unit
         }
     }

@@ -126,6 +126,11 @@ class SpotifyApiBuilder(
     fun enableLogger(enableLogger: Boolean) = apply { this.options.enableLogger = enableLogger }
 
     /**
+     * Set whether you want to allow splitting too-large requests into smaller, allowable api requests
+     */
+    fun allowBulkRequests(allowBulkRequests: Boolean) = apply { this.options.allowBulkRequests = allowBulkRequests }
+
+    /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
@@ -355,6 +360,7 @@ class SpotifyClientApiBuilder(
                         options.enableLogger,
                         options.testTokenValidity,
                         options.defaultLimit,
+                        options.allowBulkRequests,
                         options.json
                 )
             } catch (e: CancellationException) {
@@ -374,6 +380,7 @@ class SpotifyClientApiBuilder(
                     options.enableLogger,
                     options.testTokenValidity,
                     options.defaultLimit,
+                    options.allowBulkRequests,
                     options.json
             )
             authorization.tokenString != null -> SpotifyClientApi(
@@ -394,6 +401,7 @@ class SpotifyClientApiBuilder(
                     options.enableLogger,
                     options.testTokenValidity,
                     options.defaultLimit,
+                    options.allowBulkRequests,
                     options.json
             )
             else -> throw IllegalArgumentException(
@@ -436,6 +444,7 @@ class SpotifyAppApiBuilder(
                     options.enableLogger,
                     options.testTokenValidity,
                     options.defaultLimit,
+                    options.allowBulkRequests,
                     options.json
             )
             authorization.tokenString != null -> {
@@ -453,6 +462,7 @@ class SpotifyAppApiBuilder(
                         options.enableLogger,
                         options.testTokenValidity,
                         options.defaultLimit,
+                        options.allowBulkRequests,
                         options.json
                 )
             }
@@ -468,6 +478,7 @@ class SpotifyAppApiBuilder(
                         options.enableLogger,
                         options.testTokenValidity,
                         options.defaultLimit,
+                        options.allowBulkRequests,
                         options.json
                 )
             }
@@ -485,6 +496,7 @@ class SpotifyAppApiBuilder(
                         options.enableLogger,
                         options.testTokenValidity,
                         options.defaultLimit,
+                        options.allowBulkRequests,
                         options.json
                 )
             } catch (e: CancellationException) {
@@ -564,6 +576,7 @@ data class SpotifyUserAuthorization(
  * @property defaultLimit The default amount of objects to retrieve in one request
  * @property json The Json serializer/deserializer instance
  * @property enableAllOptions Whether to enable all provided utilities
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  */
 class SpotifyApiOptionsBuilder(
     var useCache: Boolean = true,
@@ -573,7 +586,8 @@ class SpotifyApiOptionsBuilder(
     var enableLogger: Boolean = true,
     var testTokenValidity: Boolean = false,
     var enableAllOptions: Boolean = false,
-    val defaultLimit: Int = 50,
+    var defaultLimit: Int = 50,
+    var allowBulkRequests: Boolean = true,
     var json: Json = stableJson
 ) {
     fun build() =
@@ -586,6 +600,7 @@ class SpotifyApiOptionsBuilder(
                         enableLogger = true,
                         testTokenValidity = true,
                         defaultLimit = 50,
+                        allowBulkRequests = true,
                         json = json
                 )
             else
@@ -597,6 +612,7 @@ class SpotifyApiOptionsBuilder(
                         enableLogger,
                         testTokenValidity,
                         defaultLimit,
+                        allowBulkRequests,
                         json
                 )
 }
@@ -612,6 +628,7 @@ class SpotifyApiOptionsBuilder(
  * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
  * @property defaultLimit The default amount of objects to retrieve in one request
  * @property json The Json serializer/deserializer instance
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  */
 
 data class SpotifyApiOptions(
@@ -622,6 +639,7 @@ data class SpotifyApiOptions(
     var enableLogger: Boolean,
     var testTokenValidity: Boolean,
     var defaultLimit: Int,
+    var allowBulkRequests: Boolean,
     var json: Json
 )
 
