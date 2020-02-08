@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.0.01"
+version = "3.0.02"
 
 java {
     withSourcesJar()
@@ -70,7 +70,7 @@ kotlin {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
