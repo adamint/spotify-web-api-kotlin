@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.base
@@ -15,6 +16,8 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.withTimeout
 
 abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
@@ -61,31 +64,37 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
             cache -= spotifyRequest
         }
 
-        return try {
-            val document = createConnection(url, body, method, contentType).execute(
-                    cacheState?.eTag?.let {
-                        listOf(HttpHeader("If-None-Match", it))
-                    }
-            )
+        try {
+            return withTimeout(api.requestTimeoutMillis ?: 100 * 1000L) {
+                try {
+                    val document = createConnection(url, body, method, contentType).execute(
+                            cacheState?.eTag?.let {
+                                listOf(HttpHeader("If-None-Match", it))
+                            }
+                    )
 
-            handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
-                    url,
-                    body,
-                    method,
-                    false,
-                    contentType
-            )
-        } catch (e: BadRequestException) {
-            if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
-                execute(
-                        url,
-                        body,
-                        method,
-                        retry202,
-                        contentType,
-                        true
-                )
-            } else throw e
+                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
+                            url,
+                            body,
+                            method,
+                            false,
+                            contentType
+                    )
+                } catch (e: BadRequestException) {
+                    if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
+                        execute(
+                                url,
+                                body,
+                                method,
+                                retry202,
+                                contentType,
+                                true
+                        )
+                    } else throw e
+                }
+            }
+        } catch (e: TimeoutCancellationException) {
+            throw TimeoutException(e.message ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
         }
     }
 
