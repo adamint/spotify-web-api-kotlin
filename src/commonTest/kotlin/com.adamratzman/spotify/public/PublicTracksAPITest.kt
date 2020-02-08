@@ -43,10 +43,10 @@ class PublicTracksAPITest : Spek({
                 assertFailsWith<SpotifyException.BadRequestException> { t.getAudioFeatures("bad track").complete() }
             }
             it("known track") {
-                assertEquals("0.0589", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())
+                assertEquals("0.0592", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())
             }
             it("multiple tracks (all known)") {
-                assertEquals(listOf(null, "0.0589"), t.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
+                assertEquals(listOf(null, "0.0592"), t.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
             }
             it("mix of known and unknown tracks") {
                 assertTrue(t.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").complete().let {
