@@ -58,6 +58,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property defaultLimit The default amount of objects to retrieve in one request
  * @property json The Json serializer/deserializer instance
  * @property logger The Spotify event logger
+ * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
  *
  */
 sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
@@ -72,6 +73,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     testTokenValidity: Boolean,
     var defaultLimit: Int,
     var allowBulkRequests: Boolean,
+    var requestTimeoutMillis: Long?,
     var json: Json
 ) {
     var useCache = useCache
@@ -354,6 +356,7 @@ class SpotifyAppApi internal constructor(
     testTokenValidity: Boolean,
     defaultLimit: Int,
     allowBulkRequests: Boolean,
+    requestTimeoutMillis: Long?,
     json: Json
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
         clientId,
@@ -367,6 +370,7 @@ class SpotifyAppApi internal constructor(
         testTokenValidity,
         defaultLimit,
         allowBulkRequests,
+        requestTimeoutMillis,
         json
 ) {
     constructor(
@@ -386,6 +390,7 @@ class SpotifyAppApi internal constructor(
             options.testTokenValidity,
             options.defaultLimit,
             options.allowBulkRequests,
+            options.requestTimeoutMillis,
             options.json
     )
 
@@ -464,6 +469,7 @@ class SpotifyClientApi internal constructor(
     testTokenValidity: Boolean,
     defaultLimit: Int,
     allowBulkRequests: Boolean,
+    requestTimeoutMillis: Long?,
     json: Json
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
@@ -477,6 +483,7 @@ class SpotifyClientApi internal constructor(
         testTokenValidity,
         defaultLimit,
         allowBulkRequests,
+        requestTimeoutMillis,
         json
 ) {
     constructor(
@@ -498,6 +505,7 @@ class SpotifyClientApi internal constructor(
             options.testTokenValidity,
             options.defaultLimit,
             options.allowBulkRequests,
+            options.requestTimeoutMillis,
             options.json
     )
 
