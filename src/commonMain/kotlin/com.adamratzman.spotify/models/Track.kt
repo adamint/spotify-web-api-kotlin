@@ -143,6 +143,8 @@ data class Track(
     val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
 }
 
+//sealed class Track()
+
 /**
  * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.

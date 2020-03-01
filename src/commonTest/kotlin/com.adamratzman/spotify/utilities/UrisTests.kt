@@ -72,27 +72,21 @@ class UrisTests : Spek({
                 assertFailsWith<SpotifyUriException> {
                     LocalTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
+
+                assertFailsWith<SpotifyUriException> {
+                    LocalTrackUri("artist:album:name:id").uri
+                }
             }
 
             it("Create local track with valid input") {
                 assertEquals(
-                    "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    "spotify:local:artist:album:name:id",
+                    LocalTrackUri("spotify:local:artist:album:name:id").uri
                 )
 
                 assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").id
-                )
-
-                assertEquals(
-                    "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").uri
-                )
-
-                assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").id
+                    "artist:album:name:id",
+                    LocalTrackUri("spotify:local:artist:album:name:id").id
                 )
             }
         }
@@ -213,12 +207,12 @@ class UrisTests : Spek({
 
                 assertEquals(
                     "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
                 )
 
                 assertEquals(
