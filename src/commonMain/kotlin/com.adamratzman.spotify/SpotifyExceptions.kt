@@ -40,4 +40,6 @@ sealed class SpotifyException(message: String, cause: Throwable? = null) : Excep
     class ParseException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 
     class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
+
+    class TimeoutException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 }
