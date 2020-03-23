@@ -8,6 +8,7 @@ import com.adamratzman.spotify.api
 import com.adamratzman.spotify.block
 import com.adamratzman.spotify.getEnvironmentVariable
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import kotlinx.coroutines.GlobalScope
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -64,6 +65,22 @@ class UtilityTests : Spek({
                         clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
                     }
                 }.build()
+            }
+
+            it("Automatic refresh") {
+                val api = spotifyAppApi {
+                    credentials {
+                        clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+                        clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
+                    }
+                }.build()
+
+                api.token = api.token.copy(expiresIn = -1)
+                val currentToken = api.token
+
+                api.browse.getAvailableGenreSeeds().complete()
+
+                assertTrue(api.token.accessToken != currentToken.accessToken)
             }
         }
     }
