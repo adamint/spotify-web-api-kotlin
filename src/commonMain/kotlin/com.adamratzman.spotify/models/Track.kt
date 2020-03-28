@@ -40,7 +40,7 @@ data class SimpleTrack(
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     override val href: String,
     override val id: String,
-    override val uri: TrackUri,
+    override val uri: PlayableUri,
 
     val artists: List<SimpleArtist>,
     @SerialName("disc_number") val discNumber: Int,
@@ -72,76 +72,76 @@ data class SimpleTrack(
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
-/**
- * Represents a music track on Spotify
- *
- * @property album The album on which the track appears. The album object includes a link in
- * href to full information about the album.
- * @property artists The artists who performed the track. Each artist object includes a link in href
- * to more detailed information about the artist.
- * @property availableMarkets A list of the countries in which the track can be played, identified by their ISO 3166-1 alpha-2 code.
- * @property isPlayable Part of the response when Track Relinking is applied. If true , the track is playable in the
- * given market. Otherwise false.
- * @property discNumber The disc number (usually 1 unless the album consists of more than one disc).
- * @property durationMs The track length in milliseconds.
- * @property explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
- * @property externalIds External IDs for this track.
- * @property href A link to the Web API endpoint providing full details of the track.
- * @property id The Spotify ID for the track.
- * @property linkedTrack Part of the response when Track Relinking is applied and is only part of the response
- * if the track linking, in fact, exists. The requested track has been replaced with a different track. The track in
- * the [linkedTrack] object contains information about the originally requested track.
- * @property name The name of the track.
- * @property popularity The popularity of the track. The value will be between 0 and 100, with 100 being the most
- * popular. The popularity of a track is a value between 0 and 100, with 100 being the most popular. The popularity
- * is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how
- * recent those plays are. Generally speaking, songs that are being played a lot now will have a higher popularity
- * than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album)
- * are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that
- * the popularity value may lag actual popularity by a few days: the value is not updated in real time.
- * @property previewUrl A link to a 30 second preview (MP3 format) of the track. Can be null
- * @property trackNumber The number of the track. If an album has several discs, the track number is the number on the specified disc.
- * @property type The object type: “track”.
- * @property isLocal Whether or not the track is from a local file.
- * @property restrictions Part of the response when Track Relinking is applied, the original track is not available in
- * the given market, and Spotify did not have any tracks to relink it with. The track response will still contain
- * metadata for the original track, and a restrictions object containing the reason why the track is not available:
- * "restrictions" : {"reason" : "market"}
- */
-@Serializable
-data class Track(
-    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
-    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-    override val href: String,
-    override val id: String,
-    override val uri: TrackUri,
-
-    val album: SimpleAlbum,
-    val artists: List<SimpleArtist>,
-    @SerialName("is_playable") val isPlayable: Boolean = true,
-    @SerialName("disc_number") val discNumber: Int,
-    @SerialName("duration_ms") val durationMs: Int,
-    val explicit: Boolean,
-    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
-    val name: String,
-    val popularity: Int,
-    @SerialName("preview_url") val previewUrl: String? = null,
-    @SerialName("track_number") val trackNumber: Int,
-    val type: String,
-    @SerialName("is_local") val isLocal: Boolean? = null,
-    val restrictions: Restrictions? = null,
-
-    val episode: Boolean? = null,
-    val track: Boolean? = null
-) : RelinkingAvailableResponse() {
-
-    @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
-
-    @Transient
-    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
-}
+///**
+// * Represents a music track on Spotify
+// *
+// * @property album The album on which the track appears. The album object includes a link in
+// * href to full information about the album.
+// * @property artists The artists who performed the track. Each artist object includes a link in href
+// * to more detailed information about the artist.
+// * @property availableMarkets A list of the countries in which the track can be played, identified by their ISO 3166-1 alpha-2 code.
+// * @property isPlayable Part of the response when Track Relinking is applied. If true , the track is playable in the
+// * given market. Otherwise false.
+// * @property discNumber The disc number (usually 1 unless the album consists of more than one disc).
+// * @property durationMs The track length in milliseconds.
+// * @property explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
+// * @property externalIds External IDs for this track.
+// * @property href A link to the Web API endpoint providing full details of the track.
+// * @property id The Spotify ID for the track.
+// * @property linkedTrack Part of the response when Track Relinking is applied and is only part of the response
+// * if the track linking, in fact, exists. The requested track has been replaced with a different track. The track in
+// * the [linkedTrack] object contains information about the originally requested track.
+// * @property name The name of the track.
+// * @property popularity The popularity of the track. The value will be between 0 and 100, with 100 being the most
+// * popular. The popularity of a track is a value between 0 and 100, with 100 being the most popular. The popularity
+// * is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how
+// * recent those plays are. Generally speaking, songs that are being played a lot now will have a higher popularity
+// * than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album)
+// * are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that
+// * the popularity value may lag actual popularity by a few days: the value is not updated in real time.
+// * @property previewUrl A link to a 30 second preview (MP3 format) of the track. Can be null
+// * @property trackNumber The number of the track. If an album has several discs, the track number is the number on the specified disc.
+// * @property type The object type: “track”.
+// * @property isLocal Whether or not the track is from a local file.
+// * @property restrictions Part of the response when Track Relinking is applied, the original track is not available in
+// * the given market, and Spotify did not have any tracks to relink it with. The track response will still contain
+// * metadata for the original track, and a restrictions object containing the reason why the track is not available:
+// * "restrictions" : {"reason" : "market"}
+// */
+//@Serializable
+//data class Track(
+//    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+//    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
+//    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+//    override val href: String,
+//    override val id: String,
+//    override val uri: PlayableUri,
+//
+//    val album: SimpleAlbum,
+//    val artists: List<SimpleArtist>,
+//    @SerialName("is_playable") val isPlayable: Boolean = true,
+//    @SerialName("disc_number") val discNumber: Int,
+//    @SerialName("duration_ms") val durationMs: Int,
+//    val explicit: Boolean,
+//    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
+//    val name: String,
+//    val popularity: Int,
+//    @SerialName("preview_url") val previewUrl: String? = null,
+//    @SerialName("track_number") val trackNumber: Int,
+//    val type: String,
+//    @SerialName("is_local") val isLocal: Boolean? = null,
+//    val restrictions: Restrictions? = null,
+//
+//    val episode: Boolean? = null,
+//    val track: Boolean? = null
+//) : RelinkingAvailableResponse() {
+//
+//    @Transient
+//    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+//
+//    @Transient
+//    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
+//}
 
 //sealed class Track()
 
@@ -158,7 +158,7 @@ data class LinkedTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    override val uri: TrackUri,
+    override val uri: PlayableUri,
 
     val type: String
 ) : CoreObject() {
@@ -412,7 +412,7 @@ data class AudioFeatures(
     @SerialName("time_signature") val timeSignature: Int,
     @SerialName("track_href") val trackHref: String,
     val type: String,
-    val uri: TrackUri,
+    val uri: PlayableUri,
     val valence: Float
 )
 
