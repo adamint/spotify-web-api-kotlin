@@ -12,10 +12,10 @@ import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SimplePlaylist
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
@@ -122,7 +122,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      */
     fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
         val body = jsonMap()
-        body += json { "uris" to JsonArray(tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
+        body += json { "uris" to JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
         if (position != null) body += json { "position" to position }
         return toAction {
             post(
@@ -288,7 +288,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     fun setClientPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction {
             val body = jsonMap()
-            body += json { "uris" to JsonArray(tracks.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
+            body += json { "uris" to JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
             put(
                 EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                 body.toJson()
@@ -458,7 +458,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
                 "tracks" to JsonArray(
                     tracks.map { (track, positions) ->
                         val json = jsonMap()
-                        json += json { "uri" to TrackUri(track).uri }
+                        json += json { "uri" to PlayableUri(track).uri }
                         if (positions?.positions?.isNotEmpty() == true) json += json {
                             "positions" to JsonArray(
                                 positions.positions.map(::JsonPrimitive)
