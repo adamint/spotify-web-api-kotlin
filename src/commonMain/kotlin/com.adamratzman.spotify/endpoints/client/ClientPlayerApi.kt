@@ -9,15 +9,13 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.AlbumUri
-import com.adamratzman.spotify.models.ArtistUri
+import com.adamratzman.spotify.models.CollectionUri
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
 import com.adamratzman.spotify.models.CurrentlyPlayingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Device
 import com.adamratzman.spotify.models.PlayHistory
-import com.adamratzman.spotify.models.PlaylistUri
-import com.adamratzman.spotify.models.TrackUri
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
 import com.adamratzman.spotify.models.serialization.toJson
@@ -258,33 +256,27 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     fun startPlayback(
-        album: String? = null,
-        artist: String? = null,
-        playlist: PlaylistUri? = null,
+        collection: CollectionUri? = null,
         offsetNum: Int? = null,
-        offsetTrackId: String? = null,
+        offsetPlayable: PlayableUri? = null,
         deviceId: String? = null,
-        tracksToPlay: List<String> = listOf()
+        tracksToPlay: List<PlayableUri> = emptyList()
     ): SpotifyRestAction<Unit> {
         return toAction {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = jsonMap()
             when {
-                album != null -> body += json { "context_uri" to AlbumUri(album).uri }
-                artist != null -> body += json { "context_uri" to ArtistUri(artist).uri }
-                playlist != null -> body += json { "context_uri" to playlist.uri }
+                collection != null -> body += json { "context_uri" to collection.uri }
                 tracksToPlay.isNotEmpty() -> body += json {
                     "uris" to JsonArray(
-                        tracksToPlay.map { TrackUri(it).uri }.map(
-                            ::JsonPrimitive
-                        )
+                        tracksToPlay.map { it.uri }.map(::JsonPrimitive)
                     )
                 }
             }
             if (body.keys.isNotEmpty()) {
                 if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }
-                else if (offsetTrackId != null) body += json {
-                    "offset" to json { "uri" to TrackUri(offsetTrackId).uri }
+                else if (offsetPlayable != null) body += json {
+                    "offset" to json { "uri" to offsetPlayable.uri }
                 }
                 put(url, body.toJson())
             } else put(url)

@@ -4,20 +4,20 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.LocalTrackUri
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SpotifyTrackUri
 import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.UserUri
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class UrisTests : Spek({
     describe("Uris tests") {
@@ -94,21 +94,21 @@ class UrisTests : Spek({
         describe("TrackUri tests") {
             it("Create track with invalid input") {
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("a:invalid")
+                    PlayableUri("a:invalid")
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("a:invalid").uri
+                    PlayableUri("a:invalid").uri
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    PlayableUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
             describe("Create any track with valid input") {
                 it("Create remote track with uri") {
-                    val trackUri = TrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         SpotifyTrackUri::class,
                         trackUri::class
@@ -123,7 +123,7 @@ class UrisTests : Spek({
                     )
                 }
                 it("Create local track with uri") {
-                    val trackUri = TrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
                         trackUri.uri
@@ -138,7 +138,7 @@ class UrisTests : Spek({
                     )
                 }
                 it("Create remote track with id") {
-                    val trackUri = TrackUri("1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         SpotifyTrackUri::class,
                         trackUri::class
