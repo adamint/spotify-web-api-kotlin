@@ -17,11 +17,21 @@ import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
 abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
     internal val json get() = api.json
+
+    internal suspend fun <T> chunk(limit: Int, objects: List<T>, consumer: suspend (List<T>) -> Unit) {
+        coroutineScope {
+            objects.chunked(limit).forEach { chunk ->
+                launch { consumer(chunk) }
+            }
+        }
+    }
 
     internal suspend fun get(url: String): String {
         return execute(url)
