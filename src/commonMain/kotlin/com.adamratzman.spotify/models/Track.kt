@@ -226,7 +226,7 @@ data class AudioAnalysisMeta(
     @SerialName("analyzer_version") val analyzerVersion: String,
     val platform: String,
     @SerialName("detailed_status") val detailedStatus: String,
-    @SerialName("status_code") val statusCode: Int,
+    @SerialName("status_code") val statusCode: Int?,
     val timestamp: Long,
     @SerialName("analysis_time") val analysisTime: Float,
     @SerialName("input_process") val inputProcess: String
