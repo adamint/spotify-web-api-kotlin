@@ -7,8 +7,8 @@ plugins {
     signing
     `java-library`
     id("io.codearte.nexus-staging") version "0.21.2"
-    kotlin("multiplatform") version "1.3.71"
-    kotlin("plugin.serialization") version "1.3.71"
+    kotlin("multiplatform") version "1.3.70"
+    kotlin("plugin.serialization") version "1.3.70"
     id("com.diffplug.gradle.spotless") version "3.26.1"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.0"
@@ -41,7 +41,7 @@ kotlin {
     targets {
         sourceSets {
             val coroutineVersion = "1.3.3"
-            val serializationVersion = "0.14.0"
+            val serializationVersion = "0.20.0"
             val spekVersion = "2.0.9"
             val ktorVersion = "1.3.0-rc2"
             val kotlinVersion = "1.3.71"
