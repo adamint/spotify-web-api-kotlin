@@ -31,6 +31,7 @@ tasks.withType<Test> {
 repositories {
     mavenCentral()
     jcenter()
+    google()
     maven("https://kotlin.bintray.com/kotlinx")
 }
 
@@ -44,7 +45,6 @@ kotlin {
             val serializationVersion = "0.20.0"
             val spekVersion = "2.0.9"
             val ktorVersion = "1.3.0-rc2"
-            val kotlinVersion = "1.3.71"
 
             val commonMain by getting {
                 dependencies {
@@ -72,8 +72,8 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
                     implementation(kotlin("stdlib-jdk8"))
-
                 }
             }
 
@@ -105,13 +105,13 @@ kotlin {
             }
 
 
-           /* val androidMain by getting {
-                dependsOn(commonJvmMain)
-            }
+            /* val androidMain by getting {
+                 dependsOn(commonJvmMain)
+             }
 
-            val androidTest by getting {
-                dependsOn(commonJvmTest)
-            }*/
+             val androidTest by getting {
+                 dependsOn(commonJvmTest)
+             }*/
 
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
