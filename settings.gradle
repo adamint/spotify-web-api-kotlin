@@ -10,12 +10,16 @@ pluginManagement {
             if (requested.id.id == "kotlinx-serialization") {
                 useModule("org.jetbrains.kotlin:kotlin-serialization:$mainKotlinVersion")
             }
+            if (requested.id.id == "com.android.library") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+            }
         }
     }
 
     repositories {
         mavenCentral()
         jcenter()
+        google()
         maven { url 'https://plugins.gradle.org/m2/' }
     }
 }

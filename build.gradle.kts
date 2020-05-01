@@ -7,8 +7,8 @@ plugins {
     signing
     `java-library`
     id("io.codearte.nexus-staging") version "0.21.2"
-    kotlin("multiplatform") version "1.3.61"
-    kotlin("plugin.serialization") version "1.3.61"
+    kotlin("multiplatform") version "1.3.71"
+    kotlin("plugin.serialization") version "1.3.71"
     id("com.diffplug.gradle.spotless") version "3.26.1"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.0"
@@ -44,6 +44,7 @@ kotlin {
             val serializationVersion = "0.14.0"
             val spekVersion = "2.0.9"
             val ktorVersion = "1.3.0-rc2"
+            val kotlinVersion = "1.3.71"
 
             val commonMain by getting {
                 dependencies {
@@ -72,6 +73,7 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
+
                 }
             }
 
@@ -101,6 +103,15 @@ kotlin {
                     implementation("org.spekframework.spek2:spek-dsl-js:$spekVersion")
                 }
             }
+
+
+           /* val androidMain by getting {
+                dependsOn(commonJvmMain)
+            }
+
+            val androidTest by getting {
+                dependsOn(commonJvmTest)
+            }*/
 
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
