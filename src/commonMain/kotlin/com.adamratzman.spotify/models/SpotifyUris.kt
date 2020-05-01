@@ -5,9 +5,10 @@ import com.adamratzman.spotify.SpotifyException
 import kotlinx.serialization.Decoder
 import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.PrimitiveDescriptor
+import kotlinx.serialization.PrimitiveKind
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializer
-import kotlinx.serialization.internal.StringDescriptor
 import kotlinx.serialization.Serializable
 
 /**
@@ -36,9 +37,9 @@ private fun String.remove(type: String): String {
 }
 
 private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSerializer<T> {
-    override val descriptor: SerialDescriptor = StringDescriptor
+    override val descriptor: SerialDescriptor = PrimitiveDescriptor("SimpleUri", PrimitiveKind.STRING)
     override fun deserialize(decoder: Decoder): T = ctor(decoder.decodeString())
-    override fun serialize(encoder: Encoder, obj: T) = encoder.encodeString(obj.uri)
+    override fun serialize(encoder: Encoder, value: T) = encoder.encodeString(value.uri)
 }
 
 @PublishedApi
@@ -83,9 +84,9 @@ sealed class SpotifyUri(input: String, type: String) {
 
     @Serializer(forClass = SpotifyUri::class)
     companion object : KSerializer<SpotifyUri> {
-        override val descriptor: SerialDescriptor = StringDescriptor
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("Uri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): SpotifyUri = SpotifyUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, obj: SpotifyUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: SpotifyUri) = encoder.encodeString(value.uri)
 
         /**
          * This function safely instantiates a SpotifyUri from given constructor.
@@ -197,9 +198,9 @@ typealias PlaylistURI = PlaylistUri
 sealed class TrackUri(input: String, type: String) : SpotifyUri(input, type) {
     @Serializer(forClass = TrackUri::class)
     companion object : KSerializer<TrackUri> {
-        override val descriptor: SerialDescriptor = StringDescriptor
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("TrackUri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): TrackUri = TrackUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, obj: TrackUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: TrackUri) = encoder.encodeString(value.uri)
 
         /**
          * Creates a abstract TrackURI of given input. Prefers SpotifyTrackUri if the input is ambiguous.
