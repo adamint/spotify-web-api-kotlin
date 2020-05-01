@@ -10,8 +10,8 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("FollowingApi"))
 typealias FollowingAPI = FollowingApi
