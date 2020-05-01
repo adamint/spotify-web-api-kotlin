@@ -14,13 +14,20 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
 @Suppress("EXPERIMENTAL_API_USAGE")
-internal val stableJson =
-        Json.nonstrict
-// Json(JsonConfiguration.Stable.copy(strictMode = false, useArrayPolymorphism = true), spotifyUriSerializersModule)
+internal val nonstrictJson =
+        Json(
+                JsonConfiguration(
+                isLenient = true,
+                ignoreUnknownKeys = true,
+                serializeSpecialFloatingPointValues = true,
+                useArrayPolymorphism = true
+        )
+        )
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi<*, *>?, json: Json): T? = try {
     toObject(serializer, api, json)
