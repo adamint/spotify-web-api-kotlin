@@ -8,8 +8,8 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.PrimitiveDescriptor
 import kotlinx.serialization.PrimitiveKind
 import kotlinx.serialization.SerialDescriptor
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 
 /**
  * Exception instantiating or deserializing a uri perceived as invalid
