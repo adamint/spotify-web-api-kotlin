@@ -7,7 +7,7 @@ import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
-import com.adamratzman.spotify.models.serialization.stableJson
+import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.coroutines.CancellationException
@@ -599,7 +599,7 @@ class SpotifyApiOptionsBuilder(
     var defaultLimit: Int = 50,
     var allowBulkRequests: Boolean = true,
     var requestTimeoutMillis: Long? = null,
-    var json: Json = stableJson
+    var json: Json = nonstrictJson
 ) {
     fun build() =
             if (enableAllOptions)
