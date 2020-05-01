@@ -111,34 +111,6 @@ kotlin {
     }
 }
 
-tasks.getByName<KotlinJsCompile>("compileKotlinJs") {
-    kotlinOptions {
-        moduleKind = "umd"
-        noStdlib = false
-        metaInfo = true
-    }
-}
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-}
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
-        ktlint()
-    }
-}
-
-nexusStaging {
-    packageGroup = "com.adamratzman"
-}
-
-
-tasks.withType<GenerateModuleMetadata> {
-    enabled = false
-}
-
 publishing {
     publications {
         val jvm by getting(MavenPublication::class) {
@@ -214,7 +186,7 @@ signing {
     sign(publishing.publications["jvm"])
 }
 
-// get signing confs interactivly if needed
+// get signing confs interactively if needed
 gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
         (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
@@ -299,6 +271,36 @@ tasks {
     artifacts {
         archives(javadocJar)
     }
+
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
+            ktlint()
+        }
+    }
+
+    nexusStaging {
+        packageGroup = "com.adamratzman"
+    }
+
+
+    getByName<KotlinJsCompile>("compileKotlinJs") {
+        kotlinOptions {
+            moduleKind = "umd"
+            noStdlib = false
+            metaInfo = true
+        }
+    }
+
+    getByName<Test>("jvmTest") {
+        useJUnitPlatform()
+    }
+
+    withType<GenerateModuleMetadata> {
+        enabled = false
+    }
+
 
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
