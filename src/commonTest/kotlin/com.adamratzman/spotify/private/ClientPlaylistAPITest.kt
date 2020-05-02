@@ -6,14 +6,14 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.utils.runBlocking
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
@@ -40,16 +40,16 @@ class ClientPlaylistAPITest : Spek({
                 ).awaitAll().flatten()
             }.mapNotNull { it.track?.uri?.uri }
 
-            api.allowBulkRequests=true
+            api.allowBulkRequests = true
 
-            val getSize = {cp.getClientPlaylist(createdPlaylist.id).complete()!!.tracks.total}
-            val sizeBefore =  getSize()
+            val getSize = { cp.getClientPlaylist(createdPlaylist.id).complete()!!.tracks.total }
+            val sizeBefore = getSize()
             cp.addTracksToClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
             assertEquals(sizeBefore + tracks.size, getSize())
             cp.removeTracksFromClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
             assertEquals(sizeBefore, getSize())
 
-            api.allowBulkRequests=false
+            api.allowBulkRequests = false
         }
 
         it("edit playlists") {
