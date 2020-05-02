@@ -3,7 +3,6 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.stackTrace
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
