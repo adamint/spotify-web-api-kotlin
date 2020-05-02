@@ -24,4 +24,4 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
 
 internal expect fun formatDate(format: String, date: Long): String
 
-expect fun <T> runBlocking(coroutineCode: suspend () -> T): T
+internal expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

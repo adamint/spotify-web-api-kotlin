@@ -20,8 +20,8 @@ import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.createMapSerializer
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
 typealias SearchAPI = SearchApi

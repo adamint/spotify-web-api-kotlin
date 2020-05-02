@@ -20,7 +20,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
-import kotlinx.serialization.list
+import kotlinx.serialization.builtins.list
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
 typealias ArtistsAPI = ArtistApi
@@ -64,12 +64,16 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
      */
     fun getArtists(vararg artists: String): SpotifyRestAction<List<Artist?>> {
+        checkBulkRequesting(50, artists.size)
+
         return toAction {
-            get(
-                EndpointBuilder("/artists").with(
-                    "ids",
-                    artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-            ).toObject(ArtistList.serializer(), api, json).artists
+            bulkRequest(50, artists.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/artists").with(
+                                "ids",
+                                chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                ).toObject(ArtistList.serializer(), api, json).artists
+            }.flatten()
         }
     }
 

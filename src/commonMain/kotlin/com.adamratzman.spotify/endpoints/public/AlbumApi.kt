@@ -41,10 +41,10 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             catch {
                 get(
-                    EndpointBuilder("/albums/${AlbumUri(album).id}").with(
-                        "market",
-                        market?.name
-                    ).toString()
+                        EndpointBuilder("/albums/${AlbumUri(album).id}").with(
+                                "market",
+                                market?.name
+                        ).toString()
                 ).toObject(Album.serializer(), api, json)
             }
         }
@@ -62,11 +62,14 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return List of [Album] objects or null if the album could not be found, in the order requested
      */
     fun getAlbums(vararg albums: String, market: Market? = null): SpotifyRestAction<List<Album?>> {
+        checkBulkRequesting(20, albums.size)
         return toAction {
-            get(
-                EndpointBuilder("/albums").with("ids", albums.joinToString(",") { AlbumUri(it).id.encodeUrl() })
-                    .with("market", market?.name).toString()
-            ).toObject(AlbumsResponse.serializer(), api, json).albums
+            bulkRequest(20, albums.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/albums").with("ids", chunk.joinToString(",") { AlbumUri(it).id.encodeUrl() })
+                                .with("market", market?.name).toString()
+                ).toObject(AlbumsResponse.serializer(), api, json).albums
+            }.flatten()
         }
     }
 
@@ -91,11 +94,11 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/albums/${AlbumUri(album).id.encodeUrl()}/tracks").with("limit", limit).with(
-                    "offset",
-                    offset
-                ).with("market", market?.name)
-                    .toString()
+                    EndpointBuilder("/albums/${AlbumUri(album).id.encodeUrl()}/tracks").with("limit", limit).with(
+                            "offset",
+                            offset
+                    ).with("market", market?.name)
+                            .toString()
             ).toPagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
         }
     }
