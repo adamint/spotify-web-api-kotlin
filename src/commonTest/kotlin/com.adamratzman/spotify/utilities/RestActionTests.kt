@@ -4,12 +4,10 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.endpoints.public.SearchApi.SearchType.TRACK
 import com.adamratzman.spotify.utils.runBlocking
+import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 @SpotifyExperimentalHttpApi
 class RestActionTests : Spek({
