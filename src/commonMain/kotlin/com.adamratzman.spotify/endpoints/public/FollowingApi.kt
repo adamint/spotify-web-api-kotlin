@@ -35,14 +35,18 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-        playlist: String,
-        vararg users: String
+            playlist: String,
+            vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
+        checkBulkRequesting(5, users.size)
+
         return toAction {
-            get(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
-                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-            ).toList(Boolean.serializer().list, api, json)
+            bulkRequest(5, users.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
+                                .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                ).toList(Boolean.serializer().list, api, json)
+            }.flatten()
         }
     }
 
@@ -61,8 +65,8 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun isFollowingPlaylist(playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction {
             areFollowingPlaylist(
-                playlist,
-                users = *arrayOf(user)
+                    playlist,
+                    users = *arrayOf(user)
             ).complete()[0]
         }
     }

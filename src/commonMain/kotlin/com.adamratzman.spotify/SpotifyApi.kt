@@ -59,6 +59,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property json The Json serializer/deserializer instance
  * @property logger The Spotify event logger
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  *
  */
 sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
