@@ -17,8 +17,8 @@ import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientLibraryApi"))
 typealias ClientLibraryAPI = ClientLibraryApi

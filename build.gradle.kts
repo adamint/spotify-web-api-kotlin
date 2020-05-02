@@ -7,15 +7,15 @@ plugins {
     signing
     `java-library`
     id("io.codearte.nexus-staging") version "0.21.2"
-    kotlin("multiplatform") version "1.3.61"
-    kotlin("plugin.serialization") version "1.3.61"
-    id("com.diffplug.gradle.spotless") version "3.26.1"
+    kotlin("multiplatform") version "1.3.72"
+    kotlin("plugin.serialization") version "1.3.72"
+    id("com.diffplug.gradle.spotless") version "3.28.1"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "0.10.0"
+    id("org.jetbrains.dokka") version "0.10.1"
 }
 
 group = "com.adamratzman"
-version = "3.0.02"
+version = "3.1.0-rc.1"
 
 java {
     withSourcesJar()
@@ -31,6 +31,7 @@ tasks.withType<Test> {
 repositories {
     mavenCentral()
     jcenter()
+    google()
     maven("https://kotlin.bintray.com/kotlinx")
 }
 
@@ -40,10 +41,10 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.3"
-            val serializationVersion = "0.14.0"
-            val spekVersion = "2.0.9"
-            val ktorVersion = "1.3.0-rc2"
+            val coroutineVersion = "1.3.5"
+            val serializationVersion = "0.20.0"
+            val spekVersion = "2.0.10"
+            val ktorVersion = "1.3.2"
 
             val commonMain by getting {
                 dependencies {
@@ -71,6 +72,7 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -79,7 +81,7 @@ kotlin {
                 dependencies {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
-                    implementation("org.junit.jupiter:junit-jupiter:5.6.0-M1")
+                    implementation("org.junit.jupiter:junit-jupiter:5.6.2")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -107,34 +109,6 @@ kotlin {
             }
         }
     }
-}
-
-tasks.getByName<KotlinJsCompile>("compileKotlinJs") {
-    kotlinOptions {
-        moduleKind = "umd"
-        noStdlib = false
-        metaInfo = true
-    }
-}
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-}
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
-        ktlint()
-    }
-}
-
-nexusStaging {
-    packageGroup = "com.adamratzman"
-}
-
-
-tasks.withType<GenerateModuleMetadata> {
-    enabled = false
 }
 
 publishing {
@@ -212,7 +186,7 @@ signing {
     sign(publishing.publications["jvm"])
 }
 
-// get signing confs interactivly if needed
+// get signing confs interactively if needed
 gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
         (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
@@ -297,6 +271,36 @@ tasks {
     artifacts {
         archives(javadocJar)
     }
+
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
+            ktlint()
+        }
+    }
+
+    nexusStaging {
+        packageGroup = "com.adamratzman"
+    }
+
+
+    getByName<KotlinJsCompile>("compileKotlinJs") {
+        kotlinOptions {
+            moduleKind = "umd"
+            noStdlib = false
+            metaInfo = true
+        }
+    }
+
+    getByName<Test>("jvmTest") {
+        useJUnitPlatform()
+    }
+
+    withType<GenerateModuleMetadata> {
+        enabled = false
+    }
+
 
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
