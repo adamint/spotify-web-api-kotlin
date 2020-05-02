@@ -71,7 +71,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/artists").with(
                                 "ids",
-                                artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                                chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
                 ).toObject(ArtistList.serializer(), api, json).artists
             }.flatten()
         }
