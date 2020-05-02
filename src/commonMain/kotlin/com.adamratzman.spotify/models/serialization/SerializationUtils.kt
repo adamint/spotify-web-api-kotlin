@@ -98,7 +98,7 @@ internal fun <T : Any> String.toPagingObject(
             }
         }
     } catch (jde: SpotifyException.ParseException) {
-        if (!arbitraryInnerNameAllowed && jde.message?.contains("unable to parse", true) == true) {
+        if (arbitraryInnerNameAllowed && jde.message?.contains("unable to parse", true) == true) {
             toPagingObject(
                     tClazz,
                     tSerializer,
