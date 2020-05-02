@@ -23,14 +23,14 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class Token(
-    @SerialName("access_token") val accessToken: String,
+    @SerialName("access_token") var accessToken: String,
     @SerialName("token_type") val tokenType: String,
-    @SerialName("expires_in") val expiresIn: Int,
-    @SerialName("refresh_token") val refreshToken: String? = null,
-    @SerialName("scope") private val scopeString: String? = null
+    @SerialName("expires_in") var expiresIn: Int,
+    @SerialName("refresh_token") var refreshToken: String? = null,
+    @SerialName("scope") private var scopeString: String? = null
 ) {
     @Transient
-    val expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
+    var expiresAt: Long = getCurrentTimeMs() + expiresIn * 1000
     @Transient
     var scopes: List<SpotifyScope> = scopeString?.let { str ->
         str.split(" ").mapNotNull { scope -> SpotifyScope.values().find { it.uri.equals(scope, true) } }
