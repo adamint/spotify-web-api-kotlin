@@ -24,10 +24,10 @@ import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
+import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.json
-import kotlinx.serialization.list
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlayerApi"))
 typealias ClientPlayerAPI = ClientPlayerApi

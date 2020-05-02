@@ -10,8 +10,8 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("FollowingApi"))
 typealias FollowingAPI = FollowingApi
@@ -38,11 +38,15 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         playlist: String,
         vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
+        checkBulkRequesting(5, users.size)
+
         return toAction {
-            get(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
-                    .with("ids", users.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-            ).toList(Boolean.serializer().list, api, json)
+            bulkRequest(5, users.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
+                                .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                ).toList(Boolean.serializer().list, api, json)
+            }.flatten()
         }
     }
 
@@ -61,8 +65,8 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun isFollowingPlaylist(playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction {
             areFollowingPlaylist(
-                playlist,
-                users = *arrayOf(user)
+                    playlist,
+                    users = *arrayOf(user)
             ).complete()[0]
         }
     }

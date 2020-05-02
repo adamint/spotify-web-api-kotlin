@@ -29,7 +29,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: 'SPOTIFY_API_VERSION'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.1.0-rc.1'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well

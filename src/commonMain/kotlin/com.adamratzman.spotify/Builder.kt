@@ -7,7 +7,7 @@ import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
-import com.adamratzman.spotify.models.serialization.stableJson
+import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.runBlocking
 import kotlinx.coroutines.CancellationException
@@ -18,21 +18,17 @@ import kotlinx.serialization.json.Json
 
 // Kotlin DSL builders
 
-@Deprecated("Builder methods are now found in SpotifyApi", ReplaceWith("SpotifyApi.spotifyAppApi"))
 fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
-        SpotifyApi.spotifyAppApi(clientId, clientSecret, block)
+        spotifyAppApi(clientId, clientSecret, block)
 
-@Deprecated("Builder methods are now found in SpotifyApi", ReplaceWith("SpotifyApi.spotifyAppApi"))
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) =
-        SpotifyApi.spotifyAppApi(block)
+        spotifyAppApi(block)
 
-@Deprecated("Builder methods are now found in SpotifyApi", ReplaceWith("SpotifyApi.spotifyClientApi"))
 fun spotifyAppApi(clientId: String, clientSecret: String, redirectUri: String, block: SpotifyClientApiBuilder.() -> Unit = {}) =
-        SpotifyApi.spotifyClientApi(clientId, clientSecret, redirectUri, block)
+        spotifyClientApi(clientId, clientSecret, redirectUri, block)
 
-@Deprecated("Builder methods are now found in SpotifyApi", ReplaceWith("SpotifyApi.spotifyClientApi"))
 fun spotifyAppApi(block: SpotifyClientApiBuilder.() -> Unit) =
-        SpotifyApi.spotifyClientApi(block)
+        spotifyClientApi(block)
 
 /**
  *  Spotify API builder
@@ -447,7 +443,7 @@ class SpotifyAppApiBuilder(
                     authorization.token!!,
                     options.useCache,
                     options.cacheLimit,
-                    false,
+                    options.automaticRefresh,
                     options.retryWhenRateLimited,
                     options.enableLogger,
                     options.testTokenValidity,
@@ -466,7 +462,7 @@ class SpotifyAppApiBuilder(
                         ),
                         options.useCache,
                         options.cacheLimit,
-                        false,
+                        options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
                         options.testTokenValidity,
@@ -483,7 +479,7 @@ class SpotifyAppApiBuilder(
                         Token("", "", 0, authorization.refreshTokenString!!),
                         options.useCache,
                         options.cacheLimit,
-                        false,
+                        options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
                         options.testTokenValidity,
@@ -502,7 +498,7 @@ class SpotifyAppApiBuilder(
                         token,
                         options.useCache,
                         options.cacheLimit,
-                        false,
+                        options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
                         options.testTokenValidity,
@@ -603,7 +599,7 @@ class SpotifyApiOptionsBuilder(
     var defaultLimit: Int = 50,
     var allowBulkRequests: Boolean = true,
     var requestTimeoutMillis: Long? = null,
-    var json: Json = stableJson
+    var json: Json = nonstrictJson
 ) {
     fun build() =
             if (enableAllOptions)
