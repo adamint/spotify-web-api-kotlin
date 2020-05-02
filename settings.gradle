@@ -1,4 +1,6 @@
 pluginManagement {
+    def mainKotlinVersion = "1.3.71"
+
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "kotlin-multiplatform") {
@@ -10,12 +12,18 @@ pluginManagement {
             if (requested.id.id == "kotlinx-serialization") {
                 useModule("org.jetbrains.kotlin:kotlin-serialization:$mainKotlinVersion")
             }
+            if (requested.id.id == "com.android.library" || requested.id.id == "kotlin-android-extensions"
+                    || requested.id.id == "kotlin-android") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+            }
+
         }
     }
 
     repositories {
         mavenCentral()
         jcenter()
+        google()
         maven { url 'https://plugins.gradle.org/m2/' }
     }
 }

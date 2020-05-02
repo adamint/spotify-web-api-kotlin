@@ -26,8 +26,8 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
 import kotlin.reflect.KClass
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
 typealias BrowseAPI = BrowseApi

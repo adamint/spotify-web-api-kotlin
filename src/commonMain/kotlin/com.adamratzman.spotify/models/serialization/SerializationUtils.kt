@@ -11,16 +11,23 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
 import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.map
-import kotlinx.serialization.serializer
 
 @Suppress("EXPERIMENTAL_API_USAGE")
-internal val stableJson =
-        Json.nonstrict
-// Json(JsonConfiguration.Stable.copy(strictMode = false, useArrayPolymorphism = true), spotifyUriSerializersModule)
+internal val nonstrictJson =
+        Json(
+                JsonConfiguration(
+                        isLenient = true,
+                        ignoreUnknownKeys = true,
+                        serializeSpecialFloatingPointValues = true,
+                        useArrayPolymorphism = true
+                )
+        )
 
 internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi<*, *>?, json: Json): T? = try {
     toObject(serializer, api, json)
@@ -63,7 +70,10 @@ internal fun <T : Any> String.toPagingObject(
     skipInnerNameFirstIfPossible: Boolean = true
 ): PagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
-        val map = this.parseJson { json.parse((String.serializer() to PagingObject.serializer(tSerializer)).map, this) }
+        val map = this.parseJson {
+            val t = (String.serializer() to PagingObject.serializer(tSerializer))
+            json.parse(MapSerializer(t.first, t.second), this)
+        }
         return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
                 ?: error("") else error(""))
                 .apply {
@@ -88,7 +98,7 @@ internal fun <T : Any> String.toPagingObject(
             }
         }
     } catch (jde: SpotifyException.ParseException) {
-        if (!arbitraryInnerNameAllowed && jde.message?.contains("unable to parse", true) == true) {
+        if (arbitraryInnerNameAllowed && jde.message?.contains("unable to parse", true) == true) {
             toPagingObject(
                     tClazz,
                     tSerializer,
@@ -132,7 +142,10 @@ internal fun <T : Any> String.toCursorBasedPagingObject(
     skipInnerNameFirstIfPossible: Boolean = true
 ): CursorBasedPagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
-        val map = this.parseJson { json.parse((String.serializer() to CursorBasedPagingObject.serializer(tSerializer)).map, this) }
+        val map = this.parseJson {
+            val t = (String.serializer() to CursorBasedPagingObject.serializer(tSerializer))
+            json.parse(MapSerializer(t.first, t.second), this)
+        }
         return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
                 ?: error("") else error(""))
                 .apply { initPagingObject(tClazz, this, endpoint) }
@@ -169,19 +182,27 @@ internal inline fun <reified T : Any> String.toCursorBasedPagingObject(
         toCursorBasedPagingObject(T::class, tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible)
 
 internal inline fun <reified T> String.toInnerObject(serializer: KSerializer<T>, innerName: String, json: Json): T {
-    val map = this.parseJson { json.parse((String.serializer() to serializer).map, this) }
+    val map = this.parseJson {
+        val t = (String.serializer() to serializer)
+        json.parse(MapSerializer(t.first, t.second), this)
+    }
     return (map[innerName] ?: error("Inner object with name $innerName doesn't exist in $map"))
 }
 
 internal inline fun <reified T> String.toInnerArray(serializer: KSerializer<List<T>>, innerName: String, json: Json): List<T> {
-    val map = this.parseJson { json.parse((String.serializer() to serializer).map, this) }
+    val map = this.parseJson {
+        val t = (String.serializer() to serializer)
+        json.parse(MapSerializer(t.first, t.second), this)
+    }
     return (map[innerName] ?: error("Inner object with name $innerName doesn't exist in $map")).toList()
 }
 
 internal fun Map<String, JsonElement>.toJson() = JsonObject(this).toString()
 
-internal fun <A, B> createMapSerializer(aSerializer: KSerializer<A>, bSerializer: KSerializer<B>) =
-        (aSerializer to bSerializer).map
+internal fun <A, B> createMapSerializer(aSerializer: KSerializer<A>, bSerializer: KSerializer<B>): KSerializer<Map<A, B>> {
+    val t = (aSerializer to bSerializer)
+    return MapSerializer(t.first, t.second)
+}
 
 internal fun <T> String.parseJson(producer: String.() -> T): T =
         try {

@@ -63,12 +63,14 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return List of possibly-null full [Track] objects.
      */
     fun getTracks(vararg tracks: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
+        checkBulkRequesting(50, tracks.size)
         return toAction {
-            get(
-                    EndpointBuilder("/tracks").with("ids", tracks.joinToString(",") { PlayableUri(it).id.encodeUrl() })
-                            .with("market", market?.name).toString()
-            )
-                    .toObject(TrackList.serializer(), api, json).tracks
+            bulkRequest(50, tracks.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
+                                .with("market", market?.name).toString()
+                ).toObject(TrackList.serializer(), api, json).tracks
+            }.flatten()
         }
     }
 
@@ -123,13 +125,16 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Ordered list of possibly-null [AudioFeatures] objects.
      */
     fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
+        checkBulkRequesting(100, tracks.size)
         return toAction {
-            get(
-                    EndpointBuilder("/audio-features").with(
-                            "ids",
-                            tracks.joinToString(",") { PlayableUri(it).id.encodeUrl() }).toString()
-            )
-                    .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
+            bulkRequest(100, tracks.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/audio-features").with(
+                                "ids",
+                                chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() }).toString()
+                )
+                        .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
+            }.flatten()
         }
     }
 }
