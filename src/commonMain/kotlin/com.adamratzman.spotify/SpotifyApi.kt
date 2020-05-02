@@ -127,6 +127,22 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     }
 
     /**
+     * Change the current [Token]'s access token
+     */
+    fun updateTokenWith(tokenString: String) {
+        updateToken {
+            accessToken = tokenString
+        }
+    }
+
+    /**
+     * Modify the current [Token] via DSL
+     */
+    fun updateToken(modifier: Token.() -> Unit) {
+        modifier(token)
+    }
+
+    /**
      * A list of all endpoints included in this api type
      */
     abstract val endpoints: List<SpotifyEndpoint>
