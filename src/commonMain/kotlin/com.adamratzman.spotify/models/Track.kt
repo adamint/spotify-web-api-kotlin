@@ -72,7 +72,7 @@ data class SimpleTrack(
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
 
-///**
+// /**
 // * Represents a music track on Spotify
 // *
 // * @property album The album on which the track appears. The album object includes a link in
@@ -108,8 +108,8 @@ data class SimpleTrack(
 // * metadata for the original track, and a restrictions object containing the reason why the track is not available:
 // * "restrictions" : {"reason" : "market"}
 // */
-//@Serializable
-//data class Track(
+// @Serializable
+// data class Track(
 //    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
 //    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
 //    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
@@ -134,16 +134,16 @@ data class SimpleTrack(
 //
 //    val episode: Boolean? = null,
 //    val track: Boolean? = null
-//) : RelinkingAvailableResponse() {
+// ) : RelinkingAvailableResponse() {
 //
 //    @Transient
 //    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 //
 //    @Transient
 //    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
-//}
+// }
 
-//sealed class Track()
+// sealed class Track()
 
 /**
  * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
