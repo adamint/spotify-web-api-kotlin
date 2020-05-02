@@ -36,7 +36,7 @@
 <td>
 <p>An access token that can be provided in subsequent calls,
 for example to Spotify Web API services.</p>
-<code><span class="keyword">val </span><span class="identifier">accessToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+<code><span class="keyword">var </span><span class="identifier">accessToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -45,7 +45,7 @@ for example to Spotify Web API services.</p>
 </td>
 <td>
 <p>The time, in milliseconds, at which this Token expires</p>
-<code><span class="keyword">val </span><span class="identifier">expiresAt</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+<code><span class="keyword">var </span><span class="identifier">expiresAt</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -54,7 +54,7 @@ for example to Spotify Web API services.</p>
 </td>
 <td>
 <p>The time period (in seconds) for which the access token is valid.</p>
-<code><span class="keyword">val </span><span class="identifier">expiresIn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+<code><span class="keyword">var </span><span class="identifier">expiresIn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -64,7 +64,7 @@ for example to Spotify Web API services.</p>
 <td>
 <p>A token that can be sent to the Spotify Accounts service in place of an authorization code,
 null if the token was created using a method that does not support token refresh</p>
-<code><span class="keyword">val </span><span class="identifier">refreshToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">refreshToken</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
 </tr>
 <tr>
 <td>
