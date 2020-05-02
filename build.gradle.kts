@@ -71,6 +71,7 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
