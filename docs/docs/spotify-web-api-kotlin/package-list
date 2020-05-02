@@ -9,5 +9,4 @@ com.adamratzman.spotify.endpoints.client
 com.adamratzman.spotify.endpoints.public
 com.adamratzman.spotify.http
 com.adamratzman.spotify.models
-com.adamratzman.spotify.models.serialization
 com.adamratzman.spotify.utils

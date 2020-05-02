@@ -31,6 +31,7 @@ implementations of the API</p>
 <h4><a href="allow-bulk-requests.html">allowBulkRequests</a></h4>
 </td>
 <td>
+<p>Allow splitting too-large requests into smaller, allowable api requests</p>
 <code><span class="keyword">var </span><span class="identifier">allowBulkRequests</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 <tr>
@@ -92,7 +93,7 @@ implementations of the API</p>
 <h4><a href="default-limit.html">defaultLimit</a></h4>
 </td>
 <td>
-<p>The default amount of objects to retrieve in one request</p>
+<p>The default amount of objects to retrieve in one request, for requests that support it.</p>
 <code><span class="keyword">var </span><span class="identifier">defaultLimit</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
 </tr>
 <tr>
@@ -145,6 +146,15 @@ implementations of the API</p>
 </td>
 <td>
 <code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">playlists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-playlist-api/index.html"><span class="identifier">PlaylistApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="request-timeout-millis.html">requestTimeoutMillis</a></h4>
+</td>
+<td>
+<p>The maximum time, in milliseconds, before terminating an http request</p>
+<code><span class="keyword">var </span><span class="identifier">requestTimeoutMillis</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span></code></td>
 </tr>
 <tr>
 <td>
@@ -294,6 +304,24 @@ the information in <a href="token.html#com.adamratzman.spotify.SpotifyApi$token"
 <p>If the method used to create the <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> supports token refresh and
 the information in <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> is accurate, attempt to refresh the token</p>
 <code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendRefreshToken</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="update-token.html">updateToken</a></h4>
+</td>
+<td>
+<p>Modify the current <a href="../../com.adamratzman.spotify.models/-token/index.html#com.adamratzman.spotify.models.Token">Token</a> via DSL</p>
+<code><span class="keyword">fun </span><span class="identifier">updateToken</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$updateToken(kotlin.Function1((com.adamratzman.spotify.models.Token, kotlin.Unit)))/modifier">modifier</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="update-token-with.html">updateTokenWith</a></h4>
+</td>
+<td>
+<p>Change the current <a href="../../com.adamratzman.spotify.models/-token/index.html#com.adamratzman.spotify.models.Token">Token</a>'s access token</p>
+<code><span class="keyword">fun </span><span class="identifier">updateTokenWith</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$updateTokenWith(kotlin.String)/tokenString">tokenString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
 <tr>
 <td>
