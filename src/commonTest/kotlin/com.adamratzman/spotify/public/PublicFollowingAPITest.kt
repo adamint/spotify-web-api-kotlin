@@ -17,7 +17,7 @@ class PublicFollowingAPITest : Spek({
             }
             it("no users, valid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> {
-                    f.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M").complete()
+                        println(f.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M").complete())
                 }
             }
             it("valid users, invalid playlist") {

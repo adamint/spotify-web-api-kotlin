@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.SpotifyApi
-import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyException.TimeoutException
@@ -22,6 +21,19 @@ import kotlinx.coroutines.withTimeout
 abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
     internal val json get() = api.json
+
+    protected fun checkBulkRequesting(maxSize: Int, itemSize: Int) {
+        if (itemSize > maxSize && !api.allowBulkRequests) {
+            throw BadRequestException("Too many items ($itemSize) provided, only $maxSize allowed", IllegalArgumentException("Bulk requests (SpotifyApi.allowBulkRequests) are not turned on, and too many items were provided"))
+        }
+        if (itemSize == 0) throw BadRequestException("No items provided!")
+    }
+
+    protected suspend fun <T, R> bulkRequest(chunkSize: Int, items: List<T>, producer: suspend (List<T>) -> R): List<R> {
+        return items.chunked(chunkSize).map { chunk ->
+            producer(chunk)
+        }
+    }
 
     internal suspend fun get(url: String): String {
         return execute(url)
@@ -51,7 +63,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         contentType: String? = null,
         attemptedRefresh: Boolean = false
     ): String {
-        if (api is SpotifyClientApi && getCurrentTimeMs() >= api.expireTime) {
+        if (getCurrentTimeMs() >= api.expireTime) {
             if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
@@ -94,7 +106,8 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
                 }
             }
         } catch (e: TimeoutCancellationException) {
-            throw TimeoutException(e.message ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
+            throw TimeoutException(e.message
+                    ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
         }
     }
 
@@ -116,7 +129,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         document.headers.find { it.key.equals("Cache-Control", true) }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
-                    responseBody, document.headers
+                        responseBody, document.headers
                         .find { it.key.equals("ETag", true) }?.value
                 )).update(cacheControlHeader.value)
             }
@@ -139,18 +152,18 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         method: HttpRequestMethod = HttpRequestMethod.GET,
         contentType: String? = null
     ) = HttpConnection(
-        url,
-        method,
-        null,
-        body,
-        contentType,
-        listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
-        api
+            url,
+            method,
+            null,
+            body,
+            contentType,
+            listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
+            api
     )
 
     internal fun <T> toAction(supplier: suspend () -> T) = SpotifyRestAction(api, supplier)
     internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: suspend () -> T) =
-        SpotifyRestActionPaging(api, supplier)
+            SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {
@@ -224,10 +237,10 @@ data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 
     internal fun update(expireBy: String): CacheState {
         val group = cacheRegex.find(expireBy)?.groupValues
         val time =
-            group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
+                group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
-            expireBy = getCurrentTimeMs() + 1000 * time
+                expireBy = getCurrentTimeMs() + 1000 * time
         )
     }
 }

@@ -10,7 +10,7 @@ This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web
 If you have a question, you can:
 
 1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
-2. Read (but that's hard)
+2. Join our [Discord server](https://discord.gg/G6vqP3S)
 3. Contact me using **Adam#9261** on [Discord](https://discordapp.com) or by sending me an email
 
 ## Contents
@@ -29,7 +29,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: 'SPOTIFY_API_VERSION'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.1.0-rc.1'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
