@@ -1,6 +1,8 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
+import kotlinx.serialization.Serializable
+
 /**
  * [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1)
  * language code.
@@ -44,6 +46,7 @@ package com.adamratzman.spotify.utils
  *
  * @author Takahiko Kawasaki
  */
+@Serializable
 enum class Language {
     /**
      * [Afar](http://en.wikipedia.org/wiki/Afar_language)
