@@ -44,7 +44,7 @@ private data class InternalPlayable(
 
     val description: String? = null,
     val images: List<SpotifyImage> = emptyList(),
-    val languages: List<Language> = language?.let { listOf(it) } ?: emptyList(),
+    val languages: List<Language> = mutableListOf(),
     val resumePoint: String? = null,
     val show: SimpleShow? = null,
 
@@ -53,6 +53,10 @@ private data class InternalPlayable(
     @SerialName("release_date_precision") val releaseDatePrecision: String? = null,
     @SerialName("release_date") val releaseDateString: String? = null
 ) {
+    init {
+        if (language != null && languages.isEmpty()) (languages as MutableList<Language>).add(language)
+    }
+
     fun toTrack(): Track? {
         return Track(
             uri = uri as? SpotifyTrackUri ?: return null,
