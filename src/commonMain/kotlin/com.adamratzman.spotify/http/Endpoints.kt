@@ -14,21 +14,24 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
+import kotlin.math.ceil
 
 abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     val cache = SpotifyCache()
     internal val json get() = api.json
 
-    internal suspend fun <T> chunk(limit: Int, objects: List<T>, consumer: suspend (List<T>) -> Unit) {
-        coroutineScope {
-            objects.chunked(limit).forEach { chunk ->
-                launch { consumer(chunk) }
-            }
+    protected fun checkBulkRequesting(maxSize: Int, itemSize: Int) {
+        if (itemSize > maxSize && !api.allowBulkRequests) {
+            throw BadRequestException("Too many items ($itemSize) provided, only $maxSize allowed", IllegalArgumentException("Bulk requests (SpotifyApi.allowBulkRequests) are not turned on, and too many items were provided"))
+        }
+        if (itemSize == 0) throw BadRequestException("No items provided!")
+    }
+
+    protected suspend fun <T, R> bulkRequest(chunkSize: Int, items: List<T>, producer: suspend (List<T>) -> R): List<R> {
+        return items.chunked(chunkSize).map { chunk ->
+            producer(chunk)
         }
     }
 
@@ -45,20 +48,20 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     }
 
     internal suspend fun delete(
-        url: String,
-        body: String? = null,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            contentType: String? = null
     ): String {
         return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     private suspend fun execute(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        retry202: Boolean = true,
-        contentType: String? = null,
-        attemptedRefresh: Boolean = false
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            retry202: Boolean = true,
+            contentType: String? = null,
+            attemptedRefresh: Boolean = false
     ): String {
         if (getCurrentTimeMs() >= api.expireTime) {
             if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
@@ -103,15 +106,16 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
                 }
             }
         } catch (e: TimeoutCancellationException) {
-            throw TimeoutException(e.message ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
+            throw TimeoutException(e.message
+                    ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
         }
     }
 
     private fun handleResponse(
-        document: HttpResponse,
-        cacheState: CacheState?,
-        spotifyRequest: SpotifyRequest,
-        retry202: Boolean
+            document: HttpResponse,
+            cacheState: CacheState?,
+            spotifyRequest: SpotifyRequest,
+            retry202: Boolean
     ): String? {
         val statusCode = document.responseCode
 
@@ -125,7 +129,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         document.headers.find { it.key.equals("Cache-Control", true) }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
-                    responseBody, document.headers
+                        responseBody, document.headers
                         .find { it.key.equals("ETag", true) }?.value
                 )).update(cacheControlHeader.value)
             }
@@ -143,23 +147,23 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     }
 
     private fun createConnection(
-        url: String,
-        body: String? = null,
-        method: HttpRequestMethod = HttpRequestMethod.GET,
-        contentType: String? = null
+            url: String,
+            body: String? = null,
+            method: HttpRequestMethod = HttpRequestMethod.GET,
+            contentType: String? = null
     ) = HttpConnection(
-        url,
-        method,
-        null,
-        body,
-        contentType,
-        listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
-        api
+            url,
+            method,
+            null,
+            body,
+            contentType,
+            listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
+            api
     )
 
     internal fun <T> toAction(supplier: suspend () -> T) = SpotifyRestAction(api, supplier)
     internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: suspend () -> T) =
-        SpotifyRestActionPaging(api, supplier)
+            SpotifyRestActionPaging(api, supplier)
 }
 
 internal class EndpointBuilder(private val path: String) {
@@ -220,10 +224,10 @@ class SpotifyCache {
 }
 
 data class SpotifyRequest(
-    val url: String,
-    val method: HttpRequestMethod,
-    val body: String?,
-    val api: SpotifyApi<*, *>
+        val url: String,
+        val method: HttpRequestMethod,
+        val body: String?,
+        val api: SpotifyApi<*, *>
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
@@ -233,10 +237,10 @@ data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 
     internal fun update(expireBy: String): CacheState {
         val group = cacheRegex.find(expireBy)?.groupValues
         val time =
-            group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
+                group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
-            expireBy = getCurrentTimeMs() + 1000 * time
+                expireBy = getCurrentTimeMs() + 1000 * time
         )
     }
 }

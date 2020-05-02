@@ -5,42 +5,72 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
+import com.adamratzman.spotify.utils.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 class ClientPlaylistAPITest : Spek({
     describe("Client playlist test") {
         val cp = (api as? SpotifyClientApi)?.playlists
         val playlistsBefore = cp?.getClientPlaylists()?.complete()
         val createdPlaylist = cp?.createClientPlaylist("this is a test playlist", "description")
-            ?.complete()
+                ?.complete()
 
         createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
             assertEquals(cp.getClientPlaylists().complete().items.size - 1, playlistsBefore?.items?.size)
         }
+
+        it("add, remove >100 tracks works correctly with chunking") {
+            val usTop50Uri = "spotify:playlist:37i9dQZEVXbLRQDuF5jeBp"
+            val globalTop50Uri = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
+            val globalViral50Uri = "spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
+
+            val tracks = runBlocking {
+                listOf(
+                        GlobalScope.async { api.playlists.getPlaylist(usTop50Uri).complete()!!.tracks.getAllItems().complete().toList() },
+                        GlobalScope.async { api.playlists.getPlaylist(globalTop50Uri).complete()!!.tracks.getAllItems().suspendComplete().toList() },
+                        GlobalScope.async { api.playlists.getPlaylist(globalViral50Uri).complete()!!.tracks.getAllItems().suspendComplete().toList() }
+                ).awaitAll().flatten()
+            }.mapNotNull { it.track?.uri?.uri }
+
+            api.allowBulkRequests=true
+
+            val getSize = {cp.getClientPlaylist(createdPlaylist.id).complete()!!.tracks.total}
+            val sizeBefore =  getSize()
+            cp.addTracksToClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
+            assertEquals(sizeBefore + tracks.size, getSize())
+            cp.removeTracksFromClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
+            assertEquals(sizeBefore, getSize())
+
+            api.allowBulkRequests=false
+        }
+
         it("edit playlists") {
             cp.changeClientPlaylistDetails(
-                createdPlaylist.id, "test playlist", public = false,
-                collaborative = true, description = "description 2"
+                    createdPlaylist.id, "test playlist", public = false,
+                    collaborative = true, description = "description 2"
             ).complete()
 
             cp.addTracksToClientPlaylist(createdPlaylist.id, "3WDIhWoRWVcaHdRwMEHkkS", "7FjZU7XFs7P9jHI9Z0yRhK").complete()
 
             cp.uploadClientPlaylistCover(
-                createdPlaylist.id,
-                imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
+                    createdPlaylist.id,
+                    imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
             ).complete()
 
             var updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!
             val fullPlaylist = updatedPlaylist.toFullPlaylist().complete()!!
 
             assertTrue(
-                updatedPlaylist.collaborative && updatedPlaylist.public == false &&
-                    updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2"
+                    updatedPlaylist.collaborative && updatedPlaylist.public == false &&
+                            updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2"
             )
 
             assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images.isNotEmpty())
@@ -68,16 +98,16 @@ class ClientPlaylistAPITest : Spek({
             cp.removeTrackFromClientPlaylist(createdPlaylist.id, trackIdOne).complete()
 
             assertEquals(
-                listOf(trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
+                    listOf(trackIdTwo, trackIdTwo),
+                    cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.addTrackToClientPlaylist(createdPlaylist.id, trackIdOne).complete()
 
             cp.removeTrackFromClientPlaylist(createdPlaylist.id, trackIdTwo, SpotifyTrackPositions(1)).complete()
 
             assertEquals(
-                listOf(trackIdTwo, trackIdOne),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
+                    listOf(trackIdTwo, trackIdOne),
+                    cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             cp.setClientPlaylistTracks(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo).complete()
 
@@ -86,16 +116,16 @@ class ClientPlaylistAPITest : Spek({
             assertTrue(cp.getPlaylistTracks(createdPlaylist.id).complete().items.isEmpty())
 
             cp.setClientPlaylistTracks(createdPlaylist.id, trackIdTwo, trackIdOne, trackIdTwo, trackIdTwo, trackIdOne)
-                .complete()
+                    .complete()
 
             cp.removeTracksFromClientPlaylist(
-                createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(4)),
-                Pair(trackIdTwo, SpotifyTrackPositions(0))
+                    createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(4)),
+                    Pair(trackIdTwo, SpotifyTrackPositions(0))
             ).complete()
 
             assertEquals(
-                listOf(trackIdOne, trackIdTwo, trackIdTwo),
-                cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
+                    listOf(trackIdOne, trackIdTwo, trackIdTwo),
+                    cp.getPlaylistTracks(createdPlaylist.id).complete().items.map { it.track?.id })
 
             assertFailsWith<SpotifyException.BadRequestException> {
                 cp.removeTracksFromClientPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3))).complete()

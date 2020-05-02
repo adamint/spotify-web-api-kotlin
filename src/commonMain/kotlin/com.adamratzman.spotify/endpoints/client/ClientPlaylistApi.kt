@@ -113,7 +113,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The spotify id or uri for the playlist.
-     * @param tracks Spotify track ids.
+     * @param tracks Spotify track ids. Maximum 100
      * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
      * first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
      * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
@@ -121,8 +121,9 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
      fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
+        checkBulkRequesting(100, tracks.size)
         return toAction {
-            chunk(100, tracks.toList()) { chunk ->
+            bulkRequest(100, tracks.toList()) { chunk ->
                 val body = jsonMap()
                 body += json { "uris" to JsonArray(chunk.map { TrackUri(TrackUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
                 if (position != null) body += json { "position" to position }
@@ -131,6 +132,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
                         body.toJson()
                 )
             }
+
+            Unit
         }
 
     }
@@ -429,7 +432,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     ) = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
 
     /**
-     * Remove tracks (each with their own positions) from the given playlist.
+     * Remove tracks (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
      *
      * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
@@ -451,27 +454,30 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
             tracks: Array<Pair<String, SpotifyTrackPositions?>>,
             snapshotId: String?
     ): SpotifyRestAction<PlaylistSnapshot> {
-        return toAction {
-            require(tracks.isNotEmpty()) { "You need to provide at least one track to remove" }
+checkBulkRequesting(100,tracks.size)
+        if (snapshotId != null && tracks.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 
-            val body = jsonMap()
-            if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
-            body += json {
-                "tracks" to JsonArray(
-                        tracks.map { (track, positions) ->
-                            val json = jsonMap()
-                            json += json { "uri" to TrackUri(track).uri }
-                            if (positions?.positions?.isNotEmpty() == true) json += json {
-                                "positions" to JsonArray(
-                                        positions.positions.map(::JsonPrimitive)
-                                )
-                            }
-                            JsonObject(json)
-                        })
-            }
-            delete(
-                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
-            ).toObject(PlaylistSnapshot.serializer(), api, json)
+        return toAction {
+            bulkRequest(100, tracks.toList()) { chunk ->
+                val body = jsonMap()
+                if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
+                body += json {
+                    "tracks" to JsonArray(
+                            chunk.map { (track, positions) ->
+                                val json = jsonMap()
+                                json += json { "uri" to TrackUri(track).uri }
+                                if (positions?.positions?.isNotEmpty() == true) json += json {
+                                    "positions" to JsonArray(
+                                            positions.positions.map(::JsonPrimitive)
+                                    )
+                                }
+                                JsonObject(json)
+                            })
+                }
+                delete(
+                        EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
+                ).toObject(PlaylistSnapshot.serializer(), api, json)
+            }.last()
         }
     }
 }
