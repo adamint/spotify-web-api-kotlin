@@ -3,6 +3,7 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
+import com.adamratzman.spotify.stackTrace
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
@@ -17,7 +18,7 @@ class PublicFollowingAPITest : Spek({
             }
             it("no users, valid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> {
-                    f.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M").complete()
+                        println(f.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M").complete())
                 }
             }
             it("valid users, invalid playlist") {

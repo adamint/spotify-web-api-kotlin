@@ -64,12 +64,16 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
      */
     fun getArtists(vararg artists: String): SpotifyRestAction<List<Artist?>> {
+        checkBulkRequesting(50, artists.size)
+
         return toAction {
-            get(
-                EndpointBuilder("/artists").with(
-                    "ids",
-                    artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-            ).toObject(ArtistList.serializer(), api, json).artists
+            bulkRequest(50, artists.toList()) { chunk ->
+                get(
+                        EndpointBuilder("/artists").with(
+                                "ids",
+                                artists.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                ).toObject(ArtistList.serializer(), api, json).artists
+            }.flatten()
         }
     }
 
