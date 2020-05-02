@@ -37,8 +37,8 @@ class ClientPlaylistAPITest : Spek({
                         GlobalScope.async { api.playlists.getPlaylist(usTop50Uri).complete()!!.tracks.getAllItems().complete().toList() },
                         GlobalScope.async { api.playlists.getPlaylist(globalTop50Uri).complete()!!.tracks.getAllItems().suspendComplete().toList() },
                         GlobalScope.async { api.playlists.getPlaylist(globalViral50Uri).complete()!!.tracks.getAllItems().suspendComplete().toList() }
-                ).awaitAll().flatten()
-            }.mapNotNull { it.track?.uri?.uri }
+                ).awaitAll().flatten().mapNotNull { it.track?.uri?.uri }
+            }
 
             api.allowBulkRequests = true
 
