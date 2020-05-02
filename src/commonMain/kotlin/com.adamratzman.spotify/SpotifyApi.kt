@@ -55,7 +55,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property browse Provides access to Spotify [browse endpoints](https://developer.spotify.com/documentation/web-api/reference/browse/)
  * @property artists Provides access to Spotify [artist endpoints](https://developer.spotify.com/documentation/web-api/reference/artists/)
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
- * @property defaultLimit The default amount of objects to retrieve in one request
+ * @property defaultLimit The default amount of objects to retrieve in one request, for requests that support it.
  * @property json The Json serializer/deserializer instance
  * @property logger The Spotify event logger
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
