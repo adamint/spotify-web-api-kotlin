@@ -56,6 +56,7 @@ internal data class InternalPlayable(
     @SerialName("release_date") val releaseDateString: String? = null
 ) {
     init {
+        @Suppress("DEPRECATION")
         if (language != null && languages.isEmpty()) (languages as MutableList<Language>).add(language)
     }
 
@@ -139,10 +140,9 @@ private class PlayableSerializer<T : Playable>(val type: String, val toT: Intern
     override fun deserialize(decoder: Decoder): T = serializer.deserialize(decoder).toT()
             ?: throw SerializationException("Could not convert internal playable representation to '$type'")
 
-    override fun serialize(encoder: Encoder, obj: T) {
+    override fun serialize(encoder: Encoder, value: T) {
         encoder as? JsonOutput ?: throw SerializationException("This class can only be serialized to json")
-        encoder as JsonOutput
-        encoder.encodeJson(encoder.json.toJson(serializer, obj.toInternalPlayable()))
+        encoder.encodeJson(encoder.json.toJson(serializer, value.toInternalPlayable()))
     }
 }
 

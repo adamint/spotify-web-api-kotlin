@@ -228,7 +228,7 @@ data class AudioAnalysisMeta(
     @SerialName("analyzer_version") val analyzerVersion: String,
     val platform: String,
     @SerialName("detailed_status") val detailedStatus: String,
-    @SerialName("status_code") val statusCode: Int,
+    @SerialName("status_code") val statusCode: Int? = null,
     val timestamp: Long,
     @SerialName("analysis_time") val analysisTime: Float,
     @SerialName("input_process") val inputProcess: String
@@ -265,16 +265,16 @@ data class AudioAnalysisMeta(
  */
 @Serializable
 data class AudioSection(
-    val start: Float,
+    val start: Float = 0f,
     val duration: Float,
     val confidence: Float,
     val loudness: Float,
-    val tempo: Float,
-    @SerialName("tempo_confidence") val tempoConfidence: Float,
+    val tempo: Float? = null,
+    @SerialName("tempo_confidence") val tempoConfidence: Float? = null,
     val key: Int,
-    @SerialName("key_confidence") val keyConfidence: Float,
-    val mode: Int,
-    @SerialName("mode_confidence") val modeConfidence: Float,
+    @SerialName("key_confidence") val keyConfidence: Float? = null,
+    val mode: Int? = null,
+    @SerialName("mode_confidence") val modeConfidence: Float? = null,
     @SerialName("time_signature") val timeSignature: Int,
     @SerialName("time_signature_confidence") val timeSignatureConfidence: Float
 )
@@ -302,11 +302,11 @@ data class AudioSection(
  */
 @Serializable
 data class AudioSegment(
-    val start: Float,
+    val start: Float? = null,
     val duration: Float,
-    val confidence: Float,
+    val confidence: Float? = null,
     @SerialName("loudness_start") val loudnessStart: Float,
-    @SerialName("loudness_max_time") val loudnessMaxTime: Float,
+    @SerialName("loudness_max_time") val loudnessMaxTime: Float? = null,
     @SerialName("loudness_max") val loudnessMax: Float,
     @SerialName("loudness_end") val loudnessEnd: Float? = null,
     val pitches: List<Float>,
@@ -320,10 +320,10 @@ data class AudioSegment(
 data class TrackAnalysis(
     @SerialName("num_samples") val numSamples: Int,
     val duration: Float,
-    @SerialName("sample_md5") val sampleMd5: String,
-    @SerialName("offset_seconds") val offsetSeconds: Int,
-    @SerialName("window_seconds") val windowSeconds: Int,
-    @SerialName("analysis_sample_rate") val analysisSampleRate: Int,
+    @SerialName("sample_md5") val sampleMd5: String? = null,
+    @SerialName("offset_seconds") val offsetSeconds: Int? = null,
+    @SerialName("window_seconds") val windowSeconds: Int? = null,
+    @SerialName("analysis_sample_rate") val analysisSampleRate: Float,
     @SerialName("analysis_channels") val analysisChannels: Int,
     @SerialName("end_of_fade_in") val endOfFadeIn: Float,
     @SerialName("start_of_fade_out") val startOfFadeOut: Float,
@@ -334,7 +334,7 @@ data class TrackAnalysis(
     @SerialName("time_signature_confidence") val timeSignatureConfidence: Float,
     val key: Int,
     @SerialName("key_confidence") val keyConfidence: Float,
-    val mode: Int,
+    val mode: Int? = null,
     @SerialName("mode_confidence") val modeConfidence: Float,
     val codestring: String,
     @SerialName("code_version") val codeVersion: Float,

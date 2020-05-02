@@ -39,7 +39,7 @@ private fun String.remove(type: String, allowColon: Boolean): String {
 private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSerializer<T> {
     override val descriptor: SerialDescriptor = StringDescriptor
     override fun deserialize(decoder: Decoder): T = ctor(decoder.decodeString())
-    override fun serialize(encoder: Encoder, obj: T) = encoder.encodeString(obj.uri)
+    override fun serialize(encoder: Encoder, value: T) = encoder.encodeString(value.uri)
 }
 
 /**
@@ -79,7 +79,7 @@ sealed class SpotifyUri(input: String, type: String, allowColon: Boolean = false
     companion object : KSerializer<SpotifyUri> {
         override val descriptor: SerialDescriptor = StringDescriptor
         override fun deserialize(decoder: Decoder): SpotifyUri = SpotifyUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, obj: SpotifyUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: SpotifyUri) = encoder.encodeString(value.uri)
 
         /**
          * This function safely instantiates a SpotifyUri from given constructor.
@@ -145,7 +145,7 @@ sealed class CollectionUri(input: String, type: String, allowColon: Boolean = fa
     companion object : KSerializer<CollectionUri> {
         override val descriptor: SerialDescriptor = StringDescriptor
         override fun deserialize(decoder: Decoder): CollectionUri = CollectionUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, obj: CollectionUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: CollectionUri) = encoder.encodeString(value.uri)
 
         operator fun invoke(input: String): CollectionUri {
             val constructors = listOf(::PlaylistUri, ImmutableCollectionUri.Companion::invoke)
@@ -166,7 +166,7 @@ sealed class ImmutableCollectionUri(input: String, type: String, allowColon: Boo
         override fun deserialize(decoder: Decoder): ImmutableCollectionUri =
             ImmutableCollectionUri(decoder.decodeString())
 
-        override fun serialize(encoder: Encoder, obj: ImmutableCollectionUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: ImmutableCollectionUri) = encoder.encodeString(value.uri)
 
         operator fun invoke(input: String): ImmutableCollectionUri {
             val constructors = listOf(::AlbumUri, ::ShowUri)
@@ -185,7 +185,7 @@ sealed class PlayableUri(input: String, type: String, allowColon: Boolean = fals
     companion object : KSerializer<PlayableUri> {
         override val descriptor: SerialDescriptor = StringDescriptor
         override fun deserialize(decoder: Decoder): PlayableUri = PlayableUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, obj: PlayableUri) = encoder.encodeString(obj.uri)
+        override fun serialize(encoder: Encoder, value: PlayableUri) = encoder.encodeString(value.uri)
 
         /**
          * Creates a abstract TrackURI of given input. Prefers SpotifyTrackUri if the input is ambiguous.

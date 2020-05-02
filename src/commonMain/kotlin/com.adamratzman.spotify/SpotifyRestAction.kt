@@ -133,7 +133,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
 }
 
 class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi<*, *>, supplier: suspend () -> T) :
-    SpotifyRestAction<T>(api, supplier) {
+        SpotifyRestAction<T>(api, supplier) {
 
     /**
      * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
@@ -162,8 +162,10 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
      * Synchronously retrieve all [Z] associated with this rest action
      */
     fun getAllItems(context: CoroutineContext = Dispatchers.Default) =
-            api.tracks.toAction { suspendComplete(context)
-            .getAllImpl().toList().map { it.items }.flatten() }
+            api.tracks.toAction {
+                suspendComplete(context)
+                        .getAllImpl().toList().map { it.items }.flatten()
+            }
 
     /**
      * Consume each [Z] by [consumer] as it is retrieved
@@ -190,13 +192,13 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow {
-            suspendComplete(context).also { master ->
-                emitAll(master.flowStartOrdered())
-                emit(master)
-                emitAll(master.flowEndOrdered())
-            }
-        }.flowOn(context)
+            flow {
+                suspendComplete(context).also { master ->
+                    emitAll(master.flowStartOrdered())
+                    emit(master)
+                    emitAll(master.flowEndOrdered())
+                }
+            }.flowOn(context)
 
     /**
      * Flow the Paging action.
@@ -214,11 +216,11 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @JvmOverloads
     @ExperimentalCoroutinesApi
     fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
-        flow {
-            suspendComplete(context).also { master ->
-                emitAll(master.flowBackward())
-                emit(master)
-                emitAll(master.flowForward())
-            }
-        }.flowOn(context)
+            flow {
+                suspendComplete(context).also { master ->
+                    emitAll(master.flowBackward())
+                    emit(master)
+                    emitAll(master.flowForward())
+                }
+            }.flowOn(context)
 }
