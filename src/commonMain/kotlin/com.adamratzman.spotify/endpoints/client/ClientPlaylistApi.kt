@@ -64,11 +64,11 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @return The created [Playlist] object with no tracks
      */
     fun createClientPlaylist(
-            name: String,
-            description: String? = null,
-            public: Boolean? = null,
-            collaborative: Boolean? = null,
-            user: String = (api as SpotifyClientApi).userId
+        name: String,
+        description: String? = null,
+        public: Boolean? = null,
+        collaborative: Boolean? = null,
+        user: String = (api as SpotifyClientApi).userId
     ): SpotifyRestAction<Playlist> {
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction {
@@ -120,7 +120,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-     fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
+    fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
         checkBulkRequesting(100, tracks.size)
         return toAction {
             bulkRequest(100, tracks.toList()) { chunk ->
@@ -135,7 +135,6 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
 
             Unit
         }
-
     }
 
     /**
@@ -155,11 +154,11 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
     fun changeClientPlaylistDetails(
-            playlist: String,
-            name: String? = null,
-            public: Boolean? = null,
-            collaborative: Boolean? = null,
-            description: String? = null
+        playlist: String,
+        name: String? = null,
+        public: Boolean? = null,
+        collaborative: Boolean? = null,
+        description: String? = null
     ): SpotifyRestAction<Unit> {
         val body = jsonMap()
         if (name != null) body += json { "name" to name }
@@ -190,8 +189,8 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if the filters provided are illegal
      */
     fun getClientPlaylists(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
         require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
@@ -257,11 +256,11 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
     fun reorderClientPlaylistTracks(
-            playlist: String,
-            reorderRangeStart: Int,
-            reorderRangeLength: Int? = null,
-            insertionPoint: Int,
-            snapshotId: String? = null
+        playlist: String,
+        reorderRangeStart: Int,
+        reorderRangeLength: Int? = null,
+        insertionPoint: Int,
+        snapshotId: String? = null
     ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
             val body = jsonMap()
@@ -352,12 +351,12 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if invalid data is provided
      */
     fun uploadClientPlaylistCover(
-            playlist: String,
-            imagePath: String? = null,
-            imageFile: File? = null,
-            image: BufferedImage? = null,
-            imageData: String? = null,
-            imageUrl: String? = null
+        playlist: String,
+        imagePath: String? = null,
+        imageFile: File? = null,
+        image: BufferedImage? = null,
+        imageData: String? = null,
+        imageUrl: String? = null
     ): SpotifyRestAction<Unit> {
         return toAction {
             val data = imageData ?: when {
@@ -389,10 +388,10 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTrackFromClientPlaylist(
-            playlist: String,
-            track: String,
-            positions: SpotifyTrackPositions,
-            snapshotId: String? = null
+        playlist: String,
+        track: String,
+        positions: SpotifyTrackPositions,
+        snapshotId: String? = null
     ) = removeTracksFromClientPlaylist(playlist, track to positions, snapshotId = snapshotId)
 
     /**
@@ -408,9 +407,9 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTrackFromClientPlaylist(
-            playlist: String,
-            track: String,
-            snapshotId: String? = null
+        playlist: String,
+        track: String,
+        snapshotId: String? = null
     ) = removeTracksFromClientPlaylist(playlist, track, snapshotId = snapshotId)
 
     /**
@@ -426,9 +425,9 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(
-            playlist: String,
-            vararg tracks: String,
-            snapshotId: String? = null
+        playlist: String,
+        vararg tracks: String,
+        snapshotId: String? = null
     ) = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
 
     /**
@@ -444,17 +443,17 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
     fun removeTracksFromClientPlaylist(
-            playlist: String,
-            vararg tracks: Pair<String, SpotifyTrackPositions>,
-            snapshotId: String? = null
+        playlist: String,
+        vararg tracks: Pair<String, SpotifyTrackPositions>,
+        snapshotId: String? = null
     ) = removePlaylistTracksImpl(playlist, tracks.toList().toTypedArray(), snapshotId)
 
     private fun removePlaylistTracksImpl(
-            playlist: String,
-            tracks: Array<Pair<String, SpotifyTrackPositions?>>,
-            snapshotId: String?
+        playlist: String,
+        tracks: Array<Pair<String, SpotifyTrackPositions?>>,
+        snapshotId: String?
     ): SpotifyRestAction<PlaylistSnapshot> {
-checkBulkRequesting(100,tracks.size)
+        checkBulkRequesting(100, tracks.size)
         if (snapshotId != null && tracks.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 
         return toAction {

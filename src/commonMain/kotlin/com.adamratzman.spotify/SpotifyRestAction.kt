@@ -7,6 +7,11 @@ import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlocking
 import com.adamratzman.spotify.utils.schedule
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +26,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.JvmOverloads
 
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
@@ -114,11 +114,11 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
      */
     @JvmOverloads
     fun queueAfter(
-            quantity: Int,
-            timeUnit: TimeUnit = TimeUnit.SECONDS,
-            scope: CoroutineScope = GlobalScope,
-            failure: (Throwable) -> Unit = { throw it },
-            consumer: (T) -> Unit
+        quantity: Int,
+        timeUnit: TimeUnit = TimeUnit.SECONDS,
+        scope: CoroutineScope = GlobalScope,
+        failure: (Throwable) -> Unit = { throw it },
+        consumer: (T) -> Unit
     ): SpotifyRestAction<T> {
         val runAt = getCurrentTimeMs() + timeUnit.toMillis(quantity.toLong())
         queue({ exception ->
