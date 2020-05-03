@@ -36,6 +36,11 @@ class PublicPlaylistsAPITest : Spek({
             it("valid playlist, get tracks") {
                 assertTrue(p.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").complete().items.isNotEmpty())
             }
+
+            it("valid playlist, get tracks including local tracks") {
+                println(p.getPlaylistTracks("0vzdw0N41qZLbRDqyx2cE0").complete().items.map { it.track?.let { it::class } })
+            }
+
             it("invalid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
             }

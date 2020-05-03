@@ -10,6 +10,7 @@ import kotlinx.serialization.PrimitiveKind
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
+import kotlinx.serialization.internal.StringDescriptor
 
 /**
  * Exception instantiating or deserializing a uri perceived as invalid
@@ -180,11 +181,11 @@ sealed class ImmutableCollectionUri(input: String, type: String, allowColon: Boo
 }
 
 @Serializable
-sealed class PlayableUri(input: String, type: String, allowColon: Boolean = false) :
+sealed class PlayableUri(input: String, val type: String, allowColon: Boolean = false) :
     SpotifyUri(input, type, allowColon) {
     @Serializer(forClass = PlayableUri::class)
     companion object : KSerializer<PlayableUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("PlayableUri", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = StringDescriptor
         override fun deserialize(decoder: Decoder): PlayableUri = PlayableUri(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: PlayableUri) = encoder.encodeString(value.uri)
 
