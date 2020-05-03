@@ -3,8 +3,6 @@ package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 
 val _clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
 val _clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
