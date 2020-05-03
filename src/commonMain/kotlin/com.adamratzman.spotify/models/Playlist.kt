@@ -4,6 +4,7 @@ package com.adamratzman.spotify.models
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
 import com.adamratzman.spotify.utils.Market
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -73,12 +74,12 @@ data class SimplePlaylist(
  */
 @Serializable
 data class PlaylistTrack(
-    @SerialName("primary_color") val primaryColor: String? = null,
-    @SerialName("added_at") val addedAt: String? = null,
-    @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
-    @SerialName("is_local") val isLocal: Boolean? = null,
-    val track: Track?,
-    @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
+        @SerialName("primary_color") val primaryColor: String? = null,
+        @SerialName("added_at") val addedAt: String? = null,
+        @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
+        @SerialName("is_local") val isLocal: Boolean? = null,
+        @Serializable(with = Playable.Companion::class) val track: Playable? = null,
+        @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
 /**
