@@ -18,9 +18,6 @@ val api = when {
                 clientId = _clientId
                 clientSecret = _clientSecret
             }
-            options {
-                json = Json(JsonConfiguration.Stable)
-            }
         }.build()
     }
     else -> {
@@ -32,9 +29,6 @@ val api = when {
             }
             authorization {
                 tokenString = _tokenString
-            }
-            options {
-                json = Json(JsonConfiguration.Stable)
             }
         }.build()
     }

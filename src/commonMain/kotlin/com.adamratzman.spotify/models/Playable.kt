@@ -5,6 +5,8 @@ import com.adamratzman.spotify.utils.Language
 import kotlinx.serialization.Decoder
 import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.PrimitiveDescriptor
+import kotlinx.serialization.PrimitiveKind
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -135,7 +137,7 @@ internal data class InternalPlayable(
 private class PlayableSerializer<T : Playable>(val type: String, val toT: InternalPlayable.() -> T?) : KSerializer<T> {
     private val serializer = InternalPlayable.serializer()
 
-    override val descriptor: SerialDescriptor = serializer.descriptor
+    override val descriptor: SerialDescriptor = PrimitiveDescriptor(type, PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): T = serializer.deserialize(decoder).toT()
             ?: throw SerializationException("Could not convert internal playable representation to '$type'")
@@ -214,7 +216,7 @@ data class Track(
     }
 
     @Serializer(forClass = Track::class)
-    companion object : KSerializer<Track> by PlayableSerializer("Track", InternalPlayable::toTrack)
+    companion object : KSerializer<Track> by PlayableSerializer("track",  InternalPlayable::toTrack)
 }
 
 @Serializable
