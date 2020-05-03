@@ -9,6 +9,7 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.NeedsApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.instantiatePagingObjects
+import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
@@ -16,7 +17,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlin.reflect.KClass
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 internal val nonstrictJson =
@@ -61,13 +61,13 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
 }
 
 internal fun <T : Any> String.toPagingObject(
-        tClazz: KClass<T>,
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json,
-        arbitraryInnerNameAllowed: Boolean = false,
-        skipInnerNameFirstIfPossible: Boolean = true
+    tClazz: KClass<T>,
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
 ): PagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
         val map = this.parseJson {
@@ -124,22 +124,22 @@ internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: Abstrac
 }
 
 internal inline fun <reified T : Any> String.toPagingObject(
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json,
-        arbitraryInnerNameAllowed: Boolean = false,
-        skipInnerNameFirstIfPossible: Boolean = true
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
 ): PagingObject<T> = toPagingObject(T::class, tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible)
 
 internal fun <T : Any> String.toCursorBasedPagingObject(
-        tClazz: KClass<T>,
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json,
-        arbitraryInnerNameAllowed: Boolean = false,
-        skipInnerNameFirstIfPossible: Boolean = true
+    tClazz: KClass<T>,
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
 ): CursorBasedPagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
         val map = this.parseJson {
@@ -172,12 +172,12 @@ internal fun <T : Any> String.toCursorBasedPagingObject(
 }
 
 internal inline fun <reified T : Any> String.toCursorBasedPagingObject(
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json,
-        arbitraryInnerNameAllowed: Boolean = false,
-        skipInnerNameFirstIfPossible: Boolean = true
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
 ): CursorBasedPagingObject<T> =
         toCursorBasedPagingObject(T::class, tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible)
 

@@ -35,26 +35,26 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class SimpleTrack(
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-        @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-        @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
-        override val href: String,
-        override val id: String,
-        override val uri: PlayableUri,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
+    override val href: String,
+    override val id: String,
+    override val uri: PlayableUri,
 
-        val artists: List<SimpleArtist>,
-        @SerialName("disc_number") val discNumber: Int,
-        @SerialName("duration_ms") val durationMs: Int,
-        val explicit: Boolean,
-        @SerialName("is_playable") val isPlayable: Boolean = true,
-        @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
-        val name: String,
-        @SerialName("preview_url") val previewUrl: String? = null,
-        @SerialName("track_number") val trackNumber: Int,
-        val type: String,
-        @SerialName("is_local") val isLocal: Boolean? = null,
-        val popularity: Int? = null,
-        val restrictions: Restrictions? = null
+    val artists: List<SimpleArtist>,
+    @SerialName("disc_number") val discNumber: Int,
+    @SerialName("duration_ms") val durationMs: Int,
+    val explicit: Boolean,
+    @SerialName("is_playable") val isPlayable: Boolean = true,
+    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
+    val name: String,
+    @SerialName("preview_url") val previewUrl: String? = null,
+    @SerialName("track_number") val trackNumber: Int,
+    val type: String,
+    @SerialName("is_local") val isLocal: Boolean? = null,
+    val popularity: Int? = null,
+    val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse() {
 
     @Transient
@@ -71,7 +71,6 @@ data class SimpleTrack(
      */
     fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
 }
-
 
 /**
  * Represents a music track on Spotify
@@ -111,30 +110,30 @@ data class SimpleTrack(
  */
 @Serializable
 data class Track(
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-        @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
-        @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-        override val href: String,
-        override val id: String,
-        override val uri: PlayableUri,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    override val href: String,
+    override val id: String,
+    override val uri: PlayableUri,
 
-        val album: SimpleAlbum,
-        val artists: List<SimpleArtist>,
-        @SerialName("is_playable") val isPlayable: Boolean = true,
-        @SerialName("disc_number") val discNumber: Int,
-        @SerialName("duration_ms") val durationMs: Int,
-        val explicit: Boolean,
-        @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
-        val name: String,
-        val popularity: Int,
-        @SerialName("preview_url") val previewUrl: String? = null,
-        @SerialName("track_number") val trackNumber: Int,
-        override val type: String,
-        @SerialName("is_local") val isLocal: Boolean? = null,
-        val restrictions: Restrictions? = null,
+    val album: SimpleAlbum,
+    val artists: List<SimpleArtist>,
+    @SerialName("is_playable") val isPlayable: Boolean = true,
+    @SerialName("disc_number") val discNumber: Int,
+    @SerialName("duration_ms") val durationMs: Int,
+    val explicit: Boolean,
+    @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
+    val name: String,
+    val popularity: Int,
+    @SerialName("preview_url") val previewUrl: String? = null,
+    @SerialName("track_number") val trackNumber: Int,
+    override val type: String,
+    @SerialName("is_local") val isLocal: Boolean? = null,
+    val restrictions: Restrictions? = null,
 
-        val episode: Boolean? = null,
-        val track: Boolean? = null
+    val episode: Boolean? = null,
+    val track: Boolean? = null
 ) : RelinkingAvailableResponse(), Playable {
 
     @Transient
@@ -154,12 +153,12 @@ data class Track(
  */
 @Serializable
 data class LinkedTrack(
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-        override val href: String,
-        override val id: String,
-        override val uri: PlayableUri,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    override val href: String,
+    override val id: String,
+    override val uri: PlayableUri,
 
-        val type: String
+    val type: String
 ) : CoreObject() {
 
     /**
@@ -173,7 +172,7 @@ data class LinkedTrack(
 
 @Serializable
 internal data class AudioFeaturesResponse(
-        @SerialName("audio_features") val audioFeatures: List<AudioFeatures?>
+    @SerialName("audio_features") val audioFeatures: List<AudioFeatures?>
 )
 
 /**
@@ -202,13 +201,13 @@ internal data class AudioFeaturesResponse(
  */
 @Serializable
 data class AudioAnalysis(
-        val bars: List<TimeInterval>,
-        val beats: List<TimeInterval>,
-        val meta: AudioAnalysisMeta,
-        val sections: List<AudioSection>,
-        val segments: List<AudioSegment>,
-        val tatums: List<TimeInterval>,
-        val track: TrackAnalysis
+    val bars: List<TimeInterval>,
+    val beats: List<TimeInterval>,
+    val meta: AudioAnalysisMeta,
+    val sections: List<AudioSection>,
+    val segments: List<AudioSegment>,
+    val tatums: List<TimeInterval>,
+    val track: TrackAnalysis
 )
 
 /**
@@ -224,13 +223,13 @@ data class AudioAnalysis(
  */
 @Serializable
 data class AudioAnalysisMeta(
-        @SerialName("analyzer_version") val analyzerVersion: String,
-        val platform: String,
-        @SerialName("detailed_status") val detailedStatus: String,
-        @SerialName("status_code") val statusCode: Int? = null,
-        val timestamp: Long,
-        @SerialName("analysis_time") val analysisTime: Float,
-        @SerialName("input_process") val inputProcess: String
+    @SerialName("analyzer_version") val analyzerVersion: String,
+    val platform: String,
+    @SerialName("detailed_status") val detailedStatus: String,
+    @SerialName("status_code") val statusCode: Int? = null,
+    val timestamp: Long,
+    @SerialName("analysis_time") val analysisTime: Float,
+    @SerialName("input_process") val inputProcess: String
 )
 
 /**
@@ -264,18 +263,18 @@ data class AudioAnalysisMeta(
  */
 @Serializable
 data class AudioSection(
-        val start: Float = 0f,
-        val duration: Float,
-        val confidence: Float,
-        val loudness: Float,
-        val tempo: Float? = null,
-        @SerialName("tempo_confidence") val tempoConfidence: Float? = null,
-        val key: Int,
-        @SerialName("key_confidence") val keyConfidence: Float? = null,
-        val mode: Int? = null,
-        @SerialName("mode_confidence") val modeConfidence: Float? = null,
-        @SerialName("time_signature") val timeSignature: Int,
-        @SerialName("time_signature_confidence") val timeSignatureConfidence: Float
+    val start: Float = 0f,
+    val duration: Float,
+    val confidence: Float,
+    val loudness: Float,
+    val tempo: Float? = null,
+    @SerialName("tempo_confidence") val tempoConfidence: Float? = null,
+    val key: Int,
+    @SerialName("key_confidence") val keyConfidence: Float? = null,
+    val mode: Int? = null,
+    @SerialName("mode_confidence") val modeConfidence: Float? = null,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("time_signature_confidence") val timeSignatureConfidence: Float
 )
 
 /**
@@ -301,15 +300,15 @@ data class AudioSection(
  */
 @Serializable
 data class AudioSegment(
-        val start: Float? = null,
-        val duration: Float,
-        val confidence: Float? = null,
-        @SerialName("loudness_start") val loudnessStart: Float,
-        @SerialName("loudness_max_time") val loudnessMaxTime: Float? = null,
-        @SerialName("loudness_max") val loudnessMax: Float,
-        @SerialName("loudness_end") val loudnessEnd: Float? = null,
-        val pitches: List<Float>,
-        val timbre: List<Float>
+    val start: Float? = null,
+    val duration: Float,
+    val confidence: Float? = null,
+    @SerialName("loudness_start") val loudnessStart: Float,
+    @SerialName("loudness_max_time") val loudnessMaxTime: Float? = null,
+    @SerialName("loudness_max") val loudnessMax: Float,
+    @SerialName("loudness_end") val loudnessEnd: Float? = null,
+    val pitches: List<Float>,
+    val timbre: List<Float>
 )
 
 /**
@@ -317,32 +316,32 @@ data class AudioSegment(
  */
 @Serializable
 data class TrackAnalysis(
-        @SerialName("num_samples") val numSamples: Int,
-        val duration: Float,
-        @SerialName("sample_md5") val sampleMd5: String? = null,
-        @SerialName("offset_seconds") val offsetSeconds: Int? = null,
-        @SerialName("window_seconds") val windowSeconds: Int? = null,
-        @SerialName("analysis_sample_rate") val analysisSampleRate: Float,
-        @SerialName("analysis_channels") val analysisChannels: Int,
-        @SerialName("end_of_fade_in") val endOfFadeIn: Float,
-        @SerialName("start_of_fade_out") val startOfFadeOut: Float,
-        val loudness: Float,
-        val tempo: Float,
-        @SerialName("tempo_confidence") val tempoConfidence: Float,
-        @SerialName("time_signature") val timeSignature: Int,
-        @SerialName("time_signature_confidence") val timeSignatureConfidence: Float,
-        val key: Int,
-        @SerialName("key_confidence") val keyConfidence: Float,
-        val mode: Int? = null,
-        @SerialName("mode_confidence") val modeConfidence: Float,
-        val codestring: String,
-        @SerialName("code_version") val codeVersion: Float,
-        val echoprintstring: String,
-        @SerialName("echoprint_version") val echoprintVersion: Float,
-        val synchstring: String,
-        @SerialName("synch_version") val synchVersion: Float,
-        val rhythmstring: String,
-        @SerialName("rhythm_version") val rhythmVersion: Float
+    @SerialName("num_samples") val numSamples: Int,
+    val duration: Float,
+    @SerialName("sample_md5") val sampleMd5: String? = null,
+    @SerialName("offset_seconds") val offsetSeconds: Int? = null,
+    @SerialName("window_seconds") val windowSeconds: Int? = null,
+    @SerialName("analysis_sample_rate") val analysisSampleRate: Float,
+    @SerialName("analysis_channels") val analysisChannels: Int,
+    @SerialName("end_of_fade_in") val endOfFadeIn: Float,
+    @SerialName("start_of_fade_out") val startOfFadeOut: Float,
+    val loudness: Float,
+    val tempo: Float,
+    @SerialName("tempo_confidence") val tempoConfidence: Float,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("time_signature_confidence") val timeSignatureConfidence: Float,
+    val key: Int,
+    @SerialName("key_confidence") val keyConfidence: Float,
+    val mode: Int? = null,
+    @SerialName("mode_confidence") val modeConfidence: Float,
+    val codestring: String,
+    @SerialName("code_version") val codeVersion: Float,
+    val echoprintstring: String,
+    @SerialName("echoprint_version") val echoprintVersion: Float,
+    val synchstring: String,
+    @SerialName("synch_version") val synchVersion: Float,
+    val rhythmstring: String,
+    @SerialName("rhythm_version") val rhythmVersion: Float
 )
 
 /**
@@ -395,24 +394,24 @@ data class TrackAnalysis(
  */
 @Serializable
 data class AudioFeatures(
-        val acousticness: Float,
-        @SerialName("analysis_url") val analysisUrl: String,
-        val danceability: Float,
-        @SerialName("duration_ms") val durationMs: Int,
-        val energy: Float,
-        val id: String,
-        val instrumentalness: Float,
-        val key: Int,
-        val liveness: Float,
-        val loudness: Float,
-        val mode: Int,
-        val speechiness: Float,
-        val tempo: Float,
-        @SerialName("time_signature") val timeSignature: Int,
-        @SerialName("track_href") val trackHref: String,
-        val type: String,
-        val uri: PlayableUri,
-        val valence: Float
+    val acousticness: Float,
+    @SerialName("analysis_url") val analysisUrl: String,
+    val danceability: Float,
+    @SerialName("duration_ms") val durationMs: Int,
+    val energy: Float,
+    val id: String,
+    val instrumentalness: Float,
+    val key: Int,
+    val liveness: Float,
+    val loudness: Float,
+    val mode: Int,
+    val speechiness: Float,
+    val tempo: Float,
+    @SerialName("time_signature") val timeSignature: Int,
+    @SerialName("track_href") val trackHref: String,
+    val type: String,
+    val uri: PlayableUri,
+    val valence: Float
 )
 
 /**
