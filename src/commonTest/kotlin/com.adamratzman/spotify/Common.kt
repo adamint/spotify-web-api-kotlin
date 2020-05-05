@@ -3,8 +3,6 @@ package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
 import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 
 val _clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
 val _clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
@@ -18,9 +16,6 @@ val api = when {
                 clientId = _clientId
                 clientSecret = _clientSecret
             }
-            options {
-                json = Json(JsonConfiguration.Stable)
-            }
         }.build()
     }
     else -> {
@@ -32,9 +27,6 @@ val api = when {
             }
             authorization {
                 tokenString = _tokenString
-            }
-            options {
-                json = Json(JsonConfiguration.Stable)
             }
         }.build()
     }

@@ -77,7 +77,7 @@ data class PlaylistTrack(
     @SerialName("added_at") val addedAt: String? = null,
     @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
     @SerialName("is_local") val isLocal: Boolean? = null,
-    val track: Track?,
+    @Serializable(with = Playable.Companion::class) val track: Playable? = null,
     @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
