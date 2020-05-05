@@ -11,9 +11,9 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
@@ -221,7 +221,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
  * @param id How to transform an id (or uri) input into its Spotify id
  */
 enum class LibraryType(private val value: String, internal val id: (String) -> String) {
-    TRACK("tracks", { TrackUri(it).id }),
+    TRACK("tracks", { PlayableUri(it).id }),
     ALBUM("albums", { AlbumUri(it).id });
 
     override fun toString() = value

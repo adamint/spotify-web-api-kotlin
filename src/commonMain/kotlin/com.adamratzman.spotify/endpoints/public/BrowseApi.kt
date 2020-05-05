@@ -12,13 +12,13 @@ import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.FeaturedPlaylists
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.RecommendationResponse
 import com.adamratzman.spotify.models.RecommendationSeed
 import com.adamratzman.spotify.models.SimpleAlbum
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifyCategory
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
@@ -324,7 +324,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.name)
                     .with("seed_artists", seedArtists?.joinToString(",") { ArtistUri(it).id.encodeUrl() })
                     .with("seed_genres", seedGenres?.joinToString(",") { it.encodeUrl() })
-                    .with("seed_tracks", seedTracks?.joinToString(",") { TrackUri(it).id.encodeUrl() })
+                    .with("seed_tracks", seedTracks?.joinToString(",") { PlayableUri(it).id.encodeUrl() })
             targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
             minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
             maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }

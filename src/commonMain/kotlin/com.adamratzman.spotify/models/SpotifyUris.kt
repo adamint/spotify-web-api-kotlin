@@ -7,6 +7,7 @@ import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.PrimitiveDescriptor
 import kotlinx.serialization.PrimitiveKind
+import kotlinx.serialization.PrimitiveKind.STRING
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
@@ -16,21 +17,22 @@ import kotlinx.serialization.Serializer
  */
 class SpotifyUriException(message: String) : SpotifyException.BadRequestException(message)
 
-private fun String.matchType(type: String): String? {
-    val typeRegex = "^spotify:(?:.*:)*$type:([^:]*)(?::.*)*$|^([^:]+)$".toRegex()
+private fun String.matchType(type: String, allowColon: Boolean): String? {
+    val uriContent = "[^:]".takeUnless { allowColon } ?: "."
+    val typeRegex = "^spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
     val match = typeRegex.matchEntire(this)?.groupValues ?: return null
     return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
-private fun String.add(type: String): String {
-    this.matchType(type)?.let {
+private fun String.add(type: String, allowColon: Boolean): String {
+    this.matchType(type, allowColon)?.let {
         return "spotify:$type:${it.trim()}"
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' uri")
 }
 
-private fun String.remove(type: String): String {
-    this.matchType(type)?.let {
+private fun String.remove(type: String, allowColon: Boolean): String {
+    this.matchType(type, allowColon)?.let {
         return it.trim()
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' id")
@@ -42,13 +44,6 @@ private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSe
     override fun serialize(encoder: Encoder, value: T) = encoder.encodeString(value.uri)
 }
 
-@PublishedApi
-internal fun fixSpotifyUri(uri: String): String {
-    val matchesOldPlaylistUriFormat = "^spotify:user:(?:.*:)*playlist:(.+)\$".toRegex().matchEntire(uri)
-    return (matchesOldPlaylistUriFormat?.let { result -> "spotify:playlist:${result.groupValues[1]}" } ?: uri)
-            .replace(" ", "")
-}
-
 /**
  * Represents a Spotify URI, parsed from either a Spotify ID or taken from an endpoint.
  *
@@ -56,14 +51,14 @@ internal fun fixSpotifyUri(uri: String): String {
  * @property id representation of this uri as an id
  */
 @Serializable
-sealed class SpotifyUri(input: String, type: String) {
+sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = false) {
     val uri: String
     val id: String
 
     init {
-        fixSpotifyUri(input).let {
-            this.uri = it.add(type)
-            this.id = it.remove(type)
+        input.replace(" ", "").also {
+            this.uri = it.add(type, allowColon)
+            this.id = it.remove(type, allowColon)
         }
     }
 
@@ -79,12 +74,12 @@ sealed class SpotifyUri(input: String, type: String) {
     }
 
     override fun toString(): String {
-        return "SpotifyUri(${fixSpotifyUri(uri)})"
+        return "SpotifyUri(type=$type, uri=$uri)"
     }
 
     @Serializer(forClass = SpotifyUri::class)
     companion object : KSerializer<SpotifyUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("Uri", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("SpotifyUri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): SpotifyUri = SpotifyUri(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: SpotifyUri) = encoder.encodeString(value.uri)
 
@@ -93,7 +88,7 @@ sealed class SpotifyUri(input: String, type: String) {
          * */
         inline fun <T : SpotifyUri> safeInitiate(uri: String, ctor: (String) -> T): T? {
             return try {
-                ctor(fixSpotifyUri(uri))
+                ctor(uri)
             } catch (e: SpotifyUriException) {
                 null
             }
@@ -102,9 +97,14 @@ sealed class SpotifyUri(input: String, type: String) {
         /**
          * Creates a abstract SpotifyUri of given input. Doesn't allow ambiguity by disallowing creation by id.
          * */
-        operator fun invoke(inputTemp: String): SpotifyUri {
-            val input = fixSpotifyUri(inputTemp)
-            val constructors = listOf(::AlbumUri, ::ArtistUri, TrackUri.Companion::invoke, ::UserUri, ::PlaylistUri)
+        operator fun invoke(input: String): SpotifyUri {
+            val constructors = listOf(
+                ::ArtistUri,
+                PlayableUri.Companion::invoke,
+                ImmutableCollectionUri.Companion::invoke,
+                ::UserUri,
+                ::PlaylistUri
+            )
             for (ctor in constructors) {
                 safeInitiate(input, ctor)?.takeIf { it.uri == input }?.also { return it }
             }
@@ -121,8 +121,7 @@ sealed class SpotifyUri(input: String, type: String) {
          *     SpotifyUri.isType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T : SpotifyUri> isType(inputTemp: String): Boolean {
-            val input = fixSpotifyUri(inputTemp)
+        inline fun <reified T : SpotifyUri> isType(input: String): Boolean {
             return safeInitiate(input, ::invoke)?.let { it is T } ?: false
         }
 
@@ -135,20 +134,92 @@ sealed class SpotifyUri(input: String, type: String) {
          *     SpotifyUri.canBeType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
-        inline fun <reified T : SpotifyUri> canBeType(inputTemp: String): Boolean {
-            val input = fixSpotifyUri(inputTemp)
+        inline fun <reified T : SpotifyUri> canBeType(input: String): Boolean {
             return isType<T>(input) || !input.contains(':')
         }
     }
 }
 
+@Serializable
+sealed class CollectionUri(input: String, type: String, allowColon: Boolean = false) :
+    SpotifyUri(input, type, allowColon) {
+    @Serializer(forClass = CollectionUri::class)
+    companion object : KSerializer<CollectionUri> {
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("CollectionUri", PrimitiveKind.STRING)
+        override fun deserialize(decoder: Decoder): CollectionUri = CollectionUri(decoder.decodeString())
+        override fun serialize(encoder: Encoder, value: CollectionUri) = encoder.encodeString(value.uri)
+
+        operator fun invoke(input: String): CollectionUri {
+            val constructors = listOf(::PlaylistUri, ImmutableCollectionUri.Companion::invoke)
+            for (ctor in constructors) {
+                safeInitiate(input, ctor)?.also { return it }
+            }
+            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to 'playlist' or 'predefinedCollection' id")
+        }
+    }
+}
+
+@Serializable
+sealed class ImmutableCollectionUri(input: String, type: String, allowColon: Boolean = false) :
+    CollectionUri(input, type, allowColon) {
+    @Serializer(forClass = ImmutableCollectionUri::class)
+    companion object : KSerializer<ImmutableCollectionUri> {
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("ImmutableCollection", PrimitiveKind.STRING)
+        override fun deserialize(decoder: Decoder): ImmutableCollectionUri =
+            ImmutableCollectionUri(decoder.decodeString())
+
+        override fun serialize(encoder: Encoder, value: ImmutableCollectionUri) = encoder.encodeString(value.uri)
+
+        operator fun invoke(input: String): ImmutableCollectionUri {
+            val constructors = listOf(::AlbumUri, ::ShowUri)
+            for (ctor in constructors) {
+                safeInitiate(input, ctor)?.also { return it }
+            }
+            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to 'album' or 'show' id")
+        }
+    }
+}
+
+@Serializable
+sealed class PlayableUri(input: String, type: String, allowColon: Boolean = false) :
+    SpotifyUri(input, type, allowColon) {
+    @Serializer(forClass = PlayableUri::class)
+    companion object : KSerializer<PlayableUri> {
+        override val descriptor: SerialDescriptor = PrimitiveDescriptor("PlayableUri", STRING)
+        override fun deserialize(decoder: Decoder): PlayableUri = PlayableUri(decoder.decodeString())
+        override fun serialize(encoder: Encoder, value: PlayableUri) = encoder.encodeString(value.uri)
+
+        /**
+         * Creates a abstract TrackURI of given input. Prefers SpotifyTrackUri if the input is ambiguous.
+         * */
+        operator fun invoke(input: String): PlayableUri {
+            val constructors = listOf(::SpotifyTrackUri, ::LocalTrackUri, ::EpisodeUri)
+            for (ctor in constructors) {
+                safeInitiate(input, ctor)?.also { return it }
+            }
+            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to 'track' or 'localTrack' or 'episode' id")
+        }
+    }
+}
+
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.spotify.models.PlaybUri"))
+typealias TrackURI = PlayableUri
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.spotify.models.PlaybUri"))
+typealias TrackUri = PlayableUri
+
 /**
  * Represents a Spotify **Album** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class AlbumUri(input: String) : SpotifyUri(input, "album") {
+class AlbumUri(input: String) : ImmutableCollectionUri(input, "album") {
     @Serializer(forClass = AlbumUri::class)
     companion object : KSerializer<AlbumUri> by SimpleUriSerializer(::AlbumUri)
+}
+
+@Serializable
+class ShowUri(input: String) : ImmutableCollectionUri(input, "show") {
+    @Serializer(forClass = ShowUri::class)
+    companion object : KSerializer<ShowUri> by SimpleUriSerializer(::ShowUri)
 }
 
 @Deprecated("renamed", ReplaceWith("AlbumUri", "com.adamratzman.spotify.models.AlbumUri"))
@@ -182,7 +253,7 @@ typealias UserURI = UserUri
  * Represents a Spotify **Playlist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class PlaylistUri(input: String) : SpotifyUri(input, "playlist") {
+class PlaylistUri(input: String) : CollectionUri(input, "playlist") {
     @Serializer(forClass = PlaylistUri::class)
     companion object : KSerializer<PlaylistUri> by SimpleUriSerializer(::PlaylistUri)
 }
@@ -191,38 +262,10 @@ class PlaylistUri(input: String) : SpotifyUri(input, "playlist") {
 typealias PlaylistURI = PlaylistUri
 
 /**
- * Represents a Spotify **Track** URI, ether LocalTrack or SpotifyTrack, parsed from either a Spotify ID or taken
- * from an endpoint
- * */
-@Serializable
-sealed class TrackUri(input: String, type: String) : SpotifyUri(input, type) {
-    @Serializer(forClass = TrackUri::class)
-    companion object : KSerializer<TrackUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("TrackUri", PrimitiveKind.STRING)
-        override fun deserialize(decoder: Decoder): TrackUri = TrackUri(decoder.decodeString())
-        override fun serialize(encoder: Encoder, value: TrackUri) = encoder.encodeString(value.uri)
-
-        /**
-         * Creates a abstract TrackURI of given input. Prefers SpotifyTrackUri if the input is ambiguous.
-         * */
-        operator fun invoke(input: String): TrackUri {
-            val constructors = listOf(::SpotifyTrackUri, ::LocalTrackUri)
-            for (ctor in constructors) {
-                safeInitiate(input, ctor)?.also { return it }
-            }
-            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to 'track' or 'local' id")
-        }
-    }
-}
-
-@Deprecated("renamed", ReplaceWith("TrackUri", "com.adamratzman.spotify.models.TrackUri"))
-typealias TrackURI = TrackUri
-
-/**
  * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
 @Serializable
-class SpotifyTrackUri(input: String) : TrackUri(input, "track") {
+class SpotifyTrackUri(input: String) : PlayableUri(input, "track") {
     @Serializer(forClass = SpotifyTrackUri::class)
     companion object : KSerializer<SpotifyTrackUri> by SimpleUriSerializer(::SpotifyTrackUri)
 }
@@ -231,10 +274,16 @@ class SpotifyTrackUri(input: String) : TrackUri(input, "track") {
  * Represents a Spotify **local track** URI
  */
 @Serializable
-class LocalTrackUri(input: String) : TrackUri(input, "local") {
+class LocalTrackUri(input: String) : PlayableUri(input, "local", allowColon = true) {
     @Serializer(forClass = LocalTrackUri::class)
     companion object : KSerializer<LocalTrackUri> by SimpleUriSerializer(::LocalTrackUri)
 }
 
 @Deprecated("renamed", ReplaceWith("LocalTrackUri", "com.adamratzman.spotify.models.LocalTrackUri"))
 typealias LocalTrackURI = LocalTrackUri
+
+@Serializable
+class EpisodeUri(input: String) : PlayableUri(input, "episode") {
+    @Serializer(forClass = EpisodeUri::class)
+    companion object : KSerializer<EpisodeUri> by SimpleUriSerializer(::EpisodeUri)
+}
