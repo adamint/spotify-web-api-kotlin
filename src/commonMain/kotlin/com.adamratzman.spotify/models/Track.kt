@@ -40,7 +40,7 @@ data class SimpleTrack(
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     override val href: String,
     override val id: String,
-    override val uri: TrackUri,
+    override val uri: PlayableUri,
 
     val artists: List<SimpleArtist>,
     @SerialName("disc_number") val discNumber: Int,
@@ -115,7 +115,7 @@ data class Track(
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     override val href: String,
     override val id: String,
-    override val uri: TrackUri,
+    override val uri: PlayableUri,
 
     val album: SimpleAlbum,
     val artists: List<SimpleArtist>,
@@ -128,13 +128,13 @@ data class Track(
     val popularity: Int,
     @SerialName("preview_url") val previewUrl: String? = null,
     @SerialName("track_number") val trackNumber: Int,
-    val type: String,
+    override val type: String,
     @SerialName("is_local") val isLocal: Boolean? = null,
     val restrictions: Restrictions? = null,
 
     val episode: Boolean? = null,
     val track: Boolean? = null
-) : RelinkingAvailableResponse() {
+) : RelinkingAvailableResponse(), Playable {
 
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
@@ -156,7 +156,7 @@ data class LinkedTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    override val uri: TrackUri,
+    override val uri: PlayableUri,
 
     val type: String
 ) : CoreObject() {
@@ -410,7 +410,7 @@ data class AudioFeatures(
     @SerialName("time_signature") val timeSignature: Int,
     @SerialName("track_href") val trackHref: String,
     val type: String,
-    val uri: TrackUri,
+    val uri: PlayableUri,
     val valence: Float
 )
 

@@ -3,6 +3,8 @@ package com.adamratzman.spotify.public
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
+import com.adamratzman.spotify.models.LocalTrack
+import com.adamratzman.spotify.models.Track
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
@@ -36,6 +38,13 @@ class PublicPlaylistsAPITest : Spek({
             it("valid playlist, get tracks") {
                 assertTrue(p.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").complete().items.isNotEmpty())
             }
+
+            it("valid playlist, get tracks including one local track") {
+                val playlist = p.getPlaylistTracks("0vzdw0N41qZLbRDqyx2cE0").complete()
+                assertEquals(LocalTrack::class, playlist[0].track!!::class)
+                assertEquals(Track::class, playlist[1].track!!::class)
+            }
+
             it("invalid playlist") {
                 assertFailsWith<SpotifyException.BadRequestException> { p.getPlaylistTracks("adskjfjkasdf").complete() }
             }
