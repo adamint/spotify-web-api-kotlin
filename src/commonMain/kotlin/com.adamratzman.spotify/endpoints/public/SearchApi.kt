@@ -13,7 +13,9 @@ import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimpleAlbum
+import com.adamratzman.spotify.models.SimpleEpisode
 import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.SimpleShow
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
@@ -43,7 +45,9 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         ALBUM("album"),
         TRACK("track"),
         ARTIST("artist"),
-        PLAYLIST("playlist");
+        PLAYLIST("playlist"),
+        SHOW("show"),
+        EPISODE("episode");
     }
 
     /**
@@ -105,12 +109,12 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
     fun search(
-        query: String,
-        vararg searchTypes: SearchType,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null,
-        includeExternal: Boolean? = null
+            query: String,
+            vararg searchTypes: SearchType,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null,
+            includeExternal: Boolean? = null
     ): SpotifyRestAction<SpotifySearchResult> {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
         return toAction {
@@ -118,10 +122,12 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
             SpotifySearchResult(
-                map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
-                map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
-                map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
-                map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json)
+                    map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
+                    map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
+                    map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
+                    map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json),
+                    map["episodes"]?.toString()?.toPagingObject(SimpleEpisode.serializer(), endpoint = this, json = json),
+                    map["shows"]?.toString()?.toPagingObject(SimpleShow.serializer(), endpoint = this, json = json)
             )
         }
     }
@@ -142,14 +148,14 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchPlaylist(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.PLAYLIST))
-                .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
+                    .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
         }
     }
 
@@ -170,14 +176,14 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchArtist(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ARTIST))
-                .toPagingObject(Artist.serializer(), "artists", this, json)
+                    .toPagingObject(Artist.serializer(), "artists", this, json)
         }
     }
 
@@ -198,14 +204,14 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchAlbum(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ALBUM))
-                .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
+                    .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
         }
     }
 
@@ -226,27 +232,83 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchTrack(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.TRACK))
-                .toPagingObject(Track.serializer(), "tracks", this, json)
+                    .toPagingObject(Track.serializer(), "tracks", this, json)
+        }
+    }
+
+    /**
+     * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleShow] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    fun searchShow(
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
+    ): SpotifyRestActionPaging<SimpleShow, PagingObject<SimpleShow>> {
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.TRACK))
+                    .toPagingObject(SimpleShow.serializer(), "shows", this, json)
+        }
+    }
+
+    /**
+     * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleEpisode] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    fun searchEpisode(
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
+    ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
+        return toActionPaging {
+            get(build(query, market, limit, offset, SearchType.TRACK))
+                    .toPagingObject(SimpleEpisode.serializer(), "episodes", this, json)
         }
     }
 
     private fun build(
-        query: String,
-        market: Market?,
-        limit: Int?,
-        offset: Int?,
-        vararg types: SearchType,
-        includeExternal: Boolean? = null
+            query: String,
+            market: Market?,
+            limit: Int?,
+            offset: Int?,
+            vararg types: SearchType,
+            includeExternal: Boolean? = null
     ): String {
         return EndpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
-            .with("market", market?.name).with("limit", limit).with("offset", offset)
-            .with("include_external", if (includeExternal == true) "audio" else null).toString()
+                .with("market", market?.name).with("limit", limit).with("offset", offset)
+                .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }
