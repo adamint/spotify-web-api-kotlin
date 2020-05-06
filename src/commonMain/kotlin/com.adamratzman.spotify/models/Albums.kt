@@ -189,7 +189,7 @@ enum class CopyrightType(val identifier: String) : ResultEnum {
     override fun retrieveIdentifier() = identifier
 }
 
-private fun getReleaseDate(releaseDateString: String) = when (releaseDateString.count { it == '-' }) {
+internal fun getReleaseDate(releaseDateString: String) = when (releaseDateString.count { it == '-' }) {
     0 -> ReleaseDate(releaseDateString.toInt(), null, null)
     1 -> {
         val split = releaseDateString.split("-").map { it.toInt() }
