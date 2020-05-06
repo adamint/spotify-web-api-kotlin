@@ -30,34 +30,3 @@ interface Playable {
         }
     }
 }
-
-
-@Serializable
-data class Episode(
-        override val href: String,
-        override val id: String,
-        override val uri: EpisodeUri,
-
-        val show: SimpleShow,
-        val audioPreviewUrl: String? = null,
-        val description: String,
-        val durationMs: Int,
-        val explicit: Boolean,
-        val externalUrlsString: Map<String, String>,
-        val images: List<SpotifyImage>,
-        val isExternallyHosted: Boolean,
-        val isPlayable: Boolean,
-        val languages: List<Language>,
-        val name: String,
-        private val releaseDateString: String,
-        private val releaseDatePrecision: String,
-        val resumePoint: String? = null,
-        override val type: String,
-
-        private val availableMarketsString: List<String>
-) : Playable
-
-@Serializable
-data class SimpleShow(
-        val uri: ShowUri
-)

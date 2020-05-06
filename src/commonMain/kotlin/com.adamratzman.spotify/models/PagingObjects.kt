@@ -348,6 +348,7 @@ abstract class AbstractPagingObject<T : Any>(
 
 internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi<*, *>) = when (this) {
     is FeaturedPlaylists -> this.playlists
+    is Show -> this.episodes
     is Album -> this.tracks
     is Playlist -> this.tracks
     else -> null
