@@ -6,6 +6,7 @@ import com.adamratzman.spotify.models.Album
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.CursorBasedPagingObject
+import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
 import kotlin.test.assertEquals

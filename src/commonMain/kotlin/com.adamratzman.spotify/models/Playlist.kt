@@ -105,22 +105,22 @@ data class PlaylistTrack(
  */
 @Serializable
 data class Playlist(
-    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    override val href: String,
-    override val id: String,
-    override val uri: PlaylistUri,
+        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+        override val href: String,
+        override val id: String,
+        override val uri: PlaylistUri,
 
-    val collaborative: Boolean,
-    val description: String? = null,
-    val followers: Followers,
-    @SerialName("primary_color") val primaryColor: String? = null,
-    val images: List<SpotifyImage>,
-    val name: String,
-    val owner: SpotifyPublicUser,
-    val public: Boolean? = null,
-    @SerialName("snapshot_id") private val snapshotIdString: String,
-    val tracks: PagingObject<PlaylistTrack>,
-    val type: String
+        val collaborative: Boolean,
+        val description: String? = null,
+        val followers: Followers,
+        @SerialName("primary_color") val primaryColor: String? = null,
+        val images: List<SpotifyImage>,
+        val name: String,
+        val owner: SpotifyPublicUser,
+        val public: Boolean? = null,
+        @SerialName("snapshot_id") private val snapshotIdString: String,
+        val tracks: PagingObject<PlaylistTrack>,
+        val type: String
 ) : CoreObject() {
 
     @Transient

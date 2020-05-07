@@ -1,7 +1,8 @@
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.utils.Language
 import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.utils.Language
+import com.adamratzman.spotify.utils.Locale
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -30,15 +31,15 @@ data class Episode(
         val description: String,
         @SerialName("duration_ms") val durationMs: Int,
         val explicit: Boolean,
-        override val externalUrlsString: Map<String, String>,
+        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
         override val href: String,
         override val id: String,
         val images: List<SpotifyImage>,
         @SerialName("is_externally_hosted") val isExternallyHosted: Boolean,
         @SerialName("is_playable") val isPlayable: Boolean,
         @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")
-        private val language: Language? = null,
-        @SerialName("languages") private val showLanguagesPrivate: List<Language>,
+        private val language: String? = null,
+        @SerialName("languages") private val showLanguagesPrivate: List<String>,
         private val name: String,
         @SerialName("release_date") private val releaseDateString: String,
         @SerialName("release_date_precision") val releaseDatePrecisionString: String,
@@ -47,11 +48,14 @@ data class Episode(
         override val type: String,
         override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-        @Transient
-        val releaseDate = getReleaseDate(releaseDateString)
+    @Transient
+    val releaseDate = getReleaseDate(releaseDateString)
 
-        @Suppress("DEPRECATION")
-        val languages get() = language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate
+    @Suppress("DEPRECATION")
+    val languages
+        get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate).map { languageString ->
+                Locale.valueOf(languageString.replace("-", "_"))
+        }
 }
 
 
@@ -78,15 +82,15 @@ data class SimpleEpisode(
         val description: String,
         @SerialName("duration_ms") val durationMs: Int,
         val explicit: Boolean,
-        override val externalUrlsString: Map<String, String>,
+        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
         override val href: String,
         override val id: String,
         val images: List<SpotifyImage>,
         @SerialName("is_externally_hosted") val isExternallyHosted: Boolean,
         @SerialName("is_playable") val isPlayable: Boolean,
         @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")
-        private val language: Language? = null,
-        @SerialName("languages") private val showLanguagesPrivate: List<Language>,
+        private val language: String? = null,
+        @SerialName("languages") private val showLanguagesPrivate: List<String>,
         private val name: String,
         @SerialName("release_date") private val releaseDateString: String,
         @SerialName("release_date_precision") val releaseDatePrecisionString: String,
@@ -94,11 +98,13 @@ data class SimpleEpisode(
         override val type: String,
         override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-        @Transient
-        val releaseDate = getReleaseDate(releaseDateString)
+    @Transient
+    val releaseDate = getReleaseDate(releaseDateString)
 
-        @Suppress("DEPRECATION")
-        val languages get() = language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate
+    @Suppress("DEPRECATION")
+    val languages
+        get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate)
+                .map { Locale.valueOf(it.replace("-", "_")) }
 }
 
 /**
