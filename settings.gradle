@@ -12,10 +12,6 @@ pluginManagement {
             if (requested.id.id == "kotlinx-serialization") {
                 useModule("org.jetbrains.kotlin:kotlin-serialization:$mainKotlinVersion")
             }
-            if (requested.id.id == "com.android.library" || requested.id.id == "kotlin-android-extensions"
-                    || requested.id.id == "kotlin-android") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
-            }
 
         }
     }
