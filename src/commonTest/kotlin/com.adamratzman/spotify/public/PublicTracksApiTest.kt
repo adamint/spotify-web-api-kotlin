@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class PublicTracksAPITest : Spek({
+class PublicTracksApiTest : Spek({
     describe("Track API (Public View) test") {
         val t = api.tracks
         describe("get track") {

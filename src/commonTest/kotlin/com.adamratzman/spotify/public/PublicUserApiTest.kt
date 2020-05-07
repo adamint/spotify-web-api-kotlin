@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class PublicUserAPITest : Spek({
+class PublicUserApiTest : Spek({
     describe("Public User test") {
         describe("get user") {
             it("available user should return author name") {

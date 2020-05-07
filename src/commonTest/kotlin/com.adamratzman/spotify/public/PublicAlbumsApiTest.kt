@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class PublicAlbumsAPITest : Spek({
+class PublicAlbumsApiTest : Spek({
     describe("Public Albums test") {
         val a = api.albums
         describe("get albums") {

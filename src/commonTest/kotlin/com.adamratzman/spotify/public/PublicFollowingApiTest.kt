@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class PublicFollowingAPITest : Spek({
+class PublicFollowingApiTest : Spek({
     describe("Public Following test") {
         val f = api.following
         describe("do users follow playlist") {

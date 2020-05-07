@@ -10,7 +10,7 @@ import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
-class SearchAPITest : Spek({
+class SearchApiTest : Spek({
     describe("Search API test") {
         val s = api.search
         describe("search multiple") {
