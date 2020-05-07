@@ -67,7 +67,7 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
     fun getTopArtists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
@@ -101,7 +101,7 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
     fun getTopTracks(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {

@@ -189,7 +189,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
      * @throws BadRequestException if the filters provided are illegal
      */
     fun getClientPlaylists(
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
@@ -218,7 +218,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
         return toAction {
             val playlists = getClientPlaylists().complete()
-            playlists.items.find { it.id == id } ?: playlists.getAllItems().complete().find { it?.id == id }
+            playlists.items.find { it?.id == id } ?: playlists.getAllItems().complete().find { it?.id == id }
         }
     }
 

@@ -56,7 +56,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getUserPlaylists(
         user: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
@@ -71,7 +71,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
     fun getPlaylists(
         user: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null
     ) = getUserPlaylists(user, limit, offset)
 
@@ -114,7 +114,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getPlaylistTracks(
         playlist: String,
-        limit: Int? = null,
+        limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
