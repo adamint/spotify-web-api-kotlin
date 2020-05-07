@@ -40,7 +40,7 @@ data class Episode(
         @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")
         private val language: String? = null,
         @SerialName("languages") private val showLanguagesPrivate: List<String>,
-        private val name: String,
+        val name: String,
         @SerialName("release_date") private val releaseDateString: String,
         @SerialName("release_date_precision") val releaseDatePrecisionString: String,
         @SerialName("resume_point") val resumePoint: ResumePoint? = null,
@@ -119,3 +119,6 @@ data class ResumePoint(
         @SerialName("fully_played") val fullyPlayed: Boolean,
         @SerialName("resume_position_ms") val resumePositionMs: Boolean
 )
+
+@Serializable
+internal data class EpisodeList(val episodes: List<Episode?>)
