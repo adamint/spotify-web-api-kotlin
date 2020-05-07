@@ -24,7 +24,7 @@ class ClientPlaylistApiTest : Spek({
 
         createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
-            assertEquals(cp.getClientPlaylists().getAllItemsNotNull().complete().items.size - 1, playlistsBefore?.items?.size)
+            assertEquals(cp.getClientPlaylists().getAllItemsNotNull().complete().size - 1, playlistsBefore?.size)
         }
 
         it("add, remove >100 tracks works correctly with chunking") {
