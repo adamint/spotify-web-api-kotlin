@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class BrowseAPITest : Spek({
+class BrowseApiTest : Spek({
     describe("Browse test") {
         val b = api.browse
         it("get genre seeds") {

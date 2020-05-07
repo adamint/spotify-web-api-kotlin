@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientFollowingAPITest : Spek({
+class ClientFollowingApiTest : Spek({
     describe("Client following tests") {
         if (api !is SpotifyClientApi) return@describe
         it("following/unfollowing artists") {

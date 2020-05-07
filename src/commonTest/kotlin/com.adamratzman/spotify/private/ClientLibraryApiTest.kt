@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientLibraryAPITest : Spek({
+class ClientLibraryApiTest : Spek({
     describe("Client Library tests") {
         if (api !is SpotifyClientApi) return@describe
 
