@@ -119,27 +119,27 @@ enum class AlbumResultType(internal val id: String) {
  */
 @Serializable
 data class Album(
-        @SerialName("album_type") private val albumTypeString: String,
-        @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-        @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String> = mapOf(),
-        override val href: String,
-        override val id: String,
-        override val uri: AlbumUri,
+    @SerialName("album_type") private val albumTypeString: String,
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String> = mapOf(),
+    override val href: String,
+    override val id: String,
+    override val uri: AlbumUri,
 
-        val artists: List<SimpleArtist>,
-        val copyrights: List<SpotifyCopyright>,
-        val genres: List<String>,
-        val images: List<SpotifyImage>,
-        val label: String,
-        val name: String,
-        val popularity: Int,
-        @SerialName("release_date") private val releaseDateString: String,
-        @SerialName("release_date_precision") val releaseDatePrecision: String,
-        val tracks: PagingObject<SimpleTrack>,
-        val type: String,
-        @SerialName("total_tracks") val totalTracks: Int,
-        val restrictions: Restrictions? = null
+    val artists: List<SimpleArtist>,
+    val copyrights: List<SpotifyCopyright>,
+    val genres: List<String>,
+    val images: List<SpotifyImage>,
+    val label: String,
+    val name: String,
+    val popularity: Int,
+    @SerialName("release_date") private val releaseDateString: String,
+    @SerialName("release_date_precision") val releaseDatePrecision: String,
+    val tracks: PagingObject<SimpleTrack>,
+    val type: String,
+    @SerialName("total_tracks") val totalTracks: Int,
+    val restrictions: Restrictions? = null
 ) : CoreObject() {
 
     @Transient

@@ -4,11 +4,11 @@ package com.adamratzman.spotify.models.serialization
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.NeedsApi
 import com.adamratzman.spotify.models.NullablePagingObject
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.instantiatePagingObjects
 import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
@@ -124,14 +124,13 @@ internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: PagingO
     }
 }
 
-
 internal inline fun <reified T : Any> String.toPagingObject(
-        tSerializer: KSerializer<T>,
-        innerObjectName: String? = null,
-        endpoint: SpotifyEndpoint,
-        json: Json,
-        arbitraryInnerNameAllowed: Boolean = false,
-        skipInnerNameFirstIfPossible: Boolean = true
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
 ): PagingObject<T> = toNullablePagingObject(tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible).toPagingObject()
 
 internal inline fun <reified T : Any> String.toNullablePagingObject(

@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SpotifySearchResult(
-        val albums: PagingObject<SimpleAlbum>? = null,
-        val artists: PagingObject<Artist>? = null,
-        val playlists: PagingObject<SimplePlaylist>? = null,
-        val tracks: PagingObject<Track>? = null,
-        val episodes: NullablePagingObject<SimpleEpisode>? = null,
-        val shows: NullablePagingObject<SimpleShow>?=null
+    val albums: PagingObject<SimpleAlbum>? = null,
+    val artists: PagingObject<Artist>? = null,
+    val playlists: PagingObject<SimplePlaylist>? = null,
+    val tracks: PagingObject<Track>? = null,
+    val episodes: NullablePagingObject<SimpleEpisode>? = null,
+    val shows: NullablePagingObject<SimpleShow>? = null
 )

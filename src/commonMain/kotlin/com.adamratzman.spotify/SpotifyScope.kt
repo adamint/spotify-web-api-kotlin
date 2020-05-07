@@ -130,7 +130,6 @@ enum class SpotifyScope(val uri: String) {
      */
     USER_READ_PLAYBACK_STATE("user-read-playback-state"),
 
-
     /**
      * Read access to a user’s playback position in a content.
      *

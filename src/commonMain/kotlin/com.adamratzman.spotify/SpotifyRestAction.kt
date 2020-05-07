@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapConcat
@@ -157,7 +156,6 @@ class SpotifyRestActionPaging<Z : Any, T : PagingObjectBase<Z>>(api: SpotifyApi<
      */
     @SpotifyExperimentalHttpApi
     fun getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { getWithNext(total, context).complete().map { it.items }.flatten() }
-
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action. Filters out null objects

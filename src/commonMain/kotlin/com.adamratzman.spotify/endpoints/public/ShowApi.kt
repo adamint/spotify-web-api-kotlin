@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
@@ -98,10 +99,10 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getShowEpisodes(
-            id: String,
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        id: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
         return toActionPaging {
             get(
@@ -111,5 +112,4 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                     .toPagingObject(SimpleEpisode.serializer(), null, this, json)
         }
     }
-
 }

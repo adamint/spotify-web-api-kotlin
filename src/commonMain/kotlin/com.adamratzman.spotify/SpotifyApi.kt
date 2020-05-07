@@ -538,7 +538,7 @@ class SpotifyClientApi internal constructor(
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
     override val episodes: EpisodeApi = EpisodeApi(this)
-    override val shows:ShowApi = ShowApi(this)
+    override val shows: ShowApi = ShowApi(this)
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving
      * information about a user’s playlists and for managing a user’s playlists.
