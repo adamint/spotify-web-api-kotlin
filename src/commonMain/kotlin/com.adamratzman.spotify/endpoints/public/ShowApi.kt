@@ -38,7 +38,7 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
      * Users can view the country that is associated with their account in the account settings.
      *
-     * @return possibly-null Show. This behavior is *the same* as in [getShows]
+     * @return possibly-null Show. This behavior is *not the same* as in [getShows]
      */
     fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
         return toAction {
