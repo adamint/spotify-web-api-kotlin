@@ -95,3 +95,6 @@ data class Show(
 
     val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 }
+
+@Serializable
+internal data class ShowList(val shows: List<SimpleShow?>)
