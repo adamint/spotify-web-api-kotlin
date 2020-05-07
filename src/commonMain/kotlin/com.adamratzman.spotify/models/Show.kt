@@ -1,6 +1,6 @@
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.utils.Language
+import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -40,7 +40,7 @@ data class SimpleShow(
         override val id: String,
         val images: List<SpotifyImage>,
         @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
-        val languages: List<Language>,
+        @SerialName("languages") private val languagesString: List<String>,
         @SerialName("media_type") val mediaType: String,
         val name: String,
         val publisher: String,
@@ -50,6 +50,7 @@ data class SimpleShow(
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
 
+    val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 
     // TODO  fun toFullShow(market: Market? = null) = api.tracks.getTrack(id, market)
 }
@@ -68,7 +69,7 @@ data class SimpleShow(
  * @property name The name of the show.
  * @property publisher The publisher of the show.
  * @property type The object type: “show”.
- * @property episodes A [PagingObject] of the show’s episodes.
+ * @property episodes A [NullablePagingObject] of the show’s episodes.
  */
 @Serializable
 data class Show(
@@ -76,13 +77,13 @@ data class Show(
         val copyrights: List<SpotifyCopyright>,
         val description: String,
         val explicit: Boolean,
-        val episodes: PagingObject<SimpleEpisode>,
+        val episodes: NullablePagingObject<SimpleEpisode>,
         @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
         override val href: String,
         override val id: String,
         val images: List<SpotifyImage>,
         @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
-        val languages: List<Language>,
+        @SerialName("languages") val languagesString: List<String>,
         @SerialName("media_type") val mediaType: String,
         val name: String,
         val publisher: String,
@@ -91,4 +92,6 @@ data class Show(
 ) : CoreObject() {
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+
+    val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 }

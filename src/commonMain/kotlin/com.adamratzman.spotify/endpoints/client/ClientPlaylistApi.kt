@@ -218,7 +218,7 @@ class ClientPlaylistApi(api: SpotifyApi<*, *>) : PlaylistApi(api) {
     fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
         return toAction {
             val playlists = getClientPlaylists().complete()
-            playlists.items.find { it.id == id } ?: playlists.getAllItems().complete().find { it.id == id }
+            playlists.items.find { it?.id == id } ?: playlists.getAllItems().complete().find { it?.id == id }
         }
     }
 
