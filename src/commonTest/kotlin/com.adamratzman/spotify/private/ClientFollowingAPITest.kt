@@ -24,7 +24,7 @@ class ClientFollowingAPITest : Spek({
 
             assertTrue(!api.following.isFollowingArtist(testArtistId).complete())
 
-            val beforeFollowing = api.following.getFollowedArtists().getAllItems().complete()
+            val beforeFollowing = api.following.getFollowedArtists().getAllItemsNotNull().complete()
 
             assertNull(beforeFollowing.find { it.id == testArtistId })
 

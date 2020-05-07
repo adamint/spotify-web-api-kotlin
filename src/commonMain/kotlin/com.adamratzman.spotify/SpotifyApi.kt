@@ -11,9 +11,11 @@ import com.adamratzman.spotify.endpoints.client.ClientProfileApi
 import com.adamratzman.spotify.endpoints.public.AlbumApi
 import com.adamratzman.spotify.endpoints.public.ArtistApi
 import com.adamratzman.spotify.endpoints.public.BrowseApi
+import com.adamratzman.spotify.endpoints.public.EpisodeApi
 import com.adamratzman.spotify.endpoints.public.FollowingApi
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
 import com.adamratzman.spotify.endpoints.public.SearchApi
+import com.adamratzman.spotify.endpoints.public.ShowApi
 import com.adamratzman.spotify.endpoints.public.TrackApi
 import com.adamratzman.spotify.endpoints.public.UserApi
 import com.adamratzman.spotify.http.HttpConnection
@@ -95,6 +97,8 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     abstract val users: UserApi
     abstract val tracks: TrackApi
     abstract val following: FollowingApi
+    abstract val episodes: EpisodeApi
+    abstract val shows: ShowApi
 
     init {
         if (testTokenValidity) {
@@ -416,6 +420,8 @@ class SpotifyAppApi internal constructor(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
+    override val episodes: EpisodeApi = EpisodeApi(this)
+    override val shows: ShowApi = ShowApi(this)
 
     /**
      * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
@@ -531,7 +537,8 @@ class SpotifyClientApi internal constructor(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
-
+    override val episodes: EpisodeApi = EpisodeApi(this)
+    override val shows:ShowApi = ShowApi(this)
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving
      * information about a user’s playlists and for managing a user’s playlists.

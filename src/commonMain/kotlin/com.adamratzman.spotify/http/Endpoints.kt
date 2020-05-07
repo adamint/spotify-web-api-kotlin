@@ -8,7 +8,7 @@ import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.base
-import com.adamratzman.spotify.models.AbstractPagingObject
+import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
@@ -162,7 +162,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     )
 
     internal fun <T> toAction(supplier: suspend () -> T) = SpotifyRestAction(api, supplier)
-    internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: suspend () -> T) =
+    internal fun <Z : Any, T : PagingObjectBase<Z>> toActionPaging(supplier: suspend () -> T) =
             SpotifyRestActionPaging(api, supplier)
 }
 
