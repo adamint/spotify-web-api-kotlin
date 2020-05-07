@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class PublicPlaylistsAPITest : Spek({
+class PublicPlaylistsApiTest : Spek({
     describe("Public playlists test") {
         val p = api.playlists
         describe("get user's playlists") {

@@ -15,7 +15,7 @@ import kotlinx.coroutines.awaitAll
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientPlaylistAPITest : Spek({
+class ClientPlaylistApiTest : Spek({
     describe("Client playlist test") {
         val cp = (api as? SpotifyClientApi)?.playlists
         val playlistsBefore = cp?.getClientPlaylists()?.complete()

@@ -6,7 +6,7 @@ import com.adamratzman.spotify.api
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class ClientUserAPITest : Spek({
+class ClientUserApiTest : Spek({
     describe("Client profile test") {
         val cp = (api as? SpotifyClientApi)?.users
         it("valid user") {
