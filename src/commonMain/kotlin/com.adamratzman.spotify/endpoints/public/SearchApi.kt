@@ -112,7 +112,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun search(
             query: String,
             vararg searchTypes: SearchType,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null,
             includeExternal: Boolean? = null
@@ -150,7 +150,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchPlaylist(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
@@ -178,7 +178,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchArtist(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
@@ -206,7 +206,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchAlbum(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
@@ -234,7 +234,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchTrack(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
@@ -262,7 +262,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchShow(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<SimpleShow, PagingObject<SimpleShow>> {
@@ -290,7 +290,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun searchEpisode(
             query: String,
-            limit: Int? = null,
+            limit: Int? = api.defaultLimit,
             offset: Int? = null,
             market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
