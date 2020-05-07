@@ -18,13 +18,13 @@ import org.spekframework.spek2.style.specification.describe
 class ClientPlaylistApiTest : Spek({
     describe("Client playlist test") {
         val cp = (api as? SpotifyClientApi)?.playlists
-        val playlistsBefore = cp?.getClientPlaylists()?.complete()
+        val playlistsBefore = cp?.getClientPlaylists()?.getAllItemsNotNull()?.complete()
         val createdPlaylist = cp?.createClientPlaylist("this is a test playlist", "description")
                 ?.complete()
 
         createdPlaylist ?: return@describe
         it("get playlists for user, then see if we can create/delete playlists") {
-            assertEquals(cp.getClientPlaylists().complete().items.size - 1, playlistsBefore?.items?.size)
+            assertEquals(cp.getClientPlaylists().getAllItemsNotNull().complete().items.size - 1, playlistsBefore?.items?.size)
         }
 
         it("add, remove >100 tracks works correctly with chunking") {
