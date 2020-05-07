@@ -151,7 +151,7 @@ class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
      * with full [Artist] objects
      */
     fun getFollowedArtists(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         after: String? = null
     ): SpotifyRestActionPaging<Artist, CursorBasedPagingObject<Artist>> {
         return toActionPaging {

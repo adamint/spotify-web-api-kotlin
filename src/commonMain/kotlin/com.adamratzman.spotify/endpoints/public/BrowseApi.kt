@@ -69,7 +69,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of new album released, ordered by release date (descending)
      */
     fun getNewReleases(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
@@ -104,7 +104,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [FeaturedPlaylists] object with the current featured message and featured playlists
      */
     fun getFeaturedPlaylists(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null,
@@ -140,7 +140,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     fun getCategoryList(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null
@@ -198,7 +198,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getPlaylistsForCategory(
         categoryId: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
@@ -250,7 +250,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         market: Market? = null,
         targetAttributes: List<TrackAttribute<*>> = listOf(),
         minAttributes: List<TrackAttribute<*>> = listOf(),
@@ -305,7 +305,7 @@ class BrowseApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         market: Market? = null,
         targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
         minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),

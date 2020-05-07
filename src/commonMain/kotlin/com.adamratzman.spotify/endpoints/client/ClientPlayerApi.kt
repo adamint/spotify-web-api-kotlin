@@ -80,7 +80,7 @@ class ClientPlayerApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      */
     fun getRecentlyPlayed(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         before: String? = null,
         after: String? = null
     ): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
