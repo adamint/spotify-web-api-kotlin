@@ -88,7 +88,7 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getAlbumTracks(
         album: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {

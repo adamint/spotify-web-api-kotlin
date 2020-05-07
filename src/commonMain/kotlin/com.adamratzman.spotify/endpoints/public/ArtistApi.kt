@@ -93,7 +93,7 @@ class ArtistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getArtistAlbums(
         artist: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = null,
         offset: Int? = null,
         market: Market? = null,
         vararg include: AlbumInclusionStrategy
