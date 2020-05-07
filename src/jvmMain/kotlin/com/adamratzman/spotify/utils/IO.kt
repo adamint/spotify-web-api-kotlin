@@ -1,10 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-import org.apache.commons.codec.binary.Base64
 import java.io.ByteArrayOutputStream
 import java.net.URL
 import javax.imageio.ImageIO
+import org.apache.commons.codec.binary.Base64
 
 internal actual fun encodeBufferedImageToBase64String(image: BufferedImage): String {
     val bos = ByteArrayOutputStream()

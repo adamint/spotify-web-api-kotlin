@@ -4,11 +4,11 @@ package com.adamratzman.spotify.public
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.Market
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class EpisodeApiTest : Spek({
     describe("Episode API  test") {
