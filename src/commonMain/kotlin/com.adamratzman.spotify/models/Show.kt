@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.utils.Locale
@@ -11,7 +12,7 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 data class BasicShowInformation(
-        val uri: ShowUri
+    val uri: ShowUri
 )
 
 /**
@@ -31,21 +32,21 @@ data class BasicShowInformation(
  */
 @Serializable
 data class SimpleShow(
-        @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-        val copyrights: List<SpotifyCopyright>,
-        val description: String,
-        val explicit: Boolean,
-        override val href: String,
-        override val id: String,
-        val images: List<SpotifyImage>,
-        @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
-        @SerialName("languages") private val languagesString: List<String>,
-        @SerialName("media_type") val mediaType: String,
-        val name: String,
-        val publisher: String,
-        val type: String,
-        override val uri: ShowUri
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    val copyrights: List<SpotifyCopyright>,
+    val description: String,
+    val explicit: Boolean,
+    override val href: String,
+    override val id: String,
+    val images: List<SpotifyImage>,
+    @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
+    @SerialName("languages") private val languagesString: List<String>,
+    @SerialName("media_type") val mediaType: String,
+    val name: String,
+    val publisher: String,
+    val type: String,
+    override val uri: ShowUri
 ) : CoreObject() {
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
@@ -73,22 +74,22 @@ data class SimpleShow(
  */
 @Serializable
 data class Show(
-        @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
-        val copyrights: List<SpotifyCopyright>,
-        val description: String,
-        val explicit: Boolean,
-        val episodes: NullablePagingObject<SimpleEpisode>,
-        @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-        override val href: String,
-        override val id: String,
-        val images: List<SpotifyImage>,
-        @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
-        @SerialName("languages") val languagesString: List<String>,
-        @SerialName("media_type") val mediaType: String,
-        val name: String,
-        val publisher: String,
-        val type: String,
-        override val uri: ShowUri
+    @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
+    val copyrights: List<SpotifyCopyright>,
+    val description: String,
+    val explicit: Boolean,
+    val episodes: NullablePagingObject<SimpleEpisode>,
+    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
+    override val href: String,
+    override val id: String,
+    val images: List<SpotifyImage>,
+    @SerialName("is_externally_hosted") val isExternallyHosted: Boolean? = null,
+    @SerialName("languages") val languagesString: List<String>,
+    @SerialName("media_type") val mediaType: String,
+    val name: String,
+    val publisher: String,
+    val type: String,
+    override val uri: ShowUri
 ) : CoreObject() {
     @Transient
     val availableMarkets = availableMarketsString.map { Market.valueOf(it) }

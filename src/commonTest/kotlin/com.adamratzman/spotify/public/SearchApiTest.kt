@@ -5,10 +5,10 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.public.SearchApi
 import com.adamratzman.spotify.utils.Market
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class SearchApiTest : Spek({
     describe("Search API test") {
@@ -19,8 +19,8 @@ class SearchApiTest : Spek({
                 assertTrue(query.albums?.items?.isNotEmpty() == true && query.tracks?.items?.isNotEmpty() == true && query.artists?.items?.isNotEmpty() == true &&
                         query.playlists?.items?.isNotEmpty() == true && query.shows?.items?.isNotEmpty() == true && query.episodes?.items?.isNotEmpty() == true)
                 val query2 = s.search("lo", SearchApi.SearchType.ARTIST, SearchApi.SearchType.PLAYLIST).complete()
-                assertTrue(query2.albums == null && query2.tracks == null && query2.shows == null && query2.episodes == null
-                        && query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true)
+                assertTrue(query2.albums == null && query2.tracks == null && query2.shows == null && query2.episodes == null &&
+                        query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true)
 
                 val query3 = s.search("lo", SearchApi.SearchType.SHOW, SearchApi.SearchType.EPISODE).complete()
                 assertTrue(query3.episodes?.items?.isNotEmpty() == true && query3.shows?.items?.isNotEmpty() == true)

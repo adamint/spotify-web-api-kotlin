@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.SpotifyApi
@@ -10,9 +11,6 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Episode
 import com.adamratzman.spotify.models.EpisodeList
 import com.adamratzman.spotify.models.EpisodeUri
-import com.adamratzman.spotify.models.ShowList
-import com.adamratzman.spotify.models.ShowUri
-import com.adamratzman.spotify.models.SimpleShow
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch

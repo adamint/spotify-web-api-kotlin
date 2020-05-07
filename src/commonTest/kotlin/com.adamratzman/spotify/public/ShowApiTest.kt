@@ -1,18 +1,15 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.public
 
-import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.models.LocalTrack
-import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.utils.Market
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 class ShowApiTest : Spek({
     describe("Show API  test") {
@@ -32,7 +29,7 @@ class ShowApiTest : Spek({
                 assertFailsWith<BadRequestException> { t.getShows("hi", "dad", market = Market.US).complete() }
             }
             it("mix of known shows") {
-                assertFailsWith<BadRequestException> {   t.getShows("1iohmBNlRooIVtukKeavRa", "j").complete().map { it?.name } }
+                assertFailsWith<BadRequestException> { t.getShows("1iohmBNlRooIVtukKeavRa", "j").complete().map { it?.name } }
             }
             it("known shows") {
                 assertEquals(listOf("Love Letters", "Freakonomics Radio"), t.getShows("1iohmBNlRooIVtukKeavRa", "6z4NLXyHPga1UmSJsPK7G1").complete().map { it?.name })
@@ -48,6 +45,5 @@ class ShowApiTest : Spek({
                 assertFailsWith<BadRequestException> { t.getShowEpisodes("adskjfjkasdf").complete() }
             }
         }
-
     }
 })

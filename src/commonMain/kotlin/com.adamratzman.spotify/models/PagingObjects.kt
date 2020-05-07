@@ -9,6 +9,8 @@ import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.runBlocking
+import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +22,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -55,18 +55,18 @@ enum class PagingTraversalType {
  */
 @Serializable
 class NullablePagingObject<T : Any>(
-        override val href: String,
-        override val items: List<T?>,
-        override val limit: Int,
-        override val next: String? = null,
-        override val offset: Int,
-        override val previous: String? = null,
-        override val total: Int = 0
+    override val href: String,
+    override val items: List<T?>,
+    override val limit: Int,
+    override val next: String? = null,
+    override val offset: Int,
+    override val previous: String? = null,
+    override val total: Int = 0
 ) : AbstractPagingObject<T>() {
     override fun get(index: Int) = items[index]
 
     fun toPagingObject(): PagingObject<T> {
-        val pagingObject= PagingObject(
+        val pagingObject = PagingObject(
                 href, items.filterNotNull(), limit, next, offset, previous, total
         )
         pagingObject.endpoint = endpoint
@@ -83,13 +83,13 @@ class NullablePagingObject<T : Any>(
  */
 @Serializable
 class PagingObject<T : Any>(
-        override val href: String,
-        override val items: List<T>,
-        override val limit: Int,
-        override val next: String? = null,
-        override val offset: Int,
-        override val previous: String? = null,
-        override val total: Int = 0
+    override val href: String,
+    override val items: List<T>,
+    override val limit: Int,
+    override val next: String? = null,
+    override val offset: Int,
+    override val previous: String? = null,
+    override val total: Int = 0
 ) : AbstractPagingObject<T>() {
     override fun get(index: Int) = items[index]
 }
@@ -199,14 +199,14 @@ abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
  */
 @Serializable
 class CursorBasedPagingObject<T : Any>(
-        override val href: String,
-        override val items: List<T>,
-        override val limit: Int,
-        override val next: String? = null,
-        @SerialName("cursors") val cursor: Cursor,
-        override val total: Int = 0,
-        override val offset: Int = 0,
-        override val previous: String? = null
+    override val href: String,
+    override val items: List<T>,
+    override val limit: Int,
+    override val next: String? = null,
+    @SerialName("cursors") val cursor: Cursor,
+    override val total: Int = 0,
+    override val offset: Int = 0,
+    override val previous: String? = null
 ) : PagingObjectBase<T>() {
     override fun get(index: Int) = items[index]
 
@@ -337,8 +337,9 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
     /**
      * Get all items of type [T] associated with the request. Filters out null objects.
      */
-     suspend fun getAllItemsNotNull(context: CoroutineContext = Dispatchers.Default) =
+    suspend fun getAllItemsNotNull(context: CoroutineContext = Dispatchers.Default) =
             endpoint!!.toAction { getAllItems(context).complete().filterNotNull() }
+
     /**
      * Flow from current page backwards.
      * */
@@ -376,8 +377,6 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
 
     @ExperimentalCoroutinesApi
     fun flowEndOrdered(): Flow<PagingObjectBase<T>> = flowForward()
-
-
 
     override val size get() = items.size
     override fun contains(element: T?) = items.contains(element)
