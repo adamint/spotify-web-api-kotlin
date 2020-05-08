@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package com.adamratzman.spotify.public
+package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.Market
@@ -12,6 +13,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class EpisodeApiTest : Spek({
     describe("Episode API  test") {
+        if (api !is SpotifyClientApi) return@describe
         val t = api.episodes
         describe("get episode") {
             it("known episode") {

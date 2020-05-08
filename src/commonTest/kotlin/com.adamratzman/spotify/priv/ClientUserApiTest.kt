@@ -1,5 +1,5 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package com.adamratzman.spotify.private
+package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.api
