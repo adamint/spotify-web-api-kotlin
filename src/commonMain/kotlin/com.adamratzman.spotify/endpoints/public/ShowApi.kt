@@ -44,9 +44,9 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
         return toAction {
             catch {
-                get(
-                        EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
-                ).toObject(Show.serializer(), api, json)
+                    get(
+                            EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
+                    ).toObject(Show.serializer(), api, json)
             }
         }
     }

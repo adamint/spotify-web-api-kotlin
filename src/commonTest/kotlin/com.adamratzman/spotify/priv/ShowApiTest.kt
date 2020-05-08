@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package com.adamratzman.spotify.public
+package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.Market
@@ -13,10 +14,12 @@ import org.spekframework.spek2.style.specification.describe
 
 class ShowApiTest : Spek({
     describe("Show API  test") {
+        if (api !is SpotifyClientApi) return@describe
         val t = api.shows
+
         describe("get show") {
             it("known show") {
-                val show = t.getShow("1iohmBNlRooIVtukKeavRa").complete()!!
+                val show = t.getShow("38bS44xjbVVZ3No3ByF1dJ").complete()!!
                 assertEquals("Love Letters", show.name)
                 assertTrue(show.episodes.isNotEmpty())
             }
