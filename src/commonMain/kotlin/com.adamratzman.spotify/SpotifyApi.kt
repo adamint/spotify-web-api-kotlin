@@ -2,6 +2,7 @@
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
 import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
 import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
@@ -30,10 +31,10 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 /**
  * Base url for Spotify web api calls
@@ -65,19 +66,19 @@ internal const val base = "https://api.spotify.com/v1"
  *
  */
 sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
-    val clientId: String?,
-    val clientSecret: String?,
-    var token: Token,
-    useCache: Boolean,
-    var cacheLimit: Int?,
-    var automaticRefresh: Boolean,
-    var retryWhenRateLimited: Boolean,
-    enableLogger: Boolean,
-    testTokenValidity: Boolean,
-    var defaultLimit: Int,
-    var allowBulkRequests: Boolean,
-    var requestTimeoutMillis: Long?,
-    var json: Json
+        val clientId: String?,
+        val clientSecret: String?,
+        var token: Token,
+        useCache: Boolean,
+        var cacheLimit: Int?,
+        var automaticRefresh: Boolean,
+        var retryWhenRateLimited: Boolean,
+        enableLogger: Boolean,
+        testTokenValidity: Boolean,
+        var defaultLimit: Int,
+        var allowBulkRequests: Boolean,
+        var requestTimeoutMillis: Long?,
+        var json: Json
 ) {
     var useCache = useCache
         set(value) {
@@ -97,8 +98,6 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     abstract val users: UserApi
     abstract val tracks: TrackApi
     abstract val following: FollowingApi
-    abstract val episodes: EpisodeApi
-    abstract val shows: ShowApi
 
     init {
         if (testTokenValidity) {
@@ -208,8 +207,8 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
 
     @JvmOverloads
     suspend fun suspendIsTokenValid(
-        makeTestRequest: Boolean = true,
-        context: CoroutineContext = Dispatchers.Default
+            makeTestRequest: Boolean = true,
+            context: CoroutineContext = Dispatchers.Default
     ): TokenValidityResponse {
         if (token.shouldRefresh()) return TokenValidityResponse(
                 false,
@@ -247,11 +246,12 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
          * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
          * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
          */
-        fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String {
+        fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String, isImplicitGrantFlow: Boolean = false, shouldShowDialog: Boolean = false): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                    "&response_type=code" +
+                    "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
                     "&redirect_uri=$redirectUri" +
-                    if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
+                    if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}" +
+                            if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
         }
 
         /**
@@ -280,84 +280,6 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
 
             throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), null, json))
         }
-
-        // ==============================================
-
-        /*
-            App Api Builders
-         */
-
-        /**
-         * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret], with the ability to configure
-         * the api settings by providing a builder initialization [block]
-         *
-         * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
-         * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
-         * @param block Api settings block
-         *
-         * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
-         */
-        fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
-                SpotifyAppApiBuilder().apply(block).apply {
-                    credentials {
-                        this.clientId = clientId
-                        this.clientSecret = clientSecret
-                    }
-                }
-
-        /**
-         * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
-         *
-         * **Note**: You **must** provide your app credentials in the [SpotifyAppApiBuilder.credentials] block
-         *
-         * @param block Api settings block
-         *
-         * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
-         */
-        fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
-
-        /*
-            Client Api Builders
-         */
-
-        /**
-         * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri], with the ability to configure
-         * the api settings by providing a builder initialization [block]
-         *
-         * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
-         * block
-         *
-         * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
-         * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
-         * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
-         * @param block Api settings block
-         *
-         * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
-         */
-        fun spotifyClientApi(
-            clientId: String,
-            clientSecret: String,
-            redirectUri: String,
-            block: SpotifyClientApiBuilder.() -> Unit
-        ) = SpotifyClientApiBuilder().apply(block).apply {
-            credentials {
-                this.clientId = clientId
-                this.clientSecret = clientSecret
-                this.redirectUri = redirectUri
-            }
-        }
-
-        /**
-         * Instantiate a new [SpotifyClientApiBuilder] by providing a builder initialization [block]
-         *
-         * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
-         * block
-         *
-         * @param block Api settings block
-         *
-         * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
-         */
-        fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
     }
 }
 
@@ -366,19 +288,19 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
  * client authentication
  */
 class SpotifyAppApi internal constructor(
-    clientId: String?,
-    clientSecret: String?,
-    token: Token,
-    useCache: Boolean,
-    cacheLimit: Int?,
-    automaticRefresh: Boolean,
-    retryWhenRateLimited: Boolean,
-    enableLogger: Boolean,
-    testTokenValidity: Boolean,
-    defaultLimit: Int,
-    allowBulkRequests: Boolean,
-    requestTimeoutMillis: Long?,
-    json: Json
+        clientId: String?,
+        clientSecret: String?,
+        token: Token,
+        useCache: Boolean,
+        cacheLimit: Int?,
+        automaticRefresh: Boolean,
+        retryWhenRateLimited: Boolean,
+        enableLogger: Boolean,
+        testTokenValidity: Boolean,
+        defaultLimit: Int,
+        allowBulkRequests: Boolean,
+        requestTimeoutMillis: Long?,
+        json: Json
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
         clientId,
         clientSecret,
@@ -395,10 +317,10 @@ class SpotifyAppApi internal constructor(
         json
 ) {
     constructor(
-        clientId: String,
-        clientSecret: String,
-        token: Token,
-        options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
+            clientId: String,
+            clientSecret: String,
+            token: Token,
+            options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
     ) : this(
             clientId,
             clientSecret,
@@ -420,8 +342,6 @@ class SpotifyAppApi internal constructor(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
-    override val episodes: EpisodeApi = EpisodeApi(this)
-    override val shows: ShowApi = ShowApi(this)
 
     /**
      * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
@@ -479,21 +399,21 @@ class SpotifyAppApi internal constructor(
  * An API instance created through client authentication, with access to private information
  * managed through the scopes exposed in [token]
  */
-class SpotifyClientApi internal constructor(
-    clientId: String?,
-    clientSecret: String?,
-    var redirectUri: String?,
-    token: Token,
-    useCache: Boolean,
-    cacheLimit: Int?,
-    automaticRefresh: Boolean,
-    retryWhenRateLimited: Boolean,
-    enableLogger: Boolean,
-    testTokenValidity: Boolean,
-    defaultLimit: Int,
-    allowBulkRequests: Boolean,
-    requestTimeoutMillis: Long?,
-    json: Json
+open class SpotifyClientApi internal constructor(
+        clientId: String?,
+        clientSecret: String?,
+        var redirectUri: String?,
+        token: Token,
+        useCache: Boolean,
+        cacheLimit: Int?,
+        automaticRefresh: Boolean,
+        retryWhenRateLimited: Boolean,
+        enableLogger: Boolean,
+        testTokenValidity: Boolean,
+        defaultLimit: Int,
+        allowBulkRequests: Boolean,
+        requestTimeoutMillis: Long?,
+        json: Json
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
         clientSecret,
@@ -510,11 +430,11 @@ class SpotifyClientApi internal constructor(
         json
 ) {
     constructor(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        token: Token,
-        options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
+            clientId: String,
+            clientSecret: String,
+            redirectUri: String,
+            token: Token,
+            options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
     ) : this(
             clientId,
             clientSecret,
@@ -537,8 +457,24 @@ class SpotifyClientApi internal constructor(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
-    override val episodes: EpisodeApi = EpisodeApi(this)
-    override val shows: ShowApi = ShowApi(this)
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/episodes/) for retrieving
+     * information about one or more episodes from the Spotify catalog.
+     *
+     * @since 3.1.0
+     */
+    @SpotifyExperimentalHttpApi
+    val episodes: EpisodeApi = EpisodeApi(this)
+
+
+    /**
+     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/shows/) for retrieving
+     * information about one or more shows from the Spotify catalog.
+     */
+    @SpotifyExperimentalHttpApi
+    val shows: ShowApi = ShowApi(this)
+
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving
      * information about a user’s playlists and for managing a user’s playlists.
@@ -699,23 +635,52 @@ class SpotifyClientApi internal constructor(
                     scopes.all { token.scopes.contains(it) }
 }
 
+
+/**
+ * An API instance created through implicit grant flow, with access to private information
+ * managed through the scopes exposed in [token]. [token] is not refreshable and is only accessible for limited time.
+ */
+class SpotifyImplicitGrantApi(
+        clientId: String?,
+        clientSecret: String?,
+        redirectUri: String?,
+        token: Token,
+        useCache: Boolean,
+        cacheLimit: Int?,
+        retryWhenRateLimited: Boolean,
+        enableLogger: Boolean,
+        testTokenValidity: Boolean,
+        defaultLimit: Int,
+        allowBulkRequests: Boolean,
+        requestTimeoutMillis: Long?,
+        json: Json
+) : SpotifyClientApi(
+        clientId,
+        clientSecret,
+        redirectUri,
+        token,
+        useCache,
+        cacheLimit,
+        false,
+        retryWhenRateLimited,
+        enableLogger,
+        testTokenValidity,
+        defaultLimit,
+        allowBulkRequests,
+        requestTimeoutMillis,
+        json
+) {
+    override suspend fun suspendRefreshToken(): Token {
+        throw IllegalStateException("You cannot refresh an implicit grant access token!")
+    }
+}
+
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyApi"))
 typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
 
 typealias SpotifyClientAPI = SpotifyClientApi
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
-
-/**
- * Get the authorization url for the provided [clientId] and [redirectUri] application settings, when attempting to authorize with
- * specified [scopes]
- *
- * @param scopes Spotify scopes the api instance should be able to access for the user
- * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
- */
-@Deprecated("Moved", ReplaceWith("SpotifyApi.getAuthUrlFull"))
-fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String): String = SpotifyApi.getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
 
 /**
  *
@@ -730,9 +695,9 @@ fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: S
 suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?, json: Json): Token = SpotifyApi.getCredentialedToken(clientId, clientSecret, api, json)
 
 internal suspend fun executeTokenRequest(
-    httpConnection: HttpConnection,
-    clientId: String,
-    clientSecret: String
+        httpConnection: HttpConnection,
+        clientId: String,
+        clientSecret: String
 ): HttpResponse {
     return httpConnection.execute(
             listOf(

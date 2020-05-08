@@ -1,9 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-
 val _clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
 val _clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
 val _redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
