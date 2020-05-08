@@ -624,15 +624,16 @@ open class SpotifyClientApi internal constructor(
     /**
      * Whether the current access token allows access to scope [scope]
      */
-    fun hasScope(scope: SpotifyScope): Boolean = hasScopes(scope)
+    fun hasScope(scope: SpotifyScope): Boolean? = hasScopes(scope)
 
     /**
      * Whether the current access token allows access to all of the provided scopes
      */
-    fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean =
-            !isTokenValid(false).isValid &&
-                    token.scopes.contains(scope) &&
-                    scopes.all { token.scopes.contains(it) }
+    fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean? =
+            if (token.scopes == null) null
+            else !isTokenValid(false).isValid &&
+                    token.scopes?.contains(scope) == true &&
+                    scopes.all { token.scopes?.contains(it) == true }
 }
 
 
