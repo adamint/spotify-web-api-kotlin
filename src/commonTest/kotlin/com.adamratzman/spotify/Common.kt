@@ -6,22 +6,8 @@ val _clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
 val _redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
 val _tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
 
-val api = {
-    println(_redirectUri)
-    println(_clientId)
-println(_redirectUri.isNullOrBlank())
-    println(_clientId.isNullOrBlank())
-
-}.let {  when {
-    _redirectUri?.isNotBlank() != true -> {
-        spotifyAppApi {
-            credentials {
-                clientId = _clientId
-                clientSecret = _clientSecret
-            }
-        }.build()
-    }
-    _clientId?.isNotBlank() == true -> {
+val api = when {
+    _redirectUri?.isNotBlank() == true -> {
         spotifyClientApi {
             credentials {
                 clientId = _clientId
@@ -33,8 +19,15 @@ println(_redirectUri.isNullOrBlank())
             }
         }.build()
     }
+    _clientId?.isNotBlank() == true -> {
+        spotifyAppApi {
+            credentials {
+                clientId = _clientId
+                clientSecret = _clientSecret
+            }
+        }.build()
+    }
     else -> null
-}
 }
 
 expect fun getEnvironmentVariable(name: String): String?
