@@ -22,6 +22,8 @@ import org.spekframework.spek2.style.specification.describe
 @UnstableDefault
 class JsonTests : Spek({
     describe("json serialization tests") {
+        api?.artists ?: return@describe
+
         it("artist serialization") {
             assertTrue(
                 Json.stringify(

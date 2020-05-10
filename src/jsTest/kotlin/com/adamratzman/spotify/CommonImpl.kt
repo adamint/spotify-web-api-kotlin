@@ -2,7 +2,6 @@
 package com.adamratzman.spotify
 
 actual fun getEnvironmentVariable(name: String): String? {
-    println("env $name: " + process.env[name].unsafeCast<String?>())
     return process.env[name].unsafeCast<String?>()
 }
 
@@ -16,6 +15,5 @@ external interface Process {
 }
 
 fun main() {
-    println(api.token)
-    println(api.browse.getAvailableGenreSeeds().complete())
+    // println(api.token)
 }
