@@ -204,7 +204,7 @@ signing {
 }
 
 // get signing confs interactively if needed
-gradle.taskGraph.whenReady {
+/*gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
         (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
                 || (has("signing.notNeeded") && get("signing.notNeeded") == "true")
@@ -231,7 +231,7 @@ gradle.taskGraph.whenReady {
 
         console.printf("\nThanks.\n\n")
     }
-}
+}*/
 
 tasks {
     val dokka by getting(DokkaTask::class) {
