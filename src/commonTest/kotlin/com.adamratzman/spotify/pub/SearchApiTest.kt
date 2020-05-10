@@ -3,6 +3,7 @@ package com.adamratzman.spotify.pub
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
+import com.adamratzman.spotify.endpoints.client.ClientSearchApi
 import com.adamratzman.spotify.endpoints.public.SearchApi
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.assertFailsWith
@@ -58,21 +59,23 @@ class SearchApiTest : Spek({
                 assertFailsWith<SpotifyException.BadRequestException> { s.searchArtist("").complete().items.size }
             }
         }
-        describe("search show") {
-            it("valid request") {
-                assertTrue(s.searchShow("f").complete().items.isNotEmpty())
+        if (s is ClientSearchApi) {
+            describe("search show") {
+                it("valid request") {
+                    assertTrue(s.searchShow("f").complete().items.isNotEmpty())
+                }
+                it("invalid request") {
+                    assertFailsWith<SpotifyException.BadRequestException> { s.searchShow("").complete().items.size }
+                }
             }
-            it("invalid request") {
-                assertFailsWith<SpotifyException.BadRequestException> { s.searchShow("").complete().items.size }
-            }
-        }
 
-        describe("search episode") {
-            it("valid request") {
-                assertTrue(s.searchEpisode("f").complete().items.isNotEmpty())
-            }
-            it("invalid request") {
-                assertFailsWith<SpotifyException.BadRequestException> { s.searchEpisode("").complete().items.size }
+            describe("search episode") {
+                it("valid request") {
+                    assertTrue(s.searchEpisode("f").complete().items.isNotEmpty())
+                }
+                it("invalid request") {
+                    assertFailsWith<SpotifyException.BadRequestException> { s.searchEpisode("").complete().items.size }
+                }
             }
         }
     }
