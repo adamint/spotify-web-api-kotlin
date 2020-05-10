@@ -42,12 +42,12 @@ class ClientPlaylistApiTest : Spek({
 
             api.allowBulkRequests = true
 
-            val getSize = { cp.getClientPlaylist(createdPlaylist.id).complete()!!.tracks.total }
-            val sizeBefore = getSize()
-            cp.addTracksToClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
-            assertEquals(sizeBefore + tracks.size, getSize())
-            cp.removeTracksFromClientPlaylist(createdPlaylist.id, *tracks.toTypedArray()).complete()
-            assertEquals(sizeBefore, getSize())
+            /*val playlistSize = { cp.getClientPlaylist(createdPlaylist.id).complete()!!.tracks.total }
+            val sizeBefore = playlistSize()
+            cp.addTracksToClientPlaylist(createdPlaylist.id, tracks=*tracks.toTypedArray()).complete()
+            assertEquals(sizeBefore.plus(tracks.size), playlistSize())
+            cp.removeTracksFromClientPlaylist(createdPlaylist.id, tracks=*tracks.toTypedArray()).complete()
+            assertEquals(sizeBefore, playlistSize())*/
 
             api.allowBulkRequests = false
         }

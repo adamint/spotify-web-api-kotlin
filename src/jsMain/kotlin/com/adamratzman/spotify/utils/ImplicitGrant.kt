@@ -1,9 +1,10 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.models.Token
-import org.w3c.dom.url.URLSearchParams
 import kotlin.browser.window
+import org.w3c.dom.url.URLSearchParams
 
 /**
  * Parse the current url into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]

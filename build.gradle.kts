@@ -1,6 +1,8 @@
+import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 import java.net.URI
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     `maven-publish`
@@ -36,7 +38,19 @@ repositories {
 
 kotlin {
     jvm()
-    js()
+    js {
+        browser {
+            dceTask {
+                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
+            }
+
+            webpackTask {
+                output.libraryTarget = Target.UMD
+            }
+        }
+
+        nodejs()
+    }
 
     targets {
         sourceSets {
@@ -89,9 +103,13 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
+                    implementation(npm("text-encoding", "0.7.0"))
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
                     implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    implementation(npm("abort-controller", "3.0.0"))
+                    implementation(npm("node-fetch", "2.6.0"))
+
                     compileOnly(kotlin("stdlib-js"))
                 }
             }
@@ -284,20 +302,8 @@ tasks {
     }
 
 
-    getByName<KotlinJsCompile>("compileKotlinJs") {
-        kotlinOptions {
-            moduleKind = "umd"
-            noStdlib = false
-            metaInfo = true
-        }
-    }
-
     getByName<Test>("jvmTest") {
         useJUnitPlatform()
-    }
-
-    withType<GenerateModuleMetadata> {
-        enabled = false
     }
 
 

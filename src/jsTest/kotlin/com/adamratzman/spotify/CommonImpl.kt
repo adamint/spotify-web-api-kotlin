@@ -2,12 +2,20 @@
 package com.adamratzman.spotify
 
 actual fun getEnvironmentVariable(name: String): String? {
-    console.log(js("process.env"))
-    return null
+    println("env $name: " + process.env[name].unsafeCast<String?>())
+    return process.env[name].unsafeCast<String?>()
 }
 
 actual fun Exception.stackTrace() = println(this)
 
+
+external val process: Process
+
+external interface Process {
+    val env: dynamic
+}
+
 fun main() {
-    println(js("process.env"))
+    println(api.token)
+    println(api.browse.getAvailableGenreSeeds().complete())
 }
