@@ -21,6 +21,8 @@ class RestActionTests : Spek({
     }
 
     describe("request timeout") {
+        api ?: return@describe
+
         it("request timeout of 0ms (must fail)") {
             val prevTimeout = api.requestTimeoutMillis
 

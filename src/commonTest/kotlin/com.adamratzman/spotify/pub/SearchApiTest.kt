@@ -13,7 +13,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class SearchApiTest : Spek({
     describe("Search API test") {
-        val s = api.search
+        val s = api?.search ?: return@describe
         describe("search multiple") {
             it("valid request") {
                 val query = s.search("lo", *SearchApi.SearchType.values()).complete()
