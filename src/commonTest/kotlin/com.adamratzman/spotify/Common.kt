@@ -15,7 +15,7 @@ val api = when {
             }
         }.build()
     }
-    else -> {
+    _clientId != null -> {
         spotifyClientApi {
             credentials {
                 clientId = _clientId
@@ -27,6 +27,7 @@ val api = when {
             }
         }.build()
     }
+    else -> null
 }
 
 expect fun getEnvironmentVariable(name: String): String?

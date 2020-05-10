@@ -17,7 +17,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class BrowseApiTest : Spek({
     describe("Browse test") {
-        val b = api.browse
+        val b = api?.browse ?: return@describe
         it("get genre seeds") {
             assertTrue(b.getAvailableGenreSeeds().complete().isNotEmpty())
         }

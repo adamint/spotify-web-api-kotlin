@@ -15,7 +15,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicAlbumsApiTest : Spek({
     describe("Public Albums test") {
-        val a = api.albums
+        val a = api?.albums ?: return@describe
         describe("get albums") {
             it("singular album") {
                 assertNull(a.getAlbum("asdf", Market.FR).complete())

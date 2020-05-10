@@ -10,6 +10,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicUserApiTest : Spek({
     describe("Public User test") {
+        api?.users ?: return@describe
         describe("get user") {
             it("available user should return author name") {
                 assertTrue { catch { api.users.getProfile("adamratzman1").complete()!!.followers.total } != null }
