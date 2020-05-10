@@ -1,8 +1,6 @@
-import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 import java.net.URI
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     `maven-publish`
@@ -46,6 +44,10 @@ kotlin {
 
             webpackTask {
                 output.libraryTarget = Target.UMD
+            }
+
+            testTask {
+                enabled = false
             }
         }
 
