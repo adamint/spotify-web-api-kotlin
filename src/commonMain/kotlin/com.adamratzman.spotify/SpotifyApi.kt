@@ -521,7 +521,6 @@ open class SpotifyClientApi internal constructor(
      */
     val player: ClientPlayerApi = ClientPlayerApi(this)
 
-
     private lateinit var userIdBacking: String
 
     private fun initiatizeUserIdBacking(): String {
@@ -533,7 +532,6 @@ open class SpotifyClientApi internal constructor(
      * The Spotify user id to which the api instance is connected
      */
     val userId: String get() = if (::userIdBacking.isInitialized) userIdBacking else initiatizeUserIdBacking()
-
 
     /**
      * Stop all automatic functions like refreshToken or clearCache and shut down the scheduled

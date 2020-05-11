@@ -15,7 +15,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicArtistsApiTest : Spek({
     describe("Public Artists test") {
-        val a = api?.artists?: return@describe
+        val a = api?.artists ?: return@describe
         describe("get artists") {
             it("invalid artist") {
                 assertNull(a.getArtist("adkjlasdf").complete())
