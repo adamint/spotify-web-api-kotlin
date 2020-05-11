@@ -79,7 +79,8 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     var defaultLimit: Int,
     var allowBulkRequests: Boolean,
     var requestTimeoutMillis: Long?,
-    var json: Json
+    var json: Json,
+    var refreshTokenProducer: suspend (SpotifyApi<*,*>) -> Token
 ) {
     var useCache = useCache
         set(value) {
@@ -232,7 +233,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
      * @return The old access token if refresh was successful
      * @throws BadRequestException if refresh fails
      */
-    abstract suspend fun suspendRefreshToken(): Token
+    suspend fun suspendRefreshToken() = refreshTokenProducer(this).apply { this@SpotifyApi.token = this }
 
     companion object {
         /*
@@ -301,7 +302,8 @@ class SpotifyAppApi internal constructor(
     defaultLimit: Int,
     allowBulkRequests: Boolean,
     requestTimeoutMillis: Long?,
-    json: Json
+    json: Json,
+    refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)?
 ) : SpotifyApi<SpotifyAppApi, SpotifyAppApiBuilder>(
         clientId,
         clientSecret,
@@ -315,7 +317,8 @@ class SpotifyAppApi internal constructor(
         defaultLimit,
         allowBulkRequests,
         requestTimeoutMillis,
-        json
+        json,
+        refreshTokenProducer ?: defaultAppApiTokenRefreshProducer
 ) {
     constructor(
         clientId: String,
@@ -335,7 +338,8 @@ class SpotifyAppApi internal constructor(
             options.defaultLimit,
             options.allowBulkRequests,
             options.requestTimeoutMillis,
-            options.json
+            options.json,
+            options.refreshTokenProducer
     )
 
     override val search: SearchApi = SearchApi(this)
@@ -358,15 +362,6 @@ class SpotifyAppApi internal constructor(
      * Provides access to **public** playlist [follower information](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)
      */
     override val following: FollowingApi = FollowingApi(this)
-
-    override suspend fun suspendRefreshToken(): Token {
-        require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
-        val currentToken = this.token
-
-        token = getCredentialedToken(clientId, clientSecret, this, json)
-
-        return currentToken
-    }
 
     override val endpoints: List<SpotifyEndpoint>
         get() = listOf(
@@ -394,6 +389,14 @@ class SpotifyAppApi internal constructor(
 
         useCache = this@SpotifyAppApi.useCache
     }
+
+    companion object {
+        private val defaultAppApiTokenRefreshProducer: suspend (SpotifyApi<*,*>) -> Token = { api ->
+            require(api.clientId != null && api.clientSecret != null) { "Either the client id or the client secret is not set" }
+
+            getCredentialedToken(api.clientId, api.clientSecret, api, api.json)
+        }
+    }
 }
 
 /**
@@ -414,7 +417,8 @@ open class SpotifyClientApi internal constructor(
     defaultLimit: Int,
     allowBulkRequests: Boolean,
     requestTimeoutMillis: Long?,
-    json: Json
+    json: Json,
+    refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
         clientSecret,
@@ -428,7 +432,8 @@ open class SpotifyClientApi internal constructor(
         defaultLimit,
         allowBulkRequests,
         requestTimeoutMillis,
-        json
+        json,
+        refreshTokenProducer ?: defaultClientApiTokenRefreshProducer
 ) {
     constructor(
         clientId: String,
@@ -450,7 +455,8 @@ open class SpotifyClientApi internal constructor(
             options.defaultLimit,
             options.allowBulkRequests,
             options.requestTimeoutMillis,
-            options.json
+            options.json,
+            options.refreshTokenProducer
     )
 
     override val albums: AlbumApi = AlbumApi(this)
@@ -541,44 +547,6 @@ open class SpotifyClientApi internal constructor(
         runExecutableFunctions = false
     }
 
-    override suspend fun suspendRefreshToken(): Token {
-        require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
-
-        val currentToken = this.token
-
-        val response = executeTokenRequest(
-                HttpConnection(
-                        "https://accounts.spotify.com/api/token",
-                        HttpRequestMethod.POST,
-                        mapOf(
-                                "grant_type" to "refresh_token",
-                                "refresh_token" to token.refreshToken
-                        ),
-                        null,
-                        "application/x-www-form-urlencoded",
-                        listOf(),
-                        this
-                ), clientId, clientSecret
-        )
-
-        if (response.responseCode / 200 == 1) {
-            val tempToken = response.body.toObject(Token.serializer(), this, json)
-            this.token = tempToken.copy(
-                    refreshToken = tempToken.refreshToken ?: this.token.refreshToken,
-                    scopeString = tempToken.scopeString
-            )
-
-            logger.logInfo("Successfully refreshed the Spotify token")
-            return currentToken
-        } else throw BadRequestException(
-                response.body.toObject(
-                        AuthenticationError.serializer(),
-                        this,
-                        json
-                )
-        )
-    }
-
     override val endpoints: List<SpotifyEndpoint>
         get() = listOf(
                 search,
@@ -639,6 +607,40 @@ open class SpotifyClientApi internal constructor(
             else !isTokenValid(false).isValid &&
                     token.scopes?.contains(scope) == true &&
                     scopes.all { token.scopes?.contains(it) == true }
+
+    companion object {
+        private val defaultClientApiTokenRefreshProducer: suspend (SpotifyApi<*,*>) -> Token = { api ->
+            require(api.clientId != null && api.clientSecret != null) { "Either the client id or the client secret is not set" }
+
+            val currentToken = api.token
+
+            val response = executeTokenRequest(
+                    HttpConnection(
+                            "https://accounts.spotify.com/api/token",
+                            HttpRequestMethod.POST,
+                            mapOf(
+                                    "grant_type" to "refresh_token",
+                                    "refresh_token" to currentToken.refreshToken
+                            ),
+                            null,
+                            "application/x-www-form-urlencoded",
+                            listOf(),
+                            api
+                    ), api.clientId, api.clientSecret
+            )
+
+            if (response.responseCode / 200 == 1) {
+                api.logger.logInfo("Successfully refreshed the Spotify token")
+                response.body.toObject(Token.serializer(), api, api.json)
+            } else throw BadRequestException(
+                    response.body.toObject(
+                            AuthenticationError.serializer(),
+                            api,
+                            api.json
+                    )
+            )
+        }
+    }
 }
 
 /**
@@ -673,12 +675,9 @@ class SpotifyImplicitGrantApi(
         defaultLimit,
         allowBulkRequests,
         requestTimeoutMillis,
-        json
-) {
-    override suspend fun suspendRefreshToken(): Token {
-        throw IllegalStateException("You cannot refresh an implicit grant access token!")
-    }
-}
+        json,
+        { throw IllegalStateException("You cannot refresh an implicit grant access token!") }
+)
 
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyApi"))
 typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
@@ -686,6 +685,8 @@ typealias SpotifyAPI<T, B> = SpotifyApi<T, B>
 typealias SpotifyClientAPI = SpotifyClientApi
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
+
+typealias  GenericSpotifyApi = SpotifyApi<*, *>
 
 /**
  *
