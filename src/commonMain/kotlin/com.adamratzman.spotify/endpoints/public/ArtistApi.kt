@@ -92,11 +92,11 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SimpleAlbum] objects
      */
     fun getArtistAlbums(
-            artist: String,
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null,
-            vararg include: AlbumInclusionStrategy
+        artist: String,
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null,
+        vararg include: AlbumInclusionStrategy
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(

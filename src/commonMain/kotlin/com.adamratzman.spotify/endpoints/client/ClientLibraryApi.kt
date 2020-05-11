@@ -44,9 +44,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging {
             get(
@@ -71,9 +71,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     fun getSavedAlbums(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging {
             get(
