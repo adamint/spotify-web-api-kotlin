@@ -547,7 +547,8 @@ class SpotifyClientApiBuilder(
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
-                        options.json
+                        options.json,
+                        options.refreshTokenProducer
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -568,7 +569,8 @@ class SpotifyClientApiBuilder(
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
-                    options.json
+                    options.json,
+                    options.refreshTokenProducer
             )
             authorization.tokenString != null -> SpotifyClientApi(
                     clientId,
@@ -590,7 +592,8 @@ class SpotifyClientApiBuilder(
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
-                    options.json
+                    options.json,
+                    options.refreshTokenProducer
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +
@@ -634,7 +637,8 @@ class SpotifyAppApiBuilder(
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
-                    options.json
+                    options.json,
+                    options.refreshTokenProducer
             )
             authorization.tokenString != null -> {
                 SpotifyAppApi(
@@ -653,7 +657,8 @@ class SpotifyAppApiBuilder(
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
-                        options.json
+                        options.json,
+                        options.refreshTokenProducer
                 )
             }
             authorization.refreshTokenString != null -> {
@@ -670,7 +675,8 @@ class SpotifyAppApiBuilder(
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
-                        options.json
+                        options.json,
+                        options.refreshTokenProducer
                 )
             }
             else -> try {
@@ -689,7 +695,8 @@ class SpotifyAppApiBuilder(
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
-                        options.json
+                        options.json,
+                        options.refreshTokenProducer
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -770,6 +777,7 @@ data class SpotifyUserAuthorization(
  * @property enableAllOptions Whether to enable all provided utilities
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
+ * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
  *
  */
 class SpotifyApiOptionsBuilder(
@@ -783,7 +791,8 @@ class SpotifyApiOptionsBuilder(
     var defaultLimit: Int = 50,
     var allowBulkRequests: Boolean = true,
     var requestTimeoutMillis: Long? = null,
-    var json: Json = nonstrictJson
+    var json: Json = nonstrictJson,
+    var refreshTokenProducer: (suspend (SpotifyApi<*,*>) -> Token)? = null
 ) {
     fun build() =
             if (enableAllOptions)
@@ -797,7 +806,8 @@ class SpotifyApiOptionsBuilder(
                         defaultLimit = 50,
                         allowBulkRequests = true,
                         requestTimeoutMillis = requestTimeoutMillis,
-                        json = json
+                        json = json,
+                        refreshTokenProducer = refreshTokenProducer
                 )
             else
                 SpotifyApiOptions(
@@ -810,7 +820,8 @@ class SpotifyApiOptionsBuilder(
                         defaultLimit,
                         allowBulkRequests,
                         requestTimeoutMillis,
-                        json
+                        json,
+                        refreshTokenProducer
                 )
 }
 
@@ -827,10 +838,11 @@ class SpotifyApiOptionsBuilder(
  * @property json The Json serializer/deserializer instance
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
+ * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
  *
  */
 
-data class SpotifyApiOptions(
+data class SpotifyApiOptions (
     var useCache: Boolean,
     var cacheLimit: Int?,
     var automaticRefresh: Boolean,
@@ -840,7 +852,8 @@ data class SpotifyApiOptions(
     var defaultLimit: Int,
     var allowBulkRequests: Boolean,
     var requestTimeoutMillis: Long?,
-    var json: Json
+    var json: Json,
+    var refreshTokenProducer: (suspend (SpotifyApi<*,*>) -> Token)?
 )
 
 @Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))

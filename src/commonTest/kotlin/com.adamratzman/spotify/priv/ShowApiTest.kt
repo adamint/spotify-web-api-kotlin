@@ -19,7 +19,7 @@ class ShowApiTest : Spek({
 
         describe("get show") {
             it("known show") {
-                val show = t.getShow("38bS44xjbVVZ3No3ByF1dJ").complete()!!
+                val show = t.getShow("1iohmBNlRooIVtukKeavRa").complete()!!
                 assertEquals("Love Letters", show.name)
                 assertTrue(show.episodes.isNotEmpty())
             }
