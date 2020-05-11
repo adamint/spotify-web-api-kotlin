@@ -31,6 +31,7 @@ typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+ * It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
