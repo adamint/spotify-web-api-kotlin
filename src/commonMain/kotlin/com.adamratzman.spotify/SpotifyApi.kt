@@ -687,6 +687,10 @@ typealias SpotifyClientAPI = SpotifyClientApi
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
 
+/**
+ * Represents a generic instance of the Spotify API client, with common functionality and information between
+ * implementations of the API
+ */
 typealias GenericSpotifyApi = SpotifyApi<*, *>
 
 /**

@@ -63,7 +63,7 @@ abstract class SpotifyEndpoint(val api: GenericSpotifyApi) {
         contentType: String? = null,
         attemptedRefresh: Boolean = false
     ): String {
-        if (getCurrentTimeMs() >= api.expireTime) {
+        if (api.token.shouldRefresh()) {
             if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
@@ -94,6 +94,8 @@ abstract class SpotifyEndpoint(val api: GenericSpotifyApi) {
                     )
                 } catch (e: BadRequestException) {
                     if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
+                        api.refreshToken()
+
                         execute(
                                 url,
                                 body,

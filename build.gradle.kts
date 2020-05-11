@@ -64,9 +64,9 @@ kotlin {
             val commonMain by getting {
                 dependencies {
                     implementation(kotlin("stdlib-common"))
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-                    implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    api("io.ktor:ktor-client-core:$ktorVersion")
                 }
             }
             val commonTest by getting {
@@ -84,9 +84,9 @@ kotlin {
                 }
 
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("commons-codec:commons-codec:1.14")
                     implementation(kotlin("stdlib-jdk8"))
                 }
@@ -106,9 +106,9 @@ kotlin {
             val jsMain by getting {
                 dependencies {
                     implementation(npm("text-encoding", "0.7.0"))
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
-                    implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    api("io.ktor:ktor-client-js:$ktorVersion")
                     implementation(npm("abort-controller", "3.0.0"))
                     implementation(npm("node-fetch", "2.6.0"))
 
