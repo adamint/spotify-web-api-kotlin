@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -28,7 +28,7 @@ typealias TrackAPI = TrackApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/)**
  */
-class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *

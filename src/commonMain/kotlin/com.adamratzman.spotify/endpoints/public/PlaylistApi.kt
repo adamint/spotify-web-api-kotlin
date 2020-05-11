@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -31,7 +31,7 @@ typealias PlaylistAPI = PlaylistApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/)**
  */
-open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
      * [PagingObject] (blame Spotify)
@@ -55,24 +55,24 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      *
      */
     fun getUserPlaylists(
-        user: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null
+            user: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
-                    "offset", offset
-                ).toString()
+                    EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
+                            "offset", offset
+                    ).toString()
             ).toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
         }
     }
 
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
     fun getPlaylists(
-        user: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null
+            user: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null
     ) = getUserPlaylists(user, limit, offset)
 
     /**
@@ -91,8 +91,8 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             catch {
                 get(
-                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
-                        .with("market", market?.name).toString()
+                        EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
+                                .with("market", market?.name).toString()
                 ).toObject(Playlist.serializer(), api, json)
             }
         }
@@ -113,17 +113,17 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getPlaylistTracks(
-        playlist: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            playlist: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<PlaylistTrack, PagingObject<PlaylistTrack>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
-                    .with("offset", offset).with("market", market?.name).toString()
+                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
+                            .with("offset", offset).with("market", market?.name).toString()
             )
-                .toPagingObject(PlaylistTrack.serializer(), null, this, json)
+                    .toPagingObject(PlaylistTrack.serializer(), null, this, json)
         }
     }
 
@@ -142,7 +142,7 @@ open class PlaylistApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction {
             get(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
-                .toList(SpotifyImage.serializer().list, api, json).toList()
+                    .toList(SpotifyImage.serializer().list, api, json).toList()
         }
     }
 }

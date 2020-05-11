@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -28,7 +28,7 @@ typealias ClientLibraryAPI = ClientLibraryApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
-class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
@@ -44,14 +44,14 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
     fun getSavedTracks(
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+                    EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
+                            .toString()
             ).toPagingObject(SavedTrack.serializer(), endpoint = this, json = json)
         }
     }
@@ -71,14 +71,14 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     fun getSavedAlbums(
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+                    EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
+                            .toString()
             ).toPagingObject(SavedAlbum.serializer(), endpoint = this, json = json)
         }
     }

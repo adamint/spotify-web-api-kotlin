@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.utils.Market
@@ -54,7 +55,8 @@ abstract class CoreObject : Identifiable() {
  */
 @Serializable
 abstract class RelinkingAvailableResponse : CoreObject() {
-    @SerialName("linked_from") abstract val linkedTrack: LinkedTrack?
+    @SerialName("linked_from")
+    abstract val linkedTrack: LinkedTrack?
     fun isRelinked() = linkedTrack != null
 }
 
@@ -83,7 +85,7 @@ class ExternalId(val key: String, val id: String)
 @Serializable
 abstract class NeedsApi {
     @Transient
-    lateinit var api: SpotifyApi<*, *>
+    lateinit var api: GenericSpotifyApi
 }
 
 /**
@@ -119,8 +121,8 @@ data class ErrorObject(val status: Int, val message: String, val reason: String?
  */
 @Serializable
 data class AuthenticationError(
-    val error: String,
-    @SerialName("error_description") val description: String
+        val error: String,
+        @SerialName("error_description") val description: String
 )
 
 /**
@@ -129,7 +131,7 @@ data class AuthenticationError(
  * @param time the time, in seconds, until the next request can be sent
  */
 class SpotifyRatelimitedException(time: Long) :
-    SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
+        SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
 
 @Deprecated("Country enum has been updated to preserve consistency with Spotify documentation", ReplaceWith("Market"))
 typealias CountryCode = Market

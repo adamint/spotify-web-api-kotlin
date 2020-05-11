@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -34,7 +34,7 @@ typealias SearchAPI = SearchApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
-open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *
@@ -110,12 +110,12 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
     fun search(
-        query: String,
-        vararg searchTypes: SearchType,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null,
-        includeExternal: Boolean? = null
+            query: String,
+            vararg searchTypes: SearchType,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null,
+            includeExternal: Boolean? = null
     ): SpotifyRestAction<SpotifySearchResult> {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
         return toAction {
@@ -149,10 +149,10 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchPlaylist(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.PLAYLIST))
@@ -177,10 +177,10 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchArtist(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ARTIST))
@@ -205,10 +205,10 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchAlbum(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ALBUM))
@@ -233,10 +233,10 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchTrack(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.TRACK))
@@ -245,12 +245,12 @@ open class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     }
 
     protected fun build(
-        query: String,
-        market: Market?,
-        limit: Int?,
-        offset: Int?,
-        vararg types: SearchType,
-        includeExternal: Boolean? = null
+            query: String,
+            market: Market?,
+            limit: Int?,
+            offset: Int?,
+            vararg types: SearchType,
+            includeExternal: Boolean? = null
     ): String {
         return EndpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
                 .with("market", market?.name).with("limit", limit).with("offset", offset)

@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
@@ -390,7 +391,7 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
     override fun subList(fromIndex: Int, toIndex: Int) = items.subList(fromIndex, toIndex)
 }
 
-internal fun Any.instantiatePagingObjects(spotifyApi: SpotifyApi<*, *>) = when (this) {
+internal fun Any.instantiatePagingObjects(spotifyApi: GenericSpotifyApi) = when (this) {
     is FeaturedPlaylists -> this.playlists
     is Show -> this.episodes
     is Album -> this.tracks

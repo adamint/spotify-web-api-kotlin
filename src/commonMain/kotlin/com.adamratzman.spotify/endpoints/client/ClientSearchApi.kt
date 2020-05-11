@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.endpoints.public.SearchApi
@@ -16,7 +16,7 @@ import com.adamratzman.spotify.utils.Market
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
-class ClientSearchApi(api: SpotifyApi<*, *>) : SearchApi(api) {
+class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
 
     /**
      * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
@@ -35,10 +35,10 @@ class ClientSearchApi(api: SpotifyApi<*, *>) : SearchApi(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchShow(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleShow, PagingObject<SimpleShow>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.SHOW))
@@ -63,10 +63,10 @@ class ClientSearchApi(api: SpotifyApi<*, *>) : SearchApi(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchEpisode(
-        query: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            query: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.EPISODE))

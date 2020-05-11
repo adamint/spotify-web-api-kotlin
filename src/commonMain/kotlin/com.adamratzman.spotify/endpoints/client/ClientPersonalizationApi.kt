@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -19,7 +19,7 @@ typealias ClientPersonalizationAPI = ClientPersonalizationApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/)**
  */
-class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * The time frame for which attribute affinities are computed.
      *
@@ -32,6 +32,7 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
          * Calculated from several years of data and including all new data as it becomes available
          */
         LONG_TERM("long_term"),
+
         /**
          * Approximately last 6 months
          */
@@ -67,14 +68,14 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
     fun getTopArtists(
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        timeRange: TimeRange? = null
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()
+                    EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
+                            .with("time_range", timeRange).toString()
             ).toPagingObject(Artist.serializer(), endpoint = this, json = json)
         }
     }
@@ -101,14 +102,14 @@ class ClientPersonalizationApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
     fun getTopTracks(
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        timeRange: TimeRange? = null
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            timeRange: TimeRange? = null
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                    .with("time_range", timeRange).toString()
+                    EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
+                            .with("time_range", timeRange).toString()
             ).toPagingObject(Track.serializer(), endpoint = this, json = json)
         }
     }
