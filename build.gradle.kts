@@ -202,7 +202,7 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications["jvm"])
+    if (project.hasProperty("nexusPublish")) sign(publishing.publications["jvm"])
 }
 
 // get signing confs interactively if needed
