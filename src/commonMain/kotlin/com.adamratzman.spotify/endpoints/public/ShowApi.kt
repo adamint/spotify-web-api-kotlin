@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -25,7 +25,7 @@ import com.adamratzman.spotify.utils.catch
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/)**
  */
-class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single show identified by its unique Spotify ID.
      *
@@ -44,9 +44,9 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
         return toAction {
             catch {
-                    get(
-                            EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
-                    ).toObject(Show.serializer(), api, json)
+                get(
+                        EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
+                ).toObject(Show.serializer(), api, json)
             }
         }
     }
@@ -99,10 +99,10 @@ class ShowApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getShowEpisodes(
-        id: String,
-        limit: Int? = null,
-        offset: Int? = null,
-        market: Market? = null
+            id: String,
+            limit: Int? = null,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
         return toActionPaging {
             get(

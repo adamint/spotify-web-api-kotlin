@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
@@ -15,7 +15,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
-class EpisodeApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single episode identified by its unique Spotify ID.
      *

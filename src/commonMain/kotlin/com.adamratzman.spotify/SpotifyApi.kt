@@ -265,7 +265,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
          * @param api The Spotify Api instance, or null if one doesn't exist yet
          * @param json The json instance that will deserialize the response. If [api] is not null, [SpotifyApi.json] can be used
          */
-        suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?, json: Json): Token {
+        suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: GenericSpotifyApi?, json: Json): Token {
             val response = executeTokenRequest(
                     HttpConnection(
                             "https://accounts.spotify.com/api/token",
@@ -418,7 +418,7 @@ open class SpotifyClientApi internal constructor(
     allowBulkRequests: Boolean,
     requestTimeoutMillis: Long?,
     json: Json,
-    refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?
+    refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)?
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
         clientSecret,
@@ -698,7 +698,7 @@ typealias  GenericSpotifyApi = SpotifyApi<*, *>
  * @param json The json instance that will deserialize the response. If [api] is not null, [SpotifyApi.json] can be used
  */
 @Deprecated("Moved", ReplaceWith("SpotifyApi.getCredentialedToken"))
-suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: SpotifyApi<*, *>?, json: Json): Token = SpotifyApi.getCredentialedToken(clientId, clientSecret, api, json)
+suspend fun getCredentialedToken(clientId: String, clientSecret: String, api: GenericSpotifyApi?, json: Json): Token = SpotifyApi.getCredentialedToken(clientId, clientSecret, api, json)
 
 internal suspend fun executeTokenRequest(
     httpConnection: HttpConnection,
