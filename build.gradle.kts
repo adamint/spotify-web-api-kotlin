@@ -172,7 +172,7 @@ publishing {
         }
     }
     repositories {
-        if (!project.hasProperty("publishToSpace")) {
+        if (project.hasProperty("nexusPublish")) {
             maven {
                 name = "nexus"
                 val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
