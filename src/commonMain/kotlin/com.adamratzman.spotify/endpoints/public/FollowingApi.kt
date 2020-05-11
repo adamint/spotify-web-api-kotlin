@@ -35,8 +35,8 @@ open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-            playlist: String,
-            vararg users: String
+        playlist: String,
+        vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
         checkBulkRequesting(5, users.size)
 

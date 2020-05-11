@@ -59,7 +59,7 @@ fun getSpotifyAuthorizationUrl(vararg scopes: SpotifyScope, clientId: String, re
  *
  * @return [SpotifyImplicitGrantApi] that can immediately begin making calls
  */
-fun spotifyImplicitGrantApi(clientId: String, redirectUri: String, token: Token, options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()) =
+fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Token, options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()) =
         SpotifyImplicitGrantApi(
                 clientId,
                 null,
@@ -119,6 +119,26 @@ fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBu
         }
 
 /**
+ * Instantiate a new [SpotifyAppApiBuilder] using a [Token]
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param apiToken The access token that will be associated with the built API instance
+ *
+ * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
+ */
+fun spotifyAppApi(clientId: String?, clientSecret: String?, apiToken: Token) =
+        SpotifyAppApiBuilder().apply {
+            credentials {
+                this.clientId = clientId
+                this.clientSecret = clientSecret
+            }
+            authentication {
+                token = apiToken
+            }
+        }
+
+/**
  * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
  *
  * **Note**: You **must** provide your app credentials in the [SpotifyAppApiBuilder.credentials] block
@@ -166,6 +186,34 @@ fun spotifyClientApi(
         this.clientId = clientId
         this.clientSecret = clientSecret
         this.redirectUri = redirectUri
+    }
+}
+
+/**
+ * Instantiate a new [SpotifyClientApiBuilder] using a [Token]
+ *
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param apiToken The access token that will be associated with the built API instance
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+fun spotifyClientApi(
+    clientId: String?,
+    clientSecret: String?,
+    redirectUri: String?,
+    apiToken: Token
+) = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+        this.redirectUri = redirectUri
+    }
+
+    authentication {
+        token = apiToken
     }
 }
 
@@ -792,7 +840,7 @@ class SpotifyApiOptionsBuilder(
     var allowBulkRequests: Boolean = true,
     var requestTimeoutMillis: Long? = null,
     var json: Json = nonstrictJson,
-    var refreshTokenProducer: (suspend (SpotifyApi<*,*>) -> Token)? = null
+    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)? = null
 ) {
     fun build() =
             if (enableAllOptions)
@@ -842,7 +890,7 @@ class SpotifyApiOptionsBuilder(
  *
  */
 
-data class SpotifyApiOptions (
+data class SpotifyApiOptions(
     var useCache: Boolean,
     var cacheLimit: Int?,
     var automaticRefresh: Boolean,
@@ -853,7 +901,7 @@ data class SpotifyApiOptions (
     var allowBulkRequests: Boolean,
     var requestTimeoutMillis: Long?,
     var json: Json,
-    var refreshTokenProducer: (suspend (SpotifyApi<*,*>) -> Token)?
+    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?
 )
 
 @Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))

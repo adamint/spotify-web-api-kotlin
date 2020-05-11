@@ -80,9 +80,9 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      */
     fun getRecentlyPlayed(
-            limit: Int? = api.defaultLimit,
-            before: String? = null,
-            after: String? = null
+        limit: Int? = api.defaultLimit,
+        before: String? = null,
+        after: String? = null
     ): SpotifyRestActionPaging<PlayHistory, CursorBasedPagingObject<PlayHistory>> {
         return toActionPaging {
             get(
@@ -256,11 +256,11 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     fun startPlayback(
-            collection: CollectionUri? = null,
-            offsetNum: Int? = null,
-            offsetPlayable: PlayableUri? = null,
-            deviceId: String? = null,
-            tracksToPlay: List<PlayableUri> = emptyList()
+        collection: CollectionUri? = null,
+        offsetNum: Int? = null,
+        offsetPlayable: PlayableUri? = null,
+        deviceId: String? = null,
+        tracksToPlay: List<PlayableUri> = emptyList()
     ): SpotifyRestAction<Unit> {
         return toAction {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()

@@ -64,6 +64,7 @@ internal const val base = "https://api.spotify.com/v1"
  * @property logger The Spotify event logger
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
+ * @property refreshTokenProducer Pluggable producer that refreshes and replaces the current [token].
  *
  */
 sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
@@ -80,7 +81,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     var allowBulkRequests: Boolean,
     var requestTimeoutMillis: Long?,
     var json: Json,
-    var refreshTokenProducer: suspend (SpotifyApi<*,*>) -> Token
+    var refreshTokenProducer: suspend (SpotifyApi<*, *>) -> Token
 ) {
     var useCache = useCache
         set(value) {
@@ -391,7 +392,7 @@ class SpotifyAppApi internal constructor(
     }
 
     companion object {
-        private val defaultAppApiTokenRefreshProducer: suspend (SpotifyApi<*,*>) -> Token = { api ->
+        private val defaultAppApiTokenRefreshProducer: suspend (SpotifyApi<*, *>) -> Token = { api ->
             require(api.clientId != null && api.clientSecret != null) { "Either the client id or the client secret is not set" }
 
             getCredentialedToken(api.clientId, api.clientSecret, api, api.json)
@@ -609,7 +610,7 @@ open class SpotifyClientApi internal constructor(
                     scopes.all { token.scopes?.contains(it) == true }
 
     companion object {
-        private val defaultClientApiTokenRefreshProducer: suspend (SpotifyApi<*,*>) -> Token = { api ->
+        private val defaultClientApiTokenRefreshProducer: suspend (SpotifyApi<*, *>) -> Token = { api ->
             require(api.clientId != null && api.clientSecret != null) { "Either the client id or the client secret is not set" }
 
             val currentToken = api.token
@@ -686,7 +687,7 @@ typealias SpotifyClientAPI = SpotifyClientApi
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyAppApi"))
 typealias SpotifyAppAPI = SpotifyAppApi
 
-typealias  GenericSpotifyApi = SpotifyApi<*, *>
+typealias GenericSpotifyApi = SpotifyApi<*, *>
 
 /**
  *

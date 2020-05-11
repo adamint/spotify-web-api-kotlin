@@ -99,10 +99,10 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     fun getShowEpisodes(
-            id: String,
-            limit: Int? = null,
-            offset: Int? = null,
-            market: Market? = null
+        id: String,
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
         return toActionPaging {
             get(
