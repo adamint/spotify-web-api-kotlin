@@ -39,13 +39,13 @@ data class HttpResponse(val responseCode: Int, val body: String, val headers: Li
  * Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests
  */
 class HttpConnection constructor(
-        val url: String,
-        val method: HttpRequestMethod,
-        val bodyMap: Map<*, *>?,
-        val bodyString: String?,
-        contentType: String?,
-        val headers: List<HttpHeader> = listOf(),
-        val api: GenericSpotifyApi? = null
+    val url: String,
+    val method: HttpRequestMethod,
+    val bodyMap: Map<*, *>?,
+    val bodyString: String?,
+    contentType: String?,
+    val headers: List<HttpHeader> = listOf(),
+    val api: GenericSpotifyApi? = null
 ) {
     val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
@@ -88,8 +88,8 @@ class HttpConnection constructor(
     }
 
     suspend fun execute(
-            additionalHeaders: List<HttpHeader>? = null,
-            retryIf502: Boolean = true
+        additionalHeaders: List<HttpHeader>? = null,
+        retryIf502: Boolean = true
     ): HttpResponse {
         val httpRequest = buildRequest(additionalHeaders)
 

@@ -25,9 +25,9 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
+import kotlin.reflect.KClass
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
-import kotlin.reflect.KClass
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
 typealias BrowseAPI = BrowseApi
@@ -69,9 +69,9 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of new album released, ordered by release date (descending)
      */
     fun getNewReleases(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(
@@ -104,11 +104,11 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [FeaturedPlaylists] object with the current featured message and featured playlists
      */
     fun getFeaturedPlaylists(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            locale: Locale? = null,
-            market: Market? = null,
-            timestamp: Long? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        locale: Locale? = null,
+        market: Market? = null,
+        timestamp: Long? = null
     ): SpotifyRestAction<FeaturedPlaylists> {
         return toAction {
             get(
@@ -140,10 +140,10 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     fun getCategoryList(
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            locale: Locale? = null,
-            market: Market? = null
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        locale: Locale? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SpotifyCategory, PagingObject<SpotifyCategory>> {
         return toActionPaging {
             get(
@@ -171,9 +171,9 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [categoryId] is not found or [locale] does not exist on Spotify
      */
     fun getCategory(
-            categoryId: String,
-            market: Market? = null,
-            locale: Locale? = null
+        categoryId: String,
+        market: Market? = null,
+        locale: Locale? = null
     ): SpotifyRestAction<SpotifyCategory> {
         return toAction {
             get(
@@ -197,10 +197,10 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of top playlists tagged with [categoryId]
      */
     fun getPlaylistsForCategory(
-            categoryId: String,
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        categoryId: String,
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(
@@ -247,14 +247,14 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     @Suppress("DEPRECATION")
     fun getTrackRecommendations(
-            seedArtists: List<String>? = null,
-            seedGenres: List<String>? = null,
-            seedTracks: List<String>? = null,
-            limit: Int? = api.defaultLimit,
-            market: Market? = null,
-            targetAttributes: List<TrackAttribute<*>> = listOf(),
-            minAttributes: List<TrackAttribute<*>> = listOf(),
-            maxAttributes: List<TrackAttribute<*>> = listOf()
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = api.defaultLimit,
+        market: Market? = null,
+        targetAttributes: List<TrackAttribute<*>> = listOf(),
+        minAttributes: List<TrackAttribute<*>> = listOf(),
+        maxAttributes: List<TrackAttribute<*>> = listOf()
     ): SpotifyRestAction<RecommendationResponse> =
             getRecommendations(
                     seedArtists,
@@ -302,14 +302,14 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     @Deprecated("Ambiguous track attribute setting. Please use BrowseAPI#getTrackRecommendations instead")
     fun getRecommendations(
-            seedArtists: List<String>? = null,
-            seedGenres: List<String>? = null,
-            seedTracks: List<String>? = null,
-            limit: Int? = api.defaultLimit,
-            market: Market? = null,
-            targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
-            minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
-            maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = api.defaultLimit,
+        market: Market? = null,
+        targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
+        minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
+        maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
     ): SpotifyRestAction<RecommendationResponse> {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
             throw BadRequestException(
@@ -341,11 +341,11 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  * @param attribute The spotify id for the track attribute
  */
 sealed class TuneableTrackAttribute<T : Number>(
-        val attribute: String,
-        val integerOnly: Boolean,
-        val min: T?,
-        val max: T?,
-        private val tClazz: KClass<T>
+    val attribute: String,
+    val integerOnly: Boolean,
+    val min: T?,
+    val max: T?,
+    private val tClazz: KClass<T>
 ) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.

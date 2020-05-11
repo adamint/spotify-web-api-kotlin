@@ -121,8 +121,8 @@ data class ErrorObject(val status: Int, val message: String, val reason: String?
  */
 @Serializable
 data class AuthenticationError(
-        val error: String,
-        @SerialName("error_description") val description: String
+    val error: String,
+    @SerialName("error_description") val description: String
 )
 
 /**

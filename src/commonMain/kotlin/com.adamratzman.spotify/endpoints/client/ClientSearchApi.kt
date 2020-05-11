@@ -35,10 +35,10 @@ class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchShow(
-            query: String,
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        query: String,
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleShow, PagingObject<SimpleShow>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.SHOW))
@@ -63,10 +63,10 @@ class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      * @throws BadRequestException if filters are illegal or query is malformed
      */
     fun searchEpisode(
-            query: String,
-            limit: Int? = api.defaultLimit,
-            offset: Int? = null,
-            market: Market? = null
+        query: String,
+        limit: Int? = api.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
     ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.EPISODE))
