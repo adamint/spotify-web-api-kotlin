@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -21,7 +21,7 @@ typealias FollowingAPI = FollowingApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
  */
-open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *
@@ -35,8 +35,8 @@ open class FollowingApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
     fun areFollowingPlaylist(
-        playlist: String,
-        vararg users: String
+            playlist: String,
+            vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
         checkBulkRequesting(5, users.size)
 

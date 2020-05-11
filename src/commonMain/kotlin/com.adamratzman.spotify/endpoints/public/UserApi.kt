@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -19,7 +19,7 @@ typealias UserAPI = UserApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
-open class UserApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *
@@ -33,7 +33,7 @@ open class UserApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             catch {
                 get(EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
-                    .toObject(SpotifyPublicUser.serializer(), api, json)
+                        .toObject(SpotifyPublicUser.serializer(), api, json)
             }
         }
     }

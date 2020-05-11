@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -26,7 +26,7 @@ typealias AlbumAPI = AlbumApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/)**
  */
-class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single album.
      *
@@ -87,10 +87,10 @@ class AlbumApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SimpleTrack] objects
      */
     fun getAlbumTracks(
-        album: String,
-        limit: Int? = api.defaultLimit,
-        offset: Int? = null,
-        market: Market? = null
+            album: String,
+            limit: Int? = api.defaultLimit,
+            offset: Int? = null,
+            market: Market? = null
     ): SpotifyRestActionPaging<SimpleTrack, PagingObject<SimpleTrack>> {
         return toActionPaging {
             get(

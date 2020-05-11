@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.UserApi
@@ -17,7 +17,7 @@ typealias ClientUserAPI = ClientProfileApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
-class ClientProfileApi(api: SpotifyApi<*, *>) : UserApi(api) {
+class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
     /**
      * Get detailed profile information about the current user (including the current user’s username).
      *

@@ -319,7 +319,7 @@ class SpotifyApiBuilder(
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
-    fun build(type: AuthorizationType): SpotifyApi<*, *> {
+    fun build(type: AuthorizationType): GenericSpotifyApi {
         return if (type == AuthorizationType.CLIENT) buildClient()
         else buildCredentialed()
     }
