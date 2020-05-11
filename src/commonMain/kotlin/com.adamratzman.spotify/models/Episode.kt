@@ -116,7 +116,7 @@ data class SimpleEpisode(
 @Serializable
 data class ResumePoint(
     @SerialName("fully_played") val fullyPlayed: Boolean,
-    @SerialName("resume_position_ms") val resumePositionMs: Boolean
+    @SerialName("resume_position_ms") val resumePositionMs: Int
 )
 
 @Serializable
