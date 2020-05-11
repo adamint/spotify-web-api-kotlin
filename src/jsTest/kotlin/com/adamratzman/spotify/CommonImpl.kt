@@ -7,7 +7,6 @@ actual fun getEnvironmentVariable(name: String): String? {
 
 actual fun Exception.stackTrace() = println(this)
 
-
 external val process: Process
 
 external interface Process {

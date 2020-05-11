@@ -13,7 +13,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicTracksApiTest : Spek({
     describe("Track API (Public View) test") {
-        val t = api?.tracks?: return@describe
+        val t = api?.tracks ?: return@describe
         describe("get track") {
             it("known track should return author name") {
                 assertEquals("Bénabar", t.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()!!.artists[0].name)

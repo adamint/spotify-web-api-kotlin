@@ -14,7 +14,7 @@ import org.spekframework.spek2.style.specification.describe
 
 class PublicPlaylistsApiTest : Spek({
     describe("Public playlists test") {
-        val p = api?.playlists?: return@describe
+        val p = api?.playlists ?: return@describe
         describe("get user's playlists") {
             it("available user should return playlists") {
                 assertTrue(p.getUserPlaylists("adamratzman1").complete().items.isNotEmpty())
