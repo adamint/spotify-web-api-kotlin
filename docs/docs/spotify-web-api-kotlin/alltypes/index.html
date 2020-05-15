@@ -11,6 +11,9 @@
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-abstract-paging-object/index.html">com.adamratzman.spotify.models.AbstractPagingObject</a></h5>
+<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+(whose value is an array of the requested objects) along with other keys like previous, next and
+limit that can be useful in future calls.</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -113,6 +116,10 @@ a roughly consistent sound throughout its duration.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-basic-show-information/index.html">com.adamratzman.spotify.models.BasicShowInformation</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.endpoints.public/-browse-a-p-i.html">com.adamratzman.spotify.endpoints.public.BrowseAPI</a></h5>
 </tr>
 <tr>
@@ -177,7 +184,16 @@ for more information on how this works. This is in beta and is available for <st
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.endpoints.client/-client-search-api/index.html">com.adamratzman.spotify.endpoints.client.ClientSearchApi</a></h5>
+<p>Get Spotify catalog information about artists, albums, tracks, playlists, episodes, or shows that match a keyword string.</p>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.endpoints.client/-client-user-a-p-i.html">com.adamratzman.spotify.endpoints.client.ClientUserAPI</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-collection-uri/index.html">com.adamratzman.spotify.models.CollectionUri</a></h5>
 </tr>
 <tr>
 (jvm)  (extensions in package com.adamratzman.spotify.utils)
@@ -246,6 +262,19 @@ cursors that can be useful in future calls.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-episode/index.html">com.adamratzman.spotify.models.Episode</a></h5>
+<p>An episode (podcast) on Spotify</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.endpoints.public/-episode-api/index.html">com.adamratzman.spotify.endpoints.public.EpisodeApi</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-episode-uri/index.html">com.adamratzman.spotify.models.EpisodeUri</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-error-object/index.html">com.adamratzman.spotify.models.ErrorObject</a></h5>
 <p>An endpoint exception from Spotify</p>
 </tr>
@@ -288,6 +317,12 @@ cursors that can be useful in future calls.</p>
 <p>This endpoint allow you check the playlists that a Spotify user follows.</p>
 </tr>
 <tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify/-generic-spotify-api.html">com.adamratzman.spotify.GenericSpotifyApi</a></h5>
+<p>Represents a generic instance of the Spotify API client, with common functionality and information between
+implementations of the API</p>
+</tr>
+<tr>
 (js)  (extensions in package com.adamratzman.spotify.utils)
 <h5><a href="../com.adamratzman.spotify.utils/kotlin.collections.-hash-map/index.html">kotlin.collections.HashMap</a></h5>
 </tr>
@@ -321,6 +356,10 @@ cursors that can be useful in future calls.</p>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-identifiable-nullable/index.html">com.adamratzman.spotify.models.IdentifiableNullable</a></h5>
 <p>Represents an identifiable Spotify object such as an Album or Recommendation Seed</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-immutable-collection-uri/index.html">com.adamratzman.spotify.models.ImmutableCollectionUri</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -361,6 +400,11 @@ searched market. If null, the API result is playable in the market.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-local-track/index.html">com.adamratzman.spotify.models.LocalTrack</a></h5>
+<p>Local track object that representing a song uploaded from a client locally</p>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-local-track-uri/index.html">com.adamratzman.spotify.models.LocalTrackUri</a></h5>
 <p>Represents a Spotify <strong>local track</strong> URI</p>
 </tr>
@@ -380,14 +424,33 @@ searched market. If null, the API result is playable in the market.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-nullable-paging-object/index.html">com.adamratzman.spotify.models.NullablePagingObject</a></h5>
+<p>The offset-based nullable paging object is a container for a set of objects. It contains a key called items
+(whose value is an array of the requested objects) along with other keys like previous, next and
+limit that can be useful in future calls. Its items are not guaranteed to be not null</p>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-paging-object/index.html">com.adamratzman.spotify.models.PagingObject</a></h5>
-<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+<p>The offset-based non-nullable paging object is a container for a set of objects. It contains a key called items
 (whose value is an array of the requested objects) along with other keys like previous, next and
 limit that can be useful in future calls.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-paging-object-base/index.html">com.adamratzman.spotify.models.PagingObjectBase</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-paging-traversal-type/index.html">com.adamratzman.spotify.models.PagingTraversalType</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-playable/index.html">com.adamratzman.spotify.models.Playable</a></h5>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-playable-uri/index.html">com.adamratzman.spotify.models.PlayableUri</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -484,6 +547,12 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-resume-point/index.html">com.adamratzman.spotify.models.ResumePoint</a></h5>
+<p>Represents the user’s most recent position in the episode. Set if the supplied access token is a user token and has
+the scope <a href="../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n.html#com.adamratzman.spotify.SpotifyScope.USER_READ_PLAYBACK_POSITION">SpotifyScope.USER_READ_PLAYBACK_POSITION</a>.</p>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-saved-album/index.html">com.adamratzman.spotify.models.SavedAlbum</a></h5>
 <p>Represents an album saved in a user's library</p>
 </tr>
@@ -499,7 +568,22 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.endpoints.public/-search-api/index.html">com.adamratzman.spotify.endpoints.public.SearchApi</a></h5>
-<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.</p>
+<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-show/index.html">com.adamratzman.spotify.models.Show</a></h5>
+<p>Information about a Spotify show, including its episodes</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.endpoints.public/-show-api/index.html">com.adamratzman.spotify.endpoints.public.ShowApi</a></h5>
+<p>Endpoints for retrieving information about one or more shows and their episodes from the Spotify catalog.</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-show-uri/index.html">com.adamratzman.spotify.models.ShowUri</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -513,8 +597,28 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </tr>
 <tr>
 (common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-simple-episode/index.html">com.adamratzman.spotify.models.SimpleEpisode</a></h5>
+<p>A simplified episode (podcast) on Spotify</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-simple-local-album/index.html">com.adamratzman.spotify.models.SimpleLocalAlbum</a></h5>
+<p>Local album object that goes with <a href="../com.adamratzman.spotify.models/-local-track/index.html#com.adamratzman.spotify.models.LocalTrack">LocalTrack</a> - represents the local album it was obtained from (likely "Local Files")</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-simple-local-artist/index.html">com.adamratzman.spotify.models.SimpleLocalArtist</a></h5>
+<p>Local artist object (goes with <a href="../com.adamratzman.spotify.models/-local-track/index.html#com.adamratzman.spotify.models.LocalTrack">LocalTrack</a>) representing an artist on a local track</p>
+</tr>
+<tr>
+(common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-simple-playlist/index.html">com.adamratzman.spotify.models.SimplePlaylist</a></h5>
 <p>Simplified Playlist object that can be used to retrieve a full <a href="../com.adamratzman.spotify.models/-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify.models/-simple-show/index.html">com.adamratzman.spotify.models.SimpleShow</a></h5>
+<p>Basic information about a Spotify show</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -620,6 +724,12 @@ managed through the scopes exposed in <a href="../com.adamratzman.spotify/-spoti
 (common, js, jvm) 
 <h5><a href="../com.adamratzman.spotify.models/-spotify-image/index.html">com.adamratzman.spotify.models.SpotifyImage</a></h5>
 <p>A Spotify image</p>
+</tr>
+<tr>
+(common, js, jvm) 
+<h5><a href="../com.adamratzman.spotify/-spotify-implicit-grant-api/index.html">com.adamratzman.spotify.SpotifyImplicitGrantApi</a></h5>
+<p>An API instance created through implicit grant flow, with access to private information
+managed through the scopes exposed in <a href="#">token</a>. <a href="#">token</a> is not refreshable and is only accessible for limited time.</p>
 </tr>
 <tr>
 (common, js, jvm) 
@@ -753,13 +863,11 @@ that only the information they choose to share will be shared, and nothing more.
 </tr>
 <tr>
 (common, js, jvm) 
-<h5><a href="../com.adamratzman.spotify.models/-track-uri/index.html">com.adamratzman.spotify.models.TrackUri</a></h5>
-<p>Represents a Spotify <strong>Track</strong> URI, ether LocalTrack or SpotifyTrack, parsed from either a Spotify ID or taken
-from an endpoint</p>
+<h5><a href="../com.adamratzman.spotify.models/-track-u-r-i.html">com.adamratzman.spotify.models.TrackURI</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 
-<h5><a href="../com.adamratzman.spotify.models/-track-u-r-i.html">com.adamratzman.spotify.models.TrackURI</a></h5>
+<h5><a href="../com.adamratzman.spotify.models/-track-uri.html">com.adamratzman.spotify.models.TrackUri</a></h5>
 </tr>
 <tr>
 (common, js, jvm) 

@@ -847,7 +847,7 @@ class SpotifyApiOptionsBuilder(
                 SpotifyApiOptions(
                         true,
                         200,
-                        automaticRefresh = false,
+                        automaticRefresh = true,
                         retryWhenRateLimited = true,
                         enableLogger = true,
                         testTokenValidity = true,
@@ -877,16 +877,16 @@ class SpotifyApiOptionsBuilder(
  * API Utilities
  *
  * @property useCache Set whether to cache requests. Default: true
- * @property cacheLimit The maximum amount of cached requests allowed at one time. Null means no limit
- * @property automaticRefresh Enable or disable automatic refresh of the Spotify access token
- * @property retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request
- * @property enableLogger Set whether to enable to the exception logger
- * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
- * @property defaultLimit The default amount of objects to retrieve in one request
- * @property json The Json serializer/deserializer instance
- * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
- * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
- * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
+ * @property cacheLimit The maximum amount of cached requests allowed at one time. Null means no limit. Default: 200
+ * @property automaticRefresh Enable or disable automatic refresh of the Spotify access token when it expires. Default: true
+ * @property retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request. Default: true
+ * @property enableLogger Set whether to enable to the exception logger. Default: true
+ * @property testTokenValidity After API creation, test whether the token is valid by performing a lightweight request. Default: false
+ * @property defaultLimit The default amount of objects to retrieve in one request. Default: 50
+ * @property json The Json serializer/deserializer instance.
+ * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests. Default: true
+ * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
+ * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token.
  *
  */
 

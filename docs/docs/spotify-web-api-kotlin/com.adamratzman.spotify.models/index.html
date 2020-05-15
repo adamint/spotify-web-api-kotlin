@@ -17,7 +17,10 @@
 <h4><a href="-abstract-paging-object/index.html">AbstractPagingObject</a></h4>
 </td>
 <td>
-<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AbstractPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+(whose value is an array of the requested objects) along with other keys like previous, next and
+limit that can be useful in future calls.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AbstractPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-paging-object-base/index.html"><span class="identifier">PagingObjectBase</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
@@ -44,7 +47,7 @@
 </td>
 <td>
 <p>Represents a Spotify <strong>Album</strong> URI, parsed from either a Spotify ID or taken from an endpoint.</p>
-<code><span class="keyword">class </span><span class="identifier">AlbumUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">class </span><span class="identifier">AlbumUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-immutable-collection-uri/index.html"><span class="identifier">ImmutableCollectionUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -146,6 +149,22 @@ a roughly consistent sound throughout its duration.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-basic-show-information/index.html">BasicShowInformation</a></h4>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">BasicShowInformation</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-collection-uri/index.html">CollectionUri</a></h4>
+</td>
+<td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CollectionUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-context/index.html">Context</a></h4>
 </td>
 <td>
@@ -223,7 +242,7 @@ a roughly consistent sound throughout its duration.</p>
 <p>The cursor-based paging object is a container for a set of objects. It contains a key called
 items (whose value is an array of the requested objects) along with other keys like next and
 cursors that can be useful in future calls.</p>
-<code><span class="keyword">class </span><span class="identifier">CursorBasedPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">CursorBasedPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-paging-object-base/index.html"><span class="identifier">PagingObjectBase</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
@@ -251,6 +270,23 @@ cursors that can be useful in future calls.</p>
 <td>
 <p>Maps a playback action to whether the user is disallowed from doing it</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">DisallowablePlaybackAction</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-episode/index.html">Episode</a></h4>
+</td>
+<td>
+<p>An episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Episode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="-playable/index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-episode-uri/index.html">EpisodeUri</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EpisodeUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -335,6 +371,14 @@ cursors that can be useful in future calls.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-immutable-collection-uri/index.html">ImmutableCollectionUri</a></h4>
+</td>
+<td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">ImmutableCollectionUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-collection-uri/index.html"><span class="identifier">CollectionUri</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-linked-track/index.html">LinkedTrack</a></h4>
 </td>
 <td>
@@ -345,11 +389,20 @@ searched market. If null, the API result is playable in the market.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-local-track/index.html">LocalTrack</a></h4>
+</td>
+<td>
+<p>Local track object that representing a song uploaded from a client locally</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">LocalTrack</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-identifiable-nullable/index.html"><span class="identifier">IdentifiableNullable</span></a><span class="symbol">, </span><a href="-playable/index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-local-track-uri/index.html">LocalTrackUri</a></h4>
 </td>
 <td>
 <p>Represents a Spotify <strong>local track</strong> URI</p>
-<code><span class="keyword">class </span><span class="identifier">LocalTrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-track-uri/index.html"><span class="identifier">TrackUri</span></a></code></td>
+<code><span class="keyword">class </span><span class="identifier">LocalTrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -371,13 +424,32 @@ searched market. If null, the API result is playable in the market.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-nullable-paging-object/index.html">NullablePagingObject</a></h4>
+</td>
+<td>
+<p>The offset-based nullable paging object is a container for a set of objects. It contains a key called items
+(whose value is an array of the requested objects) along with other keys like previous, next and
+limit that can be useful in future calls. Its items are not guaranteed to be not null</p>
+<code><span class="keyword">class </span><span class="identifier">NullablePagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-paging-object/index.html">PagingObject</a></h4>
 </td>
 <td>
-<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+<p>The offset-based non-nullable paging object is a container for a set of objects. It contains a key called items
 (whose value is an array of the requested objects) along with other keys like previous, next and
 limit that can be useful in future calls.</p>
 <code><span class="keyword">class </span><span class="identifier">PagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-paging-object-base/index.html">PagingObjectBase</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">PagingObjectBase</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
@@ -386,6 +458,22 @@ limit that can be useful in future calls.</p>
 </td>
 <td>
 <code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">PagingTraversalType</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-playable/index.html">Playable</a></h4>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Playable</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-playable-uri/index.html">PlayableUri</a></h4>
+</td>
+<td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">PlayableUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -459,7 +547,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </td>
 <td>
 <p>Represents a Spotify <strong>Playlist</strong> URI, parsed from either a Spotify ID or taken from an endpoint.</p>
-<code><span class="keyword">class </span><span class="identifier">PlaylistUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">class </span><span class="identifier">PlaylistUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-collection-uri/index.html"><span class="identifier">CollectionUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -533,6 +621,16 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-resume-point/index.html">ResumePoint</a></h4>
+</td>
+<td>
+<p>Represents the user’s most recent position in the episode. Set if the supplied access token is a user token and has
+the scope <a href="../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n.html#com.adamratzman.spotify.SpotifyScope.USER_READ_PLAYBACK_POSITION">SpotifyScope.USER_READ_PLAYBACK_POSITION</a>.</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">ResumePoint</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-saved-album/index.html">SavedAlbum</a></h4>
 </td>
 <td>
@@ -547,6 +645,23 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <td>
 <p>Represents a track saved in a user's library</p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SavedTrack</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-show/index.html">Show</a></h4>
+</td>
+<td>
+<p>Information about a Spotify show, including its episodes</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Show</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-show-uri/index.html">ShowUri</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ShowUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-immutable-collection-uri/index.html"><span class="identifier">ImmutableCollectionUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -569,11 +684,47 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-simple-episode/index.html">SimpleEpisode</a></h4>
+</td>
+<td>
+<p>A simplified episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleEpisode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="-playable/index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-simple-local-album/index.html">SimpleLocalAlbum</a></h4>
+</td>
+<td>
+<p>Local album object that goes with <a href="-local-track/index.html#com.adamratzman.spotify.models.LocalTrack">LocalTrack</a> - represents the local album it was obtained from (likely "Local Files")</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleLocalAlbum</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-simple-local-artist/index.html">SimpleLocalArtist</a></h4>
+</td>
+<td>
+<p>Local artist object (goes with <a href="-local-track/index.html#com.adamratzman.spotify.models.LocalTrack">LocalTrack</a>) representing an artist on a local track</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleLocalArtist</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-simple-playlist/index.html">SimplePlaylist</a></h4>
 </td>
 <td>
 <p>Simplified Playlist object that can be used to retrieve a full <a href="-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
 <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimplePlaylist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-simple-show/index.html">SimpleShow</a></h4>
+</td>
+<td>
+<p>Basic information about a Spotify show</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleShow</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-core-object/index.html"><span class="identifier">CoreObject</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -635,7 +786,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </td>
 <td>
 <p>Represents a Spotify <strong>Track</strong> URI, parsed from either a Spotify ID or taken from an endpoint.</p>
-<code><span class="keyword">class </span><span class="identifier">SpotifyTrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-track-uri/index.html"><span class="identifier">TrackUri</span></a></code></td>
+<code><span class="keyword">class </span><span class="identifier">SpotifyTrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -688,7 +839,7 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 </td>
 <td>
 <p>Represents a music track on Spotify</p>
-<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Track</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-relinking-available-response/index.html"><span class="identifier">RelinkingAvailableResponse</span></a></code></td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Track</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-relinking-available-response/index.html"><span class="identifier">RelinkingAvailableResponse</span></a><span class="symbol">, </span><a href="-playable/index.html"><span class="identifier">Playable</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -702,20 +853,18 @@ can be retrieved, along with the total number of tracks in the playlist.</p>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="-track-uri/index.html">TrackUri</a></h4>
+<h4><a href="-track-u-r-i.html">TrackURI</a></h4>
 </td>
 <td>
-<p>Represents a Spotify <strong>Track</strong> URI, ether LocalTrack or SpotifyTrack, parsed from either a Spotify ID or taken
-from an endpoint</p>
-<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">TrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">typealias </span><s><span class="identifier">TrackURI</span></s>&nbsp;<span class="symbol">=</span>&nbsp;<a href="-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
 </tr>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="-track-u-r-i.html">TrackURI</a></h4>
+<h4><a href="-track-uri.html">TrackUri</a></h4>
 </td>
 <td>
-<code><span class="keyword">typealias </span><s><span class="identifier">TrackURI</span></s>&nbsp;<span class="symbol">=</span>&nbsp;<a href="-track-uri/index.html"><span class="identifier">TrackUri</span></a></code></td>
+<code><span class="keyword">typealias </span><s><span class="identifier">TrackUri</span></s>&nbsp;<span class="symbol">=</span>&nbsp;<a href="-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
 </tr>
 <tr>
 <td>

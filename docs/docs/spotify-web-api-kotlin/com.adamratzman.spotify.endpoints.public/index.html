@@ -73,6 +73,14 @@
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="-episode-api/index.html">EpisodeApi</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EpisodeApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="-following-a-p-i.html">FollowingAPI</a></h4>
 </td>
 <td>
@@ -118,8 +126,18 @@
 <h4><a href="-search-api/index.html">SearchApi</a></h4>
 </td>
 <td>
-<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.</p>
-<code><span class="keyword">class </span><span class="identifier">SearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.</p>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-show-api/index.html">ShowApi</a></h4>
+</td>
+<td>
+<p>Endpoints for retrieving information about one or more shows and their episodes from the Spotify catalog.</p>
+<code><span class="keyword">class </span><span class="identifier">ShowApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
 </tr>
 <tr>
 <td>

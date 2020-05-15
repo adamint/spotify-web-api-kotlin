@@ -19,7 +19,7 @@
 <h4><a href="-init-.html">&lt;init&gt;</a></h4>
 </td>
 <td>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.http.SpotifyEndpoint$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span></code></td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.http.SpotifyEndpoint$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -32,7 +32,7 @@
 <h4><a href="api.html">api</a></h4>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -126,6 +126,14 @@ for more information on how this works. This is in beta and is available for <st
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="../../com.adamratzman.spotify.endpoints.public/-episode-api/index.html">EpisodeApi</a></h4>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EpisodeApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="../../com.adamratzman.spotify.endpoints.public/-following-api/index.html">FollowingApi</a></h4>
 </td>
 <td>
@@ -147,8 +155,18 @@ for more information on how this works. This is in beta and is available for <st
 <h4><a href="../../com.adamratzman.spotify.endpoints.public/-search-api/index.html">SearchApi</a></h4>
 </td>
 <td>
-<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.</p>
-<code><span class="keyword">class </span><span class="identifier">SearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.</p>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../../com.adamratzman.spotify.endpoints.public/-show-api/index.html">ShowApi</a></h4>
+</td>
+<td>
+<p>Endpoints for retrieving information about one or more shows and their episodes from the Spotify catalog.</p>
+<code><span class="keyword">class </span><span class="identifier">ShowApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyEndpoint</span></a></code></td>
 </tr>
 <tr>
 <td>
