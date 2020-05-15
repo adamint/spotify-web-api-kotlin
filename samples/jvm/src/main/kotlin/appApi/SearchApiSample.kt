@@ -1,9 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package public
+package appApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
 import com.adamratzman.spotify.endpoints.public.SearchApi.SearchType.ALBUM
 import com.adamratzman.spotify.endpoints.public.SearchApi.SearchType.TRACK
+import com.adamratzman.spotify.spotifyAppApi
 
 fun main() {
     // instantiate api

@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package public
+package appApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
+import com.adamratzman.spotify.spotifyAppApi
 
 fun main() {
     // instantiate api
@@ -17,5 +17,5 @@ fun main() {
     println(api.albums.getAlbums("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s", "nonexistantalbum"))
 
     // get album "Kids in Love"'s tracks
-    println(api.albums.getAlbumTracks("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete().map { it.name })
+    println(api.albums.getAlbumTracks("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete().filterNotNull().map { it.name })
 }
