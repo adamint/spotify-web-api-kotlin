@@ -1,25 +1,24 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package private
+package clientApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.endpoints.client.LibraryType.TRACK
+import com.adamratzman.spotify.spotifyClientApi
 
 fun main() {
     // instantiate api
     val api = spotifyClientApi(
             System.getenv("SPOTIFY_CLIENT_ID"),
             System.getenv("SPOTIFY_CLIENT_SECRET"),
-            System.getenv("SPOTIFY_REDIRECT_URI")) {
-        authorization {
-            tokenString = System.getenv("SPOTIFY_TOKEN_STRING")
-        }
-    }.build()
+            System.getenv("SPOTIFY_REDIRECT_URI"),
+            SpotifyUserAuthorization(tokenString = System.getenv("SPOTIFY_TOKEN_STRING")))
+            .build()
 
     // get all your saved tracks
-    println(api.library.getSavedTracks(limit = 50).getAllItems().complete().map { it.track.name })
+    println(api.library.getSavedTracks(limit = 50).getAllItems().complete().filterNotNull().map { it.track.name })
 
     // get your 11-20th saved albums
-    println(api.library.getSavedAlbums(limit = 10, offset = 10).complete().map { it.album.name })
+    println(api.library.getSavedAlbums(limit = 10, offset = 10).complete().filterNotNull().map { it.album.name })
 
     // check if your library contains the track "I'm Good" by the Mowgli's
     println(api.library.contains(TRACK, api.search.searchTrack("I'm Good the Mowgli's").complete()[0].id).complete())

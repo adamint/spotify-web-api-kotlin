@@ -1,8 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package private
+package clientApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
+import com.adamratzman.spotify.spotifyClientApi
 
 @SpotifyExperimentalHttpApi
 fun main() {
@@ -10,11 +11,9 @@ fun main() {
     val api = spotifyClientApi(
             System.getenv("SPOTIFY_CLIENT_ID"),
             System.getenv("SPOTIFY_CLIENT_SECRET"),
-            System.getenv("SPOTIFY_REDIRECT_URI")) {
-        authorization {
-            tokenString = System.getenv("SPOTIFY_TOKEN_STRING")
-        }
-    }.build()
+            System.getenv("SPOTIFY_REDIRECT_URI"),
+            SpotifyUserAuthorization(tokenString = System.getenv("SPOTIFY_TOKEN_STRING")))
+            .build()
 
     // see if you're following playlist "I'm Good Radio"
     println(api.following.isFollowingPlaylist("spotify:playlist:37i9dQZF1E8L0j2hm3kP31").complete())

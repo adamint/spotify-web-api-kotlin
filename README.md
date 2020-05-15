@@ -199,8 +199,6 @@ For obvious reasons, in most cases, making asynchronous requests via `queue` or 
 the synchronous format is also shown.
 
 ```kotlin
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
-
 val api = spotifyAppApi(
         System.getenv("SPOTIFY_CLIENT_ID"),
         System.getenv("SPOTIFY_CLIENT_SECRET")
