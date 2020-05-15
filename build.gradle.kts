@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.1.0-rc.2"
+version = "3.1.0"
 
 java {
     withSourcesJar()
