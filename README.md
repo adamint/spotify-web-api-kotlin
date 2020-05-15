@@ -6,22 +6,8 @@
 
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
-### Have a question?
-If you have a question, you can:
-
-1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
-2. Join our [Discord server](https://discord.gg/G6vqP3S)
-3. Contact me using **Adam#9261** on [Discord](https://discordapp.com) or by sending me an email
-
-## Contents
-  1. **[Downloading](#downloading)**
-  2. **[Documentation](#documentation)**
-  2. **[Creating a SpotifyApi or SpotifyClientApi object](#creating-a-spotifyapi-or-spotifyclientapi-object)**
-  3. **[What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class?)**
-  4. **[Using the Library](#using-the-library)**
-
-## Downloading
-This library is available via Maven Central [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
+## Install it
+This library is available via JCenter [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
 ### Gradle
 ```
@@ -72,39 +58,91 @@ The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/sp
 ## Samples
 Samples for all APIs are located in the `samples` directory
 
-## Creating a SpotifyApi or SpotifyClientApi object
-In order to use the methods in this library, you must create either a `SpotifyApi` or `SpotifyClientApi` object using their respective exposed builders. Client-specific methods are unable to be accessed with the generic SpotifyApi, rather you must create an instance of the Client API.
+## Have a question?
+If you have a question, you can:
 
-### SpotifyApi
-By default, the SpotifyApi `Token` automatically regenerates when needed. This can be changed 
+1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
+2. Join our [Discord server](https://discord.gg/G6vqP3S)
+3. Contact me using **Adam#9261** on [Discord](https://discordapp.com)
+
+## Creating a new api instance
+To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), please refer to 
+https://developer.spotify.com/documentation/general/guides/authorization-guide/. In general:
+- If you don't need client resources, use SpotifyAppApi
+- If you're using the api in a backend application, use SpotifyClientApi
+- If you're using the api in a frontend application, use SpotifyImplicitGrantApi
+
+### SpotifyAppApi
+This provides access only to public Spotify endpoints. By default, the SpotifyApi `Token` automatically regenerates when needed. This can be changed 
 through the `automaticRefresh` parameter in all builders.
 
-To build a new `SpotifyApi`, you must pass the application id and secret.
+There are four exposed builders, depending on the level of control you need over api creation. 
+Please see the [spotifyAppApi builder docs]() for a full list of available builders, or the app api [samples](). 
+ 
 
-```kotlin
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
+### SpotifyClientApi
+The `SpotifyClientApi` is a superset of `SpotifyApi`; thus, you have access to all `SpotifyApi` methods in `SpotifyClientApi`. 
+This library does not provide a method to retrieve the code from your  callback url; you must implement that with a web server.
 
-val api = spotifyAppApi(
-        System.getenv("SPOTIFY_CLIENT_ID"),
-        System.getenv("SPOTIFY_CLIENT_SECRET")
-).build()
-```
-
-*Note:* You are **unable** to use any client endpoint without authenticating with the client methods below. 
-
-#### SpotifyClientApi
-The `SpotifyClientApi` is a superset of `SpotifyApi`; thus, you have access to all `SpotifyApi` methods in `SpotifyClientApi`.
+Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-spotifyScopes/) in order to 
+ensure proper function of this library.
 
 Its automatic refresh ability is available *only* when building with
 an authorization code or a `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
-You have two options when building the Client API.
-1. You can use [Implicit Grant access tokens](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow) by
-setting the value of `tokenString` in the builder `authentication` block. However, this is a one-time token that cannot be refreshed.
-2. You can use the [Authorization   code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow) by 
-setting the value of `authorizationCode` in a builder. You may generate an authentication flow url allowing you to request specific 
-Spotify scopes using the `getAuthorizationUrl` method in any builder. This library does not provide a method to retrieve the code from your 
-callback url; you must implement that with a web server.
+Please see the [spotifyClientApi builder docs]() for a full list of available builders, or the client [samples](). 
+
+### SpotifyImplicitGrantApi
+Instantiate this api only if you are using the Spotify implicit grant flow. It is a superset of `SpotifyClientApi`.
+Please see the [spotifyImplicitGrantApi builder docs]() for a full list of available builders, or the implicit grant [samples](). 
+
+### SpotifyApiBuilder Block & setting API options 
+There are three pluggable blocks in each api's corresponding builder
+
+1. `credentials` lets you set the client id, client secret, and redirect uri
+2. `authorization` lets you set the type of api authorization you are using. 
+Acceptable types include: an authorization code, a `Token` object, a Token's access code string, and an optional refresh token string
+3. `options` lets you configure API options to your own specific needs
+
+#### API options
+This library does not attempt to be prescriptivist. 
+All API options are located in `SpotifyApiOptions` and their default values can be overridden; however, use caution in doing so, as 
+most of the default values either allow for significant performance or feature enhancements to the API instance.
+
+- `useCache`: Set whether to cache requests. Default: true
+- `cacheLimit`: The maximum amount of cached requests allowed at one time. Null means no limit. Default: 200
+- `automaticRefresh`: Enable or disable automatic refresh of the Spotify access token when it expires. Default: true
+- `retryWhenRateLimited`: Set whether to block the current thread and wait until the API can retry the request. Default: true
+- `enableLogger`: Set whether to enable to the exception logger. Default: true
+- `testTokenValidity`: After API creation, test whether the token is valid by performing a lightweight request. Default: false
+- `defaultLimit`: The default amount of objects to retrieve in one request. Default: 50
+- `json`: The Json serializer/deserializer instance.
+- `allowBulkRequests`: Allow splitting too-large requests into smaller, allowable api requests. Default: true 
+- `requestTimeoutMillis`: The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
+- `refreshTokenProducer`: Provide if you want to use your own logic when refreshing a Spotify token.
+
+Notes:
+- Unless you have a good reason otherwise, `useCache` should be true
+- `cacheLimit` is per Endpoint, not per API. Don't be surprised if you end up with over 200 items in your cache with the default settings.
+- `automaticRefresh` is disabled when client secret is not provided, or if tokenString is provided in SpotifyClientApi
+- `allowBulkRequests` for example, lets you query 80 artists in one wrapper call by splitting it into 50 artists + 30 artists
+- `refreshTokenProducer` is useful when you want to re-authorize with the Spotify Auth SDK or elsewhere
+
+### Building the API
+The easiest way to build the API is synchronously using .build() after a builder
+
+```kotlin
+spotifyAppApi(clientId, clientSecret).build()
+```
+
+You can also build the API asynchronously using kotlin coroutines!
+```kotlin
+runBlocking {
+    spotifyAppApi(clientId, clientSecret).buildAsyncAt(this) { api ->
+        // do things
+    }
+}
+```
 
 ## What is the SpotifyRestAction class?
 Abstracting requests into a `SpotifyRestAction` class allows for a lot of flexibility in sending and receiving requests. 
@@ -200,110 +238,3 @@ in your market!
 
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
-
-### Endpoint List
-#### SpotifyApi:
-   - **[AlbumApi (SpotifyApi.albums)](https://developer.spotify.com/web-api/album-endpoints/)**
-        1. `getAlbum`
-        2. `getAlbums`
-        3. `getAlbumTracks`
-   - **[ArtistApi (SpotifyApi.artists)](https://developer.spotify.com/web-api/artist-endpoints/)**
-        1. `getArtist` 
-        2. `getArtists` 
-        3. `getArtistAlbums`
-        4. `getArtistTopTracks` 
-        5. `getRelatedArtists` 
-   - **[BrowseApi (SpotifyApi.browse)](https://developer.spotify.com/web-api/browse-endpoints/)**
-        1. `getNewReleases`
-        2. `getFeaturedPlaylists` 
-        3. `getCategoryList` 
-        4. `getCategory`
-        5. `getPlaylistsForCategory` 
-        6. `getTrackRecommendations` 
-        7. `getAvailableGenreSeeds`
-   - **[FollowingApi (SpotifyApi.following)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
-        1. `areFollowingPlaylist`
-        2. `isFollowingPlaylist`
-   - **[PlaylistApi (SpotifyApi.playlist)](https://developer.spotify.com/web-api/playlist-endpoints/)**
-        1. `getUserPlaylists` 
-        2. `getPlaylist` 
-        3. `getPlaylistTracks` 
-        4. `getPlaylistCovers` 
-   - **[SearchApi (SpotifyApi.search)](https://developer.spotify.com/web-api/search-item/)**
-   It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.
-        1. `searchPlaylist` 
-        2. `searchTrack` 
-        3. `searchArtist`
-        4. `searchAlbum` 
-        5. `search`
-   - **[TrackApi (SpotifyApi.tracks)](https://developer.spotify.com/web-api/track-endpoints/)**
-        1. `getTrack` 
-        2. `getTracks` 
-        3. `getAudioAnalysis` 
-        4. `getAudioFeatures` 
-   - **[UserApi (SpotifyApi.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
-        1. `getProfile` 
-#### SpotifyClientApi:
-Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-spotifyScopes/) in order to 
-ensure proper function of this library.
-
-Check to see which Scope is necessary with the corresponding endpoint using the 
-links provided for each API below
-   - **[ClientPersonalizationApi (SpotifyClientApi.personalization)](https://developer.spotify.com/web-api/web-api-personalization-endpoints/)**
-        1. `getTopArtists` 
-        2. `getTopTracks` 
-   - **[ClientProfileApi (SpotifyClientApi.users)](https://developer.spotify.com/web-api/user-profile-endpoints/)**
-        1. `getClientProfile` 
-   - **[ClientLibraryApi (SpotifyClientApi.library)](https://developer.spotify.com/web-api/library-endpoints/)**
-        1. `getSavedTracks`
-        2. `getSavedAlbums` 
-        3. `contains`
-        4. `add`
-        5. `remove`
-   - **[ClientFollowingApi (SpotifyClientApi.following)](https://developer.spotify.com/web-api/web-api-follow-endpoints/)**
-        1. `isFollowingUser` 
-        2. `isFollowingPlaylist` 
-        3. `isFollowingUsers` 
-        4. `isFollowingArtist` 
-        5. `isFollowingArtists` 
-        6. `getFollowedArtists` 
-        7. `followUser` 
-        8. `followUsers` 
-        9. `followArtist` 
-        10. `followArtists`
-        11. `followPlaylist`
-        12. `unfollowUser`
-        13. `unfollowUsers`
-        14. `unfollowArtist`
-        15. `unfollowArtists`
-        16. `unfollowPlaylist`
-   - **[ClientPlayerApi (SpotifyClientApi.player)](https://developer.spotify.com/web-api/web-api-connect-endpoint-reference/)**
-        1. `getDevices`
-        2. `getCurrentContext`
-        3. `getRecentlyPlayed`
-        4. `getCurrentlyPlaying`
-        5. `pause`
-        6. `seek`
-        7. `setRepeatMode`
-        8. `setVolume`
-        9. `skipForward`
-        10. `skipBehind`
-        11. `startPlayback`
-        12. `resume`
-        13. `toggleShuffle`
-        14. `transferPlayback`
-   - **[ClientPlaylistApi (SpotifyClientApi.playlists)](https://developer.spotify.com/web-api/playlist-endpoints/)**
-        1. `createClientPlaylist`
-        2. `addTrackToClientPlaylist` 
-        3. `addTracksToClientPlaylist` 
-        4. `changeClientPlaylistDetails` 
-        5. `getClientPlaylists` 
-        6. `getClientPlaylist` 
-        7. `deleteClientPlaylist`
-        8. `reorderClientPlaylistTracks`
-        9. `setClientPlaylistTracks`
-        10. `replaceClientPlaylistTracks`
-        11. `removeAllClientPlaylistTracks`
-        12. `uploadClientPlaylistCover`
-        13. `removeTrackFromClientPlaylist`
-        14. `removeTracksFromClientPlaylist`
