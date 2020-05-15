@@ -9,7 +9,7 @@
 <br/>
 <h1>CursorBasedPagingObject</h1>
 <a name="com.adamratzman.spotify.models.CursorBasedPagingObject"></a>
-(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">CursorBasedPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">CursorBasedPagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-paging-object-base/index.html"><span class="identifier">PagingObjectBase</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
 <p>The cursor-based paging object is a container for a set of objects. It contains a key called
 items (whose value is an array of the requested objects) along with other keys like next and
 cursors that can be useful in future calls.</p>
@@ -25,7 +25,7 @@ cursors that can be useful in future calls.</p>
 <p>The cursor-based paging object is a container for a set of objects. It contains a key called
 items (whose value is an array of the requested objects) along with other keys like next and
 cursors that can be useful in future calls.</p>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/items">items</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/next">next</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/cursor">cursor</span><span class="symbol">:</span>&nbsp;<a href="../-cursor/index.html"><span class="identifier">Cursor</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int)/total">total</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">)</span></code></td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/items">items</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/next">next</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/cursor">cursor</span><span class="symbol">:</span>&nbsp;<a href="../-cursor/index.html"><span class="identifier">Cursor</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/total">total</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.CursorBasedPagingObject.T)), kotlin.Int, kotlin.String, com.adamratzman.spotify.models.Cursor, kotlin.Int, kotlin.Int, kotlin.String)/previous">previous</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -80,6 +80,24 @@ cursors that can be useful in future calls.</p>
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="offset.html">offset</a></h4>
+</td>
+<td>
+<p>The offset of the items returned (as set in the query or by default).</p>
+<code><span class="keyword">val </span><span class="identifier">offset</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="previous.html">previous</a></h4>
+</td>
+<td>
+<p>URL to the previous page of items. ( null if none)</p>
+<code><span class="keyword">val </span><span class="identifier">previous</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="total.html">total</a></h4>
 </td>
 <td>
@@ -91,6 +109,14 @@ cursors that can be useful in future calls.</p>
 <h3>Functions</h3>
 <table>
 <tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get.html">get</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.CursorBasedPagingObject$get(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
 <tr>
 <td>
 (common, js, jvm) 

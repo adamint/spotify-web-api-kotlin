@@ -9,7 +9,7 @@
 <br/>
 <h1>SpotifyClientApi</h1>
 <a name="com.adamratzman.spotify.SpotifyClientApi"></a>
-(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">SpotifyClientApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">SpotifyClientApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a><span class="symbol">&gt;</span></code>
+(common, js, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyClientApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">SpotifyClientApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a><span class="symbol">&gt;</span></code>
 <p>An API instance created through client authentication, with access to private information
 managed through the scopes exposed in <a href="../-spotify-api/token.html#com.adamratzman.spotify.SpotifyApi$token">token</a></p>
 <h3>Constructors</h3>
@@ -35,7 +35,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </td>
 <td>
 <p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/albums/">album endpoints</a></p>
-<code><span class="keyword">val </span><span class="identifier">albums</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-album-api/index.html"><span class="identifier">AlbumApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">albums</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-album-api/index.html"><span class="identifier">AlbumApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -44,7 +44,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </td>
 <td>
 <p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/artists/">artist endpoints</a></p>
-<code><span class="keyword">val </span><span class="identifier">artists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-artist-api/index.html"><span class="identifier">ArtistApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">artists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-artist-api/index.html"><span class="identifier">ArtistApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -53,7 +53,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </td>
 <td>
 <p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/browse/">browse endpoints</a></p>
-<code><span class="keyword">val </span><span class="identifier">browse</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-browse-api/index.html"><span class="identifier">BrowseApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">browse</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-browse-api/index.html"><span class="identifier">BrowseApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -62,7 +62,17 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </td>
 <td>
 <p>A list of all endpoints included in this api type</p>
-<code><span class="keyword">val </span><span class="identifier">endpoints</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">endpoints</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="episodes.html">episodes</a></h4>
+</td>
+<td>
+<p>Provides access to <a href="https://developer.spotify.com/documentation/web-api/reference/episodes/">endpoints</a> for retrieving
+information about one or more episodes from the Spotify catalog.</p>
+<code><span class="keyword">val </span><span class="identifier">episodes</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-episode-api/index.html"><span class="identifier">EpisodeApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -73,7 +83,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 <p>Provides access to <a href="https://developer.spotify.com/documentation/web-api/reference/follow/">endpoints</a> for managing
 the artists, users, and playlists that a Spotify user follows.
 <em>Superset of <a href="../../com.adamratzman.spotify.endpoints.public/-following-api/index.html#com.adamratzman.spotify.endpoints.public.FollowingApi">FollowingApi</a></em></p>
-<code><span class="keyword">val </span><span class="identifier">following</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-following-api/index.html"><span class="identifier">ClientFollowingApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">following</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-following-api/index.html"><span class="identifier">ClientFollowingApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -114,7 +124,7 @@ including track playing and pausing endpoints.</p>
 <p>Provides access to <a href="https://developer.spotify.com/documentation/web-api/reference/playlists/">endpoints</a> for retrieving
 information about a user’s playlists and for managing a user’s playlists.
 <em>Superset of <a href="../../com.adamratzman.spotify.endpoints.public/-playlist-api/index.html#com.adamratzman.spotify.endpoints.public.PlaylistApi">PlaylistApi</a></em></p>
-<code><span class="keyword">val </span><span class="identifier">playlists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-playlist-api/index.html"><span class="identifier">ClientPlaylistApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">playlists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-playlist-api/index.html"><span class="identifier">ClientPlaylistApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -131,7 +141,17 @@ information about a user’s playlists and for managing a user’s playlists.
 </td>
 <td>
 <p>Provides access to the Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/search/search/">search endpoint</a></p>
-<code><span class="keyword">val </span><span class="identifier">search</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-search-api/index.html"><span class="identifier">SearchApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">search</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-search-api/index.html"><span class="identifier">ClientSearchApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="shows.html">shows</a></h4>
+</td>
+<td>
+<p>Provides access to <a href="https://developer.spotify.com/documentation/web-api/reference/shows/">endpoints</a> for retrieving
+information about one or more shows from the Spotify catalog.</p>
+<code><span class="keyword">val </span><span class="identifier">shows</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-show-api/index.html"><span class="identifier">ShowApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -140,7 +160,7 @@ information about a user’s playlists and for managing a user’s playlists.
 </td>
 <td>
 <p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/tracks/">track endpoints</a></p>
-<code><span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-track-api/index.html"><span class="identifier">TrackApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-track-api/index.html"><span class="identifier">TrackApi</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -160,7 +180,7 @@ information about a user’s playlists and for managing a user’s playlists.
 <p>Provides access to <a href="https://developer.spotify.com/documentation/web-api/reference/users-profile/">endpoints</a> for
 retrieving information about a user’s profile.
 <em>Superset of <a href="../../com.adamratzman.spotify.endpoints.public/-user-api/index.html#com.adamratzman.spotify.endpoints.public.UserApi">UserApi</a></em></p>
-<code><span class="keyword">val </span><span class="identifier">users</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-profile-api/index.html"><span class="identifier">ClientProfileApi</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">users</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-client-profile-api/index.html"><span class="identifier">ClientProfileApi</span></a></code></td>
 </tr>
 </tbody>
 </table>
@@ -174,7 +194,7 @@ retrieving information about a user’s profile.
 </td>
 <td>
 <p>Return a new <a href="../-spotify-api-builder/index.html#com.adamratzman.spotify.SpotifyApiBuilder">SpotifyApiBuilder</a> with the parameters provided to this api instance</p>
-<code><span class="keyword">fun </span><span class="identifier">getApiBuilder</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-api-builder/index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getApiBuilder</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-api-builder/index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -183,7 +203,7 @@ retrieving information about a user’s profile.
 </td>
 <td>
 <p>Return a new <a href="../-spotify-api/index.html#B">B</a> with the parameters provided to this api instance</p>
-<code><span class="keyword">fun </span><span class="identifier">getApiBuilderDsl</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getApiBuilderDsl</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -201,7 +221,7 @@ retrieving information about a user’s profile.
 </td>
 <td>
 <p>Whether the current access token allows access to scope <a href="has-scope.html#com.adamratzman.spotify.SpotifyClientApi$hasScope(com.adamratzman.spotify.SpotifyScope)/scope">scope</a></p>
-<code><span class="keyword">fun </span><span class="identifier">hasScope</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScope(com.adamratzman.spotify.SpotifyScope)/scope">scope</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+<code><span class="keyword">fun </span><span class="identifier">hasScope</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScope(com.adamratzman.spotify.SpotifyScope)/scope">scope</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code></td>
 </tr>
 <tr>
 <td>
@@ -210,7 +230,7 @@ retrieving information about a user’s profile.
 </td>
 <td>
 <p>Whether the current access token allows access to all of the provided scopes</p>
-<code><span class="keyword">fun </span><span class="identifier">hasScopes</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScopes(com.adamratzman.spotify.SpotifyScope, kotlin.Array((com.adamratzman.spotify.SpotifyScope)))/scope">scope</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScopes(com.adamratzman.spotify.SpotifyScope, kotlin.Array((com.adamratzman.spotify.SpotifyScope)))/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+<code><span class="keyword">fun </span><span class="identifier">hasScopes</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScopes(com.adamratzman.spotify.SpotifyScope, kotlin.Array((com.adamratzman.spotify.SpotifyScope)))/scope">scope</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$hasScopes(com.adamratzman.spotify.SpotifyScope, kotlin.Array((com.adamratzman.spotify.SpotifyScope)))/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code></td>
 </tr>
 <tr>
 <td>
@@ -222,15 +242,20 @@ retrieving information about a user’s profile.
 executor</p>
 <code><span class="keyword">fun </span><span class="identifier">shutdown</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="suspend-refresh-token.html">suspendRefreshToken</a></h4>
+<h4><a href="../-spotify-implicit-grant-api/index.html">SpotifyImplicitGrantApi</a></h4>
 </td>
 <td>
-<p>If the method used to create the <a href="../-spotify-api/token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> supports token refresh and
-the information in <a href="../-spotify-api/token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> is accurate, attempt to refresh the token</p>
-<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendRefreshToken</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+<p>An API instance created through implicit grant flow, with access to private information
+managed through the scopes exposed in <a href="#">token</a>. <a href="#">token</a> is not refreshable and is only accessible for limited time.</p>
+<code><span class="keyword">class </span><span class="identifier">SpotifyImplicitGrantApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyClientApi</span></a></code></td>
 </tr>
 </tbody>
 </table>

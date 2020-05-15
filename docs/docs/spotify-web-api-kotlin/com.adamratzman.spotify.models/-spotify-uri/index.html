@@ -39,6 +39,14 @@
 <tr>
 <td>
 (common, js, jvm) 
+<h4><a href="type.html">type</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
 <h4><a href="uri.html">uri</a></h4>
 </td>
 <td>
@@ -90,24 +98,15 @@
 <code><span class="keyword">fun </span><span class="identifier">deserialize</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$deserialize(kotlinx.serialization.Decoder)/decoder">decoder</span><span class="symbol">:</span>&nbsp;<span class="identifier">Decoder</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyUri</span></a></code><br/>
 <code><span class="keyword">fun </span><span class="identifier">serialize</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$serialize(kotlinx.serialization.Encoder, com.adamratzman.spotify.models.SpotifyUri)/encoder">encoder</span><span class="symbol">:</span>&nbsp;<span class="identifier">Encoder</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$serialize(kotlinx.serialization.Encoder, com.adamratzman.spotify.models.SpotifyUri)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
 <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">&gt;</span> <span class="identifier">safeInitiate</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$safeInitiate(kotlin.String, kotlin.Function1((kotlin.String, com.adamratzman.spotify.models.SpotifyUri.Companion.safeInitiate.T)))/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$safeInitiate(kotlin.String, kotlin.Function1((kotlin.String, com.adamratzman.spotify.models.SpotifyUri.Companion.safeInitiate.T)))/ctor">ctor</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code><br/>
-<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">invoke</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$invoke(kotlin.String)/inputTemp">inputTemp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyUri</span></a></code><br/>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">&gt;</span> <span class="identifier">isType</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$isType(kotlin.String)/inputTemp">inputTemp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code><br/>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">&gt;</span> <span class="identifier">canBeType</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$canBeType(kotlin.String)/inputTemp">inputTemp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">invoke</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$invoke(kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyUri</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">&gt;</span> <span class="identifier">isType</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$isType(kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a><span class="symbol">&gt;</span> <span class="identifier">canBeType</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SpotifyUri.Companion$canBeType(kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 </tbody>
 </table>
 <h3>Inheritors</h3>
 <table>
 <tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="../-album-uri/index.html">AlbumUri</a></h4>
-</td>
-<td>
-<p>Represents a Spotify <strong>Album</strong> URI, parsed from either a Spotify ID or taken from an endpoint.</p>
-<code><span class="keyword">class </span><span class="identifier">AlbumUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a></code></td>
-</tr>
 <tr>
 <td>
 (common, js, jvm) 
@@ -120,21 +119,18 @@
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="../-playlist-uri/index.html">PlaylistUri</a></h4>
+<h4><a href="../-collection-uri/index.html">CollectionUri</a></h4>
 </td>
 <td>
-<p>Represents a Spotify <strong>Playlist</strong> URI, parsed from either a Spotify ID or taken from an endpoint.</p>
-<code><span class="keyword">class </span><span class="identifier">PlaylistUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CollectionUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a></code></td>
 </tr>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="../-track-uri/index.html">TrackUri</a></h4>
+<h4><a href="../-playable-uri/index.html">PlayableUri</a></h4>
 </td>
 <td>
-<p>Represents a Spotify <strong>Track</strong> URI, ether LocalTrack or SpotifyTrack, parsed from either a Spotify ID or taken
-from an endpoint</p>
-<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">TrackUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">PlayableUri</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyUri</span></a></code></td>
 </tr>
 <tr>
 <td>
