@@ -24,8 +24,6 @@ each scope or use the following code snippet to print out the Spotify token stri
 **How to generate an authorization URL**
 ```kotlin
 import com.adamratzman.spotify.main.SpotifyScope
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-
 val api = spotifyClientApi(
         "SPOTIFY_CLIENT_ID",
         "SPOTIFY_CLIENT_SECRET",
@@ -39,8 +37,6 @@ val api = spotifyClientApi(
 
 **How to get a Spotify token**
 ```kotlin
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
-
 val api = spotifyClientApi(
         "SPOTIFY_CLIENT_ID",
         "SPOTIFY_CLIENT_SECRET",

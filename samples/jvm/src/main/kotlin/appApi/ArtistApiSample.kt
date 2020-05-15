@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package public
+package appApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyAppApi
+import com.adamratzman.spotify.spotifyAppApi
 
 fun main() {
     // instantiate api
@@ -17,7 +17,7 @@ fun main() {
     println(api.artists.getArtists("spotify:artist:26HkLAAIMh5qOFet57d1rg", "nonexistantartist"))
 
     // get all of artist Cody G's albums
-    println(api.artists.getArtistAlbums("spotify:artist:26HkLAAIMh5qOFet57d1rg").getAllItems().complete().map { it.name })
+    println(api.artists.getArtistAlbums("spotify:artist:26HkLAAIMh5qOFet57d1rg").getAllItems().complete().filterNotNull().map { it.name })
 
     // get Cody G's top tracks, in descending order, in France
     println(api.artists.getArtistTopTracks("spotify:artist:26HkLAAIMh5qOFet57d1rg").complete().map { it.name })

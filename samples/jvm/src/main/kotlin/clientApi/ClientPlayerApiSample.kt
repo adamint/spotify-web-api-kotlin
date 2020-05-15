@@ -1,9 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
-package private
+package clientApi
 
-import com.adamratzman.spotify.SpotifyApi.Companion.spotifyClientApi
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi
 import com.adamratzman.spotify.endpoints.client.ClientPlayerApi.PlayerRepeatState.TRACK
+import com.adamratzman.spotify.spotifyClientApi
 
 @SpotifyExperimentalFunctionApi
 fun main() {
@@ -11,11 +12,9 @@ fun main() {
     val api = spotifyClientApi(
             System.getenv("SPOTIFY_CLIENT_ID"),
             System.getenv("SPOTIFY_CLIENT_SECRET"),
-            System.getenv("SPOTIFY_REDIRECT_URI")) {
-        authorization {
-            tokenString = System.getenv("SPOTIFY_TOKEN_STRING")
-        }
-    }.build()
+            System.getenv("SPOTIFY_REDIRECT_URI"),
+            SpotifyUserAuthorization(tokenString = System.getenv("SPOTIFY_TOKEN_STRING")))
+    .build()
 
     // print all devices connected to this Spotify account
     println(api.player.getDevices().complete())
@@ -24,13 +23,13 @@ fun main() {
     println(api.player.getCurrentContext().complete()?.progressMs)
 
     // get the 20 most recently played (there is a small lag) tracks
-    println(api.player.getRecentlyPlayed().complete().map { it.track.name })
+    println(api.player.getRecentlyPlayed().complete().filterNotNull().map { it.track.name })
 
     // get the currenty played PlaybackActions
     println(api.player.getCurrentlyPlaying().complete()?.actions)
 
     // play song "I'm Good" by the Mowgli's
-    api.player.startPlayback(tracksToPlay = listOf(api.search.searchTrack("I'm Good the Mowgli's").complete()[0].uri.uri)).complete()
+    api.player.startPlayback(tracksToPlay = listOf(api.search.searchTrack("I'm Good the Mowgli's").complete()[0].uri)).complete()
 
     // pause playback on the current device.
     api.player.pause().complete()
