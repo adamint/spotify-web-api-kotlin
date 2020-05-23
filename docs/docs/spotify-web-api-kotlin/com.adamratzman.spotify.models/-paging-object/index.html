@@ -10,7 +10,7 @@
 <h1>PagingObject</h1>
 <a name="com.adamratzman.spotify.models.PagingObject"></a>
 (common, js, jvm) <code><span class="keyword">class </span><span class="identifier">PagingObject</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
-<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+<p>The offset-based non-nullable paging object is a container for a set of objects. It contains a key called items
 (whose value is an array of the requested objects) along with other keys like previous, next and
 limit that can be useful in future calls.</p>
 <h3>Constructors</h3>
@@ -22,7 +22,7 @@ limit that can be useful in future calls.</p>
 <h4><a href="-init-.html">&lt;init&gt;</a></h4>
 </td>
 <td>
-<p>The offset-based paging object is a container for a set of objects. It contains a key called items
+<p>The offset-based non-nullable paging object is a container for a set of objects. It contains a key called items
 (whose value is an array of the requested objects) along with other keys like previous, next and
 limit that can be useful in future calls.</p>
 <code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/items">items</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/next">next</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/previous">previous</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$<init>(kotlin.String, kotlin.collections.List((com.adamratzman.spotify.models.PagingObject.T)), kotlin.Int, kotlin.String, kotlin.Int, kotlin.String, kotlin.Int)/total">total</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">)</span></code></td>
@@ -103,20 +103,10 @@ limit that can be useful in future calls.</p>
 <tr>
 <td>
 (common, js, jvm) 
-<h4><a href="get-all.html">getAll</a></h4>
+<h4><a href="get.html">get</a></h4>
 </td>
 <td>
-<p>Get all PagingObjects associated with the request</p>
-<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">getAll</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="get-with-next.html">getWithNext</a></h4>
-</td>
-<td>
-<p>Synchronously retrieve the next <a href="get-with-next.html#com.adamratzman.spotify.models.PagingObject$getWithNext(kotlin.Int)/total">total</a> paging objects associated with this <a href="index.html#com.adamratzman.spotify.models.PagingObject">PagingObject</a>, including this <a href="index.html#com.adamratzman.spotify.models.PagingObject">PagingObject</a>.</p>
-<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">getWithNext</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$getWithNext(kotlin.Int)/total">total</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html"><span class="identifier">Sequence</span></a><span class="symbol">&lt;</span><a href="../-abstract-paging-object/index.html"><span class="identifier">AbstractPagingObject</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.PagingObject$get(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
 </tr>
 </tbody>
 </table>

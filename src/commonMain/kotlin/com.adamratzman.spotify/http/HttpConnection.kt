@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
@@ -45,7 +45,7 @@ class HttpConnection constructor(
     val bodyString: String?,
     contentType: String?,
     val headers: List<HttpHeader> = listOf(),
-    val api: SpotifyApi<*, *>? = null
+    val api: GenericSpotifyApi? = null
 ) {
     val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 

@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -11,9 +11,9 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
@@ -28,7 +28,7 @@ typealias ClientLibraryAPI = ClientLibraryApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
-class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
@@ -50,8 +50,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SavedTrack, PagingObject<SavedTrack>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+                    EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
+                            .toString()
             ).toPagingObject(SavedTrack.serializer(), endpoint = this, json = json)
         }
     }
@@ -77,8 +77,8 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SavedAlbum, PagingObject<SavedAlbum>> {
         return toActionPaging {
             get(
-                EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+                    EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
+                            .toString()
             ).toPagingObject(SavedAlbum.serializer(), endpoint = this, json = json)
         }
     }
@@ -221,7 +221,7 @@ class ClientLibraryApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
  * @param id How to transform an id (or uri) input into its Spotify id
  */
 enum class LibraryType(private val value: String, internal val id: (String) -> String) {
-    TRACK("tracks", { TrackUri(it).id }),
+    TRACK("tracks", { PlayableUri(it).id }),
     ALBUM("albums", { AlbumUri(it).id });
 
     override fun toString() = value

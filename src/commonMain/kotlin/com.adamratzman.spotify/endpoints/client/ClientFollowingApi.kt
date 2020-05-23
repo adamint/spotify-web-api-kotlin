@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
@@ -28,7 +28,7 @@ typealias ClientFollowingAPI = ClientFollowingApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
  */
-class ClientFollowingApi(api: SpotifyApi<*, *>) : FollowingApi(api) {
+class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Check to see if the current user is following another Spotify user.
      *
