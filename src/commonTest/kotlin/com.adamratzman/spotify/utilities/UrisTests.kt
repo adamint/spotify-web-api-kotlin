@@ -4,11 +4,11 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.LocalTrackUri
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SpotifyTrackUri
 import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.UserUri
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -72,27 +72,21 @@ class UrisTests : Spek({
                 assertFailsWith<SpotifyUriException> {
                     LocalTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
+
+                assertFailsWith<SpotifyUriException> {
+                    LocalTrackUri("artist:album:name:id").uri
+                }
             }
 
             it("Create local track with valid input") {
                 assertEquals(
-                    "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    "spotify:local:artist:album:name:id",
+                    LocalTrackUri("spotify:local:artist:album:name:id").uri
                 )
 
                 assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO").id
-                )
-
-                assertEquals(
-                    "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").uri
-                )
-
-                assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    LocalTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").id
+                    "artist:album:name:id",
+                    LocalTrackUri("spotify:local:artist:album:name:id").id
                 )
             }
         }
@@ -100,21 +94,21 @@ class UrisTests : Spek({
         describe("TrackUri tests") {
             it("Create track with invalid input") {
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("a:invalid")
+                    PlayableUri("a:invalid")
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("a:invalid").uri
+                    PlayableUri("a:invalid").uri
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    TrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    PlayableUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
             describe("Create any track with valid input") {
                 it("Create remote track with uri") {
-                    val trackUri = TrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         SpotifyTrackUri::class,
                         trackUri::class
@@ -129,7 +123,7 @@ class UrisTests : Spek({
                     )
                 }
                 it("Create local track with uri") {
-                    val trackUri = TrackUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
                         trackUri.uri
@@ -144,7 +138,7 @@ class UrisTests : Spek({
                     )
                 }
                 it("Create remote track with id") {
-                    val trackUri = TrackUri("1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         SpotifyTrackUri::class,
                         trackUri::class
@@ -213,12 +207,12 @@ class UrisTests : Spek({
 
                 assertEquals(
                     "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
+                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
                 )
 
                 assertEquals(

@@ -2,7 +2,7 @@
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
-import com.adamratzman.spotify.models.AbstractPagingObject
+import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlocking
@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapConcat
@@ -30,7 +29,7 @@ import kotlinx.coroutines.withContext
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
  */
-open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyApi<*, *>, val supplier: suspend () -> T) {
+open class SpotifyRestAction<T> internal constructor(protected val api: GenericSpotifyApi, val supplier: suspend () -> T) {
     private var hasRunBacking: Boolean = false
     private var hasCompletedBacking: Boolean = false
 
@@ -132,18 +131,18 @@ open class SpotifyRestAction<T> internal constructor(protected val api: SpotifyA
     override fun toString() = complete().toString()
 }
 
-class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: SpotifyApi<*, *>, supplier: suspend () -> T) :
+class SpotifyRestActionPaging<Z : Any, T : PagingObjectBase<Z>>(api: GenericSpotifyApi, supplier: suspend () -> T) :
         SpotifyRestAction<T>(api, supplier) {
 
     /**
-     * Synchronously retrieve all [AbstractPagingObject] associated with this rest action
+     * Synchronously retrieve all [PagingObjectBase] associated with this rest action
      */
     fun getAll(context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { suspendComplete(context).getAllImpl() }
 
     /**
      * Synchronously retrieve the next [total] paging objects associated with this rest action, including the current one.
      *
-     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @param total The total amount of [PagingObjectBase] to request, including the [PagingObjectBase] associated with the current request.
      * @since 3.0.0
      */
     @SpotifyExperimentalHttpApi
@@ -152,11 +151,22 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     /**
      * Synchronously retrieve the items associated with the next [total] paging objects associated with this rest action, including the current one.
      *
-     * @param total The total amount of [AbstractPagingObject] to request, including the [AbstractPagingObject] associated with the current request.
+     * @param total The total amount of [PagingObjectBase] to request, including the [PagingObjectBase] associated with the current request.
      * @since 3.0.0
      */
     @SpotifyExperimentalHttpApi
     fun getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default) = api.tracks.toAction { getWithNext(total, context).complete().map { it.items }.flatten() }
+
+    /**
+     * Synchronously retrieve all [Z] associated with this rest action. Filters out null objects
+     *
+     * @since 3.1.0
+     */
+    fun getAllItemsNotNull(context: CoroutineContext = Dispatchers.Default) =
+            api.tracks.toAction {
+                suspendComplete(context)
+                        .getAllImpl().toList().map { it.items }.flatten().filterNotNull()
+            }
 
     /**
      * Synchronously retrieve all [Z] associated with this rest action
@@ -170,7 +180,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     /**
      * Consume each [Z] by [consumer] as it is retrieved
      */
-    fun streamAllItems(context: CoroutineContext = Dispatchers.Default, consumer: (Z) -> Unit): SpotifyRestAction<Unit> {
+    fun streamAllItems(context: CoroutineContext = Dispatchers.Default, consumer: (Z?) -> Unit): SpotifyRestAction<Unit> {
         return api.tracks.toAction {
             suspendComplete(context).getAllImpl().toList().forEach { it.items.forEach { item -> consumer(item) } }
         }
@@ -182,7 +192,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flowOrdered(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
+    fun flowOrdered(context: CoroutineContext = Dispatchers.Default) = flow {
         emitAll(flowPagingObjectsOrdered().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -191,7 +201,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
      * */
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
+    fun flowPagingObjectsOrdered(context: CoroutineContext = Dispatchers.Default) =
             flow {
                 suspendComplete(context).also { master ->
                     emitAll(master.flowStartOrdered())
@@ -206,7 +216,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
     @FlowPreview
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flow(context: CoroutineContext = Dispatchers.Default): Flow<Z> = flow {
+    fun flow(context: CoroutineContext = Dispatchers.Default) = flow {
         emitAll(flowPagingObjects().flatMapConcat { it.asFlow() })
     }.flowOn(context)
 
@@ -215,7 +225,7 @@ class SpotifyRestActionPaging<Z : Any, T : AbstractPagingObject<Z>>(api: Spotify
      * */
     @JvmOverloads
     @ExperimentalCoroutinesApi
-    fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default): Flow<AbstractPagingObject<Z>> =
+    fun flowPagingObjects(context: CoroutineContext = Dispatchers.Default) =
             flow {
                 suspendComplete(context).also { master ->
                     emitAll(master.flowBackward())

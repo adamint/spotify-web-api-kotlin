@@ -1,16 +1,16 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.base
-import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
+import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
@@ -18,7 +18,7 @@ import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
-abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
+abstract class SpotifyEndpoint(val api: GenericSpotifyApi) {
     val cache = SpotifyCache()
     internal val json get() = api.json
 
@@ -63,7 +63,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
         contentType: String? = null,
         attemptedRefresh: Boolean = false
     ): String {
-        if (getCurrentTimeMs() >= api.expireTime) {
+        if (api.token.shouldRefresh()) {
             if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
@@ -94,6 +94,8 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
                     )
                 } catch (e: BadRequestException) {
                     if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
+                        api.refreshToken()
+
                         execute(
                                 url,
                                 body,
@@ -162,7 +164,7 @@ abstract class SpotifyEndpoint(val api: SpotifyApi<*, *>) {
     )
 
     internal fun <T> toAction(supplier: suspend () -> T) = SpotifyRestAction(api, supplier)
-    internal fun <Z : Any, T : AbstractPagingObject<Z>> toActionPaging(supplier: suspend () -> T) =
+    internal fun <Z : Any, T : PagingObjectBase<Z>> toActionPaging(supplier: suspend () -> T) =
             SpotifyRestActionPaging(api, supplier)
 }
 
@@ -227,7 +229,7 @@ data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
-    val api: SpotifyApi<*, *>
+    val api: GenericSpotifyApi
 )
 
 data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {

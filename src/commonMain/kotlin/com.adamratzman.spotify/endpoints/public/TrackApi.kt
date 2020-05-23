@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -10,9 +10,9 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AudioAnalysis
 import com.adamratzman.spotify.models.AudioFeatures
 import com.adamratzman.spotify.models.AudioFeaturesResponse
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.TrackList
-import com.adamratzman.spotify.models.TrackUri
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
@@ -28,7 +28,7 @@ typealias TrackAPI = TrackApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/)**
  */
-class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *
@@ -43,7 +43,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             catch {
                 get(
-                        EndpointBuilder("/tracks/${TrackUri(track).id.encodeUrl()}").with(
+                        EndpointBuilder("/tracks/${PlayableUri(track).id.encodeUrl()}").with(
                                 "market",
                                 market?.name
                         ).toString()
@@ -67,7 +67,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         return toAction {
             bulkRequest(50, tracks.toList()) { chunk ->
                 get(
-                        EndpointBuilder("/tracks").with("ids", chunk.joinToString(",") { TrackUri(it).id.encodeUrl() })
+                        EndpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
                                 .with("market", market?.name).toString()
                 ).toObject(TrackList.serializer(), api, json).tracks
             }.flatten()
@@ -94,7 +94,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction {
-            get(EndpointBuilder("/audio-analysis/${TrackUri(track).id.encodeUrl()}").toString())
+            get(EndpointBuilder("/audio-analysis/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioAnalysis.serializer(), api, json)
         }
     }
@@ -110,7 +110,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
      */
     fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction {
-            get(EndpointBuilder("/audio-features/${TrackUri(track).id.encodeUrl()}").toString())
+            get(EndpointBuilder("/audio-features/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioFeatures.serializer(), api, json)
         }
     }
@@ -131,7 +131,7 @@ class TrackApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/audio-features").with(
                                 "ids",
-                                chunk.joinToString(",") { TrackUri(it).id.encodeUrl() }).toString()
+                                chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() }).toString()
                 )
                         .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
             }.flatten()

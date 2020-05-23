@@ -122,7 +122,7 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 ### Gradle Patch ###
-**/build/
+samples/jvm/build/
 
 # End of https://www.gitignore.io/api/gradle,kotlin,intellij
 /.idea/

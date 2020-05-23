@@ -2,9 +2,9 @@
 package com.adamratzman.spotify.http
 
 import java.net.URLEncoder
-import javax.xml.bind.DatatypeConverter
+import org.apache.commons.codec.binary.Base64
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 internal actual fun String.base64ByteEncode(): String {
-    return DatatypeConverter.printBase64Binary(toByteArray())
+    return Base64.encodeBase64String(toByteArray())
 }
