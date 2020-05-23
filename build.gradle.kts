@@ -172,7 +172,7 @@ publishing {
         }
     }
     repositories {
-        if (project.hasProperty("nexusPublish")) {
+        if (System.getenv("publishLocation") == "nexus") {
             maven {
                 name = "nexus"
                 val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -202,11 +202,14 @@ publishing {
 }
 
 signing {
-    if (project.hasProperty("nexusPublish")) sign(publishing.publications["jvm"])
+    if (System.getenv("publishLocation") == "nexus") {
+        sign(publishing.publications["jvm"])
+        sign(publishing.publications["js"])
+    }
 }
 
 // get signing confs interactively if needed
-/*gradle.taskGraph.whenReady {
+gradle.taskGraph.whenReady {
     val alreadyConfigured = with(project.extra) {
         (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
                 || (has("signing.notNeeded") && get("signing.notNeeded") == "true")
@@ -233,7 +236,7 @@ signing {
 
         console.printf("\nThanks.\n\n")
     }
-}*/
+}
 
 tasks {
     val dokka by getting(DokkaTask::class) {
