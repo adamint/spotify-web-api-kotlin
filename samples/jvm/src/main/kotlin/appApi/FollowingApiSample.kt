@@ -3,7 +3,6 @@ package appApi
 
 import com.adamratzman.spotify.spotifyAppApi
 
-
 fun main() {
     // instantiate api
     val api = spotifyAppApi(
