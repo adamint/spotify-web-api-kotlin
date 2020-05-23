@@ -1,13 +1,14 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models.serialization
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.AbstractPagingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.NeedsApi
+import com.adamratzman.spotify.models.NullablePagingObject
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.instantiatePagingObjects
 import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
@@ -29,31 +30,31 @@ internal val nonstrictJson =
                 )
         )
 
-internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: SpotifyApi<*, *>?, json: Json): T? = try {
+internal inline fun <reified T : Any> String.toObjectNullable(serializer: KSerializer<T>, api: GenericSpotifyApi?, json: Json): T? = try {
     toObject(serializer, api, json)
 } catch (e: Exception) {
     null
 }
 
-internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>, api: SpotifyApi<*, *>?, json: Json): T {
+internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>, api: GenericSpotifyApi?, json: Json): T {
     return this.parseJson {
         val obj = json.parse(serializer, this)
         api?.let {
             if (obj is NeedsApi) obj.api = api
-            if (obj is AbstractPagingObject<*>) obj.endpoint = api.tracks
+            if (obj is PagingObjectBase<*>) obj.endpoint = api.tracks
             obj.instantiatePagingObjects(api)
         }
         obj
     }
 }
 
-internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, api: SpotifyApi<*, *>?, json: Json): List<T> {
+internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, api: GenericSpotifyApi?, json: Json): List<T> {
     return this.parseJson {
         json.parse(serializer, this).apply {
             if (api != null) {
                 forEach { obj ->
                     if (obj is NeedsApi) obj.api = api
-                    if (obj is AbstractPagingObject<*>) obj.endpoint = api.tracks
+                    if (obj is PagingObjectBase<*>) obj.endpoint = api.tracks
                 }
             }
         }
@@ -68,10 +69,10 @@ internal fun <T : Any> String.toPagingObject(
     json: Json,
     arbitraryInnerNameAllowed: Boolean = false,
     skipInnerNameFirstIfPossible: Boolean = true
-): PagingObject<T> {
+): NullablePagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
         val map = this.parseJson {
-            val t = (String.serializer() to PagingObject.serializer(tSerializer))
+            val t = (String.serializer() to NullablePagingObject.serializer(tSerializer))
             json.parse(MapSerializer(t.first, t.second), this)
         }
         return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
@@ -81,20 +82,20 @@ internal fun <T : Any> String.toPagingObject(
                     this.itemClazz = tClazz
                     this.items.map { obj ->
                         if (obj is NeedsApi) obj.api = endpoint.api
-                        if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
+                        if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
                     }
                 }
     }
 
     return try {
-        val pagingObject = this.parseJson { json.parse(PagingObject.serializer(tSerializer), this) }
+        val pagingObject = this.parseJson { json.parse(NullablePagingObject.serializer(tSerializer), this) }
 
         pagingObject.apply {
             this.endpoint = endpoint
             this.itemClazz = tClazz
             this.items.map { obj ->
                 if (obj is NeedsApi) obj.api = endpoint.api
-                if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
+                if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
             }
         }
     } catch (jde: SpotifyException.ParseException) {
@@ -112,13 +113,13 @@ internal fun <T : Any> String.toPagingObject(
     }
 }
 
-internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: AbstractPagingObject<T>, endpoint: SpotifyEndpoint) {
+internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: PagingObjectBase<T>, endpoint: SpotifyEndpoint) {
     pagingObject.apply {
         this.endpoint = endpoint
         this.itemClazz = tClazz
         this.items.map { obj ->
             if (obj is NeedsApi) obj.api = endpoint.api
-            if (obj is AbstractPagingObject<*>) obj.endpoint = endpoint
+            if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
         }
     }
 }
@@ -130,7 +131,16 @@ internal inline fun <reified T : Any> String.toPagingObject(
     json: Json,
     arbitraryInnerNameAllowed: Boolean = false,
     skipInnerNameFirstIfPossible: Boolean = true
-): PagingObject<T> = toPagingObject(T::class, tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible)
+): PagingObject<T> = toNullablePagingObject(tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible).toPagingObject()
+
+internal inline fun <reified T : Any> String.toNullablePagingObject(
+    tSerializer: KSerializer<T>,
+    innerObjectName: String? = null,
+    endpoint: SpotifyEndpoint,
+    json: Json,
+    arbitraryInnerNameAllowed: Boolean = false,
+    skipInnerNameFirstIfPossible: Boolean = true
+): NullablePagingObject<T> = toPagingObject(T::class, tSerializer, innerObjectName, endpoint, json, arbitraryInnerNameAllowed, skipInnerNameFirstIfPossible)
 
 internal fun <T : Any> String.toCursorBasedPagingObject(
     tClazz: KClass<T>,

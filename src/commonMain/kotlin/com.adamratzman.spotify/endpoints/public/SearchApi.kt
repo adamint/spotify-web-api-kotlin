@@ -1,7 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.public
 
-import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyRestActionPaging
@@ -13,11 +13,14 @@ import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimpleAlbum
+import com.adamratzman.spotify.models.SimpleEpisode
 import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.SimpleShow
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.createMapSerializer
+import com.adamratzman.spotify.models.serialization.toNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.serializer
@@ -28,10 +31,11 @@ typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+ * It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
-class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
+open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *
@@ -43,7 +47,9 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         ALBUM("album"),
         TRACK("track"),
         ARTIST("artist"),
-        PLAYLIST("playlist");
+        PLAYLIST("playlist"),
+        SHOW("show"),
+        EPISODE("episode");
     }
 
     /**
@@ -118,10 +124,12 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
             val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
             SpotifySearchResult(
-                map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
-                map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
-                map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
-                map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json)
+                    map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
+                    map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
+                    map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
+                    map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json),
+                    map["episodes"]?.toString()?.toNullablePagingObject(SimpleEpisode.serializer(), endpoint = this, json = json),
+                    map["shows"]?.toString()?.toNullablePagingObject(SimpleShow.serializer(), endpoint = this, json = json)
             )
         }
     }
@@ -149,7 +157,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.PLAYLIST))
-                .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
+                    .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
         }
     }
 
@@ -177,7 +185,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ARTIST))
-                .toPagingObject(Artist.serializer(), "artists", this, json)
+                    .toPagingObject(Artist.serializer(), "artists", this, json)
         }
     }
 
@@ -205,7 +213,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<SimpleAlbum, PagingObject<SimpleAlbum>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.ALBUM))
-                .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
+                    .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
         }
     }
 
@@ -233,11 +241,11 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
     ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
         return toActionPaging {
             get(build(query, market, limit, offset, SearchType.TRACK))
-                .toPagingObject(Track.serializer(), "tracks", this, json)
+                    .toPagingObject(Track.serializer(), "tracks", this, json)
         }
     }
 
-    private fun build(
+    protected fun build(
         query: String,
         market: Market?,
         limit: Int?,
@@ -246,7 +254,7 @@ class SearchApi(api: SpotifyApi<*, *>) : SpotifyEndpoint(api) {
         includeExternal: Boolean? = null
     ): String {
         return EndpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
-            .with("market", market?.name).with("limit", limit).with("offset", offset)
-            .with("include_external", if (includeExternal == true) "audio" else null).toString()
+                .with("market", market?.name).with("limit", limit).with("offset", offset)
+                .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }

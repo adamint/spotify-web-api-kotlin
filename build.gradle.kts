@@ -1,5 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 import java.net.URI
 
 plugins {
@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.1.0-rc.1"
+version = "3.1.0"
 
 java {
     withSourcesJar()
@@ -31,13 +31,28 @@ tasks.withType<Test> {
 repositories {
     mavenCentral()
     jcenter()
-    google()
     maven("https://kotlin.bintray.com/kotlinx")
 }
 
 kotlin {
     jvm()
-    js()
+    js {
+        browser {
+            dceTask {
+                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
+            }
+
+            webpackTask {
+                output.libraryTarget = Target.UMD
+            }
+
+            testTask {
+                enabled = false
+            }
+        }
+
+        nodejs()
+    }
 
     targets {
         sourceSets {
@@ -49,9 +64,9 @@ kotlin {
             val commonMain by getting {
                 dependencies {
                     implementation(kotlin("stdlib-common"))
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-                    implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    api("io.ktor:ktor-client-core:$ktorVersion")
                 }
             }
             val commonTest by getting {
@@ -69,10 +84,10 @@ kotlin {
                 }
 
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
+                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("commons-codec:commons-codec:1.14")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -90,9 +105,13 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
+                    implementation(npm("text-encoding", "0.7.0"))
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
-                    implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    api("io.ktor:ktor-client-js:$ktorVersion")
+                    implementation(npm("abort-controller", "3.0.0"))
+                    implementation(npm("node-fetch", "2.6.0"))
+
                     compileOnly(kotlin("stdlib-js"))
                 }
             }
@@ -153,7 +172,7 @@ publishing {
         }
     }
     repositories {
-        if (!project.hasProperty("publishToSpace")) {
+        if (System.getenv("publishLocation") == "nexus") {
             maven {
                 name = "nexus"
                 val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -183,7 +202,10 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications["jvm"])
+    if (System.getenv("publishLocation") == "nexus") {
+        sign(publishing.publications["jvm"])
+        sign(publishing.publications["js"])
+    }
 }
 
 // get signing confs interactively if needed
@@ -285,20 +307,8 @@ tasks {
     }
 
 
-    getByName<KotlinJsCompile>("compileKotlinJs") {
-        kotlinOptions {
-            moduleKind = "umd"
-            noStdlib = false
-            metaInfo = true
-        }
-    }
-
     getByName<Test>("jvmTest") {
         useJUnitPlatform()
-    }
-
-    withType<GenerateModuleMetadata> {
-        enabled = false
     }
 
 
