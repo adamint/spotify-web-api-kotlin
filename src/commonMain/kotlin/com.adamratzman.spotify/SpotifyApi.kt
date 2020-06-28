@@ -187,12 +187,18 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
      * @param scopes The scopes that the application should have access to
      * @param redirectUri The redirect uri specified on the Spotify developer dashboard; where to
      * redirect the browser after authentication
+     * @param state This provides protection against attacks such as cross-site request forgery.
      *
      * @return Authorization URL that can be used in a browser
      */
-    fun getAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String): String {
+    fun getAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String, state: String? = null): String {
         require(clientId != null)
-        return getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri)
+        return getAuthUrlFull(
+                *scopes,
+                clientId = clientId,
+                redirectUri = redirectUri,
+                state = state
+        )
     }
 
     /**
@@ -248,11 +254,20 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
          * @param scopes Spotify scopes the api instance should be able to access for the user
          * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
          * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param state This provides protection against attacks such as cross-site request forgery.
          */
-        fun getAuthUrlFull(vararg scopes: SpotifyScope, clientId: String, redirectUri: String, isImplicitGrantFlow: Boolean = false, shouldShowDialog: Boolean = false): String {
+        fun getAuthUrlFull(
+            vararg scopes: SpotifyScope,
+            clientId: String,
+            redirectUri: String,
+            isImplicitGrantFlow: Boolean = false,
+            shouldShowDialog: Boolean = false,
+            state: String? = null
+        ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
                     "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
                     "&redirect_uri=$redirectUri" +
+                    (state?.let { "&state=$it" } ?: "") +
                     if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}" +
                             if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
         }
@@ -589,9 +604,9 @@ open class SpotifyClientApi internal constructor(
      *
      * @return Authorization URL that can be used in a browser
      */
-    fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
+    fun getAuthorizationUrl(vararg scopes: SpotifyScope, state: String? = null): String {
         require(clientId != null && clientSecret != null) { "Either the client id or the client secret is not set" }
-        return redirectUri?.let { getAuthUrlFull(*scopes, clientId = clientId, redirectUri = it) }
+        return redirectUri?.let { getAuthUrlFull(*scopes, clientId = clientId, redirectUri = it, state = state) }
                 ?: throw IllegalArgumentException("The redirect uri must be set")
     }
 

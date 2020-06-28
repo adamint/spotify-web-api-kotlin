@@ -63,10 +63,11 @@ kotlin {
 
             val commonMain by getting {
                 dependencies {
-                    implementation(kotlin("stdlib-common"))
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
                     api("io.ktor:ktor-client-core:$ktorVersion")
+
+                    implementation(kotlin("stdlib-common"))
                 }
             }
             val commonTest by getting {
@@ -85,9 +86,9 @@ kotlin {
 
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    implementation("commons-codec:commons-codec:1.14")
+                    api("commons-codec:commons-codec:1.14")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -105,12 +106,12 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    implementation(npm("text-encoding", "0.7.0"))
+                    api(npm("text-encoding", "0.7.0"))
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
                     api("io.ktor:ktor-client-js:$ktorVersion")
-                    implementation(npm("abort-controller", "3.0.0"))
-                    implementation(npm("node-fetch", "2.6.0"))
+                    api(npm("abort-controller", "3.0.0"))
+                    api(npm("node-fetch", "2.6.0"))
 
                     compileOnly(kotlin("stdlib-js"))
                 }
