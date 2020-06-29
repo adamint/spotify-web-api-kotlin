@@ -8,8 +8,6 @@ import kotlinx.serialization.Serializable
 /**
  * Private information about a Spotify user. Each field may require a specific scope.
  *
- * @property birthdate The user’s date-of-birth. This field is only available when the current user
- * has granted access to the [SpotifyScope.USER_READ_BIRTHDATE] scope.
  * @property country The country of the user, as set in the user’s account profile. An ISO 3166-1 alpha-2
  * country code. This field is only available when the current user has granted access to the [SpotifyScope.USER_READ_PRIVATE] scope.
  * @property displayName The name displayed on the user’s profile. null if not available.
@@ -32,7 +30,6 @@ data class SpotifyUserInformation(
     override val id: String,
     override val uri: UserUri,
 
-    val birthdate: String? = null,
     val country: String? = null,
     @SerialName("display_name") val displayName: String? = null,
     val email: String? = null,

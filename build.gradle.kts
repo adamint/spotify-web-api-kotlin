@@ -9,13 +9,13 @@ plugins {
     id("io.codearte.nexus-staging") version "0.21.2"
     kotlin("multiplatform") version "1.3.72"
     kotlin("plugin.serialization") version "1.3.72"
-    id("com.diffplug.gradle.spotless") version "3.28.1"
+    id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.1"
 }
 
 group = "com.adamratzman"
-version = "3.1.01"
+version = "3.1.02"
 
 java {
     withSourcesJar()
@@ -56,9 +56,9 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.5"
+            val coroutineVersion = "1.3.7"
             val serializationVersion = "0.20.0"
-            val spekVersion = "2.0.10"
+            val spekVersion = "2.0.11"
             val ktorVersion = "1.3.2"
 
             val commonMain by getting {
