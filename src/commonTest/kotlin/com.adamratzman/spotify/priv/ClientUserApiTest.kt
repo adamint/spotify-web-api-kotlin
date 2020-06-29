@@ -10,7 +10,7 @@ class ClientUserApiTest : Spek({
     describe("Client profile test") {
         val cp = (api as? SpotifyClientApi)?.users
         it("valid user") {
-            cp?.getClientProfile()?.complete()?.birthdate
+            cp?.getClientProfile()?.complete()?.displayName
         }
     }
 })
