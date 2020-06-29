@@ -103,13 +103,6 @@ enum class SpotifyScope(val uri: String) {
     USER_READ_PRIVATE("user-read-private"),
 
     /**
-     * Read access to the user's birthdate.
-     *
-     * **Visible to users**: Receive your birthdate.
-     */
-    USER_READ_BIRTHDATE("user-read-birthdate"),
-
-    /**
      * Read access to user’s email address.
      *
      * **Visible to users**: Get your real email address.
