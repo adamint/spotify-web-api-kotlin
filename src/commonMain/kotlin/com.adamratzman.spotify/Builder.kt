@@ -28,9 +28,24 @@ import kotlinx.serialization.json.Json
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param isImplicitGrantFlow Whether the authorization url should be for the Implicit Grant flow, otherwise for Authorization Code flo
  * @param shouldShowDialog If [isImplicitGrantFlow] is true, whether or not to force the user to approve the app again if they’ve already done so.
+ * @param state This provides protection against attacks such as cross-site request forgery.
  */
-fun getSpotifyAuthorizationUrl(vararg scopes: SpotifyScope, clientId: String, redirectUri: String, isImplicitGrantFlow: Boolean = false, shouldShowDialog: Boolean = false): String {
-    return SpotifyApi.getAuthUrlFull(*scopes, clientId = clientId, redirectUri = redirectUri, isImplicitGrantFlow = isImplicitGrantFlow, shouldShowDialog = shouldShowDialog)
+fun getSpotifyAuthorizationUrl(
+    vararg scopes: SpotifyScope,
+    clientId: String,
+    redirectUri: String,
+    isImplicitGrantFlow: Boolean = false,
+    shouldShowDialog: Boolean = false,
+    state: String? = null
+): String {
+    return SpotifyApi.getAuthUrlFull(
+            *scopes,
+            clientId = clientId,
+            redirectUri = redirectUri,
+            isImplicitGrantFlow = isImplicitGrantFlow,
+            shouldShowDialog = shouldShowDialog,
+            state = state
+    )
 }
 
 // ==============================================
@@ -536,9 +551,10 @@ interface ISpotifyClientApiBuilder : ISpotifyApiBuilder<SpotifyClientApi, Spotif
      * Create a Spotify authorization URL from which API access can be obtained
      *
      * @param scopes The scopes that the application should have access to
+     * @param state This provides protection against attacks such as cross-site request forgery.
      * @return Authorization URL that can be used in a browser
      */
-    fun getAuthorizationUrl(vararg scopes: SpotifyScope): String
+    fun getAuthorizationUrl(vararg scopes: SpotifyScope, state: String? = null): String
 }
 
 /**
@@ -549,9 +565,14 @@ class SpotifyClientApiBuilder(
     override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build(),
     override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 ) : ISpotifyClientApiBuilder {
-    override fun getAuthorizationUrl(vararg scopes: SpotifyScope): String {
+    override fun getAuthorizationUrl(vararg scopes: SpotifyScope, state: String?): String {
         require(credentials.redirectUri != null && credentials.clientId != null) { "You didn't specify a redirect uri or client id in the credentials block!" }
-        return SpotifyApi.getAuthUrlFull(*scopes, clientId = credentials.clientId!!, redirectUri = credentials.redirectUri!!)
+        return SpotifyApi.getAuthUrlFull(
+                *scopes,
+                clientId = credentials.clientId!!,
+                redirectUri = credentials.redirectUri!!,
+                state = state
+        )
     }
 
     override suspend fun suspendBuild(): SpotifyClientApi {
