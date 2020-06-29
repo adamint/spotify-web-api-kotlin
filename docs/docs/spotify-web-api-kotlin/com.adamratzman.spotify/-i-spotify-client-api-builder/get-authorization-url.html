@@ -8,12 +8,14 @@
 <a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="index.html">ISpotifyClientApiBuilder</a>&nbsp;/&nbsp;<a href="./get-authorization-url.html">getAuthorizationUrl</a><br/>
 <br/>
 <h1>getAuthorizationUrl</h1>
-<a name="com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)))"></a>
-(common, js, jvm) <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)))/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<a name="com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.ISpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
 <p>Create a Spotify authorization URL from which API access can be obtained</p>
 <h3>Parameters</h3>
 <p><a name="scopes"></a>
 <code>scopes</code> - The scopes that the application should have access to</p>
+<p><a name="state"></a>
+<code>state</code> - This provides protection against attacks such as cross-site request forgery.</p>
 <p><strong>Return</strong><br/>
 Authorization URL that can be used in a browser</p>
 </BODY>
