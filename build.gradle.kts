@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "com.adamratzman"
-version = "3.1.02"
+version = "3.1.03"
 
 java {
     withSourcesJar()
@@ -133,6 +133,16 @@ kotlin {
 
 publishing {
     publications {
+        val js by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin-js"
+            setupPom("spotify-api-kotlin-js")
+        }
+
+        val kotlinMultiplatform by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin-core"
+            setupPom("spotify-api-kotlin-core")
+        }
+
         val jvm by getting(MavenPublication::class) {
             artifactId = "spotify-api-kotlin"
             artifact(tasks.getByName("javadocJar"))
@@ -145,31 +155,7 @@ publishing {
                 }
             }
 
-            pom {
-                name.set("spotify-api-kotlin")
-                description.set("A Kotlin wrapper for the Spotify Web API.")
-                url.set("https://github.com/adamint/spotify-web-api-kotlin")
-                inceptionYear.set("2018")
-                scm {
-                    url.set("https://github.com/adamint/spotify-web-api-kotlin")
-                    connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
-                    developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
-                }
-                licenses {
-                    license {
-                        name.set("The Apache Software License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                        distribution.set("repo")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("adamratzman")
-                        name.set("Adam Ratzman")
-                        email.set("adam@adamratzman.com")
-                    }
-                }
-            }
+            setupPom("spotify-api-kotlin")
         }
     }
     repositories {
@@ -204,8 +190,7 @@ publishing {
 
 signing {
     if (System.getenv("publishLocation") == "nexus") {
-        sign(publishing.publications["jvm"])
-        sign(publishing.publications["js"])
+        sign(publishing.publications)
     }
 }
 
@@ -317,5 +302,33 @@ tasks {
         dependsOn.add(check)
         dependsOn.add(dokka)
         dependsOn.add("publishJvmPublicationToNexusRepository")
+    }
+}
+
+fun MavenPublication.setupPom(publicationName: String) {
+    pom {
+        name.set(publicationName)
+        description.set("A Kotlin wrapper for the Spotify Web API.")
+        url.set("https://github.com/adamint/spotify-web-api-kotlin")
+        inceptionYear.set("2018")
+        scm {
+            url.set("https://github.com/adamint/spotify-web-api-kotlin")
+            connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
+            developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
+        }
+        licenses {
+            license {
+                name.set("The Apache Software License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("repo")
+            }
+        }
+        developers {
+            developer {
+                id.set("adamratzman")
+                name.set("Adam Ratzman")
+                email.set("adam@adamratzman.com")
+            }
+        }
     }
 }
