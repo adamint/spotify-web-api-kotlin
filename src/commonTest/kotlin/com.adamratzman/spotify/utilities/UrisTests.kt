@@ -22,7 +22,7 @@ import org.spekframework.spek2.style.specification.describe
 class UrisTests : Spek({
     describe("Uris tests") {
         describe("SpotifyTrackUri tests") {
-            it("Create spotify track with invalid input") {
+            it("Create com.adamratzman.spotify track with invalid input") {
                 assertFailsWith<SpotifyUriException> {
                     SpotifyTrackUri("a:invalid")
                 }
@@ -32,23 +32,23 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    SpotifyTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    SpotifyTrackUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
-            it("Create spotify track with valid input") {
+            it("Create com.adamratzman.spotify track with valid input") {
                 assertEquals(
-                    "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    "com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                    SpotifyTrackUri("com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 )
 
                 assertEquals(
                     "1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
+                    SpotifyTrackUri("com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
                 )
 
                 assertEquals(
-                    "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                    "com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
                     SpotifyTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").uri
                 )
 
@@ -70,7 +70,7 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    LocalTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    LocalTrackUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
 
                 assertFailsWith<SpotifyUriException> {
@@ -80,13 +80,13 @@ class UrisTests : Spek({
 
             it("Create local track with valid input") {
                 assertEquals(
-                    "spotify:local:artist:album:name:id",
-                    LocalTrackUri("spotify:local:artist:album:name:id").uri
+                    "com.adamratzman.spotify:local:artist:album:name:id",
+                    LocalTrackUri("com.adamratzman.spotify:local:artist:album:name:id").uri
                 )
 
                 assertEquals(
                     "artist:album:name:id",
-                    LocalTrackUri("spotify:local:artist:album:name:id").id
+                    LocalTrackUri("com.adamratzman.spotify:local:artist:album:name:id").id
                 )
             }
         }
@@ -102,19 +102,19 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    PlayableUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    PlayableUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
             describe("Create any track with valid input") {
                 it("Create remote track with uri") {
-                    val trackUri = PlayableUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
                         SpotifyTrackUri::class,
                         trackUri::class
                     )
                     assertEquals(
-                        "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                        "com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
                         trackUri.uri
                     )
                     assertEquals(
@@ -123,9 +123,9 @@ class UrisTests : Spek({
                     )
                 }
                 it("Create local track with uri") {
-                    val trackUri = PlayableUri("spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
+                    val trackUri = PlayableUri("com.adamratzman.spotify:local:1Z9UVqWuRJ7zToOiVnlXRO")
                     assertEquals(
-                        "spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
+                        "com.adamratzman.spotify:local:1Z9UVqWuRJ7zToOiVnlXRO",
                         trackUri.uri
                     )
                     assertEquals(
@@ -144,7 +144,7 @@ class UrisTests : Spek({
                         trackUri::class
                     )
                     assertEquals(
-                        "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                        "com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
                         trackUri.uri
                     )
                     assertEquals(
@@ -170,33 +170,33 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    UserUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    UserUri("com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
 
             it("Create user with valid input") {
                 assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                    UserUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 )
 
                 assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                    SpotifyUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 )
 
                 assertEquals(
                     UserUri::class,
-                    SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")::class
+                    SpotifyUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")::class
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
+                    UserUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
                 )
 
                 assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                    "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                     UserUri("7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 )
 
@@ -206,23 +206,23 @@ class UrisTests : Spek({
                 )
 
                 assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                    UserUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
                 )
 
                 assertEquals(
                     "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    UserUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
                 )
 
                 assertEquals(
-                    "spotify:user:",
-                    UserUri("spotify:user:").uri
+                    "com.adamratzman.spotify:user:",
+                    UserUri("com.adamratzman.spotify:user:").uri
                 )
 
                 assertEquals(
                     "",
-                    UserUri("spotify:user:").id
+                    UserUri("com.adamratzman.spotify:user:").id
                 )
             }
         }
@@ -242,23 +242,23 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    PlaylistUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                    PlaylistUri("com.adamratzman.spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
                 }
             }
 
             it("Create playlist with valid input") {
                 assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    "com.adamratzman.spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    PlaylistUri("com.adamratzman.spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
                 )
 
                 assertEquals(
                     "66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    PlaylistUri("com.adamratzman.spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
                 )
 
                 assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    "com.adamratzman.spotify:playlist:66wcLiS5R50akaQ3onDyZd",
                     PlaylistUri("66wcLiS5R50akaQ3onDyZd").uri
                 )
 
@@ -268,13 +268,13 @@ class UrisTests : Spek({
                 )
 
                 assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                    "com.adamratzman.spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                    PlaylistUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
                 )
 
                 assertEquals(
                     "66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                    PlaylistUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
                 )
             }
         }
@@ -294,23 +294,23 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    AlbumUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    AlbumUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
             it("Create album with valid input") {
                 assertEquals(
-                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
+                    "com.adamratzman.spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                    AlbumUri("com.adamratzman.spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
                 )
 
                 assertEquals(
                     "0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
+                    AlbumUri("com.adamratzman.spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
                 )
 
                 assertEquals(
-                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                    "com.adamratzman.spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
                     AlbumUri("0W0ag2P4h1Fmp7PnGJVvIJ").uri
                 )
 
@@ -336,23 +336,23 @@ class UrisTests : Spek({
                 }
 
                 assertFailsWith<SpotifyUriException> {
-                    ArtistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                    ArtistUri("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
                 }
             }
 
             it("Create artist with valid input") {
                 assertEquals(
-                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
+                    "com.adamratzman.spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                    ArtistUri("com.adamratzman.spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
                 )
 
                 assertEquals(
                     "1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
+                    ArtistUri("com.adamratzman.spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
                 )
 
                 assertEquals(
-                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                    "com.adamratzman.spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
                     ArtistUri("1XLjkBxFokuDTlHt0mQkRe").uri
                 )
 
@@ -367,20 +367,20 @@ class UrisTests : Spek({
         val json = Json(JsonConfiguration.Stable)
         it("create UserUri from json by using SpotifyUri.serializer()") {
             val spotifyUri: SpotifyUri =
-                json.parse(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                json.parse(SpotifyUri.serializer(), "\"com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 UserUri::class,
                 spotifyUri::class
             )
             assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 spotifyUri.uri
             )
         }
         it("create UserUri from json by using UserUri.serializer()") {
-            val userUri = json.parse(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            val userUri = json.parse(UserUri.serializer(), "\"com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
             )
         }
@@ -392,7 +392,7 @@ class UrisTests : Spek({
         it("create UserUri from json with id by using UserUri.serializer()") {
             val userUri = json.parse(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
-                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                "com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
             )
         }
@@ -400,7 +400,7 @@ class UrisTests : Spek({
     describe("Uri types test") {
         it("test user uri string is a UserUri") {
             assertTrue {
-                SpotifyUri.isType<UserUri>("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")
+                SpotifyUri.isType<UserUri>("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")
             }
         }
         it("test user id string is not a UserUri") {
@@ -410,7 +410,7 @@ class UrisTests : Spek({
         }
         it("test user uri string can be a UserUri") {
             assertTrue {
-                SpotifyUri.canBeType<UserUri>("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")
+                SpotifyUri.canBeType<UserUri>("com.adamratzman.spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")
             }
         }
         it("test user id string can't be a UserUri") {

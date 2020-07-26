@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.adamint.spotify-web-api-kotlin:spotify-api-kotlin:dev-SNAPSHOT'
+    compile 'com.github.adamint.com.adamratzman.spotify-web-api-kotlin:com.adamratzman.spotify-api-kotlin:dev-SNAPSHOT'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 

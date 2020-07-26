@@ -3,14 +3,14 @@ package com.adamratzman.spotify.utils
 
 import java.io.ByteArrayOutputStream
 import java.net.URL
+import java.util.Base64
 import javax.imageio.ImageIO
-import org.apache.commons.codec.binary.Base64
 
 internal actual fun encodeBufferedImageToBase64String(image: BufferedImage): String {
     val bos = ByteArrayOutputStream()
     ImageIO.write(image, "jpg", bos)
     bos.close()
-    return Base64.encodeBase64String(bos.toByteArray())
+    return Base64.getEncoder().encodeToString(bos.toByteArray())
 }
 
 internal actual fun convertFileToBufferedImage(file: File): BufferedImage = ImageIO.read(file)

@@ -11,17 +11,17 @@ fun main() {
     ).build()
 
     // get track "I'm Good" by the Mowgli's and check its popularity
-    println(api.tracks.getTrack("spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete()!!.popularity)
+    println(api.tracks.getTrack("com.adamratzman.spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete()!!.popularity)
 
     // get track "I'm Good" and a non-existant track
-    println(api.tracks.getTracks("spotify:track:5KQDGl3vAkNGyfvSbaW89E", "nonexistanttrack").complete())
+    println(api.tracks.getTracks("com.adamratzman.spotify:track:5KQDGl3vAkNGyfvSbaW89E", "nonexistanttrack").complete())
 
     // get audio analysis for track "I'm Good"
-    println(api.tracks.getAudioAnalysis("spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete())
+    println(api.tracks.getAudioAnalysis("com.adamratzman.spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete())
 
     // get audio features for track "I'm Good"
-    println(api.tracks.getAudioFeatures("spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete())
+    println(api.tracks.getAudioFeatures("com.adamratzman.spotify:track:5KQDGl3vAkNGyfvSbaW89E").complete())
 
     // get audio features for an existing and non-existant track
-    println(api.tracks.getAudioFeatures("spotify:track:5KQDGl3vAkNGyfvSbaW89E", "nonexistanttrack"))
+    println(api.tracks.getAudioFeatures("com.adamratzman.spotify:track:5KQDGl3vAkNGyfvSbaW89E", "nonexistanttrack"))
 }

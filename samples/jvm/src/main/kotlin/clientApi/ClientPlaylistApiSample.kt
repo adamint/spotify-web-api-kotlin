@@ -23,7 +23,7 @@ fun main() {
     println(playlist)
 
     // add "Reflections" by MisterWives to the end of your newly-created playlist
-    api.playlists.addTrackToClientPlaylist(playlist.id, "spotify:track:2PtBhfoPZ6VYtXkrE5FrCH").complete()
+    api.playlists.addTrackToClientPlaylist(playlist.id, "com.adamratzman.spotify:track:2PtBhfoPZ6VYtXkrE5FrCH").complete()
 
     // change the playlist description to "My awesome playlist"
     api.playlists.changeClientPlaylistDetails(playlist.id, description = "My awesome playlist").complete()
@@ -38,10 +38,10 @@ fun main() {
     // for an example of re-ordering tracks
 
     // replace the tracks in a client playlist with two songs by Lorde
-    api.playlists.setClientPlaylistTracks(playlist.id, "spotify:track:6ie2Bw3xLj2JcGowOlcMhb", "spotify:track:2dLLR6qlu5UJ5gk0dKz0h3").complete()
+    api.playlists.setClientPlaylistTracks(playlist.id, "com.adamratzman.spotify:track:6ie2Bw3xLj2JcGowOlcMhb", "com.adamratzman.spotify:track:2dLLR6qlu5UJ5gk0dKz0h3").complete()
 
     // remove the song we just added from our client playlist
-    api.playlists.removeTrackFromClientPlaylist(playlist.id, "spotify:track:6ie2Bw3xLj2JcGowOlcMhb").complete()
+    api.playlists.removeTrackFromClientPlaylist(playlist.id, "com.adamratzman.spotify:track:6ie2Bw3xLj2JcGowOlcMhb").complete()
 
     // remove all playlist tracks
     api.playlists.removeAllClientPlaylistTracks(playlist.id)
