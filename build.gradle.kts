@@ -5,22 +5,40 @@ import java.net.URI
 plugins {
     `maven-publish`
     signing
-    `java-library`
     id("io.codearte.nexus-staging") version "0.21.2"
     kotlin("multiplatform") version "1.3.72"
     kotlin("plugin.serialization") version "1.3.72"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "0.10.1"
+    id("com.android.library")
+    id("kotlin-android-extensions")
+}
+
+repositories {
+    jcenter()
+    google()
+    maven("https://kotlin.bintray.com/kotlinx")
+}
+
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:3.5.4")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+    }
 }
 
 group = "com.adamratzman"
 version = "3.1.03"
 
-java {
+/*java {
     withSourcesJar()
     withJavadocJar()
 }
+*/
 
 tasks.withType<Test> {
     this.testLogging {
@@ -28,13 +46,38 @@ tasks.withType<Test> {
     }
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-    maven("https://kotlin.bintray.com/kotlinx")
+android {
+    compileSdkVersion(30)
+    defaultConfig {
+        minSdkVersion(15)
+        targetSdkVersion(30)
+        versionCode = 1
+        versionName = "1.0"
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+        }
+    }
+    sourceSets {
+        getByName("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            java.setSrcDirs(listOf("src/androidMain/kotlin"))
+            res.setSrcDirs(listOf("src/androidMain/res"))
+        }
+        getByName("androidTest") {
+            java.setSrcDirs(listOf("src/androidTest/kotlin"))
+            res.setSrcDirs(listOf("src/androidTest/res"))
+        }
+    }
 }
 
 kotlin {
+    android() {
+
+    }
+
     jvm()
     js {
         browser {
@@ -88,7 +131,6 @@ kotlin {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    api("commons-codec:commons-codec:1.14")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -124,6 +166,32 @@ kotlin {
                 }
             }
 
+            val androidMain by getting {
+                repositories {
+                    mavenCentral()
+                    jcenter()
+                }
+
+                dependencies {
+                    api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation(kotlin("stdlib-jdk8"))
+                }
+            }
+
+            val androidTest by getting {
+                dependencies {
+                    implementation(kotlin("test"))
+                    implementation(kotlin("test-junit"))
+                    implementation("org.junit.jupiter:junit-jupiter:5.6.2")
+                    implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+                    runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+                    runtimeOnly(kotlin("reflect"))
+                }
+            }
+
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
             }
@@ -134,18 +202,18 @@ kotlin {
 publishing {
     publications {
         val js by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-js"
-            setupPom("spotify-api-kotlin-js")
+            artifactId = "com.adamratzman.spotify-api-kotlin-js"
+            setupPom("com.adamratzman.spotify-api-kotlin-js")
         }
 
         val kotlinMultiplatform by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-core"
-            setupPom("spotify-api-kotlin-core")
+            artifactId = "com.adamratzman.spotify-api-kotlin-core"
+            setupPom("com.adamratzman.spotify-api-kotlin-core")
         }
 
         val jvm by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin"
-            artifact(tasks.getByName("javadocJar"))
+            artifactId = "com.adamratzman.spotify-api-kotlin"
+//            artifact(tasks.getByName("javadocJar"))
             versionMapping {
                 usage("java-api") {
                     fromResolutionOf("runtimeClasspath")
@@ -155,7 +223,7 @@ publishing {
                 }
             }
 
-            setupPom("spotify-api-kotlin")
+            setupPom("com.adamratzman.spotify-api-kotlin")
         }
     }
     repositories {
@@ -233,14 +301,14 @@ tasks {
             val js by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
             val jvm by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -248,7 +316,7 @@ tasks {
             register("common") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -256,7 +324,7 @@ tasks {
             register("global") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
 
@@ -270,14 +338,14 @@ tasks {
         }
     }
 
-    val javadocJar by getting(Jar::class) {
-        dependsOn.add(javadoc)
-        archiveClassifier.set("javadoc")
-        from(javadoc)
-    }
+    /* val javadocJar by getting(Jar::class) {
+         dependsOn.add(javadoc)
+         archiveClassifier.set("javadoc")
+         from(javadoc)
+     }*/
 
     artifacts {
-        archives(javadocJar)
+        // archives(javadocJar)
     }
 
     spotless {
@@ -303,18 +371,19 @@ tasks {
         dependsOn.add(dokka)
         dependsOn.add("publishJvmPublicationToNexusRepository")
     }
+
 }
 
 fun MavenPublication.setupPom(publicationName: String) {
     pom {
         name.set(publicationName)
         description.set("A Kotlin wrapper for the Spotify Web API.")
-        url.set("https://github.com/adamint/spotify-web-api-kotlin")
+        url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
         inceptionYear.set("2018")
         scm {
-            url.set("https://github.com/adamint/spotify-web-api-kotlin")
-            connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
-            developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
+            url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
+            connection.set("scm:https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
+            developerConnection.set("scm:git://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
         }
         licenses {
             license {

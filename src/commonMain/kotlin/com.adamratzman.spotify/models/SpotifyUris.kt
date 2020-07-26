@@ -19,14 +19,14 @@ class SpotifyUriException(message: String) : SpotifyException.BadRequestExceptio
 
 private fun String.matchType(type: String, allowColon: Boolean): String? {
     val uriContent = "[^:]".takeUnless { allowColon } ?: "."
-    val typeRegex = "^spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
+    val typeRegex = "^com.adamratzman.spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
     val match = typeRegex.matchEntire(this)?.groupValues ?: return null
     return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
 private fun String.add(type: String, allowColon: Boolean): String {
     this.matchType(type, allowColon)?.let {
-        return "spotify:$type:${it.trim()}"
+        return "com.adamratzman.spotify:$type:${it.trim()}"
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' uri")
 }
@@ -117,8 +117,8 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
          *
          * @example ```Kotlin
          *     SpotifyUri.isType<UserUri>("abc") // returns: false
-         *     SpotifyUri.isType<UserUri>("spotify:user:abc") // returns: true
-         *     SpotifyUri.isType<UserUri>("spotify:track:abc") // returns: false
+         *     SpotifyUri.isType<UserUri>("com.adamratzman.spotify:user:abc") // returns: true
+         *     SpotifyUri.isType<UserUri>("com.adamratzman.spotify:track:abc") // returns: false
          * ```
          * */
         inline fun <reified T : SpotifyUri> isType(input: String): Boolean {
@@ -130,8 +130,8 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
          *
          * @example ```Kotlin
          *     SpotifyUri.canBeType<UserUri>("abc") // returns: true
-         *     SpotifyUri.canBeType<UserUri>("spotify:user:abc") // returns: true
-         *     SpotifyUri.canBeType<UserUri>("spotify:track:abc") // returns: false
+         *     SpotifyUri.canBeType<UserUri>("com.adamratzman.spotify:user:abc") // returns: true
+         *     SpotifyUri.canBeType<UserUri>("com.adamratzman.spotify:track:abc") // returns: false
          * ```
          * */
         inline fun <reified T : SpotifyUri> canBeType(input: String): Boolean {
@@ -202,9 +202,9 @@ sealed class PlayableUri(input: String, type: String, allowColon: Boolean = fals
     }
 }
 
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.spotify.models.PlaybUri"))
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlaybUri"))
 typealias TrackURI = PlayableUri
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.spotify.models.PlaybUri"))
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlaybUri"))
 typealias TrackUri = PlayableUri
 
 /**
@@ -222,7 +222,7 @@ class ShowUri(input: String) : ImmutableCollectionUri(input, "show") {
     companion object : KSerializer<ShowUri> by SimpleUriSerializer(::ShowUri)
 }
 
-@Deprecated("renamed", ReplaceWith("AlbumUri", "com.adamratzman.spotify.models.AlbumUri"))
+@Deprecated("renamed", ReplaceWith("AlbumUri", "com.adamratzman.com.adamratzman.spotify.models.AlbumUri"))
 typealias AlbumURI = AlbumUri
 
 /**
@@ -234,7 +234,7 @@ class ArtistUri(input: String) : SpotifyUri(input, "artist") {
     companion object : KSerializer<ArtistUri> by SimpleUriSerializer(::ArtistUri)
 }
 
-@Deprecated("renamed", ReplaceWith("ArtistUri", "com.adamratzman.spotify.models.ArtistUri"))
+@Deprecated("renamed", ReplaceWith("ArtistUri", "com.adamratzman.com.adamratzman.spotify.models.ArtistUri"))
 typealias ArtistURI = ArtistUri
 
 /**
@@ -246,7 +246,7 @@ class UserUri(input: String) : SpotifyUri(input, "user") {
     companion object : KSerializer<UserUri> by SimpleUriSerializer(::UserUri)
 }
 
-@Deprecated("renamed", ReplaceWith("UserUri", "com.adamratzman.spotify.models.UserUri"))
+@Deprecated("renamed", ReplaceWith("UserUri", "com.adamratzman.com.adamratzman.spotify.models.UserUri"))
 typealias UserURI = UserUri
 
 /**
@@ -258,7 +258,7 @@ class PlaylistUri(input: String) : CollectionUri(input, "playlist") {
     companion object : KSerializer<PlaylistUri> by SimpleUriSerializer(::PlaylistUri)
 }
 
-@Deprecated("renamed", ReplaceWith("PlaylistUri", "com.adamratzman.spotify.models.PlaylistUri"))
+@Deprecated("renamed", ReplaceWith("PlaylistUri", "com.adamratzman.com.adamratzman.spotify.models.PlaylistUri"))
 typealias PlaylistURI = PlaylistUri
 
 /**
@@ -279,7 +279,7 @@ class LocalTrackUri(input: String) : PlayableUri(input, "local", allowColon = tr
     companion object : KSerializer<LocalTrackUri> by SimpleUriSerializer(::LocalTrackUri)
 }
 
-@Deprecated("renamed", ReplaceWith("LocalTrackUri", "com.adamratzman.spotify.models.LocalTrackUri"))
+@Deprecated("renamed", ReplaceWith("LocalTrackUri", "com.adamratzman.com.adamratzman.spotify.models.LocalTrackUri"))
 typealias LocalTrackURI = LocalTrackUri
 
 @Serializable

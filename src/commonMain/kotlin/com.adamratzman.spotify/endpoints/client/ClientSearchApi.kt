@@ -14,17 +14,17 @@ import com.adamratzman.spotify.utils.Market
 /**
  * Get Spotify catalog information about artists, albums, tracks, playlists, episodes, or shows that match a keyword string.
  *
- * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+ * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
  */
 class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
 
     /**
      * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -49,10 +49,10 @@ class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
     /**
      * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
