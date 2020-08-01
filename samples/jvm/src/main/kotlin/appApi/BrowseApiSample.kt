@@ -39,7 +39,7 @@ fun main() {
 
     // get and print recommendation seeds and tracks
     val recommendationResponse = api.browse.getTrackRecommendations(
-            seedTracks = listOf("spotify:track:2LYAG9jlH9rul11nalRxR0"),
+            seedTracks = listOf("com.adamratzman.spotify:track:2LYAG9jlH9rul11nalRxR0"),
             seedGenres = listOf("indie-pop"),
             minAttributes = listOf(TrackAttribute.create(TuneableTrackAttribute.Danceability, 0.6f))
     ).complete()

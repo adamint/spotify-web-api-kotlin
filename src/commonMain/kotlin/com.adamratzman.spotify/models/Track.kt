@@ -144,7 +144,7 @@ data class Track(
 }
 
 /**
- * Represents a [relinked track](https:github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
+ * Represents a [relinked track](https:github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  *
  * @property href A link to the Web API endpoint providing full details of the track.
