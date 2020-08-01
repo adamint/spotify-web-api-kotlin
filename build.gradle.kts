@@ -1,6 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
-import java.net.URI
 
 plugins {
     `maven-publish`
@@ -32,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.1.03"
+version = "3.2.0"
 
 /*java {
     withSourcesJar()
@@ -73,13 +72,36 @@ android {
     }
 }
 
-kotlin {
-    android() {
+val dokkaJar by tasks.registering(Jar::class) {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = "Docs"
+    classifier = "javadoc"
+    from(tasks.dokka)
+}
 
+kotlin {
+    android {
+        mavenPublication {
+            artifactId = "spotify-api-kotlin-android"
+            setupPom(artifactId)
+        }
+
+        publishLibraryVariants("release")
     }
 
-    jvm()
+    jvm {
+        mavenPublication {
+            artifactId = "spotify-api-kotlin"
+            setupPom(artifactId)
+        }
+    }
+
     js {
+        mavenPublication {
+            artifactId = "spotify-api-kotlin-js"
+            setupPom(artifactId)
+        }
+
         browser {
             dceTask {
                 keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
@@ -201,101 +223,42 @@ kotlin {
 
 publishing {
     publications {
-        val js by getting(MavenPublication::class) {
-            artifactId = "com.adamratzman.spotify-api-kotlin-js"
-            setupPom("com.adamratzman.spotify-api-kotlin-js")
-        }
-
         val kotlinMultiplatform by getting(MavenPublication::class) {
-            artifactId = "com.adamratzman.spotify-api-kotlin-core"
-            setupPom("com.adamratzman.spotify-api-kotlin-core")
+            artifactId = "spotify-api-kotlin-core"
+            setupPom(artifactId)
         }
 
-        val jvm by getting(MavenPublication::class) {
-            artifactId = "com.adamratzman.spotify-api-kotlin"
-//            artifact(tasks.getByName("javadocJar"))
-            versionMapping {
-                usage("java-api") {
-                    fromResolutionOf("runtimeClasspath")
-                }
-                usage("java-runtime") {
-                    fromResolutionResult()
-                }
-            }
-
-            setupPom("com.adamratzman.spotify-api-kotlin")
+        val metadata by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin-metadata"
+            setupPom(artifactId)
         }
     }
+
     repositories {
-        if (System.getenv("publishLocation") == "nexus") {
-            maven {
-                name = "nexus"
-                val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+        maven {
+            name = "nexus"
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
-                credentials {
-                    val nexusUsername: String? by project.extra
-                    val nexusPassword: String? by project.extra
-                    username = nexusUsername
-                    password = nexusPassword
-                }
-            }
-        } else {
-            if (project.extra.has("spaceUser") && project.extra.has("spacePassword")) {
-                maven {
-                    credentials {
-                        username = project.extra["spaceUser"]?.toString()
-                        password = project.extra["spacePassword"]?.toString()
-                    }
-
-                    url = URI.create("https://maven.jetbrains.space/adam/ratzman")
-                }
+            credentials {
+                val nexusUsername: String? by project.extra
+                val nexusPassword: String? by project.extra
+                username = nexusUsername
+                password = nexusPassword
             }
         }
     }
 }
 
 signing {
-    if (System.getenv("publishLocation") == "nexus") {
-        sign(publishing.publications)
-    }
-}
-
-// get signing confs interactively if needed
-gradle.taskGraph.whenReady {
-    val alreadyConfigured = with(project.extra) {
-        (has("signing.keyId") && has("signing.secretKeyRingFile") && has("signing.password"))
-                || (has("signing.notNeeded") && get("signing.notNeeded") == "true")
-    }
-    if (!alreadyConfigured && allTasks.any { it is Sign }) {
-        // Use Java's console to read from the console (no good for
-        // a CI environment)
-        val console = System.console()
-        requireNotNull(console) { "Could not get signing config: please provide yours in the gradle.properties file." }
-        console.printf(
-                "\n\nWe have to sign some things in this build." +
-                        "\n\nPlease enter your signing details.\n\n"
-        )
-
-        val id = console.readLine("PGP Key Id: ")
-        val file = console.readLine("PGP Secret Key Ring File (absolute path): ")
-        val password = console.readPassword("PGP Private Key Password: ")
-
-        allprojects {
-            project.extra["signing.keyId"] = id
-            project.extra["signing.secretKeyRingFile"] = file
-            project.extra["signing.password"] = password
-        }
-
-        console.printf("\nThanks.\n\n")
-    }
+    sign(publishing.publications)
 }
 
 tasks {
     val dokka by getting(DokkaTask::class) {
-        outputDirectory = "docs/docs"
         outputFormat = "html"
+        outputDirectory = "$buildDir/javadoc"
 
         multiplatform {
             val js by creating {
@@ -344,10 +307,6 @@ tasks {
          from(javadoc)
      }*/
 
-    artifacts {
-        // archives(javadocJar)
-    }
-
     spotless {
         kotlin {
             target("**/*.kt")
@@ -374,7 +333,10 @@ tasks {
 
 }
 
+
 fun MavenPublication.setupPom(publicationName: String) {
+    artifact(dokkaJar.get())
+
     pom {
         name.set(publicationName)
         description.set("A Kotlin wrapper for the Spotify Web API.")
