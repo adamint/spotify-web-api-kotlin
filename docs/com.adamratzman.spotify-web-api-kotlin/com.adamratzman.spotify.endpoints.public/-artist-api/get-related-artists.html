@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.ArtistApi.getRelatedArtists - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">ArtistApi</a>&nbsp;/&nbsp;<a href="./get-related-artists.html">getRelatedArtists</a><br/>
+<br/>
+<h1>getRelatedArtists</h1>
+<a name="com.adamratzman.spotify.endpoints.public.ArtistApi$getRelatedArtists(kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getRelatedArtists</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getRelatedArtists(kotlin.String)/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify catalog information about artists similar to a given artist.
+Similarity is based on analysis of the Spotify community’s listening history.</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/artists/get-related-artists/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="artist"></a>
+<code>artist</code> - The com.adamratzman.spotify id or uri for the artist.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the <a href="get-related-artists.html#com.adamratzman.spotify.endpoints.public.ArtistApi$getRelatedArtists(kotlin.String)/artist">artist</a> is not found</p>
+<p><strong>Return</strong><br/>
+List of <em>never-null</em>, but possibly empty <a href="../../com.adamratzman.spotify.models/-artist/index.html#com.adamratzman.spotify.models.Artist">Artist</a>s representing similar artists</p>
+</BODY>
+</HTML>

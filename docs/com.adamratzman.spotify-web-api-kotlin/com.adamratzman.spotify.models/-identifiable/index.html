@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.Identifiable - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">Identifiable</a><br/>
+<br/>
+<h1>Identifiable</h1>
+<a name="com.adamratzman.spotify.models.Identifiable"></a>
+(common, js, jvm) <code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">Identifiable</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-identifiable-nullable/index.html"><span class="identifier">IdentifiableNullable</span></a></code>
+<p>Represents an identifiable Spotify object such as an Album or Recommendation Seed</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Represents an identifiable Spotify object such as an Album or Recommendation Seed</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>The Spotify id of the associated object</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-core-object/index.html">CoreObject</a></h4>
+</td>
+<td>
+<p>Represents a core Spotify object such as a Track or Album</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">CoreObject</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Identifiable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-recommendation-seed/index.html">RecommendationSeed</a></h4>
+</td>
+<td>
+<p>Seed from which the recommendation was constructed</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">RecommendationSeed</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Identifiable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-category/index.html">SpotifyCategory</a></h4>
+</td>
+<td>
+<p>Spotify music category</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SpotifyCategory</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Identifiable</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

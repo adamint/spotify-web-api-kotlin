@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.SpotifyAppApi - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyAppApi</a><br/>
+<br/>
+<h1>SpotifyAppApi</h1>
+<a name="com.adamratzman.spotify.SpotifyAppApi"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">SpotifyAppApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">SpotifyAppApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a><span class="symbol">&gt;</span></code>
+<p>An API instance created with application credentials, not through
+client authentication</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyAppApi$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptions)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyAppApi$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptions)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyAppApi$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptions)/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyAppApi$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptions)/options">options</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-api-options/index.html"><span class="identifier">SpotifyApiOptions</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SpotifyApiOptionsBuilder().build()<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="albums.html">albums</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/albums/">album endpoints</a></p>
+<code><span class="keyword">val </span><span class="identifier">albums</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-album-api/index.html"><span class="identifier">AlbumApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="artists.html">artists</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/artists/">artist endpoints</a></p>
+<code><span class="keyword">val </span><span class="identifier">artists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-artist-api/index.html"><span class="identifier">ArtistApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="browse.html">browse</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/">browse endpoints</a></p>
+<code><span class="keyword">val </span><span class="identifier">browse</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-browse-api/index.html"><span class="identifier">BrowseApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="endpoints.html">endpoints</a></h4>
+</td>
+<td>
+<p>A list of all endpoints included in this api type</p>
+<code><span class="keyword">val </span><span class="identifier">endpoints</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="following.html">following</a></h4>
+</td>
+<td>
+<p>Provides access to <strong>public</strong> playlist <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/">follower information</a></p>
+<code><span class="keyword">val </span><span class="identifier">following</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-following-api/index.html"><span class="identifier">FollowingApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="playlists.html">playlists</a></h4>
+</td>
+<td>
+<p>Provides access to <strong>public</strong> Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/">playlist endpoints</a></p>
+<code><span class="keyword">val </span><span class="identifier">playlists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-playlist-api/index.html"><span class="identifier">PlaylistApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search.html">search</a></h4>
+</td>
+<td>
+<p>Provides access to the Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/">search endpoint</a></p>
+<code><span class="keyword">val </span><span class="identifier">search</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-search-api/index.html"><span class="identifier">SearchApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="tracks.html">tracks</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/">track endpoints</a></p>
+<code><span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-track-api/index.html"><span class="identifier">TrackApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="users.html">users</a></h4>
+</td>
+<td>
+<p>Provides access to <strong>public</strong> Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/">user information</a></p>
+<code><span class="keyword">val </span><span class="identifier">users</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-user-api/index.html"><span class="identifier">UserApi</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-api-builder.html">getApiBuilder</a></h4>
+</td>
+<td>
+<p>Return a new <a href="../-spotify-api-builder/index.html#com.adamratzman.spotify.SpotifyApiBuilder">SpotifyApiBuilder</a> with the parameters provided to this api instance</p>
+<code><span class="keyword">fun </span><span class="identifier">getApiBuilder</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-api-builder/index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-api-builder-dsl.html">getApiBuilderDsl</a></h4>
+</td>
+<td>
+<p>Return a new <a href="../-spotify-api/index.html#B">B</a> with the parameters provided to this api instance</p>
+<code><span class="keyword">fun </span><span class="identifier">getApiBuilderDsl</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

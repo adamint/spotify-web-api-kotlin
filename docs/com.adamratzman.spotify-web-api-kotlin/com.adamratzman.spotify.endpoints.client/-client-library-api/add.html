@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientLibraryApi.add - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientLibraryApi</a>&nbsp;/&nbsp;<a href="./add.html">add</a><br/>
+<br/>
+<h1>add</h1>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Save one of <a href="../-library-type/index.html#com.adamratzman.spotify.endpoints.client.LibraryType">LibraryType</a> to the current user’s ‘Your Music’ library.</p>
+<p><strong>Requires</strong> the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y.html#com.adamratzman.spotify.SpotifyScope.USER_LIBRARY_MODIFY">SpotifyScope.USER_LIBRARY_MODIFY</a> scope</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - The type of object (album or track)</p>
+<p><a name="id"></a>
+<code>id</code> - The com.adamratzman.spotify id or uri of the object</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the id is invalid</p>
+(common, js, jvm) <a name="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-library-type/index.html"><span class="identifier">LibraryType</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$add(com.adamratzman.spotify.endpoints.client.LibraryType, kotlin.Array((kotlin.String)))/ids">ids</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Save one or more of <a href="../-library-type/index.html#com.adamratzman.spotify.endpoints.client.LibraryType">LibraryType</a> to the current user’s ‘Your Music’ library.</p>
+<p><strong>Requires</strong> the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y.html#com.adamratzman.spotify.SpotifyScope.USER_LIBRARY_MODIFY">SpotifyScope.USER_LIBRARY_MODIFY</a> scope</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="type"></a>
+<code>type</code> - The type of objects to check against (album or track)</p>
+<p><a name="ids"></a>
+<code>ids</code> - The com.adamratzman.spotify ids or uris of the objects. Maximum <strong>50</strong> ids.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if any of the provided ids is invalid</p>
+</BODY>
+</HTML>
