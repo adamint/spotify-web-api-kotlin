@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.ArtistApi.getArtistAlbums - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">ArtistApi</a>&nbsp;/&nbsp;<a href="./get-artist-albums.html">getArtistAlbums</a><br/>
+<br/>
+<h1>getArtistAlbums</h1>
+<a name="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getArtistAlbums</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/include">include</span><span class="symbol">:</span>&nbsp;<a href="-album-inclusion-strategy/index.html"><span class="identifier">AlbumInclusionStrategy</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify catalog information about an artist’s albums.</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/artists/get-artists-albums/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="artist"></a>
+<code>artist</code> - The artist id or uri</p>
+<p><a name="market"></a>
+<code>market</code> - Supply this parameter to limit the response to one particular geographical market.</p>
+<p><a name="limit"></a>
+<code>limit</code> - The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
+<p><a name="include"></a>
+<code>include</code> - List of keywords that will be used to filter the response. If not supplied, all album groups will be returned.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if <a href="get-artist-albums.html#com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/artist">artist</a> is not found, or filter parameters are illegal</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.adamratzman.spotify.models/-paging-object/index.html#com.adamratzman.spotify.models.PagingObject">PagingObject</a> of <a href="../../com.adamratzman.spotify.models/-simple-album/index.html#com.adamratzman.spotify.models.SimpleAlbum">SimpleAlbum</a> objects</p>
+</BODY>
+</HTML>

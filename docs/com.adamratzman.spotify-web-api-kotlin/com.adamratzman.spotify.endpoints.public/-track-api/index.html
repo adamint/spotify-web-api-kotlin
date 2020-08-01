@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.TrackApi - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">TrackApi</a><br/>
+<br/>
+<h1>TrackApi</h1>
+<a name="com.adamratzman.spotify.endpoints.public.TrackApi"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">TrackApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<p>Endpoints for retrieving information about one or more tracks from the Spotify catalog.</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/">Api Reference</a></strong></p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Endpoints for retrieving information about one or more tracks from the Spotify catalog.</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-audio-analysis.html">getAudioAnalysis</a></h4>
+</td>
+<td>
+<p>Get a detailed audio analysis for a single track identified by its unique Spotify ID.</p>
+<code><span class="keyword">fun </span><span class="identifier">getAudioAnalysis</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getAudioAnalysis(kotlin.String)/track">track</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-audio-analysis/index.html"><span class="identifier">AudioAnalysis</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-audio-features.html">getAudioFeatures</a></h4>
+</td>
+<td>
+<p>Get audio feature information for a single track identified by its unique Spotify ID.</p>
+<code><span class="keyword">fun </span><span class="identifier">getAudioFeatures</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getAudioFeatures(kotlin.String)/track">track</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-audio-features/index.html"><span class="identifier">AudioFeatures</span></a><span class="symbol">&gt;</span></code>
+<p>Get audio features for multiple tracks based on their Spotify IDs.</p>
+<code><span class="keyword">fun </span><span class="identifier">getAudioFeatures</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getAudioFeatures(kotlin.Array((kotlin.String)))/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-audio-features/index.html"><span class="identifier">AudioFeatures</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-track.html">getTrack</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for a single track identified by its unique Spotify ID.</p>
+<code><span class="keyword">fun </span><span class="identifier">getTrack</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTrack(kotlin.String, com.adamratzman.spotify.utils.Market)/track">track</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTrack(kotlin.String, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-tracks.html">getTracks</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for multiple tracks based on their Spotify IDs.</p>
+<code><span class="keyword">fun </span><span class="identifier">getTracks</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTracks(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTracks(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
