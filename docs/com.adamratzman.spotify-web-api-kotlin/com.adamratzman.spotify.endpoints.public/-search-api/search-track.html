@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.SearchApi.searchTrack - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">SearchApi</a>&nbsp;/&nbsp;<a href="./search-track.html">searchTrack</a><br/>
+<br/>
+<h1>searchTrack</h1>
+<a name="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">searchTrack</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify Catalog information about tracks that match the keyword string. See <a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a> for more information</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="query"></a>
+<code>query</code> - Search query keywords and optional field filters and operators.</p>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want to apply <a href="https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking">Track Relinking</a></p>
+<p><a name="limit"></a>
+<code>limit</code> - The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if filters are illegal or query is malformed</p>
+<p><strong>See Also</strong><br/>
+<p><a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a></p>
+</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.adamratzman.spotify.models/-paging-object/index.html#com.adamratzman.spotify.models.PagingObject">PagingObject</a> of non-full <a href="../../com.adamratzman.spotify.models/-simple-track/index.html#com.adamratzman.spotify.models.SimpleTrack">SimpleTrack</a> objects ordered by likelihood of correct match</p>
+</BODY>
+</HTML>
