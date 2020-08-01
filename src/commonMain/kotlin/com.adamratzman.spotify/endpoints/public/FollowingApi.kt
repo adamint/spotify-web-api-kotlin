@@ -19,13 +19,13 @@ typealias FollowingAPI = FollowingApi
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
  *
- * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
+ * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/)**
  */
 open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlist playlist id or uri
      * @param users user ids or uris to check. Maximum **5**.
@@ -53,7 +53,7 @@ open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check to see if a specific Spotify user is following the specified playlist.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlist playlist id or uri
      * @param user Spotify user id

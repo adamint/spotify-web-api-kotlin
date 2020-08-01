@@ -15,7 +15,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.1.0'
+compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: 'LATEST_VERSION'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -28,7 +28,7 @@ repositories {
 Then, you can use the following:
 ```
 dependencies {
-	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
+	compile 'com.github.adamint:com.adamratzman.spotify-web-api-kotlin:dev-SNAPSHOT'
 }
 ```
 
@@ -36,8 +36,8 @@ dependencies {
 ```
 <dependency>
     <groupId>com.adamratzman</groupId>
-    <artifactId>spotify-api-kotlin</artifactId>
-    <version>SPOTIFY_API_VERSION</version>
+    <artifactId>com.adamratzman.spotify-api-kotlin</artifactId>
+    <version>LATEST_VERSION</version>
 </dependency>
 ```
 JCenter Maven Repository:
@@ -53,7 +53,7 @@ JCenter Maven Repository:
 This library will work out of the box on Android.
 
 ## Documentation
-The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/
+The `com.adamratzman.spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/com.adamratzman.spotify-web-api-kotlin/docs/com.adamratzman.spotify-web-api-kotlin/
 
 ## Samples
 Samples for all APIs are located in the `samples` directory
@@ -67,7 +67,7 @@ If you have a question, you can:
 
 ## Creating a new api instance
 To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), please refer to 
-https://developer.spotify.com/documentation/general/guides/authorization-guide/. In general:
+https://developer.com.adamratzman.spotify.com/documentation/general/guides/authorization-guide/. In general:
 - If you don't need client resources, use SpotifyAppApi
 - If you're using the api in a backend application, use SpotifyClientApi
 - If you're using the api in a frontend application, use SpotifyImplicitGrantApi
@@ -217,7 +217,7 @@ println(api.browse.getFeaturedPlaylists().complete().message)
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
 
 val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
-// this works; a redundant way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
+// this works; a redundant way would be: api.artists.getArtist("com.adamratzman.spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
 
 println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
 ```
