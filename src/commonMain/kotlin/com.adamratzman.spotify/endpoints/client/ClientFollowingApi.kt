@@ -26,7 +26,7 @@ typealias ClientFollowingAPI = ClientFollowingApi
 /**
  * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
  *
- * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
+ * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/)**
  */
 class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
@@ -34,7 +34,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param user The user id or uri to check.
      *
@@ -53,7 +53,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * Checking if the user is privately following a playlist is only possible for the current user when
      * that user has granted access to the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
      * @param playlistId playlist id or uri
      *
@@ -76,7 +76,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param users List of the user Spotify IDs to check. Max 50
      *
@@ -100,7 +100,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param artist The artist id to check.
      *
@@ -118,7 +118,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
      * @param artists List of the artist ids or uris to check. Max 50
      *
@@ -142,12 +142,12 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/get-followed/)**
      *
      * @param limit The maximum number of items to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param after The last artist ID retrieved from the previous request.
      *
-     * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
+     * @return [CursorBasedPagingObject] ([Information about them](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
      * with full [Artist] objects
      */
     fun getFollowedArtists(
@@ -169,7 +169,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -184,7 +184,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @param users User ids or uris. Maximum **50**.
      *
@@ -209,7 +209,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @throws BadRequestException if an invalid id is provided
      */
@@ -224,7 +224,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
      * @param artists User ids or uris. Maximum **50**.
      *
@@ -254,9 +254,9 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * publicly or privately (i.e. show others what they are following), not whether the playlist itself is
      * public or private.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-playlist/)**
      *
-     * @param playlist the spotify id or uri of the playlist. Any playlist can be followed, regardless of its
+     * @param playlist the com.adamratzman.spotify id or uri of the playlist. Any playlist can be followed, regardless of its
      * public/private status, as long as you know its playlist ID.
      * @param followPublicly Defaults to true. If true the playlist will be included in user’s public playlists,
      * if false it will remain private. To be able to follow playlists privately, the user must have granted the playlist-modify-private scope.
@@ -278,7 +278,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param user The user to be unfollowed from
      *
@@ -295,7 +295,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param users The users to be unfollowed from. Maximum **50**.
      *
@@ -319,7 +319,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param artist The artist to be unfollowed from
      *
@@ -336,7 +336,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
      * @param artists The artists to be unfollowed from. Maximum **50**.
      *
@@ -365,9 +365,9 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * Note that the scopes you provide relate only to whether the current user is following the playlist publicly or
      * privately (i.e. showing others what they are following), not whether the playlist itself is public or private.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/)**
      *
-     * @param playlist The spotify id or uri of the playlist that is to be no longer followed.
+     * @param playlist The com.adamratzman.spotify id or uri of the playlist that is to be no longer followed.
      *
      * @throws BadRequestException if the playlist is not found
      */

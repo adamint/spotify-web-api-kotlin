@@ -31,10 +31,10 @@ import kotlinx.serialization.json.json
 typealias ClientPlayerAPI = ClientPlayerApi
 
 /**
- * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.spotify.com/web-api/working-with-connect/)
+ * These endpoints allow for viewing and controlling user playback. Please view [the official documentation](https://developer.com.adamratzman.spotify.com/web-api/working-with-connect/)
  * for more information on how this works. This is in beta and is available for **premium users only**. Endpoints are **not** guaranteed to work and are subject to change!
  *
- * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/)**
+ * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/)**
  */
 class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
@@ -42,7 +42,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/)**
      */
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction {
@@ -55,7 +55,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
      */
     fun getCurrentContext(): SpotifyRestAction<CurrentlyPlayingContext?> {
         return toAction {
@@ -72,7 +72,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_READ_RECENTLY_PLAYED] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/get-recently-played/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param before The timestamp (retrieved via cursor) **not including**, but before which, tracks will have been played. This can be combined with [limit]
@@ -97,7 +97,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** *either* the [SpotifyScope.USER_READ_PLAYBACK_STATE] or [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scopes
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
      */
     fun getCurrentlyPlaying(): SpotifyRestAction<CurrentlyPlayingObject?> {
         return toAction {
@@ -115,7 +115,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/pause-a-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/pause-a-users-playback/)**
      *
      * @param deviceId The device to play on
      */
@@ -131,7 +131,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/seek-to-position-in-currently-playing-track/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/seek-to-position-in-currently-playing-track/)**
      *
      * @param positionMs The position in milliseconds to seek to. Must be a positive number. Passing in a position
      * that is greater than the length of the track will cause the player to start playing the next song.
@@ -155,7 +155,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
      *
      * @param state mode to describe how to repeat in the current context
      * @param deviceId The device to play on
@@ -177,7 +177,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-volume-for-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/set-volume-for-users-playback/)**
      *
      * @param volume The volume to set. Must be a value from 0 to 100 inclusive.
      * @param deviceId The device to play on
@@ -200,7 +200,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-next-track/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-next-track/)**
      *
      * @param deviceId The device to play on
      */
@@ -219,7 +219,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-previous-track/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-previous-track/)**
      *
      * @param deviceId The device to play on
      */
@@ -242,7 +242,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
      * @param album An album id or uri to play
      * @param artist An artist id or uri for whom to play
@@ -289,7 +289,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
      * @param deviceId The device to play on
      */
@@ -300,7 +300,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/toggle-shuffle-for-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/toggle-shuffle-for-users-playback/)**
      *
      * @param deviceId The device to play on
      * @param shuffle Whether to enable shuffling of playback
@@ -317,7 +317,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/)**
      *
      * @param deviceId The device to play on
      * @param play Whether to immediately start playback on the transferred device
@@ -337,7 +337,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * What state the player can repeat in.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
+     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
      */
     enum class PlayerRepeatState {
         /**

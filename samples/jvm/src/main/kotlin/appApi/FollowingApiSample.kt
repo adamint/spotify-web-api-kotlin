@@ -11,8 +11,8 @@ fun main() {
     ).build()
 
     // check if adamratzman and adamratzman1 are following "Hit Rewind"
-    println(api.following.areFollowingPlaylist("spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", "adamratzman", "adamratzman1"))
+    println(api.following.areFollowingPlaylist("com.adamratzman.spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", "adamratzman", "adamratzman1"))
 
     // check if adamratzman1 is following "Hit Rewind"
-    println(api.following.isFollowingPlaylist("spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", "adamratzman1"))
+    println(api.following.isFollowingPlaylist("com.adamratzman.spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", "adamratzman1"))
 }
