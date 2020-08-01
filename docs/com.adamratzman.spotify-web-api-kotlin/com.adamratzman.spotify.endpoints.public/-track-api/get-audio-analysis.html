@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.TrackApi.getAudioAnalysis - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">TrackApi</a>&nbsp;/&nbsp;<a href="./get-audio-analysis.html">getAudioAnalysis</a><br/>
+<br/>
+<h1>getAudioAnalysis</h1>
+<a name="com.adamratzman.spotify.endpoints.public.TrackApi$getAudioAnalysis(kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getAudioAnalysis</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getAudioAnalysis(kotlin.String)/track">track</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-audio-analysis/index.html"><span class="identifier">AudioAnalysis</span></a><span class="symbol">&gt;</span></code>
+<p>Get a detailed audio analysis for a single track identified by its unique Spotify ID.</p>
+<p>The Audio Analysis endpoint provides low-level audio analysis for all of the tracks in the Spotify catalog.
+The Audio Analysis describes the track’s structure and musical content, including rhythm, pitch, and timbre.
+All information is precise to the audio sample.</p>
+<p>Many elements of analysis include confidence values, a floating-point number ranging from 0.0 to 1.0.
+Confidence indicates the reliability of its corresponding attribute. Elements carrying a small confidence value
+should be considered speculative. There may not be sufficient data in the audio to compute the attribute with
+high certainty.</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="track"></a>
+<code>track</code> - The com.adamratzman.spotify id or uri for the track.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if <a href="get-audio-analysis.html#com.adamratzman.spotify.endpoints.public.TrackApi$getAudioAnalysis(kotlin.String)/track">track</a> cannot be found</p>
+</BODY>
+</HTML>

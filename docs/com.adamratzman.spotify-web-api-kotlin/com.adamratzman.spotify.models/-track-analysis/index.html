@@ -1,0 +1,242 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.TrackAnalysis - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">TrackAnalysis</a><br/>
+<br/>
+<h1>TrackAnalysis</h1>
+<a name="com.adamratzman.spotify.models.TrackAnalysis"></a>
+(common, js, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">TrackAnalysis</span></code>
+<p>General information about the track as a whole</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>General information about the track as a whole</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/numSamples">numSamples</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/duration">duration</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/sampleMd5">sampleMd5</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/offsetSeconds">offsetSeconds</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/windowSeconds">windowSeconds</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/analysisSampleRate">analysisSampleRate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/analysisChannels">analysisChannels</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/endOfFadeIn">endOfFadeIn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/startOfFadeOut">startOfFadeOut</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/loudness">loudness</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/tempo">tempo</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/tempoConfidence">tempoConfidence</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/timeSignature">timeSignature</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/timeSignatureConfidence">timeSignatureConfidence</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/keyConfidence">keyConfidence</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/mode">mode</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/modeConfidence">modeConfidence</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/codestring">codestring</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/codeVersion">codeVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/echoprintstring">echoprintstring</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/echoprintVersion">echoprintVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/synchstring">synchstring</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/synchVersion">synchVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/rhythmstring">rhythmstring</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.TrackAnalysis$<init>(kotlin.Int, kotlin.Float, kotlin.String, kotlin.Int, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.Int, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float, kotlin.String, kotlin.Float)/rhythmVersion">rhythmVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="analysis-channels.html">analysisChannels</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">analysisChannels</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="analysis-sample-rate.html">analysisSampleRate</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">analysisSampleRate</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="codestring.html">codestring</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">codestring</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="code-version.html">codeVersion</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">codeVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="duration.html">duration</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">duration</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="echoprintstring.html">echoprintstring</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">echoprintstring</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="echoprint-version.html">echoprintVersion</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">echoprintVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="end-of-fade-in.html">endOfFadeIn</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">endOfFadeIn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="key.html">key</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">key</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="key-confidence.html">keyConfidence</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">keyConfidence</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="loudness.html">loudness</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">loudness</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="mode.html">mode</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">mode</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="mode-confidence.html">modeConfidence</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">modeConfidence</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="num-samples.html">numSamples</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">numSamples</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="offset-seconds.html">offsetSeconds</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">offsetSeconds</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="rhythmstring.html">rhythmstring</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">rhythmstring</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="rhythm-version.html">rhythmVersion</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">rhythmVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="sample-md5.html">sampleMd5</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">sampleMd5</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="start-of-fade-out.html">startOfFadeOut</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">startOfFadeOut</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="synchstring.html">synchstring</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">synchstring</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="synch-version.html">synchVersion</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">synchVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="tempo.html">tempo</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tempo</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="tempo-confidence.html">tempoConfidence</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tempoConfidence</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="time-signature.html">timeSignature</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">timeSignature</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="time-signature-confidence.html">timeSignatureConfidence</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">timeSignatureConfidence</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="window-seconds.html">windowSeconds</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">windowSeconds</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

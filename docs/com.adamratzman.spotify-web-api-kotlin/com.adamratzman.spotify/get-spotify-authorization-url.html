@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.getSpotifyAuthorizationUrl - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./get-spotify-authorization-url.html">getSpotifyAuthorizationUrl</a><br/>
+<br/>
+<h1>getSpotifyAuthorizationUrl</h1>
+<a name="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getSpotifyAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/isImplicitGrantFlow">isImplicitGrantFlow</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/shouldShowDialog">shouldShowDialog</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Get the authorization url for the provided <a href="get-spotify-authorization-url.html#com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/clientId">clientId</a> and <a href="get-spotify-authorization-url.html#com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/redirectUri">redirectUri</a> application settings, when attempting to authorize with
+specified <a href="get-spotify-authorization-url.html#com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/scopes">scopes</a></p>
+<h3>Parameters</h3>
+<p><a name="scopes"></a>
+<code>scopes</code> - Spotify scopes the api instance should be able to access for the user</p>
+<p><a name="clientId"></a>
+<code>clientId</code> - Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/general/guides/app-settings/">client id</a></p>
+<p><a name="redirectUri"></a>
+<code>redirectUri</code> - Spotify <a href="https://developer.com.adamratzman.spotify.com/documentation/general/guides/app-settings/">redirect uri</a></p>
+<p><a name="isImplicitGrantFlow"></a>
+<code>isImplicitGrantFlow</code> - Whether the authorization url should be for the Implicit Grant flow, otherwise for Authorization Code flo</p>
+<p><a name="shouldShowDialog"></a>
+<code>shouldShowDialog</code> - If <a href="get-spotify-authorization-url.html#com.adamratzman.spotify$getSpotifyAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/isImplicitGrantFlow">isImplicitGrantFlow</a> is true, whether or not to force the user to approve the app again if they’ve already done so.</p>
+<p><a name="state"></a>
+<code>state</code> - This provides protection against attacks such as cross-site request forgery.</p>
+</BODY>
+</HTML>

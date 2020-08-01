@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.http.HttpConnection - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.http</a>&nbsp;/&nbsp;<a href="./index.html">HttpConnection</a><br/>
+<br/>
+<h1>HttpConnection</h1>
+<a name="com.adamratzman.spotify.http.HttpConnection"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">HttpConnection</span></code>
+<p>Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/url">url</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/method">method</span><span class="symbol">:</span>&nbsp;<a href="../-http-request-method/index.html"><span class="identifier">HttpRequestMethod</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/bodyMap">bodyMap</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/bodyString">bodyString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/contentType">contentType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/headers">headers</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-http-header/index.html"><span class="identifier">HttpHeader</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;listOf()<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$<init>(kotlin.String, com.adamratzman.spotify.http.HttpRequestMethod, kotlin.collections.Map((kotlin.Any, )), kotlin.String, kotlin.String, kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="api.html">api</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="body-map.html">bodyMap</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">bodyMap</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="body-string.html">bodyString</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">bodyString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="content-type.html">contentType</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">contentType</span><span class="symbol">: </span><span class="identifier">ContentType</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="headers.html">headers</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">headers</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-http-header/index.html"><span class="identifier">HttpHeader</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="method.html">method</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">method</span><span class="symbol">: </span><a href="../-http-request-method/index.html"><span class="identifier">HttpRequestMethod</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="url.html">url</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">url</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="build-request.html">buildRequest</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">buildRequest</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$buildRequest(kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)))/additionalHeaders">additionalHeaders</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-http-header/index.html"><span class="identifier">HttpHeader</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">HttpRequestBuilder</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="execute.html">execute</a></h4>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">execute</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$execute(kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), kotlin.Boolean)/additionalHeaders">additionalHeaders</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-http-header/index.html"><span class="identifier">HttpHeader</span></a><span class="symbol">&gt;</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.http.HttpConnection$execute(kotlin.collections.List((com.adamratzman.spotify.http.HttpHeader)), kotlin.Boolean)/retryIf502">retryIf502</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><a href="../-http-response/index.html"><span class="identifier">HttpResponse</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="to-byte-array-content.html">toByteArrayContent</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">.</span><span class="identifier">toByteArrayContent</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ByteArrayContent</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="to-string.html">toString</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

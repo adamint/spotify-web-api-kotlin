@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientFollowingApi.followPlaylist - com.adamratzman.spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">com.adamratzman.spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientFollowingApi</a>&nbsp;/&nbsp;<a href="./follow-playlist.html">followPlaylist</a><br/>
+<br/>
+<h1>followPlaylist</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientFollowingApi$followPlaylist(kotlin.String, kotlin.Boolean)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">followPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientFollowingApi$followPlaylist(kotlin.String, kotlin.Boolean)/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientFollowingApi$followPlaylist(kotlin.String, kotlin.Boolean)/followPublicly">followPublicly</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Add the current user as a follower of a playlist.</p>
+<p>Following a playlist publicly requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+following it privately requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<p>Note that the scopes you provide determine only whether the current user can themselves follow the playlist
+publicly or privately (i.e. show others what they are following), not whether the playlist itself is
+public or private.</p>
+<p><strong><a href="https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/follow/follow-playlist/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - the com.adamratzman.spotify id or uri of the playlist. Any playlist can be followed, regardless of its
+public/private status, as long as you know its playlist ID.</p>
+<p><a name="followPublicly"></a>
+<code>followPublicly</code> - Defaults to true. If true the playlist will be included in user’s public playlists,
+if false it will remain private. To be able to follow playlists privately, the user must have granted the playlist-modify-private scope.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if the playlist is not found</p>
+</BODY>
+</HTML>
