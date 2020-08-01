@@ -15,7 +15,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: '3.1.0-rc.1'
+compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: 'LATEST_VERSION'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -37,7 +37,7 @@ dependencies {
 <dependency>
     <groupId>com.adamratzman</groupId>
     <artifactId>com.adamratzman.spotify-api-kotlin</artifactId>
-    <version>SPOTIFY_API_VERSION</version>
+    <version>LATEST_VERSION</version>
 </dependency>
 ```
 JCenter Maven Repository:
@@ -77,7 +77,7 @@ This provides access only to public Spotify endpoints. By default, the SpotifyAp
 through the `automaticRefresh` parameter in all builders.
 
 There are four exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyAppApi builder docs]() for a full list of available builders, or the app api [samples](). 
+Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders, or the app api [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/appApi). 
  
 
 ### SpotifyClientApi
@@ -90,11 +90,11 @@ ensure proper function of this library.
 Its automatic refresh ability is available *only* when building with
 an authorization code or a `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
-Please see the [spotifyClientApi builder docs]() for a full list of available builders, or the client [samples](). 
+Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders, or the client [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/clientApi). 
 
 ### SpotifyImplicitGrantApi
 Instantiate this api only if you are using the Spotify implicit grant flow. It is a superset of `SpotifyClientApi`.
-Please see the [spotifyImplicitGrantApi builder docs]() for a full list of available builders, or the implicit grant [samples](). 
+Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders, or the implicit grant [samples (tbd)](). 
 
 ### SpotifyApiBuilder Block & setting API options 
 There are three pluggable blocks in each api's corresponding builder
