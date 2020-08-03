@@ -19,14 +19,14 @@ class SpotifyUriException(message: String) : SpotifyException.BadRequestExceptio
 
 private fun String.matchType(type: String, allowColon: Boolean): String? {
     val uriContent = "[^:]".takeUnless { allowColon } ?: "."
-    val typeRegex = "^com.adamratzman.spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
+    val typeRegex = "^spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
     val match = typeRegex.matchEntire(this)?.groupValues ?: return null
     return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
 private fun String.add(type: String, allowColon: Boolean): String {
     this.matchType(type, allowColon)?.let {
-        return "com.adamratzman.spotify:$type:${it.trim()}"
+        return "spotify:$type:${it.trim()}"
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' uri")
 }
@@ -117,8 +117,8 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
          *
          * @example ```Kotlin
          *     SpotifyUri.isType<UserUri>("abc") // returns: false
-         *     SpotifyUri.isType<UserUri>("com.adamratzman.spotify:user:abc") // returns: true
-         *     SpotifyUri.isType<UserUri>("com.adamratzman.spotify:track:abc") // returns: false
+         *     SpotifyUri.isType<UserUri>("spotify:user:abc") // returns: true
+         *     SpotifyUri.isType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
         inline fun <reified T : SpotifyUri> isType(input: String): Boolean {
@@ -130,8 +130,8 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
          *
          * @example ```Kotlin
          *     SpotifyUri.canBeType<UserUri>("abc") // returns: true
-         *     SpotifyUri.canBeType<UserUri>("com.adamratzman.spotify:user:abc") // returns: true
-         *     SpotifyUri.canBeType<UserUri>("com.adamratzman.spotify:track:abc") // returns: false
+         *     SpotifyUri.canBeType<UserUri>("spotify:user:abc") // returns: true
+         *     SpotifyUri.canBeType<UserUri>("spotify:track:abc") // returns: false
          * ```
          * */
         inline fun <reified T : SpotifyUri> canBeType(input: String): Boolean {
@@ -202,9 +202,9 @@ sealed class PlayableUri(input: String, type: String, allowColon: Boolean = fals
     }
 }
 
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlaybUri"))
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlayableUri"))
 typealias TrackURI = PlayableUri
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlaybUri"))
+@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlayableUri"))
 typealias TrackUri = PlayableUri
 
 /**
