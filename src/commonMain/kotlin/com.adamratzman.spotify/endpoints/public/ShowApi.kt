@@ -23,7 +23,7 @@ import com.adamratzman.spotify.utils.catch
 /**
  * Endpoints for retrieving information about one or more shows and their episodes from the Spotify catalog.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/shows/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/)**
  */
 class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
@@ -31,7 +31,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-track/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/)**
      *
      * @param id The Spotify ID for the show.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
@@ -58,7 +58,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/shows/get-several-shows/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/get-several-shows/)**
      *
      * @param ids The com.adamratzman.spotify id or uri for the shows. Maximum **50**.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
@@ -86,7 +86,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/shows/get-shows-episodes/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/get-shows-episodes/)**
      *
      * @param id The Spotify ID for the show.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
