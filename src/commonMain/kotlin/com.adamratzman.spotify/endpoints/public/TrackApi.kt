@@ -26,13 +26,13 @@ typealias TrackAPI = TrackApi
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/)**
  */
 class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-track/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/)**
      *
      * @param track The com.adamratzman.spotify id or uri for the track.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -55,7 +55,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for multiple tracks based on their Spotify IDs.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
      *
      * @param tracks The com.adamratzman.spotify id or uri for the tracks. Maximum **50**.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -86,7 +86,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * should be considered speculative. There may not be sufficient data in the audio to compute the attribute with
      * high certainty.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/)**
      *
      * @param track The com.adamratzman.spotify id or uri for the track.
      *
@@ -102,7 +102,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get audio feature information for a single track identified by its unique Spotify ID.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)**
      *
      * @param track The com.adamratzman.spotify id or uri for the track.
      *
@@ -118,7 +118,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get audio features for multiple tracks based on their Spotify IDs.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/)**
      *
      * @param tracks vararg of com.adamratzman.spotify track ids or uris. Maximum **100**.
      *
