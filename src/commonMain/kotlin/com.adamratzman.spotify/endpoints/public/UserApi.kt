@@ -17,13 +17,13 @@ typealias UserAPI = UserApi
 /**
  * Endpoints for retrieving information about a user’s profile.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/users-profile/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
 open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)**
      *
      * @param user The user’s Spotify user ID.
      *

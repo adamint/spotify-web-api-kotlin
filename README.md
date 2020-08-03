@@ -67,7 +67,7 @@ If you have a question, you can:
 
 ## Creating a new api instance
 To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), please refer to 
-https://developer.com.adamratzman.spotify.com/documentation/general/guides/authorization-guide/. In general:
+https://developer.spotify.com/documentation/general/guides/authorization-guide/. In general:
 - If you don't need client resources, use SpotifyAppApi
 - If you're using the api in a backend application, use SpotifyClientApi
 - If you're using the api in a frontend application, use SpotifyImplicitGrantApi

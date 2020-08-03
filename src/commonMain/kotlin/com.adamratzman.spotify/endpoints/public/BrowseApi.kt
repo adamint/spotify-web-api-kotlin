@@ -35,13 +35,13 @@ typealias BrowseAPI = BrowseApi
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/)**
  */
 class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Retrieve a list of available genres seed parameter values for recommendations.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
      *
      * @return List of genre ids
      */
@@ -58,7 +58,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -86,7 +86,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -125,7 +125,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -158,7 +158,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-category/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-category/)**
      *
      * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
@@ -186,7 +186,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of Spotify playlists tagged with a particular category.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/)**
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
@@ -224,10 +224,10 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **All attributes** are weighted equally.
      *
-     * See [here](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
+     * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
      * and descriptions of tuneable track attributes and their ranges.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
      *
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
@@ -278,10 +278,10 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **All attributes** are weighted equally.
      *
-     * See [here](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
+     * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
      * and descriptions of tuneable track attributes and their ranges.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
      *
      * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
      * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
@@ -336,7 +336,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
 /**
  * Describes a track attribute
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
  *
  * @param attribute The com.adamratzman.spotify id for the track attribute
  */

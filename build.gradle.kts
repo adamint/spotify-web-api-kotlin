@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.0"
+version = "3.2.01"
 
 /*java {
     withSourcesJar()
@@ -165,6 +165,7 @@ kotlin {
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
+                    implementation("com.sparkjava:spark-core:2.9.1")
                 }
             }
 
@@ -176,7 +177,7 @@ kotlin {
                     api("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
-
+                    api(npm("btoa", "1.2.1"))
                     compileOnly(kotlin("stdlib-js"))
                 }
             }
