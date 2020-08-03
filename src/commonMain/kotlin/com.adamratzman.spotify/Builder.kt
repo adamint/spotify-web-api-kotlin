@@ -352,7 +352,6 @@ fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientA
                 ||     ||
  */
 
-
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using an [authCode] and [codeVerifier]. This is for **PKCE authorization**.
  *
@@ -367,14 +366,12 @@ fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientA
  */
 fun spotifyClientPkceApi(
         clientId: String?,
-        clientSecret: String?,
         redirectUri: String?,
         authCode: String,
         codeVerifier: String
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
-        this.clientSecret = clientSecret
         this.redirectUri = redirectUri
     }
 
@@ -399,7 +396,6 @@ fun spotifyClientPkceApi(
  */
 fun spotifyClientPkceApi(
         clientId: String?,
-        clientSecret: String?,
         redirectUri: String?,
         authCode: String,
         codeVerifier: String,
@@ -407,7 +403,6 @@ fun spotifyClientPkceApi(
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
-        this.clientSecret = clientSecret
         this.redirectUri = redirectUri
     }
 
@@ -723,7 +718,7 @@ class SpotifyClientApiBuilder(
         val redirectUri = credentials.redirectUri
 
         // either application credentials, or a token is required
-        require((clientId != null && clientSecret != null && redirectUri != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+        require((clientId != null && clientSecret != null && redirectUri != null) || (clientId != null && redirectUri != null && authorization.pkceCodeVerifier != null) ||  authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
             authorization.authorizationCode != null && authorization.pkceCodeVerifier == null -> try {
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
