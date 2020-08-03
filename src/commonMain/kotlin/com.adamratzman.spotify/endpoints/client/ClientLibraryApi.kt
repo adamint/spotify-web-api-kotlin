@@ -26,7 +26,7 @@ typealias ClientLibraryAPI = ClientLibraryApi
 /**
  * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
 class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
@@ -34,7 +34,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -61,7 +61,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -88,7 +88,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of object (album or track)
      * @param id The com.adamratzman.spotify id or uri of the object
@@ -106,7 +106,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects (album or track)
      * @param ids The com.adamratzman.spotify ids or uris of the objects. Maximum **50** ids.
@@ -130,7 +130,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of object (album or track)
      * @param id The com.adamratzman.spotify id or uri of the object
@@ -148,7 +148,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
      * @param ids The com.adamratzman.spotify ids or uris of the objects. Maximum **50** ids.
@@ -172,7 +172,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of object to check against (album or track)
      * @param id The com.adamratzman.spotify id or uri of the object
@@ -192,7 +192,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
 
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/library/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
      * @param type The type of objects to check against (album or track)
      * @param ids The com.adamratzman.spotify ids or uris of the objects. Maximum **50** ids.
