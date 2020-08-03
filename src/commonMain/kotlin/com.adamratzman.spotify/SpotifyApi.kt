@@ -458,7 +458,7 @@ class SpotifyAppApi internal constructor(
  * An API instance created through client authentication, with access to private information
  * managed through the scopes exposed in [token]
  */
-open class SpotifyClientApi internal constructor(
+open class SpotifyClientApi(
     clientId: String?,
     clientSecret: String?,
     var redirectUri: String?,
@@ -496,6 +496,7 @@ open class SpotifyClientApi internal constructor(
         clientSecret: String,
         redirectUri: String,
         token: Token,
+        usesPkceAuth: Boolean,
         options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
     ) : this(
             clientId,
@@ -513,7 +514,7 @@ open class SpotifyClientApi internal constructor(
             options.requestTimeoutMillis,
             options.json,
             options.refreshTokenProducer,
-            options.usesPkceAuth
+            usesPkceAuth
     )
 
     override val albums: AlbumApi = AlbumApi(this)
