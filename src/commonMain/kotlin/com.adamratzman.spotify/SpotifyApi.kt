@@ -283,6 +283,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
                             if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
         }
 
+
         /**
          * Get the PKCE authorization url for the provided [clientId] and [redirectUri] application settings, when attempting to authorize with
          * specified [scopes]
@@ -290,8 +291,9 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
          * @param scopes Spotify scopes the api instance should be able to access for the user
          * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
          * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param codeChallenge The code challenge corresponding to your codeVerifier. **It is highly recommend to use
+         * [getSpotifyPkceCodeChallenge] to get the code challenge from a code verifier (only available for JVM/Android).**
          * @param state This provides protection against attacks such as cross-site request forgery.
-         * @param codeChallenge In order to generate the code challenge, your app should hash the code verifier using the SHA256 algorithm. Then, base64url encode the hash that you generated.
          */
         fun getPkceAuthUrlFull(
                 vararg scopes: SpotifyScope,
@@ -471,7 +473,8 @@ open class SpotifyClientApi internal constructor(
     allowBulkRequests: Boolean,
     requestTimeoutMillis: Long?,
     json: Json,
-    refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)?
+    refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)?,
+    val usesPkceAuth: Boolean
 ) : SpotifyApi<SpotifyClientApi, SpotifyClientApiBuilder>(
         clientId,
         clientSecret,
@@ -509,7 +512,8 @@ open class SpotifyClientApi internal constructor(
             options.allowBulkRequests,
             options.requestTimeoutMillis,
             options.json,
-            options.refreshTokenProducer
+            options.refreshTokenProducer,
+            options.usesPkceAuth
     )
 
     override val albums: AlbumApi = AlbumApi(this)
@@ -662,9 +666,10 @@ open class SpotifyClientApi internal constructor(
                     scopes.all { token.scopes?.contains(it) == true }
 
     companion object {
-        private val defaultClientApiTokenRefreshProducer: suspend (SpotifyApi<*, *>) -> Token = { api ->
+        private val defaultClientApiTokenRefreshProducer: suspend (GenericSpotifyApi) -> Token = { api ->
             require(api.clientId != null && api.clientSecret != null) { "Either the client id or the client secret is not set" }
-            
+            api as SpotifyClientApi
+
             val response = executeTokenRequest(
                     HttpConnection(
                             "https://accounts.spotify.com/api/token",
@@ -689,13 +694,13 @@ open class SpotifyClientApi internal constructor(
             )
         }
 
-        private fun getDefaultClientApiTokenBody(api: GenericSpotifyApi): Map<String, String?> {
-            val map = mapOf(
+        private fun getDefaultClientApiTokenBody(api: SpotifyClientApi): Map<String, String?> {
+            val map = mutableMapOf(
                     "grant_type" to "refresh_token",
                     "refresh_token" to api.token.refreshToken
-            ).toMutableMap()
+            )
 
-          //  if (genericSpotifyApi)
+            if (api.usesPkceAuth) map += "client_id" to api.clientId
 
             return map
         }
@@ -735,7 +740,8 @@ class SpotifyImplicitGrantApi(
         allowBulkRequests,
         requestTimeoutMillis,
         json,
-        { throw IllegalStateException("You cannot refresh an implicit grant access token!") }
+        { throw IllegalStateException("You cannot refresh an implicit grant access token!") },
+        false
 )
 
 @Deprecated("API name has been updated for kotlin convention consistency", ReplaceWith("SpotifyApi"))

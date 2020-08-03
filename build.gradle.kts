@@ -176,7 +176,7 @@ kotlin {
                     api("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
-
+                    api(npm("btoa", "1.2.1"))
                     compileOnly(kotlin("stdlib-js"))
                 }
             }
