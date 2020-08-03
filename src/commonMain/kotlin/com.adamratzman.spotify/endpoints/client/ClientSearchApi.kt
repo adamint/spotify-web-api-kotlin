@@ -14,14 +14,14 @@ import com.adamratzman.spotify.utils.Market
 /**
  * Get Spotify catalog information about artists, albums, tracks, playlists, episodes, or shows that match a keyword string.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
 class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
 
     /**
      * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -49,7 +49,7 @@ class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
     /**
      * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
