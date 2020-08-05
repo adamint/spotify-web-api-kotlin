@@ -86,7 +86,7 @@ kotlin {
             setupPom(artifactId)
         }
 
-        publishLibraryVariants("release")
+        publishLibraryVariants("debug", "release")
     }
 
     jvm {
