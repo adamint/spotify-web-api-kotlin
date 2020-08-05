@@ -43,6 +43,24 @@ repositories {
 compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.02'
 ```
 
+**If you declare any release types not named debug or release, you need to do the following for each**
+```
+android {
+    buildTypes {
+        yourReleaseType1 {
+            // ...
+            matchingFallbacks = ['release', 'debug'] 
+        }
+        yourReleaseType2 {
+            // ...
+            matchingFallbacks = ['release', 'debug'] 
+        }
+	...
+    }
+}
+```
+
+
 To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
 ```
 packagingOptions {
