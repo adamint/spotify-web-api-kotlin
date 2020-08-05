@@ -7,15 +7,17 @@
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
 ## Install it
+
+### JVM
 This library is available via JCenter [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
-### Gradle
+#### Gradle
 ```
 repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: 'LATEST_VERSION'
+compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: '3.2.01'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -32,28 +34,26 @@ dependencies {
 }
 ```
 
-### Maven
+### Android
 ```
-<dependency>
-    <groupId>com.adamratzman</groupId>
-    <artifactId>com.adamratzman.spotify-api-kotlin</artifactId>
-    <version>LATEST_VERSION</version>
-</dependency>
-```
-JCenter Maven Repository:
-```
-<repository>
-    <id>jcenter</id>
-    <name>jcenter-bintray</name>
-    <url>http://jcenter.bintray.com</url>
-</repository>
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin-android', version: '3.2.01'
 ```
 
-#### Android
-This library will work out of the box on Android.
+### Kotlin/JS
+```
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin-js', version: '3.2.01'
+```
 
 ## Documentation
-The `com.adamratzman.spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/com.adamratzman.spotify-web-api-kotlin/docs/com.adamratzman.spotify-web-api-kotlin/
+The `com.adamratzman.spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
 
 ## Samples
 Samples for all APIs are located in the `samples` directory
