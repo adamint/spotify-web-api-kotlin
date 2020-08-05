@@ -43,7 +43,7 @@ repositories {
 compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.02'
 ```
 
-**If you declare any release types not named debug or release, you need to do the following for each**
+**If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
 ```
 android {
     buildTypes {
