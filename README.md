@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.01'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -30,7 +30,7 @@ repositories {
 Then, you can use the following:
 ```
 dependencies {
-	compile 'com.github.adamint:com.adamratzman.spotify-web-api-kotlin:dev-SNAPSHOT'
+	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
 }
 ```
 
@@ -40,7 +40,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin-android', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.01'
 ```
 
 ### Kotlin/JS
@@ -49,11 +49,11 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin-js', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.01'
 ```
 
 ## Documentation
-The `com.adamratzman.spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
+The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
 
 ## Samples
 Samples for all APIs are located in the `samples` directory
