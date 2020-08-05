@@ -86,6 +86,9 @@ kotlin {
             setupPom(artifactId)
         }
 
+        publishLibraryVariants("debug", "release")
+
+        publishLibraryVariantsGroupedByFlavor = true
     }
 
     jvm {
