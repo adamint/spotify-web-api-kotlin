@@ -43,6 +43,13 @@ repositories {
 compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.01'
 ```
 
+To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
+```
+packagingOptions {
+	exclude 'META-INF/*.kotlin_module'
+}
+```
+
 ### Kotlin/JS
 ```
 repositories {
