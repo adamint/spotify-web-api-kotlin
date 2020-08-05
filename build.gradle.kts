@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.0"
+version = "3.2.02"
 
 /*java {
     withSourcesJar()
@@ -86,7 +86,6 @@ kotlin {
             setupPom(artifactId)
         }
 
-        publishLibraryVariants("debug", "release")
     }
 
     jvm {
