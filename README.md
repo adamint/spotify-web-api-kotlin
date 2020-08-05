@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.02'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -40,7 +40,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.02'
 ```
 
 To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
@@ -56,7 +56,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.01'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.02'
 ```
 
 ## Documentation
