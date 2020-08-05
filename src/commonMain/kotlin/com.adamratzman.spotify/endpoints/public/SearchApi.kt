@@ -33,13 +33,13 @@ typealias SearchAPI = SearchApi
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
  * It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
 open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param id The internal com.adamratzman.spotify id
      */
@@ -90,7 +90,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * Depending on object types being searched for, other field filters, include genre (applicable to tracks and artists), upc, and isrc. For example: q=lil%20genre:%22southern%20hip%20hop%22&type=artist. Use double quotation marks around the genre keyword string if it contains spaces.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param searchTypes A list of item types to search across. Search results include hits from all the specified item types.
@@ -137,7 +137,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about playlists that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -164,7 +164,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about artists that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -192,7 +192,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about albums that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -220,7 +220,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify Catalog information about tracks that match the keyword string. See [SearchApi.search] for more information
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/search/search/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)

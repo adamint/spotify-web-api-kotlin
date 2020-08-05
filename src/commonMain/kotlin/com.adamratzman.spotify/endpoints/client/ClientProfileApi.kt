@@ -15,7 +15,7 @@ typealias ClientUserAPI = ClientProfileApi
 /**
  * Endpoints for retrieving information about a user’s profile.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/users-profile/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
 class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
     /**
@@ -26,7 +26,7 @@ class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      * reading country and product subscription level requires the [SpotifyScope.USER_READ_PRIVATE] scope.
      * Reading the user’s birthdate requires the [SpotifyScope.USER_READ_BIRTHDATE] scope.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
      *
      * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
      */
