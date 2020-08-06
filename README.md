@@ -7,15 +7,17 @@
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
 ## Install it
+
+### JVM
 This library is available via JCenter [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
 
-### Gradle
+#### Gradle
 ```
 repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'com.adamratzman.spotify-api-kotlin', version: '3.1.0-rc.1'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.03'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -28,32 +30,55 @@ repositories {
 Then, you can use the following:
 ```
 dependencies {
-	compile 'com.github.adamint:com.adamratzman.spotify-web-api-kotlin:dev-SNAPSHOT'
+	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
 }
 ```
 
-### Maven
+### Android
 ```
-<dependency>
-    <groupId>com.adamratzman</groupId>
-    <artifactId>com.adamratzman.spotify-api-kotlin</artifactId>
-    <version>SPOTIFY_API_VERSION</version>
-</dependency>
-```
-JCenter Maven Repository:
-```
-<repository>
-    <id>jcenter</id>
-    <name>jcenter-bintray</name>
-    <url>http://jcenter.bintray.com</url>
-</repository>
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.03'
 ```
 
-#### Android
-This library will work out of the box on Android.
+**If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
+```
+android {
+    buildTypes {
+        yourReleaseType1 {
+            // ...
+            matchingFallbacks = ['release', 'debug'] 
+        }
+        yourReleaseType2 {
+            // ...
+            matchingFallbacks = ['release', 'debug'] 
+        }
+	...
+    }
+}
+```
+
+
+To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
+```
+packagingOptions {
+	exclude 'META-INF/*.kotlin_module'
+}
+```
+
+### Kotlin/JS
+```
+repositories {
+    jcenter()
+}
+
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.03'
+```
 
 ## Documentation
-The `com.adamratzman.spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/com.adamratzman.spotify-web-api-kotlin/docs/com.adamratzman.spotify-web-api-kotlin/
+The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
 
 ## Samples
 Samples for all APIs are located in the `samples` directory
@@ -67,7 +92,7 @@ If you have a question, you can:
 
 ## Creating a new api instance
 To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), please refer to 
-https://developer.com.adamratzman.spotify.com/documentation/general/guides/authorization-guide/. In general:
+https://developer.spotify.com/documentation/general/guides/authorization-guide/. In general:
 - If you don't need client resources, use SpotifyAppApi
 - If you're using the api in a backend application, use SpotifyClientApi
 - If you're using the api in a frontend application, use SpotifyImplicitGrantApi
@@ -77,7 +102,7 @@ This provides access only to public Spotify endpoints. By default, the SpotifyAp
 through the `automaticRefresh` parameter in all builders.
 
 There are four exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyAppApi builder docs]() for a full list of available builders, or the app api [samples](). 
+Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders, or the app api [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/appApi). 
  
 
 ### SpotifyClientApi
@@ -90,11 +115,11 @@ ensure proper function of this library.
 Its automatic refresh ability is available *only* when building with
 an authorization code or a `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
-Please see the [spotifyClientApi builder docs]() for a full list of available builders, or the client [samples](). 
+Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders, or the client [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/clientApi). 
 
 ### SpotifyImplicitGrantApi
 Instantiate this api only if you are using the Spotify implicit grant flow. It is a superset of `SpotifyClientApi`.
-Please see the [spotifyImplicitGrantApi builder docs]() for a full list of available builders, or the implicit grant [samples](). 
+Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders, or the implicit grant [samples (tbd)](). 
 
 ### SpotifyApiBuilder Block & setting API options 
 There are three pluggable blocks in each api's corresponding builder

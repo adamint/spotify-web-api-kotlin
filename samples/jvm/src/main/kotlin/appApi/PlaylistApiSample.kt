@@ -16,11 +16,11 @@ fun main() {
     println(api.playlists.getUserPlaylists("adamratzman1").getAllItems().complete().filterNotNull().map { it.name })
 
     // get playlist "Hit Rewind"'s description in Andorra's market
-    println(api.playlists.getPlaylist("com.adamratzman.spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", Market.AD).complete()!!.description)
+    println(api.playlists.getPlaylist("spotify:playlist:37i9dQZF1DX0s5kDXi1oC5", Market.AD).complete()!!.description)
 
     // get up to 20 tracks for playlist "Hit Rewind"
-    println(api.playlists.getPlaylistTracks("com.adamratzman.spotify:playlist:37i9dQZF1DX0s5kDXi1oC5").complete().items.map { (it.track as Track).name })
+    println(api.playlists.getPlaylistTracks("spotify:playlist:37i9dQZF1DX0s5kDXi1oC5").complete().items.map { (it.track as Track).name })
 
     // get playlist covers for "Hit Rewind"
-    println(api.playlists.getPlaylistCovers("com.adamratzman.spotify:playlist:37i9dQZF1DX0s5kDXi1oC5").complete())
+    println(api.playlists.getPlaylistCovers("spotify:playlist:37i9dQZF1DX0s5kDXi1oC5").complete())
 }

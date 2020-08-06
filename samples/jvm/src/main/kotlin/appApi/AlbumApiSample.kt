@@ -11,11 +11,11 @@ fun main() {
     ).build()
 
     // get album "Kids in Love" by the Mowgli's release date
-    println(api.albums.getAlbum("com.adamratzman.spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete()!!.releaseDate)
+    println(api.albums.getAlbum("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete()!!.releaseDate)
 
     // get album "Kids in Love" and a non-existant album
-    println(api.albums.getAlbums("com.adamratzman.spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s", "nonexistantalbum"))
+    println(api.albums.getAlbums("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s", "nonexistantalbum"))
 
     // get album "Kids in Love"'s tracks
-    println(api.albums.getAlbumTracks("com.adamratzman.spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete().filterNotNull().map { it.name })
+    println(api.albums.getAlbumTracks("spotify:album:4M2p2BIRHIeBu8Ew9IBQ0s").complete().filterNotNull().map { it.name })
 }

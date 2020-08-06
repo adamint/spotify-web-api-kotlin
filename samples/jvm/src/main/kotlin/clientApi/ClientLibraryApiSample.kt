@@ -24,6 +24,6 @@ fun main() {
     println(api.library.contains(TRACK, api.search.searchTrack("I'm Good the Mowgli's").complete()[0].id).complete())
 
     // add and remove track "Up" by Nav
-    api.library.add(TRACK, "com.adamratzman.spotify:track:5qbcsZMwL0x46sX7VO37Ye").complete()
-    api.library.remove(TRACK, "com.adamratzman.spotify:track:5qbcsZMwL0x46sX7VO37Ye").complete()
+    api.library.add(TRACK, "spotify:track:5qbcsZMwL0x46sX7VO37Ye").complete()
+    api.library.remove(TRACK, "spotify:track:5qbcsZMwL0x46sX7VO37Ye").complete()
 }

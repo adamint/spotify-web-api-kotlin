@@ -49,7 +49,7 @@ class BrowseApiTest : Spek({
                     5,
                     4,
                     market = Market.US,
-                    timestamp = getCurrentTimeMs() - 1000000
+                    timestamp = getCurrentTimeMs() - 10000000
                 ).complete().playlists.total > 0
             )
             assertTrue(b.getFeaturedPlaylists(offset = 32).complete().playlists.total > 0)

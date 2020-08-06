@@ -28,9 +28,9 @@ class ClientPlaylistApiTest : Spek({
         }
 
         it("add, remove >100 tracks works correctly with chunking") {
-            val usTop50Uri = "com.adamratzman.spotify:playlist:37i9dQZEVXbLRQDuF5jeBp"
-            val globalTop50Uri = "com.adamratzman.spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
-            val globalViral50Uri = "com.adamratzman.spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
+            val usTop50Uri = "spotify:playlist:37i9dQZEVXbLRQDuF5jeBp"
+            val globalTop50Uri = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
+            val globalViral50Uri = "spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
 
             val tracks = runBlocking {
                 listOf(
@@ -62,7 +62,7 @@ class ClientPlaylistApiTest : Spek({
 
             cp.uploadClientPlaylistCover(
                     createdPlaylist.id,
-                    imageUrl = "https://developer.com.adamratzman.spotify.com/assets/WebAPI_intro.png"
+                    imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
             ).complete()
 
             var updatedPlaylist = cp.getClientPlaylist(createdPlaylist.id).complete()!!

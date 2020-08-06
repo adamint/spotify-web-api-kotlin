@@ -29,7 +29,7 @@ typealias PlaylistAPI = PlaylistApi
 /**
  * Endpoints for retrieving information about a user’s playlists
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/)**
  */
 open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
@@ -42,7 +42,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
      * scope to have been authorized by the user.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/get-list-users-playlists/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-list-users-playlists/)**
      *
      * @param user The user’s Spotify user ID.
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
@@ -80,7 +80,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/get-playlist/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/)**
      *
      * @param playlist The com.adamratzman.spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -103,7 +103,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/)**
      *
      * @param playlist The com.adamratzman.spotify id or uri for the playlist.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -133,7 +133,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * This access token must be issued on behalf of the user. Current playlist image for both Public and Private
      * playlists of any user are retrievable on provision of a valid access token.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/)**
      *
      * @param playlist The com.adamratzman.spotify id or uri for the playlist.
      *
