@@ -24,13 +24,13 @@ typealias AlbumAPI = AlbumApi
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
  *
- * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/albums/)**
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/)**
  */
 class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single album.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/albums/get-album/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-album/)**
      *
      * @param album The com.adamratzman.spotify id or uri for the album.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -54,7 +54,7 @@ class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
      * **Albums not found are returned as null inside the ordered list**
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/albums/get-several-albums/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums/)**
      *
      * @param albums The com.adamratzman.spotify ids or uris for the albums. Maximum **20**.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
@@ -76,7 +76,7 @@ class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information about an album’s tracks. Optional parameters can be used to limit the number of tracks returned.
      *
-     * **[Api Reference](https://developer.com.adamratzman.spotify.com/documentation/web-api/reference/albums/get-albums-tracks/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/albums/get-albums-tracks/)**
      *
      * @param album The com.adamratzman.spotify id or uri for the album.
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.

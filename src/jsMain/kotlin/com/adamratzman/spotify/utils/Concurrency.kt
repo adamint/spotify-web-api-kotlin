@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
 
-internal actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): dynamic {
+actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): dynamic {
     return GlobalScope.promise { coroutineCode() }
 }
 
