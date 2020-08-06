@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.0"
+version = "3.2.03"
 
 /*java {
     withSourcesJar()
@@ -47,11 +47,20 @@ tasks.withType<Test> {
 
 android {
     compileSdkVersion(30)
+    compileOptions {
+        setSourceCompatibility(JavaVersion.VERSION_1_8)
+        setTargetCompatibility(JavaVersion.VERSION_1_8)
+    }
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/*.md")
+    }
     defaultConfig {
         minSdkVersion(15)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -59,13 +68,19 @@ android {
             isMinifyEnabled = false
         }
     }
+    testOptions {
+        @Suppress("UNCHECKED_CAST")
+        this.unitTests.all(closureOf<Test> {
+            this.useJUnitPlatform()
+        } as groovy.lang.Closure<Test>)
+    }
     sourceSets {
         getByName("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
             java.setSrcDirs(listOf("src/androidMain/kotlin"))
             res.setSrcDirs(listOf("src/androidMain/res"))
         }
-        getByName("androidTest") {
+        getByName("test") {
             java.setSrcDirs(listOf("src/androidTest/kotlin"))
             res.setSrcDirs(listOf("src/androidTest/res"))
         }
@@ -86,7 +101,9 @@ kotlin {
             setupPom(artifactId)
         }
 
-        publishLibraryVariants("release")
+        publishLibraryVariants("debug", "release")
+
+        publishLibraryVariantsGroupedByFlavor = true
     }
 
     jvm {
@@ -162,6 +179,7 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
+                    implementation("com.sparkjava:spark-core:2.9.1")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -208,6 +226,8 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
+                    implementation("com.sparkjava:spark-core:2.9.1")
+                    implementation("org.mockito:mockito-core:3.3.3")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -301,11 +321,11 @@ tasks {
         }
     }
 
-    /* val javadocJar by getting(Jar::class) {
-         dependsOn.add(javadoc)
-         archiveClassifier.set("javadoc")
-         from(javadoc)
-     }*/
+/* val javadocJar by getting(Jar::class) {
+     dependsOn.add(javadoc)
+     archiveClassifier.set("javadoc")
+     from(javadoc)
+ }*/
 
     spotless {
         kotlin {
@@ -323,7 +343,6 @@ tasks {
     getByName<Test>("jvmTest") {
         useJUnitPlatform()
     }
-
 
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
