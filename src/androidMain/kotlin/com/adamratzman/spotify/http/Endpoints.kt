@@ -6,5 +6,5 @@ import java.net.URLEncoder
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 internal actual fun String.base64ByteEncode(): String {
-    return Base64.encodeToString(toByteArray(), Base64.DEFAULT)
+    return Base64.encodeToString(toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
 }
