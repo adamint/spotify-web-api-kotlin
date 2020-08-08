@@ -274,8 +274,8 @@ fun spotifyClientApi(
     clientId: String?,
     clientSecret: String?,
     redirectUri: String?,
-    options: SpotifyApiOptionsBuilder? = null,
-    apiToken: Token
+    apiToken: Token,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
