@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.03"
+version = "3.2.04"
 
 /*java {
     withSourcesJar()
@@ -52,15 +52,14 @@ android {
         setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
     packagingOptions {
-        exclude("META-INF/*.kotlin_module")
+       // exclude("META-INF/*.kotlin_module")
         exclude("META-INF/*.md")
     }
     defaultConfig {
-        minSdkVersion(15)
+        minSdkVersion(20)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
-        multiDexEnabled = true
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -272,7 +271,11 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications)
+    if (project.hasProperty("signing.keyId")
+            && project.hasProperty("signing.password")
+            && project.hasProperty("signing.secretKeyRingFile")) {
+        sign(publishing.publications)
+    }
 }
 
 tasks {

@@ -200,14 +200,14 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
                 state = state
         )
     }
-    
-    fun getPkceAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String, codeChallenge: String, state: String? = null ): String {
+
+    fun getPkceAuthorizationUrl(vararg scopes: SpotifyScope, redirectUri: String, codeChallenge: String, state: String? = null): String {
         require(clientId != null)
         return getPkceAuthUrlFull(
                 *scopes,
-                clientId=clientId,
-                redirectUri=redirectUri,
-                codeChallenge=codeChallenge,
+                clientId = clientId,
+                redirectUri = redirectUri,
+                codeChallenge = codeChallenge,
                 state = state
         )
     }
@@ -283,7 +283,6 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
                             if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
         }
 
-
         /**
          * Get the PKCE authorization url for the provided [clientId] and [redirectUri] application settings, when attempting to authorize with
          * specified [scopes]
@@ -296,11 +295,11 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
          * @param state This provides protection against attacks such as cross-site request forgery.
          */
         fun getPkceAuthUrlFull(
-                vararg scopes: SpotifyScope,
-                clientId: String,
-                redirectUri: String,
-                codeChallenge: String,
-                state: String? = null
+            vararg scopes: SpotifyScope,
+            clientId: String,
+            redirectUri: String,
+            codeChallenge: String,
+            state: String? = null
         ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
                     "&response_type=code" +
