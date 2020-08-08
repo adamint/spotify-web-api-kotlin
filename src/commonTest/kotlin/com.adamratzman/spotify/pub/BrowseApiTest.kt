@@ -27,6 +27,7 @@ class BrowseApiTest : Spek({
                 b.getCategoryList(locale = ar_AE).complete().items[0],
                 b.getCategoryList().complete().items[0]
             )
+            assertTrue(b.getCategoryList(4, 3, market = Market.CA).complete().items.isNotEmpty())
             assertTrue(b.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).complete().items.isNotEmpty())
         }
 

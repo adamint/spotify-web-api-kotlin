@@ -70,10 +70,15 @@ class UtilityTests : Spek({
 
             it("Automatic refresh") {
                 if (api == null) return@it
+                var test = false
                 val api = spotifyAppApi {
                     credentials {
                         clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
                         clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
+                    }
+
+                    options {
+                        onTokenRefresh = { test = true }
                     }
                 }.build()
 
@@ -82,6 +87,7 @@ class UtilityTests : Spek({
 
                 api.browse.getAvailableGenreSeeds().complete()
 
+                assertTrue(test)
                 assertTrue(api.token.accessToken != currentToken.accessToken)
             }
         }

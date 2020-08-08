@@ -35,10 +35,21 @@ class PkceTest : Spek({
                 val code = request.queryParams("code")
                 val actualState = request.queryParams("state")
                 if (code != null && actualState == state) {
-                    val api = spotifyClientPkceApi(_clientId, serverRedirectUri, code, pkceCodeVerifier).build()
+                    val api = spotifyClientPkceApi(
+                            _clientId,
+                            serverRedirectUri,
+                            code,
+                            pkceCodeVerifier,
+                            SpotifyApiOptionsBuilder(
+                                    onTokenRefresh = { println("refreshed token") }
+                            )
+                    ).build()
+                    println(api.token)
+                    api.refreshToken()
+                    println(api.token)
                     val username = api.users.getClientProfile().complete().displayName
                     stop = true
-                    "Successfully authenticated $username with PKCE."
+                    "Successfully authenticated $username with PKCE and refreshed the token."
                 } else "err."
             }
 
