@@ -29,5 +29,5 @@ pluginManagement {
 
 enableFeaturePreview("GRADLE_METADATA")
 
-rootProject.name = "com.adamratzman.spotify-web-api-kotlin"
+rootProject.name = "spotify-web-api-kotlin"
 
