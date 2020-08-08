@@ -1,9 +1,10 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.util.Base64
 import java.security.MessageDigest
-import android.util.Base64;
 
 actual fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
     val sha256 = MessageDigest.getInstance("SHA-256").digest(codeVerifier.toByteArray())

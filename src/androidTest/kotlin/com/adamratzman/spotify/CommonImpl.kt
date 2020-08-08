@@ -5,7 +5,6 @@ import android.os.Build.VERSION
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
-
 fun setFinalStatic(field: Field, newValue: Any?) {
     field.isAccessible = true
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
