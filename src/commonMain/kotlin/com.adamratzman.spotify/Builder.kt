@@ -58,6 +58,7 @@ fun getSpotifyAuthorizationUrl(
  * @param state This provides protection against attacks such as cross-site request forgery.
  * @param codeChallenge In order to generate the code challenge, your app should hash the code verifier using the SHA256 algorithm.
  * Then, base64url encode the hash that you generated.
+ *
  */
 fun getPkceAuthorizationUrl(
     vararg scopes: SpotifyScope,
@@ -106,8 +107,12 @@ expect fun getSpotifyPkceCodeChallenge(codeVerifier: String): String
  *
  * @return [SpotifyImplicitGrantApi] that can immediately begin making calls
  */
-fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Token, options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()) =
-        SpotifyImplicitGrantApi(
+fun spotifyImplicitGrantApi(
+    clientId: String?,
+    redirectUri: String?,
+    token: Token,
+    options: SpotifyApiOptionsBuilder = SpotifyApiOptionsBuilder()
+) = SpotifyImplicitGrantApi(
                 clientId,
                 null,
                 redirectUri,
@@ -142,10 +147,17 @@ fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Toke
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String, clientSecret: String) = spotifyAppApi(clientId, clientSecret) {}
+fun spotifyAppApi(
+    clientId: String,
+    clientSecret: String,
+    options: SpotifyApiOptionsBuilder? = null
+) = spotifyAppApi(clientId, clientSecret) {
+    options?.let { this.options = it.build() }
+}
 
 /**
  * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret], with the ability to configure
@@ -157,8 +169,11 @@ fun spotifyAppApi(clientId: String, clientSecret: String) = spotifyAppApi(client
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
-        SpotifyAppApiBuilder().apply(block).apply {
+fun spotifyAppApi(
+    clientId: String,
+    clientSecret: String,
+    block: SpotifyAppApiBuilder.() -> Unit
+) = SpotifyAppApiBuilder().apply(block).apply {
             credentials {
                 this.clientId = clientId
                 this.clientSecret = clientSecret
@@ -171,19 +186,26 @@ fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBu
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param apiToken The access token that will be associated with the built API instance
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String?, clientSecret: String?, apiToken: Token) =
-        SpotifyAppApiBuilder().apply {
-            credentials {
-                this.clientId = clientId
-                this.clientSecret = clientSecret
-            }
-            authentication {
-                token = apiToken
-            }
-        }
+fun spotifyAppApi(
+    clientId: String?,
+    clientSecret: String?,
+    apiToken: Token,
+    options: SpotifyApiOptionsBuilder? = null
+) = SpotifyAppApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+    }
+    authentication {
+        token = apiToken
+    }
+
+    options?.let { this.options = it.build() }
+}
 
 /**
  * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
@@ -244,6 +266,7 @@ fun spotifyClientApi(
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param apiToken The access token that will be associated with the built API instance
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
@@ -251,6 +274,7 @@ fun spotifyClientApi(
     clientId: String?,
     clientSecret: String?,
     redirectUri: String?,
+    options: SpotifyApiOptionsBuilder? = null,
     apiToken: Token
 ) = SpotifyClientApiBuilder().apply {
     credentials {
@@ -262,6 +286,8 @@ fun spotifyClientApi(
     authentication {
         token = apiToken
     }
+
+    options?.let { this.options = it.build() }
 }
 
 /**
@@ -272,6 +298,7 @@ fun spotifyClientApi(
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param authCode The authorization code retrieved after OAuth authorization
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
@@ -279,7 +306,8 @@ fun spotifyClientApi(
     clientId: String?,
     clientSecret: String?,
     redirectUri: String?,
-    authCode: String
+    authCode: String,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -290,6 +318,8 @@ fun spotifyClientApi(
     authentication {
         authorizationCode = authCode
     }
+
+    options?.let { this.options = it.build() }
 }
 
 /**
@@ -313,7 +343,7 @@ fun spotifyClientApi(
     clientSecret: String,
     redirectUri: String,
     authorization: SpotifyUserAuthorization,
-    options: SpotifyApiOptions? = null,
+    options: SpotifyApiOptionsBuilder? = null,
     block: SpotifyClientApiBuilder.() -> Unit = {}
 ) = SpotifyClientApiBuilder().apply(block).apply {
     credentials {
@@ -321,7 +351,7 @@ fun spotifyClientApi(
         this.clientSecret = clientSecret
         this.redirectUri = redirectUri
     }
-    options?.let { this.options = options }
+    options?.let { this.options = options.build() }
     this.authorization = authorization
 }
 
@@ -359,36 +389,7 @@ fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientA
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param authCode The authorization code retrieved after OAuth authorization
  * @param codeVerifier Your code verifier plaintext.
- *
- * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
- */
-fun spotifyClientPkceApi(
-    clientId: String?,
-    redirectUri: String?,
-    authCode: String,
-    codeVerifier: String
-) = SpotifyClientApiBuilder().apply {
-    credentials {
-        this.clientId = clientId
-        this.redirectUri = redirectUri
-    }
-
-    authentication {
-        authorizationCode = authCode
-        pkceCodeVerifier = codeVerifier
-    }
-}
-
-/**
- * Instantiate a new [SpotifyClientApiBuilder] using an [authCode] and [codeVerifier]. This is for **PKCE authorization**.
- *
- *
- * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param authCode The authorization code retrieved after OAuth authorization
- * @param codeVerifier Your code verifier plaintext.
- * @param block Api settings block
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
@@ -397,7 +398,7 @@ fun spotifyClientPkceApi(
     redirectUri: String?,
     authCode: String,
     codeVerifier: String,
-    block: SpotifyClientApiBuilder.() -> Unit = {}
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -408,7 +409,9 @@ fun spotifyClientPkceApi(
         authorizationCode = authCode
         pkceCodeVerifier = codeVerifier
     }
-}.apply(block)
+
+    options?.let { this.options = it.build() }
+}
 
 /**
  *  Spotify API builder
@@ -650,6 +653,11 @@ interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>
     fun options(options: SpotifyApiOptions) = apply { this.options = options }
 
     /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun options(options: SpotifyApiOptionsBuilder) = apply { this.options = options.build() }
+
+    /**
      * Build the [T] by provided information
      */
     suspend fun suspendBuild(): T
@@ -751,7 +759,8 @@ class SpotifyClientApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        false
+                        false,
+                        options.onTokenRefresh
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -793,7 +802,8 @@ class SpotifyClientApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        true
+                        true,
+                        options.onTokenRefresh
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -816,7 +826,8 @@ class SpotifyClientApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    false
+                    false,
+                    options.onTokenRefresh
             )
             authorization.tokenString != null -> SpotifyClientApi(
                     clientId,
@@ -840,7 +851,8 @@ class SpotifyClientApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    false
+                    false,
+                    options.onTokenRefresh
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +
@@ -885,7 +897,8 @@ class SpotifyAppApiBuilder(
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
                     options.json,
-                    options.refreshTokenProducer
+                    options.refreshTokenProducer,
+                    options.onTokenRefresh
             )
             authorization.tokenString != null -> {
                 SpotifyAppApi(
@@ -905,7 +918,8 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh
                 )
             }
             authorization.refreshTokenString != null -> {
@@ -923,7 +937,8 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh
                 )
             }
             else -> try {
@@ -943,7 +958,8 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -1028,6 +1044,7 @@ data class SpotifyUserAuthorization(
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
+ * @property onTokenRefresh Provide if you want to act on token refresh event
  *
  */
 class SpotifyApiOptionsBuilder(
@@ -1042,7 +1059,8 @@ class SpotifyApiOptionsBuilder(
     var allowBulkRequests: Boolean = true,
     var requestTimeoutMillis: Long? = null,
     var json: Json = nonstrictJson,
-    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)? = null
+    var refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)? = null,
+    var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null
 ) {
     fun build() =
             if (enableAllOptions)
@@ -1057,7 +1075,8 @@ class SpotifyApiOptionsBuilder(
                         allowBulkRequests = true,
                         requestTimeoutMillis = requestTimeoutMillis,
                         json = json,
-                        refreshTokenProducer = refreshTokenProducer
+                        refreshTokenProducer = refreshTokenProducer,
+                        onTokenRefresh = onTokenRefresh
                 )
             else
                 SpotifyApiOptions(
@@ -1071,7 +1090,8 @@ class SpotifyApiOptionsBuilder(
                         allowBulkRequests,
                         requestTimeoutMillis,
                         json,
-                        refreshTokenProducer
+                        refreshTokenProducer,
+                        onTokenRefresh
                 )
 }
 
@@ -1089,6 +1109,7 @@ class SpotifyApiOptionsBuilder(
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests. Default: true
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token.
+ * @property onTokenRefresh Provide if you want to act on token refresh event
  *
  */
 
@@ -1103,7 +1124,8 @@ data class SpotifyApiOptions(
     var allowBulkRequests: Boolean,
     var requestTimeoutMillis: Long?,
     var json: Json,
-    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?
+    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?,
+    var onTokenRefresh: (suspend (SpotifyApi<*, *>) -> Unit)?
 )
 
 @Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))
