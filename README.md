@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.03'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.04'
 ```
 
 To use the latest snapshot instead, you must add the Jitpack repository as well
@@ -40,7 +40,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.03'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.04'
 ```
 
 **If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
@@ -61,7 +61,7 @@ android {
 ```
 
 
-To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
+To successfully build, you might need to exclude kotlin_module files from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
 ```
 packagingOptions {
 	exclude 'META-INF/*.kotlin_module'
@@ -74,7 +74,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.03'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.04'
 ```
 
 ## Documentation
