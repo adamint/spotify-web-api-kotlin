@@ -23,5 +23,3 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
 internal expect fun formatDate(format: String, date: Long): String
-
-expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

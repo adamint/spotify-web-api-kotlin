@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapConcat
@@ -32,6 +32,8 @@ import kotlinx.coroutines.withContext
 open class SpotifyRestAction<T> internal constructor(protected val api: GenericSpotifyApi, val supplier: suspend () -> T) {
     private var hasRunBacking: Boolean = false
     private var hasCompletedBacking: Boolean = false
+
+    lateinit var scope: CoroutineContext
 
     /**
      * Whether this REST action has been *commenced*.
@@ -88,20 +90,22 @@ open class SpotifyRestAction<T> internal constructor(protected val api: GenericS
      * @param consumer to be invoked with [T] after successful completion of [supplier]
      */
     @JvmOverloads
-    fun queue(failure: ((Throwable) -> Unit) = { throw it }, consumer: ((T) -> Unit) = {}): SpotifyRestAction<T> {
+    fun queue(failure: (suspend (Throwable) -> Unit) = { throw it }, consumer: (suspend (T) -> Unit) = {}) {
         hasRunBacking = true
-        GlobalScope.launch {
-            try {
-                val result = suspendComplete()
-                consumer(result)
-            } catch (e: CancellationException) {
-                throw e
-            } catch (t: Throwable) {
-                failure(t)
+        runBlocking {
+            coroutineScope {
+                launch {
+                    try {
+                        val result = suspendComplete()
+                        consumer(result)
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (t: Throwable) {
+                        failure(t)
+                    }
+                }
             }
         }
-
-        return this
     }
 
     /**
@@ -115,17 +119,16 @@ open class SpotifyRestAction<T> internal constructor(protected val api: GenericS
     fun queueAfter(
         quantity: Int,
         timeUnit: TimeUnit = TimeUnit.SECONDS,
-        scope: CoroutineScope = GlobalScope,
+        scope: CoroutineScope? = null,
         failure: (Throwable) -> Unit = { throw it },
         consumer: (T) -> Unit
-    ): SpotifyRestAction<T> {
+    ) {
         val runAt = getCurrentTimeMs() + timeUnit.toMillis(quantity.toLong())
         queue({ exception ->
-            scope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { failure(exception) }
+            (scope ?: coroutineScope { this }).schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { failure(exception) }
         }) { result ->
-            scope.schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result) }
+            (scope ?: coroutineScope { this }).schedule((runAt - getCurrentTimeMs()).toInt(), TimeUnit.MILLISECONDS) { consumer(result) }
         }
-        return this
     }
 
     override fun toString() = complete().toString()

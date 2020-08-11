@@ -53,9 +53,10 @@ class PkceTest : Spek({
                 } else "err."
             }
 
+            println("Waiting...")
+
             while (!stop) {
                 Thread.sleep(2000)
-                println("Waiting...")
             }
         }
     }
