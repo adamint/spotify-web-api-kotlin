@@ -16,11 +16,6 @@ class EpisodeApiTest : Spek({
         if (api !is SpotifyClientApi) return@describe
         val t = api.episodes
         describe("get episode") {
-            it("known episode") {
-                val episode = t.getEpisode("1cfOhXP4GQCd5ZFHoSF8gg").complete()!!
-
-                assertEquals("417. Reasons to Be Cheerful", episode.name)
-            }
             it("unknown episode id should be null") {
                 assertNull(t.getEpisode("nonexistant episode").complete())
             }
@@ -33,7 +28,7 @@ class EpisodeApiTest : Spek({
                 assertFailsWith<BadRequestException> { t.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").complete().map { it?.name } }
             }
             it("known episodes") {
-                assertEquals(listOf("417. Reasons to Be Cheerful", "The 'Murder Hornets' And The Honey Bees"), t.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "4IhgnOc8rwMW70agMWVVfh").complete().map { it?.name })
+                assertEquals(listOf("The 'Murder Hornets' And The Honey Bees"), t.getEpisodes( "4IhgnOc8rwMW70agMWVVfh").complete().map { it?.name })
             }
         }
     }
