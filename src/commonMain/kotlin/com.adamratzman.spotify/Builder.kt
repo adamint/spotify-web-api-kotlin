@@ -172,7 +172,7 @@ fun spotifyAppApi(
 fun spotifyAppApi(
     clientId: String,
     clientSecret: String,
-    block: SpotifyAppApiBuilder.() -> Unit
+    block: SpotifyAppApiBuilder.() -> Unit = {}
 ) = SpotifyAppApiBuilder().apply(block).apply {
             credentials {
                 this.clientId = clientId
@@ -249,7 +249,7 @@ fun spotifyClientApi(
     clientId: String,
     clientSecret: String,
     redirectUri: String,
-    block: SpotifyClientApiBuilder.() -> Unit
+    block: SpotifyClientApiBuilder.() -> Unit = {}
 ) = SpotifyClientApiBuilder().apply(block).apply {
     credentials {
         this.clientId = clientId
@@ -826,7 +826,7 @@ class SpotifyClientApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    false,
+                    authorization.pkceCodeVerifier != null,
                     options.onTokenRefresh
             )
             authorization.tokenString != null -> SpotifyClientApi(

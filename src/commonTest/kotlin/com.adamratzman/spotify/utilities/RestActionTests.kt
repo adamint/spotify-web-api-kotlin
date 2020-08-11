@@ -6,9 +6,11 @@ import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.utils.runBlocking
 import kotlin.test.assertFailsWith
+import kotlin.time.ExperimentalTime
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
+@ExperimentalTime
 @SpotifyExperimentalHttpApi
 class RestActionTests : Spek({
     describe("Paging Object") {

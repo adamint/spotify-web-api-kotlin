@@ -10,3 +10,5 @@ expect enum class TimeUnit {
 }
 
 internal expect fun CoroutineScope.schedule(quantity: Int, timeUnit: TimeUnit, consumer: () -> Unit)
+
+expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

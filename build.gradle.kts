@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.05"
+version = "3.2.06"
 
 /*java {
     withSourcesJar()
@@ -48,15 +48,15 @@ tasks.withType<Test> {
 android {
     compileSdkVersion(30)
     compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
        // exclude("META-INF/*.kotlin_module")
         exclude("META-INF/*.md")
     }
     defaultConfig {
-        minSdkVersion(20)
+        minSdkVersion(15)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
@@ -145,8 +145,8 @@ kotlin {
             val commonMain by getting {
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-                    api("io.ktor:ktor-client-core:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                    implementation("io.ktor:ktor-client-core:$ktorVersion")
 
                     implementation(kotlin("stdlib-common"))
                 }
@@ -167,8 +167,8 @@ kotlin {
 
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -187,10 +187,10 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    api(npm("text-encoding", "0.7.0"))
+                    implementation(npm("text-encoding", "0.7.0"))
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
-                    api("io.ktor:ktor-client-js:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
+                    implementation("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
 
@@ -212,10 +212,10 @@ kotlin {
                 }
 
                 dependencies {
-                    api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
+                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
