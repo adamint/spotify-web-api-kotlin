@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.06"
+version = "3.2.07"
 
 /*java {
     withSourcesJar()

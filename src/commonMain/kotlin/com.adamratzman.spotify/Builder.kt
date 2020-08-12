@@ -154,9 +154,9 @@ fun spotifyImplicitGrantApi(
 fun spotifyAppApi(
     clientId: String,
     clientSecret: String,
-    options: SpotifyApiOptionsBuilder? = null
+    options: SpotifyApiOptionsBuilder
 ) = spotifyAppApi(clientId, clientSecret) {
-    options?.let { this.options = it.build() }
+    this.options = options.build()
 }
 
 /**
