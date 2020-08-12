@@ -287,14 +287,14 @@ tasks {
             val js by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
             val jvm by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -302,7 +302,7 @@ tasks {
             register("common") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -310,7 +310,7 @@ tasks {
             register("global") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
 
@@ -362,12 +362,12 @@ fun MavenPublication.setupPom(publicationName: String) {
     pom {
         name.set(publicationName)
         description.set("A Kotlin wrapper for the Spotify Web API.")
-        url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
+        url.set("https://github.com/adamint/spotify-web-api-kotlin")
         inceptionYear.set("2018")
         scm {
-            url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
-            connection.set("scm:https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
-            developerConnection.set("scm:git://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
+            url.set("https://github.com/adamint/spotify-web-api-kotlin")
+            connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
+            developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
         }
         licenses {
             license {
