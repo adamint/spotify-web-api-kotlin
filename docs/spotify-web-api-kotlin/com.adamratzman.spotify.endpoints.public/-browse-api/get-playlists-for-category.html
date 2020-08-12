@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.BrowseApi.getPlaylistsForCategory - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">BrowseApi</a>&nbsp;/&nbsp;<a href="./get-playlists-for-category.html">getPlaylistsForCategory</a><br/>
+<br/>
+<h1>getPlaylistsForCategory</h1>
+<a name="com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getPlaylistsForCategory</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/categoryId">categoryId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get a list of Spotify playlists tagged with a particular category.</p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want the list of returned items to be relevant to a particular country.
+If omitted, the returned items will be relevant to all countries.</p>
+<p><a name="limit"></a>
+<code>limit</code> - The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if <a href="get-playlists-for-category.html#com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/categoryId">categoryId</a> is not found or filters are illegal</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.adamratzman.spotify.models/-paging-object/index.html#com.adamratzman.spotify.models.PagingObject">PagingObject</a> of top playlists tagged with <a href="get-playlists-for-category.html#com.adamratzman.spotify.endpoints.public.BrowseApi$getPlaylistsForCategory(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/categoryId">categoryId</a></p>
+</BODY>
+</HTML>

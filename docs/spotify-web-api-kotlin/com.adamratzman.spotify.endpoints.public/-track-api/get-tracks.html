@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.TrackApi.getTracks - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">TrackApi</a>&nbsp;/&nbsp;<a href="./get-tracks.html">getTracks</a><br/>
+<br/>
+<h1>getTracks</h1>
+<a name="com.adamratzman.spotify.endpoints.public.TrackApi$getTracks(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getTracks</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTracks(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.TrackApi$getTracks(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify catalog information for multiple tracks based on their Spotify IDs.</p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="tracks"></a>
+<code>tracks</code> - The com.adamratzman.spotify id or uri for the tracks. Maximum <strong>50</strong>.</p>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want to apply <a href="https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking">Track Relinking</a></p>
+<p><strong>Return</strong><br/>
+List of possibly-null full <a href="../../com.adamratzman.spotify.models/-track/index.html#com.adamratzman.spotify.models.Track">Track</a> objects.</p>
+</BODY>
+</HTML>

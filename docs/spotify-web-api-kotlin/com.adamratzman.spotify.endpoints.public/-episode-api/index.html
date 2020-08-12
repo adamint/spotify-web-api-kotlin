@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.EpisodeApi - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">EpisodeApi</a><br/>
+<br/>
+<h1>EpisodeApi</h1>
+<a name="com.adamratzman.spotify.endpoints.public.EpisodeApi"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">EpisodeApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.EpisodeApi$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-episode.html">getEpisode</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for a single episode identified by its unique Spotify ID.</p>
+<code><span class="keyword">fun </span><span class="identifier">getEpisode</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.EpisodeApi$getEpisode(kotlin.String, com.adamratzman.spotify.utils.Market)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.EpisodeApi$getEpisode(kotlin.String, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-episode/index.html"><span class="identifier">Episode</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-episodes.html">getEpisodes</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for multiple episodes based on their Spotify IDs.</p>
+<code><span class="keyword">fun </span><span class="identifier">getEpisodes</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.EpisodeApi$getEpisodes(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/ids">ids</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.EpisodeApi$getEpisodes(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-episode/index.html"><span class="identifier">Episode</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

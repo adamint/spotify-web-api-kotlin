@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.ArtistApi - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">ArtistApi</a><br/>
+<br/>
+<h1>ArtistApi</h1>
+<a name="com.adamratzman.spotify.endpoints.public.ArtistApi"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">ArtistApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<p>Endpoints for retrieving information about one or more artists from the Spotify catalog.</p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/artists/">Api Reference</a></strong></p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-album-inclusion-strategy/index.html">AlbumInclusionStrategy</a></h4>
+</td>
+<td>
+<p>Describes object types to include when finding albums</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">AlbumInclusionStrategy</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Endpoints for retrieving information about one or more artists from the Spotify catalog.</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-artist.html">getArtist</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for a single artist identified by their unique Spotify ID.</p>
+<code><span class="keyword">fun </span><span class="identifier">getArtist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtist(kotlin.String)/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-artist-albums.html">getArtistAlbums</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information about an artist’s albums.</p>
+<code><span class="keyword">fun </span><span class="identifier">getArtistAlbums</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistAlbums(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Array((com.adamratzman.spotify.endpoints.public.ArtistApi.AlbumInclusionStrategy)))/include">include</span><span class="symbol">:</span>&nbsp;<a href="-album-inclusion-strategy/index.html"><span class="identifier">AlbumInclusionStrategy</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-artists.html">getArtists</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information for several artists based on their Spotify IDs. <strong>Artists not found are returned as null inside the ordered list</strong></p>
+<code><span class="keyword">fun </span><span class="identifier">getArtists</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtists(kotlin.Array((kotlin.String)))/artists">artists</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-artist-top-tracks.html">getArtistTopTracks</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information about an artist’s top tracks <strong>by country</strong>.</p>
+<code><span class="keyword">fun </span><span class="identifier">getArtistTopTracks</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getArtistTopTracks(kotlin.String, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Market.US<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-related-artists.html">getRelatedArtists</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information about artists similar to a given artist.
+Similarity is based on analysis of the Spotify community’s listening history.</p>
+<code><span class="keyword">fun </span><span class="identifier">getRelatedArtists</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.ArtistApi$getRelatedArtists(kotlin.String)/artist">artist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
