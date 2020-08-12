@@ -78,7 +78,7 @@ compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.0
 ```
 
 ## Documentation
-The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
+The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/
 
 ## Samples
 Samples for all APIs are located in the `samples` directory
@@ -242,7 +242,7 @@ println(api.browse.getFeaturedPlaylists().complete().message)
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
 
 val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
-// this works; a redundant way would be: api.artists.getArtist("com.adamratzman.spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
+// this works; a redundant way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
 
 println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
 ```
