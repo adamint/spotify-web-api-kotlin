@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.Device - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">Device</a><br/>
+<br/>
+<h1>Device</h1>
+<a name="com.adamratzman.spotify.models.Device"></a>
+(common, js, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Device</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-identifiable-nullable/index.html"><span class="identifier">IdentifiableNullable</span></a></code>
+<p>A device which is connected to the Spotify user</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>A device which is connected to the Spotify user</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/isActive">isActive</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/isPrivateSession">isPrivateSession</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/isRestricted">isRestricted</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/typeString">typeString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.Device$<init>(kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.String, kotlin.String, kotlin.Int)/volumePercent">volumePercent</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="href.html">href</a></h4>
+</td>
+<td>
+<p>A link to the Spotify web api endpoint associated with this request</p>
+<code><span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>The device ID. This may be null.</p>
+<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="is-active.html">isActive</a></h4>
+</td>
+<td>
+<p>If this device is the currently active device.</p>
+<code><span class="keyword">val </span><span class="identifier">isActive</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="is-private-session.html">isPrivateSession</a></h4>
+</td>
+<td>
+<p>If this device is currently in a private session.</p>
+<code><span class="keyword">val </span><span class="identifier">isPrivateSession</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="is-restricted.html">isRestricted</a></h4>
+</td>
+<td>
+<p>Whether controlling this device is restricted. At present
+if this is “true” then no Web API commands will be accepted by this device.</p>
+<code><span class="keyword">val </span><span class="identifier">isRestricted</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="name.html">name</a></h4>
+</td>
+<td>
+<p>The name of the device.</p>
+<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="type.html">type</a></h4>
+</td>
+<td>
+<p>Device type, such as “Computer”, “Smartphone” or “Speaker”.</p>
+<code><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="../-device-type/index.html"><span class="identifier">DeviceType</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="type-string.html">typeString</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">typeString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="volume-percent.html">volumePercent</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">volumePercent</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

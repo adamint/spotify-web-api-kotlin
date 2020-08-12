@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.SearchApi - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="./index.html">SearchApi</a><br/>
+<br/>
+<h1>SearchApi</h1>
+<a name="com.adamratzman.spotify.endpoints.public.SearchApi"></a>
+(common, js, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a></code>
+<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.</p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/search/search/">Api Reference</a></strong></p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-search-type/index.html">SearchType</a></h4>
+</td>
+<td>
+<p>Describes which object to search for</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">SearchType</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+It is possible to have 0 results and no exception thrown with these methods. Check the size of items returned.</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$<init>(com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))))/api">api</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify/-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="build.html">build</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">build</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/types">types</span><span class="symbol">:</span>&nbsp;<a href="-search-type/index.html"><span class="identifier">SearchType</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$build(kotlin.String, com.adamratzman.spotify.utils.Market, kotlin.Int, kotlin.Int, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Boolean)/includeExternal">includeExternal</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search.html">search</a></h4>
+</td>
+<td>
+<p>Get Spotify Catalog information about artists, albums, tracks and/or playlists that match a keyword string.</p>
+<code><span class="keyword">fun </span><span class="identifier">search</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/searchTypes">searchTypes</span><span class="symbol">:</span>&nbsp;<a href="-search-type/index.html"><span class="identifier">SearchType</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)/includeExternal">includeExternal</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-spotify-search-result/index.html"><span class="identifier">SpotifySearchResult</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search-album.html">searchAlbum</a></h4>
+</td>
+<td>
+<p>Get Spotify Catalog information about albums that match the keyword string. See <a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a> for more information</p>
+<code><span class="keyword">fun </span><span class="identifier">searchAlbum</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchAlbum(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchAlbum(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchAlbum(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchAlbum(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-album/index.html"><span class="identifier">SimpleAlbum</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search-artist.html">searchArtist</a></h4>
+</td>
+<td>
+<p>Get Spotify Catalog information about artists that match the keyword string. See <a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a> for more information</p>
+<code><span class="keyword">fun </span><span class="identifier">searchArtist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchArtist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchArtist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchArtist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchArtist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-artist/index.html"><span class="identifier">Artist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search-playlist.html">searchPlaylist</a></h4>
+</td>
+<td>
+<p>Get Spotify Catalog information about playlists that match the keyword string. See <a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a> for more information</p>
+<code><span class="keyword">fun </span><span class="identifier">searchPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchPlaylist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchPlaylist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchPlaylist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchPlaylist(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-simple-playlist/index.html"><span class="identifier">SimplePlaylist</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search-track.html">searchTrack</a></h4>
+</td>
+<td>
+<p>Get Spotify Catalog information about tracks that match the keyword string. See <a href="search.html#com.adamratzman.spotify.endpoints.public.SearchApi$search(kotlin.String, kotlin.Array((com.adamratzman.spotify.endpoints.public.SearchApi.SearchType)), kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market, kotlin.Boolean)">SearchApi.search</a> for more information</p>
+<code><span class="keyword">fun </span><span class="identifier">searchTrack</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/query">query</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.SearchApi$searchTrack(kotlin.String, kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-track/index.html"><span class="identifier">Track</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../../com.adamratzman.spotify.endpoints.client/-client-search-api/index.html">ClientSearchApi</a></h4>
+</td>
+<td>
+<p>Get Spotify catalog information about artists, albums, tracks, playlists, episodes, or shows that match a keyword string.</p>
+<code><span class="keyword">class </span><span class="identifier">ClientSearchApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SearchApi</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

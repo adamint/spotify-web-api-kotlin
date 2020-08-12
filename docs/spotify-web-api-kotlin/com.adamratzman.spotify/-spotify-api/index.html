@@ -1,0 +1,422 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.SpotifyApi - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyApi</a><br/>
+<br/>
+<h1>SpotifyApi</h1>
+<a name="com.adamratzman.spotify.SpotifyApi"></a>
+(common, js, jvm) <code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">SpotifyApi</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">,</span>&nbsp;<span class="identifier">B</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">B</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-i-spotify-api-builder/index.html"><span class="identifier">ISpotifyApiBuilder</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">,</span>&nbsp;<span class="identifier">B</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Represents an instance of the Spotify API client, with common
+functionality and information between the <a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> and <a href="../-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a>
+implementations of the API</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="albums.html">albums</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/albums/">album endpoints</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">albums</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-album-api/index.html"><span class="identifier">AlbumApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="allow-bulk-requests.html">allowBulkRequests</a></h4>
+</td>
+<td>
+<p>Allow splitting too-large requests into smaller, allowable api requests</p>
+<code><span class="keyword">var </span><span class="identifier">allowBulkRequests</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="artists.html">artists</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/artists/">artist endpoints</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">artists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-artist-api/index.html"><span class="identifier">ArtistApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="automatic-refresh.html">automaticRefresh</a></h4>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">automaticRefresh</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="browse.html">browse</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/browse/">browse endpoints</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">browse</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-browse-api/index.html"><span class="identifier">BrowseApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="cache-limit.html">cacheLimit</a></h4>
+</td>
+<td>
+<p>The maximum amount of cached requests allowed at one time. Null means no limit</p>
+<code><span class="keyword">var </span><span class="identifier">cacheLimit</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="client-id.html">clientId</a></h4>
+</td>
+<td>
+<p>The application client id found on the application <a href="https://developer.spotify.com/dashboard/applications">dashboard</a></p>
+<code><span class="keyword">val </span><span class="identifier">clientId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="client-secret.html">clientSecret</a></h4>
+</td>
+<td>
+<p>The application client secret found on the application <a href="https://developer.spotify.com/dashboard/applications">dashboard</a></p>
+<code><span class="keyword">val </span><span class="identifier">clientSecret</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="default-limit.html">defaultLimit</a></h4>
+</td>
+<td>
+<p>The default amount of objects to retrieve in one request, for requests that support it.</p>
+<code><span class="keyword">var </span><span class="identifier">defaultLimit</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="endpoints.html">endpoints</a></h4>
+</td>
+<td>
+<p>A list of all endpoints included in this api type</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">endpoints</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.http/-spotify-endpoint/index.html"><span class="identifier">SpotifyEndpoint</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="expire-time.html">expireTime</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">expireTime</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="following.html">following</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">following</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-following-api/index.html"><span class="identifier">FollowingApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="json.html">json</a></h4>
+</td>
+<td>
+<p>The Json serializer/deserializer instance</p>
+<code><span class="keyword">var </span><span class="identifier">json</span><span class="symbol">: </span><span class="identifier">Json</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="logger.html">logger</a></h4>
+</td>
+<td>
+<p>The Spotify event logger</p>
+<code><span class="keyword">val </span><span class="identifier">logger</span><span class="symbol">: </span><a href="../-spotify-logger/index.html"><span class="identifier">SpotifyLogger</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="on-token-refresh.html">onTokenRefresh</a></h4>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">onTokenRefresh</span><span class="symbol">: </span><span class="symbol">(</span><span class="keyword">suspend </span><span class="symbol">(</span><a href="./index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="playlists.html">playlists</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">playlists</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-playlist-api/index.html"><span class="identifier">PlaylistApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="refresh-token-producer.html">refreshTokenProducer</a></h4>
+</td>
+<td>
+<p>Pluggable producer that refreshes and replaces the current <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a>.</p>
+<code><span class="keyword">var </span><span class="identifier">refreshTokenProducer</span><span class="symbol">: </span><span class="keyword">suspend </span><span class="symbol">(</span><a href="./index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="request-timeout-millis.html">requestTimeoutMillis</a></h4>
+</td>
+<td>
+<p>The maximum time, in milliseconds, before terminating an http request</p>
+<code><span class="keyword">var </span><span class="identifier">requestTimeoutMillis</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="retry-when-rate-limited.html">retryWhenRateLimited</a></h4>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">retryWhenRateLimited</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="run-executable-functions.html">runExecutableFunctions</a></h4>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">runExecutableFunctions</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="search.html">search</a></h4>
+</td>
+<td>
+<p>Provides access to the Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/search/search/">search endpoint</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">search</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-search-api/index.html"><span class="identifier">SearchApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="token.html">token</a></h4>
+</td>
+<td>
+<p>The access token associated with this API instance</p>
+<code><span class="keyword">var </span><span class="identifier">token</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="tracks.html">tracks</a></h4>
+</td>
+<td>
+<p>Provides access to Spotify <a href="https://developer.spotify.com/documentation/web-api/reference/tracks/">track endpoints</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-track-api/index.html"><span class="identifier">TrackApi</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="use-cache.html">useCache</a></h4>
+</td>
+<td>
+<p>Whether to use the built-in cache to avoid making unnecessary calls to
+the Spotify API</p>
+<code><span class="keyword">var </span><span class="identifier">useCache</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="users.html">users</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">users</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.public/-user-api/index.html"><span class="identifier">UserApi</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="clear-cache.html">clearCache</a></h4>
+</td>
+<td>
+<p>If the cache is enabled, clear all stored queries in the cache</p>
+<code><span class="keyword">fun </span><span class="identifier">clearCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-api-builder.html">getApiBuilder</a></h4>
+</td>
+<td>
+<p>Return a new <a href="../-spotify-api-builder/index.html#com.adamratzman.spotify.SpotifyApiBuilder">SpotifyApiBuilder</a> with the parameters provided to this api instance</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getApiBuilder</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-api-builder/index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-api-builder-dsl.html">getApiBuilderDsl</a></h4>
+</td>
+<td>
+<p>Return a new <a href="index.html#B">B</a> with the parameters provided to this api instance</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getApiBuilderDsl</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">B</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-authorization-url.html">getAuthorizationUrl</a></h4>
+</td>
+<td>
+<p>Create a Spotify authorization URL from which client access can be obtained</p>
+<code><span class="keyword">fun </span><span class="identifier">getAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-cache.html">getCache</a></h4>
+</td>
+<td>
+<p>Obtain a map of all currently-cached requests</p>
+<code><span class="keyword">fun </span><span class="identifier">getCache</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.http/-spotify-request/index.html"><span class="identifier">SpotifyRequest</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.http/-cache-state/index.html"><span class="identifier">CacheState</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-pkce-authorization-url.html">getPkceAuthorizationUrl</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getPkceAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getPkceAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getPkceAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getPkceAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String)/codeChallenge">codeChallenge</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$getPkceAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="is-token-valid.html">isTokenValid</a></h4>
+</td>
+<td>
+<p>Tests whether the current <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> is actually valid. By default, an endpoint is called <em>once</em> to verify
+validity.</p>
+<code><span class="keyword">fun </span><span class="identifier">isTokenValid</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$isTokenValid(kotlin.Boolean)/makeTestRequest">makeTestRequest</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token-validity-response/index.html"><span class="identifier">TokenValidityResponse</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="refresh-token.html">refreshToken</a></h4>
+</td>
+<td>
+<p>If the method used to create the <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> supports token refresh and
+the information in <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> is accurate, attempt to refresh the token</p>
+<code><span class="keyword">fun </span><span class="identifier">refreshToken</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="suspend-is-token-valid.html">suspendIsTokenValid</a></h4>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendIsTokenValid</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$suspendIsTokenValid(kotlin.Boolean, kotlin.coroutines.CoroutineContext)/makeTestRequest">makeTestRequest</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$suspendIsTokenValid(kotlin.Boolean, kotlin.coroutines.CoroutineContext)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token-validity-response/index.html"><span class="identifier">TokenValidityResponse</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="suspend-refresh-token.html">suspendRefreshToken</a></h4>
+</td>
+<td>
+<p>If the method used to create the <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> supports token refresh and
+the information in <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a> is accurate, attempt to refresh the token</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendRefreshToken</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="update-token.html">updateToken</a></h4>
+</td>
+<td>
+<p>Modify the current <a href="../../com.adamratzman.spotify.models/-token/index.html#com.adamratzman.spotify.models.Token">Token</a> via DSL</p>
+<code><span class="keyword">fun </span><span class="identifier">updateToken</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$updateToken(kotlin.Function1((com.adamratzman.spotify.models.Token, kotlin.Unit)))/modifier">modifier</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="update-token-with.html">updateTokenWith</a></h4>
+</td>
+<td>
+<p>Change the current <a href="../../com.adamratzman.spotify.models/-token/index.html#com.adamratzman.spotify.models.Token">Token</a>'s access token</p>
+<code><span class="keyword">fun </span><span class="identifier">updateTokenWith</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$updateTokenWith(kotlin.String)/tokenString">tokenString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="use-logger.html">useLogger</a></h4>
+</td>
+<td>
+<p>Allows enabling and disabling the logger</p>
+<code><span class="keyword">fun </span><span class="identifier">useLogger</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi$useLogger(kotlin.Boolean)/enable">enable</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-auth-url-full.html">getAuthUrlFull</a></h4>
+</td>
+<td>
+<p>Get the authorization url for the provided <a href="get-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/clientId">clientId</a> and <a href="get-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/redirectUri">redirectUri</a> application settings, when attempting to authorize with
+specified <a href="get-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/scopes">scopes</a></p>
+<code><span class="keyword">fun </span><span class="identifier">getAuthUrlFull</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/isImplicitGrantFlow">isImplicitGrantFlow</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/shouldShowDialog">shouldShowDialog</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-credentialed-token.html">getCredentialedToken</a></h4>
+</td>
+<td>
+<p>Get an application token (can only access public methods) that can be used to instantiate a new <a href="../-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a></p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">getCredentialedToken</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getCredentialedToken(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )), kotlinx.serialization.json.Json)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getCredentialedToken(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )), kotlinx.serialization.json.Json)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getCredentialedToken(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )), kotlinx.serialization.json.Json)/api">api</span><span class="symbol">:</span>&nbsp;<a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getCredentialedToken(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApi((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), )), kotlinx.serialization.json.Json)/json">json</span><span class="symbol">:</span>&nbsp;<span class="identifier">Json</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-pkce-auth-url-full.html">getPkceAuthUrlFull</a></h4>
+</td>
+<td>
+<p>Get the PKCE authorization url for the provided <a href="get-pkce-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/clientId">clientId</a> and <a href="get-pkce-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/redirectUri">redirectUri</a> application settings, when attempting to authorize with
+specified <a href="get-pkce-auth-url-full.html#com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/scopes">scopes</a></p>
+<code><span class="keyword">fun </span><span class="identifier">getPkceAuthUrlFull</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/codeChallenge">codeChallenge</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApi.Companion$getPkceAuthUrlFull(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String, kotlin.String, kotlin.String, kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-app-api/index.html">SpotifyAppApi</a></h4>
+</td>
+<td>
+<p>An API instance created with application credentials, not through
+client authentication</p>
+<code><span class="keyword">class </span><span class="identifier">SpotifyAppApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="../-spotify-app-api/index.html"><span class="identifier">SpotifyAppApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-client-api/index.html">SpotifyClientApi</a></h4>
+</td>
+<td>
+<p>An API instance created through client authentication, with access to private information
+managed through the scopes exposed in <a href="token.html#com.adamratzman.spotify.SpotifyApi$token">token</a></p>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyClientApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="../-spotify-client-api/index.html"><span class="identifier">SpotifyClientApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

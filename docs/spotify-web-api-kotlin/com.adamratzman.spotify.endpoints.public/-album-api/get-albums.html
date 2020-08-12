@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.public.AlbumApi.getAlbums - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.public</a>&nbsp;/&nbsp;<a href="index.html">AlbumApi</a>&nbsp;/&nbsp;<a href="./get-albums.html">getAlbums</a><br/>
+<br/>
+<h1>getAlbums</h1>
+<a name="com.adamratzman.spotify.endpoints.public.AlbumApi$getAlbums(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getAlbums</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.public.AlbumApi$getAlbums(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/albums">albums</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.public.AlbumApi$getAlbums(kotlin.Array((kotlin.String)), com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-album/index.html"><span class="identifier">Album</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get Spotify catalog information for multiple albums identified by their Spotify IDs.
+<strong>Albums not found are returned as null inside the ordered list</strong></p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/albums/get-several-albums/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="albums"></a>
+<code>albums</code> - The com.adamratzman.spotify ids or uris for the albums. Maximum <strong>20</strong>.</p>
+<p><a name="market"></a>
+<code>market</code> - Provide this parameter if you want to apply <a href="https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking">Track Relinking</a></p>
+<p><strong>Return</strong><br/>
+List of <a href="../../com.adamratzman.spotify.models/-album/index.html#com.adamratzman.spotify.models.Album">Album</a> objects or null if the album could not be found, in the order requested</p>
+</BODY>
+</HTML>
