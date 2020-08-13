@@ -1,7 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
+import com.adamratzman.spotify.SpotifyApiOptionsBuilder
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.block
 import com.adamratzman.spotify.getEnvironmentVariable
@@ -89,6 +91,22 @@ class UtilityTests : Spek({
 
                 assertTrue(test)
                 assertTrue(api.token.accessToken != currentToken.accessToken)
+            }
+
+            if (api is SpotifyClientApi) {
+                it("Required scopes") {
+                    assertFailsWith<IllegalStateException> {
+                        spotifyClientApi(
+                                api.clientId,
+                                api.clientSecret,
+                                api.redirectUri,
+                                api.token.copy(scopeString = null),
+                                SpotifyApiOptionsBuilder(
+                                        requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE)
+                                )
+                        ).build()
+                    }
+                }
             }
         }
     }
