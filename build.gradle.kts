@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.07"
+version = "3.2.08"
 
 /*java {
     withSourcesJar()
@@ -145,8 +145,8 @@ kotlin {
             val commonMain by getting {
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-                    implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                    api("io.ktor:ktor-client-core:$ktorVersion")
 
                     implementation(kotlin("stdlib-common"))
                 }
@@ -167,8 +167,8 @@ kotlin {
 
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -187,10 +187,10 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    implementation(npm("text-encoding", "0.7.0"))
+                    api(npm("text-encoding", "0.7.0"))
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
-                    implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
+                    api("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
 
@@ -212,10 +212,10 @@ kotlin {
                 }
 
                 dependencies {
-                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
+                    api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
