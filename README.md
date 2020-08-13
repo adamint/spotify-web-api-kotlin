@@ -14,7 +14,7 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-core', version: '3.2.06'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-core', version: '3.2.08'
 ```
 
 ### Android
@@ -75,6 +75,12 @@ You will need:
 
 Example creation (default settings)
 
+```kotlin
+val api = spotifyAppApi("clientId", "clientSecret").build() // create and build api
+println(api.browse.getNewReleases().complete()) // use it
+```
+
+Example creation, using an existing Token 
 
 
 ### SpotifyClientApi
@@ -124,6 +130,11 @@ Notes:
 - `automaticRefresh` is disabled when client secret is not provided, or if tokenString is provided in SpotifyClientApi
 - `allowBulkRequests` for example, lets you query 80 artists in one wrapper call by splitting it into 50 artists + 30 artists
 - `refreshTokenProducer` is useful when you want to re-authorize with the Spotify Auth SDK or elsewhere
+
+### Tips
+- 
+
+
 
 ### Building the API
 The easiest way to build the API is synchronously using .build() after a builder
