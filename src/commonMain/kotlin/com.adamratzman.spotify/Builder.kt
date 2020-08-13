@@ -127,7 +127,8 @@ fun spotifyImplicitGrantApi(
                 options.defaultLimit,
                 options.allowBulkRequests,
                 options.requestTimeoutMillis,
-                options.json
+                options.json,
+                options.requiredScopes
         )
 
 // App Api builders
@@ -834,7 +835,8 @@ class SpotifyClientApiBuilder(
                         options.json,
                         options.refreshTokenProducer,
                         false,
-                        options.onTokenRefresh
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -877,7 +879,8 @@ class SpotifyClientApiBuilder(
                         options.json,
                         options.refreshTokenProducer,
                         true,
-                        options.onTokenRefresh
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -901,7 +904,8 @@ class SpotifyClientApiBuilder(
                     options.json,
                     options.refreshTokenProducer,
                     authorization.pkceCodeVerifier != null,
-                    options.onTokenRefresh
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             authorization.tokenString != null -> SpotifyClientApi(
                     clientId,
@@ -926,7 +930,8 @@ class SpotifyClientApiBuilder(
                     options.json,
                     options.refreshTokenProducer,
                     false,
-                    options.onTokenRefresh
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +
@@ -972,7 +977,8 @@ class SpotifyAppApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    options.onTokenRefresh
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             authorization.tokenString != null -> {
                 SpotifyAppApi(
@@ -993,7 +999,8 @@ class SpotifyAppApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        options.onTokenRefresh
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             }
             authorization.refreshTokenString != null -> {
@@ -1012,7 +1019,8 @@ class SpotifyAppApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        options.onTokenRefresh
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             }
             else -> try {
@@ -1033,7 +1041,8 @@ class SpotifyAppApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        options.onTokenRefresh
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -1119,6 +1128,7 @@ data class SpotifyUserAuthorization(
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
  * @property onTokenRefresh Provide if you want to act on token refresh event
+ * @property requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  *
  */
 class SpotifyApiOptionsBuilder(
@@ -1134,7 +1144,8 @@ class SpotifyApiOptionsBuilder(
     var requestTimeoutMillis: Long? = null,
     var json: Json = nonstrictJson,
     var refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)? = null,
-    var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null
+    var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
+    var requiredScopes: List<SpotifyScope>? = null
 ) {
     fun build() =
             if (enableAllOptions)
@@ -1150,7 +1161,8 @@ class SpotifyApiOptionsBuilder(
                         requestTimeoutMillis = requestTimeoutMillis,
                         json = json,
                         refreshTokenProducer = refreshTokenProducer,
-                        onTokenRefresh = onTokenRefresh
+                        onTokenRefresh = onTokenRefresh,
+                        requiredScopes = requiredScopes
                 )
             else
                 SpotifyApiOptions(
@@ -1165,7 +1177,8 @@ class SpotifyApiOptionsBuilder(
                         requestTimeoutMillis,
                         json,
                         refreshTokenProducer,
-                        onTokenRefresh
+                        onTokenRefresh,
+                        requiredScopes
                 )
 }
 
@@ -1184,6 +1197,7 @@ class SpotifyApiOptionsBuilder(
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token.
  * @property onTokenRefresh Provide if you want to act on token refresh event
+ * @property requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  *
  */
 
@@ -1199,7 +1213,8 @@ data class SpotifyApiOptions(
     var requestTimeoutMillis: Long?,
     var json: Json,
     var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?,
-    var onTokenRefresh: (suspend (SpotifyApi<*, *>) -> Unit)?
+    var onTokenRefresh: (suspend (SpotifyApi<*, *>) -> Unit)?,
+    var requiredScopes: List<SpotifyScope>?
 )
 
 @Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))
