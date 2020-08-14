@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.SpotifyClientApiBuilder - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyClientApiBuilder</a><br/>
+<br/>
+<h1>SpotifyClientApiBuilder</h1>
+<a name="com.adamratzman.spotify.SpotifyClientApiBuilder"></a>
+(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">SpotifyClientApiBuilder</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-i-spotify-client-api-builder/index.html"><span class="identifier">ISpotifyClientApiBuilder</span></a></code>
+<p><a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> builder for api creation using client authorization</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p><a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> builder for api creation using client authorization</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApiBuilder$<init>(com.adamratzman.spotify.SpotifyCredentials, com.adamratzman.spotify.SpotifyUserAuthorization, com.adamratzman.spotify.SpotifyApiOptions)/credentials">credentials</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-credentials/index.html"><span class="identifier">SpotifyCredentials</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SpotifyCredentialsBuilder().build()<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApiBuilder$<init>(com.adamratzman.spotify.SpotifyCredentials, com.adamratzman.spotify.SpotifyUserAuthorization, com.adamratzman.spotify.SpotifyApiOptions)/authorization">authorization</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-user-authorization/index.html"><span class="identifier">SpotifyUserAuthorization</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SpotifyUserAuthorizationBuilder().build()<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApiBuilder$<init>(com.adamratzman.spotify.SpotifyCredentials, com.adamratzman.spotify.SpotifyUserAuthorization, com.adamratzman.spotify.SpotifyApiOptions)/options">options</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-api-options/index.html"><span class="identifier">SpotifyApiOptions</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SpotifyApiOptionsBuilder().build()<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="authorization.html">authorization</a></h4>
+</td>
+<td>
+<p>Allows you to authenticate a <a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> with an authorization code
+or build <a href="../-spotify-api/index.html#com.adamratzman.spotify.SpotifyApi">SpotifyApi</a> using a refresh token</p>
+<code><span class="keyword">var </span><span class="identifier">authorization</span><span class="symbol">: </span><a href="../-spotify-user-authorization/index.html"><span class="identifier">SpotifyUserAuthorization</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="credentials.html">credentials</a></h4>
+</td>
+<td>
+<p>A block in which Spotify application credentials (accessible via the Spotify <a href="https://developer.spotify.com/dashboard/applications">dashboard</a>)
+should be put</p>
+<code><span class="keyword">var </span><span class="identifier">credentials</span><span class="symbol">: </span><a href="../-spotify-credentials/index.html"><span class="identifier">SpotifyCredentials</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="options.html">options</a></h4>
+</td>
+<td>
+<p>Allows you to override default values for caching, token refresh, and logging</p>
+<code><span class="keyword">var </span><span class="identifier">options</span><span class="symbol">: </span><a href="../-spotify-api-options/index.html"><span class="identifier">SpotifyApiOptions</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="get-authorization-url.html">getAuthorizationUrl</a></h4>
+</td>
+<td>
+<p>Create a Spotify authorization URL from which API access can be obtained</p>
+<code><span class="keyword">fun </span><span class="identifier">getAuthorizationUrl</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.SpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String)/scopes">scopes</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApiBuilder$getAuthorizationUrl(kotlin.Array((com.adamratzman.spotify.SpotifyScope)), kotlin.String)/state">state</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="suspend-build.html">suspendBuild</a></h4>
+</td>
+<td>
+<p>Build the <a href="../-i-spotify-api-builder/index.html#T">T</a> by provided information</p>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendBuild</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-client-api/index.html"><span class="identifier">SpotifyClientApi</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

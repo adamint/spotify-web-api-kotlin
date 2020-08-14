@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.endpoints.client.ClientPlaylistApi.replaceClientPlaylistTracks - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientPlaylistApi</a>&nbsp;/&nbsp;<a href="./replace-client-playlist-tracks.html">replaceClientPlaylistTracks</a><br/>
+<br/>
+<h1>replaceClientPlaylistTracks</h1>
+<a name="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$replaceClientPlaylistTracks(kotlin.String, kotlin.Array((kotlin.String)))"></a>
+(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">replaceClientPlaylistTracks</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$replaceClientPlaylistTracks(kotlin.String, kotlin.Array((kotlin.String)))/playlist">playlist</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientPlaylistApi$replaceClientPlaylistTracks(kotlin.String, kotlin.Array((kotlin.String)))/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
+for replacing tracks, re-ordering existing tracks, or clearing the playlist.</p>
+<p>Setting tracks in the current user’s public playlists requires authorization of the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PUBLIC">SpotifyScope.PLAYLIST_MODIFY_PUBLIC</a> scope;
+setting tracks in the current user’s private playlist (including collaborative playlists) requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html#com.adamratzman.spotify.SpotifyScope.PLAYLIST_MODIFY_PRIVATE">SpotifyScope.PLAYLIST_MODIFY_PRIVATE</a> scope.</p>
+<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/">Api Reference</a></strong></p>
+<h3>Parameters</h3>
+<p><a name="playlist"></a>
+<code>playlist</code> - The com.adamratzman.spotify id or uri for the playlist.</p>
+<p><a name="tracks"></a>
+<code>tracks</code> - The Spotify track ids. Maximum <strong>100</strong>.</p>
+<h3>Exceptions</h3>
+<p><a name="BadRequestException"></a>
+<code>BadRequestException</code> - if playlist is not found or illegal tracks are provided</p>
+</BODY>
+</HTML>

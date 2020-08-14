@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.spotifyAppApi - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./spotify-app-api.html">spotifyAppApi</a><br/>
+<br/>
+<h1>spotifyAppApi</h1>
+(common, js, jvm) <a name="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)"></a>
+<code><span class="keyword">fun </span><span class="identifier">spotifyAppApi</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/options">options</span><span class="symbol">:</span>&nbsp;<a href="-spotify-api-options-builder/index.html"><span class="identifier">SpotifyApiOptionsBuilder</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a></code>
+<p>Instantiate a new <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> using a Spotify <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientId">clientId</a> and <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientSecret">clientSecret</a></p>
+<p>Use case: I am using the client credentials flow.
+I only need access to public Spotify API endpoints, don't have an existing token,
+and don't want to deal with advanced configuration.</p>
+<h3>Parameters</h3>
+<p><a name="clientId"></a>
+<code>clientId</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client id</a></p>
+<p><a name="clientSecret"></a>
+<code>clientSecret</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client secret</a></p>
+<p><a name="options"></a>
+<code>options</code> - Override default API options such as the cache limit</p>
+<p><strong>Return</strong><br/>
+Configurable <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> that, when built, creates a new <a href="-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a></p>
+(common, js, jvm) <a name="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">spotifyAppApi</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/block">block</span><span class="symbol">:</span>&nbsp;<a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">)</span><span class="symbol">: </span><a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a></code>
+<p>Instantiate a new <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> using a Spotify <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/clientId">clientId</a> and <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/clientSecret">clientSecret</a>, with the ability to configure
+the api settings by providing a builder initialization <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/block">block</a></p>
+<p>Use case: I am using the client credentials flow.
+I only need access to public Spotify API endpoints, might have an existing token,
+and might want to deal with advanced configuration.</p>
+<h3>Parameters</h3>
+<p><a name="clientId"></a>
+<code>clientId</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client id</a></p>
+<p><a name="clientSecret"></a>
+<code>clientSecret</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client secret</a></p>
+<p><a name="block"></a>
+<code>block</code> - Api settings block</p>
+<p><strong>Return</strong><br/>
+Configurable <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> that, when built, creates a new <a href="-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a></p>
+(common, js, jvm) <a name="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptionsBuilder)"></a>
+<code><span class="keyword">fun </span><span class="identifier">spotifyAppApi</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/apiToken">apiToken</span><span class="symbol">:</span>&nbsp;<a href="../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, com.adamratzman.spotify.SpotifyApiOptionsBuilder)/options">options</span><span class="symbol">:</span>&nbsp;<a href="-spotify-api-options-builder/index.html"><span class="identifier">SpotifyApiOptionsBuilder</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a></code>
+<p>Instantiate a new <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> using a <a href="../com.adamratzman.spotify.models/-token/index.html#com.adamratzman.spotify.models.Token">Token</a></p>
+<p>Use case: I am using the client credentials flow.
+I only need access to public Spotify API endpoints, I have an existing token,
+and I don't want to deal with advanced configuration.</p>
+<h3>Parameters</h3>
+<p><a name="clientId"></a>
+<code>clientId</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client id</a></p>
+<p><a name="clientSecret"></a>
+<code>clientSecret</code> - Spotify <a href="https://developer.spotify.com/documentation/general/guides/app-settings/">client secret</a></p>
+<p><a name="apiToken"></a>
+<code>apiToken</code> - The access token that will be associated with the built API instance</p>
+<p><a name="options"></a>
+<code>options</code> - Override default API options such as the cache limit</p>
+<p><strong>Return</strong><br/>
+Configurable <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> that, when built, creates a new <a href="-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a></p>
+(common, js, jvm) <a name="com.adamratzman.spotify$spotifyAppApi(kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">spotifyAppApi</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify$spotifyAppApi(kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/block">block</span><span class="symbol">:</span>&nbsp;<a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-spotify-app-api-builder/index.html"><span class="identifier">SpotifyAppApiBuilder</span></a></code>
+<p>Instantiate a new <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> by providing a builder initialization <a href="spotify-app-api.html#com.adamratzman.spotify$spotifyAppApi(kotlin.Function1((com.adamratzman.spotify.SpotifyAppApiBuilder, kotlin.Unit)))/block">block</a>.</p>
+<p><strong>Note</strong>: You <strong>must</strong> provide your app credentials in the <a href="#">SpotifyAppApiBuilder.credentials</a> block</p>
+<p>Use case: I am using the client credentials flow.
+I only need access to public Spotify API endpoints, and I want to use the <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> DSL
+to configure everything myself.</p>
+<h3>Parameters</h3>
+<p><a name="block"></a>
+<code>block</code> - Api settings block</p>
+<p><strong>Return</strong><br/>
+Configurable <a href="-spotify-app-api-builder/index.html#com.adamratzman.spotify.SpotifyAppApiBuilder">SpotifyAppApiBuilder</a> that, when built, creates a new <a href="-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a></p>
+</BODY>
+</HTML>

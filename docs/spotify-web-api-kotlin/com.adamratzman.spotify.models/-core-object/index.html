@@ -1,0 +1,210 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.CoreObject - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">CoreObject</a><br/>
+<br/>
+<h1>CoreObject</h1>
+<a name="com.adamratzman.spotify.models.CoreObject"></a>
+(common, js, jvm) <code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">CoreObject</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-identifiable/index.html"><span class="identifier">Identifiable</span></a></code>
+<p>Represents a core Spotify object such as a Track or Album</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Represents a core Spotify object such as a Track or Album</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="external-urls.html">externalUrls</a></h4>
+</td>
+<td>
+<p>Known external URLs for this object</p>
+<code><span class="keyword">val </span><span class="identifier">externalUrls</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-external-url/index.html"><span class="identifier">ExternalUrl</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="external-urls-string.html">externalUrlsString</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">externalUrlsString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="href.html">href</a></h4>
+</td>
+<td>
+<p>A link to the Spotify web api endpoint associated with this request</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="uri.html">uri</a></h4>
+</td>
+<td>
+<p>The URI associated with the object</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-spotify-uri/index.html"><span class="identifier">SpotifyUri</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-album/index.html">Album</a></h4>
+</td>
+<td>
+<p>Represents an Album on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Album</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-artist/index.html">Artist</a></h4>
+</td>
+<td>
+<p>Represents an Artist (distinct from a regular user) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Artist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-episode/index.html">Episode</a></h4>
+</td>
+<td>
+<p>An episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Episode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="../-playable/index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-linked-track/index.html">LinkedTrack</a></h4>
+</td>
+<td>
+<p>Represents a <a href="https:github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking">relinked track</a>. This is playable in the
+searched market. If null, the API result is playable in the market.</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">LinkedTrack</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-play-history-context/index.html">PlayHistoryContext</a></h4>
+</td>
+<td>
+<p>Context in which a track was played</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">PlayHistoryContext</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-playlist/index.html">Playlist</a></h4>
+</td>
+<td>
+<p>Represents a Playlist on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Playlist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-relinking-available-response/index.html">RelinkingAvailableResponse</a></h4>
+</td>
+<td>
+<p>Represents a response for which a relinked track could be available</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">RelinkingAvailableResponse</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-show/index.html">Show</a></h4>
+</td>
+<td>
+<p>Information about a Spotify show, including its episodes</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Show</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-simple-album/index.html">SimpleAlbum</a></h4>
+</td>
+<td>
+<p>Simplified Album object that can be used to retrieve a full <a href="../-album/index.html#com.adamratzman.spotify.models.Album">Album</a></p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleAlbum</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-simple-artist/index.html">SimpleArtist</a></h4>
+</td>
+<td>
+<p>Simplified Artist object that can be used to retrieve a full <a href="../-artist/index.html#com.adamratzman.spotify.models.Artist">Artist</a></p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleArtist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-simple-episode/index.html">SimpleEpisode</a></h4>
+</td>
+<td>
+<p>A simplified episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleEpisode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="../-playable/index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-simple-playlist/index.html">SimplePlaylist</a></h4>
+</td>
+<td>
+<p>Simplified Playlist object that can be used to retrieve a full <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimplePlaylist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-simple-show/index.html">SimpleShow</a></h4>
+</td>
+<td>
+<p>Basic information about a Spotify show</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleShow</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-public-user/index.html">SpotifyPublicUser</a></h4>
+</td>
+<td>
+<p>Public information about a Spotify user</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SpotifyPublicUser</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="../-spotify-user-information/index.html">SpotifyUserInformation</a></h4>
+</td>
+<td>
+<p>Private information about a Spotify user. Each field may require a specific scope.</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SpotifyUserInformation</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoreObject</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
