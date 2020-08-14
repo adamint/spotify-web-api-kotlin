@@ -39,8 +39,10 @@ repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-core', version: '3.2.10'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-core', version: '3.2.11'
 ```
+
+Note that images and profiles are not supported on the Kotlin/JS target.
 
 ### Android
 **If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
