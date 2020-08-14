@@ -6,7 +6,32 @@
 
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
-## Install it
+## Table of Contents
+* [Library installing](#library-installing)
+    + [JVM, Android, JS](#jvm-android-js)
+    + [Android information](#android)
+* [Documentation](#documentation)
+* [Need help, have a question, or want to contribute?](#have-a-question)
+* [Creating a new api instance](#creating-a-new-api-instance)
+    + [SpotifyAppApi](#spotifyappapi)
+    + [SpotifyClientApi](#spotifyclientapi)
+        * [PKCE](#pkce)
+        * [Non-PKCE](#non-pkce-backend-applications-requires-client-secret)
+    + [SpotifyImplicitGrantApi](#spotifyimplicitgrantapi)
+    + [SpotifyApiBuilder block & setting API options](#spotifyapibuilder-block--setting-api-options)
+        * [API options](#api-options)
+    + [Using the API](#using-the-api)
+* [Tips](#tips)
+    + [Building the API](#building-the-api)
+    + [What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class)
+    + [SpotifyRestPagingAction](#spotifyrestpagingaction)
+* [Notes](#notes)
+    + [The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
+    + [Generic Requests](#generic-request)
+    + [Track Relinking](#track-relinking)
+* [Contributing](#contributing)
+
+## Library installing
 
 ### JVM, Android, JS
 ```
@@ -368,7 +393,7 @@ for `AbstractPagingObject` (`PagingObject` and `CursorBasedPagingObject`). This 
 but you also have the ability to retrieve *all* of its items or linked PagingObjects, or a *subset* of its items or linked PagingObjects with one call, with 
 a single method call to `getAllItems()` or `getAllPagingObjects()`, or `getWithNext(total: Int, context: CoroutineContext = Dispatchers.Default)` or `getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default)` respectively
 
-## Design Notes
+## Notes
 ### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
 can do with them!
@@ -433,5 +458,5 @@ will be populated with the href, uri, and, most importantly, the id of the track
 You can then use this track in `SpotifyClientApi` endpoints such as playing or saving the track, knowing that it will be playable 
 in your market!
 
-### Contributing
+## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
