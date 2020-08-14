@@ -31,13 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.08"
-
-/*java {
-    withSourcesJar()
-    withJavadocJar()
-}
-*/
+version = "3.2.10"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -52,7 +46,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
-       // exclude("META-INF/*.kotlin_module")
         exclude("META-INF/*.md")
     }
     defaultConfig {
@@ -323,12 +316,6 @@ tasks {
             }
         }
     }
-
-/* val javadocJar by getting(Jar::class) {
-     dependsOn.add(javadoc)
-     archiveClassifier.set("javadoc")
-     from(javadoc)
- }*/
 
     spotless {
         kotlin {

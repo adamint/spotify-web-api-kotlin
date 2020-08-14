@@ -24,7 +24,7 @@ import kotlinx.serialization.builtins.serializer
 typealias ClientLibraryAPI = ClientLibraryApi
 
 /**
- * Endpoints for retrieving information about, and managing, tracks that the current user has saved in their “Your Music” library.
+ * Endpoints for retrieving information about, and managing, tracks and albums that the current user has saved in their “Your Music” library.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
