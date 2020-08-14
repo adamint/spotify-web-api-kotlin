@@ -31,12 +31,12 @@ import kotlinx.serialization.json.Json
  * @param state This provides protection against attacks such as cross-site request forgery.
  */
 fun getSpotifyAuthorizationUrl(
-        vararg scopes: SpotifyScope,
-        clientId: String,
-        redirectUri: String,
-        isImplicitGrantFlow: Boolean = false,
-        shouldShowDialog: Boolean = false,
-        state: String? = null
+    vararg scopes: SpotifyScope,
+    clientId: String,
+    redirectUri: String,
+    isImplicitGrantFlow: Boolean = false,
+    shouldShowDialog: Boolean = false,
+    state: String? = null
 ): String {
     return SpotifyApi.getAuthUrlFull(
             *scopes,
@@ -58,13 +58,14 @@ fun getSpotifyAuthorizationUrl(
  * @param state This provides protection against attacks such as cross-site request forgery.
  * @param codeChallenge In order to generate the code challenge, your app should hash the code verifier using the SHA256 algorithm.
  * Then, base64url encode the hash that you generated.
+ *
  */
 fun getPkceAuthorizationUrl(
-        vararg scopes: SpotifyScope,
-        clientId: String,
-        redirectUri: String,
-        codeChallenge: String,
-        state: String? = null
+    vararg scopes: SpotifyScope,
+    clientId: String,
+    redirectUri: String,
+    codeChallenge: String,
+    state: String? = null
 ): String {
     return SpotifyApi.getPkceAuthUrlFull(
             *scopes,
@@ -97,7 +98,9 @@ expect fun getSpotifyPkceCodeChallenge(codeVerifier: String): String
 
 /**
  * Instantiate a new [SpotifyImplicitGrantApi] using a Spotify [clientId], [redirectUri], and [token] retrieved from the implicit
- * grant flow
+ * grant flow.
+ *
+ * Use case: I have a token obtained after implicit grant authorization.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
@@ -106,8 +109,12 @@ expect fun getSpotifyPkceCodeChallenge(codeVerifier: String): String
  *
  * @return [SpotifyImplicitGrantApi] that can immediately begin making calls
  */
-fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Token, options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()) =
-        SpotifyImplicitGrantApi(
+fun spotifyImplicitGrantApi(
+    clientId: String?,
+    redirectUri: String?,
+    token: Token,
+    options: SpotifyApiOptionsBuilder = SpotifyApiOptionsBuilder()
+) = SpotifyImplicitGrantApi(
                 clientId,
                 null,
                 redirectUri,
@@ -120,7 +127,8 @@ fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Toke
                 options.defaultLimit,
                 options.allowBulkRequests,
                 options.requestTimeoutMillis,
-                options.json
+                options.json,
+                options.requiredScopes
         )
 
 // App Api builders
@@ -140,16 +148,31 @@ fun spotifyImplicitGrantApi(clientId: String?, redirectUri: String?, token: Toke
 /**
  * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret]
  *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, don't have an existing token,
+ * and don't want to deal with advanced configuration.
+ *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String, clientSecret: String) = spotifyAppApi(clientId, clientSecret) {}
+fun spotifyAppApi(
+    clientId: String,
+    clientSecret: String,
+    options: SpotifyApiOptionsBuilder
+) = spotifyAppApi(clientId, clientSecret) {
+    this.options = options.build()
+}
 
 /**
  * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret], with the ability to configure
  * the api settings by providing a builder initialization [block]
+ *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, might have an existing token,
+ * and might want to deal with advanced configuration.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
@@ -157,8 +180,11 @@ fun spotifyAppApi(clientId: String, clientSecret: String) = spotifyAppApi(client
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBuilder.() -> Unit = {}) =
-        SpotifyAppApiBuilder().apply(block).apply {
+fun spotifyAppApi(
+    clientId: String,
+    clientSecret: String,
+    block: SpotifyAppApiBuilder.() -> Unit = {}
+) = SpotifyAppApiBuilder().apply(block).apply {
             credentials {
                 this.clientId = clientId
                 this.clientSecret = clientSecret
@@ -168,33 +194,49 @@ fun spotifyAppApi(clientId: String, clientSecret: String, block: SpotifyAppApiBu
 /**
  * Instantiate a new [SpotifyAppApiBuilder] using a [Token]
  *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, I have an existing token,
+ * and I don't want to deal with advanced configuration.
+ *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param apiToken The access token that will be associated with the built API instance
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
-fun spotifyAppApi(clientId: String?, clientSecret: String?, apiToken: Token) =
-        SpotifyAppApiBuilder().apply {
-            credentials {
-                this.clientId = clientId
-                this.clientSecret = clientSecret
-            }
-            authentication {
-                token = apiToken
-            }
-        }
+fun spotifyAppApi(
+    clientId: String?,
+    clientSecret: String?,
+    apiToken: Token,
+    options: SpotifyApiOptionsBuilder? = null
+) = SpotifyAppApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+    }
+    authentication {
+        token = apiToken
+    }
+
+    options?.let { this.options = it.build() }
+}
 
 /**
  * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
  *
  * **Note**: You **must** provide your app credentials in the [SpotifyAppApiBuilder.credentials] block
  *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, and I want to use the [SpotifyAppApiBuilder] DSL
+ * to configure everything myself.
+ *
  * @param block Api settings block
  *
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
+
 
 // Client Api Builders
 /*
@@ -216,6 +258,10 @@ fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder
  * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
  * block
  *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints, and I want
+ * to configure authorization and other settings myself.
+ *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
@@ -224,10 +270,10 @@ fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientApi(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        block: SpotifyClientApiBuilder.() -> Unit
+    clientId: String,
+    clientSecret: String,
+    redirectUri: String,
+    block: SpotifyClientApiBuilder.() -> Unit = {}
 ) = SpotifyClientApiBuilder().apply(block).apply {
     credentials {
         this.clientId = clientId
@@ -239,19 +285,24 @@ fun spotifyClientApi(
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using a [Token]
  *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints, I have an existing token,
+ * and I might want to configure api options.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param apiToken The access token that will be associated with the built API instance
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientApi(
-        clientId: String?,
-        clientSecret: String?,
-        redirectUri: String?,
-        apiToken: Token
+    clientId: String?,
+    clientSecret: String?,
+    redirectUri: String?,
+    apiToken: Token,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -262,24 +313,31 @@ fun spotifyClientApi(
     authentication {
         token = apiToken
     }
+
+    options?.let { this.options = it.build() }
 }
 
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using an [authCode]
  *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints, I have an authorization code,
+ * and I might want to configure api options.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param authCode The authorization code retrieved after OAuth authorization
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientApi(
-        clientId: String?,
-        clientSecret: String?,
-        redirectUri: String?,
-        authCode: String
+    clientId: String?,
+    clientSecret: String?,
+    redirectUri: String?,
+    authCode: String,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -290,13 +348,18 @@ fun spotifyClientApi(
     authentication {
         authorizationCode = authCode
     }
-}
 
+    options?.let { this.options = it.build() }
+}
 
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri],
  * with an existing [SpotifyUserAuthorization] and with the ability to configure the api settings by providing a
  * builder initialization [block]
+ *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints and I want to configure [authorization]
+ * and [options] without using the DSL.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
@@ -310,19 +373,18 @@ fun spotifyClientApi(
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientApi(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        authorization: SpotifyUserAuthorization,
-        options: SpotifyApiOptions? = null,
-        block: SpotifyClientApiBuilder.() -> Unit = {}
-) = SpotifyClientApiBuilder().apply(block).apply {
+    clientId: String,
+    clientSecret: String?,
+    redirectUri: String,
+    authorization: SpotifyUserAuthorization,
+    options: SpotifyApiOptionsBuilder? = null
+) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
         this.clientSecret = clientSecret
         this.redirectUri = redirectUri
     }
-    options?.let { this.options = options }
+    options?.let { this.options = options.build() }
     this.authorization = authorization
 }
 
@@ -332,12 +394,15 @@ fun spotifyClientApi(
  * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
  * block
  *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints and I want to handle configuration
+ * via the DSL myself.
+ *
  * @param block Api settings block
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientApiBuilder().apply(block)
-
 
 // PKCE Client Api Builders
 /*
@@ -355,20 +420,24 @@ fun spotifyClientApi(block: SpotifyClientApiBuilder.() -> Unit) = SpotifyClientA
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using an [authCode] and [codeVerifier]. This is for **PKCE authorization**.
  *
+ * Use case: I am using the PKCE client authorization flow.
+ * I want access to both public and client Spotify API endpoints, I have an existing api [token], and I might
+ * want to set api [options] without using the DSL.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param authCode The authorization code retrieved after OAuth authorization
+ * @param token Api token retrieved using PKCE authorization flow.
  * @param codeVerifier Your code verifier plaintext.
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientPkceApi(
-        clientId: String?,
-        redirectUri: String?,
-        authCode: String,
-        codeVerifier: String
+    clientId: String?,
+    redirectUri: String?,
+    token: Token,
+    codeVerifier: String,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -376,21 +445,25 @@ fun spotifyClientPkceApi(
     }
 
     authentication {
-        authorizationCode = authCode
+        this.token = token
         pkceCodeVerifier = codeVerifier
     }
+
+    options?.let { this.options = it.build() }
 }
 
 /**
- * Instantiate a new [SpotifyClientApiBuilder] using an [authCode] and [codeVerifier]. This is for **PKCE authorization**.
+ * Instantiate a new [SpotifyClientApiBuilder] using a [token] and [codeVerifier]. This is for **PKCE authorization**.
  *
+ * Use case: I am using the PKCE client authorization flow.
+ * I want access to both public and client Spotify API endpoints, I have an authorization code, and I might
+ * want to set api [options] without using the DSL.
  *
  * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
- * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param authCode The authorization code retrieved after OAuth authorization
  * @param codeVerifier Your code verifier plaintext.
- * @param block Api settings block
+ * @param options Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
@@ -399,7 +472,7 @@ fun spotifyClientPkceApi(
         redirectUri: String?,
         authCode: String,
         codeVerifier: String,
-        block: SpotifyClientApiBuilder.() -> Unit = {}
+        options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -410,17 +483,18 @@ fun spotifyClientPkceApi(
         authorizationCode = authCode
         pkceCodeVerifier = codeVerifier
     }
-}.apply(block)
 
+    options?.let { this.options = it.build() }
+}
 
 
 /**
  *  Spotify API builder
  */
 class SpotifyApiBuilder(
-        private var clientId: String?,
-        private var clientSecret: String?,
-        private var redirectUri: String?
+    private var clientId: String?,
+    private var clientSecret: String?,
+    private var redirectUri: String?
 ) {
     /**
      * Allows you to authenticate a [SpotifyClientApi] with an authorization code
@@ -654,6 +728,11 @@ interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>
     fun options(options: SpotifyApiOptions) = apply { this.options = options }
 
     /**
+     * Allows you to override default values for caching, token refresh, and logging
+     */
+    fun options(options: SpotifyApiOptionsBuilder) = apply { this.options = options.build() }
+
+    /**
      * Build the [T] by provided information
      */
     suspend fun suspendBuild(): T
@@ -698,9 +777,9 @@ interface ISpotifyClientApiBuilder : ISpotifyApiBuilder<SpotifyClientApi, Spotif
  * [SpotifyClientApi] builder for api creation using client authorization
  */
 class SpotifyClientApiBuilder(
-        override var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build(),
-        override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build(),
-        override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
+    override var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build(),
+    override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build(),
+    override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 ) : ISpotifyClientApiBuilder {
     override fun getAuthorizationUrl(vararg scopes: SpotifyScope, state: String?): String {
         require(credentials.redirectUri != null && credentials.clientId != null) { "You didn't specify a redirect uri or client id in the credentials block!" }
@@ -718,7 +797,7 @@ class SpotifyClientApiBuilder(
         val redirectUri = credentials.redirectUri
 
         // either application credentials, or a token is required
-        require((clientId != null && clientSecret != null && redirectUri != null) || (clientId != null && redirectUri != null && authorization.pkceCodeVerifier != null) ||  authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+        require((clientId != null && clientSecret != null && redirectUri != null) || (clientId != null && redirectUri != null && authorization.pkceCodeVerifier != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
         return when {
             authorization.authorizationCode != null && authorization.pkceCodeVerifier == null -> try {
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
@@ -755,7 +834,9 @@ class SpotifyClientApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        false
+                        false,
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -797,7 +878,9 @@ class SpotifyClientApiBuilder(
                         options.requestTimeoutMillis,
                         options.json,
                         options.refreshTokenProducer,
-                        true
+                        true,
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -820,7 +903,9 @@ class SpotifyClientApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    false
+                    authorization.pkceCodeVerifier != null,
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             authorization.tokenString != null -> SpotifyClientApi(
                     clientId,
@@ -844,7 +929,9 @@ class SpotifyClientApiBuilder(
                     options.requestTimeoutMillis,
                     options.json,
                     options.refreshTokenProducer,
-                    false
+                    false,
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             else -> throw IllegalArgumentException(
                     "At least one of: authorizationCode, tokenString, or token must be provided " +
@@ -863,9 +950,9 @@ interface ISpotifyAppApiBuilder : ISpotifyApiBuilder<SpotifyAppApi, SpotifyAppAp
  * [SpotifyAppApi] builder for api creation using client authorization
  */
 class SpotifyAppApiBuilder(
-        override var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build(),
-        override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build(),
-        override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
+    override var credentials: SpotifyCredentials = SpotifyCredentialsBuilder().build(),
+    override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorizationBuilder().build(),
+    override var options: SpotifyApiOptions = SpotifyApiOptionsBuilder().build()
 ) : ISpotifyAppApiBuilder {
     /**
      * Build a public [SpotifyAppApi] using the provided credentials
@@ -889,7 +976,9 @@ class SpotifyAppApiBuilder(
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
                     options.json,
-                    options.refreshTokenProducer
+                    options.refreshTokenProducer,
+                    options.onTokenRefresh,
+                    options.requiredScopes
             )
             authorization.tokenString != null -> {
                 SpotifyAppApi(
@@ -909,7 +998,9 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             }
             authorization.refreshTokenString != null -> {
@@ -927,7 +1018,9 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             }
             else -> try {
@@ -947,7 +1040,9 @@ class SpotifyAppApiBuilder(
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
                         options.json,
-                        options.refreshTokenProducer
+                        options.refreshTokenProducer,
+                        options.onTokenRefresh,
+                        options.requiredScopes
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -988,11 +1083,11 @@ data class SpotifyCredentials(val clientId: String?, val clientSecret: String?, 
  * limited time constraint on these before the API automatically refreshes them
  */
 class SpotifyUserAuthorizationBuilder(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null,
-        var refreshTokenString: String? = null,
-        var pkceCodeVerifier: String? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null,
+    var refreshTokenString: String? = null,
+    var pkceCodeVerifier: String? = null
 ) {
     fun build() = SpotifyUserAuthorization(authorizationCode, tokenString, token, refreshTokenString, pkceCodeVerifier)
 }
@@ -1010,11 +1105,11 @@ class SpotifyUserAuthorizationBuilder(
  * @property pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
  */
 data class SpotifyUserAuthorization(
-        var authorizationCode: String? = null,
-        var tokenString: String? = null,
-        var token: Token? = null,
-        var refreshTokenString: String? = null,
-        var pkceCodeVerifier: String? = null
+    var authorizationCode: String? = null,
+    var tokenString: String? = null,
+    var token: Token? = null,
+    var refreshTokenString: String? = null,
+    var pkceCodeVerifier: String? = null
 )
 
 /**
@@ -1032,21 +1127,25 @@ data class SpotifyUserAuthorization(
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token
+ * @property onTokenRefresh Provide if you want to act on token refresh event
+ * @property requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  *
  */
 class SpotifyApiOptionsBuilder(
-        var useCache: Boolean = true,
-        var cacheLimit: Int? = 200,
-        var automaticRefresh: Boolean = true,
-        var retryWhenRateLimited: Boolean = true,
-        var enableLogger: Boolean = true,
-        var testTokenValidity: Boolean = false,
-        var enableAllOptions: Boolean = false,
-        var defaultLimit: Int = 50,
-        var allowBulkRequests: Boolean = true,
-        var requestTimeoutMillis: Long? = null,
-        var json: Json = nonstrictJson,
-        var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)? = null
+    var useCache: Boolean = true,
+    var cacheLimit: Int? = 200,
+    var automaticRefresh: Boolean = true,
+    var retryWhenRateLimited: Boolean = true,
+    var enableLogger: Boolean = true,
+    var testTokenValidity: Boolean = false,
+    var enableAllOptions: Boolean = false,
+    var defaultLimit: Int = 50,
+    var allowBulkRequests: Boolean = true,
+    var requestTimeoutMillis: Long? = null,
+    var json: Json = nonstrictJson,
+    var refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)? = null,
+    var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
+    var requiredScopes: List<SpotifyScope>? = null
 ) {
     fun build() =
             if (enableAllOptions)
@@ -1061,7 +1160,9 @@ class SpotifyApiOptionsBuilder(
                         allowBulkRequests = true,
                         requestTimeoutMillis = requestTimeoutMillis,
                         json = json,
-                        refreshTokenProducer = refreshTokenProducer
+                        refreshTokenProducer = refreshTokenProducer,
+                        onTokenRefresh = onTokenRefresh,
+                        requiredScopes = requiredScopes
                 )
             else
                 SpotifyApiOptions(
@@ -1075,7 +1176,9 @@ class SpotifyApiOptionsBuilder(
                         allowBulkRequests,
                         requestTimeoutMillis,
                         json,
-                        refreshTokenProducer
+                        refreshTokenProducer,
+                        onTokenRefresh,
+                        requiredScopes
                 )
 }
 
@@ -1093,21 +1196,25 @@ class SpotifyApiOptionsBuilder(
  * @property allowBulkRequests Allow splitting too-large requests into smaller, allowable api requests. Default: true
  * @property requestTimeoutMillis The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
  * @property refreshTokenProducer Provide if you want to use your own logic when refreshing a Spotify token.
+ * @property onTokenRefresh Provide if you want to act on token refresh event
+ * @property requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  *
  */
 
 data class SpotifyApiOptions(
-        var useCache: Boolean,
-        var cacheLimit: Int?,
-        var automaticRefresh: Boolean,
-        var retryWhenRateLimited: Boolean,
-        var enableLogger: Boolean,
-        var testTokenValidity: Boolean,
-        var defaultLimit: Int,
-        var allowBulkRequests: Boolean,
-        var requestTimeoutMillis: Long?,
-        var json: Json,
-        var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?
+    var useCache: Boolean,
+    var cacheLimit: Int?,
+    var automaticRefresh: Boolean,
+    var retryWhenRateLimited: Boolean,
+    var enableLogger: Boolean,
+    var testTokenValidity: Boolean,
+    var defaultLimit: Int,
+    var allowBulkRequests: Boolean,
+    var requestTimeoutMillis: Long?,
+    var json: Json,
+    var refreshTokenProducer: (suspend (SpotifyApi<*, *>) -> Token)?,
+    var onTokenRefresh: (suspend (SpotifyApi<*, *>) -> Unit)?,
+    var requiredScopes: List<SpotifyScope>?
 )
 
 @Deprecated("Name has been replaced by `options`", ReplaceWith("SpotifyApiOptions"))

@@ -15,6 +15,11 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
+/**
+ * Endpoints for retrieving information about one or more episodes from the Spotify catalog.
+ *
+ * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/)**
+ */
 class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single episode identified by its unique Spotify ID.
