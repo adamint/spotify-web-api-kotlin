@@ -4,7 +4,7 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.HttpResponse
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlinx.serialization.UnstableDefault
@@ -138,4 +138,4 @@ class HttpConnectionTests : Spek({
     }
 })
 
-private fun HttpConnection.executeBlocking(): HttpResponse = runBlocking { execute() }
+private fun HttpConnection.executeBlocking(): HttpResponse = runBlockingMpp { execute() }

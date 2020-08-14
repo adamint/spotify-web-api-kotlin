@@ -8,7 +8,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
@@ -263,7 +263,7 @@ class CursorBasedPagingObject<T : Any>(
     }
 
     override suspend fun getAllImpl(): Sequence<PagingObjectBase<T>> {
-        return generateSequence(this) { runBlocking { it.getImpl(FORWARDS) as? CursorBasedPagingObject<T> } }
+        return generateSequence(this) { runBlockingMpp { it.getImpl(FORWARDS) as? CursorBasedPagingObject<T> } }
     }
 
     @SpotifyExperimentalHttpApi

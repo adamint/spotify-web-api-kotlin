@@ -7,7 +7,7 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -740,7 +740,7 @@ interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>
     /**
      * Build the [T] by provided information
      */
-    fun build(): T = runBlocking { suspendBuild() }
+    fun build(): T = runBlockingMpp { suspendBuild() }
 
     /**
      * Build the [T] by provided information
