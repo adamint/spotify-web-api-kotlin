@@ -31,7 +31,7 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.Dispatchers
@@ -142,7 +142,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
      * @return The old access token if refresh was successful
      * @throws BadRequestException if refresh fails
      */
-    fun refreshToken(): Token = runBlocking {
+    fun refreshToken(): Token = runBlockingMpp {
         suspendRefreshToken()
     }
 
@@ -235,7 +235,7 @@ sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
      * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
      */
     @JvmOverloads
-    fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse = runBlocking {
+    fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse = runBlockingMpp {
         suspendIsTokenValid(makeTestRequest)
     }
 
