@@ -69,7 +69,7 @@ packagingOptions {
 ```
 
 ## Documentation
-The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/
+The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
 
 ## Have a question?
 If you have a question, you can:
