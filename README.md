@@ -6,43 +6,45 @@
 
 This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
 
-## Install it
+## Table of Contents
+* [Library installing](#library-installing)
+    + [JVM, Android, JS](#jvm-android-js)
+    + [Android information](#android)
+* [Documentation](#documentation)
+* [Need help, have a question, or want to contribute?](#have-a-question)
+* [Creating a new api instance](#creating-a-new-api-instance)
+    + [SpotifyAppApi](#spotifyappapi)
+    + [SpotifyClientApi](#spotifyclientapi)
+        * [PKCE](#pkce)
+        * [Non-PKCE](#non-pkce-backend-applications-requires-client-secret)
+    + [SpotifyImplicitGrantApi](#spotifyimplicitgrantapi)
+    + [SpotifyApiBuilder block & setting API options](#spotifyapibuilder-block--setting-api-options)
+        * [API options](#api-options)
+    + [Using the API](#using-the-api)
+* [Tips](#tips)
+    + [Building the API](#building-the-api)
+    + [What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class)
+    + [SpotifyRestPagingAction](#spotifyrestpagingaction)
+* [Notes](#notes)
+    + [The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
+    + [Generic Requests](#generic-request)
+    + [Track Relinking](#track-relinking)
+* [Contributing](#contributing)
 
-### JVM
-This library is available via JCenter [here](https://search.maven.org/artifact/com.adamratzman/spotify-api-kotlin). 
+## Library installing
 
-#### Gradle
+### JVM, Android, JS
 ```
 repositories {
     jcenter()
 }
 
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin', version: '3.2.02'
+compile group: 'com.adamratzman', name: 'spotify-api-kotlin-core', version: '3.2.11'
 ```
 
-To use the latest snapshot instead, you must add the Jitpack repository as well
-```
-repositories {
-    maven { url 'https://jitpack.io' }
-    jcenter()
-}
-```
-Then, you can use the following:
-```
-dependencies {
-	compile 'com.github.adamint:spotify-web-api-kotlin:dev-SNAPSHOT'
-}
-```
+Note that images and profiles are not supported on the Kotlin/JS target.
 
 ### Android
-```
-repositories {
-    jcenter()
-}
-
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-android', version: '3.2.02'
-```
-
 **If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
 ```
 android {
@@ -61,27 +63,15 @@ android {
 ```
 
 
-To successfully build, you might need to exclude kotlin_modules from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
+To successfully build, you might need to exclude kotlin_module files from the packaging. To do this, inside the android/buildTypes/release closure, you would put:
 ```
 packagingOptions {
 	exclude 'META-INF/*.kotlin_module'
 }
 ```
 
-### Kotlin/JS
-```
-repositories {
-    jcenter()
-}
-
-compile group: 'com.adamratzman', name: 'spotify-api-kotlin-js', version: '3.2.02'
-```
-
 ## Documentation
 The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/
-
-## Samples
-Samples for all APIs are located in the `samples` directory
 
 ## Have a question?
 If you have a question, you can:
@@ -91,35 +81,220 @@ If you have a question, you can:
 3. Contact me using **Adam#9261** on [Discord](https://discordapp.com)
 
 ## Creating a new api instance
-To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), please refer to 
-https://developer.spotify.com/documentation/general/guides/authorization-guide/. In general:
+To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), you can refer 
+to the sections below or the [Spotify authorization guide](https://developer.spotify.com/documentation/general/guides/authorization-guide/). In general:
 - If you don't need client resources, use SpotifyAppApi
-- If you're using the api in a backend application, use SpotifyClientApi
-- If you're using the api in a frontend application, use SpotifyImplicitGrantApi
+- If you're using the api in a backend application, use SpotifyClientApi (with or without PKCE)
+- If you're using the api in Kotlin/JS browser, use SpotifyImplicitGrantApi
+- If you need access to client resources in an Android or other application, use SpotifyClientApi with PKCE
+
 
 ### SpotifyAppApi
-This provides access only to public Spotify endpoints. By default, the SpotifyApi `Token` automatically regenerates when needed. This can be changed 
-through the `automaticRefresh` parameter in all builders.
+This provides access only to public Spotify endpoints.
+Use this when you have a server-side application. Note that implicit grant authorization 
+provides a higher api ratelimit, so consider using implicit grant if your application has 
+significant usage.
+
+By default, the SpotifyApi `Token` automatically regenerates when needed. 
+This can be changed by overriding the `automaticRefresh` builder setting.
 
 There are four exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders, or the app api [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/appApi). 
- 
+Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders.
+
+You will need:
+- Spotify application client id
+- Spotify application client secret
+
+Example creation (default settings)
+
+```kotlin
+val api = spotifyAppApi("clientId", "clientSecret").build() // create and build api
+println(api.browse.getNewReleases().complete()) // use it
+```
+
+Example creation, using an existing Token and setting automatic token refresh to false
+```kotlin
+val token = spotifyAppApi(spotifyClientId, spotifyClientSecret).build().token
+val api = spotifyAppApi(
+    "clientId",
+    "clientSecret",
+    token,
+    SpotifyApiOptionsBuilder(
+        automaticRefresh = false
+    )
+)
+println(api.browse.getNewReleases().complete()) // use it
+```
 
 ### SpotifyClientApi
-The `SpotifyClientApi` is a superset of `SpotifyApi`; thus, you have access to all `SpotifyApi` methods in `SpotifyClientApi`. 
-This library does not provide a method to retrieve the code from your  callback url; you must implement that with a web server.
+The `SpotifyClientApi` is a superset of `SpotifyApi`; thus, nothing changes if you want to 
+access public data.
+This library does not provide a method to retrieve the code from your  callback url; instead,
+you must implement that with a web server. 
+Automatic refresh is available *only* when building with an authorization code or a 
+`Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
 Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-spotifyScopes/) in order to 
-ensure proper function of this library.
+ensure proper function of this library. The api option `requiredScopes` allows you to verify 
+that a client has actually authorized with the scopes you are expecting.
 
-Its automatic refresh ability is available *only* when building with
-an authorization code or a `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
+You will need:
+- Spotify application client id
+- Spotify application client secret (if not using PKCE)
+- Spotify application redirect uri
+- To choose which client authorization method (PKCE or non-PKCE) to use
 
-Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders, or the client [samples](https://github.com/adamint/spotify-web-api-kotlin/tree/master/samples/jvm/src/main/kotlin/clientApi). 
+#### PKCE
+Use the PKCE builders and helper methods if you are using the Spotify client authorization PKCE flow.
+Building via PKCE returns a `SpotifyClientApi` which has modified refresh logic.
+
+Use cases:
+1. You are using this library in an application (likely Android), or do not want to expose the client secret.
+
+To learn more about the PKCE flow, please read the [Spotify authorization guide](https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow).
+Some highlights about the flow are:
+- It is refreshable, but each refresh token can only be used once. This library handles token refresh automatically by default
+- It does not require a client secret; instead, a set redirect uri and a random code verifier 
+are used to verify the authenticity of the authorization.
+- A code verifier is required. The code verifier is "*a cryptographically random string between 43 and 128 characters in length. 
+It can contain letters, digits, underscores, periods, hyphens, or tildes.*"
+- A code challenge is required. "*In order to generate the code challenge, your app should 
+hash the code verifier using the SHA256 algorithm. Then, base64url encode the hash that you generated.*"
+- When creating a pkce api instance, the code verifier is passed in by you and compared to 
+the code challenge used to authorize the user.
+
+This library contains helpful methods that can be used to simplify the PKCE authorization process.
+This includes `getSpotifyPkceCodeChallenge` (not available in the Kotlin/JS target), which SHA256 hashes and base64url encodes the code 
+challenge, and `getPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
+
+Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.
+ 
+**Takeaway**: Use PKCE authorization flow in applications where you cannot secure the client secret.
+
+To get a PKCE authorization url, to which you can redirect a user, you can use the `getPkceAuthorizationUrl`
+top-level method. An example is shown below, requesting 4 different scopes.
+```kotlin
+val codeVerifier = "thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"
+val codeChallenge = getSpotifyPkceCodeChallenge(codeVerifier) // helper method
+val url: String = getPkceAuthorizationUrl(
+    SpotifyScope.PLAYLIST_READ_PRIVATE,
+    SpotifyScope.PLAYLIST_MODIFY_PRIVATE,
+    SpotifyScope.USER_FOLLOW_READ,
+    SpotifyScope.USER_LIBRARY_MODIFY,
+    clientId = "clientId",
+    redirectUri = "your-redirect-uri",
+    codeChallenge = codeChallenge
+)
+```
+
+There is also an optional parameter `state`, which helps you verify the authorization.
+
+**Note**: If you want automatic token refresh, you need to pass in your application client id and redirect uri 
+when using the `spotifyClientPkceApi`.
+
+##### Example: A user has authorized your application. You now have the authorization code obtained after the user was redirected back to your application. You want to create a new `SpotifyClientApi`.
+```kotlin
+val codeVerifier = "thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"
+val code: String = ...
+val api = spotifyClientPkceApi(
+    "clientId", // optional. include for token refresh
+    "your-redirect-uri", // optional. include for token refresh
+    code,
+    codeVerifier, // the same code verifier you used to generate the code challenge
+    SpotifyApiOptionsBuilder(
+        retryWhenRateLimited = false
+    )
+).build()
+println(api.library.getSavedTracks().complete().take(10).filterNotNull().map { it.track.name })
+```
+
+#### Non-PKCE (backend applications, requires client secret)
+To get a non-PKCE authorization url, to which you can redirect a user, you can use the `getSpotifyAuthorizationUrl`
+top-level method. An example is shown below, requesting 4 different scopes.
+```kotlin
+val url: String = getSpotifyAuthorizationUrl(
+    SpotifyScope.PLAYLIST_READ_PRIVATE,
+    SpotifyScope.PLAYLIST_MODIFY_PRIVATE,
+    SpotifyScope.USER_FOLLOW_READ,
+    SpotifyScope.USER_LIBRARY_MODIFY,
+    clientId = "clientId",
+    redirectUri = "your-redirect-uri",
+    state = "your-special-state" // optional
+)
+```
+There are also several optional parameters, allowing you to set whether the authorization url is meant 
+for implicit grant flow, the state, and whether a re-authorization dialog should be shown to users.
+
+There are several exposed builders, depending on the level of control you need over api creation. 
+Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders.
+
+##### Example: You've redirected the user back to your web server and have an authorization code (code).
+In this example, automatic token refresh is turned on by default.
+```kotlin
+val authCode = ""
+val api = spotifyClientApi(
+    "clientId",
+    "clientSecret",
+    "your-redirect-uri",
+    authCode
+).build() // create and build api
+println(api.personalization.getTopTracks(limit = 5).complete().items.map { it.name }) // print user top tracks
+```
+
+##### Example: You've saved a user's token from previous authorization and need to create an api instance.
+In this case, if you provide a client id to the builder, automatic token refresh will also be turned on.
+```kotlin
+val token: Token = ... // your existing token
+val api = spotifyClientApi(
+    "clientId",
+    "clientSecret",
+    "your-redirect-uri",
+    token,
+    SpotifyApiOptionsBuilder(
+        onTokenRefresh = { 
+            println("Token refreshed at ${System.currentTimeMillis()}")
+        }
+    )
+).build()
+println(api.personalization.getTopTracks(limit = 5).complete().items.map { it.name })
+```
+
 
 ### SpotifyImplicitGrantApi
-Instantiate this api only if you are using the Spotify implicit grant flow. It is a superset of `SpotifyClientApi`.
-Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders, or the implicit grant [samples (tbd)](). 
+Use the `SpotifyImplicitGrantApi` if you are using the Spotify implicit grant flow.
+`SpotifyImplicitGrantApi` is a superset of `SpotifyClientApi`.
+Unlike the other builders, the `spotifyImplicitGrantApi` builder method directly returns 
+a `SpotifyImplicitGrantApi` instead of an api builder.
+
+Use cases:
+1. You are using the **Kotlin/JS** target for this library.
+2. Your frontend Javascript passes the token received through the implicit grant flow to your 
+backend, where it is then used to create an api instance.
+
+To learn more about the implicit grant flow, please read the [Spotify authorization guide](https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow).
+Some highlights about the flow are:
+- It is non-refreshable
+- It is client-side
+- It does not require a client secret
+
+Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/com.adamratzman.spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders.
+ 
+The Kotlin/JS target contains the `parseSpotifyCallbackHashToToken` method, which will parse the hash 
+for the current url into a Token object, with which you can then instantiate the api.
+
+**Takeaway**: There are two ways to use implicit grant flow, browser-side only and browser and 
+server. This library provides easy access for both.
+
+##### Example
+```kotlin
+val token: Token = ...
+val api = spotifyImplicitGrantApi(
+    null,
+    null,
+    token
+) // create api. there is no need to build it 
+println(api.personalization.getTopArtists(limit = 1).complete()[0].name) // use it
+```
 
 ### SpotifyApiBuilder Block & setting API options 
 There are three pluggable blocks in each api's corresponding builder
@@ -145,6 +320,9 @@ most of the default values either allow for significant performance or feature e
 - `allowBulkRequests`: Allow splitting too-large requests into smaller, allowable api requests. Default: true 
 - `requestTimeoutMillis`: The maximum time, in milliseconds, before terminating an http request. Default: 100000ms
 - `refreshTokenProducer`: Provide if you want to use your own logic when refreshing a Spotify token.
+- `requiredScopes`: Scopes that your application requires to function (only applicable to `SpotifyClientApi` and `SpotifyImplicitGrantApi`).
+This verifies that the token your user authorized with actually contains the scopes your 
+application needs to function.
 
 Notes:
 - Unless you have a good reason otherwise, `useCache` should be true
@@ -153,6 +331,30 @@ Notes:
 - `allowBulkRequests` for example, lets you query 80 artists in one wrapper call by splitting it into 50 artists + 30 artists
 - `refreshTokenProducer` is useful when you want to re-authorize with the Spotify Auth SDK or elsewhere
 
+### Using the API
+APIs available in all `SpotifyApi` instances, including `SpotifyClientApi` and `SpotifyImplicitGrantApi`:
+- `SearchApi` (searching items)
+- `AlbumApi` (get information about albums)
+- `BrowseApi` (browse new releases, featured playlists, categories, and recommendations)
+- `ArtistApi` (get information about artists)
+- `PlaylistApi` (get information about playlists)
+- `UserApi` (get public information about users on Spotify)
+- `TrackApi` (get information about tracks)
+- `FollowingApi` (check whether users follow playlists)
+
+APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instances:
+- `ClientSearchApi` (all the methods in `SearchApi`, and searching shows and episodes)
+- `EpisodeApi` (get information about episodes)
+- `ShowApi` (get information about shows)
+- `ClientPlaylistApi` (all the methods in `PlaylistApi`, and get and manage user playlists)
+- `ClientProfileApi` (all the methods in `UserApi`, and get the user profile, depending on scopes)
+- `ClientFollowingApi` (all the methods in `FollowingApi`, and get and manage following of playlists, artists, and users)
+- `ClientPersonalizationApi` (get user top tracks and artists)
+- `ClientLibraryApi` (get and manage saved tracks and albums)
+- `ClientPlayerApi` (view and control Spotify playback)
+
+## Tips
+
 ### Building the API
 The easiest way to build the API is synchronously using .build() after a builder
 
@@ -160,7 +362,7 @@ The easiest way to build the API is synchronously using .build() after a builder
 spotifyAppApi(clientId, clientSecret).build()
 ```
 
-You can also build the API asynchronously using kotlin coroutines!
+You can also build the API asynchronously using Kotlin coroutines.
 ```kotlin
 runBlocking {
     spotifyAppApi(clientId, clientSecret).buildAsyncAt(this) { api ->
@@ -169,7 +371,7 @@ runBlocking {
 }
 ```
 
-## What is the SpotifyRestAction class?
+### What is the SpotifyRestAction class?
 Abstracting requests into a `SpotifyRestAction` class allows for a lot of flexibility in sending and receiving requests. 
 This class includes options for asynchronous and blocking execution in all endpoints. However, 
  due to this, you **must** call one of the provided methods in order for the call 
@@ -188,13 +390,12 @@ time, this will likely be accurate within a few milliseconds.
 - `asFuture()` transforms the supplier into a `CompletableFuture` (only JVM)
 
 ### SpotifyRestPagingAction
-Separate from, but a superset of SpotifyRestAction, this specialized implementation of RestActions is 
-just for [AbstractPagingObject] (`PagingObject` and `CursorBasedPagingObject`). This class gives you the same functionality as SpotifyRestAction, 
+Separate from, but a superset of SpotifyRestAction, this specialized implementation of RestActions includes extensions
+for `AbstractPagingObject` (`PagingObject` and `CursorBasedPagingObject`). This class gives you the same functionality as SpotifyRestAction, 
 but you also have the ability to retrieve *all* of its items or linked PagingObjects, or a *subset* of its items or linked PagingObjects with one call, with 
 a single method call to `getAllItems()` or `getAllPagingObjects()`, or `getWithNext(total: Int, context: CoroutineContext = Dispatchers.Default)` or `getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default)` respectively
 
-
-## Using the Library
+## Notes
 ### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
 can do with them!
@@ -242,7 +443,7 @@ println(api.browse.getFeaturedPlaylists().complete().message)
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
 
 val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
-// this works; a redundant way would be: api.artists.getArtist("com.adamratzman.spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
+// this works; a redundant way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
 
 println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
 ```
@@ -259,5 +460,5 @@ will be populated with the href, uri, and, most importantly, the id of the track
 You can then use this track in `SpotifyClientApi` endpoints such as playing or saving the track, knowing that it will be playable 
 in your market!
 
-### Contributing
+## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)

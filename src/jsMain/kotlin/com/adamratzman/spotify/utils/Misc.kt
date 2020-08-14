@@ -3,7 +3,7 @@ package com.adamratzman.spotify.utils
 
 import kotlin.js.Date
 
-internal actual fun getCurrentTimeMs(): Long {
+actual fun getCurrentTimeMs(): Long {
     return Date().getTime().toLong()
 }
 

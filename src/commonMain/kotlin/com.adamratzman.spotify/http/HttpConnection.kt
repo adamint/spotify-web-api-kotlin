@@ -49,10 +49,6 @@ class HttpConnection constructor(
 ) {
     val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
-    companion object {
-        private val client = HttpClient()
-    }
-
     fun String?.toByteArrayContent(): ByteArrayContent? {
         return if (this == null) null else ByteArrayContent(this.toByteArray(), contentType)
     }
@@ -94,7 +90,7 @@ class HttpConnection constructor(
         val httpRequest = buildRequest(additionalHeaders)
 
         try {
-            return client.request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
+            return HttpClient().request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
                 val respCode = response.status.value
 
                 if (respCode == 502 && retryIf502) {
@@ -149,7 +145,7 @@ class HttpConnection constructor(
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
             val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
-            throw SpotifyException.BadRequestException(error)
+            throw SpotifyException.BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
         }
     }
 

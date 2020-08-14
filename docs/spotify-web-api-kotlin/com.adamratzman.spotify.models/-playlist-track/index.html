@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.PlaylistTrack - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">PlaylistTrack</a><br/>
+<br/>
+<h1>PlaylistTrack</h1>
+<a name="com.adamratzman.spotify.models.PlaylistTrack"></a>
+(common, js, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">PlaylistTrack</span></code>
+<p>Represents a Spotify track inside a <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Represents a Spotify track inside a <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/primaryColor">primaryColor</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/addedAt">addedAt</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/addedBy">addedBy</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-public-user/index.html"><span class="identifier">SpotifyPublicUser</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/isLocal">isLocal</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/track">track</span><span class="symbol">:</span>&nbsp;<a href="../-playable/index.html"><span class="identifier">Playable</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.PlaylistTrack$<init>(kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.Boolean, com.adamratzman.spotify.models.Playable, com.adamratzman.spotify.models.VideoThumbnail)/videoThumbnail">videoThumbnail</span><span class="symbol">:</span>&nbsp;<a href="../-video-thumbnail/index.html"><span class="identifier">VideoThumbnail</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="added-at.html">addedAt</a></h4>
+</td>
+<td>
+<p>The date and time the track was added. Note that some very old playlists may return null in this field.</p>
+<code><span class="keyword">val </span><span class="identifier">addedAt</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="added-by.html">addedBy</a></h4>
+</td>
+<td>
+<p>The Spotify user who added the track. Note that some very old playlists may return null in this field.</p>
+<code><span class="keyword">val </span><span class="identifier">addedBy</span><span class="symbol">: </span><a href="../-spotify-public-user/index.html"><span class="identifier">SpotifyPublicUser</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="is-local.html">isLocal</a></h4>
+</td>
+<td>
+<p>Whether this track is a local file or not.</p>
+<code><span class="keyword">val </span><span class="identifier">isLocal</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="primary-color.html">primaryColor</a></h4>
+</td>
+<td>
+<p>Unknown. Undocumented field</p>
+<code><span class="keyword">val </span><span class="identifier">primaryColor</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="track.html">track</a></h4>
+</td>
+<td>
+<p>Information about the track. In rare occasions, this field may be null if this track's API entry is broken.</p>
+<code><span class="keyword">val </span><span class="identifier">track</span><span class="symbol">: </span><a href="../-playable/index.html"><span class="identifier">Playable</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, js, jvm) 
+<h4><a href="video-thumbnail.html">videoThumbnail</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">videoThumbnail</span><span class="symbol">: </span><a href="../-video-thumbnail/index.html"><span class="identifier">VideoThumbnail</span></a><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
