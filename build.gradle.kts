@@ -31,7 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.10"
+version = "3.2.11"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -209,6 +209,7 @@ kotlin {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
                     api("io.ktor:ktor-client-cio:$ktorVersion")
+                    api("io.coil-kt:coil:0.11.0")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
