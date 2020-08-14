@@ -5,7 +5,7 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
 import kotlinx.serialization.json.JsonElement
 
-internal expect fun getCurrentTimeMs(): Long
+expect fun getCurrentTimeMs(): Long
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
@@ -23,5 +23,3 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
 internal expect fun formatDate(format: String, date: Long): String
-
-expect fun <T> runBlocking(coroutineCode: suspend () -> T): T

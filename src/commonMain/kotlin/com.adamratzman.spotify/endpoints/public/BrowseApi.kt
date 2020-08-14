@@ -338,7 +338,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
  *
- * @param attribute The com.adamratzman.spotify id for the track attribute
+ * @param attribute The spotify id for the track attribute
  */
 sealed class TuneableTrackAttribute<T : Number>(
     val attribute: String,

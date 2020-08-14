@@ -31,13 +31,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.2.01"
-
-/*java {
-    withSourcesJar()
-    withJavadocJar()
-}
-*/
+version = "3.2.11"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -47,6 +41,13 @@ tasks.withType<Test> {
 
 android {
     compileSdkVersion(30)
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude("META-INF/*.md")
+    }
     defaultConfig {
         minSdkVersion(15)
         targetSdkVersion(30)
@@ -59,13 +60,19 @@ android {
             isMinifyEnabled = false
         }
     }
+    testOptions {
+        @Suppress("UNCHECKED_CAST")
+        this.unitTests.all(closureOf<Test> {
+            this.useJUnitPlatform()
+        } as groovy.lang.Closure<Test>)
+    }
     sourceSets {
         getByName("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
             java.setSrcDirs(listOf("src/androidMain/kotlin"))
             res.setSrcDirs(listOf("src/androidMain/res"))
         }
-        getByName("androidTest") {
+        getByName("test") {
             java.setSrcDirs(listOf("src/androidTest/kotlin"))
             res.setSrcDirs(listOf("src/androidTest/res"))
         }
@@ -86,7 +93,9 @@ kotlin {
             setupPom(artifactId)
         }
 
-        publishLibraryVariants("release")
+        publishLibraryVariants("debug", "release")
+
+        publishLibraryVariantsGroupedByFlavor = true
     }
 
     jvm {
@@ -152,7 +161,7 @@ kotlin {
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    api("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -162,10 +171,10 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
+                    implementation("com.sparkjava:spark-core:2.9.1")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
-                    implementation("com.sparkjava:spark-core:2.9.1")
                 }
             }
 
@@ -177,7 +186,7 @@ kotlin {
                     api("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
-                    api(npm("btoa", "1.2.1"))
+
                     compileOnly(kotlin("stdlib-js"))
                 }
             }
@@ -199,7 +208,8 @@ kotlin {
                     api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    api("io.ktor:ktor-client-cio:$ktorVersion")
+                    api("io.coil-kt:coil:0.11.0")
                     implementation(kotlin("stdlib-jdk8"))
                 }
             }
@@ -209,6 +219,8 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
+                    implementation("com.sparkjava:spark-core:2.9.1")
+                    implementation("org.mockito:mockito-core:3.3.3")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -253,7 +265,11 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications)
+    if (project.hasProperty("signing.keyId")
+            && project.hasProperty("signing.password")
+            && project.hasProperty("signing.secretKeyRingFile")) {
+        sign(publishing.publications)
+    }
 }
 
 tasks {
@@ -265,14 +281,14 @@ tasks {
             val js by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
             val jvm by creating {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -280,7 +296,7 @@ tasks {
             register("common") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
             }
@@ -288,7 +304,7 @@ tasks {
             register("global") {
                 sourceLink {
                     path = "/src"
-                    url = "https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/tree/master/"
+                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
                     lineSuffix = "#L"
                 }
 
@@ -301,12 +317,6 @@ tasks {
             }
         }
     }
-
-    /* val javadocJar by getting(Jar::class) {
-         dependsOn.add(javadoc)
-         archiveClassifier.set("javadoc")
-         from(javadoc)
-     }*/
 
     spotless {
         kotlin {
@@ -325,7 +335,6 @@ tasks {
         useJUnitPlatform()
     }
 
-
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
         dependsOn.add(dokka)
@@ -341,12 +350,12 @@ fun MavenPublication.setupPom(publicationName: String) {
     pom {
         name.set(publicationName)
         description.set("A Kotlin wrapper for the Spotify Web API.")
-        url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
+        url.set("https://github.com/adamint/spotify-web-api-kotlin")
         inceptionYear.set("2018")
         scm {
-            url.set("https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin")
-            connection.set("scm:https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
-            developerConnection.set("scm:git://github.com/adamint/com.adamratzman.spotify-web-api-kotlin.git")
+            url.set("https://github.com/adamint/spotify-web-api-kotlin")
+            connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
+            developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
         }
         licenses {
             license {
