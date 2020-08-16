@@ -7,7 +7,7 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -123,7 +123,6 @@ fun spotifyImplicitGrantApi(
                 options.cacheLimit,
                 options.retryWhenRateLimited,
                 options.enableLogger,
-                options.testTokenValidity,
                 options.defaultLimit,
                 options.allowBulkRequests,
                 options.requestTimeoutMillis,
@@ -236,7 +235,6 @@ fun spotifyAppApi(
  * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
  */
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
-
 
 // Client Api Builders
 /*
@@ -468,11 +466,11 @@ fun spotifyClientPkceApi(
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientPkceApi(
-        clientId: String?,
-        redirectUri: String?,
-        authCode: String,
-        codeVerifier: String,
-        options: SpotifyApiOptionsBuilder? = null
+    clientId: String?,
+    redirectUri: String?,
+    authCode: String,
+    codeVerifier: String,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -486,7 +484,6 @@ fun spotifyClientPkceApi(
 
     options?.let { this.options = it.build() }
 }
-
 
 /**
  *  Spotify API builder
@@ -740,7 +737,7 @@ interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>
     /**
      * Build the [T] by provided information
      */
-    fun build(): T = runBlocking { suspendBuild() }
+    fun build(): T = runBlockingMpp { suspendBuild() }
 
     /**
      * Build the [T] by provided information
@@ -798,7 +795,7 @@ class SpotifyClientApiBuilder(
 
         // either application credentials, or a token is required
         require((clientId != null && clientSecret != null && redirectUri != null) || (clientId != null && redirectUri != null && authorization.pkceCodeVerifier != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
-        return when {
+        val api = when {
             authorization.authorizationCode != null && authorization.pkceCodeVerifier == null -> try {
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
@@ -828,7 +825,6 @@ class SpotifyClientApiBuilder(
                         options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
-                        options.testTokenValidity,
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
@@ -844,7 +840,7 @@ class SpotifyClientApiBuilder(
                 throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})", e)
             }
             authorization.authorizationCode != null && authorization.pkceCodeVerifier != null -> try {
-                require(clientId != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+                require(clientId != null && redirectUri != null) { "You need to specify a valid clientId and redirectUri in the credentials block!" }
 
                 val response = HttpConnection(
                         "https://accounts.spotify.com/api/token",
@@ -872,7 +868,6 @@ class SpotifyClientApiBuilder(
                         options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
-                        options.testTokenValidity,
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
@@ -897,7 +892,6 @@ class SpotifyClientApiBuilder(
                     options.automaticRefresh,
                     options.retryWhenRateLimited,
                     options.enableLogger,
-                    options.testTokenValidity,
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
@@ -923,7 +917,6 @@ class SpotifyClientApiBuilder(
                     false,
                     options.retryWhenRateLimited,
                     options.enableLogger,
-                    options.testTokenValidity,
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
@@ -938,6 +931,10 @@ class SpotifyClientApiBuilder(
                             "to build a SpotifyClientApi object"
             )
         }
+
+        if (options.testTokenValidity) SpotifyApi.testTokenValidity(api)
+
+        return api
     }
 }
 
@@ -961,7 +958,8 @@ class SpotifyAppApiBuilder(
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }
-        return when {
+
+        val api = when {
             authorization.token != null -> SpotifyAppApi(
                     clientId,
                     clientSecret,
@@ -971,7 +969,6 @@ class SpotifyAppApiBuilder(
                     options.automaticRefresh,
                     options.retryWhenRateLimited,
                     options.enableLogger,
-                    options.testTokenValidity,
                     options.defaultLimit,
                     options.allowBulkRequests,
                     options.requestTimeoutMillis,
@@ -993,7 +990,6 @@ class SpotifyAppApiBuilder(
                         options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
-                        options.testTokenValidity,
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
@@ -1013,7 +1009,6 @@ class SpotifyAppApiBuilder(
                         options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
-                        options.testTokenValidity,
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
@@ -1035,7 +1030,6 @@ class SpotifyAppApiBuilder(
                         options.automaticRefresh,
                         options.retryWhenRateLimited,
                         options.enableLogger,
-                        options.testTokenValidity,
                         options.defaultLimit,
                         options.allowBulkRequests,
                         options.requestTimeoutMillis,
@@ -1050,6 +1044,10 @@ class SpotifyAppApiBuilder(
                 throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)", e)
             }
         }
+
+        if (options.testTokenValidity) SpotifyApi.testTokenValidity(api)
+
+        return api
     }
 }
 
