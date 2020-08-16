@@ -237,7 +237,6 @@ fun spotifyAppApi(
  */
 fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit) = SpotifyAppApiBuilder().apply(block)
 
-
 // Client Api Builders
 /*
  ____________________________
@@ -468,11 +467,11 @@ fun spotifyClientPkceApi(
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
  */
 fun spotifyClientPkceApi(
-        clientId: String?,
-        redirectUri: String?,
-        authCode: String,
-        codeVerifier: String,
-        options: SpotifyApiOptionsBuilder? = null
+    clientId: String?,
+    redirectUri: String?,
+    authCode: String,
+    codeVerifier: String,
+    options: SpotifyApiOptionsBuilder? = null
 ) = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId
@@ -486,7 +485,6 @@ fun spotifyClientPkceApi(
 
     options?.let { this.options = it.build() }
 }
-
 
 /**
  *  Spotify API builder
@@ -798,7 +796,7 @@ class SpotifyClientApiBuilder(
 
         // either application credentials, or a token is required
         require((clientId != null && clientSecret != null && redirectUri != null) || (clientId != null && redirectUri != null && authorization.pkceCodeVerifier != null) || authorization.token != null || authorization.tokenString != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
-        return when {
+        val api = when {
             authorization.authorizationCode != null && authorization.pkceCodeVerifier == null -> try {
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
@@ -844,7 +842,7 @@ class SpotifyClientApiBuilder(
                 throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})", e)
             }
             authorization.authorizationCode != null && authorization.pkceCodeVerifier != null -> try {
-                require(clientId != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
+                require(clientId != null && redirectUri != null) { "You need to specify a valid clientId and redirectUri in the credentials block!" }
 
                 val response = HttpConnection(
                         "https://accounts.spotify.com/api/token",
@@ -938,6 +936,10 @@ class SpotifyClientApiBuilder(
                             "to build a SpotifyClientApi object"
             )
         }
+
+        if (options.testTokenValidity) SpotifyApi.testTokenValidity(api)
+
+        return api
     }
 }
 
@@ -961,7 +963,8 @@ class SpotifyAppApiBuilder(
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }
-        return when {
+
+        val api = when {
             authorization.token != null -> SpotifyAppApi(
                     clientId,
                     clientSecret,
@@ -1050,6 +1053,10 @@ class SpotifyAppApiBuilder(
                 throw SpotifyException.AuthenticationException("Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)", e)
             }
         }
+
+        if (options.testTokenValidity) SpotifyApi.testTokenValidity(api)
+
+        return api
     }
 }
 
