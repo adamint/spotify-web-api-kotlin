@@ -7,7 +7,6 @@ import android.util.Base64
 import java.io.ByteArrayOutputStream
 import java.net.URL
 
-
 internal actual fun encodeBufferedImageToBase64String(image: BufferedImage): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
     image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)

@@ -5,7 +5,7 @@ import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import com.adamratzman.spotify.utils.schedule
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
@@ -50,7 +50,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: GenericS
     /**
      * Invoke [supplier] and synchronously retrieve [T]
      */
-    fun complete(): T = runBlocking {
+    fun complete(): T = runBlockingMpp {
         suspendComplete()
     }
 
@@ -92,7 +92,7 @@ open class SpotifyRestAction<T> internal constructor(protected val api: GenericS
     @JvmOverloads
     fun queue(failure: (suspend (Throwable) -> Unit) = { throw it }, consumer: (suspend (T) -> Unit) = {}) {
         hasRunBacking = true
-        runBlocking {
+        runBlockingMpp {
             coroutineScope {
                 launch {
                     try {

@@ -5,7 +5,7 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.api
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
@@ -32,7 +32,7 @@ class ClientPlaylistApiTest : Spek({
             val globalTop50Uri = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
             val globalViral50Uri = "spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
 
-            val tracks = runBlocking {
+            val tracks = runBlockingMpp {
                 listOf(
                         GlobalScope.async { api.playlists.getPlaylist(usTop50Uri).complete()!!.tracks.getAllItemsNotNull().complete().toList() },
                         GlobalScope.async { api.playlists.getPlaylist(globalTop50Uri).complete()!!.tracks.getAllItemsNotNull().suspendComplete().toList() },
