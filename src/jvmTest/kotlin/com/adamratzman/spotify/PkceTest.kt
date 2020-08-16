@@ -41,7 +41,8 @@ class PkceTest : Spek({
                             code,
                             pkceCodeVerifier,
                             SpotifyApiOptionsBuilder(
-                                    onTokenRefresh = { println("refreshed token") }
+                                    onTokenRefresh = { println("refreshed token") },
+                                    testTokenValidity = true
                             )
                     ).build()
                     println(api.token)

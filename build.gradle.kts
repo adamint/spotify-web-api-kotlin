@@ -208,7 +208,7 @@ kotlin {
                     api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                    api("io.ktor:ktor-client-cio:$ktorVersion")
+                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
                     api("io.coil-kt:coil:0.11.0")
                     implementation(kotlin("stdlib-jdk8"))
                 }
