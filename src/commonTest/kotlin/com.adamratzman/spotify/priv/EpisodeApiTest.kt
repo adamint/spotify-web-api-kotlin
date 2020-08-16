@@ -28,7 +28,7 @@ class EpisodeApiTest : Spek({
                 assertFailsWith<BadRequestException> { t.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").complete().map { it?.name } }
             }
             it("known episodes") {
-                assertEquals(listOf("The 'Murder Hornets' And The Honey Bees"), t.getEpisodes( "4IhgnOc8rwMW70agMWVVfh").complete().map { it?.name })
+                assertEquals(listOf("The 'Murder Hornets' And The Honey Bees"), t.getEpisodes("4IhgnOc8rwMW70agMWVVfh").complete().map { it?.name })
             }
         }
     }
