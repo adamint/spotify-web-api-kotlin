@@ -4,7 +4,7 @@ package com.adamratzman.spotify.utilities
 import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.api
-import com.adamratzman.spotify.utils.runBlocking
+import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.test.assertFailsWith
 import kotlin.time.ExperimentalTime
 import org.spekframework.spek2.Spek
@@ -30,7 +30,7 @@ class RestActionTests : Spek({
 
             api.requestTimeoutMillis = 1
 
-            runBlocking {
+            runBlockingMpp {
                 assertFailsWith<TimeoutException> {
                     api.search.searchTrack("fail").complete()
                 }

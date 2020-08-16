@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking as kRunBlocking
 
-actual inline fun <T> runBlocking(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
+actual inline fun <T> runBlockingMpp(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
     coroutineCode()
 }
 

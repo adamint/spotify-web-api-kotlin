@@ -1,7 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.SpotifyException.AuthenticationException
 import kotlin.random.Random
+import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import spark.Spark.exception
@@ -41,13 +43,25 @@ class PkceTest : Spek({
                             code,
                             pkceCodeVerifier,
                             SpotifyApiOptionsBuilder(
-                                    onTokenRefresh = { println("refreshed token") }
+                                    onTokenRefresh = { println("refreshed token") },
+                                    testTokenValidity = true
                             )
                     ).build()
-                    println(api.token)
+                    val token = api.token.copy(expiresIn = -1)
                     api.refreshToken()
-                    println(api.token)
+                    // test that using same token will fail with auth exception
+
+                    assertFailsWith<AuthenticationException> {
+                        spotifyClientPkceApi(
+                                _clientId,
+                                serverRedirectUri,
+                                token,
+                                pkceCodeVerifier
+                        ).build().library.getSavedTracks().complete()
+                    }
+
                     val username = api.users.getClientProfile().complete().displayName
+
                     stop = true
                     "Successfully authenticated $username with PKCE and refreshed the token."
                 } else "err."
