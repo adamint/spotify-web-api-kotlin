@@ -2,7 +2,10 @@
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.SpotifyException.AuthenticationException
+import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyException.ParseException
+import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.adamratzman.spotify.models.serialization.nonstrictJson
@@ -119,7 +122,6 @@ class HttpConnection constructor(
                 }
 
                 val body = response.readText()
-
                 if (respCode == 401 && body.contains("access token") &&
                         api != null && api.automaticRefresh
                 ) {
@@ -144,8 +146,13 @@ class HttpConnection constructor(
             throw e
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
-            val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
-            throw SpotifyException.BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
+            try {
+                val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
+                throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
+            } catch (ignored: ParseException) {
+                val error = errorBody.toObject(AuthenticationError.serializer(), api, api?.json ?: nonstrictJson)
+                throw AuthenticationException(error)
+            }
         }
     }
 
