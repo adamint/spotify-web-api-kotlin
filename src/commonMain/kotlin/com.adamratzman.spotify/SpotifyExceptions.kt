@@ -39,7 +39,10 @@ sealed class SpotifyException(message: String, cause: Throwable? = null) : Excep
 
     class ParseException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 
-    class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
+    class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause) {
+        constructor(authenticationError: AuthenticationError) :
+                this("Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}")
+    }
 
     class TimeoutException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 }
