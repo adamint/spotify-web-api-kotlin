@@ -22,10 +22,12 @@ import com.adamratzman.spotify.models.serialization.toJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
-import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.json
+import kotlinx.serialization.json.put
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlayerApi"))
 typealias ClientPlayerAPI = ClientPlayerApi
@@ -46,7 +48,7 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     fun getDevices(): SpotifyRestAction<List<Device>> {
         return toAction {
-            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(Device.serializer().list, "devices", json)
+            get(EndpointBuilder("/me/player/devices").toString()).toInnerObject(ListSerializer(Device.serializer()), "devices", json)
         }
     }
 
@@ -266,17 +268,17 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             val url = EndpointBuilder("/me/player/play").with("device_id", deviceId).toString()
             val body = jsonMap()
             when {
-                collection != null -> body += json { "context_uri" to collection.uri }
-                tracksToPlay.isNotEmpty() -> body += json {
-                    "uris" to JsonArray(
-                            tracksToPlay.map { it.uri }.map(::JsonPrimitive)
-                    )
+                collection != null -> body += buildJsonObject { put("context_uri", collection.uri) }
+                tracksToPlay.isNotEmpty() -> body += buildJsonObject {
+                    put("uris", JsonArray(
+                        tracksToPlay.map { it.uri }.map(::JsonPrimitive)
+                    ))
                 }
             }
             if (body.keys.isNotEmpty()) {
-                if (offsetNum != null) body += json { "offset" to json { "position" to offsetNum } }
-                else if (offsetPlayable != null) body += json {
-                    "offset" to json { "uri" to offsetPlayable.uri }
+                if (offsetNum != null) body += buildJsonObject { put("offset", buildJsonObject { put("position", offsetNum) }) }
+                else if (offsetPlayable != null) body += buildJsonObject {
+                    put("offset", buildJsonObject { put("uri", offsetPlayable.uri) })
                 }
                 put(url, body.toJson())
             } else put(url)
@@ -327,8 +329,8 @@ class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         //    require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
         return toAction {
             val json = jsonMap()
-            play?.let { json += json { "play" to it } }
-            json += json { "device_ids" to JsonArray(listOf(deviceId).map(::JsonPrimitive)) }
+            play?.let { json += buildJsonObject { put("play", it) } }
+            json += buildJsonObject { put("device_ids", JsonArray(listOf(deviceId).map(::JsonPrimitive))) }
             put(EndpointBuilder("/me/player").toString(), json.toJson())
             Unit
         }

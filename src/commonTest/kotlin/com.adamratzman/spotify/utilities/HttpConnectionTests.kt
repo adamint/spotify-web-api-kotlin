@@ -7,13 +7,13 @@ import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-@UnstableDefault
 class HttpConnectionTests : Spek({
     describe("http connection testing") {
         describe("get request") {
@@ -23,7 +23,7 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
             it("get request response code") {
                 assertEquals(200, response.responseCode)
@@ -33,7 +33,7 @@ class HttpConnectionTests : Spek({
                 val requestHeader = body["headers"]
                 assertTrue {
                     // ignore the user-agent because of the version in it
-                    requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
+                    requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
                             mapOf(
                                     "Accept" to "*/*",
                                     "Host" to "httpbin.org",
@@ -44,7 +44,7 @@ class HttpConnectionTests : Spek({
             }
 
             it("get request query string") {
-                assertEquals("string", body["args"]!!.jsonObject.getPrimitive("query").content)
+                assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
             }
         }
 
@@ -55,7 +55,7 @@ class HttpConnectionTests : Spek({
                     null,
                     "body",
                     "text/html"
-            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
             it("post request response code") {
                 assertEquals(200, response.responseCode)
@@ -64,7 +64,7 @@ class HttpConnectionTests : Spek({
             it("post request header") {
                 val requestHeader = body["headers"]
                 assertTrue {
-                    requestHeader!!.jsonObject.map { it.key to it.value.primitive.content }.containsAll(
+                    requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
                             mapOf(
                                     "Accept" to "*/*",
                                     "Host" to "httpbin.org",
@@ -76,11 +76,11 @@ class HttpConnectionTests : Spek({
             }
 
             it("post request query string") {
-                assertEquals("string", body["args"]!!.jsonObject.getPrimitive("query").content)
+                assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
             }
 
             it("post request body") {
-                assertEquals("body", body.jsonObject.getPrimitive("data").content)
+                assertEquals("body", body.jsonObject.getValue("data").jsonPrimitive.content)
             }
         }
 
@@ -91,7 +91,7 @@ class HttpConnectionTests : Spek({
                     null,
                     null,
                     "text/html"
-            ).executeBlocking().let { it to Json.parse(JsonObject.serializer(), it.body) }
+            ).executeBlocking().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
             it("delete request response code") {
                 assertEquals(200, response.responseCode)
