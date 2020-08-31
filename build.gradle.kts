@@ -87,7 +87,7 @@ val dokkaJar by tasks.registering(Jar::class) {
 }
 
 kotlin {
-    explicitApiWarning() // TODO change to error when library is fully updated?
+    explicitApiWarning()
 
     android {
         mavenPublication {
@@ -107,7 +107,7 @@ kotlin {
         }
     }
 
-    js(LEGACY) { // TODO use BOTH instead
+    js(LEGACY) {
         mavenPublication {
             artifactId = "spotify-api-kotlin-js"
             setupPom(artifactId)
