@@ -25,6 +25,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.parse
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
 typealias SearchAPI = SearchApi
@@ -121,7 +122,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
         return toAction {
             val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
-            val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
+            val map = json.decodeFromString(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
             SpotifySearchResult(
                     map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
