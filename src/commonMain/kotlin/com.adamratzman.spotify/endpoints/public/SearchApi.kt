@@ -121,7 +121,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
         return toAction {
             val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
-            val map = json.parse(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
+            val map = json.decodeFromString(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
             SpotifySearchResult(
                     map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),

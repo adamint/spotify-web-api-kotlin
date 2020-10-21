@@ -10,6 +10,7 @@ import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
 
@@ -45,7 +46,7 @@ open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
                                 .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-                ).toList(Boolean.serializer().list, api, json)
+                ).toList(ListSerializer(Boolean.serializer()), api, json)
             }.flatten()
         }
     }

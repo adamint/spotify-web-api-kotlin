@@ -145,7 +145,7 @@ class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            val errorBody = e.response.readText()
+            val errorBody = e.response?.readText() ?: throw BadRequestException("Request $this failed", e)
             try {
                 val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
                 throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))

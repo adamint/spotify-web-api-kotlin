@@ -15,7 +15,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -364,10 +363,10 @@ class UrisTests : Spek({
         }
     }
     describe("Uri serialization test") {
-        val json = Json(JsonConfiguration.Stable)
+        val json = Json { allowStructuredMapKeys = true }
         it("create UserUri from json by using SpotifyUri.serializer()") {
             val spotifyUri: SpotifyUri =
-                json.parse(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                    json.decodeFromString(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 UserUri::class,
                 spotifyUri::class
@@ -378,7 +377,7 @@ class UrisTests : Spek({
             )
         }
         it("create UserUri from json by using UserUri.serializer()") {
-            val userUri = json.parse(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            val userUri = json.decodeFromString(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
@@ -386,11 +385,11 @@ class UrisTests : Spek({
         }
         it("try creating UserUri from json with id by using SpotifyUri.serializer()") {
             assertFailsWith<SpotifyUriException> {
-                json.parse(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                json.decodeFromString(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             }
         }
         it("create UserUri from json with id by using UserUri.serializer()") {
-            val userUri = json.parse(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            val userUri = json.decodeFromString(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
