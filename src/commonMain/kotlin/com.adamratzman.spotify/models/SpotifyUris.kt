@@ -2,15 +2,14 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyException
-import kotlinx.serialization.Decoder
-import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.PrimitiveDescriptor
-import kotlinx.serialization.PrimitiveKind
-import kotlinx.serialization.PrimitiveKind.STRING
-import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * Exception instantiating or deserializing a uri perceived as invalid
@@ -39,7 +38,7 @@ private fun String.remove(type: String, allowColon: Boolean): String {
 }
 
 private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSerializer<T> {
-    override val descriptor: SerialDescriptor = PrimitiveDescriptor("SimpleUri", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("SimpleUri", PrimitiveKind.STRING)
     override fun deserialize(decoder: Decoder): T = ctor(decoder.decodeString())
     override fun serialize(encoder: Encoder, value: T) = encoder.encodeString(value.uri)
 }
@@ -50,6 +49,7 @@ private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSe
  * @property uri retrieve this URI as a string
  * @property id representation of this uri as an id
  */
+@Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = false) {
     val uri: String
@@ -79,7 +79,7 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
 
     @Serializer(forClass = SpotifyUri::class)
     companion object : KSerializer<SpotifyUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("SpotifyUri", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("SpotifyUri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): SpotifyUri = SpotifyUri(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: SpotifyUri) = encoder.encodeString(value.uri)
 
@@ -140,12 +140,14 @@ sealed class SpotifyUri(input: String, val type: String, allowColon: Boolean = f
     }
 }
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 sealed class CollectionUri(input: String, type: String, allowColon: Boolean = false) :
     SpotifyUri(input, type, allowColon) {
+
     @Serializer(forClass = CollectionUri::class)
     companion object : KSerializer<CollectionUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("CollectionUri", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("CollectionUri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): CollectionUri = CollectionUri(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: CollectionUri) = encoder.encodeString(value.uri)
 
@@ -159,12 +161,14 @@ sealed class CollectionUri(input: String, type: String, allowColon: Boolean = fa
     }
 }
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 sealed class ImmutableCollectionUri(input: String, type: String, allowColon: Boolean = false) :
     CollectionUri(input, type, allowColon) {
+
     @Serializer(forClass = ImmutableCollectionUri::class)
     companion object : KSerializer<ImmutableCollectionUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("ImmutableCollection", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ImmutableCollection", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): ImmutableCollectionUri =
             ImmutableCollectionUri(decoder.decodeString())
 
@@ -180,12 +184,14 @@ sealed class ImmutableCollectionUri(input: String, type: String, allowColon: Boo
     }
 }
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 sealed class PlayableUri(input: String, type: String, allowColon: Boolean = false) :
     SpotifyUri(input, type, allowColon) {
+
     @Serializer(forClass = PlayableUri::class)
     companion object : KSerializer<PlayableUri> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("PlayableUri", STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("PlayableUri", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): PlayableUri = PlayableUri(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: PlayableUri) = encoder.encodeString(value.uri)
 

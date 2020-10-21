@@ -21,6 +21,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.list
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("PlaylistApi"))
@@ -142,7 +143,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction {
             get(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
-                    .toList(SpotifyImage.serializer().list, api, json).toList()
+                    .toList(ListSerializer(SpotifyImage.serializer()), api, json).toList()
         }
     }
 }
