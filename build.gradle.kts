@@ -26,7 +26,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
     }
 }
 
@@ -130,15 +130,15 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.7"
-            val serializationVersion = "0.20.0"
+            val coroutineVersion = "1.3.9"
+            val serializationVersion = "1.0.0-RC"
             val spekVersion = "2.0.11"
-            val ktorVersion = "1.3.2"
+            val ktorVersion = "1.4.0"
 
             val commonMain by getting {
                 dependencies {
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                     api("io.ktor:ktor-client-core:$ktorVersion")
 
                     implementation(kotlin("stdlib-common"))
@@ -160,7 +160,7 @@ kotlin {
 
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                     api("io.ktor:ktor-client-cio:$ktorVersion")
                     implementation(kotlin("stdlib-jdk8"))
                 }
@@ -182,7 +182,7 @@ kotlin {
                 dependencies {
                     api(npm("text-encoding", "0.7.0"))
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-core-js:$serializationVersion")
                     api("io.ktor:ktor-client-js:$ktorVersion")
                     api(npm("abort-controller", "3.0.0"))
                     api(npm("node-fetch", "2.6.0"))
@@ -207,7 +207,7 @@ kotlin {
                 dependencies {
                     api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                     api("io.ktor:ktor-client-okhttp:$ktorVersion")
                     api("io.coil-kt:coil:0.11.0")
                     implementation(kotlin("stdlib-jdk8"))
