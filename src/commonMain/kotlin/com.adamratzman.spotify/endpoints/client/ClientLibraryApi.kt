@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
 
@@ -120,7 +121,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                 get(
                         EndpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
                                 .toString()
-                ).toList(Boolean.serializer().list, api, json)
+                ).toList(ListSerializer(Boolean.serializer()), api, json)
             }.flatten()
         }
     }

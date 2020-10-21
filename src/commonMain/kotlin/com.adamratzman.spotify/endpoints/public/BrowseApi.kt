@@ -25,6 +25,7 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
+import kotlinx.serialization.builtins.ListSerializer
 import kotlin.reflect.KClass
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
@@ -48,7 +49,7 @@ class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     fun getAvailableGenreSeeds(): SpotifyRestAction<List<String>> {
         return toAction {
             get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
-                    String.serializer().list,
+                    ListSerializer(String.serializer()),
                     "genres",
                     json
             )

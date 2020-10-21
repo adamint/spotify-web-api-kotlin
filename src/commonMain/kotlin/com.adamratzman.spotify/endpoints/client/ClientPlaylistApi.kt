@@ -32,7 +32,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.json
+import kotlinx.serialization.json.put
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlaylistApi"))
 typealias ClientPlaylistAPI = ClientPlaylistApi
@@ -73,10 +75,10 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         return toAction {
             val body = jsonMap()
-            body += json { "name" to name }
-            if (description != null) body += json { "description" to description }
-            if (public != null) body += json { "public" to public }
-            if (collaborative != null) body += json { "collaborative" to collaborative }
+            body += buildJsonObject { put("name", name) }
+            if (description != null) body += buildJsonObject { put("description", description) }
+            if (public != null) body += buildJsonObject { put("public", public) }
+            if (collaborative != null) body += buildJsonObject { put("collaborative", collaborative) }
             post(
                     EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").toString(),
                     body.toJson()
@@ -125,8 +127,8 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         return toAction {
             bulkRequest(100, tracks.toList()) { chunk ->
                 val body = jsonMap()
-                body += json { "uris" to JsonArray(chunk.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
-                if (position != null) body += json { "position" to position }
+                body += buildJsonObject { put("uris", JsonArray(chunk.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))) }
+                if (position != null) body += buildJsonObject { put("position", position) }
                 post(
                         EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                         body.toJson()
@@ -161,10 +163,10 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         description: String? = null
     ): SpotifyRestAction<Unit> {
         val body = jsonMap()
-        if (name != null) body += json { "name" to name }
-        if (public != null) body += json { "public" to public }
-        if (collaborative != null) body += json { "collaborative" to collaborative }
-        if (description != null) body += json { "description" to description }
+        if (name != null) body += buildJsonObject { put("name", name) }
+        if (public != null) body += buildJsonObject { put("public", public) }
+        if (collaborative != null) body += buildJsonObject { put("collaborative", collaborative) }
+        if (description != null) body += buildJsonObject { put("description", description) }
         require(body.isNotEmpty()) { "At least one option must not be null" }
         return toAction {
             put(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
@@ -264,10 +266,10 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     ): SpotifyRestAction<PlaylistSnapshot> {
         return toAction {
             val body = jsonMap()
-            body += json { "range_start" to reorderRangeStart }
-            body += json { "insert_before" to insertionPoint }
-            if (reorderRangeLength != null) body += json { "range_length" to reorderRangeLength }
-            if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
+            body += buildJsonObject { put("range_start", reorderRangeStart) }
+            body += buildJsonObject { put("insert_before", insertionPoint) }
+            if (reorderRangeLength != null) body += buildJsonObject { put("range_length", reorderRangeLength) }
+            if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
             put(
                     EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                     body.toJson()
@@ -292,7 +294,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     fun setClientPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction {
             val body = jsonMap()
-            body += json { "uris" to JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive)) }
+            body += buildJsonObject { put("uris", JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))) }
             put(
                     EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
                     body.toJson()
@@ -459,19 +461,19 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         return toAction {
             bulkRequest(100, tracks.toList()) { chunk ->
                 val body = jsonMap()
-                if (snapshotId != null) body += json { "snapshot_id" to snapshotId }
-                body += json {
-                    "tracks" to JsonArray(
+                if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
+                body += buildJsonObject {
+                    put("tracks", JsonArray(
                             chunk.map { (track, positions) ->
                                 val json = jsonMap()
-                                json += json { "uri" to PlayableUri(track).uri }
-                                if (positions?.positions?.isNotEmpty() == true) json += json {
-                                    "positions" to JsonArray(
+                                json += buildJsonObject { put("uri", PlayableUri(track).uri) }
+                                if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
+                                    put("positions", JsonArray(
                                             positions.positions.map(::JsonPrimitive)
-                                    )
+                                    ))
                                 }
                                 JsonObject(json)
-                            })
+                            }))
                 }
                 delete(
                         EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()

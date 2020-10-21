@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toList
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
 
@@ -90,7 +91,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
                 get(
                         EndpointBuilder("/me/following/contains").with("type", "user")
                                 .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
-                ).toList(Boolean.serializer().list, api, json)
+                ).toList(ListSerializer(Boolean.serializer()), api, json)
             }.flatten()
         }
     }
@@ -132,7 +133,7 @@ class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
                 get(
                         EndpointBuilder("/me/following/contains").with("type", "artist")
                                 .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
-                ).toList(Boolean.serializer().list, api, json)
+                ).toList(ListSerializer(Boolean.serializer()), api, json)
             }.flatten()
         }
     }
