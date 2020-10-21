@@ -1,5 +1,5 @@
 pluginManagement {
-    val mainKotlinVersion = "1.3.72"
+    val mainKotlinVersion = "1.4.10"
 
     resolutionStrategy {
         eachPlugin {
