@@ -1,20 +1,20 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
+public actual class SpotifyLogger actual constructor(public actual var enabled: Boolean) {
     private val redString = "\u001B[31m"
     private val orangeString = "\u001B[33m"
     private val resetString = "\u001B[0m"
 
-    actual fun logInfo(message: String) {
+    public actual fun logInfo(message: String) {
         if (enabled) println("Spotify Logger Info: $message")
     }
 
-    actual fun logWarning(message: String) {
+    public actual fun logWarning(message: String) {
         if (enabled) println("${orangeString}Spotify Logger Warning: $message$resetString")
     }
 
-    actual fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {
+    public actual fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {
         if (!enabled) return
 
         val error = StringBuilder(redString).apply {

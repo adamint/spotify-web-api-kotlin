@@ -3,8 +3,8 @@ package com.adamratzman.spotify.utils
 
 import org.w3c.files.File
 
-actual typealias BufferedImage = File
+public actual typealias BufferedImage = File
 
-actual typealias ConcurrentHashMap<K, V> = HashMap<K, V>
+public actual typealias ConcurrentHashMap<K, V> = HashMap<K, V>
 
-actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()
+public actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()

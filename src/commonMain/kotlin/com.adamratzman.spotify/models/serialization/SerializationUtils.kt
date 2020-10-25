@@ -102,8 +102,8 @@ internal fun <T : Any> String.toPagingObject(
                     innerObjectName,
                     endpoint,
                     json,
-                    true,
-                    false
+                    arbitraryInnerNameAllowed = true,
+                    skipInnerNameFirstIfPossible = false
             )
         } else throw jde
     }

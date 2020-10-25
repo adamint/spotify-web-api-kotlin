@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * @property width The image width in pixels. If unknown: null or not returned.
  */
 @Serializable
-data class SpotifyImage(
+public data class SpotifyImage(
     val height: Int? = null,
     val url: String,
     val width: Int? = null
@@ -23,4 +23,4 @@ data class SpotifyImage(
  * @property reason why the track is not available
  */
 @Serializable
-data class Restrictions(val reason: String)
+public data class Restrictions(val reason: String)

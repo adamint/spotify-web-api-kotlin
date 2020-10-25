@@ -3,10 +3,10 @@ package com.adamratzman.spotify.utils
 
 import android.graphics.Bitmap
 
-actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.ConcurrentHashMap<K, V>
+public actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.ConcurrentHashMap<K, V>
 
-actual typealias BufferedImage = Bitmap // TODO
+public actual typealias BufferedImage = Bitmap // TODO
 
-actual typealias File = java.io.File
+public actual typealias File = java.io.File
 
-actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()
+public actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()

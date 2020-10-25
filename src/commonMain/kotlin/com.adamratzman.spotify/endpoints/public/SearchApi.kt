@@ -27,7 +27,7 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
-typealias SearchAPI = SearchApi
+public typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
@@ -35,7 +35,7 @@ typealias SearchAPI = SearchApi
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
  */
-open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Describes which object to search for
      *
@@ -43,7 +43,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param id The internal com.adamratzman.spotify id
      */
-    enum class SearchType(internal val id: String) {
+    public enum class SearchType(internal val id: String) {
         ALBUM("album"),
         TRACK("track"),
         ARTIST("artist"),
@@ -110,7 +110,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
-    fun search(
+    public fun search(
         query: String,
         vararg searchTypes: SearchType,
         limit: Int? = api.defaultLimit,
@@ -140,7 +140,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -149,7 +149,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of full [Playlist] objects ordered by likelihood of correct match
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    fun searchPlaylist(
+    public fun searchPlaylist(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
@@ -167,7 +167,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -177,7 +177,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    fun searchArtist(
+    public fun searchArtist(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
@@ -195,7 +195,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -205,7 +205,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    fun searchAlbum(
+    public fun searchAlbum(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
@@ -223,7 +223,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
      * @param query Search query keywords and optional field filters and operators.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
@@ -233,7 +233,7 @@ open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    fun searchTrack(
+    public fun searchTrack(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,

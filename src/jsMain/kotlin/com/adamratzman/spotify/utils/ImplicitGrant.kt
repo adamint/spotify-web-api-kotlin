@@ -1,22 +1,24 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
+@file:Suppress("unused")
+
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.models.Token
-import kotlin.browser.window
+import kotlinx.browser.window
 import org.w3c.dom.url.URLSearchParams
 
 /**
  * Parse the current url into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]
  */
-fun parseSpotifyCallbackHashToToken() = parseSpotifyCallbackHashToToken(window.location.hash.substring(1))
+public fun parseSpotifyCallbackHashToToken(): Token = parseSpotifyCallbackHashToToken(window.location.hash.substring(1))
 
 /**
  * Parse the hash string into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]
  *
  * @param hashString The Spotify hash string containing access_token, token_type, and expires_in.
  */
-fun parseSpotifyCallbackHashToToken(hashString: String): Token {
+public fun parseSpotifyCallbackHashToToken(hashString: String): Token {
     val hash = URLSearchParams(hashString)
 
     return Token(

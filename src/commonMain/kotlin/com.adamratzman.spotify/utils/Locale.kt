@@ -49,7 +49,7 @@ package com.adamratzman.spotify.utils
  *
  * @author Takahiko Kawasaki
  */
-enum class Locale(val language: Language, val country: Market) {
+public enum class Locale(public val language: Language, public val country: Market) {
     /**
      * [Arabic][Language.ar]
      */
@@ -736,8 +736,8 @@ enum class Locale(val language: Language, val country: Market) {
         return name
     }
 
-    companion object {
-        fun from(language: Language, country: Market): Locale? {
+    public companion object {
+        public fun from(language: Language, country: Market): Locale? {
             return values().find { locale -> locale.language == language && locale.country == country }
         }
     }
