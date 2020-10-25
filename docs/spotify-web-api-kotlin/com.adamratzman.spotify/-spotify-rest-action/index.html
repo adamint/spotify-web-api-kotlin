@@ -9,14 +9,14 @@
 <br/>
 <h1>SpotifyRestAction</h1>
 <a name="com.adamratzman.spotify.SpotifyRestAction"></a>
-(common, js, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyRestAction</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+(common, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyRestAction</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
 <p>Provides a uniform interface to retrieve, whether synchronously or asynchronously, <a href="index.html#T">T</a> from Spotify</p>
 <h3>Properties</h3>
 <table>
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="api.html">api</a></h4>
 </td>
 <td>
@@ -24,7 +24,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="scope.html">scope</a></h4>
 </td>
 <td>
@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="supplier.html">supplier</a></h4>
 </td>
 <td>
@@ -45,7 +45,7 @@
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="complete.html">complete</a></h4>
 </td>
 <td>
@@ -54,7 +54,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="has-completed.html">hasCompleted</a></h4>
 </td>
 <td>
@@ -63,7 +63,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="has-run.html">hasRun</a></h4>
 </td>
 <td>
@@ -72,7 +72,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="queue.html">queue</a></h4>
 </td>
 <td>
@@ -84,13 +84,13 @@
 <h4><a href="queue-after.html">queueAfter</a></h4>
 </td>
 <td>
-<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously immediately and invoke <a href="queue-after.html#com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> after the specified quantity of time</p>
-(jvm) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
-(common, js) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously immediately and invoke <a href="queue-after.html#com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> after the specified quantity of time</p>
+(common) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+(jvm) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="suspend-complete.html">suspendComplete</a></h4>
 </td>
 <td>
@@ -99,7 +99,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="suspend-queue.html">suspendQueue</a></h4>
 </td>
 <td>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="to-string.html">toString</a></h4>
 </td>
 <td>
@@ -135,7 +135,7 @@
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="../-spotify-rest-action-paging/index.html">SpotifyRestActionPaging</a></h4>
 </td>
 <td>

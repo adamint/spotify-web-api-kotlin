@@ -9,7 +9,7 @@
 <br/>
 <h1>SpotifyClientApi</h1>
 <a name="com.adamratzman.spotify.SpotifyClientApi"></a>
-(common, js, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyClientApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">SpotifyClientApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a><span class="symbol">&gt;</span></code>
+(common, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyClientApi</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-spotify-api/index.html"><span class="identifier">SpotifyApi</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">SpotifyClientApi</span></a><span class="symbol">,</span>&nbsp;<a href="../-spotify-client-api-builder/index.html"><span class="identifier">SpotifyClientApiBuilder</span></a><span class="symbol">&gt;</span></code>
 <p>An API instance created through client authentication, with access to private information
 managed through the scopes exposed in <a href="../-spotify-api/token.html#com.adamratzman.spotify.SpotifyApi$token">token</a></p>
 <h3>Constructors</h3>
@@ -17,14 +17,14 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="-init-.html">&lt;init&gt;</a></h4>
 </td>
 <td>
 <code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/usesPkceAuth">usesPkceAuth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, com.adamratzman.spotify.SpotifyApiOptions)/options">options</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-api-options/index.html"><span class="identifier">SpotifyApiOptions</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SpotifyApiOptionsBuilder().build()<span class="symbol">)</span></code>
 <p>An API instance created through client authentication, with access to private information
 managed through the scopes exposed in <a href="../-spotify-api/token.html#com.adamratzman.spotify.SpotifyApi$token">token</a></p>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/useCache">useCache</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/cacheLimit">cacheLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/automaticRefresh">automaticRefresh</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/retryWhenRateLimited">retryWhenRateLimited</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/enableLogger">enableLogger</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/testTokenValidity">testTokenValidity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/defaultLimit">defaultLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/allowBulkRequests">allowBulkRequests</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/requestTimeoutMillis">requestTimeoutMillis</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/json">json</span><span class="symbol">:</span>&nbsp;<span class="identifier">Json</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/refreshTokenProducer">refreshTokenProducer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="keyword">suspend </span><span class="symbol">(</span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">)</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/usesPkceAuth">usesPkceAuth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/onTokenRefresh">onTokenRefresh</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="keyword">suspend </span><span class="symbol">(</span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/requiredScopes">requiredScopes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span></code></td>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/useCache">useCache</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/cacheLimit">cacheLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/automaticRefresh">automaticRefresh</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/retryWhenRateLimited">retryWhenRateLimited</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/enableLogger">enableLogger</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/defaultLimit">defaultLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/allowBulkRequests">allowBulkRequests</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/requestTimeoutMillis">requestTimeoutMillis</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/json">json</span><span class="symbol">:</span>&nbsp;<span class="identifier">Json</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/refreshTokenProducer">refreshTokenProducer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="keyword">suspend </span><span class="symbol">(</span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">)</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/usesPkceAuth">usesPkceAuth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/onTokenRefresh">onTokenRefresh</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="keyword">suspend </span><span class="symbol">(</span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyClientApi$<init>(kotlin.String, kotlin.String, kotlin.String, com.adamratzman.spotify.models.Token, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean, kotlin.Int, kotlin.Boolean, kotlin.Long, kotlinx.serialization.json.Json, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), com.adamratzman.spotify.models.Token)), kotlin.Boolean, kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyApi((, com.adamratzman.spotify.ISpotifyApiBuilder((, )))), kotlin.Unit)), kotlin.collections.List((com.adamratzman.spotify.SpotifyScope)))/requiredScopes">requiredScopes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-scope/index.html"><span class="identifier">SpotifyScope</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -33,7 +33,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="albums.html">albums</a></h4>
 </td>
 <td>
@@ -42,7 +42,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="artists.html">artists</a></h4>
 </td>
 <td>
@@ -51,7 +51,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="browse.html">browse</a></h4>
 </td>
 <td>
@@ -60,7 +60,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="endpoints.html">endpoints</a></h4>
 </td>
 <td>
@@ -69,7 +69,7 @@ managed through the scopes exposed in <a href="../-spotify-api/token.html#com.ad
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="episodes.html">episodes</a></h4>
 </td>
 <td>
@@ -79,7 +79,7 @@ information about one or more episodes from the Spotify catalog.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="following.html">following</a></h4>
 </td>
 <td>
@@ -90,7 +90,7 @@ the artists, users, and playlists that a Spotify user follows.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="library.html">library</a></h4>
 </td>
 <td>
@@ -100,7 +100,7 @@ retrieving information about, and managing, tracks that the current user has sav
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="personalization.html">personalization</a></h4>
 </td>
 <td>
@@ -110,7 +110,7 @@ retrieving information about the user’s listening habits.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="player.html">player</a></h4>
 </td>
 <td>
@@ -120,7 +120,7 @@ including track playing and pausing endpoints.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="playlists.html">playlists</a></h4>
 </td>
 <td>
@@ -131,7 +131,7 @@ information about a user’s playlists and for managing a user’s playlists.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="redirect-uri.html">redirectUri</a></h4>
 </td>
 <td>
@@ -139,7 +139,7 @@ information about a user’s playlists and for managing a user’s playlists.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="search.html">search</a></h4>
 </td>
 <td>
@@ -148,7 +148,7 @@ information about a user’s playlists and for managing a user’s playlists.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="shows.html">shows</a></h4>
 </td>
 <td>
@@ -158,7 +158,7 @@ information about one or more shows from the Spotify catalog.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="tracks.html">tracks</a></h4>
 </td>
 <td>
@@ -167,7 +167,7 @@ information about one or more shows from the Spotify catalog.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="user-id.html">userId</a></h4>
 </td>
 <td>
@@ -176,7 +176,7 @@ information about one or more shows from the Spotify catalog.</p>
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="users.html">users</a></h4>
 </td>
 <td>
@@ -187,7 +187,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="uses-pkce-auth.html">usesPkceAuth</a></h4>
 </td>
 <td>
@@ -200,7 +200,7 @@ retrieving information about a user’s profile.
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="get-api-builder.html">getApiBuilder</a></h4>
 </td>
 <td>
@@ -209,7 +209,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="get-api-builder-dsl.html">getApiBuilderDsl</a></h4>
 </td>
 <td>
@@ -218,7 +218,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="get-authorization-url.html">getAuthorizationUrl</a></h4>
 </td>
 <td>
@@ -227,7 +227,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="has-scope.html">hasScope</a></h4>
 </td>
 <td>
@@ -236,7 +236,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="has-scopes.html">hasScopes</a></h4>
 </td>
 <td>
@@ -245,7 +245,7 @@ retrieving information about a user’s profile.
 </tr>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="shutdown.html">shutdown</a></h4>
 </td>
 <td>
@@ -260,7 +260,7 @@ executor</p>
 <tbody>
 <tr>
 <td>
-(common, js, jvm) 
+(common, jvm) 
 <h4><a href="../-spotify-implicit-grant-api/index.html">SpotifyImplicitGrantApi</a></h4>
 </td>
 <td>
