@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.Playable - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">Playable</a><br/>
+<br/>
+<h1>Playable</h1>
+<a name="com.adamratzman.spotify.models.Playable"></a>
+(common, jvm) <code><span class="keyword">interface </span><span class="identifier">Playable</span></code>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="-companion.html">Companion</a></h4>
+</td>
+<td>
+<code><span class="keyword">companion</span> <span class="keyword">object </span><span class="identifier">Companion</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">KSerializer</span><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">Playable</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="href.html">href</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="type.html">type</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="uri.html">uri</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-playable-uri/index.html"><span class="identifier">PlayableUri</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="../-episode/index.html">Episode</a></h4>
+</td>
+<td>
+<p>An episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Episode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-core-object/index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="../-local-track/index.html">LocalTrack</a></h4>
+</td>
+<td>
+<p>Local track object that representing a song uploaded from a client locally</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">LocalTrack</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-identifiable-nullable/index.html"><span class="identifier">IdentifiableNullable</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="../-simple-episode/index.html">SimpleEpisode</a></h4>
+</td>
+<td>
+<p>A simplified episode (podcast) on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimpleEpisode</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-core-object/index.html"><span class="identifier">CoreObject</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="../-track/index.html">Track</a></h4>
+</td>
+<td>
+<p>Represents a music track on Spotify</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Track</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-relinking-available-response/index.html"><span class="identifier">RelinkingAvailableResponse</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Playable</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

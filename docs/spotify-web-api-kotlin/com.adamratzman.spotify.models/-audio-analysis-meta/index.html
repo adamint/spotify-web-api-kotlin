@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.AudioAnalysisMeta - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">AudioAnalysisMeta</a><br/>
+<br/>
+<h1>AudioAnalysisMeta</h1>
+<a name="com.adamratzman.spotify.models.AudioAnalysisMeta"></a>
+(common, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">AudioAnalysisMeta</span></code>
+<p>Information about the analysis run</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Information about the analysis run</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/analyzerVersion">analyzerVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/platform">platform</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/detailedStatus">detailedStatus</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/statusCode">statusCode</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/timestamp">timestamp</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/analysisTime">analysisTime</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysisMeta$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.Int, kotlin.Long, kotlin.Float, kotlin.String)/inputProcess">inputProcess</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="analysis-time.html">analysisTime</a></h4>
+</td>
+<td>
+<p>How long, in milliseconds, this analysis took to run</p>
+<code><span class="keyword">val </span><span class="identifier">analysisTime</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="analyzer-version.html">analyzerVersion</a></h4>
+</td>
+<td>
+<p>Which version of the Spotify analyzer the analysis was run on</p>
+<code><span class="keyword">val </span><span class="identifier">analyzerVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="detailed-status.html">detailedStatus</a></h4>
+</td>
+<td>
+<p>Whether there was an error in the analysis or "OK"</p>
+<code><span class="keyword">val </span><span class="identifier">detailedStatus</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="input-process.html">inputProcess</a></h4>
+</td>
+<td>
+<p>The process used in the analysis</p>
+<code><span class="keyword">val </span><span class="identifier">inputProcess</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="platform.html">platform</a></h4>
+</td>
+<td>
+<p>The OS the analysis was run on</p>
+<code><span class="keyword">val </span><span class="identifier">platform</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="status-code.html">statusCode</a></h4>
+</td>
+<td>
+<p>0 on success, any other integer on error</p>
+<code><span class="keyword">val </span><span class="identifier">statusCode</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="timestamp.html">timestamp</a></h4>
+</td>
+<td>
+<p>When this analysis was completed</p>
+<code><span class="keyword">val </span><span class="identifier">timestamp</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

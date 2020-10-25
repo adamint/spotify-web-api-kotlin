@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.adamratzman.spotify.models.AudioAnalysis - spotify-web-api-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">AudioAnalysis</a><br/>
+<br/>
+<h1>AudioAnalysis</h1>
+<a name="com.adamratzman.spotify.models.AudioAnalysis"></a>
+(common, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">AudioAnalysis</span></code>
+<p>The Audio Analysis endpoint provides low-level audio analysis for all of the tracks
+in the Spotify catalog. The Audio Analysis describes the track’s structure
+and musical content, including rhythm, pitch, and timbre. All information is
+precise to the audio sample. Many elements of analysis include confidence values,
+a floating-point number ranging from 0.0 to 1.0. Confidence indicates the reliability
+of its corresponding attribute. Elements carrying a small confidence value should
+be considered speculative. There may not be sufficient data in the audio to
+compute the attribute with high certainty.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>The Audio Analysis endpoint provides low-level audio analysis for all of the tracks
+in the Spotify catalog. The Audio Analysis describes the track’s structure
+and musical content, including rhythm, pitch, and timbre. All information is
+precise to the audio sample. Many elements of analysis include confidence values,
+a floating-point number ranging from 0.0 to 1.0. Confidence indicates the reliability
+of its corresponding attribute. Elements carrying a small confidence value should
+be considered speculative. There may not be sufficient data in the audio to
+compute the attribute with high certainty.</p>
+<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/bars">bars</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/beats">beats</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/meta">meta</span><span class="symbol">:</span>&nbsp;<a href="../-audio-analysis-meta/index.html"><span class="identifier">AudioAnalysisMeta</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/sections">sections</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-audio-section/index.html"><span class="identifier">AudioSection</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/segments">segments</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-audio-segment/index.html"><span class="identifier">AudioSegment</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/tatums">tatums</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.AudioAnalysis$<init>(kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.AudioAnalysisMeta, kotlin.collections.List((com.adamratzman.spotify.models.AudioSection)), kotlin.collections.List((com.adamratzman.spotify.models.AudioSegment)), kotlin.collections.List((com.adamratzman.spotify.models.TimeInterval)), com.adamratzman.spotify.models.TrackAnalysis)/track">track</span><span class="symbol">:</span>&nbsp;<a href="../-track-analysis/index.html"><span class="identifier">TrackAnalysis</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="bars.html">bars</a></h4>
+</td>
+<td>
+<p>The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as
+a given number of beats. Bar offsets also indicate downbeats, the first beat of the measure.</p>
+<code><span class="keyword">val </span><span class="identifier">bars</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="beats.html">beats</a></h4>
+</td>
+<td>
+<p>The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music;
+for example, each tick of a metronome. Beats are typically multiples of tatums.</p>
+<code><span class="keyword">val </span><span class="identifier">beats</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="meta.html">meta</a></h4>
+</td>
+<td>
+<p>Analysis meta information (limited use)</p>
+<code><span class="keyword">val </span><span class="identifier">meta</span><span class="symbol">: </span><a href="../-audio-analysis-meta/index.html"><span class="identifier">AudioAnalysisMeta</span></a></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="sections.html">sections</a></h4>
+</td>
+<td>
+<p>Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge, guitar
+solo, etc. Each section contains its own descriptions of tempo, key, mode, time_signature, and loudness.</p>
+<code><span class="keyword">val </span><span class="identifier">sections</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-audio-section/index.html"><span class="identifier">AudioSection</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="segments.html">segments</a></h4>
+</td>
+<td>
+<p>Audio segments attempts to subdivide a song into many segments, with each segment containing
+a roughly consitent sound throughout its duration.</p>
+<code><span class="keyword">val </span><span class="identifier">segments</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-audio-segment/index.html"><span class="identifier">AudioSegment</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="tatums.html">tatums</a></h4>
+</td>
+<td>
+<p>A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing
+of perceived musical events (segments).</p>
+<code><span class="keyword">val </span><span class="identifier">tatums</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-time-interval/index.html"><span class="identifier">TimeInterval</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+(common, jvm) 
+<h4><a href="track.html">track</a></h4>
+</td>
+<td>
+<p>An analysis of the track as a whole. Undocumented on Spotify's side.</p>
+<code><span class="keyword">val </span><span class="identifier">track</span><span class="symbol">: </span><a href="../-track-analysis/index.html"><span class="identifier">TrackAnalysis</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
