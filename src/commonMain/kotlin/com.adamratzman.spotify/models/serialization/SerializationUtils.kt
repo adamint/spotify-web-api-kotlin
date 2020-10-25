@@ -17,9 +17,7 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.parse
 
-@Suppress("EXPERIMENTAL_API_USAGE")
 internal val nonstrictJson =
         Json {
             isLenient = true

@@ -40,7 +40,7 @@ class PublicArtistsApiTest : Spek({
             }
             it("valid artist") {
                 assertTrue(a.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", 10,
-                    include = *arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
+                    include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
                 )
                         .complete().items.asSequence().map { it.name }.contains("Louane"))
             }

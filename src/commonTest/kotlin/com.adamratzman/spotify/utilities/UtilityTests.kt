@@ -62,7 +62,7 @@ class UtilityTests : Spek({
 
             it("Refresh on invalid token") {
                 if (api == null) return@it
-                val api = spotifyAppApi {
+                @Suppress("UNUSED_VARIABLE") val api = spotifyAppApi {
                     credentials {
                         clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
                         clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
