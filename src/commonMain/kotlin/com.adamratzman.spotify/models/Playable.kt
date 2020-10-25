@@ -10,6 +10,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
+/**
+ * A Playable object represents a [Track], [Episode], or [LocalTrack] that has been returned by the Spotify api.
+ *
+ * @property href A link to the Web API endpoint providing full details of the album.
+ * @property id The Spotify ID for the album.
+ * @property uri The URI associated with the object
+ * @property type The object type
+ */
 interface Playable {
     val href: String?
     val id: String?
@@ -33,4 +41,19 @@ interface Playable {
             }
         }
     }
+
+    /**
+     * This Playable object as a [LocalTrack]
+     */
+    val asLocalTrack get() = this as LocalTrack
+
+    /**
+     * This Playable object as a [Track]
+     */
+    val asTrack get() = this as Track
+
+    /**
+     * This Playable object as an [Episode]
+     */
+    val asEpisode get() = this as Episode
 }

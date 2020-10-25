@@ -9,11 +9,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.getPrimitive
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.primitive
-import kotlinx.serialization.parse
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
