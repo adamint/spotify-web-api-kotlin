@@ -18,28 +18,28 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("TrackApi"))
-typealias TracksAPI = TrackApi
+public typealias TracksAPI = TrackApi
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("TrackApi"))
-typealias TrackAPI = TrackApi
+public typealias TrackAPI = TrackApi
 
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/)**
  */
-class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single track identified by its unique Spotify ID.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/)**
      *
      * @param track The com.adamratzman.spotify id or uri for the track.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      *
      * @return possibly-null Track. This behavior is *the same* as in [getTracks]
      */
-    fun getTrack(track: String, market: Market? = null): SpotifyRestAction<Track?> {
+    public fun getTrack(track: String, market: Market? = null): SpotifyRestAction<Track?> {
         return toAction {
             catch {
                 get(
@@ -58,11 +58,11 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
      *
      * @param tracks The com.adamratzman.spotify id or uri for the tracks. Maximum **50**.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      *
      * @return List of possibly-null full [Track] objects.
      */
-    fun getTracks(vararg tracks: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
+    public fun getTracks(vararg tracks: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
         checkBulkRequesting(50, tracks.size)
         return toAction {
             bulkRequest(50, tracks.toList()) { chunk ->
@@ -92,7 +92,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [track] cannot be found
      */
-    fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
+    public fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
         return toAction {
             get(EndpointBuilder("/audio-analysis/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioAnalysis.serializer(), api, json)
@@ -108,7 +108,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [track] cannot be found
      */
-    fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
+    public fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
         return toAction {
             get(EndpointBuilder("/audio-features/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioFeatures.serializer(), api, json)
@@ -124,7 +124,7 @@ class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return Ordered list of possibly-null [AudioFeatures] objects.
      */
-    fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
+    public fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
         checkBulkRequesting(100, tracks.size)
         return toAction {
             bulkRequest(100, tracks.toList()) { chunk ->

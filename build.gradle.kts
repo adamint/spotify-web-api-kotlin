@@ -26,12 +26,12 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
     }
 }
 
 group = "com.adamratzman"
-version = "3.2.14"
+version = "3.2.15"
 
 tasks.withType<Test> {
     this.testLogging {

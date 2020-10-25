@@ -24,14 +24,14 @@ import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("PlaylistApi"))
-typealias PlaylistAPI = PlaylistApi
+public typealias PlaylistAPI = PlaylistApi
 
 /**
  * Endpoints for retrieving information about a user’s playlists
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/)**
  */
-open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
      * [PagingObject] (blame Spotify)
@@ -54,7 +54,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the user is not found (404)
      *
      */
-    fun getUserPlaylists(
+    public fun getUserPlaylists(
         user: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null
@@ -69,11 +69,11 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
-    fun getPlaylists(
+    public fun getPlaylists(
         user: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null
-    ) = getUserPlaylists(user, limit, offset)
+    ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> = getUserPlaylists(user, limit, offset)
 
     /**
      * Get a playlist owned by a Spotify user.
@@ -83,11 +83,11 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/)**
      *
      * @param playlist The com.adamratzman.spotify id or uri for the playlist.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      *
      * @throws BadRequestException if the playlist is not found
      */
-    fun getPlaylist(playlist: String, market: Market? = null): SpotifyRestAction<Playlist?> {
+    public fun getPlaylist(playlist: String, market: Market? = null): SpotifyRestAction<Playlist?> {
         return toAction {
             catch {
                 get(
@@ -106,13 +106,13 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/)**
      *
      * @param playlist The com.adamratzman.spotify id or uri for the playlist.
-     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking)
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistTracks(
+    public fun getPlaylistTracks(
         playlist: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
@@ -139,7 +139,7 @@ open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
+    public fun getPlaylistCovers(playlist: String): SpotifyRestAction<List<SpotifyImage>> {
         return toAction {
             get(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
                     .toList(ListSerializer(SpotifyImage.serializer()), api, json).toList()

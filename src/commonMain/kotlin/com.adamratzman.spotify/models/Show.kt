@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
@@ -12,7 +13,7 @@ import kotlinx.serialization.Transient
  *
  */
 @Serializable
-data class BasicShowInformation(
+public data class BasicShowInformation(
     val uri: ShowUri
 )
 
@@ -32,7 +33,7 @@ data class BasicShowInformation(
  * @property type The object type: “show”.
  */
 @Serializable
-data class SimpleShow(
+public data class SimpleShow(
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     val copyrights: List<SpotifyCopyright>,
@@ -50,16 +51,16 @@ data class SimpleShow(
     override val uri: ShowUri
 ) : CoreObject() {
     @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
 
-    val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
+    val languages: List<Locale> get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 
     /**
      * Converts this [SimpleShow] to a full [Show] object
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullShow(market: Market? = null) = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
+    public fun toFullShow(market: Market? = null): SpotifyRestAction<Show?>? = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
 }
 
 /**
@@ -79,7 +80,7 @@ data class SimpleShow(
  * @property episodes A [NullablePagingObject] of the show’s episodes.
  */
 @Serializable
-data class Show(
+public data class Show(
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     val copyrights: List<SpotifyCopyright>,
     val description: String,
@@ -97,10 +98,9 @@ data class Show(
     val type: String,
     override val uri: ShowUri
 ) : CoreObject() {
-    @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
-    val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
+    val languages: List<Locale> get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 }
 
 @Serializable

@@ -14,14 +14,14 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("FollowingApi"))
-typealias FollowingAPI = FollowingApi
+public typealias FollowingAPI = FollowingApi
 
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/)**
  */
-open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check to see if one or more Spotify users are following a specified playlist.
      *
@@ -34,7 +34,7 @@ open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
      */
-    fun areFollowingPlaylist(
+    public fun areFollowingPlaylist(
         playlist: String,
         vararg users: String
     ): SpotifyRestAction<List<Boolean>> {
@@ -62,11 +62,11 @@ open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws [BadRequestException] if the playlist is not found or if the user does not exist
      */
-    fun isFollowingPlaylist(playlist: String, user: String): SpotifyRestAction<Boolean> {
+    public fun isFollowingPlaylist(playlist: String, user: String): SpotifyRestAction<Boolean> {
         return toAction {
             areFollowingPlaylist(
                     playlist,
-                    users = *arrayOf(user)
+                    users = arrayOf(user)
             ).complete()[0]
         }
     }

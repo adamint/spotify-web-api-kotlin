@@ -5,16 +5,16 @@ import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.ErrorObject
 import io.ktor.client.features.ResponseException
 
-sealed class SpotifyException(message: String, cause: Throwable? = null) : Exception(message, cause) {
-    abstract class UnNullableException(message: String) : SpotifyException(message)
+public sealed class SpotifyException(message: String, cause: Throwable? = null) : Exception(message, cause) {
+    public abstract class UnNullableException(message: String) : SpotifyException(message)
 
     /**
      * Thrown when a request fails
      */
-    open class BadRequestException(message: String, val statusCode: Int? = null, val reason: String? = null, cause: Throwable? = null) :
+    public open class BadRequestException(message: String, public val statusCode: Int? = null, public val reason: String? = null, cause: Throwable? = null) :
             SpotifyException(message, cause) {
-        constructor(message: String, cause: Throwable? = null) : this(message, null, null, cause)
-        constructor(error: ErrorObject?, cause: Throwable? = null) : this(
+        public constructor(message: String, cause: Throwable? = null) : this(message, null, null, cause)
+        public constructor(error: ErrorObject?, cause: Throwable? = null) : this(
                 "Received Status Code ${error?.status}. Error cause: ${error?.message}" + (error?.reason?.let { ". Reason: ${error.reason}" }
                         ?: ""),
                 error?.status,
@@ -22,13 +22,13 @@ sealed class SpotifyException(message: String, cause: Throwable? = null) : Excep
                 cause
         )
 
-        constructor(authenticationError: AuthenticationError) :
+        public constructor(authenticationError: AuthenticationError) :
                 this(
                         "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
                         401
                 )
 
-        constructor(responseException: ResponseException) :
+        public constructor(responseException: ResponseException) :
                 this(
                         responseException.message ?: "Bad Request",
                         responseException.response?.status?.value,
@@ -37,12 +37,12 @@ sealed class SpotifyException(message: String, cause: Throwable? = null) : Excep
                 )
     }
 
-    class ParseException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
+    public class ParseException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 
-    class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause) {
-        constructor(authenticationError: AuthenticationError?) :
+    public class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause) {
+        public constructor(authenticationError: AuthenticationError?) :
                 this("Authentication error: ${authenticationError?.error}. Description: ${authenticationError?.description}")
     }
 
-    class TimeoutException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
+    public class TimeoutException(message: String, cause: Throwable? = null) : SpotifyException(message, cause)
 }

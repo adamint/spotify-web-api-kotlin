@@ -47,7 +47,7 @@ import kotlinx.serialization.Serializable
  * @author Takahiko Kawasaki
  */
 @Serializable
-enum class Language {
+public enum class Language {
     /**
      * [Afar](http://en.wikipedia.org/wiki/Afar_language)
      * ([aar][LanguageAlpha3Code.aar]).
