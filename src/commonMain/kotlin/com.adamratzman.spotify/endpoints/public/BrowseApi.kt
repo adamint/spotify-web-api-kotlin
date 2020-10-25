@@ -25,9 +25,8 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
-import kotlinx.serialization.builtins.ListSerializer
 import kotlin.reflect.KClass
-import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))

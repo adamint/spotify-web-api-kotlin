@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -68,4 +69,15 @@ data class LocalTrack(
     @SerialName("track_number") val trackNumber: Int? = null,
     override val type: String,
     override val uri: LocalTrackUri
-) : IdentifiableNullable(), Playable
+) : IdentifiableNullable(), Playable {
+
+    /**
+     * Search for this local track by name in Spotify's track catalog.
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     */
+    fun searchForSpotifyTrack(limit: Int? = null, offset: Int? = null, market: Market? = null) = api.search.searchTrack(name, limit, offset, market)
+}
