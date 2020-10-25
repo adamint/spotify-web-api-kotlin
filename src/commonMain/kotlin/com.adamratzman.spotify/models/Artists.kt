@@ -24,8 +24,14 @@ data class SimpleArtist(
 ) : CoreObject() {
 
     /**
+     * This [SimpleArtist] into a full [Artist] object
+     */
+    val fullArtist by lazy { api.artists.getArtist(id) }
+
+    /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
+    @Deprecated("Replaced with a lazy fullArtist property", ReplaceWith("fullArtist"))
     fun toFullArtist() = api.artists.getArtist(id)
 }
 

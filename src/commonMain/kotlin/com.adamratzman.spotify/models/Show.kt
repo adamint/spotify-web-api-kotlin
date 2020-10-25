@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
@@ -53,7 +54,12 @@ data class SimpleShow(
 
     val languages get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 
-    // TODO  fun toFullShow(market: Market? = null) = api.tracks.getTrack(id, market)
+    /**
+     * Converts this [SimpleShow] to a full [Show] object
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
+    fun toFullShow(market: Market? = null) = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
 }
 
 /**
