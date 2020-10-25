@@ -32,7 +32,7 @@ class ClientPlaylistApiTest : Spek({
             val globalTop50Uri = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
             val globalViral50Uri = "spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
 
-            val tracks = runBlockingMpp {
+            @Suppress("UNUSED_VARIABLE") val tracks = runBlockingMpp {
                 listOf(
                         GlobalScope.async { api.playlists.getPlaylist(usTop50Uri).complete()!!.tracks.getAllItemsNotNull().complete().toList() },
                         GlobalScope.async { api.playlists.getPlaylist(globalTop50Uri).complete()!!.tracks.getAllItemsNotNull().suspendComplete().toList() },

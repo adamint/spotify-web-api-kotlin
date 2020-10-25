@@ -133,14 +133,14 @@ kotlin {
     targets {
         sourceSets {
             val coroutineVersion = "1.3.9"
-            val serializationVersion = "1.0.0-RC"
+            val serializationVersion = "1.0.0"
             val spekVersion = "2.0.11"
             val ktorVersion = "1.4.0"
 
             val commonMain by getting {
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                    api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     api("io.ktor:ktor-client-core:$ktorVersion")
                 }
             }
