@@ -1,90 +1,232 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.http - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../style.css">
-</HEAD>
-<BODY>
-<a href="../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="./index.html">com.adamratzman.spotify.http</a><br/>
-<br/>
-<h2>Package com.adamratzman.spotify.http</h2>
-<h3>Types</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-cache-state/index.html">CacheState</a></h4>
-</td>
-<td>
-<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">CacheState</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-http-connection/index.html">HttpConnection</a></h4>
-</td>
-<td>
-<p>Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests</p>
-<code><span class="keyword">class </span><span class="identifier">HttpConnection</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-http-connection-status/index.html">HttpConnectionStatus</a></h4>
-</td>
-<td>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">HttpConnectionStatus</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-http-header/index.html">HttpHeader</a></h4>
-</td>
-<td>
-<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">HttpHeader</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-http-request-method/index.html">HttpRequestMethod</a></h4>
-</td>
-<td>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">HttpRequestMethod</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-http-response/index.html">HttpResponse</a></h4>
-</td>
-<td>
-<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">HttpResponse</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-spotify-cache/index.html">SpotifyCache</a></h4>
-</td>
-<td>
-<code><span class="keyword">class </span><span class="identifier">SpotifyCache</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-spotify-endpoint/index.html">SpotifyEndpoint</a></h4>
-</td>
-<td>
-<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">SpotifyEndpoint</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-spotify-request/index.html">SpotifyRequest</a></h4>
-</td>
-<td>
-<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SpotifyRequest</span></code></td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.adamratzman.spotify.http</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../styles/style.css" rel="Stylesheet">
+    <link href="../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify.http////PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../index.html">spotify-web-api-kotlin</a>/<a href="index.html">com.adamratzman.spotify.http</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Package com.</span><wbr></wbr><span>adamratzman.</span><wbr></wbr><span>spotify.</span><wbr></wbr><span>http</span></h1>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Types</h2>
+              <div class="table" data-togglable="Types"><a data-name="%5Bcom.adamratzman.spotify.http%2FCacheState%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="CacheState" id="%5Bcom.adamratzman.spotify.http%2FCacheState%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-cache-state/index.html">CacheState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FCacheState%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-cache-state/index.html">CacheState</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpConnection" id="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-http-connection/index.html">HttpConnection</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-http-connection/index.html">HttpConnection</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpConnection" id="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpConnection" id="%5Bcom.adamratzman.spotify.http%2FHttpConnection%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpConnectionStatus%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpConnectionStatus" id="%5Bcom.adamratzman.spotify.http%2FHttpConnectionStatus%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-http-connection-status/index.html">HttpConnectionStatus</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FHttpConnectionStatus%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-http-connection-status/index.html">HttpConnectionStatus</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-http-connection-status/index.html">HttpConnectionStatus</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpHeader%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpHeader" id="%5Bcom.adamratzman.spotify.http%2FHttpHeader%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-http-header/index.html">HttpHeader</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FHttpHeader%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-http-header/index.html">HttpHeader</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpRequestMethod%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpRequestMethod" id="%5Bcom.adamratzman.spotify.http%2FHttpRequestMethod%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-http-request-method/index.html">HttpRequestMethod</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FHttpRequestMethod%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-http-request-method/index.html">HttpRequestMethod</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-http-request-method/index.html">HttpRequestMethod</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FHttpResponse%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="HttpResponse" id="%5Bcom.adamratzman.spotify.http%2FHttpResponse%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-http-response/index.html">HttpResponse</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FHttpResponse%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-http-response/index.html">HttpResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FSpotifyCache%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="SpotifyCache" id="%5Bcom.adamratzman.spotify.http%2FSpotifyCache%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-spotify-cache/index.html">SpotifyCache</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FSpotifyCache%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-spotify-cache/index.html">SpotifyCache</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FSpotifyEndpoint%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="SpotifyEndpoint" id="%5Bcom.adamratzman.spotify.http%2FSpotifyEndpoint%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-spotify-endpoint/index.html">SpotifyEndpoint</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FSpotifyEndpoint%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public abstract class <a href="-spotify-endpoint/index.html">SpotifyEndpoint</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.http%2FSpotifyRequest%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="SpotifyRequest" id="%5Bcom.adamratzman.spotify.http%2FSpotifyRequest%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-spotify-request/index.html">SpotifyRequest</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.http%2FSpotifyRequest%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-spotify-request/index.html">SpotifyRequest</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

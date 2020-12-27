@@ -1,147 +1,380 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.SpotifyRestAction - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../../style.css">
-</HEAD>
-<BODY>
-<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyRestAction</a><br/>
-<br/>
-<h1>SpotifyRestAction</h1>
-<a name="com.adamratzman.spotify.SpotifyRestAction"></a>
-(common, jvm) <code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SpotifyRestAction</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
-<p>Provides a uniform interface to retrieve, whether synchronously or asynchronously, <a href="index.html#T">T</a> from Spotify</p>
-<h3>Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="api.html">api</a></h4>
-</td>
-<td>
-<code><span class="keyword">val </span><span class="identifier">api</span><span class="symbol">: </span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="scope.html">scope</a></h4>
-</td>
-<td>
-<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">scope</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="supplier.html">supplier</a></h4>
-</td>
-<td>
-<code><span class="keyword">val </span><span class="identifier">supplier</span><span class="symbol">: </span><span class="keyword">suspend </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="complete.html">complete</a></h4>
-</td>
-<td>
-<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> and synchronously retrieve <a href="index.html#T">T</a></p>
-<code><span class="keyword">fun </span><span class="identifier">complete</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="has-completed.html">hasCompleted</a></h4>
-</td>
-<td>
-<p>Whether this REST action has been fully <em>completed</em></p>
-<code><span class="keyword">fun </span><span class="identifier">hasCompleted</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="has-run.html">hasRun</a></h4>
-</td>
-<td>
-<p>Whether this REST action has been <em>commenced</em>.</p>
-<code><span class="keyword">fun </span><span class="identifier">hasRun</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="queue.html">queue</a></h4>
-</td>
-<td>
-<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously and consume <a href="queue.html#com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.coroutines.SuspendFunction1((kotlin.Throwable, kotlin.Unit)), kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> with the <a href="index.html#T">T</a> value returned</p>
-<code><span class="keyword">fun </span><span class="identifier">queue</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.coroutines.SuspendFunction1((kotlin.Throwable, kotlin.Unit)), kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queue(kotlin.coroutines.SuspendFunction1((kotlin.Throwable, kotlin.Unit)), kotlin.coroutines.SuspendFunction1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{}<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<h4><a href="queue-after.html">queueAfter</a></h4>
-</td>
-<td>
-<p>Invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">supplier</a> asynchronously immediately and invoke <a href="queue-after.html#com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</a> after the specified quantity of time</p>
-(common) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, com.adamratzman.spotify.utils.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
-(jvm) <code><span class="keyword">fun </span><span class="identifier">queueAfter</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/quantity">quantity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/timeUnit">timeUnit</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-time-unit/index.html"><span class="identifier">TimeUnit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;TimeUnit.SECONDS<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/scope">scope</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineScope</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/failure">failure</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ throw it }<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$queueAfter(kotlin.Int, java.util.concurrent.TimeUnit, kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Throwable, kotlin.Unit)), kotlin.Function1((com.adamratzman.spotify.SpotifyRestAction.T, kotlin.Unit)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="suspend-complete.html">suspendComplete</a></h4>
-</td>
-<td>
-<p>Switch to given <a href="suspend-complete.html#com.adamratzman.spotify.SpotifyRestAction$suspendComplete(kotlin.coroutines.CoroutineContext)/context">context</a>, invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">SpotifyRestAction.supplier</a> and synchronously retrieve <a href="index.html#T">T</a></p>
-<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendComplete</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyRestAction$suspendComplete(kotlin.coroutines.CoroutineContext)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="suspend-queue.html">suspendQueue</a></h4>
-</td>
-<td>
-<p>Suspend the coroutine, invoke <a href="supplier.html#com.adamratzman.spotify.SpotifyRestAction$supplier">SpotifyRestAction.supplier</a> asynchronously/queued and resume with result <a href="index.html#T">T</a></p>
-<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">suspendQueue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="to-string.html">toString</a></h4>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Extension Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(jvm) 
-<h4><a href="../../com.adamratzman.spotify.utils/as-future.html">asFuture</a></h4>
-</td>
-<td>
-<p>Return this <a href="index.html#com.adamratzman.spotify.SpotifyRestAction">SpotifyRestAction</a> as a normal <a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a></p>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asFuture</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html"><span class="identifier">CompletableFuture</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Inheritors</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="../-spotify-rest-action-paging/index.html">SpotifyRestActionPaging</a></h4>
-</td>
-<td>
-<code><span class="keyword">class </span><span class="identifier">SpotifyRestActionPaging</span><span class="symbol">&lt;</span><span class="identifier">Z</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object-base/index.html"><span class="identifier">PagingObjectBase</span></a><span class="symbol">&lt;</span><span class="identifier">Z</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SpotifyRestAction</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify/SpotifyRestAction///PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">spotify-web-api-kotlin</a>/<a href="../index.html">com.adamratzman.spotify</a>/<a href="index.html">SpotifyRestAction</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/jvmMain">jvm</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Spotify</span><wbr></wbr><span>Rest</span><wbr></wbr><span>Action</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public class <a href="index.html">SpotifyRestAction</a>&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Provides a uniform interface to retrieve, whether synchronously or asynchronously, <a href="index.html">T</a> from Spotify</p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Extensions">Extensions</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="complete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="complete.html">complete</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">T</a> <a href="complete.html">complete</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="complete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="complete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fcomplete%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Invoke <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">supplier</a> and synchronously retrieve <a href="index.html">T</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">other</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-scope%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getScope" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-scope%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-scope.html">getScope</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-scope%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a> <a href="get-scope.html">getScope</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-supplier%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getSupplier" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-supplier%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-supplier.html">getSupplier</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cget-supplier%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-suspend-function0/index.html">SuspendFunction0</a>&lt;<a href="index.html">T</a>&gt; <a href="get-supplier.html">getSupplier</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasCompleted" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="has-completed.html">hasCompleted</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="has-completed.html">hasCompleted</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasCompleted" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasCompleted" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasCompleted%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Whether this REST action has been fully completed</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasRun" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="has-run.html">hasRun</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="has-run.html">hasRun</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasRun" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hasRun" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FhasRun%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Whether this REST action has been commenced.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="queue.html">queue</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>()</div></div>final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="queue.html">queue</a>(<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-suspend-function1/index.html">SuspendFunction1</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html">Throwable</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt; <a href="queue.html">failure</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-suspend-function1/index.html">SuspendFunction1</a>&lt;<a href="index.html">T</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt; <a href="queue.html">consumer</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fqueue%2F%23kotlin.coroutines.SuspendFunction1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.coroutines.SuspendFunction1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Invoke <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">supplier</a> asynchronously and consume <span data-unresolved-link="com.adamratzman.spotify/SpotifyRestAction/consumer/#/PointingToCallableParameters(-1)/">consumer</span> with the <a href="index.html">T</a> value returned</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queueAfter" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="queue-after.html">queueAfter</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>()</div></div>final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="queue-after.html">queueAfter</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="queue-after.html">quantity</a>, <a href="../../com.adamratzman.spotify.utils/-time-unit/index.html">TimeUnit</a> <a href="queue-after.html">timeUnit</a>, <span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span> <a href="queue-after.html">scope</a>, <span data-unresolved-link="kotlin.jvm.functions/Function1///PointingToDeclaration/">Function1</span>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html">Throwable</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt; <a href="queue-after.html">failure</a>, <span data-unresolved-link="kotlin.jvm.functions/Function1///PointingToDeclaration/">Function1</span>&lt;<a href="index.html">T</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt; <a href="queue-after.html">consumer</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queueAfter" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="queueAfter" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FqueueAfter%2F%23kotlin.Int%23com.adamratzman.spotify.utils.TimeUnit%23kotlinx.coroutines.CoroutineScope%3F%23kotlin.Function1%5Bkotlin.Throwable%2Ckotlin.Unit%5D%23kotlin.Function1%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%2Ckotlin.Unit%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Invoke <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">supplier</a> asynchronously immediately and invoke <span data-unresolved-link="com.adamratzman.spotify/SpotifyRestAction/consumer/#/PointingToCallableParameters(-1)/">consumer</span> after the specified quantity of time</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cset-scope%3E%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setScope" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cset-scope%3E%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="set-scope.html">setScope</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%3Cset-scope%3E%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="set-scope.html">setScope</a>(<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a> <a href="set-scope.html">scope</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendComplete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="suspend-complete.html">suspendComplete</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>()</div></div>final <a href="index.html">T</a> <a href="suspend-complete.html">suspendComplete</a>(<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a> <a href="suspend-complete.html">context</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendComplete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendComplete" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendComplete%2F%23kotlin.coroutines.CoroutineContext%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Switch to given <span data-unresolved-link="com.adamratzman.spotify/SpotifyRestAction/context/#/PointingToCallableParameters(-1)/">context</span>, invoke <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">SpotifyRestAction.supplier</a> and synchronously retrieve <a href="index.html">T</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendQueue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="suspend-queue.html">suspendQueue</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">T</a> <a href="suspend-queue.html">suspendQueue</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendQueue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="suspendQueue" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FsuspendQueue%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Suspend the coroutine, invoke <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">SpotifyRestAction.supplier</a> asynchronously/queued and resume with result <a href="index.html">T</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toString" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="to-string.html">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="to-string.html">toString</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="scope" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">scope</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="scope" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private  <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fscope%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">scope</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="supplier" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">supplier</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="supplier" id="%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-suspend-function0/index.html">SuspendFunction0</a>&lt;<a href="index.html">T</a>&gt; <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2Fsupplier%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">supplier</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Inheritors</h2>
+              <div class="table" data-togglable="Inheritors"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyRestActionPaging%2F%2F%2FPointingToDeclaration%2F%5D%2FInheritors%2F-71305405" anchor-label="SpotifyRestActionPaging" id="%5Bcom.adamratzman.spotify%2FSpotifyRestActionPaging%2F%2F%2FPointingToDeclaration%2F%5D%2FInheritors%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-spotify-rest-action-paging/index.html">SpotifyRestActionPaging</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyRestActionPaging%2F%2F%2FPointingToDeclaration%2F%5D%2FInheritors%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="tabbedcontent">Extensions</h2>
+              <div class="table" data-togglable="Extensions"><a data-name="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" anchor-label="asFuture" id="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" data-filterable-set=":dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.utils/-concurrency-kt/index.html#%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F442448351">asFuture</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag jvm-like">jvm</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/jvmMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a>&lt;<a href="../../com.adamratzman.spotify.utils/-concurrency-kt/index.html#%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F442448351">T</a>&gt; <a href="../../com.adamratzman.spotify.utils/-concurrency-kt/index.html#%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F442448351">asFuture</a>&lt;T extends <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt;()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" anchor-label="asFuture" id="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" data-filterable-set=":dokkaHtml/jvmMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" anchor-label="asFuture" id="%5Bcom.adamratzman.spotify.utils%2F%2FasFuture%2Fcom.adamratzman.spotify.SpotifyRestAction%5BTypeParam%28bounds%3D%5Bkotlin.Any%3F%5D%29%5D%23%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351" data-filterable-set=":dokkaHtml/jvmMain"></a>Return this <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyRestAction%2F%2F%2FPointingToDeclaration%2F%5D%2FExtensions%2F442448351">SpotifyRestAction</a> as a normal <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

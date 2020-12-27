@@ -1,144 +1,283 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.utils - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../style.css">
-</HEAD>
-<BODY>
-<a href="../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="./index.html">com.adamratzman.spotify.utils</a><br/>
-<br/>
-<h2>Package com.adamratzman.spotify.utils</h2>
-<h3>Types</h3>
-<table>
-<tbody>
-<tr>
-<td>
-<h4><a href="-buffered-image.html">BufferedImage</a></h4>
-</td>
-<td>
-(common) <code><span class="keyword">class </span><span class="identifier">BufferedImage</span></code><br/>
-<code><span class="identifier">BufferedImage</span></code></td>
-</tr>
-<tr>
-<td>
-<h4><a href="-concurrent-hash-map.html">ConcurrentHashMap</a></h4>
-</td>
-<td>
-(common) <code><span class="keyword">class </span><span class="identifier">ConcurrentHashMap</span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span></code><br/>
-<code><span class="identifier">ConcurrentHashMap</span></code></td>
-</tr>
-<tr>
-<td>
-<h4><a href="-file.html">File</a></h4>
-</td>
-<td>
-(common) <code><span class="keyword">class </span><span class="identifier">File</span></code><br/>
-<code><span class="identifier">File</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-language/index.html">Language</a></h4>
-</td>
-<td>
-<p><a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>
-language code.</p>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Language</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-locale/index.html">Locale</a></h4>
-</td>
-<td>
-<p>Locale code.</p>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Locale</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-market/index.html">Market</a></h4>
-</td>
-<td>
-<p><a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a> country code.</p>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Market</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-time-unit/index.html">TimeUnit</a></h4>
-</td>
-<td>
-<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">TimeUnit</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Extensions for External Classes</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(jvm) 
-<h4><a href="java.util.concurrent.-concurrent-hash-map/index.html">java.util.concurrent.ConcurrentHashMap</a></h4>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="kotlin.-string/index.html">kotlin.String</a></h4>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
-<h3>Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(jvm) 
-<h4><a href="as-future.html">asFuture</a></h4>
-</td>
-<td>
-<p>Return this <a href="../com.adamratzman.spotify/-spotify-rest-action/index.html#com.adamratzman.spotify.SpotifyRestAction">SpotifyRestAction</a> as a normal <a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a></p>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asFuture</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/CompletableFuture.html"><span class="identifier">CompletableFuture</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-(common) 
-<h4><a href="as-list.html">asList</a></h4>
-</td>
-<td>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="-concurrent-hash-map.html"><span class="identifier">ConcurrentHashMap</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">asList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html"><span class="identifier">Pair</span></a><span class="symbol">&lt;</span><span class="identifier">K</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="encode-to-base64.html">encodeToBase64</a></h4>
-</td>
-<td>
-<code><span class="keyword">fun </span><span class="identifier">encodeToBase64</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils$encodeToBase64(kotlin.ByteArray)/src">src</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="get-current-time-ms.html">getCurrentTimeMs</a></h4>
-</td>
-<td>
-<code><span class="keyword">fun </span><span class="identifier">getCurrentTimeMs</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="run-blocking-mpp.html">runBlockingMpp</a></h4>
-</td>
-<td>
-<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">runBlockingMpp</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.utils$runBlockingMpp(kotlin.coroutines.SuspendFunction0((com.adamratzman.spotify.utils.runBlockingMpp.T)))/coroutineCode">coroutineCode</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.adamratzman.spotify.utils</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../styles/style.css" rel="Stylesheet">
+    <link href="../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify.utils////PointingToDeclaration//-918833914">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../index.html">spotify-web-api-kotlin</a>/<a href="index.html">com.adamratzman.spotify.utils</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/androidMain">android</button><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button><button class="platform-tag platform-selector js-like" data-active="" data-filter=":dokkaHtml/jsMain">js</button><button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/jvmMain">jvm</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Package com.</span><wbr></wbr><span>adamratzman.</span><wbr></wbr><span>spotify.</span><wbr></wbr><span>utils</span></h1>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Types</h2>
+              <div class="table" data-togglable="Types"><a data-name="%5Bcom.adamratzman.spotify.utils%2FBase64Kt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="Base64Kt" id="%5Bcom.adamratzman.spotify.utils%2FBase64Kt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-base64-kt/index.html">Base64Kt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FBase64Kt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-active="" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-toggle=":dokkaHtml/commonMain">common</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">public final class <a href="-base64-kt/index.html">Base64Kt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-base64-kt/index.html">Base64Kt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FBufferedImage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="BufferedImage" id="%5Bcom.adamratzman.spotify.utils%2FBufferedImage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-buffered-image/index.html">BufferedImage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FBufferedImage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-active="" data-toggle=":dokkaHtml/commonMain">common</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark js-like" data-filterable-current=":dokkaHtml/jsMain" data-filterable-set=":dokkaHtml/jsMain" data-toggle=":dokkaHtml/jsMain">js</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain" data-toggle=":dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-buffered-image/index.html">BufferedImage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">final class <a href="-buffered-image/index.html">BufferedImage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jsMain"><div class="symbol monospace">final class <a href="-buffered-image/index.html">BufferedImage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jvmMain"><div class="symbol monospace">final class <a href="-buffered-image/index.html">BufferedImage</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FConcurrencyKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="ConcurrencyKt" id="%5Bcom.adamratzman.spotify.utils%2FConcurrencyKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-concurrency-kt/index.html">ConcurrencyKt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FConcurrencyKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-active="" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-toggle=":dokkaHtml/commonMain">common</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">public final class <a href="-concurrency-kt/index.html">ConcurrencyKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-concurrency-kt/index.html">ConcurrencyKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FConcurrentHashMap%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="ConcurrentHashMap" id="%5Bcom.adamratzman.spotify.utils%2FConcurrentHashMap%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-concurrent-hash-map/index.html">ConcurrentHashMap</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FConcurrentHashMap%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-active="" data-toggle=":dokkaHtml/commonMain">common</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark js-like" data-filterable-current=":dokkaHtml/jsMain" data-filterable-set=":dokkaHtml/jsMain" data-toggle=":dokkaHtml/jsMain">js</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain" data-toggle=":dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-concurrent-hash-map/index.html">ConcurrentHashMap</a>&lt;K extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a>, V extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">final class <a href="-concurrent-hash-map/index.html">ConcurrentHashMap</a>&lt;, &gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jsMain"><div class="symbol monospace">final class <a href="-concurrent-hash-map/index.html">ConcurrentHashMap</a>&lt;, &gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jvmMain"><div class="symbol monospace">final class <a href="-concurrent-hash-map/index.html">ConcurrentHashMap</a>&lt;, &gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FFile%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="File" id="%5Bcom.adamratzman.spotify.utils%2FFile%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-file/index.html">File</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FFile%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/androidMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-active="" data-toggle=":dokkaHtml/commonMain">common</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark js-like" data-filterable-current=":dokkaHtml/jsMain" data-filterable-set=":dokkaHtml/jsMain" data-toggle=":dokkaHtml/jsMain">js</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain" data-toggle=":dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-file/index.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">final class <a href="-file/index.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jsMain"><div class="symbol monospace">final class <a href="-file/index.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jvmMain"><div class="symbol monospace">final class <a href="-file/index.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FImplicitGrantKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="ImplicitGrantKt" id="%5Bcom.adamratzman.spotify.utils%2FImplicitGrantKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-implicit-grant-kt/index.html">ImplicitGrantKt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FImplicitGrantKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-active="" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-toggle=":dokkaHtml/commonMain">common</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">public final class <a href="-implicit-grant-kt/index.html">ImplicitGrantKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-implicit-grant-kt/index.html">ImplicitGrantKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Language" id="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-language/index.html">Language</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-language/index.html">Language</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-language/index.html">Language</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Language" id="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Language" id="%5Bcom.adamratzman.spotify.utils%2FLanguage%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language code.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Locale" id="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-locale/index.html">Locale</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-locale/index.html">Locale</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-locale/index.html">Locale</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Locale" id="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Locale" id="%5Bcom.adamratzman.spotify.utils%2FLocale%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Locale code.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Market" id="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-market/index.html">Market</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-market/index.html">Market</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-market/index.html">Market</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Market" id="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="Market" id="%5Bcom.adamratzman.spotify.utils%2FMarket%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a> country code.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FTimeUnit%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="TimeUnit" id="%5Bcom.adamratzman.spotify.utils%2FTimeUnit%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/androidMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/androidMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/androidMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-time-unit/index.html">TimeUnit</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FTimeUnit%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/androidMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/androidMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-active="" data-toggle=":dokkaHtml/commonMain">common</button><button class="platform-bookmark js-like" data-filterable-current=":dokkaHtml/jsMain" data-filterable-set=":dokkaHtml/jsMain" data-toggle=":dokkaHtml/jsMain">js</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/jvmMain" data-toggle=":dokkaHtml/jvmMain">jvm</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="-time-unit/index.html">TimeUnit</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jsMain"><div class="symbol monospace">public enum <a href="-time-unit/index.html">TimeUnit</a><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt; extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">enum <a href="-time-unit/index.html">TimeUnit</a><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/jvmMain"><div class="symbol monospace">enum <a href="-time-unit/index.html">TimeUnit</a><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="-time-unit/index.html">TimeUnit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FTypesKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="TypesKt" id="%5Bcom.adamratzman.spotify.utils%2FTypesKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-types-kt/index.html">TypesKt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FTypesKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-active="" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-toggle=":dokkaHtml/commonMain">common</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">public final class <a href="-types-kt/index.html">TypesKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-types-kt/index.html">TypesKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.utils%2FUtilsKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" anchor-label="UtilsKt" id="%5Bcom.adamratzman.spotify.utils%2FUtilsKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-utils-kt/index.html">UtilsKt</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.utils%2FUtilsKt%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-918833914"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain" data-filterable-set=":dokkaHtml/androidMain :dokkaHtml/commonMain :dokkaHtml/jsMain :dokkaHtml/jvmMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark jvm-like" data-filterable-current=":dokkaHtml/androidMain" data-filterable-set=":dokkaHtml/androidMain" data-active="" data-toggle=":dokkaHtml/androidMain">android</button><button class="platform-bookmark common-like" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain" data-toggle=":dokkaHtml/commonMain">common</button></div>
+<div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/androidMain"><div class="symbol monospace">public final class <a href="-utils-kt/index.html">UtilsKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div><div class="content sourceset-depenent-content" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="-utils-kt/index.html">UtilsKt</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

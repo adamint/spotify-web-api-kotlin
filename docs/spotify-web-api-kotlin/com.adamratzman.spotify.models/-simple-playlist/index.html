@@ -1,180 +1,973 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.models.SimplePlaylist - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../../style.css">
-</HEAD>
-<BODY>
-<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.models</a>&nbsp;/&nbsp;<a href="./index.html">SimplePlaylist</a><br/>
-<br/>
-<h1>SimplePlaylist</h1>
-<a name="com.adamratzman.spotify.models.SimplePlaylist"></a>
-(common, jvm) <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SimplePlaylist</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-core-object/index.html"><span class="identifier">CoreObject</span></a></code>
-<p>Simplified Playlist object that can be used to retrieve a full <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
-<h3>Constructors</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="-init-.html">&lt;init&gt;</a></h4>
-</td>
-<td>
-<p>Simplified Playlist object that can be used to retrieve a full <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a></p>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/externalUrlsString">externalUrlsString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/href">href</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="../-playlist-uri/index.html"><span class="identifier">PlaylistUri</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/collaborative">collaborative</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/images">images</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-image/index.html"><span class="identifier">SpotifyImage</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/owner">owner</span><span class="symbol">:</span>&nbsp;<a href="../-spotify-public-user/index.html"><span class="identifier">SpotifyPublicUser</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/primaryColor">primaryColor</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/public">public</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/snapshotIdString">snapshotIdString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/tracks">tracks</span><span class="symbol">:</span>&nbsp;<a href="../-playlist-track-info/index.html"><span class="identifier">PlaylistTrackInfo</span></a><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$<init>(kotlin.collections.Map((kotlin.String, )), kotlin.String, kotlin.String, com.adamratzman.spotify.models.PlaylistUri, kotlin.Boolean, kotlin.collections.List((com.adamratzman.spotify.models.SpotifyImage)), kotlin.String, kotlin.String, com.adamratzman.spotify.models.SpotifyPublicUser, kotlin.String, kotlin.Boolean, kotlin.String, com.adamratzman.spotify.models.PlaylistTrackInfo, kotlin.String)/type">type</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="collaborative.html">collaborative</a></h4>
-</td>
-<td>
-<p>Returns true if context is not search and the owner allows other users to
-modify the playlist. Otherwise returns false.</p>
-<code><span class="keyword">val </span><span class="identifier">collaborative</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="description.html">description</a></h4>
-</td>
-<td>
-<p>The playlist description. Only returned for modified, verified playlists, otherwise null.</p>
-<code><span class="keyword">val </span><span class="identifier">description</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="external-urls-string.html">externalUrlsString</a></h4>
-</td>
-<td>
-<code><span class="keyword">val </span><span class="identifier">externalUrlsString</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="href.html">href</a></h4>
-</td>
-<td>
-<p>A link to the Web API endpoint providing full details of the playlist.</p>
-<code><span class="keyword">val </span><span class="identifier">href</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="id.html">id</a></h4>
-</td>
-<td>
-<p>The Spotify ID for the playlist.</p>
-<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="images.html">images</a></h4>
-</td>
-<td>
-<p>Images for the playlist. The array may be empty or contain up to three images.
-The images are returned by size in descending order. See Working with Playlists.
-Note: If returned, the source URL for the image ( url ) is temporary and will expire in less than a day.</p>
-<code><span class="keyword">val </span><span class="identifier">images</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-spotify-image/index.html"><span class="identifier">SpotifyImage</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="name.html">name</a></h4>
-</td>
-<td>
-<p>The name of the playlist.</p>
-<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="owner.html">owner</a></h4>
-</td>
-<td>
-<p>The user who owns the playlist</p>
-<code><span class="keyword">val </span><span class="identifier">owner</span><span class="symbol">: </span><a href="../-spotify-public-user/index.html"><span class="identifier">SpotifyPublicUser</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="primary-color.html">primaryColor</a></h4>
-</td>
-<td>
-<p>Unknown.</p>
-<code><span class="keyword">val </span><span class="identifier">primaryColor</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="public.html">public</a></h4>
-</td>
-<td>
-<p>The playlist’s public/private status: true the playlist is public, false the
-playlist is private, null the playlist status is not relevant.</p>
-<code><span class="keyword">val </span><span class="identifier">public</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="snapshot.html">snapshot</a></h4>
-</td>
-<td>
-<p>The version identifier for the current playlist. Can be supplied in other
-requests to target a specific playlist version</p>
-<code><span class="keyword">val </span><span class="identifier">snapshot</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify.endpoints.client/-playlist-snapshot/index.html"><span class="identifier">PlaylistSnapshot</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="tracks.html">tracks</a></h4>
-</td>
-<td>
-<p>A collection containing a link ( href ) to the Web API endpoint where full details of the
-playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.</p>
-<code><span class="keyword">val </span><span class="identifier">tracks</span><span class="symbol">: </span><a href="../-playlist-track-info/index.html"><span class="identifier">PlaylistTrackInfo</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="type.html">type</a></h4>
-</td>
-<td>
-<p>The object type: “playlist”</p>
-<code><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="uri.html">uri</a></h4>
-</td>
-<td>
-<p>The URI associated with the object</p>
-<code><span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="../-playlist-uri/index.html"><span class="identifier">PlaylistUri</span></a></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, jvm) 
-<h4><a href="to-full-playlist.html">toFullPlaylist</a></h4>
-</td>
-<td>
-<p>Converts this <a href="index.html#com.adamratzman.spotify.models.SimplePlaylist">SimplePlaylist</a> into a full <a href="../-playlist/index.html#com.adamratzman.spotify.models.Playlist">Playlist</a> object with the given
-market</p>
-<code><span class="keyword">fun </span><span class="identifier">toFullPlaylist</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.models.SimplePlaylist$toFullPlaylist(com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html"><span class="identifier">SpotifyRestAction</span></a><span class="symbol">&lt;</span><a href="../-playlist/index.html"><span class="identifier">Playlist</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SimplePlaylist</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify.models/SimplePlaylist///PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">spotify-web-api-kotlin</a>/<a href="../index.html">com.adamratzman.spotify.models</a>/<a href="index.html">SimplePlaylist</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Simple</span><wbr></wbr><span>Playlist</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="index.html">SimplePlaylist</a> extends <a href="../-core-object/index.html">CoreObject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Simplified Playlist object that can be used to retrieve a full <a href="../-playlist/index.html">Playlist</a></p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+            <div class="tabs-section-body">
+              <h2 class="tabbedcontent">Constructors</h2>
+              <div class="table" data-togglable="Constructors"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FSimplePlaylist%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405" anchor-label="SimplePlaylist" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FSimplePlaylist%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue TabbedContent">
+                    <div class=""><span class="inline-flex"><a href="-simple-playlist.html">SimplePlaylist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FSimplePlaylist%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="index.html">SimplePlaylist</a> <a href="-simple-playlist.html">SimplePlaylist</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&gt; <a href="-simple-playlist.html">externalUrlsString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">href</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">id</a>, <a href="../-playlist-uri/index.html">PlaylistUri</a> <a href="-simple-playlist.html">uri</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="-simple-playlist.html">collaborative</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-spotify-image/index.html">SpotifyImage</a>&gt; <a href="-simple-playlist.html">images</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">name</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">description</a>, <a href="../-spotify-public-user/index.html">SpotifyPublicUser</a> <a href="-simple-playlist.html">owner</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">primaryColor</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="-simple-playlist.html">public</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">snapshotIdString</a>, <a href="../-playlist-track-info/index.html">PlaylistTrackInfo</a> <a href="-simple-playlist.html">tracks</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-simple-playlist.html">type</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent10%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component10" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent10%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component10.html">component10</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent10%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component10.html">component10</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent11%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component11" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent11%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component11.html">component11</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent11%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="component11.html">component11</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent13%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component13" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent13%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component13.html">component13</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent13%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-playlist-track-info/index.html">PlaylistTrackInfo</a> <a href="component13.html">component13</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent14%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component14" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent14%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component14.html">component14</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent14%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component14.html">component14</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent2%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component2" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent2%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component2.html">component2</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent2%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component2.html">component2</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent3%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component3" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent3%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component3.html">component3</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent3%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component3.html">component3</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent4%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component4" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent4%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component4.html">component4</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent4%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-playlist-uri/index.html">PlaylistUri</a> <a href="component4.html">component4</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent5%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component5" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent5%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component5.html">component5</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent5%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="component5.html">component5</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent6%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component6" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent6%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component6.html">component6</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent6%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-spotify-image/index.html">SpotifyImage</a>&gt; <a href="component6.html">component6</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent7%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component7" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent7%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component7.html">component7</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent7%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component7.html">component7</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent8%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component8" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent8%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component8.html">component8</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent8%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="component8.html">component8</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent9%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="component9" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent9%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="component9.html">component9</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcomponent9%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-public-user/index.html">SpotifyPublicUser</a> <a href="component9.html">component9</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcopy%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="copy" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcopy%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="copy.html">copy</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcopy%2F%23kotlin.collections.Map%5Bkotlin.String%2Ckotlin.String%5D%23kotlin.String%23kotlin.String%23com.adamratzman.spotify.models.PlaylistUri%23kotlin.Boolean%23kotlin.collections.List%5Bcom.adamratzman.spotify.models.SpotifyImage%5D%23kotlin.String%23kotlin.String%3F%23com.adamratzman.spotify.models.SpotifyPublicUser%23kotlin.String%3F%23kotlin.Boolean%3F%23kotlin.String%23com.adamratzman.spotify.models.PlaylistTrackInfo%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SimplePlaylist</a> <a href="copy.html">copy</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&gt; <a href="copy.html">externalUrlsString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">href</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">id</a>, <a href="../-playlist-uri/index.html">PlaylistUri</a> <a href="copy.html">uri</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="copy.html">collaborative</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-spotify-image/index.html">SpotifyImage</a>&gt; <a href="copy.html">images</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">name</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">description</a>, <a href="../-spotify-public-user/index.html">SpotifyPublicUser</a> <a href="copy.html">owner</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">primaryColor</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="copy.html">public</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">snapshotIdString</a>, <a href="../-playlist-track-info/index.html">PlaylistTrackInfo</a> <a href="copy.html">tracks</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="copy.html">type</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a> <a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">other</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-api.html">getApi</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../../com.adamratzman.spotify/-spotify-api/index.html">SpotifyApi</a>&lt;?, ?&gt; <a href="get-api.html">getApi</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-api%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The API client associated with the request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getCollaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-collaborative.html">getCollaborative</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="get-collaborative.html">getCollaborative</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getCollaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getCollaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-collaborative%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Returns true if context is not search and the owner allows other users to modify the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getDescription" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-description.html">getDescription</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-description.html">getDescription</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getDescription" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getDescription" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-description%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The playlist description.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-externalUrls%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getExternalUrls" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-externalUrls%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-external-urls.html">getExternalUrls</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-externalUrls%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-external-url/index.html">ExternalUrl</a>&gt; <a href="get-external-urls.html">getExternalUrls</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getHref" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-href.html">getHref</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-href.html">getHref</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getHref" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getHref" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-href%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>A link to the Web API endpoint providing full details of the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getId" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-id.html">getId</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-id.html">getId</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getId" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getId" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-id%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The Spotify ID for the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getImages" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-images.html">getImages</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-spotify-image/index.html">SpotifyImage</a>&gt; <a href="get-images.html">getImages</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getImages" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getImages" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-images%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Images for the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getName" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-name.html">getName</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-name.html">getName</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getName" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getName" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The name of the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOwner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-owner.html">getOwner</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-public-user/index.html">SpotifyPublicUser</a> <a href="get-owner.html">getOwner</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOwner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOwner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-owner%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The user who owns the playlist</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPrimaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-primary-color.html">getPrimaryColor</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-primary-color.html">getPrimaryColor</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPrimaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPrimaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-primaryColor%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Unknown.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPublic" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-public.html">getPublic</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="get-public.html">getPublic</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPublic" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getPublic" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-public%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The playlist’s public/private status: true the playlist is public, false the playlist is private, null the playlist status is not relevant.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getSnapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-snapshot.html">getSnapshot</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../../com.adamratzman.spotify.endpoints.client/-playlist-snapshot/index.html">PlaylistSnapshot</a> <a href="get-snapshot.html">getSnapshot</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getSnapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getSnapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-snapshot%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The version identifier for the current playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getTracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-tracks.html">getTracks</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-playlist-track-info/index.html">PlaylistTrackInfo</a> <a href="get-tracks.html">getTracks</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getTracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getTracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-tracks%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getType" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-type.html">getType</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-type.html">getType</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getType" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getType" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-type%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The object type: “playlist”</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-uri.html">getUri</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="../-playlist-uri/index.html">PlaylistUri</a> <a href="get-uri.html">getUri</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The URI associated with the object</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="set-api.html">setApi</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="set-api.html">setApi</a>(<a href="../../com.adamratzman.spotify/-spotify-api/index.html">SpotifyApi</a>&lt;?, ?&gt; <a href="set-api.html">api</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setApi" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2F%3Cset-api%3E%2F%23com.adamratzman.spotify.SpotifyApi%5B*%2C*%5D%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The API client associated with the request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toFullPlaylist" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="to-full-playlist.html">toFullPlaylist</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../../com.adamratzman.spotify/-spotify-rest-action/index.html">SpotifyRestAction</a>&lt;<a href="../-playlist/index.html">Playlist</a>&gt; <a href="to-full-playlist.html">toFullPlaylist</a>(<a href="../../com.adamratzman.spotify.utils/-market/index.html">Market</a> <a href="to-full-playlist.html">market</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toFullPlaylist" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toFullPlaylist" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FtoFullPlaylist%2F%23com.adamratzman.spotify.utils.Market%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Converts this <a href="index.html">SimplePlaylist</a> into a full <a href="../-playlist/index.html">Playlist</a> object with the given market</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toString" id="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="../-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="api" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">api</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="api" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private  transient <a href="../../com.adamratzman.spotify/-spotify-api/index.html">SpotifyApi</a>&lt;?, ?&gt; <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">api</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="api" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fapi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The API client associated with the request</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="collaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">collaborative</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="collaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">collaborative</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="collaborative" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fcollaborative%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Returns true if context is not search and the owner allows other users to modify the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="description" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">description</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="description" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">description</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="description" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fdescription%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The playlist description.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="externalUrls" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">externalUrls</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="externalUrls" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-external-url/index.html">ExternalUrl</a>&gt; <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">externalUrls</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="externalUrls" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FexternalUrls%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Known external URLs for this object</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="href" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">href</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="href" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">href</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="href" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fhref%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>A link to the Web API endpoint providing full details of the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="id" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">id</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="id" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">id</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="id" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fid%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The Spotify ID for the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="images" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">images</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="images" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a>&lt;<a href="../-spotify-image/index.html">SpotifyImage</a>&gt; <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">images</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="images" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fimages%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Images for the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="name" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">name</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="name" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">name</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="name" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The name of the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="owner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">owner</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="owner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="../-spotify-public-user/index.html">SpotifyPublicUser</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">owner</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="owner" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fowner%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The user who owns the playlist</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="primaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">primaryColor</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="primaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">primaryColor</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="primaryColor" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2FprimaryColor%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Unknown.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="public" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">public</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="public" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">public</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="public" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fpublic%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The playlist’s public/private status: true the playlist is public, false the playlist is private, null the playlist status is not relevant.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="snapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">snapshot</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="snapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final transient <a href="../../com.adamratzman.spotify.endpoints.client/-playlist-snapshot/index.html">PlaylistSnapshot</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">snapshot</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="snapshot" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Fsnapshot%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The version identifier for the current playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="tracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">tracks</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="tracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="../-playlist-track-info/index.html">PlaylistTrackInfo</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">tracks</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="tracks" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftracks%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="type" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">type</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="type" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">type</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="type" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Ftype%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The object type: “playlist”</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">uri</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="../-playlist-uri/index.html">PlaylistUri</a> <a href="index.html#%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">uri</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify.models%2FSimplePlaylist%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The URI associated with the object</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+
