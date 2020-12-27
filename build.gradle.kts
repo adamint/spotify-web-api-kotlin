@@ -30,6 +30,10 @@ buildscript {
     }
 }
 
+dependencies {
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.20")
+}
+
 group = "com.adamratzman"
 version = "3.2.15"
 
@@ -51,6 +55,7 @@ android {
     defaultConfig {
         minSdkVersion(15)
         targetSdkVersion(30)
+        compileSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -83,7 +88,7 @@ val dokkaJar by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "Docs"
     classifier = "javadoc"
-    from(tasks.dokka)
+    from(tasks.dokkaHtml)
 }
 
 kotlin {
@@ -209,7 +214,7 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
-                    implementation("com.sparkjava:spark-core:2.9.1")
+                    implementation("com.sparkjava:spark-core:2.9.3")
                     implementation("org.mockito:mockito-core:3.3.3")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
@@ -263,46 +268,39 @@ signing {
 }
 
 tasks {
-    val dokka by getting(DokkaTask::class) {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/javadoc"
+    val dokkaHtml by getting(DokkaTask::class) {
+        outputDirectory.set(projectDir.resolve("docs"))
 
-        multiplatform {
+        dokkaSourceSets {
             val js by creating {
                 sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/").toURL())
+                    remoteLineSuffix.set("#L")
                 }
             }
             val jvm by creating {
                 sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/").toURL())
+                    remoteLineSuffix.set("#L")
+
                 }
             }
 
             register("common") {
                 sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/").toURL())
+                    remoteLineSuffix.set("#L")
                 }
             }
 
             register("global") {
                 sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
-                }
-
-                sourceRoot {
-                    path = kotlin.sourceSets.getByName("jvmMain").kotlin.srcDirs.first().toString()
-                }
-                sourceRoot {
-                    path = kotlin.sourceSets.getByName("commonMain").kotlin.srcDirs.first().toString()
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/").toURL())
+                    remoteLineSuffix.set("#L")
                 }
             }
         }
@@ -327,7 +325,7 @@ tasks {
 
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
-        dependsOn.add(dokka)
+        dependsOn.add(dokkaHtml)
         dependsOn.add("publishJvmPublicationToNexusRepository")
     }
 
