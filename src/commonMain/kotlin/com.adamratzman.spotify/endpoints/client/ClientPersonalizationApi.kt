@@ -12,14 +12,14 @@ import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toPagingObject
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPersonalizationApi"))
-typealias ClientPersonalizationAPI = ClientPersonalizationApi
+public typealias ClientPersonalizationAPI = ClientPersonalizationApi
 
 /**
  * Endpoints for retrieving information about the user’s listening habits.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/personalization/)**
  */
-class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * The time frame for which attribute affinities are computed.
      *
@@ -27,7 +27,7 @@ class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param id the Spotify id of the time frame
      */
-    enum class TimeRange(val id: String) {
+    public enum class TimeRange(public val id: String) {
         /**
          * Calculated from several years of data and including all new data as it becomes available
          */
@@ -43,7 +43,7 @@ class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
          */
         SHORT_TERM("short_term");
 
-        override fun toString() = id
+        override fun toString(): String = id
     }
 
     /**
@@ -67,7 +67,7 @@ class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
-    fun getTopArtists(
+    public fun getTopArtists(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
@@ -101,7 +101,7 @@ class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
-    fun getTopTracks(
+    public fun getTopTracks(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null

@@ -31,7 +31,7 @@ class PkceTest : Spek({
 
             port(1337)
 
-            exception(Exception::class.java) { exception, request, response -> exception.printStackTrace() }
+            exception(Exception::class.java) { exception, _, _ -> exception.printStackTrace() }
 
             get("/") { request, _ ->
                 val code = request.queryParams("code")

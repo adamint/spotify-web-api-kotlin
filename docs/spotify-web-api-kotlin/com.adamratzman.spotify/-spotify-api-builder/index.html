@@ -1,240 +1,645 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.SpotifyApiBuilder - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../../style.css">
-</HEAD>
-<BODY>
-<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyApiBuilder</a><br/>
-<br/>
-<h1>SpotifyApiBuilder</h1>
-<a name="com.adamratzman.spotify.SpotifyApiBuilder"></a>
-(common, js, jvm) <code><span class="keyword">class </span><span class="identifier">SpotifyApiBuilder</span></code>
-<p>Spotify API builder</p>
-<h3>Constructors</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-init-.html">&lt;init&gt;</a></h4>
-</td>
-<td>
-<p>Spotify API builder</p>
-<code><span class="identifier">&lt;init&gt;</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$<init>(kotlin.String, kotlin.String, kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$<init>(kotlin.String, kotlin.String, kotlin.String)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$<init>(kotlin.String, kotlin.String, kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="authorization.html">authorization</a></h4>
-</td>
-<td>
-<p>Allows you to authenticate a <a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> with an authorization code
-or build <a href="../-spotify-api/index.html#com.adamratzman.spotify.SpotifyApi">SpotifyApi</a> using a refresh token</p>
-<code><span class="keyword">var </span><span class="identifier">authorization</span><span class="symbol">: </span><a href="../-spotify-user-authorization/index.html"><span class="identifier">SpotifyUserAuthorization</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="options.html">options</a></h4>
-</td>
-<td>
-<p>Allows you to override default values for caching, token refresh, and logging</p>
-<code><span class="keyword">var </span><span class="identifier">options</span><span class="symbol">: </span><a href="../-spotify-api-options/index.html"><span class="identifier">SpotifyApiOptions</span></a></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="allow-bulk-requests.html">allowBulkRequests</a></h4>
-</td>
-<td>
-<p>Set whether you want to allow splitting too-large requests into smaller, allowable api requests</p>
-<code><span class="keyword">fun </span><span class="identifier">allowBulkRequests</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$allowBulkRequests(kotlin.Boolean)/allowBulkRequests">allowBulkRequests</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="authorization-code.html">authorizationCode</a></h4>
-</td>
-<td>
-<p>Set a returned <a href="https://developer.spotify.com/documentation/general/guides/authorization-guide/">authorization code</a></p>
-<code><span class="keyword">fun </span><span class="identifier">authorizationCode</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$authorizationCode(kotlin.String)/authorizationCode">authorizationCode</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="automatic-refresh.html">automaticRefresh</a></h4>
-</td>
-<td>
-<p>Enable or disable automatic refresh of the Spotify access token</p>
-<code><span class="keyword">fun </span><span class="identifier">automaticRefresh</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$automaticRefresh(kotlin.Boolean)/automaticRefresh">automaticRefresh</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="build.html">build</a></h4>
-</td>
-<td>
-<p>Create a <a href="../-spotify-api/index.html#com.adamratzman.spotify.SpotifyApi">SpotifyApi</a> instance with the given <a href="index.html#com.adamratzman.spotify.SpotifyApiBuilder">SpotifyApiBuilder</a> parameters and the type -
-<a href="../-authorization-type/-c-l-i-e-n-t.html#com.adamratzman.spotify.AuthorizationType.CLIENT">AuthorizationType.CLIENT</a> for client authentication, or otherwise <a href="../-authorization-type/-a-p-p-l-i-c-a-t-i-o-n.html#com.adamratzman.spotify.AuthorizationType.APPLICATION">AuthorizationType.APPLICATION</a></p>
-<code><span class="keyword">fun </span><span class="identifier">build</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$build(com.adamratzman.spotify.AuthorizationType)/type">type</span><span class="symbol">:</span>&nbsp;<a href="../-authorization-type/index.html"><span class="identifier">AuthorizationType</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-generic-spotify-api.html"><span class="identifier">GenericSpotifyApi</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="build-client.html">buildClient</a></h4>
-</td>
-<td>
-<p>Create a new <a href="../-spotify-client-api/index.html#com.adamratzman.spotify.SpotifyClientApi">SpotifyClientApi</a> that has access to public endpoints, in addition to endpoints
-requiring scopes contained in the client authorization request</p>
-<code><span class="keyword">fun </span><span class="identifier">buildClient</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-client-api/index.html"><span class="identifier">SpotifyClientApi</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="build-credentialed.html">buildCredentialed</a></h4>
-</td>
-<td>
-<p>Create a new <a href="../-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a> that only has access to <em>public</em> endpoints and data</p>
-<code><span class="keyword">fun </span><span class="identifier">buildCredentialed</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-app-api/index.html"><span class="identifier">SpotifyAppApi</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="build-public.html">buildPublic</a></h4>
-</td>
-<td>
-<p>Create a new <a href="../-spotify-app-api/index.html#com.adamratzman.spotify.SpotifyAppApi">SpotifyAppApi</a> that only has access to <em>public</em> endpoints and data</p>
-<code><span class="keyword">fun </span><span class="identifier">buildPublic</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-spotify-app-api/index.html"><span class="identifier">SpotifyAppApi</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="cache-limit.html">cacheLimit</a></h4>
-</td>
-<td>
-<p>Set the maximum allowed amount of cached requests at one time. Null means no limit</p>
-<code><span class="keyword">fun </span><span class="identifier">cacheLimit</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$cacheLimit(kotlin.Int)/cacheLimit">cacheLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="client-id.html">clientId</a></h4>
-</td>
-<td>
-<p>Set the application client id</p>
-<code><span class="keyword">fun </span><span class="identifier">clientId</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$clientId(kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="client-secret.html">clientSecret</a></h4>
-</td>
-<td>
-<p>Set the application client secret</p>
-<code><span class="keyword">fun </span><span class="identifier">clientSecret</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$clientSecret(kotlin.String)/clientSecret">clientSecret</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="default-limit.html">defaultLimit</a></h4>
-</td>
-<td>
-<p>Allows you to set the default amount of objects to retrieve in one request</p>
-<code><span class="keyword">fun </span><span class="identifier">defaultLimit</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$defaultLimit(kotlin.Int)/defaultLimit">defaultLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="enable-all-options.html">enableAllOptions</a></h4>
-</td>
-<td>
-<p>Set whether to enable all utilities (<a href="automatic-refresh.html#com.adamratzman.spotify.SpotifyApiBuilder$automaticRefresh(kotlin.Boolean)">automaticRefresh</a>, <a href="retry-when-rate-limited.html#com.adamratzman.spotify.SpotifyApiBuilder$retryWhenRateLimited(kotlin.Boolean)">retryWhenRateLimited</a>, <a href="use-cache.html#com.adamratzman.spotify.SpotifyApiBuilder$useCache(kotlin.Boolean)">useCache</a>, <a href="enable-logger.html#com.adamratzman.spotify.SpotifyApiBuilder$enableLogger(kotlin.Boolean)">enableLogger</a>, <a href="test-token-validity.html#com.adamratzman.spotify.SpotifyApiBuilder$testTokenValidity(kotlin.Boolean)">testTokenValidity</a>)</p>
-<code><span class="keyword">fun </span><span class="identifier">enableAllOptions</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="enable-logger.html">enableLogger</a></h4>
-</td>
-<td>
-<p>Set whether to enable to the exception logger</p>
-<code><span class="keyword">fun </span><span class="identifier">enableLogger</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$enableLogger(kotlin.Boolean)/enableLogger">enableLogger</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="redirect-uri.html">redirectUri</a></h4>
-</td>
-<td>
-<p>Set the application <a href="https://developer.spotify.com/documentation/general/guides/authorization-guide/">redirect uri</a></p>
-<code><span class="keyword">fun </span><span class="identifier">redirectUri</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$redirectUri(kotlin.String)/redirectUri">redirectUri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="request-timeout-millis.html">requestTimeoutMillis</a></h4>
-</td>
-<td>
-<p>Set the maximum time, in milliseconds, before terminating an http request</p>
-<code><span class="keyword">fun </span><span class="identifier">requestTimeoutMillis</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$requestTimeoutMillis(kotlin.Long)/requestTimeoutMillis">requestTimeoutMillis</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="retry-when-rate-limited.html">retryWhenRateLimited</a></h4>
-</td>
-<td>
-<p>Set whether to block the current thread and wait until the API can retry the request</p>
-<code><span class="keyword">fun </span><span class="identifier">retryWhenRateLimited</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$retryWhenRateLimited(kotlin.Boolean)/retryWhenRateLimited">retryWhenRateLimited</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="test-token-validity.html">testTokenValidity</a></h4>
-</td>
-<td>
-<p>After API creation, set whether to test whether the token is valid by performing a lightweight request</p>
-<code><span class="keyword">fun </span><span class="identifier">testTokenValidity</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$testTokenValidity(kotlin.Boolean)/testTokenValidity">testTokenValidity</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="token.html">token</a></h4>
-</td>
-<td>
-<p>Set the token to be used with this api instance</p>
-<code><span class="keyword">fun </span><span class="identifier">token</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$token(com.adamratzman.spotify.models.Token)/token">token</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-token/index.html"><span class="identifier">Token</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="token-string.html">tokenString</a></h4>
-</td>
-<td>
-<p>If you only have an access token, the api can be instantiated with it</p>
-<code><span class="keyword">fun </span><span class="identifier">tokenString</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$tokenString(kotlin.String)/tokenString">tokenString</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="use-cache.html">useCache</a></h4>
-</td>
-<td>
-<p>Set whether to cache requests. Default: true</p>
-<code><span class="keyword">fun </span><span class="identifier">useCache</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.SpotifyApiBuilder$useCache(kotlin.Boolean)/useCache">useCache</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SpotifyApiBuilder</span></a></code></td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SpotifyApiBuilder</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify/SpotifyApiBuilder///PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">spotify-web-api-kotlin</a>/<a href="../index.html">com.adamratzman.spotify</a>/<a href="index.html">SpotifyApiBuilder</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Spotify</span><wbr></wbr><span>Api</span><wbr></wbr><span>Builder</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public final class <a href="index.html">SpotifyApiBuilder</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Spotify API builder</p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+            <div class="tabs-section-body">
+              <h2 class="tabbedcontent">Constructors</h2>
+              <div class="table" data-togglable="Constructors"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FSpotifyApiBuilder%2F%23kotlin.String%3F%23kotlin.String%3F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405" anchor-label="SpotifyApiBuilder" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FSpotifyApiBuilder%2F%23kotlin.String%3F%23kotlin.String%3F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue TabbedContent">
+                    <div class=""><span class="inline-flex"><a href="-spotify-api-builder.html">SpotifyApiBuilder</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FSpotifyApiBuilder%2F%23kotlin.String%3F%23kotlin.String%3F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FConstructors%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="index.html">SpotifyApiBuilder</a> <a href="-spotify-api-builder.html">SpotifyApiBuilder</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-spotify-api-builder.html">clientId</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-spotify-api-builder.html">clientSecret</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="-spotify-api-builder.html">redirectUri</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="allowBulkRequests" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="allow-bulk-requests.html">allowBulkRequests</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="allow-bulk-requests.html">allowBulkRequests</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="allow-bulk-requests.html">allowBulkRequests</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="allowBulkRequests" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="allowBulkRequests" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FallowBulkRequests%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set whether you want to allow splitting too-large requests into smaller, allowable api requests</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="authorizationCode" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="authorization-code.html">authorizationCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="authorization-code.html">authorizationCode</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="authorization-code.html">authorizationCode</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="authorizationCode" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="authorizationCode" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FauthorizationCode%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set a returned <a href="https://developer.spotify.com/documentation/general/guides/authorization-guide/">authorization code</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="automaticRefresh" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="automatic-refresh.html">automaticRefresh</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="automatic-refresh.html">automaticRefresh</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="automatic-refresh.html">automaticRefresh</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="automaticRefresh" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="automaticRefresh" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FautomaticRefresh%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Enable or disable automatic refresh of the Spotify access token</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="build" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="build.html">build</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-api/index.html">SpotifyApi</a>&lt;?, ?&gt; <a href="build.html">build</a>(<a href="../-authorization-type/index.html">AuthorizationType</a> <a href="build.html">type</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="build" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="build" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fbuild%2F%23com.adamratzman.spotify.AuthorizationType%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Create a <a href="../-spotify-api/index.html">SpotifyApi</a> instance with the given <a href="index.html">SpotifyApiBuilder</a> parameters and the type - <a href="../-authorization-type/-c-l-i-e-n-t/index.html">AuthorizationType.CLIENT</a> for client authentication, or otherwise <a href="../-authorization-type/-a-p-p-l-i-c-a-t-i-o-n/index.html">AuthorizationType.APPLICATION</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildClient" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="build-client.html">buildClient</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-client-api/index.html">SpotifyClientApi</a> <a href="build-client.html">buildClient</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildClient" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildClient" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildClient%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Create a new <a href="../-spotify-client-api/index.html">SpotifyClientApi</a> that has access to public endpoints, in addition to endpoints requiring scopes contained in the client authorization request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildCredentialed" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="build-credentialed.html">buildCredentialed</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-app-api/index.html">SpotifyAppApi</a> <a href="build-credentialed.html">buildCredentialed</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildCredentialed" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildCredentialed" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildCredentialed%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Create a new <a href="../-spotify-app-api/index.html">SpotifyAppApi</a> that only has access to public endpoints and data</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildPublic" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="build-public.html">buildPublic</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-app-api/index.html">SpotifyAppApi</a> <a href="build-public.html">buildPublic</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildPublic" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="buildPublic" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FbuildPublic%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Create a new <a href="../-spotify-app-api/index.html">SpotifyAppApi</a> that only has access to public endpoints and data</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="cacheLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="cache-limit.html">cacheLimit</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="cache-limit.html">cacheLimit</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="cache-limit.html">cacheLimit</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="cacheLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="cacheLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FcacheLimit%2F%23kotlin.Int%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the maximum allowed amount of cached requests at one time.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientId" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="client-id.html">clientId</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="client-id.html">clientId</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="client-id.html">clientId</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientId" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientId" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientId%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the application client id</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientSecret" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="client-secret.html">clientSecret</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="client-secret.html">clientSecret</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="client-secret.html">clientSecret</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientSecret" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="clientSecret" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FclientSecret%2F%23kotlin.String%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the application client secret</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="defaultLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="default-limit.html">defaultLimit</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="default-limit.html">defaultLimit</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="default-limit.html">defaultLimit</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="defaultLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="defaultLimit" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FdefaultLimit%2F%23kotlin.Int%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to set the default amount of objects to retrieve in one request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableAllOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="enable-all-options.html">enableAllOptions</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="enable-all-options.html">enableAllOptions</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableAllOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableAllOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableAllOptions%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set whether to enable all utilities (<a href="automatic-refresh.html">automaticRefresh</a>, <a href="retry-when-rate-limited.html">retryWhenRateLimited</a>, <a href="use-cache.html">useCache</a>, <a href="enable-logger.html">enableLogger</a>, <a href="test-token-validity.html">testTokenValidity</a>)</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableLogger" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="enable-logger.html">enableLogger</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="enable-logger.html">enableLogger</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="enable-logger.html">enableLogger</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableLogger" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="enableLogger" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FenableLogger%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set whether to enable to the exception logger</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="equals" id="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">other</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-authorization.html">getAuthorization</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-user-authorization/index.html">SpotifyUserAuthorization</a> <a href="get-authorization.html">getAuthorization</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-authorization%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to authenticate a <a href="../-spotify-client-api/index.html">SpotifyClientApi</a> with an authorization code or build <a href="../-spotify-api/index.html">SpotifyApi</a> using a refresh token</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-options.html">getOptions</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../-spotify-api-options/index.html">SpotifyApiOptions</a> <a href="get-options.html">getOptions</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cget-options%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to override default values for caching, token refresh, and logging</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hashCode" id="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="redirectUri" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="redirect-uri.html">redirectUri</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="redirect-uri.html">redirectUri</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="redirect-uri.html">redirectUri</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="redirectUri" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="redirectUri" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FredirectUri%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the application <a href="https://developer.spotify.com/documentation/general/guides/authorization-guide/">redirect uri</a></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="requestTimeoutMillis" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="request-timeout-millis.html">requestTimeoutMillis</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="request-timeout-millis.html">requestTimeoutMillis</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a> <a href="request-timeout-millis.html">requestTimeoutMillis</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="requestTimeoutMillis" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="requestTimeoutMillis" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FrequestTimeoutMillis%2F%23kotlin.Long%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the maximum time, in milliseconds, before terminating an http request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="retryWhenRateLimited" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="retry-when-rate-limited.html">retryWhenRateLimited</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="retry-when-rate-limited.html">retryWhenRateLimited</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="retry-when-rate-limited.html">retryWhenRateLimited</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="retryWhenRateLimited" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="retryWhenRateLimited" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FretryWhenRateLimited%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set whether to block the current thread and wait until the API can retry the request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="set-authorization.html">setAuthorization</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="set-authorization.html">setAuthorization</a>(<a href="../-spotify-user-authorization/index.html">SpotifyUserAuthorization</a> <a href="set-authorization.html">authorization</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setAuthorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-authorization%3E%2F%23com.adamratzman.spotify.SpotifyUserAuthorization%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to authenticate a <a href="../-spotify-client-api/index.html">SpotifyClientApi</a> with an authorization code or build <a href="../-spotify-api/index.html">SpotifyApi</a> using a refresh token</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="set-options.html">setOptions</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a> <a href="set-options.html">setOptions</a>(<a href="../-spotify-api-options/index.html">SpotifyApiOptions</a> <a href="set-options.html">options</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="setOptions" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2F%3Cset-options%3E%2F%23com.adamratzman.spotify.SpotifyApiOptions%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to override default values for caching, token refresh, and logging</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="testTokenValidity" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="test-token-validity.html">testTokenValidity</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="test-token-validity.html">testTokenValidity</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="test-token-validity.html">testTokenValidity</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="testTokenValidity" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="testTokenValidity" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtestTokenValidity%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>After API creation, set whether to test whether the token is valid by performing a lightweight request</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="token" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="token.html">token</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="token.html">token</a>(<a href="../../com.adamratzman.spotify.models/-token/index.html">Token</a> <a href="token.html">token</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="token" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="token" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Ftoken%2F%23com.adamratzman.spotify.models.Token%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set the token to be used with this api instance</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="tokenString" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="token-string.html">tokenString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="token-string.html">tokenString</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="token-string.html">tokenString</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="tokenString" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="tokenString" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FtokenString%2F%23kotlin.String%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>If you only have an access token, the api can be instantiated with it</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toString" id="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="../../com.adamratzman.spotify.models/-explicit-content-settings/index.html#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="useCache" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="use-cache.html">useCache</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="index.html">SpotifyApiBuilder</a> <a href="use-cache.html">useCache</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="use-cache.html">useCache</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="useCache" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="useCache" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2FuseCache%2F%23kotlin.Boolean%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Set whether to cache requests.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="authorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">authorization</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="authorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private  <a href="../-spotify-user-authorization/index.html">SpotifyUserAuthorization</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">authorization</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="authorization" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Fauthorization%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to authenticate a <a href="../-spotify-client-api/index.html">SpotifyClientApi</a> with an authorization code or build <a href="../-spotify-api/index.html">SpotifyApi</a> using a refresh token</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="options" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">options</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="options" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private  <a href="../-spotify-api-options/index.html">SpotifyApiOptions</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">options</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="options" id="%5Bcom.adamratzman.spotify%2FSpotifyApiBuilder%2Foptions%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>Allows you to override default values for caching, token refresh, and logging</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

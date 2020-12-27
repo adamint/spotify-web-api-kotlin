@@ -98,14 +98,14 @@ package com.adamratzman.spotify.utils
  *
  * @author Takahiko Kawasaki (https://github.com/TakahikoKawasaki/nv-i18n)
  */
-enum class Market(
+public enum class Market(
     /**
      * Get the country name.
      *
      * @return
      * The country name.
      */
-    val marketName: String,
+    public val marketName: String,
     /**
      * Get the [ISO 3166-1 alpha-3](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) code.
      *
@@ -114,7 +114,7 @@ enum class Market(
      * Some country codes reserved exceptionally (such as [.EU])
      * returns `null`.
      */
-    val alpha3: String?,
+    public val alpha3: String?,
     /**
      * Get the [ISO 3166-1 numeric](http://en.wikipedia.org/wiki/ISO_3166-1_numeric) code.
      *
@@ -123,7 +123,7 @@ enum class Market(
      * Country codes reserved exceptionally (such as [.EU])
      * returns `-1`.
      */
-    val numeric: Int,
+    public val numeric: Int,
     /**
      * Get the assignment state of this country code in ISO 3166-1.
      *
@@ -132,7 +132,7 @@ enum class Market(
      *
      * @see [Decoding table of ISO 3166-1 alpha-2 codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.Decoding_table)
      */
-    val assignment: Assignment
+    public val assignment: Assignment
 ) {
     /**
      * [Ascension Island](http://en.wikipedia.org/wiki/Ascension_Island)
@@ -1851,7 +1851,7 @@ enum class Market(
      *
      * @see [Decoding table of ISO 3166-1 alpha-2 codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.Decoding_table)
      */
-    enum class Assignment {
+    public enum class Assignment {
         /**
          * [Officially assigned](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
          *

@@ -18,7 +18,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
-@Suppress("EXPERIMENTAL_API_USAGE")
 internal val nonstrictJson =
         Json {
             isLenient = true
@@ -103,8 +102,8 @@ internal fun <T : Any> String.toPagingObject(
                     innerObjectName,
                     endpoint,
                     json,
-                    true,
-                    false
+                    arbitraryInnerNameAllowed = true,
+                    skipInnerNameFirstIfPossible = false
             )
         } else throw jde
     }

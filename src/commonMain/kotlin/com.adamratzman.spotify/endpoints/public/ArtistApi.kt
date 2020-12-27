@@ -23,16 +23,16 @@ import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
-typealias ArtistsAPI = ArtistApi
+public typealias ArtistsAPI = ArtistApi
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
-typealias ArtistAPI = ArtistApi
+public typealias ArtistAPI = ArtistApi
 
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/artists/)**
  */
-class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID.
      *
@@ -42,7 +42,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return [Artist] if valid artist id is provided, otherwise null
      */
-    fun getArtist(artist: String): SpotifyRestAction<Artist?> {
+    public fun getArtist(artist: String): SpotifyRestAction<Artist?> {
         return toAction {
             catch {
                 get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}").toString()).toObject(
@@ -63,7 +63,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return List of [Artist] objects or null if the artist could not be found, in the order requested
      */
-    fun getArtists(vararg artists: String): SpotifyRestAction<List<Artist?>> {
+    public fun getArtists(vararg artists: String): SpotifyRestAction<List<Artist?>> {
         checkBulkRequesting(50, artists.size)
 
         return toAction {
@@ -91,7 +91,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [artist] is not found, or filter parameters are illegal
      * @return [PagingObject] of [SimpleAlbum] objects
      */
-    fun getArtistAlbums(
+    public fun getArtistAlbums(
         artist: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
@@ -116,7 +116,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param keyword The com.adamratzman.spotify id of the strategy
      */
-    enum class AlbumInclusionStrategy(val keyword: String) {
+    public enum class AlbumInclusionStrategy(public val keyword: String) {
         ALBUM("album"),
         SINGLE("single"),
         APPEARS_ON("appears_on"),
@@ -137,7 +137,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if tracks are not available in the specified [Market] or the [artist] is not found
      * @return List of the top [Track]s of an artist in the given market
      */
-    fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
+    public fun getArtistTopTracks(artist: String, market: Market = Market.US): SpotifyRestAction<List<Track>> {
         return toAction {
             get(
                     EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/top-tracks").with(
@@ -159,7 +159,7 @@ class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the [artist] is not found
      * @return List of *never-null*, but possibly empty [Artist]s representing similar artists
      */
-    fun getRelatedArtists(artist: String): SpotifyRestAction<List<Artist>> {
+    public fun getRelatedArtists(artist: String): SpotifyRestAction<List<Artist>> {
         return toAction {
             get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/related-artists").toString())
                     .toObject(ArtistList.serializer(), api, json).artists.filterNotNull()

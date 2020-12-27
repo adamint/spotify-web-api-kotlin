@@ -1,384 +1,549 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.SpotifyScope - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../../style.css">
-</HEAD>
-<BODY>
-<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify</a>&nbsp;/&nbsp;<a href="./index.html">SpotifyScope</a><br/>
-<br/>
-<h1>SpotifyScope</h1>
-<a name="com.adamratzman.spotify.SpotifyScope"></a>
-(common, js, jvm) <code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">SpotifyScope</span></code>
-<p>Scopes provide Spotify users using third-party apps the confidence
-that only the information they choose to share will be shared, and nothing more.</p>
-<p>Each represents a distinct privilege and may be required by one or more endpoints as discussed
-on the <a href="https://developer.spotify.com/documentation/general/guides/scopes/">Spotify Authorization Documentation</a></p>
-<h3>Enum Values</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-a-p-p_-r-e-m-o-t-e_-c-o-n-t-r-o-l.html">APP_REMOTE_CONTROL</a></h4>
-</td>
-<td>
-<p>Remote control playback of Spotify. This scope is currently available to Spotify iOS and Android App Remote SDKs.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-p-r-i-v-a-t-e.html">PLAYLIST_READ_PRIVATE</a></h4>
-</td>
-<td>
-<p>Read access to user's private playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-c-o-l-l-a-b-o-r-a-t-i-v-e.html">PLAYLIST_READ_COLLABORATIVE</a></h4>
-</td>
-<td>
-<p>Include collaborative playlists when requesting a user's playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html">PLAYLIST_MODIFY_PUBLIC</a></h4>
-</td>
-<td>
-<p>Write access to a user's public playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html">PLAYLIST_MODIFY_PRIVATE</a></h4>
-</td>
-<td>
-<p>Write access to a user's private playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-s-t-r-e-a-m-i-n-g.html">STREAMING</a></h4>
-</td>
-<td>
-<p>Control playback of a Spotify track. This scope is currently available to Spotify Playback SDKs, including the iOS SDK, Android SDK and Web Playback SDK. The user must have a Spotify Premium account.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-g-c_-i-m-a-g-e_-u-p-l-o-a-d.html">UGC_IMAGE_UPLOAD</a></h4>
-</td>
-<td>
-<p>Let the application upload playlist covers and profile images</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-f-o-l-l-o-w_-m-o-d-i-f-y.html">USER_FOLLOW_MODIFY</a></h4>
-</td>
-<td>
-<p>Write/delete access to the list of artists and other users that the user follows.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-f-o-l-l-o-w_-r-e-a-d.html">USER_FOLLOW_READ</a></h4>
-</td>
-<td>
-<p>Read access to the list of artists and other users that the user follows.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d.html">USER_LIBRARY_READ</a></h4>
-</td>
-<td>
-<p>Read access to a user's "Your Music" library.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y.html">USER_LIBRARY_MODIFY</a></h4>
-</td>
-<td>
-<p>Write/delete access to a user's "Your Music" library.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-m-o-d-i-f-y_-p-l-a-y-b-a-c-k_-s-t-a-t-e.html">USER_MODIFY_PLAYBACK_STATE</a></h4>
-</td>
-<td>
-<p>Write access to a user’s playback state</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-r-i-v-a-t-e.html">USER_READ_PRIVATE</a></h4>
-</td>
-<td>
-<p>Read access to user’s subscription details (type of user account).</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-e-m-a-i-l.html">USER_READ_EMAIL</a></h4>
-</td>
-<td>
-<p>Read access to user’s email address.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-t-o-p_-r-e-a-d.html">USER_TOP_READ</a></h4>
-</td>
-<td>
-<p>Read access to a user's top artists and tracks.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-s-t-a-t-e.html">USER_READ_PLAYBACK_STATE</a></h4>
-</td>
-<td>
-<p>Read access to a user’s player state.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n.html">USER_READ_PLAYBACK_POSITION</a></h4>
-</td>
-<td>
-<p>Read access to a user’s playback position in a content.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-c-u-r-r-e-n-t-l-y_-p-l-a-y-i-n-g.html">USER_READ_CURRENTLY_PLAYING</a></h4>
-</td>
-<td>
-<p>Read access to a user’s currently playing track</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d.html">USER_READ_RECENTLY_PLAYED</a></h4>
-</td>
-<td>
-<p>Read access to a user’s recently played tracks.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3>Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="uri.html">uri</a></h4>
-</td>
-<td>
-<p>The scope id</p>
-<code><span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Inheritors</h3>
-<table>
-<tbody>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-a-p-p_-r-e-m-o-t-e_-c-o-n-t-r-o-l.html">APP_REMOTE_CONTROL</a></h4>
-</td>
-<td>
-<p>Remote control playback of Spotify. This scope is currently available to Spotify iOS and Android App Remote SDKs.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e.html">PLAYLIST_MODIFY_PRIVATE</a></h4>
-</td>
-<td>
-<p>Write access to a user's private playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c.html">PLAYLIST_MODIFY_PUBLIC</a></h4>
-</td>
-<td>
-<p>Write access to a user's public playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-c-o-l-l-a-b-o-r-a-t-i-v-e.html">PLAYLIST_READ_COLLABORATIVE</a></h4>
-</td>
-<td>
-<p>Include collaborative playlists when requesting a user's playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-p-r-i-v-a-t-e.html">PLAYLIST_READ_PRIVATE</a></h4>
-</td>
-<td>
-<p>Read access to user's private playlists.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-s-t-r-e-a-m-i-n-g.html">STREAMING</a></h4>
-</td>
-<td>
-<p>Control playback of a Spotify track. This scope is currently available to Spotify Playback SDKs, including the iOS SDK, Android SDK and Web Playback SDK. The user must have a Spotify Premium account.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-g-c_-i-m-a-g-e_-u-p-l-o-a-d.html">UGC_IMAGE_UPLOAD</a></h4>
-</td>
-<td>
-<p>Let the application upload playlist covers and profile images</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-f-o-l-l-o-w_-m-o-d-i-f-y.html">USER_FOLLOW_MODIFY</a></h4>
-</td>
-<td>
-<p>Write/delete access to the list of artists and other users that the user follows.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-f-o-l-l-o-w_-r-e-a-d.html">USER_FOLLOW_READ</a></h4>
-</td>
-<td>
-<p>Read access to the list of artists and other users that the user follows.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y.html">USER_LIBRARY_MODIFY</a></h4>
-</td>
-<td>
-<p>Write/delete access to a user's "Your Music" library.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d.html">USER_LIBRARY_READ</a></h4>
-</td>
-<td>
-<p>Read access to a user's "Your Music" library.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-m-o-d-i-f-y_-p-l-a-y-b-a-c-k_-s-t-a-t-e.html">USER_MODIFY_PLAYBACK_STATE</a></h4>
-</td>
-<td>
-<p>Write access to a user’s playback state</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-c-u-r-r-e-n-t-l-y_-p-l-a-y-i-n-g.html">USER_READ_CURRENTLY_PLAYING</a></h4>
-</td>
-<td>
-<p>Read access to a user’s currently playing track</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-e-m-a-i-l.html">USER_READ_EMAIL</a></h4>
-</td>
-<td>
-<p>Read access to user’s email address.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n.html">USER_READ_PLAYBACK_POSITION</a></h4>
-</td>
-<td>
-<p>Read access to a user’s playback position in a content.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-s-t-a-t-e.html">USER_READ_PLAYBACK_STATE</a></h4>
-</td>
-<td>
-<p>Read access to a user’s player state.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-p-r-i-v-a-t-e.html">USER_READ_PRIVATE</a></h4>
-</td>
-<td>
-<p>Read access to user’s subscription details (type of user account).</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d.html">USER_READ_RECENTLY_PLAYED</a></h4>
-</td>
-<td>
-<p>Read access to a user’s recently played tracks.</p>
-</td>
-</tr>
-<tr>
-<td>
-(common, js, jvm) 
-<h4><a href="-u-s-e-r_-t-o-p_-r-e-a-d.html">USER_TOP_READ</a></h4>
-</td>
-<td>
-<p>Read access to a user's top artists and tracks.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SpotifyScope</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify/SpotifyScope///PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">spotify-web-api-kotlin</a>/<a href="../index.html">com.adamratzman.spotify</a>/<a href="index.html">SpotifyScope</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Spotify</span><wbr></wbr><span>Scope</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace">public enum <a href="index.html">SpotifyScope</a> extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a>&lt;<a href="index.html">SpotifyScope</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Scopes provide Spotify users using third-party apps the confidence that only the information they choose to share will be shared, and nothing more.</p><p class="paragraph">Each represents a distinct privilege and may be required by one or more endpoints as discussed on the <a href="https://developer.spotify.com/documentation/general/guides/scopes/">Spotify Authorization Documentation</a></p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Entries">Entries</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+            <div class="tabs-section-body">
+              <h2 class="tabbedcontent">Entries</h2>
+              <div class="table" data-togglable="Entries"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.APP_REMOTE_CONTROL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="APP_REMOTE_CONTROL" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.APP_REMOTE_CONTROL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-a-p-p_-r-e-m-o-t-e_-c-o-n-t-r-o-l/index.html">APP_REMOTE_CONTROL</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.APP_REMOTE_CONTROL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-a-p-p_-r-e-m-o-t-e_-c-o-n-t-r-o-l/index.html">APP_REMOTE_CONTROL</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Remote control playback of Spotify.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="PLAYLIST_READ_PRIVATE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-p-r-i-v-a-t-e/index.html">PLAYLIST_READ_PRIVATE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-p-r-i-v-a-t-e/index.html">PLAYLIST_READ_PRIVATE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to user's private playlists.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_COLLABORATIVE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="PLAYLIST_READ_COLLABORATIVE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_COLLABORATIVE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-c-o-l-l-a-b-o-r-a-t-i-v-e/index.html">PLAYLIST_READ_COLLABORATIVE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_READ_COLLABORATIVE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-p-l-a-y-l-i-s-t_-r-e-a-d_-c-o-l-l-a-b-o-r-a-t-i-v-e/index.html">PLAYLIST_READ_COLLABORATIVE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Include collaborative playlists when requesting a user's playlists.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PUBLIC%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="PLAYLIST_MODIFY_PUBLIC" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PUBLIC%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c/index.html">PLAYLIST_MODIFY_PUBLIC</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PUBLIC%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-u-b-l-i-c/index.html">PLAYLIST_MODIFY_PUBLIC</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Write access to a user's public playlists.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="PLAYLIST_MODIFY_PRIVATE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e/index.html">PLAYLIST_MODIFY_PRIVATE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.PLAYLIST_MODIFY_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-p-l-a-y-l-i-s-t_-m-o-d-i-f-y_-p-r-i-v-a-t-e/index.html">PLAYLIST_MODIFY_PRIVATE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Write access to a user's private playlists.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.STREAMING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="STREAMING" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.STREAMING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-s-t-r-e-a-m-i-n-g/index.html">STREAMING</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.STREAMING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-s-t-r-e-a-m-i-n-g/index.html">STREAMING</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Control playback of a Spotify track.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.UGC_IMAGE_UPLOAD%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="UGC_IMAGE_UPLOAD" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.UGC_IMAGE_UPLOAD%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-g-c_-i-m-a-g-e_-u-p-l-o-a-d/index.html">UGC_IMAGE_UPLOAD</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.UGC_IMAGE_UPLOAD%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-g-c_-i-m-a-g-e_-u-p-l-o-a-d/index.html">UGC_IMAGE_UPLOAD</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Let the application upload playlist covers and profile imagesVisible to users: Upload images to personalize your profile or playlist cover</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_FOLLOW_MODIFY" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-f-o-l-l-o-w_-m-o-d-i-f-y/index.html">USER_FOLLOW_MODIFY</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-f-o-l-l-o-w_-m-o-d-i-f-y/index.html">USER_FOLLOW_MODIFY</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Write/delete access to the list of artists and other users that the user follows.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_FOLLOW_READ" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-f-o-l-l-o-w_-r-e-a-d/index.html">USER_FOLLOW_READ</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_FOLLOW_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-f-o-l-l-o-w_-r-e-a-d/index.html">USER_FOLLOW_READ</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to the list of artists and other users that the user follows.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_LIBRARY_READ" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d/index.html">USER_LIBRARY_READ</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d/index.html">USER_LIBRARY_READ</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user's &quot;Your Music&quot; library.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_LIBRARY_MODIFY" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y/index.html">USER_LIBRARY_MODIFY</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_LIBRARY_MODIFY%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-l-i-b-r-a-r-y_-m-o-d-i-f-y/index.html">USER_LIBRARY_MODIFY</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Write/delete access to a user's &quot;Your Music&quot; library.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_MODIFY_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_MODIFY_PLAYBACK_STATE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_MODIFY_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-m-o-d-i-f-y_-p-l-a-y-b-a-c-k_-s-t-a-t-e/index.html">USER_MODIFY_PLAYBACK_STATE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_MODIFY_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-m-o-d-i-f-y_-p-l-a-y-b-a-c-k_-s-t-a-t-e/index.html">USER_MODIFY_PLAYBACK_STATE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Write access to a user’s playback stateVisible to users: Control playback on your Spotify clients and Spotify Connect devices.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_PRIVATE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-p-r-i-v-a-t-e/index.html">USER_READ_PRIVATE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PRIVATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-p-r-i-v-a-t-e/index.html">USER_READ_PRIVATE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to user’s subscription details (type of user account).</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_EMAIL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_EMAIL" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_EMAIL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-e-m-a-i-l/index.html">USER_READ_EMAIL</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_EMAIL%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-e-m-a-i-l/index.html">USER_READ_EMAIL</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to user’s email address.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_TOP_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_TOP_READ" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_TOP_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-t-o-p_-r-e-a-d/index.html">USER_TOP_READ</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_TOP_READ%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-t-o-p_-r-e-a-d/index.html">USER_TOP_READ</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user's top artists and tracks.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_PLAYBACK_STATE" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-s-t-a-t-e/index.html">USER_READ_PLAYBACK_STATE</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_STATE%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-s-t-a-t-e/index.html">USER_READ_PLAYBACK_STATE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user’s player state.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_POSITION%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_PLAYBACK_POSITION" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_POSITION%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n/index.html">USER_READ_PLAYBACK_POSITION</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_PLAYBACK_POSITION%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-p-l-a-y-b-a-c-k_-p-o-s-i-t-i-o-n/index.html">USER_READ_PLAYBACK_POSITION</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user’s playback position in a content.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_CURRENTLY_PLAYING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_CURRENTLY_PLAYING" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_CURRENTLY_PLAYING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-c-u-r-r-e-n-t-l-y_-p-l-a-y-i-n-g/index.html">USER_READ_CURRENTLY_PLAYING</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_CURRENTLY_PLAYING%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-c-u-r-r-e-n-t-l-y_-p-l-a-y-i-n-g/index.html">USER_READ_CURRENTLY_PLAYING</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user’s currently playing trackVisible to users: Read your currently playing track</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_RECENTLY_PLAYED%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" anchor-label="USER_READ_RECENTLY_PLAYED" id="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_RECENTLY_PLAYED%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d/index.html">USER_READ_RECENTLY_PLAYED</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope.USER_READ_RECENTLY_PLAYED%2F%2F%2FPointingToDeclaration%2F%5D%2FClasslikes%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace"><a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d/index.html">USER_READ_RECENTLY_PLAYED</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Read access to a user’s recently played tracks.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="compareTo" id="%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d/index.html#%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">compareTo</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d/index.html#%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">compareTo</a>(<a href="index.html">SpotifyScope</a> <a href="-u-s-e-r_-r-e-a-d_-r-e-c-e-n-t-l-y_-p-l-a-y-e-d/index.html#%5Bkotlin%2FEnum%2FcompareTo%2F%23com.adamratzman.spotify.SpotifyScope%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">other</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="equals" id="%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a> <a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">equals</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a> <a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">other</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getName" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-name.html">getName</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-name%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-name.html">getName</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-ordinal%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getOrdinal" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-ordinal%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-ordinal.html">getOrdinal</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-ordinal%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="get-ordinal.html">getOrdinal</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-uri.html">getUri</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="get-uri.html">getUri</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="getUri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2F%3Cget-uri%3E%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The scope id</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FEnum%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="hashCode" id="%5Bkotlin%2FEnum%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FEnum%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">hashCode</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bkotlin%2FEnum%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" anchor-label="toString" id="%5Bkotlin%2FEnum%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bkotlin%2FEnum%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="../../com.adamratzman.spotify.models/-currently-playing-type/-u-n-k-n-o-w-n/index.html#%5Bkotlin%2FEnum%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F-71305405">toString</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+</div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="name" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">name</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="name" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fname%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">name</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="ordinal" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">ordinal</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="ordinal" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Fordinal%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">ordinal</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>
+                <div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">uri</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="platform-tags ">
+                        <div class="platform-tag common-like">common</div>
+                      </div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a><div class="symbol monospace block">private final <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a> <a href="index.html#%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405">uri</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" anchor-label="uri" id="%5Bcom.adamratzman.spotify%2FSpotifyScope%2Furi%2F%23%2FPointingToDeclaration%2F%5D%2FProperties%2F-71305405" data-filterable-set=":dokkaHtml/commonMain"></a>The scope id</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

@@ -6,7 +6,7 @@ import android.os.Build.VERSION_CODES
 import android.util.Base64
 import java.security.MessageDigest
 
-actual fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
+public actual fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
     val sha256 = MessageDigest.getInstance("SHA-256").digest(codeVerifier.toByteArray())
     return if (VERSION.SDK_INT >= VERSION_CODES.O) {
         java.util.Base64.getUrlEncoder()

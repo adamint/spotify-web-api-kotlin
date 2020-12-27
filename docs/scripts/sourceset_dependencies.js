@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":dokkaHtml/androidDebug": [], ":dokkaHtml/androidMain": [], ":dokkaHtml/androidRelease": [], ":dokkaHtml/common": [], ":dokkaHtml/commonMain": [], ":dokkaHtml/global": [], ":dokkaHtml/js": [], ":dokkaHtml/jsMain": [":dokkaHtml/commonMain"], ":dokkaHtml/jvm": [], ":dokkaHtml/jvmMain": [":dokkaHtml/commonMain"]}'

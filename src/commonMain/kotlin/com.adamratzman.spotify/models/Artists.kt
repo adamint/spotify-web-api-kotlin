@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +14,7 @@ import kotlinx.serialization.Serializable
  * @property type The object type: "artist"
  */
 @Serializable
-data class SimpleArtist(
+public data class SimpleArtist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -26,13 +27,13 @@ data class SimpleArtist(
     /**
      * This [SimpleArtist] into a full [Artist] object
      */
-    val fullArtist by lazy { api.artists.getArtist(id) }
+    val fullArtist: Artist? by lazy { api.artists.getArtist(id).complete() }
 
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
     @Deprecated("Replaced with a lazy fullArtist property", ReplaceWith("fullArtist"))
-    fun toFullArtist() = api.artists.getArtist(id)
+    public fun toFullArtist(): SpotifyRestAction<Artist?> = api.artists.getArtist(id)
 }
 
 /**
@@ -50,7 +51,7 @@ data class SimpleArtist(
  * @property type The object type: "artist"
  */
 @Serializable
-data class Artist(
+public data class Artist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,

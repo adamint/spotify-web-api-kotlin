@@ -20,7 +20,7 @@ import com.adamratzman.spotify.utils.catch
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/)**
  */
-class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single episode identified by its unique Spotify ID.
      *
@@ -36,7 +36,7 @@ class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return possibly-null [Episode].
      */
-    fun getEpisode(id: String, market: Market? = null): SpotifyRestAction<Episode?> {
+    public fun getEpisode(id: String, market: Market? = null): SpotifyRestAction<Episode?> {
         return toAction {
             catch {
                 get(
@@ -64,7 +64,7 @@ class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of possibly-null [Episode] objects.
      * @throws BadRequestException If any invalid show id is provided
      */
-    fun getEpisodes(vararg ids: String, market: Market? = null): SpotifyRestAction<List<Episode?>> {
+    public fun getEpisodes(vararg ids: String, market: Market? = null): SpotifyRestAction<List<Episode?>> {
         checkBulkRequesting(50, ids.size)
         return toAction {
             bulkRequest(50, ids.toList()) { chunk ->

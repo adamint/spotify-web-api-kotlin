@@ -3,12 +3,12 @@ package com.adamratzman.spotify.utils
 
 import kotlinx.coroutines.CoroutineScope
 
-expect enum class TimeUnit {
+public expect enum class TimeUnit {
     MILLISECONDS, SECONDS;
 
-    fun toMillis(duration: Long): Long
+    public fun toMillis(duration: Long): Long
 }
 
 internal expect fun CoroutineScope.schedule(quantity: Int, timeUnit: TimeUnit, consumer: () -> Unit)
 
-expect fun <T> runBlockingMpp(coroutineCode: suspend () -> T): T
+public expect fun <T> runBlockingMpp(coroutineCode: suspend () -> T): T

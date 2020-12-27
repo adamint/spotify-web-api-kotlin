@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
@@ -23,7 +24,7 @@ import kotlinx.serialization.Transient
  * @property type The object type: “album”
  * @property releaseDate The date the album was first released, for example 1981. Depending on the precision,
  * it might be shown as 1981-12 or 1981-12-15.
- * @property releaseDatePrecision The precision with which release_date value is known: year , month , or day.
+ * @property releaseDatePrecisionString The precision with which release_date value is known: year , month , or day.
  * @property albumType The type of the album: one of “album”, “single”, or “compilation”.
  * @property restrictions Part of the response when Track Relinking is applied, the original track is not available
  * in the given market, and Spotify did not have any tracks to relink it with. The track response will still contain
@@ -31,7 +32,7 @@ import kotlinx.serialization.Transient
  * "restrictions" : {"reason" : "market"}
  */
 @Serializable
-data class SimpleAlbum(
+public data class SimpleAlbum(
     @SerialName("album_type") private val albumTypeString: String,
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
@@ -50,7 +51,7 @@ data class SimpleAlbum(
     @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject() {
     @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
     val albumType: AlbumResultType = albumTypeString.let { _ ->
@@ -58,7 +59,7 @@ data class SimpleAlbum(
     }
 
     @Transient
-    val releaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
 
     @Transient
     val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
@@ -71,15 +72,15 @@ data class SimpleAlbum(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullAlbum(market: Market? = null) = api.albums.getAlbum(id, market)
+    public fun toFullAlbum(market: Market? = null): SpotifyRestAction<Album?> = api.albums.getAlbum(id, market)
 }
 
-data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
+public data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
 
 /**
  * Album search type
  */
-enum class AlbumResultType(internal val id: String) {
+public enum class AlbumResultType(internal val id: String) {
     ALBUM("album"),
     SINGLE("single"),
     COMPILATION("compilation"),
@@ -118,7 +119,7 @@ enum class AlbumResultType(internal val id: String) {
  * restrictions object containing the reason why the track is not available: "restrictions" : {"reason" : "market"}
  */
 @Serializable
-data class Album(
+public data class Album(
     @SerialName("album_type") private val albumTypeString: String,
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
@@ -143,16 +144,16 @@ data class Album(
 ) : CoreObject() {
 
     @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
-    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
+    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
 
     @Transient
     val albumType: AlbumResultType = AlbumResultType.values().first { it.id == albumTypeString }
 
     @Transient
-    val releaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
 }
 
 /**
@@ -163,17 +164,17 @@ data class Album(
  * P = the sound recording (performance) copyright.
  */
 @Serializable
-data class SpotifyCopyright(
+public data class SpotifyCopyright(
     @SerialName("text") private val textString: String,
     @SerialName("type") private val typeString: String
 ) {
     @Transient
-    val text = textString
+    val text: String = textString
             .removePrefix("(P)")
             .removePrefix("(C)")
             .trim()
     @Transient
-    val type = CopyrightType.values().match(typeString)!!
+    val type: CopyrightType = CopyrightType.values().match(typeString)!!
 }
 
 @Serializable
@@ -182,11 +183,11 @@ internal data class AlbumsResponse(val albums: List<Album?>)
 /**
  * Copyright statement type of an Album
  */
-enum class CopyrightType(val identifier: String) : ResultEnum {
+public enum class CopyrightType(public val identifier: String) : ResultEnum {
     COPYRIGHT("C"),
     SOUND_PERFORMANCE_COPYRIGHT("P");
 
-    override fun retrieveIdentifier() = identifier
+    override fun retrieveIdentifier(): String = identifier
 }
 
 internal fun getReleaseDate(releaseDateString: String) = when (releaseDateString.count { it == '-' }) {

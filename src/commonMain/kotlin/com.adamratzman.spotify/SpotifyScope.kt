@@ -10,7 +10,7 @@ package com.adamratzman.spotify
  *
  * @property uri The scope id
  */
-enum class SpotifyScope(val uri: String) {
+public enum class SpotifyScope(public val uri: String) {
     /**
      * Remote control playback of Spotify. This scope is currently available to Spotify iOS and Android App Remote SDKs.
      *

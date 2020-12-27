@@ -22,10 +22,10 @@ class JsonTests : Spek({
 
         it("artist serialization") {
             assertTrue(
-                    Json.encodeToString(
-                            Artist.serializer().nullable,
-                            api.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN").complete()
-                    ).isNotEmpty()
+                Json.encodeToString(
+                    Artist.serializer().nullable,
+                    api.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN").complete()
+                ).isNotEmpty()
             )
         }
         it("track serialization") {

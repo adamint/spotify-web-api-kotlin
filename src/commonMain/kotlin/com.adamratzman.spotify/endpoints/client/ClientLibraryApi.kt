@@ -18,18 +18,17 @@ import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.serializer
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientLibraryApi"))
-typealias ClientLibraryAPI = ClientLibraryApi
+public typealias ClientLibraryAPI = ClientLibraryApi
 
 /**
  * Endpoints for retrieving information about, and managing, tracks and albums that the current user has saved in their “Your Music” library.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
  */
-class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
@@ -44,7 +43,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
-    fun getSavedTracks(
+    public fun getSavedTracks(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
@@ -71,7 +70,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
-    fun getSavedAlbums(
+    public fun getSavedAlbums(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
@@ -96,9 +95,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [id] is not found
      */
-    fun contains(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
+    public fun contains(type: LibraryType, id: String): SpotifyRestAction<Boolean> {
         return toAction {
-            contains(type, ids = *arrayOf(id)).complete()[0]
+            contains(type, ids = arrayOf(id)).complete()[0]
         }
     }
 
@@ -114,7 +113,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
+    public fun contains(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
         if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
             ids.toList().chunked(50).map { list ->
@@ -138,9 +137,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the id is invalid
      */
-    fun add(type: LibraryType, id: String): SpotifyRestAction<Unit> {
+    public fun add(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction {
-            add(type, ids = *arrayOf(id)).complete()
+            add(type, ids = arrayOf(id)).complete()
         }
     }
 
@@ -156,7 +155,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+    public fun add(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
             ids.toList().chunked(50).forEach { list ->
@@ -180,9 +179,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun remove(type: LibraryType, id: String): SpotifyRestAction<Unit> {
+    public fun remove(type: LibraryType, id: String): SpotifyRestAction<Unit> {
         return toAction {
-            remove(type, ids = *arrayOf(id)).complete()
+            remove(type, ids = arrayOf(id)).complete()
         }
     }
 
@@ -200,7 +199,7 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
+    public fun remove(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> {
         if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
         return toAction {
             ids.toList().chunked(50).forEach { list ->
@@ -221,9 +220,9 @@ class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  * @param value Spotify id for the type
  * @param id How to transform an id (or uri) input into its Spotify id
  */
-enum class LibraryType(private val value: String, internal val id: (String) -> String) {
+public enum class LibraryType(private val value: String, internal val id: (String) -> String) {
     TRACK("tracks", { PlayableUri(it).id }),
     ALBUM("albums", { AlbumUri(it).id });
 
-    override fun toString() = value
+    override fun toString(): String = value
 }

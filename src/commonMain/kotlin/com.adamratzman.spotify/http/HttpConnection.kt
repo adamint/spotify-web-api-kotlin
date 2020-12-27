@@ -27,36 +27,36 @@ import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
-enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
+public enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
     GET(HttpMethod.Get),
     POST(HttpMethod.Post),
     PUT(HttpMethod.Put),
     DELETE(HttpMethod.Delete);
 }
 
-data class HttpHeader(val key: String, val value: String)
+public data class HttpHeader(val key: String, val value: String)
 
-data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
+public data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
 /**
  * Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests
  */
-class HttpConnection constructor(
-    val url: String,
-    val method: HttpRequestMethod,
-    val bodyMap: Map<*, *>?,
-    val bodyString: String?,
+public class HttpConnection constructor(
+    public val url: String,
+    public val method: HttpRequestMethod,
+    public val bodyMap: Map<*, *>?,
+    public val bodyString: String?,
     contentType: String?,
-    val headers: List<HttpHeader> = listOf(),
-    val api: GenericSpotifyApi? = null
+    public val headers: List<HttpHeader> = listOf(),
+    public val api: GenericSpotifyApi? = null
 ) {
-    val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
+    public val contentType: ContentType = contentType?.let { ContentType.parse(it) } ?: ContentType.Application.Json
 
-    fun String?.toByteArrayContent(): ByteArrayContent? {
+    public fun String?.toByteArrayContent(): ByteArrayContent? {
         return if (this == null) null else ByteArrayContent(this.toByteArray(), contentType)
     }
 
-    fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
+    public fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
         url(this@HttpConnection.url)
         method = this@HttpConnection.method.externalMethod
 
@@ -86,7 +86,7 @@ class HttpConnection constructor(
         }
     }
 
-    suspend fun execute(
+    public suspend fun execute(
         additionalHeaders: List<HttpHeader>? = null,
         retryIf502: Boolean = true
     ): HttpResponse {
@@ -145,7 +145,7 @@ class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            val errorBody = e.response?.readText() ?: throw BadRequestException("Request $this failed", e)
+            val errorBody = e.response.readText()
             try {
                 val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
                 throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
@@ -167,6 +167,6 @@ class HttpConnection constructor(
     }
 }
 
-enum class HttpConnectionStatus(val code: Int) {
+public enum class HttpConnectionStatus(public val code: Int) {
     HTTP_NOT_MODIFIED(304);
 }

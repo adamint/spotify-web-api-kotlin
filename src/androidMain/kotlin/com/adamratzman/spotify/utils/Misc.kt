@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.Date
 
-actual fun getCurrentTimeMs(): Long = System.currentTimeMillis()
+public actual fun getCurrentTimeMs(): Long = System.currentTimeMillis()
 
 @SuppressLint("SimpleDateFormat")
 internal actual fun formatDate(format: String, date: Long): String {

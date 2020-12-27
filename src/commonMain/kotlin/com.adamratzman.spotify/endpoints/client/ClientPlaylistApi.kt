@@ -33,18 +33,17 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.json
 import kotlinx.serialization.json.put
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlaylistApi"))
-typealias ClientPlaylistAPI = ClientPlaylistApi
+public typealias ClientPlaylistAPI = ClientPlaylistApi
 
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/)**
  */
-class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
+public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
      *
@@ -65,7 +64,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @return The created [Playlist] object with no tracks
      */
-    fun createClientPlaylist(
+    public fun createClientPlaylist(
         name: String,
         description: String? = null,
         public: Boolean? = null,
@@ -103,7 +102,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
 
-    fun addTrackToClientPlaylist(playlist: String, track: String, position: Int? = null) =
+    public fun addTrackToClientPlaylist(playlist: String, track: String, position: Int? = null): SpotifyRestAction<Unit> =
             addTracksToClientPlaylist(playlist, track, position = position)
 
     /**
@@ -122,7 +121,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
-    fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
+    public fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null): SpotifyRestAction<Unit> {
         checkBulkRequesting(100, tracks.size)
         return toAction {
             bulkRequest(100, tracks.toList()) { chunk ->
@@ -155,7 +154,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if the playlist is not found or parameters exceed the max length
      */
-    fun changeClientPlaylistDetails(
+    public fun changeClientPlaylistDetails(
         playlist: String,
         name: String? = null,
         public: Boolean? = null,
@@ -190,7 +189,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if the filters provided are illegal
      */
-    fun getClientPlaylists(
+    public fun getClientPlaylists(
         limit: Int? = api.defaultLimit,
         offset: Int? = null
     ): SpotifyRestActionPaging<SimplePlaylist, PagingObject<SimplePlaylist>> {
@@ -217,7 +216,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @return A possibly-null [SimplePlaylist] if the playlist doesn't exist
      */
-    fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
+    public fun getClientPlaylist(id: String): SpotifyRestAction<SimplePlaylist?> {
         return toAction {
             val playlists = getClientPlaylists().complete()
             playlists.items.find { it.id == id } ?: playlists.getAllItems().complete().find { it?.id == id }
@@ -231,7 +230,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @param playlist playlist id
      */
-    fun deleteClientPlaylist(playlist: String): SpotifyRestAction<Unit> {
+    public fun deleteClientPlaylist(playlist: String): SpotifyRestAction<Unit> {
         return (api as SpotifyClientApi).following.unfollowPlaylist(PlaylistUri(playlist).id)
     }
 
@@ -257,7 +256,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    fun reorderClientPlaylistTracks(
+    public fun reorderClientPlaylistTracks(
         playlist: String,
         reorderRangeStart: Int,
         reorderRangeLength: Int? = null,
@@ -291,7 +290,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun setClientPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
+    public fun setClientPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> {
         return toAction {
             val body = jsonMap()
             body += buildJsonObject { put("uris", JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))) }
@@ -317,7 +316,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    fun replaceClientPlaylistTracks(playlist: String, vararg tracks: String) = setClientPlaylistTracks(playlist, *tracks)
+    public fun replaceClientPlaylistTracks(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> = setClientPlaylistTracks(playlist, *tracks)
 
     /**
      * Remove all the tracks in a playlist
@@ -326,7 +325,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @param playlist the com.adamratzman.spotify id or uri for the playlist.
      */
-    fun removeAllClientPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
+    public fun removeAllClientPlaylistTracks(playlist: String): SpotifyRestAction<Unit> {
         return setClientPlaylistTracks(playlist)
     }
 
@@ -352,7 +351,7 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if invalid data is provided
      */
-    fun uploadClientPlaylistCover(
+    public fun uploadClientPlaylistCover(
         playlist: String,
         imagePath: String? = null,
         imageFile: File? = null,
@@ -389,12 +388,12 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @param positions The positions at which the track is located in the playlist
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    fun removeTrackFromClientPlaylist(
+    public fun removeTrackFromClientPlaylist(
         playlist: String,
         track: String,
         positions: SpotifyTrackPositions,
         snapshotId: String? = null
-    ) = removeTracksFromClientPlaylist(playlist, track to positions, snapshotId = snapshotId)
+    ): SpotifyRestAction<PlaylistSnapshot> = removeTracksFromClientPlaylist(playlist, track to positions, snapshotId = snapshotId)
 
     /**
      * Remove all occurrences of a track from the specified playlist.
@@ -408,11 +407,11 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @param track The track id
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    fun removeTrackFromClientPlaylist(
+    public fun removeTrackFromClientPlaylist(
         playlist: String,
         track: String,
         snapshotId: String? = null
-    ) = removeTracksFromClientPlaylist(playlist, track, snapshotId = snapshotId)
+    ): SpotifyRestAction<PlaylistSnapshot> = removeTracksFromClientPlaylist(playlist, track, snapshotId = snapshotId)
 
     /**
      * Remove all occurrences of the specified tracks from the given playlist.
@@ -426,11 +425,11 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @param tracks An array of track ids. Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    fun removeTracksFromClientPlaylist(
+    public fun removeTracksFromClientPlaylist(
         playlist: String,
         vararg tracks: String,
         snapshotId: String? = null
-    ) = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
+    ): SpotifyRestAction<PlaylistSnapshot> = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
 
     /**
      * Remove tracks (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
@@ -444,11 +443,11 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based). Maximum **100**.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    fun removeTracksFromClientPlaylist(
+    public fun removeTracksFromClientPlaylist(
         playlist: String,
         vararg tracks: Pair<String, SpotifyTrackPositions>,
         snapshotId: String? = null
-    ) = removePlaylistTracksImpl(playlist, tracks.toList().toTypedArray(), snapshotId)
+    ): SpotifyRestAction<PlaylistSnapshot> = removePlaylistTracksImpl(playlist, tracks.toList().toTypedArray(), snapshotId)
 
     private fun removePlaylistTracksImpl(
         playlist: String,
@@ -464,16 +463,16 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
                 if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
                 body += buildJsonObject {
                     put("tracks", JsonArray(
-                            chunk.map { (track, positions) ->
-                                val json = jsonMap()
-                                json += buildJsonObject { put("uri", PlayableUri(track).uri) }
-                                if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
-                                    put("positions", JsonArray(
-                                            positions.positions.map(::JsonPrimitive)
-                                    ))
-                                }
-                                JsonObject(json)
-                            }))
+                        chunk.map { (track, positions) ->
+                            val json = jsonMap()
+                            json += buildJsonObject { put("uri", PlayableUri(track).uri) }
+                            if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
+                                put("positions", JsonArray(
+                                    positions.positions.map(::JsonPrimitive)
+                                ))
+                            }
+                            JsonObject(json)
+                        }))
                 }
                 delete(
                         EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
@@ -489,11 +488,11 @@ class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
  * @param snapshotId The playlist state identifier
  */
 @Serializable
-data class PlaylistSnapshot(@SerialName("snapshot_id") val snapshotId: String)
+public data class PlaylistSnapshot(@SerialName("snapshot_id") val snapshotId: String)
 
 /**
  * Represents the positions inside a playlist's items list of where to locate the track
  *
  * @param positions Track positions (zero-based)
  */
-class SpotifyTrackPositions(vararg val positions: Int)
+public class SpotifyTrackPositions(public vararg val positions: Int)

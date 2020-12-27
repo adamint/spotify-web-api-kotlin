@@ -1,27 +1,51 @@
-<HTML>
-<HEAD>
-<meta charset="UTF-8">
-<title>com.adamratzman.spotify.endpoints.client.ClientLibraryApi.getSavedAlbums - spotify-web-api-kotlin</title>
-<link rel="stylesheet" href="../../../style.css">
-</HEAD>
-<BODY>
-<a href="../../index.html">spotify-web-api-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>&nbsp;/&nbsp;<a href="index.html">ClientLibraryApi</a>&nbsp;/&nbsp;<a href="./get-saved-albums.html">getSavedAlbums</a><br/>
-<br/>
-<h1>getSavedAlbums</h1>
-<a name="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$getSavedAlbums(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)"></a>
-(common, js, jvm) <code><span class="keyword">fun </span><span class="identifier">getSavedAlbums</span><span class="symbol">(</span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$getSavedAlbums(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;api.defaultLimit<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$getSavedAlbums(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.adamratzman.spotify.endpoints.client.ClientLibraryApi$getSavedAlbums(kotlin.Int, kotlin.Int, com.adamratzman.spotify.utils.Market)/market">market</span><span class="symbol">:</span>&nbsp;<a href="../../com.adamratzman.spotify.utils/-market/index.html"><span class="identifier">Market</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html"><span class="identifier">SpotifyRestActionPaging</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-saved-album/index.html"><span class="identifier">SavedAlbum</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.adamratzman.spotify.models/-paging-object/index.html"><span class="identifier">PagingObject</span></a><span class="symbol">&lt;</span><a href="../../com.adamratzman.spotify.models/-saved-album/index.html"><span class="identifier">SavedAlbum</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
-<p>Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.</p>
-<p><strong>Requires</strong> the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d.html#com.adamratzman.spotify.SpotifyScope.USER_LIBRARY_READ">SpotifyScope.USER_LIBRARY_READ</a> scope</p>
-<p><strong><a href="https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/">Api Reference</a></strong></p>
-<h3>Parameters</h3>
-<p><a name="limit"></a>
-<code>limit</code> - The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.</p>
-<p><a name="offset"></a>
-<code>offset</code> - The index of the first item to return. Default: 0. Use with limit to get the next set of items</p>
-<p><a name="market"></a>
-<code>market</code> - Provide this parameter if you want the list of returned items to be relevant to a particular country.
-If omitted, the returned items will be relevant to all countries.</p>
-<p><strong>Return</strong><br/>
-Paging Object of <a href="../../com.adamratzman.spotify.models/-saved-album/index.html#com.adamratzman.spotify.models.SavedAlbum">SavedAlbum</a> ordered by position in library</p>
-</BODY>
-</HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>getSavedAlbums</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.adamratzman.spotify.endpoints.client/ClientLibraryApi/getSavedAlbums/#kotlin.Int?#kotlin.Int?#com.adamratzman.spotify.utils.Market?/PointingToDeclaration//-71305405">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">spotify-web-api-kotlin</a>/<a href="../index.html">com.adamratzman.spotify.endpoints.client</a>/<a href="index.html">ClientLibraryApi</a>/<a href="get-saved-albums.html">getSavedAlbums</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>get</span><wbr></wbr><span>Saved</span><wbr></wbr><span>Albums</span></h1>
+          </div>
+<div class="divergent-group" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div class="symbol monospace block">final <a href="../../com.adamratzman.spotify/-spotify-rest-action-paging/index.html">SpotifyRestActionPaging</a>&lt;<a href="../../com.adamratzman.spotify.models/-saved-album/index.html">SavedAlbum</a>, <a href="../../com.adamratzman.spotify.models/-paging-object/index.html">PagingObject</a>&lt;<a href="../../com.adamratzman.spotify.models/-saved-album/index.html">SavedAlbum</a>&gt;&gt; <a href="get-saved-albums.html">getSavedAlbums</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="get-saved-albums.html">limit</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a> <a href="get-saved-albums.html">offset</a>, <a href="../../com.adamratzman.spotify.utils/-market/index.html">Market</a> <a href="get-saved-albums.html">market</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<p class="paragraph">Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.</p><p class="paragraph">Requires the <a href="../../com.adamratzman.spotify/-spotify-scope/-u-s-e-r_-l-i-b-r-a-r-y_-r-e-a-d/index.html">SpotifyScope.USER_LIBRARY_READ</a> scope</p><p class="paragraph"><a href="https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/">Api Reference</a></p><h4 class="">Return</h4><p class="paragraph">Paging Object of <a href="../../com.adamratzman.spotify.models/-saved-album/index.html">SavedAlbum</a> ordered by position in library</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/commonMain"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">limit</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">offset</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The index of the first item to return. Default: 0. Use with limit to get the next set of items</p></div></div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/commonMain" data-filterable-set=":dokkaHtml/commonMain"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">market</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Provide this parameter if you want the list of returned items to be relevant to a particular country. If omitted, the returned items will be relevant to all countries.</p></div></div></div></div></div></div></div></div></div></div></div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+
