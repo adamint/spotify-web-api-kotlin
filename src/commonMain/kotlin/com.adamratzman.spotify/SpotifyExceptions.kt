@@ -31,7 +31,7 @@ public sealed class SpotifyException(message: String, cause: Throwable? = null) 
         public constructor(responseException: ResponseException) :
                 this(
                         responseException.message ?: "Bad Request",
-                        responseException.response?.status?.value,
+                        responseException.response.status.value,
                         null,
                         responseException
                 )

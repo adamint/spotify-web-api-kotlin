@@ -4,12 +4,12 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 plugins {
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.21.2"
-    kotlin("multiplatform") version "1.4.0"
-    kotlin("plugin.serialization") version "1.4.0"
+    id("io.codearte.nexus-staging") version "0.22.0"
+    kotlin("multiplatform") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.10"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "0.10.1"
+    id("org.jetbrains.dokka") version "1.4.20"
     id("com.android.library")
     id("kotlin-android-extensions")
 }
@@ -26,7 +26,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
     }
 }
 
@@ -132,16 +132,16 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.9"
-            val serializationVersion = "1.0.0"
-            val spekVersion = "2.0.11"
-            val ktorVersion = "1.4.0"
+            val coroutineVersion = "1.4.2"
+            val serializationVersion = "1.0.1"
+            val spekVersion = "2.0.15"
+            val ktorVersion = "1.4.1"
 
             val commonMain by getting {
                 dependencies {
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-                    api("io.ktor:ktor-client-core:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                    implementation("io.ktor:ktor-client-core:$ktorVersion")
                 }
             }
             val commonTest by getting {
@@ -159,7 +159,7 @@ kotlin {
                 }
 
                 dependencies {
-                    api("io.ktor:ktor-client-cio:$ktorVersion")
+                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 }
             }
 
@@ -168,7 +168,7 @@ kotlin {
                     implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
                     implementation("org.junit.jupiter:junit-jupiter:5.6.2")
-                    implementation("com.sparkjava:spark-core:2.9.1")
+                    implementation("com.sparkjava:spark-core:2.9.3")
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
@@ -177,10 +177,10 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    api(npm("text-encoding", "0.7.0"))
-                    api("io.ktor:ktor-client-js:$ktorVersion")
-                    api(npm("abort-controller", "3.0.0"))
-                    api(npm("node-fetch", "2.6.0"))
+                    implementation(npm("text-encoding", "0.7.0"))
+                    implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    implementation(npm("abort-controller", "3.0.0"))
+                    implementation(npm("node-fetch", "2.6.0"))
                 }
             }
 
@@ -198,9 +198,9 @@ kotlin {
                 }
 
                 dependencies {
-                    api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    api("io.coil-kt:coil:0.11.0")
+                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
+                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("io.coil-kt:coil:1.1.0")
                 }
             }
 

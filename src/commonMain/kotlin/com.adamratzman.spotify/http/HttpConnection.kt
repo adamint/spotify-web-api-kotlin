@@ -145,12 +145,12 @@ public class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            val errorBody = e.response?.readText()
+            val errorBody = e.response.readText()
             try {
-                val error = errorBody?.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson)?.error
-                throw BadRequestException(error?.copy(reason = (error.reason ?: "") + " URL: $url"))
+                val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
+                throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
             } catch (ignored: ParseException) {
-                val error = errorBody?.toObject(AuthenticationError.serializer(), api, api?.json ?: nonstrictJson)
+                val error = errorBody.toObject(AuthenticationError.serializer(), api, api?.json ?: nonstrictJson)
                 throw AuthenticationException(error)
             }
         }
