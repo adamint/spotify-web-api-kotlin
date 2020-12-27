@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -34,7 +35,7 @@ import kotlinx.serialization.Transient
  * "restrictions" : {"reason" : "market"}
  */
 @Serializable
-data class SimpleTrack(
+public data class SimpleTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
@@ -58,10 +59,10 @@ data class SimpleTrack(
 ) : RelinkingAvailableResponse() {
 
     @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
-    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
+    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
 
     /**
      * Converts this [SimpleTrack] into a full [Track] object with the given
@@ -69,7 +70,7 @@ data class SimpleTrack(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
+    public fun toFullTrack(market: Market? = null): SpotifyRestAction<Track?> = api.tracks.getTrack(id, market)
 }
 
 /**
@@ -109,7 +110,7 @@ data class SimpleTrack(
  * "restrictions" : {"reason" : "market"}
  */
 @Serializable
-data class Track(
+public data class Track(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
@@ -137,14 +138,14 @@ data class Track(
 ) : RelinkingAvailableResponse(), Playable {
 
     @Transient
-    val availableMarkets = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
 
     @Transient
-    val externalIds = externalIdsString.map { ExternalId(it.key, it.value) }
+    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
 }
 
 /**
- * Represents a [relinked track](https:github.com/adamint/com.adamratzman.spotify-web-api-kotlin/blob/master/README.md#track-relinking). This is playable in the
+ * Represents a [relinked track](https://github.com/adamint/spotify-web-api-kotlin#track-relinking). This is playable in the
  * searched market. If null, the API result is playable in the market.
  *
  * @property href A link to the Web API endpoint providing full details of the track.
@@ -152,7 +153,7 @@ data class Track(
  * @property type The object type: “track”.
  */
 @Serializable
-data class LinkedTrack(
+public data class LinkedTrack(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -167,7 +168,7 @@ data class LinkedTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
 
-    fun toFullTrack(market: Market? = null) = api.tracks.getTrack(id, market)
+    public fun toFullTrack(market: Market? = null): SpotifyRestAction<Track?> = api.tracks.getTrack(id, market)
 }
 
 @Serializable
@@ -200,7 +201,7 @@ internal data class AudioFeaturesResponse(
  * @property track An analysis of the track as a whole. Undocumented on Spotify's side.
  */
 @Serializable
-data class AudioAnalysis(
+public data class AudioAnalysis(
     val bars: List<TimeInterval>,
     val beats: List<TimeInterval>,
     val meta: AudioAnalysisMeta,
@@ -222,7 +223,7 @@ data class AudioAnalysis(
  * @property inputProcess The process used in the analysis
  */
 @Serializable
-data class AudioAnalysisMeta(
+public data class AudioAnalysisMeta(
     @SerialName("analyzer_version") val analyzerVersion: String,
     val platform: String,
     @SerialName("detailed_status") val detailedStatus: String,
@@ -262,7 +263,7 @@ data class AudioAnalysisMeta(
  * Sections with time signature changes may correspond to low values in this field.
  */
 @Serializable
-data class AudioSection(
+public data class AudioSection(
     val start: Float = 0f,
     val duration: Float,
     val confidence: Float,
@@ -299,7 +300,7 @@ data class AudioSection(
  * instruments, or voices. Timbre vectors are best used in comparison with each other.
  */
 @Serializable
-data class AudioSegment(
+public data class AudioSegment(
     val start: Float? = null,
     val duration: Float,
     val confidence: Float? = null,
@@ -315,7 +316,7 @@ data class AudioSegment(
  * General information about the track as a whole
  */
 @Serializable
-data class TrackAnalysis(
+public data class TrackAnalysis(
     @SerialName("num_samples") val numSamples: Int,
     val duration: Float,
     @SerialName("sample_md5") val sampleMd5: String? = null,
@@ -393,7 +394,7 @@ data class TrackAnalysis(
  * valence sound more negative (e.g. sad, depressed, angry).
  */
 @Serializable
-data class AudioFeatures(
+public data class AudioFeatures(
     val acousticness: Float,
     @SerialName("analysis_url") val analysisUrl: String,
     val danceability: Float,
@@ -422,7 +423,7 @@ data class AudioFeatures(
  * @property confidence The confidence, from 0.0 to 1.0, of the reliability of the interval
  */
 @Serializable
-data class TimeInterval(val start: Float, val duration: Float, val confidence: Float)
+public data class TimeInterval(val start: Float, val duration: Float, val confidence: Float)
 
 @Serializable
 internal data class TrackList(val tracks: List<Track?>)

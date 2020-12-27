@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * @property album Information about the album.
  */
 @Serializable
-data class SavedAlbum(
+public data class SavedAlbum(
     @SerialName("added_at") val addedAt: String,
     val album: Album
 )
@@ -23,7 +23,7 @@ data class SavedAlbum(
  * @property track The track object.
  */
 @Serializable
-data class SavedTrack(
+public data class SavedTrack(
     @SerialName("added_at") val addedAt: String,
     val track: Track
 )

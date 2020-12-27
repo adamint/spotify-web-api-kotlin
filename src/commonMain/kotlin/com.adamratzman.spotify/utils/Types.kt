@@ -1,18 +1,18 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-expect class ConcurrentHashMap<K, V>() {
-    operator fun get(key: K): V?
-    fun put(key: K, value: V): V?
-    fun remove(key: K): V?
-    fun clear()
+public expect class ConcurrentHashMap<K, V>() {
+    public operator fun get(key: K): V?
+    public fun put(key: K, value: V): V?
+    public fun remove(key: K): V?
+    public fun clear()
 
-    val size: Int
-    val entries: MutableSet<MutableMap.MutableEntry<K, V>>
+    public val size: Int
+    public val entries: MutableSet<MutableMap.MutableEntry<K, V>>
 }
 
-expect fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>>
+public expect fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>>
 
-expect class BufferedImage
+public expect class BufferedImage
 
-expect class File
+public expect class File

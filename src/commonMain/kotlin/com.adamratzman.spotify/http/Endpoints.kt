@@ -18,8 +18,8 @@ import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
-abstract class SpotifyEndpoint(val api: GenericSpotifyApi) {
-    val cache = SpotifyCache()
+public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
+    public val cache: SpotifyCache = SpotifyCache()
     internal val json get() = api.json
 
     protected fun checkBulkRequesting(maxSize: Int, itemSize: Int) {
@@ -183,8 +183,8 @@ internal class EndpointBuilder(private val path: String) {
     override fun toString() = builder.toString()
 }
 
-class SpotifyCache {
-    val cachedRequests: ConcurrentHashMap<SpotifyRequest, CacheState> = ConcurrentHashMap()
+public class SpotifyCache {
+    public val cachedRequests: ConcurrentHashMap<SpotifyRequest, CacheState> = ConcurrentHashMap()
 
     internal operator fun get(request: SpotifyRequest): CacheState? {
         checkCache(request)
@@ -202,7 +202,7 @@ class SpotifyCache {
         cachedRequests.remove(request)
     }
 
-    fun clear() = cachedRequests.clear()
+    public fun clear(): Unit = cachedRequests.clear()
 
     private fun checkCache(request: SpotifyRequest) {
         if (!request.api.useCache) clear()
@@ -225,14 +225,14 @@ class SpotifyCache {
     }
 }
 
-data class SpotifyRequest(
+public data class SpotifyRequest(
     val url: String,
     val method: HttpRequestMethod,
     val body: String?,
     val api: GenericSpotifyApi
 )
 
-data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
+public data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
     private val cacheRegex = "max-age=(\\d+)".toRegex()
     internal fun isStillValid(): Boolean = getCurrentTimeMs() <= this.expireBy
 

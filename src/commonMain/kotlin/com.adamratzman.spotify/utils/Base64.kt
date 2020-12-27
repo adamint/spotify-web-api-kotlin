@@ -10,7 +10,7 @@ private const val BASE64_PAD = '='
 
 private fun Int.toBase64(): Char = BASE64_ALPHABET[this]
 
-fun encodeToBase64(src: ByteArray): ByteArray {
+public fun encodeToBase64(src: ByteArray): ByteArray {
     fun ByteArray.getOrZero(index: Int): Int = if (index >= size) 0 else get(index).toInt()
     // 4n / 3 is expected Base64 payload
     val result = ArrayList<Byte>(4 * src.size / 3)
@@ -22,7 +22,7 @@ fun encodeToBase64(src: ByteArray): ByteArray {
         index += 3
 
         for (i in 3 downTo padSize) {
-            val char = (chunk shr (6 * i)) and BASE64_MASK.toInt()
+            val char = (chunk shr (6 * i)) and BASE64_MASK
             result.add(char.toBase64().toByte())
         }
         // Fill the pad with '='
@@ -32,4 +32,4 @@ fun encodeToBase64(src: ByteArray): ByteArray {
     return result.toByteArray()
 }
 
-fun String.encodeToBase64() = String(encodeToBase64(toByteArray()))
+public fun String.encodeToBase64(): String = String(encodeToBase64(toByteArray()))

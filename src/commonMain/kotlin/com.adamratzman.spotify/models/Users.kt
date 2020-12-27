@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  * @property type The object type: “user”
  */
 @Serializable
-data class SpotifyUserInformation(
+public data class SpotifyUserInformation(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -51,7 +51,7 @@ data class SpotifyUserInformation(
  * @property type The object type: “user”
  */
 @Serializable
-data class SpotifyPublicUser(
+public data class SpotifyPublicUser(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -72,13 +72,13 @@ data class SpotifyPublicUser(
  * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 @Serializable
-data class Followers(
+public data class Followers(
     val href: String? = null,
     @SerialName("total") val total: Int
 )
 
 @Serializable
-data class ExplicitContentSettings(
+public data class ExplicitContentSettings(
     @SerialName("filter_enabled") val filterEnabled: Boolean,
     @SerialName("filter_locked") val filterLocked: Boolean
 )

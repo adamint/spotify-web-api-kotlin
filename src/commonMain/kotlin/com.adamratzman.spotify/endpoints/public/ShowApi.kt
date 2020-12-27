@@ -25,7 +25,7 @@ import com.adamratzman.spotify.utils.catch
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/)**
  */
-class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single show identified by its unique Spotify ID.
      *
@@ -41,7 +41,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return possibly-null Show. This behavior is *not the same* as in [getShows]
      */
-    fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
+    public fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
         return toAction {
             catch {
                 get(
@@ -69,7 +69,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of possibly-null [SimpleShow] objects.
      * @throws BadRequestException If any invalid show id is provided
      */
-    fun getShows(vararg ids: String, market: Market? = null): SpotifyRestAction<List<SimpleShow?>> {
+    public fun getShows(vararg ids: String, market: Market? = null): SpotifyRestAction<List<SimpleShow?>> {
         checkBulkRequesting(50, ids.size)
         return toAction {
             bulkRequest(50, ids.toList()) { chunk ->
@@ -98,7 +98,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getShowEpisodes(
+    public fun getShowEpisodes(
         id: String,
         limit: Int? = null,
         offset: Int? = null,

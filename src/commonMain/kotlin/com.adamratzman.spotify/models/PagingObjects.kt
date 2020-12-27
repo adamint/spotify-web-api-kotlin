@@ -43,7 +43,7 @@ import kotlinx.serialization.Transient
 
  */
 
-enum class PagingTraversalType {
+public enum class PagingTraversalType {
     BACKWARDS,
     FORWARDS;
 }
@@ -54,7 +54,7 @@ enum class PagingTraversalType {
  * limit that can be useful in future calls. Its items are not guaranteed to be not null
  */
 @Serializable
-class NullablePagingObject<T : Any>(
+public class NullablePagingObject<T : Any>(
     override val href: String,
     override val items: List<T?>,
     override val limit: Int,
@@ -63,9 +63,9 @@ class NullablePagingObject<T : Any>(
     override val previous: String? = null,
     override val total: Int = 0
 ) : AbstractPagingObject<T>() {
-    override fun get(index: Int) = items[index]
+    override fun get(index: Int): T? = items[index]
 
-    fun toPagingObject(): PagingObject<T> {
+    public fun toPagingObject(): PagingObject<T> {
         val pagingObject = PagingObject(
                 href, items.filterNotNull(), limit, next, offset, previous, total
         )
@@ -82,7 +82,7 @@ class NullablePagingObject<T : Any>(
  * limit that can be useful in future calls.
  */
 @Serializable
-class PagingObject<T : Any>(
+public class PagingObject<T : Any>(
     override val href: String,
     override val items: List<T>,
     override val limit: Int,
@@ -91,7 +91,7 @@ class PagingObject<T : Any>(
     override val previous: String? = null,
     override val total: Int = 0
 ) : AbstractPagingObject<T>() {
-    override fun get(index: Int) = items[index]
+    override fun get(index: Int): T = items[index]
 }
 
 /**
@@ -108,7 +108,7 @@ class PagingObject<T : Any>(
  * @property offset The offset of the items returned (as set in the query or by default).
  */
 @Serializable
-abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
+public abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
     @Suppress("UNCHECKED_CAST")
     override suspend fun getImpl(type: PagingTraversalType): PagingObjectBase<T>? {
         val endpointFinal = endpoint!!
@@ -166,7 +166,7 @@ abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
      * Get all PagingObjects associated with the request
      */
     @Suppress("UNCHECKED_CAST")
-    suspend fun getAll() = endpoint!!.toAction { (getAllImpl() as Sequence<AbstractPagingObject<T>>).toList() }
+    public suspend fun getAll(): SpotifyRestAction<List<AbstractPagingObject<T>>> = endpoint!!.toAction { (getAllImpl() as Sequence<AbstractPagingObject<T>>).toList() }
 
     /**
      * Synchronously retrieve the next [total] paging objects associated with this [AbstractPagingObject], including this [AbstractPagingObject].
@@ -176,7 +176,7 @@ abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
      */
     @SpotifyExperimentalHttpApi
     @Suppress("UNCHECKED_CAST")
-    suspend fun getWithNext(total: Int) = endpoint!!.toAction { getWithNextImpl(total) }
+    public suspend fun getWithNext(total: Int): SpotifyRestAction<Sequence<PagingObjectBase<T>>> = endpoint!!.toAction { getWithNextImpl(total) }
 
     /**
      * Get all items of type [T] associated with the request
@@ -198,23 +198,23 @@ abstract class AbstractPagingObject<T : Any> : PagingObjectBase<T>(), List<T?> {
  * @property cursor The cursors used to find the next set of items..
  */
 @Serializable
-class CursorBasedPagingObject<T : Any>(
+public class CursorBasedPagingObject<T : Any>(
     override val href: String,
     override val items: List<T>,
     override val limit: Int,
     override val next: String? = null,
-    @SerialName("cursors") val cursor: Cursor,
+    @SerialName("cursors") public val cursor: Cursor,
     override val total: Int = 0,
     override val offset: Int = 0,
     override val previous: String? = null
 ) : PagingObjectBase<T>() {
-    override fun get(index: Int) = items[index]
+    override fun get(index: Int): T = items[index]
 
     /**
      * Get all CursorBasedPagingObjects associated with the request
      */
     @Suppress("UNCHECKED_CAST")
-    fun getAll() = endpoint!!.toAction {
+    public fun getAll(): SpotifyRestAction<Sequence<CursorBasedPagingObject<T>>> = endpoint!!.toAction {
         getAllImpl() as Sequence<CursorBasedPagingObject<T>>
     }
 
@@ -226,7 +226,7 @@ class CursorBasedPagingObject<T : Any>(
      */
     @SpotifyExperimentalHttpApi
     @Suppress("UNCHECKED_CAST")
-    fun getWithNext(total: Int) = endpoint!!.toAction {
+    public fun getWithNext(total: Int): SpotifyRestAction<Sequence<CursorBasedPagingObject<T>>> = endpoint!!.toAction {
         getWithNextImpl(total) as Sequence<CursorBasedPagingObject<T>>
     }
 
@@ -287,7 +287,7 @@ class CursorBasedPagingObject<T : Any>(
  * @property after The cursor to use as key to find the next page of items.
  */
 @Serializable
-data class Cursor(val before: String? = null, val after: String? = null)
+public data class Cursor(val before: String? = null, val after: String? = null)
 
 /**
  * @property href A link to the Web API endpoint returning the full result of the request.
@@ -299,14 +299,14 @@ data class Cursor(val before: String? = null, val after: String? = null)
  * @property offset The offset of the items returned (as set in the query or by default).
  */
 @Serializable
-abstract class PagingObjectBase<T : Any> : List<T?> {
-    abstract val href: String
-    abstract val items: List<T?>
-    abstract val limit: Int
-    abstract val next: String?
-    abstract val offset: Int
-    abstract val previous: String?
-    abstract val total: Int
+public abstract class PagingObjectBase<T : Any> : List<T?> {
+    public abstract val href: String
+    public abstract val items: List<T?>
+    public abstract val limit: Int
+    public abstract val next: String?
+    public abstract val offset: Int
+    public abstract val previous: String?
+    public abstract val total: Int
 
     @Transient
     internal var endpoint: SpotifyEndpoint? = null
@@ -331,20 +331,20 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
     private suspend fun getNextImpl() = getImpl(FORWARDS)
     private suspend fun getPreviousImpl() = getImpl(PagingTraversalType.BACKWARDS)
 
-    suspend fun getNext(): PagingObjectBase<T>? = getNextImpl()
-    suspend fun getPrevious(): PagingObjectBase<T>? = getPreviousImpl()
+    public suspend fun getNext(): PagingObjectBase<T>? = getNextImpl()
+    public suspend fun getPrevious(): PagingObjectBase<T>? = getPreviousImpl()
 
     /**
      * Get all items of type [T] associated with the request. Filters out null objects.
      */
-    suspend fun getAllItemsNotNull(context: CoroutineContext = Dispatchers.Default) =
+    public suspend fun getAllItemsNotNull(context: CoroutineContext = Dispatchers.Default): SpotifyRestAction<Sequence<T>> =
             endpoint!!.toAction { getAllItems(context).complete().filterNotNull() }
 
     /**
      * Flow from current page backwards.
      * */
     @ExperimentalCoroutinesApi
-    fun flowBackward(): Flow<PagingObjectBase<T>> = flow<PagingObjectBase<T>> {
+    public fun flowBackward(): Flow<PagingObjectBase<T>> = flow<PagingObjectBase<T>> {
         if (previous == null) return@flow
         var next = getPrevious()
         while (next != null) {
@@ -357,7 +357,7 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
      * Flow from current page forwards.
      * */
     @ExperimentalCoroutinesApi
-    fun flowForward(): Flow<PagingObjectBase<T>> = flow<PagingObjectBase<T>> {
+    public fun flowForward(): Flow<PagingObjectBase<T>> = flow<PagingObjectBase<T>> {
         if (next == null) return@flow
         var next = getNext()
         while (next != null) {
@@ -367,7 +367,7 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
     }.flowOn(Dispatchers.Default)
 
     @ExperimentalCoroutinesApi
-    fun flowStartOrdered(): Flow<PagingObjectBase<T>> =
+    public fun flowStartOrdered(): Flow<PagingObjectBase<T>> =
             flow {
                 if (previous == null) return@flow
                 flowBackward().toList().reversed().also {
@@ -376,18 +376,18 @@ abstract class PagingObjectBase<T : Any> : List<T?> {
             }.flowOn(Dispatchers.Default)
 
     @ExperimentalCoroutinesApi
-    fun flowEndOrdered(): Flow<PagingObjectBase<T>> = flowForward()
+    public fun flowEndOrdered(): Flow<PagingObjectBase<T>> = flowForward()
 
-    override val size get() = items.size
-    override fun contains(element: T?) = items.contains(element)
-    override fun containsAll(elements: Collection<T?>) = items.containsAll(elements)
-    override fun indexOf(element: T?) = items.indexOf(element)
-    override fun isEmpty() = items.isEmpty()
-    override fun iterator() = items.iterator()
-    override fun lastIndexOf(element: T?) = items.lastIndexOf(element)
-    override fun listIterator() = items.listIterator()
-    override fun listIterator(index: Int) = items.listIterator(index)
-    override fun subList(fromIndex: Int, toIndex: Int) = items.subList(fromIndex, toIndex)
+    override val size: Int get() = items.size
+    override fun contains(element: T?): Boolean = items.contains(element)
+    override fun containsAll(elements: Collection<T?>): Boolean = items.containsAll(elements)
+    override fun indexOf(element: T?): Int = items.indexOf(element)
+    override fun isEmpty(): Boolean = items.isEmpty()
+    override fun iterator(): Iterator<T?> = items.iterator()
+    override fun lastIndexOf(element: T?): Int = items.lastIndexOf(element)
+    override fun listIterator(): ListIterator<T?> = items.listIterator()
+    override fun listIterator(index: Int): ListIterator<T?> = items.listIterator(index)
+    override fun subList(fromIndex: Int, toIndex: Int): List<T?> = items.subList(fromIndex, toIndex)
 }
 
 internal fun Any.instantiatePagingObjects(spotifyApi: GenericSpotifyApi) = when (this) {

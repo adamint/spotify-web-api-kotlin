@@ -363,10 +363,9 @@ class UrisTests : Spek({
         }
     }
     describe("Uri serialization test") {
-        val json = Json { allowStructuredMapKeys = true }
         it("create UserUri from json by using SpotifyUri.serializer()") {
             val spotifyUri: SpotifyUri =
-                    json.decodeFromString(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                Json.decodeFromString(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 UserUri::class,
                 spotifyUri::class
@@ -377,7 +376,7 @@ class UrisTests : Spek({
             )
         }
         it("create UserUri from json by using UserUri.serializer()") {
-            val userUri = json.decodeFromString(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            val userUri = Json.decodeFromString(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
@@ -385,11 +384,11 @@ class UrisTests : Spek({
         }
         it("try creating UserUri from json with id by using SpotifyUri.serializer()") {
             assertFailsWith<SpotifyUriException> {
-                json.decodeFromString(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                Json.decodeFromString(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             }
         }
         it("create UserUri from json with id by using UserUri.serializer()") {
-            val userUri = json.decodeFromString(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
+            val userUri = Json.decodeFromString(UserUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
                 "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
                 userUri.uri
