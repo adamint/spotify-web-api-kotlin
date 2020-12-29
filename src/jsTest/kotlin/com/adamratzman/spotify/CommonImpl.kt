@@ -1,6 +1,11 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.promise
+
 actual fun getEnvironmentVariable(name: String): String? {
     return process.env[name].unsafeCast<String?>()
 }
@@ -13,6 +18,6 @@ external interface Process {
     val env: dynamic
 }
 
-fun main() {
-    // println(api.token)
-}
+val testScope = MainScope()
+actual val testCoroutineContext: CoroutineContext = testScope.coroutineContext
+actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): dynamic = testScope.promise { this.block() }

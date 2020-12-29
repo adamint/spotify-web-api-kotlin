@@ -3,50 +3,54 @@ package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.api
+import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Market
+import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
-class ShowApiTest : Spek({
-    describe("Show API  test") {
-        if (api !is SpotifyClientApi) return@describe
-        val t = api.shows
+class ShowApiTest {
+    lateinit var api: SpotifyClientApi
 
-        describe("get show") {
-            it("known show") {
-                val show = t.getShow("1iohmBNlRooIVtukKeavRa").complete()!!
-                assertEquals("Love Letters", show.name)
-                assertTrue(show.episodes.isNotEmpty())
-            }
-            it("unknown show id should be null") {
-                assertNull(t.getShow("nonexistant show").complete())
-            }
-        }
-        describe("get shows") {
-            it("unknown shows") {
-                assertFailsWith<BadRequestException> { t.getShows("hi", "dad", market = Market.US).complete() }
-            }
-            it("mix of known shows") {
-                assertFailsWith<BadRequestException> { t.getShows("1iohmBNlRooIVtukKeavRa", "j").complete().map { it?.name } }
-            }
-            it("known shows") {
-                assertEquals(listOf("Love Letters", "Freakonomics Radio"), t.getShows("1iohmBNlRooIVtukKeavRa", "6z4NLXyHPga1UmSJsPK7G1").complete().map { it?.name })
-            }
-        }
+    private suspend fun testPrereq(): Boolean {
+        spotifyApi.await()?.let { it as? SpotifyClientApi }?.let { api = it }
+        return ::api.isInitialized
+    }
 
-        describe("get show episodes") {
-            it("valid show, get episodes") {
-                assertTrue(t.getShowEpisodes("1iohmBNlRooIVtukKeavRa").complete().items.isNotEmpty())
-            }
+    @Test
+    fun testGetShow() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
 
-            it("invalid show") {
-                assertFailsWith<BadRequestException> { t.getShowEpisodes("adskjfjkasdf").complete() }
-            }
+            val show = api.shows.getShow("1iohmBNlRooIVtukKeavRa")!!
+            assertEquals("Love Letters", show.name)
+            assertTrue(show.episodes.isNotEmpty())
+
+            assertNull(api.shows.getShow("nonexistant show"))
         }
     }
-})
+
+    @Test
+    fun testGetShows() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertFailsWithSuspend<BadRequestException> { api.shows.getShows("hi", "dad", market = Market.US) }
+            assertFailsWithSuspend<BadRequestException> { api.shows.getShows("1iohmBNlRooIVtukKeavRa", "j").map { it?.name } }
+            assertEquals(listOf("Love Letters", "Freakonomics Radio"), api.shows.getShows("1iohmBNlRooIVtukKeavRa", "6z4NLXyHPga1UmSJsPK7G1").map { it?.name })
+        }
+    }
+
+    @Test
+    fun testGetShowEpisodes() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertTrue(api.shows.getShowEpisodes("1iohmBNlRooIVtukKeavRa").items.isNotEmpty())
+            assertFailsWithSuspend<BadRequestException> { api.shows.getShowEpisodes("adskjfjkasdf") }
+        }
+    }
+}

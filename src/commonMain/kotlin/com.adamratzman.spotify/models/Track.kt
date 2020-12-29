@@ -1,11 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -57,12 +55,9 @@ public data class SimpleTrack(
     val popularity: Int? = null,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse() {
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
-    @Transient
-    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
-
-    @Transient
-    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
+    val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
 
     /**
      * Converts this [SimpleTrack] into a full [Track] object with the given
@@ -70,7 +65,7 @@ public data class SimpleTrack(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullTrack(market: Market? = null): SpotifyRestAction<Track?> = api.tracks.getTrack(id, market)
+    public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
 }
 
 /**
@@ -136,12 +131,9 @@ public data class Track(
     val episode: Boolean? = null,
     val track: Boolean? = null
 ) : RelinkingAvailableResponse(), Playable {
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
-    @Transient
-    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
-
-    @Transient
-    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
+    val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
 }
 
 /**
@@ -168,7 +160,7 @@ public data class LinkedTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
 
-    public fun toFullTrack(market: Market? = null): SpotifyRestAction<Track?> = api.tracks.getTrack(id, market)
+    public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
 }
 
 @Serializable

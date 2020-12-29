@@ -1,12 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Simplified Album object that can be used to retrieve a full [Album]
@@ -50,21 +48,19 @@ public data class SimpleAlbum(
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject() {
-    @Transient
-    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
-    @Transient
-    val albumType: AlbumResultType = albumTypeString.let { _ ->
-        AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
-    }
+    val albumType: AlbumResultType
+        get() = albumTypeString.let { _ ->
+            AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
+        }
 
-    @Transient
-    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
-    @Transient
-    val albumGroup: AlbumResultType? = albumGroupString?.let { _ ->
-        AlbumResultType.values().find { it.id == albumGroupString }
-    }
+    val albumGroup: AlbumResultType?
+        get() = albumGroupString?.let { _ ->
+            AlbumResultType.values().find { it.id == albumGroupString }
+        }
 
     /**
      * Converts this [SimpleAlbum] into a full [Album] object with the given
@@ -72,7 +68,7 @@ public data class SimpleAlbum(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullAlbum(market: Market? = null): SpotifyRestAction<Album?> = api.albums.getAlbum(id, market)
+    public suspend fun toFullAlbum(market: Market? = null): Album? = api.albums.getAlbum(id, market)
 }
 
 public data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
@@ -80,7 +76,7 @@ public data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
 /**
  * Album search type
  */
-public enum class AlbumResultType(internal val id: String) {
+public enum class AlbumResultType(public val id: String) {
     ALBUM("album"),
     SINGLE("single"),
     COMPILATION("compilation"),
@@ -142,18 +138,13 @@ public data class Album(
     @SerialName("total_tracks") val totalTracks: Int,
     val restrictions: Restrictions? = null
 ) : CoreObject() {
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
-    @Transient
-    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
+    val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
 
-    @Transient
-    val externalIds: List<ExternalId> = externalIdsString.map { ExternalId(it.key, it.value) }
+    val albumType: AlbumResultType get() = AlbumResultType.values().first { it.id == albumTypeString }
 
-    @Transient
-    val albumType: AlbumResultType = AlbumResultType.values().first { it.id == albumTypeString }
-
-    @Transient
-    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 }
 
 /**
@@ -168,13 +159,13 @@ public data class SpotifyCopyright(
     @SerialName("text") private val textString: String,
     @SerialName("type") private val typeString: String
 ) {
-    @Transient
-    val text: String = textString
-            .removePrefix("(P)")
-            .removePrefix("(C)")
-            .trim()
-    @Transient
-    val type: CopyrightType = CopyrightType.values().match(typeString)!!
+    val text: String
+        get() = textString
+                .removePrefix("(P)")
+                .removePrefix("(C)")
+                .trim()
+
+    val type: CopyrightType get() = CopyrightType.values().match(typeString)!!
 }
 
 @Serializable

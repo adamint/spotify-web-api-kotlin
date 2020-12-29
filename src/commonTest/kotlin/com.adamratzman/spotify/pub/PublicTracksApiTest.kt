@@ -1,58 +1,66 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.api
+import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Market
+import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
-class PublicTracksApiTest : Spek({
-    describe("Track API (Public View) test") {
-        val t = api?.tracks ?: return@describe
-        describe("get track") {
-            it("known track should return author name") {
-                assertEquals("Bénabar", t.getTrack("5OT3k9lPxI2jkaryRK3Aop").complete()!!.artists[0].name)
-            }
-            it("unknown track id should be null") {
-                assertNull(t.getTrack("nonexistant track").complete())
-            }
-        }
-        describe("get tracks") {
-            it("unknown tracks") {
-                assertEquals(listOf(null, null), t.getTracks("hi", "dad", market = Market.US).complete())
-            }
-            it("mix of known tracks") {
-                assertEquals(listOf("Alors souris", null), t.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").complete().map { it?.name })
-            }
-        }
-        describe("audio analysis") {
-            it("unknown track") {
-                assertFailsWith<SpotifyException.BadRequestException> { t.getAudioAnalysis("bad track").complete() }
-            }
-            it("known track") {
-                assertEquals("165.61333", t.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").complete().track.duration.toString())
-            }
-        }
-        describe("audio features") {
-            it("unknown track") {
-                assertFailsWith<SpotifyException.BadRequestException> { t.getAudioFeatures("bad track").complete() }
-            }
-            it("known track") {
-                assertEquals("0.0592", t.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").complete().acousticness.toString())
-            }
-            it("multiple tracks (all known)") {
-                assertEquals(listOf(null, "0.0592"), t.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").complete().map { it?.acousticness?.toString() })
-            }
-            it("mix of known and unknown tracks") {
-                assertTrue(t.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").complete().let {
-                    it[0] == null && it[1] != null
-                })
-            }
+class PublicTracksApiTest {
+    lateinit var api: GenericSpotifyApi
+
+    private suspend fun testPrereq(): Boolean {
+        spotifyApi.await()?.let { api = it }
+        return ::api.isInitialized
+    }
+
+    @Test
+    fun testGetTrack() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertEquals("Bénabar", api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")!!.artists[0].name)
+            assertNull(api.tracks.getTrack("nonexistant track"))
         }
     }
-})
+
+    @Test
+    fun testGetTracks() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertEquals(listOf(null, null), api.tracks.getTracks("hi", "dad", market = Market.US))
+            assertEquals(listOf("Alors souris", null), api.tracks.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").map { it?.name })
+        }
+    }
+
+    @Test
+    fun testAudioAnalysis() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.tracks.getAudioAnalysis("bad track") }
+            assertEquals("165.61333", api.tracks.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").track.duration.toString())
+        }
+    }
+
+    @Test
+    fun testAudioFeatures() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.tracks.getAudioFeatures("bad track") }
+            assertEquals("0.0592", api.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())
+            assertEquals(listOf(null, "0.0592"), api.tracks.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").map { it?.acousticness?.toString() })
+            assertTrue(api.tracks.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").let {
+                it[0] == null && it[1] != null
+            })
+        }
+    }
+}

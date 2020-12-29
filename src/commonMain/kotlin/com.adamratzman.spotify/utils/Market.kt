@@ -71,12 +71,12 @@ package com.adamratzman.spotify.utils
  * //
  * // The list will contain:
  * //
- * //     Market.AE : United Arab Emirates
- * //     Market.GB : United Kingdom
+ * //     Market.AE ed Arab Emirates
+ * //     Market.GB ed Kingdom
  * //     Market.TZ : Tanzania, United Republic of
- * //     Market.UK : United Kingdom
- * //     Market.UM : United States Minor Outlying Islands
- * //     Market.US : United States
+ * //     Market.UK ed Kingdom
+ * //     Market.UM ed States Minor Outlying Islands
+ * //     Market.US ed States
  * //</span>
  * List&lt;Market&gt; list = Market.[findByName][.findByName](<span style="color: darkred;">".*United.*"</span>);
  *

@@ -2,15 +2,24 @@
 package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.api
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.spotifyApi
+import kotlin.test.Test
 
-class ClientUserApiTest : Spek({
-    describe("Client profile test") {
-        val cp = (api as? SpotifyClientApi)?.users
-        it("valid user") {
-            cp?.getClientProfile()?.complete()?.displayName
+class ClientUserApiTest {
+    lateinit var api: SpotifyClientApi
+
+    private suspend fun testPrereq(): Boolean {
+        spotifyApi.await()?.let { it as? SpotifyClientApi }?.let { api = it }
+        return ::api.isInitialized
+    }
+
+    @Test
+    fun testClientProfile() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            api.users.getClientProfile().displayName
         }
     }
-})
+}

@@ -37,7 +37,7 @@ internal inline fun <reified T : Any> String.toObject(serializer: KSerializer<T>
         val obj = json.decodeFromString(serializer, this)
         api?.let {
             if (obj is NeedsApi) obj.api = api
-            if (obj is PagingObjectBase<*>) obj.endpoint = api.tracks
+            if (obj is PagingObjectBase<*, *>) obj.endpoint = api.tracks
             obj.instantiatePagingObjects(api)
         }
         obj
@@ -50,7 +50,7 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
             if (api != null) {
                 forEach { obj ->
                     if (obj is NeedsApi) obj.api = api
-                    if (obj is PagingObjectBase<*>) obj.endpoint = api.tracks
+                    if (obj is PagingObjectBase<*, *>) obj.endpoint = api.tracks
                 }
             }
         }
@@ -78,7 +78,7 @@ internal fun <T : Any> String.toPagingObject(
                     this.itemClazz = tClazz
                     this.items.map { obj ->
                         if (obj is NeedsApi) obj.api = endpoint.api
-                        if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
+                        if (obj is PagingObjectBase<*, *>) obj.endpoint = endpoint
                     }
                 }
     }
@@ -91,7 +91,7 @@ internal fun <T : Any> String.toPagingObject(
             this.itemClazz = tClazz
             this.items.map { obj ->
                 if (obj is NeedsApi) obj.api = endpoint.api
-                if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
+                if (obj is PagingObjectBase<*, *>) obj.endpoint = endpoint
             }
         }
     } catch (jde: SpotifyException.ParseException) {
@@ -109,13 +109,13 @@ internal fun <T : Any> String.toPagingObject(
     }
 }
 
-internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: PagingObjectBase<T>, endpoint: SpotifyEndpoint) {
+internal fun <T : Any> initPagingObject(tClazz: KClass<T>, pagingObject: PagingObjectBase<T, *>, endpoint: SpotifyEndpoint) {
     pagingObject.apply {
         this.endpoint = endpoint
         this.itemClazz = tClazz
         this.items.map { obj ->
             if (obj is NeedsApi) obj.api = endpoint.api
-            if (obj is PagingObjectBase<*>) obj.endpoint = endpoint
+            if (obj is PagingObjectBase<*, *>) obj.endpoint = endpoint
         }
     }
 }
