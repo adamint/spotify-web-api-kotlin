@@ -23,8 +23,6 @@ This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web
     + [Using the API](#using-the-api)
 * [Tips](#tips)
     + [Building the API](#building-the-api)
-    + [What is the SpotifyRestAction class?](#what-is-the-spotifyrestaction-class)
-    + [SpotifyRestPagingAction](#spotifyrestpagingaction)
 * [Notes](#notes)
     + [The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
     + [Generic Requests](#generic-request)
@@ -109,7 +107,7 @@ Example creation (default settings)
 
 ```kotlin
 val api = spotifyAppApi("clientId", "clientSecret").build() // create and build api
-println(api.browse.getNewReleases().complete()) // use it
+println(api.browse.getNewReleases()) // use it
 ```
 
 Example creation, using an existing Token and setting automatic token refresh to false
@@ -123,7 +121,7 @@ val api = spotifyAppApi(
         automaticRefresh = false
     )
 )
-println(api.browse.getNewReleases().complete()) // use it
+println(api.browse.getNewReleases()) // use it
 ```
 
 ### SpotifyClientApi
@@ -205,7 +203,7 @@ val api = spotifyClientPkceApi(
         retryWhenRateLimited = false
     )
 ).build()
-println(api.library.getSavedTracks().complete().take(10).filterNotNull().map { it.track.name })
+println(api.library.getSavedTracks().take(10).filterNotNull().map { it.track.name })
 ```
 
 #### Non-PKCE (backend applications, requires client secret)
@@ -238,7 +236,7 @@ val api = spotifyClientApi(
     "your-redirect-uri",
     authCode
 ).build() // create and build api
-println(api.personalization.getTopTracks(limit = 5).complete().items.map { it.name }) // print user top tracks
+println(api.personalization.getTopTracks(limit = 5).items.map { it.name }) // print user top tracks
 ```
 
 ##### Example: You've saved a user's token from previous authorization and need to create an api instance.
@@ -256,7 +254,7 @@ val api = spotifyClientApi(
         }
     )
 ).build()
-println(api.personalization.getTopTracks(limit = 5).complete().items.map { it.name })
+println(api.personalization.getTopTracks(limit = 5).items.map { it.name })
 ```
 
 
@@ -293,7 +291,7 @@ val api = spotifyImplicitGrantApi(
     null,
     token
 ) // create api. there is no need to build it 
-println(api.personalization.getTopArtists(limit = 1).complete()[0].name) // use it
+println(api.personalization.getTopArtists(limit = 1)[0].name) // use it
 ```
 
 ### SpotifyApiBuilder Block & setting API options 
@@ -371,30 +369,6 @@ runBlocking {
 }
 ```
 
-### What is the SpotifyRestAction class?
-Abstracting requests into a `SpotifyRestAction` class allows for a lot of flexibility in sending and receiving requests. 
-This class includes options for asynchronous and blocking execution in all endpoints. However, 
- due to this, you **must** call one of the provided methods in order for the call 
- to execute! The `SpotifyRestAction` provides many methods and fields for use, including blocking and asynchronous ones. For example,
- - `hasRun()` tells you whether the rest action has been *started*
- - `hasCompleted()` tells you whether this rest action has been fully executed and *completed*
-- `complete()` blocks the current thread and returns the result
-- `suspendComplete(context: CoroutineContext = Dispatchers.Default)` switches to given context, invokes the supplier, and synchronously retrieves the result.
-- `suspendQueue()` suspends the coroutine, invokes the supplier asynchronously, and resumes with the result
-- `queue()` executes and immediately returns
-- `queue(consumer: (T) -> Unit)` executes the provided callback as soon as the request 
-is asynchronously evaluated
-- `queueAfter(quantity: Int, timeUnit: TimeUnit, consumer: (T) -> Unit)` executes the 
-provided callback after the provided time. As long as supplier execution is less than the provided 
-time, this will likely be accurate within a few milliseconds.
-- `asFuture()` transforms the supplier into a `CompletableFuture` (only JVM)
-
-### SpotifyRestPagingAction
-Separate from, but a superset of SpotifyRestAction, this specialized implementation of RestActions includes extensions
-for `AbstractPagingObject` (`PagingObject` and `CursorBasedPagingObject`). This class gives you the same functionality as SpotifyRestAction, 
-but you also have the ability to retrieve *all* of its items or linked PagingObjects, or a *subset* of its items or linked PagingObjects with one call, with 
-a single method call to `getAllItems()` or `getAllPagingObjects()`, or `getWithNext(total: Int, context: CoroutineContext = Dispatchers.Default)` or `getWithNextItems(total: Int, context: CoroutineContext = Dispatchers.Default)` respectively
-
 ## Notes
 ### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
@@ -430,22 +404,17 @@ val api = spotifyAppApi(
         System.getenv("SPOTIFY_CLIENT_SECRET")
 ).build()
 
-// block and print out the names of the twenty most similar songs to the search
-println(api.search.searchTrack("Début de la Suite").complete().joinToString { it.name })
-
-// now, let's do it asynchronously
-api.search.searchTrack("Début de la Suite").queue { tracks -> println(tracks.joinToString { track -> track.name }) }
+// print out the names of the twenty most similar songs to the search
+println(api.search.searchTrack("Début de la Suite").joinToString { it.name })
 
 // simple, right? what about if we want to print out the featured playlists message from the "Overview" tab?
-println(api.browse.getFeaturedPlaylists().complete().message)
+println(api.browse.getFeaturedPlaylists().message)
 
 // easy! let's try something a little harder
 // let's find out Bénabar's Spotify ID, find his top tracks, and print them out
-
-val benabarId = api.search.searchArtist("Bénabar").complete()[0].id
-// this works; a redundant way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").complete().id
-
-println(api.artists.getArtistTopTracks(benabarId).complete().joinToString { it.name })
+val benabarId = api.search.searchArtist("Bénabar")[0].id
+// this works; a redundant way would be: api.artists.getArtist("spotify:artist:6xoAWsIOZxJVPpo7Qvqaqv").id
+println(api.artists.getArtistTopTracks(benabarId).joinToString { it.name })
 ```
 
 ### Track Relinking
