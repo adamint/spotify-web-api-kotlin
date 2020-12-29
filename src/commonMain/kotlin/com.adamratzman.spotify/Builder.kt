@@ -7,11 +7,7 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.utils.runBlockingMpp
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
 // Kotlin DSL builders and top-level utilities
@@ -588,7 +584,7 @@ public class SpotifyApiBuilder(
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
-    public fun build(type: AuthorizationType): GenericSpotifyApi {
+    public suspend fun build(type: AuthorizationType): GenericSpotifyApi {
         return if (type == AuthorizationType.CLIENT) buildClient()
         else buildCredentialed()
     }
@@ -596,12 +592,12 @@ public class SpotifyApiBuilder(
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
-    public fun buildPublic(): SpotifyAppApi = buildCredentialed()
+    public suspend fun buildPublic(): SpotifyAppApi = buildCredentialed()
 
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
-    public fun buildCredentialed(): SpotifyAppApi = spotifyAppApi {
+    public suspend fun buildCredentialed(): SpotifyAppApi = spotifyAppApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -614,7 +610,7 @@ public class SpotifyApiBuilder(
      * Create a new [SpotifyClientApi] that has access to public endpoints, in addition to endpoints
      * requiring scopes contained in the client authorization request
      */
-    public fun buildClient(): SpotifyClientApi = spotifyClientApi {
+    public suspend fun buildClient(): SpotifyClientApi = spotifyClientApi {
         credentials {
             clientId = this@SpotifyApiBuilder.clientId
             clientSecret = this@SpotifyApiBuilder.clientSecret
@@ -730,28 +726,7 @@ public interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder
     /**
      * Build the [T] by provided information
      */
-    public suspend fun suspendBuild(): T
-
-    /**
-     * Build the [T] by provided information
-     */
-    public fun build(): T = runBlockingMpp { suspendBuild() }
-
-    /**
-     * Build the [T] by provided information
-     *
-     * Provide a consumer object to be executed after the api has been successfully built
-     */
-    public fun buildAsyncAt(scope: CoroutineScope, consumer: (T) -> Unit): Job = with(scope) { buildAsync(consumer) }
-
-    /**
-     * Build the [T] by provided information
-     *
-     * Provide a consumer object to be executed after the api has been successfully built
-     */
-    public fun CoroutineScope.buildAsync(consumer: (T) -> Unit): Job = launch {
-        consumer(suspendBuild())
-    }
+    public suspend fun build(): T
 }
 
 /**
@@ -786,7 +761,7 @@ public class SpotifyClientApiBuilder(
         )
     }
 
-    override suspend fun suspendBuild(): SpotifyClientApi {
+    override suspend fun build(): SpotifyClientApi {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         val redirectUri = credentials.redirectUri
@@ -952,7 +927,7 @@ public class SpotifyAppApiBuilder(
     /**
      * Build a public [SpotifyAppApi] using the provided credentials
      */
-    override suspend fun suspendBuild(): SpotifyAppApi {
+    override suspend fun build(): SpotifyAppApi {
         val clientId = credentials.clientId
         val clientSecret = credentials.clientSecret
         require((clientId != null && clientSecret != null) || authorization.token != null || authorization.tokenString != null) { "You didn't specify a client id or client secret in the credentials block!" }

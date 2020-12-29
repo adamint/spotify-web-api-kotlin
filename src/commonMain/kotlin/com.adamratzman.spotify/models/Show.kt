@@ -2,12 +2,10 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  *
@@ -50,8 +48,7 @@ public data class SimpleShow(
     val type: String,
     override val uri: ShowUri
 ) : CoreObject() {
-    @Transient
-    val availableMarkets: List<Market> = availableMarketsString.map { Market.valueOf(it) }
+    val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
     val languages: List<Locale> get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
 
@@ -60,7 +57,7 @@ public data class SimpleShow(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullShow(market: Market? = null): SpotifyRestAction<Show?>? = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
+    public suspend fun toFullShow(market: Market? = null): Show? = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
 }
 
 /**

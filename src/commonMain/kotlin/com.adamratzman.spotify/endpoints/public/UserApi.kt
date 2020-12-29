@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
@@ -29,12 +28,8 @@ public open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return All publicly-available information about the user
      */
-    public fun getProfile(user: String): SpotifyRestAction<SpotifyPublicUser?> {
-        return toAction {
-            catch {
-                get(EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
-                        .toObject(SpotifyPublicUser.serializer(), api, json)
-            }
-        }
+    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch {
+        get(EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
+                .toObject(SpotifyPublicUser.serializer(), api, json)
     }
 }

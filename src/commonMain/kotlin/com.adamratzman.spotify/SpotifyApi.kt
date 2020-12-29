@@ -33,10 +33,7 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
-import com.adamratzman.spotify.utils.runBlockingMpp
-import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmOverloads
-import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 
 /**
@@ -108,7 +105,6 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     init {
         if (requiredScopes != null) {
             val tokenScopes = token.scopes ?: listOf()
-            println("$requiredScopes $tokenScopes")
             if (!tokenScopes.containsAll(requiredScopes)) {
                 val missingScopes = requiredScopes.filter { it !in tokenScopes }
 
@@ -123,17 +119,6 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
      * Obtain a map of all currently-cached requests
      */
     public fun getCache(): Map<SpotifyRequest, CacheState> = endpoints.map { it.cache.cachedRequests.asList() }.flatten().toMap()
-
-    /**
-     * If the method used to create the [token] supports token refresh and
-     * the information in [token] is accurate, attempt to refresh the token
-     *
-     * @return The old access token if refresh was successful
-     * @throws BadRequestException if refresh fails
-     */
-    public fun refreshToken(): Token = runBlockingMpp {
-        suspendRefreshToken()
-    }
 
     /**
      * Change the current [Token]'s access token
@@ -224,14 +209,8 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
      * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
      */
     @JvmOverloads
-    public fun isTokenValid(makeTestRequest: Boolean = true): TokenValidityResponse = runBlockingMpp {
-        suspendIsTokenValid(makeTestRequest)
-    }
-
-    @JvmOverloads
-    public suspend fun suspendIsTokenValid(
-        makeTestRequest: Boolean = true,
-        context: CoroutineContext = Dispatchers.Default
+    public suspend fun isTokenValid(
+        makeTestRequest: Boolean = true
     ): TokenValidityResponse {
         if (token.shouldRefresh()) return TokenValidityResponse(
                 false,
@@ -240,7 +219,7 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
         return try {
-            browse.getAvailableGenreSeeds().suspendComplete(context)
+            browse.getAvailableGenreSeeds()
             TokenValidityResponse(true, null)
         } catch (e: Exception) {
             TokenValidityResponse(false, e)
@@ -254,13 +233,13 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
      * @return The old access token if refresh was successful
      * @throws BadRequestException if refresh fails
      */
-    public suspend fun suspendRefreshToken(): Token = refreshTokenProducer(this).apply {
+    public suspend fun refreshToken(): Token = refreshTokenProducer(this).apply {
         this@SpotifyApi.token = this
         onTokenRefresh?.let { it(this@SpotifyApi) }
     }
 
     public companion object {
-        internal fun testTokenValidity(api: GenericSpotifyApi) {
+        internal suspend fun testTokenValidity(api: GenericSpotifyApi) {
             if (!api.isTokenValid().isValid) {
                 try {
                     api.refreshToken()
@@ -611,15 +590,15 @@ public open class SpotifyClientApi(
 
     private lateinit var userIdBacking: String
 
-    private fun initiatizeUserIdBacking(): String {
-        userIdBacking = users.getClientProfile().complete().id
+    private suspend fun initiatizeUserIdBacking(): String {
+        userIdBacking = users.getClientProfile().id
         return userIdBacking
     }
 
     /**
      * The Spotify user id to which the api instance is connected
      */
-    public val userId: String get() = if (::userIdBacking.isInitialized) userIdBacking else initiatizeUserIdBacking()
+    public suspend fun getUserId(): String = if (::userIdBacking.isInitialized) userIdBacking else initiatizeUserIdBacking()
 
     /**
      * Stop all automatic functions like refreshToken or clearCache and shut down the scheduled
@@ -679,12 +658,12 @@ public open class SpotifyClientApi(
     /**
      * Whether the current access token allows access to scope [scope]
      */
-    public fun hasScope(scope: SpotifyScope): Boolean? = hasScopes(scope)
+    public suspend fun hasScope(scope: SpotifyScope): Boolean? = hasScopes(scope)
 
     /**
      * Whether the current access token allows access to all of the provided scopes
      */
-    public fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean? =
+    public suspend fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean? =
             if (token.scopes == null) null
             else !isTokenValid(false).isValid &&
                     token.scopes?.contains(scope) == true &&

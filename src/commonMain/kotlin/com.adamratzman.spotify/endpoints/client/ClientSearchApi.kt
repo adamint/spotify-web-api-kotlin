@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.endpoints.public.SearchApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleEpisode
@@ -34,17 +33,13 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      *
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    public fun searchShow(
+    public suspend fun searchShow(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SimpleShow, PagingObject<SimpleShow>> {
-        return toActionPaging {
-            get(build(query, market, limit, offset, SearchType.SHOW))
-                    .toPagingObject(SimpleShow.serializer(), "shows", this, json)
-        }
-    }
+    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, SearchType.SHOW))
+            .toPagingObject(SimpleShow.serializer(), "shows", this, json)
 
     /**
      * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
@@ -62,15 +57,11 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      *
      * @throws BadRequestException if filters are illegal or query is malformed
      */
-    public fun searchEpisode(
+    public suspend fun searchEpisode(
         query: String,
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
-        return toActionPaging {
-            get(build(query, market, limit, offset, SearchType.EPISODE))
-                    .toPagingObject(SimpleEpisode.serializer(), "episodes", this, json)
-        }
-    }
+    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, SearchType.EPISODE))
+                .toPagingObject(SimpleEpisode.serializer(), "episodes", this, json)
 }

@@ -1,12 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -48,9 +46,7 @@ public data class SimplePlaylist(
     val tracks: PlaylistTrackInfo,
     val type: String
 ) : CoreObject() {
-
-    @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
+    val snapshot: PlaylistSnapshot get() = PlaylistSnapshot(snapshotIdString)
 
     /**
      * Converts this [SimplePlaylist] into a full [Playlist] object with the given
@@ -58,7 +54,7 @@ public data class SimplePlaylist(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> =
+    public suspend fun toFullPlaylist(market: Market? = null): Playlist? =
             api.playlists.getPlaylist(id, market)
 }
 
@@ -122,9 +118,7 @@ public data class Playlist(
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
 ) : CoreObject() {
-
-    @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
+    val snapshot: PlaylistSnapshot get() = PlaylistSnapshot(snapshotIdString)
 }
 
 /**

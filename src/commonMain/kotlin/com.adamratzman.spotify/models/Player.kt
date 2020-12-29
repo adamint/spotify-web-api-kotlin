@@ -5,7 +5,6 @@ import com.adamratzman.spotify.utils.getExternalUrls
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Context in which a track was played
@@ -61,8 +60,7 @@ public data class Device(
     @SerialName("type") val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable() {
-    @Transient
-    val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
+    val type: DeviceType get() = DeviceType.values().first { it.identifier.equals(typeString, true) }
 
     override val href: String? = null
 }
@@ -112,8 +110,7 @@ public data class CurrentlyPlayingContext(
     @SerialName("repeat_state") val repeatStateString: String,
     val context: Context? = null
 ) {
-    @Transient
-    val repeatState: RepeatState = RepeatState.values().match(repeatStateString)!!
+    val repeatState: RepeatState get() = RepeatState.values().match(repeatStateString)!!
 }
 
 /**
@@ -149,8 +146,7 @@ public data class CurrentlyPlayingObject(
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {
-    @Transient
-    val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
+    val currentlyPlayingType: CurrentlyPlayingType get() = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
 }
 
 /**
@@ -163,13 +159,13 @@ public data class CurrentlyPlayingObject(
 public data class PlaybackActions(
     @SerialName("disallows") val disallowsString: Map<String, Boolean?>
 ) {
-    @Transient
-    val disallows: List<DisallowablePlaybackAction> = disallowsString.map {
-        DisallowablePlaybackAction(
-            PlaybackAction.values().match(it.key)!!,
-            it.value ?: false
-        )
-    }
+    val disallows: List<DisallowablePlaybackAction>
+        get() = disallowsString.map {
+            DisallowablePlaybackAction(
+                    PlaybackAction.values().match(it.key)!!,
+                    it.value ?: false
+            )
+        }
 }
 
 /**
