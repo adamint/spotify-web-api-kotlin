@@ -354,18 +354,10 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 ## Tips
 
 ### Building the API
-The easiest way to build the API is synchronously using .build() after a builder
-
-```kotlin
-spotifyAppApi(clientId, clientSecret).build()
-```
-
-You can also build the API asynchronously using Kotlin coroutines.
+The easiest way to build the API is using .build() after a builder
 ```kotlin
 runBlocking {
-    spotifyAppApi(clientId, clientSecret).buildAsyncAt(this) { api ->
-        // do things
-    }
+    val api = spotifyAppApi(clientId, clientSecret).build()
 }
 ```
 

@@ -167,6 +167,7 @@ $dokka.location:com.adamratzman.spotify.models/Album/<get-tracks>/#/PointingToDe
 $dokka.location:com.adamratzman.spotify.models/Album/<get-type>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album/get-type.html
 $dokka.location:com.adamratzman.spotify.models/Album/<get-uri>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album/get-uri.html
 $dokka.location:com.adamratzman.spotify.models/Album/<set-api>/#com.adamratzman.spotify.SpotifyApi[*,*]/PointingToDeclaration/com.adamratzman.spotify.models/-album/set-api.html
+$dokka.location:com.adamratzman.spotify.models/AlbumResultType/<get-id>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album-result-type/get-id.html
 $dokka.location:com.adamratzman.spotify.models/AlbumResultType/<get-name>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album-result-type/get-name.html
 $dokka.location:com.adamratzman.spotify.models/AlbumResultType/<get-ordinal>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album-result-type/get-ordinal.html
 $dokka.location:com.adamratzman.spotify.models/AlbumUri.Companion/<get-descriptor>/#/PointingToDeclaration/com.adamratzman.spotify.models/-album-uri/-companion/get-descriptor.html
@@ -531,7 +532,6 @@ $dokka.location:com.adamratzman.spotify.models/SimpleAlbum/<get-uri>/#/PointingT
 $dokka.location:com.adamratzman.spotify.models/SimpleAlbum/<set-api>/#com.adamratzman.spotify.SpotifyApi[*,*]/PointingToDeclaration/com.adamratzman.spotify.models/-simple-album/set-api.html
 $dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-api>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-api.html
 $dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-externalUrls>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-external-urls.html
-$dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-fullArtist>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-full-artist.html
 $dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-href>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-href.html
 $dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-id>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-id.html
 $dokka.location:com.adamratzman.spotify.models/SimpleArtist/<get-name>/#/PointingToDeclaration/com.adamratzman.spotify.models/-simple-artist/get-name.html
@@ -741,15 +741,12 @@ $dokka.location:com.adamratzman.spotify.models/UserUri/<get-id>/#/PointingToDecl
 $dokka.location:com.adamratzman.spotify.models/UserUri/<get-type>/#/PointingToDeclaration/com.adamratzman.spotify.models/-user-uri/get-type.html
 $dokka.location:com.adamratzman.spotify.models/UserUri/<get-uri>/#/PointingToDeclaration/com.adamratzman.spotify.models/-user-uri/get-uri.html
 $dokka.location:com.adamratzman.spotify.models/VideoThumbnail/<get-url>/#/PointingToDeclaration/com.adamratzman.spotify.models/-video-thumbnail/get-url.html
-$dokka.location:com.adamratzman.spotify.utils//asFuture/[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/com.adamratzman.spotify.utils/-concurrency-kt/as-future.html
-$dokka.location:com.adamratzman.spotify.utils//asFuture/com.adamratzman.spotify.SpotifyRestAction[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/com.adamratzman.spotify.utils/-concurrency-kt/as-future.html
 $dokka.location:com.adamratzman.spotify.utils//asList/com.adamratzman.spotify.utils.ConcurrentHashMap[TypeParam(bounds=[kotlin.Any?]),TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/com.adamratzman.spotify.utils/-types-kt/as-list.html
 $dokka.location:com.adamratzman.spotify.utils//encodeToBase64/#kotlin.ByteArray/PointingToDeclaration/com.adamratzman.spotify.utils/-base64-kt/encode-to-base64.html
 $dokka.location:com.adamratzman.spotify.utils//encodeToBase64/kotlin.String#/PointingToDeclaration/com.adamratzman.spotify.utils/-base64-kt/encode-to-base64.html
 $dokka.location:com.adamratzman.spotify.utils//getCurrentTimeMs/#/PointingToDeclaration/com.adamratzman.spotify.utils/-utils-kt/get-current-time-ms.html
 $dokka.location:com.adamratzman.spotify.utils//parseSpotifyCallbackHashToToken/#/PointingToDeclaration/com.adamratzman.spotify.utils/-implicit-grant-kt/parse-spotify-callback-hash-to-token.html
 $dokka.location:com.adamratzman.spotify.utils//parseSpotifyCallbackHashToToken/#kotlin.String/PointingToDeclaration/com.adamratzman.spotify.utils/-implicit-grant-kt/parse-spotify-callback-hash-to-token.html
-$dokka.location:com.adamratzman.spotify.utils//runBlockingMpp/#kotlin.coroutines.SuspendFunction0[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/com.adamratzman.spotify.utils/-concurrency-kt/run-blocking-mpp.html
 $dokka.location:com.adamratzman.spotify.utils/ConcurrentHashMap/<get-entries>/#/PointingToDeclaration/com.adamratzman.spotify.utils/-concurrent-hash-map/get-entries.html
 $dokka.location:com.adamratzman.spotify.utils/ConcurrentHashMap/<get-size>/#/PointingToDeclaration/com.adamratzman.spotify.utils/-concurrent-hash-map/get-size.html
 $dokka.location:com.adamratzman.spotify.utils/Language/<get-name>/#/PointingToDeclaration/com.adamratzman.spotify.utils/-language/get-name.html
@@ -973,7 +970,6 @@ $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-shows>/#/PointingT
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-token>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-token.html
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-tracks>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-tracks.html
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-useCache>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-use-cache.html
-$dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-userId>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-user-id.html
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-users>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-users.html
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<get-usesPkceAuth>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/get-uses-pkce-auth.html
 $dokka.location:com.adamratzman.spotify/SpotifyClientApi/<set-allowBulkRequests>/#kotlin.Boolean/PointingToDeclaration/com.adamratzman.spotify/-spotify-client-api/set-allow-bulk-requests.html
@@ -1048,7 +1044,6 @@ $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-shows>/#/Po
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-token>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-token.html
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-tracks>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-tracks.html
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-useCache>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-use-cache.html
-$dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-userId>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-user-id.html
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-users>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-users.html
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<get-usesPkceAuth>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/get-uses-pkce-auth.html
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<set-allowBulkRequests>/#kotlin.Boolean/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/set-allow-bulk-requests.html
@@ -1066,12 +1061,6 @@ $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<set-token>/#com
 $dokka.location:com.adamratzman.spotify/SpotifyImplicitGrantApi/<set-useCache>/#kotlin.Boolean/PointingToDeclaration/com.adamratzman.spotify/-spotify-implicit-grant-api/set-use-cache.html
 $dokka.location:com.adamratzman.spotify/SpotifyLogger/<get-enabled>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-logger/get-enabled.html
 $dokka.location:com.adamratzman.spotify/SpotifyLogger/<set-enabled>/#kotlin.Boolean/PointingToDeclaration/com.adamratzman.spotify/-spotify-logger/set-enabled.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestAction/<get-scope>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action/get-scope.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestAction/<get-supplier>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action/get-supplier.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestAction/<set-scope>/#kotlin.coroutines.CoroutineContext/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action/set-scope.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestActionPaging/<get-scope>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action-paging/get-scope.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestActionPaging/<get-supplier>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action-paging/get-supplier.html
-$dokka.location:com.adamratzman.spotify/SpotifyRestActionPaging/<set-scope>/#kotlin.coroutines.CoroutineContext/PointingToDeclaration/com.adamratzman.spotify/-spotify-rest-action-paging/set-scope.html
 $dokka.location:com.adamratzman.spotify/SpotifyScope/<get-name>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-scope/get-name.html
 $dokka.location:com.adamratzman.spotify/SpotifyScope/<get-ordinal>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-scope/get-ordinal.html
 $dokka.location:com.adamratzman.spotify/SpotifyScope/<get-uri>/#/PointingToDeclaration/com.adamratzman.spotify/-spotify-scope/get-uri.html
