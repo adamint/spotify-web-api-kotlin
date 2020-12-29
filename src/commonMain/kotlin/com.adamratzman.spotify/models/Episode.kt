@@ -2,13 +2,11 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * An episode (podcast) on Spotify
@@ -51,13 +49,12 @@ public data class Episode(
     override val type: String,
     override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-    @Transient
-    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
     @Suppress("DEPRECATION")
     val languages: List<Locale>
         get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate).map { languageString ->
-                Locale.valueOf(languageString.replace("-", "_"))
+            Locale.valueOf(languageString.replace("-", "_"))
         }
 }
 
@@ -100,8 +97,7 @@ public data class SimpleEpisode(
     override val type: String,
     override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-    @Transient
-    val releaseDate: ReleaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
     @Suppress("DEPRECATION")
     val languages: List<Locale>
@@ -113,7 +109,7 @@ public data class SimpleEpisode(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullEpisode(market: Market? = null): SpotifyRestAction<Episode?>? = (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
+    public suspend fun toFullEpisode(market: Market? = null): Episode? = (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
 }
 
 /**

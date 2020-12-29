@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
@@ -34,22 +33,18 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/)**
      *
-     * @param track The com.adamratzman.spotify id or uri for the track.
+     * @param track The id or uri for the track.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      *
      * @return possibly-null Track. This behavior is *the same* as in [getTracks]
      */
-    public fun getTrack(track: String, market: Market? = null): SpotifyRestAction<Track?> {
-        return toAction {
-            catch {
-                get(
-                        EndpointBuilder("/tracks/${PlayableUri(track).id.encodeUrl()}").with(
-                                "market",
-                                market?.name
-                        ).toString()
-                ).toObject(Track.serializer(), api, json)
-            }
-        }
+    public suspend fun getTrack(track: String, market: Market? = null): Track? = catch {
+        get(
+                EndpointBuilder("/tracks/${PlayableUri(track).id.encodeUrl()}").with(
+                        "market",
+                        market?.name
+                ).toString()
+        ).toObject(Track.serializer(), api, json)
     }
 
     /**
@@ -57,21 +52,19 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/)**
      *
-     * @param tracks The com.adamratzman.spotify id or uri for the tracks. Maximum **50**.
+     * @param tracks The id or uri for the tracks. Maximum **50**.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      *
      * @return List of possibly-null full [Track] objects.
      */
-    public fun getTracks(vararg tracks: String, market: Market? = null): SpotifyRestAction<List<Track?>> {
+    public suspend fun getTracks(vararg tracks: String, market: Market? = null): List<Track?> {
         checkBulkRequesting(50, tracks.size)
-        return toAction {
-            bulkRequest(50, tracks.toList()) { chunk ->
-                get(
-                        EndpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
-                                .with("market", market?.name).toString()
-                ).toObject(TrackList.serializer(), api, json).tracks
-            }.flatten()
-        }
+        return bulkRequest(50, tracks.toList()) { chunk ->
+            get(
+                    EndpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
+                            .with("market", market?.name).toString()
+            ).toObject(TrackList.serializer(), api, json).tracks
+        }.flatten()
     }
 
     /**
@@ -88,53 +81,45 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/)**
      *
-     * @param track The com.adamratzman.spotify id or uri for the track.
+     * @param track The id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
      */
-    public fun getAudioAnalysis(track: String): SpotifyRestAction<AudioAnalysis> {
-        return toAction {
+    public suspend fun getAudioAnalysis(track: String): AudioAnalysis =
             get(EndpointBuilder("/audio-analysis/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioAnalysis.serializer(), api, json)
-        }
-    }
 
     /**
      * Get audio feature information for a single track identified by its unique Spotify ID.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)**
      *
-     * @param track The com.adamratzman.spotify id or uri for the track.
+     * @param track The id or uri for the track.
      *
      * @throws BadRequestException if [track] cannot be found
      */
-    public fun getAudioFeatures(track: String): SpotifyRestAction<AudioFeatures> {
-        return toAction {
+    public suspend fun getAudioFeatures(track: String): AudioFeatures =
             get(EndpointBuilder("/audio-features/${PlayableUri(track).id.encodeUrl()}").toString())
                     .toObject(AudioFeatures.serializer(), api, json)
-        }
-    }
 
     /**
      * Get audio features for multiple tracks based on their Spotify IDs.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-audio-features/)**
      *
-     * @param tracks vararg of com.adamratzman.spotify track ids or uris. Maximum **100**.
+     * @param tracks vararg of track ids or uris. Maximum **100**.
      *
      * @return Ordered list of possibly-null [AudioFeatures] objects.
      */
-    public fun getAudioFeatures(vararg tracks: String): SpotifyRestAction<List<AudioFeatures?>> {
+    public suspend fun getAudioFeatures(vararg tracks: String): List<AudioFeatures?> {
         checkBulkRequesting(100, tracks.size)
-        return toAction {
-            bulkRequest(100, tracks.toList()) { chunk ->
-                get(
-                        EndpointBuilder("/audio-features").with(
-                                "ids",
-                                chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() }).toString()
-                )
-                        .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
-            }.flatten()
-        }
+        return bulkRequest(100, tracks.toList()) { chunk ->
+            get(
+                    EndpointBuilder("/audio-features").with(
+                            "ids",
+                            chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() }).toString()
+            )
+                    .toObject(AudioFeaturesResponse.serializer(), api, json).audioFeatures
+        }.flatten()
     }
 }

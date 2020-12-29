@@ -18,11 +18,9 @@ import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.url
 import io.ktor.client.statement.readText
-import io.ktor.client.utils.EmptyContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
-import io.ktor.http.content.TextContent
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -74,10 +72,6 @@ public class HttpConnection constructor(
             else -> body
         }
 
-        if (body === EmptyContent && this@HttpConnection.method != HttpRequestMethod.POST) {
-            body = TextContent("", contentType)
-        }
-
         // let additionalHeaders overwrite headers
         val allHeaders = this@HttpConnection.headers + (additionalHeaders ?: listOf())
 
@@ -125,7 +119,7 @@ public class HttpConnection constructor(
                 if (respCode == 401 && body.contains("access token") &&
                         api != null && api.automaticRefresh
                 ) {
-                    api.suspendRefreshToken()
+                    api.refreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
                     newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
                     return execute(newAdditionalHeaders, retryIf502)

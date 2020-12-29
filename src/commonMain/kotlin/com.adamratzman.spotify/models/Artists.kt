@@ -1,7 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyRestAction
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -23,17 +22,10 @@ public data class SimpleArtist(
     val name: String,
     val type: String
 ) : CoreObject() {
-
-    /**
-     * This [SimpleArtist] into a full [Artist] object
-     */
-    val fullArtist: Artist? by lazy { api.artists.getArtist(id).complete() }
-
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
-    @Deprecated("Replaced with a lazy fullArtist property", ReplaceWith("fullArtist"))
-    public fun toFullArtist(): SpotifyRestAction<Artist?> = api.artists.getArtist(id)
+    public suspend fun toFullArtist(): Artist? = api.artists.getArtist(id)
 }
 
 /**

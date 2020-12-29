@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -67,18 +66,14 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
      *
      * @return [PagingObject] of full [Artist] objects sorted by affinity
      */
-    public fun getTopArtists(
+    public suspend fun getTopArtists(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): SpotifyRestActionPaging<Artist, PagingObject<Artist>> {
-        return toActionPaging {
-            get(
-                    EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-                            .with("time_range", timeRange).toString()
-            ).toPagingObject(Artist.serializer(), endpoint = this, json = json)
-        }
-    }
+    ): PagingObject<Artist> = get(
+                EndpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
+                        .with("time_range", timeRange).toString()
+        ).toPagingObject(Artist.serializer(), endpoint = this, json = json)
 
     /**
      * Get the current user’s top tracks based on calculated affinity.
@@ -101,16 +96,12 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
      *
      * @return [PagingObject] of full [Track] objects sorted by affinity
      */
-    public fun getTopTracks(
+    public suspend fun getTopTracks(
         limit: Int? = api.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): SpotifyRestActionPaging<Track, PagingObject<Track>> {
-        return toActionPaging {
-            get(
-                    EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-                            .with("time_range", timeRange).toString()
-            ).toPagingObject(Track.serializer(), endpoint = this, json = json)
-        }
-    }
+    ): PagingObject<Track> = get(
+                EndpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
+                        .with("time_range", timeRange).toString()
+        ).toPagingObject(Track.serializer(), endpoint = this, json = json)
 }

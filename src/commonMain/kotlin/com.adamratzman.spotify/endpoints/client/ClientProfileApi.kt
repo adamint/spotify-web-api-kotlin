@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.UserApi
 import com.adamratzman.spotify.http.EndpointBuilder
@@ -29,12 +28,9 @@ public class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      *
      * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
      */
-    public fun getClientProfile(): SpotifyRestAction<SpotifyUserInformation> {
-        return toAction {
+    public suspend fun getClientProfile(): SpotifyUserInformation =
             get(EndpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
-        }
-    }
 
     @Deprecated("Renamed to use `client` instead of `user`", ReplaceWith("getClientProfile"))
-    public fun getUserProfile(): SpotifyRestAction<SpotifyUserInformation> = getClientProfile()
+    public suspend fun getUserProfile(): SpotifyUserInformation = getClientProfile()
 }

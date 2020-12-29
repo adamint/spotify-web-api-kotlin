@@ -9,7 +9,7 @@ public expect fun getCurrentTimeMs(): Long
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
-internal inline fun <T> catch(function: () -> T): T? {
+internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T? {
     return try {
         function()
     } catch (e: SpotifyException.BadRequestException) {
