@@ -9,12 +9,13 @@ import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyApi
-import kotlin.test.AfterTest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi
@@ -30,10 +31,20 @@ class ClientPlaylistApiTest {
         return ::api.isInitialized
     }
 
-    private suspend fun tearDown() {
+    private suspend fun CoroutineScope.tearDown() {
         if (::createdPlaylist.isInitialized) {
-            api.playlists.deleteClientPlaylist(createdPlaylist.id)
-            assertTrue(api.playlists.getClientPlaylist(createdPlaylist.id) == null)
+            coroutineScope {
+                api.playlists.getClientPlaylists().getAllItemsNotNull()
+                        .filter { it.name == "this is a test playlist" }
+                        .map {
+                            async {
+                                if (api.following.isFollowingPlaylist(it.id)) {
+                                    api.playlists.deleteClientPlaylist(it.id)
+                                }
+                            }
+                        }
+                        .awaitAll()
+            }
         }
     }
 
