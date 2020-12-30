@@ -9,13 +9,14 @@ import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import com.adamratzman.spotify.utils.Platform
+import com.adamratzman.spotify.utils.platform
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi
@@ -31,7 +32,7 @@ class ClientPlaylistApiTest {
         return ::api.isInitialized
     }
 
-    private suspend fun CoroutineScope.tearDown() {
+    private suspend fun tearDown() {
         if (::createdPlaylist.isInitialized) {
             coroutineScope {
                 api.playlists.getClientPlaylists().getAllItemsNotNull()
@@ -105,10 +106,12 @@ class ClientPlaylistApiTest {
 
             api.playlists.addTracksToClientPlaylist(createdPlaylist.id, "3WDIhWoRWVcaHdRwMEHkkS", "7FjZU7XFs7P9jHI9Z0yRhK")
 
-            api.playlists.uploadClientPlaylistCover(
-                    createdPlaylist.id,
-                    imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
-            )
+            if (platform != Platform.ANDROID) {
+                api.playlists.uploadClientPlaylistCover(
+                        createdPlaylist.id,
+                        imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
+                )
+            }
 
             var updatedPlaylist = api.playlists.getClientPlaylist(createdPlaylist.id)!!
             val fullPlaylist = updatedPlaylist.toFullPlaylist()!!
