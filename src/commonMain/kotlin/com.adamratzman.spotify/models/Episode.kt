@@ -7,7 +7,6 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * An episode (podcast) on Spotify
@@ -28,7 +27,7 @@ import kotlinx.serialization.Transient
  * @property show The show on which the episode belongs.
  */
 @Serializable
-data class Episode(
+public data class Episode(
     @SerialName("audio_preview_url") val audioPreviewUrl: String? = null,
     val description: String,
     @SerialName("duration_ms") val durationMs: Int,
@@ -50,13 +49,12 @@ data class Episode(
     override val type: String,
     override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-    @Transient
-    val releaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
     @Suppress("DEPRECATION")
-    val languages
+    val languages: List<Locale>
         get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate).map { languageString ->
-                Locale.valueOf(languageString.replace("-", "_"))
+            Locale.valueOf(languageString.replace("-", "_"))
         }
 }
 
@@ -78,7 +76,7 @@ data class Episode(
  * @property type The object type: "episode".
  */
 @Serializable
-data class SimpleEpisode(
+public data class SimpleEpisode(
     @SerialName("audio_preview_url") val audioPreviewUrl: String? = null,
     val description: String,
     @SerialName("duration_ms") val durationMs: Int,
@@ -99,11 +97,10 @@ data class SimpleEpisode(
     override val type: String,
     override val uri: EpisodeUri
 ) : CoreObject(), Playable {
-    @Transient
-    val releaseDate = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
     @Suppress("DEPRECATION")
-    val languages
+    val languages: List<Locale>
         get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate)
                 .map { Locale.valueOf(it.replace("-", "_")) }
 
@@ -112,7 +109,7 @@ data class SimpleEpisode(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullEpisode(market: Market? = null) = (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
+    public suspend fun toFullEpisode(market: Market? = null): Episode? = (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
 }
 
 /**
@@ -123,7 +120,7 @@ data class SimpleEpisode(
  * @property resumePositionMs The user’s most recent position in the episode in milliseconds.
  */
 @Serializable
-data class ResumePoint(
+public data class ResumePoint(
     @SerialName("fully_played") val fullyPlayed: Boolean,
     @SerialName("resume_position_ms") val resumePositionMs: Int
 )

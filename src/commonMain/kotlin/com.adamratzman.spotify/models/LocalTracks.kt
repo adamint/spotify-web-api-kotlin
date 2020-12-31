@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  * @property type The object type: "artist"
  */
 @Serializable
-data class SimpleLocalArtist(
+public data class SimpleLocalArtist(
     val name: String,
     val type: String
 )
@@ -29,7 +29,7 @@ data class SimpleLocalArtist(
  * @property albumType The type of the album: one of “album”, “single”, or “compilation”.
  */
 @Serializable
-data class SimpleLocalAlbum(
+public data class SimpleLocalAlbum(
     @SerialName("album_type") val albumType: String? = null,
     val artists: List<SimpleLocalArtist> = listOf(),
     val name: String,
@@ -55,7 +55,7 @@ data class SimpleLocalAlbum(
  * @property popularity the popularity of this track. possibly null
  */
 @Serializable
-data class LocalTrack(
+public data class LocalTrack(
     val album: SimpleLocalAlbum,
     val artists: List<SimpleLocalArtist>,
     override val href: String? = null,
@@ -79,5 +79,5 @@ data class LocalTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      */
-    fun searchForSpotifyTrack(limit: Int? = null, offset: Int? = null, market: Market? = null) = api.search.searchTrack(name, limit, offset, market)
+    public suspend fun searchForSpotifyTrack(limit: Int? = null, offset: Int? = null, market: Market? = null): PagingObject<Track> = api.search.searchTrack(name, limit, offset, market)
 }

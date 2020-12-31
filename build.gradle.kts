@@ -1,15 +1,16 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.21.2"
-    kotlin("multiplatform") version "1.3.72"
-    kotlin("plugin.serialization") version "1.3.72"
+    id("io.codearte.nexus-staging") version "0.22.0"
+    kotlin("multiplatform") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.21"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "0.10.1"
+    id("org.jetbrains.dokka") version "1.4.20"
     id("com.android.library")
     id("kotlin-android-extensions")
 }
@@ -26,12 +27,12 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
     }
 }
 
 group = "com.adamratzman"
-version = "3.2.14"
+version = "3.3.01"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -51,6 +52,7 @@ android {
     defaultConfig {
         minSdkVersion(15)
         targetSdkVersion(30)
+        compileSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -61,9 +63,10 @@ android {
         }
     }
     testOptions {
+        this.unitTests.isReturnDefaultValues = true
         @Suppress("UNCHECKED_CAST")
         this.unitTests.all(closureOf<Test> {
-            this.useJUnitPlatform()
+          //  this.useJUnitPlatform()
         } as groovy.lang.Closure<Test>)
     }
     sourceSets {
@@ -83,11 +86,17 @@ val dokkaJar by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "Docs"
     classifier = "javadoc"
-    from(tasks.dokka)
+    from(tasks.dokkaHtml)
 }
 
 kotlin {
+    explicitApiWarning()
+
     android {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+
         mavenPublication {
             artifactId = "spotify-api-kotlin-android"
             setupPom(artifactId)
@@ -99,56 +108,65 @@ kotlin {
     }
 
     jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+        testRuns["test"].executionTask.configure {
+            useJUnit()
+        }
+
         mavenPublication {
             artifactId = "spotify-api-kotlin"
             setupPom(artifactId)
         }
     }
 
-    js {
+    js(KotlinJsCompilerType.LEGACY) {
         mavenPublication {
             artifactId = "spotify-api-kotlin-js"
             setupPom(artifactId)
         }
 
         browser {
-            dceTask {
-                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
-            }
-
             webpackTask {
                 output.libraryTarget = Target.UMD
             }
 
             testTask {
-                enabled = false
+                useKarma {
+                    useChromeHeadless()
+                    webpackConfig.cssSupport.enabled = true
+                }
+                //   this.
             }
         }
 
-        nodejs()
+        nodejs {
+            testTask {
+                useMocha {
+                    timeout = "5000"
+                }
+            }
+        }
     }
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.3.9"
-            val serializationVersion = "1.0.0-RC"
-            val spekVersion = "2.0.11"
-            val ktorVersion = "1.4.0"
+            val coroutineVersion = "1.4.2"
+            val serializationVersion = "1.0.1"
+            val ktorVersion = "1.4.1"
 
             val commonMain by getting {
                 dependencies {
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                    api("io.ktor:ktor-client-core:$ktorVersion")
-
-                    implementation(kotlin("stdlib-common"))
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                    implementation("io.ktor:ktor-client-core:$ktorVersion")
                 }
             }
             val commonTest by getting {
                 dependencies {
                     implementation(kotlin("test-common"))
                     implementation(kotlin("test-annotations-common"))
-                    implementation("org.spekframework.spek2:spek-dsl-metadata:$spekVersion")
                 }
             }
 
@@ -159,42 +177,32 @@ kotlin {
                 }
 
                 dependencies {
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                    api("io.ktor:ktor-client-cio:$ktorVersion")
-                    implementation(kotlin("stdlib-jdk8"))
+                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 }
             }
 
             val jvmTest by getting {
                 dependencies {
-                    implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
-                    implementation("org.junit.jupiter:junit-jupiter:5.6.2")
-                    implementation("com.sparkjava:spark-core:2.9.1")
-                    implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-                    runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+                    implementation("com.sparkjava:spark-core:2.9.3")
                     runtimeOnly(kotlin("reflect"))
                 }
             }
 
             val jsMain by getting {
                 dependencies {
-                    api(npm("text-encoding", "0.7.0"))
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-core-js:$serializationVersion")
-                    api("io.ktor:ktor-client-js:$ktorVersion")
-                    api(npm("abort-controller", "3.0.0"))
-                    api(npm("node-fetch", "2.6.0"))
+                    implementation(npm("text-encoding", "0.7.0"))
+                    implementation("io.ktor:ktor-client-js:$ktorVersion")
+                    implementation(npm("abort-controller", "3.0.0"))
+                    implementation(npm("node-fetch", "2.6.0"))
+                    implementation(kotlin("stdlib-js"))
 
-                    compileOnly(kotlin("stdlib-js"))
                 }
             }
 
             val jsTest by getting {
                 dependencies {
                     implementation(kotlin("test-js"))
-                    implementation("org.spekframework.spek2:spek-dsl-js:$spekVersion")
                 }
             }
 
@@ -205,24 +213,14 @@ kotlin {
                 }
 
                 dependencies {
-                    api("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                    api("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                    api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    api("io.coil-kt:coil:0.11.0")
-                    implementation(kotlin("stdlib-jdk8"))
+                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 }
             }
 
             val androidTest by getting {
                 dependencies {
-                    implementation(kotlin("test"))
                     implementation(kotlin("test-junit"))
-                    implementation("org.junit.jupiter:junit-jupiter:5.6.2")
-                    implementation("com.sparkjava:spark-core:2.9.1")
-                    implementation("org.mockito:mockito-core:3.3.3")
-                    implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-                    runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+                    implementation("com.sparkjava:spark-core:2.9.3")
                     runtimeOnly(kotlin("reflect"))
                 }
             }
@@ -273,46 +271,17 @@ signing {
 }
 
 tasks {
-    val dokka by getting(DokkaTask::class) {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/javadoc"
+    val dokkaHtml by getting(DokkaTask::class) {
+        outputDirectory.set(projectDir.resolve("docs"))
 
-        multiplatform {
-            val js by creating {
-                sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
-                }
-            }
-            val jvm by creating {
-                sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
-                }
-            }
+        dokkaSourceSets {
+            configureEach {
+                skipDeprecated.set(true)
 
-            register("common") {
                 sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
-                }
-            }
-
-            register("global") {
-                sourceLink {
-                    path = "/src"
-                    url = "https://github.com/adamint/spotify-web-api-kotlin/tree/master/"
-                    lineSuffix = "#L"
-                }
-
-                sourceRoot {
-                    path = kotlin.sourceSets.getByName("jvmMain").kotlin.srcDirs.first().toString()
-                }
-                sourceRoot {
-                    path = kotlin.sourceSets.getByName("commonMain").kotlin.srcDirs.first().toString()
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/src").toURL())
+                    remoteLineSuffix.set("#L")
                 }
             }
         }
@@ -331,13 +300,9 @@ tasks {
     }
 
 
-    getByName<Test>("jvmTest") {
-        useJUnitPlatform()
-    }
-
     val publishJvm by registering(Task::class) {
         dependsOn.add(check)
-        dependsOn.add(dokka)
+        dependsOn.add(dokkaHtml)
         dependsOn.add("publishJvmPublicationToNexusRepository")
     }
 

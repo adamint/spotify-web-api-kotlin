@@ -3,8 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.SpotifyRestAction
-import com.adamratzman.spotify.SpotifyRestActionPaging
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -25,7 +23,7 @@ import com.adamratzman.spotify.utils.catch
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/)**
  */
-class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single show identified by its unique Spotify ID.
      *
@@ -41,13 +39,11 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return possibly-null Show. This behavior is *not the same* as in [getShows]
      */
-    fun getShow(id: String, market: Market? = null): SpotifyRestAction<Show?> {
-        return toAction {
-            catch {
-                get(
-                        EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
-                ).toObject(Show.serializer(), api, json)
-            }
+    public suspend fun getShow(id: String, market: Market? = null): Show? {
+        return catch {
+            get(
+                    EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
+            ).toObject(Show.serializer(), api, json)
         }
     }
 
@@ -60,7 +56,7 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/shows/get-several-shows/)**
      *
-     * @param ids The com.adamratzman.spotify id or uri for the shows. Maximum **50**.
+     * @param ids The id or uri for the shows. Maximum **50**.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
@@ -69,16 +65,14 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of possibly-null [SimpleShow] objects.
      * @throws BadRequestException If any invalid show id is provided
      */
-    fun getShows(vararg ids: String, market: Market? = null): SpotifyRestAction<List<SimpleShow?>> {
+    public suspend fun getShows(vararg ids: String, market: Market? = null): List<SimpleShow?> {
         checkBulkRequesting(50, ids.size)
-        return toAction {
-            bulkRequest(50, ids.toList()) { chunk ->
-                get(
-                        EndpointBuilder("/shows").with("ids", chunk.joinToString(",") { ShowUri(it).id.encodeUrl() })
-                                .with("market", market?.name).toString()
-                ).toObject(ShowList.serializer(), api, json).shows
-            }.flatten()
-        }
+        return bulkRequest(50, ids.toList()) { chunk ->
+            get(
+                    EndpointBuilder("/shows").with("ids", chunk.joinToString(",") { ShowUri(it).id.encodeUrl() })
+                            .with("market", market?.name).toString()
+            ).toObject(ShowList.serializer(), api, json).shows
+        }.flatten()
     }
 
     /**
@@ -98,18 +92,14 @@ class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the playlist cannot be found
      */
-    fun getShowEpisodes(
+    public suspend fun getShowEpisodes(
         id: String,
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestActionPaging<SimpleEpisode, PagingObject<SimpleEpisode>> {
-        return toActionPaging {
-            get(
-                    EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
-                            .with("offset", offset).with("market", market?.name).toString()
-            )
-                    .toPagingObject(SimpleEpisode.serializer(), null, this, json)
-        }
-    }
+    ): PagingObject<SimpleEpisode> = get(
+            EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
+                    .with("offset", offset).with("market", market?.name).toString()
+    )
+            .toPagingObject(SimpleEpisode.serializer(), null, this, json)
 }

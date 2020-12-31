@@ -1,12 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
@@ -31,7 +29,7 @@ import kotlinx.serialization.Transient
  * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
  */
 @Serializable
-data class SimplePlaylist(
+public data class SimplePlaylist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -48,9 +46,7 @@ data class SimplePlaylist(
     val tracks: PlaylistTrackInfo,
     val type: String
 ) : CoreObject() {
-
-    @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
+    val snapshot: PlaylistSnapshot get() = PlaylistSnapshot(snapshotIdString)
 
     /**
      * Converts this [SimplePlaylist] into a full [Playlist] object with the given
@@ -58,7 +54,7 @@ data class SimplePlaylist(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    fun toFullPlaylist(market: Market? = null): SpotifyRestAction<Playlist?> =
+    public suspend fun toFullPlaylist(market: Market? = null): Playlist? =
             api.playlists.getPlaylist(id, market)
 }
 
@@ -72,7 +68,7 @@ data class SimplePlaylist(
  * @property track Information about the track. In rare occasions, this field may be null if this track's API entry is broken.
  */
 @Serializable
-data class PlaylistTrack(
+public data class PlaylistTrack(
     @SerialName("primary_color") val primaryColor: String? = null,
     @SerialName("added_at") val addedAt: String? = null,
     @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
@@ -104,7 +100,7 @@ data class PlaylistTrack(
  * @property type The object type: “playlist”
  */
 @Serializable
-data class Playlist(
+public data class Playlist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -122,9 +118,7 @@ data class Playlist(
     val tracks: PagingObject<PlaylistTrack>,
     val type: String
 ) : CoreObject() {
-
-    @Transient
-    val snapshot: PlaylistSnapshot = PlaylistSnapshot(snapshotIdString)
+    val snapshot: PlaylistSnapshot get() = PlaylistSnapshot(snapshotIdString)
 }
 
 /**
@@ -136,10 +130,10 @@ data class Playlist(
  * @property total the total number of tracks in the playlist.
  */
 @Serializable
-data class PlaylistTrackInfo(
+public data class PlaylistTrackInfo(
     val href: String,
     val total: Int
 )
 
 @Serializable
-data class VideoThumbnail(val url: String?)
+public data class VideoThumbnail(val url: String?)

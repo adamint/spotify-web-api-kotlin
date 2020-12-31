@@ -1,182 +1,208 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.api
+import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
+import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Locale
-import com.adamratzman.spotify.utils.Locale.ar_AE
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import kotlin.test.assertFailsWith
+import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
-class BrowseApiTest : Spek({
-    describe("Browse test") {
-        val b = api?.browse ?: return@describe
-        it("get genre seeds") {
-            assertTrue(b.getAvailableGenreSeeds().complete().isNotEmpty())
+class BrowseApiTest {
+    lateinit var api: GenericSpotifyApi
+
+    private suspend fun testPrereq(): Boolean {
+        spotifyApi.await()?.let { api = it }
+        return ::api.isInitialized
+    }
+
+    @Test
+    fun testGenreSeeds() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+            assertTrue(api.browse.getAvailableGenreSeeds().isNotEmpty())
         }
+    }
 
-        it("get category list") {
+    @Test
+    fun testGetCategoryList() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
             assertNotSame(
-                b.getCategoryList(locale = ar_AE).complete().items[0],
-                b.getCategoryList().complete().items[0]
+                    api.browse.getCategoryList(locale = Locale.ar_AE).items[0],
+                    api.browse.getCategoryList().items[0]
             )
-            assertTrue(b.getCategoryList(4, 3, market = Market.CA).complete().items.isNotEmpty())
-            assertTrue(b.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).complete().items.isNotEmpty())
+            assertTrue(api.browse.getCategoryList(4, 3, market = Market.CA).items.isNotEmpty())
+            assertTrue(api.browse.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).items.isNotEmpty())
         }
+    }
 
-        it("get category") {
-            assertNotNull(b.getCategory("pop").complete())
-            assertNotNull(b.getCategory("pop", Market.FR).complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = Locale.en_US).complete())
-            assertNotNull(b.getCategory("pop", Market.FR, locale = Locale.sr_ME).complete())
-            assertFailsWith<SpotifyException.BadRequestException> { b.getCategory("no u", Market.US).complete() }
+    @Test
+    fun testGetCategory() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+            assertNotNull(api.browse.getCategory("pop"))
+            assertNotNull(api.browse.getCategory("pop", Market.FR))
+            assertNotNull(api.browse.getCategory("pop", Market.FR, locale = Locale.en_US))
+            assertNotNull(api.browse.getCategory("pop", Market.FR, locale = Locale.sr_ME))
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.browse.getCategory("no u", Market.US) }
         }
+    }
 
-        it("get playlists by category") {
-            assertFailsWith<SpotifyException.BadRequestException> { b.getPlaylistsForCategory("no u", limit = 4).complete() }
-            assertTrue(b.getPlaylistsForCategory("pop", 10, 0, Market.FR).complete().items.isNotEmpty())
+    @Test
+    fun testGetPlaylistsByCategory() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.browse.getPlaylistsForCategory("no u", limit = 4) }
+            assertTrue(api.browse.getPlaylistsForCategory("pop", 10, 0, Market.FR).items.isNotEmpty())
         }
+    }
 
-        it("get featured playlists") {
+    @Test
+    fun testGetFeaturedPlaylists() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
             assertTrue(
-                b.getFeaturedPlaylists(
-                    5,
-                    4,
-                    market = Market.US,
-                    timestamp = getCurrentTimeMs() - 10000000
-                ).complete().playlists.total > 0
+                    api.browse.getFeaturedPlaylists(
+                            5,
+                            4,
+                            market = Market.US,
+                            timestamp = getCurrentTimeMs() - 10000000
+                    ).playlists.total > 0
             )
-            assertTrue(b.getFeaturedPlaylists(offset = 32).complete().playlists.total > 0)
+            assertTrue(api.browse.getFeaturedPlaylists(offset = 32).playlists.total > 0)
         }
+    }
 
-        it("get new releases") {
-            assertTrue(b.getNewReleases(market = Market.CA).complete().items.isNotEmpty())
-            assertTrue(b.getNewReleases(limit = 1, offset = 3).complete().items.isNotEmpty())
-            assertTrue(b.getNewReleases(limit = 6, offset = 44, market = Market.US).complete().items.isNotEmpty())
+    @Test
+    fun testGetNewReleases() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertTrue(api.browse.getNewReleases(market = Market.CA).items.isNotEmpty())
+            assertTrue(api.browse.getNewReleases(limit = 1, offset = 3).items.isNotEmpty())
+            assertTrue(api.browse.getNewReleases(limit = 6, offset = 44, market = Market.US).items.isNotEmpty())
         }
+    }
 
-        describe("get recommendations") {
-            it("no parameters") {
-                assertFailsWith<SpotifyException.BadRequestException> { b.getTrackRecommendations().complete() }
-            }
-            it("seed artists") {
-                assertFailsWith<SpotifyException.BadRequestException> {
-                    b.getTrackRecommendations(seedArtists = listOf("abc")).complete()
-                }
-                assertTrue(b.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).complete().tracks.isNotEmpty())
-                assertTrue(
-                    b.getTrackRecommendations(
-                        seedArtists = listOf(
-                            "2C2sVVXanbOpymYBMpsi89",
-                            "7lMgpN1tEBQKpRoUMKB8iw"
-                        )
-                    ).complete().tracks.isNotEmpty()
-                )
-            }
-            it("seed tracks") {
-                assertFailsWith<SpotifyException.BadRequestException> {
-                    b.getTrackRecommendations(seedTracks = listOf("abc")).complete()
-                }
-                assertTrue(b.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).complete().tracks.isNotEmpty())
-                assertTrue(
-                    b.getTrackRecommendations(
-                        seedTracks = listOf(
-                            "6d9iYQG2JvTTEgcndW81lt",
-                            "3Uyt0WO3wOopnUBCe9BaXl"
-                        )
-                    ).complete().tracks.isNotEmpty()
-                )
-            }
-            it("seed genres") {
-                b.getTrackRecommendations(seedGenres = listOf("abc")).complete()
-                assertTrue(b.getTrackRecommendations(seedGenres = listOf("pop")).complete().tracks.isNotEmpty())
-                assertTrue(
-                    b.getTrackRecommendations(
-                        seedGenres = listOf(
-                            "pop",
-                            "latinx"
-                        )
-                    ).complete().tracks.isNotEmpty()
-                )
-            }
-            it("multiple seed types") {
+    @Test
+    fun testGetRecommendations() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
 
-                b.getTrackRecommendations(
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.browse.getTrackRecommendations() }
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api.browse.getTrackRecommendations(seedArtists = listOf("abc"))
+            }
+            assertTrue(api.browse.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).tracks.isNotEmpty())
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            seedArtists = listOf(
+                                    "2C2sVVXanbOpymYBMpsi89",
+                                    "7lMgpN1tEBQKpRoUMKB8iw"
+                            )
+                    ).tracks.isNotEmpty()
+            )
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api.browse.getTrackRecommendations(seedTracks = listOf("abc"))
+            }
+            assertTrue(api.browse.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).tracks.isNotEmpty())
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            seedTracks = listOf(
+                                    "6d9iYQG2JvTTEgcndW81lt",
+                                    "3Uyt0WO3wOopnUBCe9BaXl"
+                            )
+                    ).tracks.isNotEmpty()
+            )
+
+            api.browse.getTrackRecommendations(seedGenres = listOf("abc"))
+            assertTrue(api.browse.getTrackRecommendations(seedGenres = listOf("pop")).tracks.isNotEmpty())
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            seedGenres = listOf(
+                                    "pop",
+                                    "latinx"
+                            )
+                    ).tracks.isNotEmpty()
+            )
+
+            api.browse.getTrackRecommendations(
                     seedArtists = listOf("2C2sVVXanbOpymYBMpsi89"),
                     seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl"),
                     seedGenres = listOf("pop")
-                ).complete()
-            }
-            it("target attributes") {
-                assertFailsWith<IllegalArgumentException> {
-                    b.getTrackRecommendations(
+            )
+
+            assertFailsWithSuspend<IllegalArgumentException> {
+                api.browse.getTrackRecommendations(
                         targetAttributes = listOf(
-                            TuneableTrackAttribute.Acousticness.asTrackAttribute(
-                                3f
-                            )
+                                TuneableTrackAttribute.Acousticness.asTrackAttribute(
+                                        3f
+                                )
                         )
-                    ).complete()
-                }
-                assertTrue(
-                    b.getTrackRecommendations(
-                        targetAttributes = listOf(
-                            TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
-                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
-                        ),
-                        seedGenres = listOf("pop")
-                    ).complete().tracks.isNotEmpty()
                 )
             }
-            it("min attributes") {
-                assertFailsWith<IllegalArgumentException> {
-                    b.getTrackRecommendations(
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            targetAttributes = listOf(
+                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
+                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                            ),
+                            seedGenres = listOf("pop")
+                    ).tracks.isNotEmpty()
+            )
+
+            assertFailsWithSuspend<IllegalArgumentException> {
+                api.browse.getTrackRecommendations(
                         minAttributes = listOf(
-                            TuneableTrackAttribute.Acousticness.asTrackAttribute(
-                                3f
-                            )
+                                TuneableTrackAttribute.Acousticness.asTrackAttribute(
+                                        3f
+                                )
                         )
-                    ).complete()
-                }
-                assertTrue(
-                    b.getTrackRecommendations(
-                        minAttributes = listOf(
-                            TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
-                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
-                        ),
-                        seedGenres = listOf("pop")
-                    ).complete().tracks.isNotEmpty()
                 )
             }
-            it("max attributes") {
-                assertFailsWith<SpotifyException.BadRequestException> {
-                    b.getTrackRecommendations(
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            minAttributes = listOf(
+                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
+                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                            ),
+                            seedGenres = listOf("pop")
+                    ).tracks.isNotEmpty()
+            )
+
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api.browse.getTrackRecommendations(
                         maxAttributes = listOf(
-                            TuneableTrackAttribute.Speechiness.asTrackAttribute(
-                                0.9f
-                            )
+                                TuneableTrackAttribute.Speechiness.asTrackAttribute(
+                                        0.9f
+                                )
                         )
-                    ).complete()
-                }
-                assertTrue(
-                    b.getTrackRecommendations(
-                        maxAttributes = listOf(
-                            TuneableTrackAttribute.Acousticness.asTrackAttribute(0.9f),
-                            TuneableTrackAttribute.Danceability.asTrackAttribute(0.9f)
-                        ),
-                        seedGenres = listOf("pop")
-                    ).complete().tracks.isNotEmpty()
                 )
             }
-            it("track attributes") {
-                TuneableTrackAttribute.values().first().asTrackAttribute(0f).value == 0f
-            }
+            assertTrue(
+                    api.browse.getTrackRecommendations(
+                            maxAttributes = listOf(
+                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(0.9f),
+                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.9f)
+                            ),
+                            seedGenres = listOf("pop")
+                    ).tracks.isNotEmpty()
+            )
+
+            assertTrue(TuneableTrackAttribute.values().first().asTrackAttribute(0f).value == 0f)
         }
     }
-})
+}

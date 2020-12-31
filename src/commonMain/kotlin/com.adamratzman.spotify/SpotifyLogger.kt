@@ -1,10 +1,10 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-expect class SpotifyLogger(enabled: Boolean) {
-    var enabled: Boolean
+public expect class SpotifyLogger(enabled: Boolean) {
+    public var enabled: Boolean
 
-    fun logInfo(message: String)
-    fun logWarning(message: String)
-    fun logError(fatal: Boolean, message: String?, throwable: Throwable?)
+    public fun logInfo(message: String)
+    public fun logWarning(message: String)
+    public fun logError(fatal: Boolean, message: String?, throwable: Throwable?)
 }

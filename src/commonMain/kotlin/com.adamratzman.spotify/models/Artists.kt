@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * @property type The object type: "artist"
  */
 @Serializable
-data class SimpleArtist(
+public data class SimpleArtist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
@@ -22,17 +22,10 @@ data class SimpleArtist(
     val name: String,
     val type: String
 ) : CoreObject() {
-
-    /**
-     * This [SimpleArtist] into a full [Artist] object
-     */
-    val fullArtist by lazy { api.artists.getArtist(id) }
-
     /**
      * Converts this [SimpleArtist] into a full [Artist] object
      */
-    @Deprecated("Replaced with a lazy fullArtist property", ReplaceWith("fullArtist"))
-    fun toFullArtist() = api.artists.getArtist(id)
+    public suspend fun toFullArtist(): Artist? = api.artists.getArtist(id)
 }
 
 /**
@@ -50,7 +43,7 @@ data class SimpleArtist(
  * @property type The object type: "artist"
  */
 @Serializable
-data class Artist(
+public data class Artist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,

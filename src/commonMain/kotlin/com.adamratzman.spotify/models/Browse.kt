@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * @property name The name of the category.
  */
 @Serializable
-data class SpotifyCategory(
+public data class SpotifyCategory(
     override val href: String,
     override val id: String,
 
@@ -34,7 +34,7 @@ data class SpotifyCategory(
  * @property type The entity type of this seed. One of artist , track or genre.
  */
 @Serializable
-data class RecommendationSeed(
+public data class RecommendationSeed(
     @SerialName("href") override val href: String? = null,
     @SerialName("id") override val id: String,
 
@@ -49,7 +49,7 @@ data class RecommendationSeed(
  * @property tracks An array of track object (simplified) ordered according to the parameters supplied.
  */
 @Serializable
-data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<Track>)
+public data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<Track>)
 
 /**
  * Spotify featured playlists (on the Browse tab)
@@ -58,4 +58,4 @@ data class RecommendationResponse(val seeds: List<RecommendationSeed>, val track
  * @property playlists [PagingObject] of returned items
  */
 @Serializable
-data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)
+public data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)

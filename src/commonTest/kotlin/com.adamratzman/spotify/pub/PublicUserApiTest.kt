@@ -1,23 +1,29 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
-import com.adamratzman.spotify.api
+import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.catch
+import kotlin.test.Test
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
-class PublicUserApiTest : Spek({
-    describe("Public User test") {
-        api?.users ?: return@describe
-        describe("get user") {
-            it("available user should return author name") {
-                assertTrue { catch { api.users.getProfile("adamratzman1").complete()!!.followers.total } != null }
-            }
-            it("unknown user should throw exception") {
-                assertNull(api.users.getProfile("non-existant-user").complete())
-            }
+class PublicUserApiTest {
+    lateinit var api: GenericSpotifyApi
+
+    private suspend fun testPrereq(): Boolean {
+        spotifyApi.await()?.let { api = it }
+        return ::api.isInitialized
+    }
+
+    @Test
+    fun testPublicUser() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertTrue(catch { api.users.getProfile("adamratzman1")!!.followers.total } != null)
+            assertNull(api.users.getProfile("non-existant-user"))
         }
     }
-})
+}

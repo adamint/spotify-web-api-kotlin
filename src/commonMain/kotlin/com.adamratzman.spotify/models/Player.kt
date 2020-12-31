@@ -1,26 +1,29 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.utils.getExternalUrls
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Context in which a track was played
  *
  * @property type The object type, e.g. “artist”, “playlist”, “album”.
  * @property href A link to the Web API endpoint providing full details of the track.
+ * @property uri The URI associated with the object
+ * @property externalUrls Known external URLs for this object
+ *
  */
 @Serializable // TODO remove id. It's wrong to extend CoreObject here, as it doesn't has any id
-data class PlayHistoryContext(
-    @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
-    override val href: String,
-    override val uri: SpotifyUri,
-
-    val type: String,
-    override val id: String = TRANSIENT_EMPTY_STRING
-) : CoreObject()
+public data class PlayHistoryContext(
+    @SerialName("external_urls") private val externalUrlsString: Map<String, String>,
+    val href: String,
+    val uri: SpotifyUri,
+    val type: String
+) {
+    val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
+}
 
 /**
  * Information about a previously-played track
@@ -30,7 +33,7 @@ data class PlayHistoryContext(
  * @property context The context the track was played from.
  */
 @Serializable
-data class PlayHistory(
+public data class PlayHistory(
     val track: SimpleTrack,
     @SerialName("played_at") val playedAt: String,
     val context: PlayHistoryContext? = null
@@ -48,7 +51,7 @@ data class PlayHistory(
  * @property type Device type, such as “Computer”, “Smartphone” or “Speaker”.
  */
 @Serializable
-data class Device(
+public data class Device(
     override val id: String? = null,
     @SerialName("is_active") val isActive: Boolean,
     @SerialName("is_private_session") val isPrivateSession: Boolean,
@@ -57,8 +60,7 @@ data class Device(
     @SerialName("type") val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable() {
-    @Transient
-    val type: DeviceType = DeviceType.values().first { it.identifier.equals(typeString, true) }
+    val type: DeviceType get() = DeviceType.values().first { it.identifier.equals(typeString, true) }
 
     override val href: String? = null
 }
@@ -68,7 +70,7 @@ data class Device(
  *
  * @property identifier readable name
  */
-enum class DeviceType(val identifier: String) {
+public enum class DeviceType(public val identifier: String) {
     COMPUTER("Computer"),
     TABLET("Tablet"),
     SMARTPHONE("Smartphone"),
@@ -98,7 +100,7 @@ enum class DeviceType(val identifier: String) {
  *
  */
 @Serializable
-data class CurrentlyPlayingContext(
+public data class CurrentlyPlayingContext(
     val timestamp: Long,
     val device: Device,
     @SerialName("progress_ms") val progressMs: Int? = null,
@@ -108,19 +110,18 @@ data class CurrentlyPlayingContext(
     @SerialName("repeat_state") val repeatStateString: String,
     val context: Context? = null
 ) {
-    @Transient
-    val repeatState: RepeatState = RepeatState.values().match(repeatStateString)!!
+    val repeatState: RepeatState get() = RepeatState.values().match(repeatStateString)!!
 }
 
 /**
  * How and if playback is repeating
  */
-enum class RepeatState(val identifier: String) : ResultEnum {
+public enum class RepeatState(public val identifier: String) : ResultEnum {
     OFF("off"),
     TRACK("track"),
     CONTEXT("context");
 
-    override fun retrieveIdentifier() = identifier
+    override fun retrieveIdentifier(): String = identifier
 }
 
 /**
@@ -136,7 +137,7 @@ enum class RepeatState(val identifier: String) : ResultEnum {
  *
  */
 @Serializable
-data class CurrentlyPlayingObject(
+public data class CurrentlyPlayingObject(
     val context: PlayHistoryContext? = null,
     val timestamp: Long,
     @SerialName("progress_ms") val progressMs: Int? = null,
@@ -145,8 +146,7 @@ data class CurrentlyPlayingObject(
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {
-    @Transient
-    val currentlyPlayingType: CurrentlyPlayingType = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
+    val currentlyPlayingType: CurrentlyPlayingType get() = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
 }
 
 /**
@@ -156,16 +156,16 @@ data class CurrentlyPlayingObject(
  * @property disallows A list of [DisallowablePlaybackAction] that have an explicit setting
  */
 @Serializable
-data class PlaybackActions(
+public data class PlaybackActions(
     @SerialName("disallows") val disallowsString: Map<String, Boolean?>
 ) {
-    @Transient
-    val disallows: List<DisallowablePlaybackAction> = disallowsString.map {
-        DisallowablePlaybackAction(
-            PlaybackAction.values().match(it.key)!!,
-            it.value ?: false
-        )
-    }
+    val disallows: List<DisallowablePlaybackAction>
+        get() = disallowsString.map {
+            DisallowablePlaybackAction(
+                    PlaybackAction.values().match(it.key)!!,
+                    it.value ?: false
+            )
+        }
 }
 
 /**
@@ -175,12 +175,12 @@ data class PlaybackActions(
  * @property disallowed Whether the action is not allowed.
  */
 @Serializable
-data class DisallowablePlaybackAction(val action: PlaybackAction, val disallowed: Boolean)
+public data class DisallowablePlaybackAction(val action: PlaybackAction, val disallowed: Boolean)
 
 /**
  * Action a user takes that will affect current playback
  */
-enum class PlaybackAction(private val identifier: String) : ResultEnum {
+public enum class PlaybackAction(private val identifier: String) : ResultEnum {
     INTERRUPTING_PLAYBACK("interrupting_playback"),
     PAUSING("pausing"),
     PLAYING("playing"),
@@ -194,28 +194,27 @@ enum class PlaybackAction(private val identifier: String) : ResultEnum {
     TOGGLING_REPEAT_TRACK("toggling_repeat_track"),
     TRANSFERRING_PLAYBACK("transferring_playback");
 
-    override fun retrieveIdentifier() = identifier
+    override fun retrieveIdentifier(): String = identifier
 }
 
 /**
  * The object type of the currently playing item
  */
-enum class CurrentlyPlayingType(val identifier: String) : ResultEnum {
+public enum class CurrentlyPlayingType(public val identifier: String) : ResultEnum {
     TRACK("track"),
     EPISODE("episode"),
     AD("ad"),
     UNKNOWN("unknown");
 
-    override fun retrieveIdentifier() = identifier
+    override fun retrieveIdentifier(): String = identifier
 }
 
 /**
  * Puts an object in-context by linking to other related endpoints
  */
 @Serializable
-data class Context(
+public data class Context(
     @SerialName("external_urls") private val externalUrlsString: Map<String, String>
 ) {
-    @Transient
-    val externalUrls = externalUrlsString.map { ExternalUrl(it.key, it.value) }
+    val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
 }

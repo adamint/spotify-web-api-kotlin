@@ -3,7 +3,7 @@ package com.adamratzman.spotify.utils
 
 import org.w3c.files.File
 
-actual typealias File = File
+public actual typealias File = File
 
 internal actual fun convertFileToBufferedImage(file: File): BufferedImage = file
 internal actual fun convertUrlPathToBufferedImage(url: String): BufferedImage =

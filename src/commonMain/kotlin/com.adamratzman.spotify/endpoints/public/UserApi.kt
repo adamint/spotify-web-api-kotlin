@@ -2,7 +2,6 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
@@ -12,14 +11,14 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 
 @Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("UserApi"))
-typealias UserAPI = UserApi
+public typealias UserAPI = UserApi
 
 /**
  * Endpoints for retrieving information about a user’s profile.
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/)**
  */
-open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
+public open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get public profile information about a Spotify user.
      *
@@ -29,12 +28,8 @@ open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return All publicly-available information about the user
      */
-    fun getProfile(user: String): SpotifyRestAction<SpotifyPublicUser?> {
-        return toAction {
-            catch {
-                get(EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
-                        .toObject(SpotifyPublicUser.serializer(), api, json)
-            }
-        }
+    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch {
+        get(EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
+                .toObject(SpotifyPublicUser.serializer(), api, json)
     }
 }
