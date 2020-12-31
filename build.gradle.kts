@@ -31,12 +31,8 @@ buildscript {
     }
 }
 
-dependencies {
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.20")
-}
-
 group = "com.adamratzman"
-version = "3.3.0"
+version = "3.3.01"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -67,6 +63,7 @@ android {
         }
     }
     testOptions {
+        this.unitTests.isReturnDefaultValues = true
         @Suppress("UNCHECKED_CAST")
         this.unitTests.all(closureOf<Test> {
           //  this.useJUnitPlatform()
@@ -216,9 +213,7 @@ kotlin {
                 }
 
                 dependencies {
-                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.2")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    implementation("io.coil-kt:coil:1.1.0")
                 }
             }
 
@@ -226,7 +221,6 @@ kotlin {
                 dependencies {
                     implementation(kotlin("test-junit"))
                     implementation("com.sparkjava:spark-core:2.9.3")
-                    implementation("org.mockito:mockito-core:3.3.3")
                     runtimeOnly(kotlin("reflect"))
                 }
             }
@@ -279,6 +273,18 @@ signing {
 tasks {
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
+
+        dokkaSourceSets {
+            configureEach {
+                skipDeprecated.set(true)
+
+                sourceLink {
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/src").toURL())
+                    remoteLineSuffix.set("#L")
+                }
+            }
+        }
     }
 
     spotless {
