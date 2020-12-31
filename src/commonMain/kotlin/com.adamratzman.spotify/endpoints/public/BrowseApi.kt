@@ -24,6 +24,7 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
 import kotlin.reflect.KClass
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
@@ -311,14 +312,19 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  *
  * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
  *
- * @param attribute The spotify id for the track attribute
+ * @param attribute The spotify id for the track attribute.
+ * @param integerOnly Whether this attribute can only take integers.
+ * @param min The minimum value allowed for this attribute.
+ * @param max The maximum value allowed for this attribute.
+ * @param typeClass The type, a subclass of [Number], one of [Float] or [Int] that corresponds to this attribute.
  */
+@Serializable
 public sealed class TuneableTrackAttribute<T : Number>(
     public val attribute: String,
     public val integerOnly: Boolean,
     public val min: T?,
     public val max: T?,
-    private val tClazz: KClass<T>
+    public val typeClass: KClass<T>
 ) {
     /**
      * A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
@@ -429,7 +435,7 @@ public sealed class TuneableTrackAttribute<T : Number>(
         require(!(max != null && max.toDouble() < value.toDouble())) { "Attribute value for $this must be less than $max!" }
 
         @Suppress("UNCHECKED_CAST")
-        return TrackAttribute(this, when (tClazz) {
+        return TrackAttribute(this, when (typeClass) {
             Int::class -> value.toInt() as T
             Float::class -> value.toFloat() as T
             Double::class -> value.toDouble() as T
@@ -459,7 +465,11 @@ public sealed class TuneableTrackAttribute<T : Number>(
 
 /**
  * The track attribute wrapper contains a set value for a specific [TuneableTrackAttribute]
+ *
+ * @param tuneableTrackAttribute The [TuneableTrackAttribute] that this [TrackAttribute] will correspond to.
+ * @param value The value of the [tuneableTrackAttribute].
  */
+@Serializable
 public data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {
     public companion object {
         public fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T): TrackAttribute<T> =

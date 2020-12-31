@@ -24,6 +24,7 @@ import io.ktor.http.content.ByteArrayContent
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
+import kotlinx.serialization.Serializable
 
 public enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
     GET(HttpMethod.Get),
@@ -32,8 +33,10 @@ public enum class HttpRequestMethod(internal val externalMethod: HttpMethod) {
     DELETE(HttpMethod.Delete);
 }
 
+@Serializable
 public data class HttpHeader(val key: String, val value: String)
 
+@Serializable
 public data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
 /**

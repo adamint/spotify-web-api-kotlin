@@ -11,6 +11,8 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
@@ -37,8 +39,8 @@ class BrowseApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertNotSame(
-                    api.browse.getCategoryList(locale = Locale.ar_AE).items[0],
-                    api.browse.getCategoryList().items[0]
+                api.browse.getCategoryList(locale = Locale.ar_AE).items[0],
+                api.browse.getCategoryList().items[0]
             )
             assertTrue(api.browse.getCategoryList(4, 3, market = Market.CA).items.isNotEmpty())
             assertTrue(api.browse.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).items.isNotEmpty())
@@ -62,7 +64,12 @@ class BrowseApiTest {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.browse.getPlaylistsForCategory("no u", limit = 4) }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api.browse.getPlaylistsForCategory(
+                    "no u",
+                    limit = 4
+                )
+            }
             assertTrue(api.browse.getPlaylistsForCategory("pop", 10, 0, Market.FR).items.isNotEmpty())
         }
     }
@@ -73,12 +80,12 @@ class BrowseApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertTrue(
-                    api.browse.getFeaturedPlaylists(
-                            5,
-                            4,
-                            market = Market.US,
-                            timestamp = getCurrentTimeMs() - 10000000
-                    ).playlists.total > 0
+                api.browse.getFeaturedPlaylists(
+                    5,
+                    4,
+                    market = Market.US,
+                    timestamp = getCurrentTimeMs() - 10000000
+                ).playlists.total > 0
             )
             assertTrue(api.browse.getFeaturedPlaylists(offset = 32).playlists.total > 0)
         }
@@ -107,12 +114,12 @@ class BrowseApiTest {
             }
             assertTrue(api.browse.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).tracks.isNotEmpty())
             assertTrue(
-                    api.browse.getTrackRecommendations(
-                            seedArtists = listOf(
-                                    "2C2sVVXanbOpymYBMpsi89",
-                                    "7lMgpN1tEBQKpRoUMKB8iw"
-                            )
-                    ).tracks.isNotEmpty()
+                api.browse.getTrackRecommendations(
+                    seedArtists = listOf(
+                        "2C2sVVXanbOpymYBMpsi89",
+                        "7lMgpN1tEBQKpRoUMKB8iw"
+                    )
+                ).tracks.isNotEmpty()
             )
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
@@ -120,89 +127,101 @@ class BrowseApiTest {
             }
             assertTrue(api.browse.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).tracks.isNotEmpty())
             assertTrue(
-                    api.browse.getTrackRecommendations(
-                            seedTracks = listOf(
-                                    "6d9iYQG2JvTTEgcndW81lt",
-                                    "3Uyt0WO3wOopnUBCe9BaXl"
-                            )
-                    ).tracks.isNotEmpty()
+                api.browse.getTrackRecommendations(
+                    seedTracks = listOf(
+                        "6d9iYQG2JvTTEgcndW81lt",
+                        "3Uyt0WO3wOopnUBCe9BaXl"
+                    )
+                ).tracks.isNotEmpty()
             )
 
             api.browse.getTrackRecommendations(seedGenres = listOf("abc"))
             assertTrue(api.browse.getTrackRecommendations(seedGenres = listOf("pop")).tracks.isNotEmpty())
             assertTrue(
-                    api.browse.getTrackRecommendations(
-                            seedGenres = listOf(
-                                    "pop",
-                                    "latinx"
-                            )
-                    ).tracks.isNotEmpty()
+                api.browse.getTrackRecommendations(
+                    seedGenres = listOf(
+                        "pop",
+                        "latinx"
+                    )
+                ).tracks.isNotEmpty()
             )
 
             api.browse.getTrackRecommendations(
-                    seedArtists = listOf("2C2sVVXanbOpymYBMpsi89"),
-                    seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl"),
+                seedArtists = listOf("2C2sVVXanbOpymYBMpsi89"),
+                seedTracks = listOf("6d9iYQG2JvTTEgcndW81lt", "3Uyt0WO3wOopnUBCe9BaXl"),
+                seedGenres = listOf("pop")
+            )
+
+            assertFailsWithSuspend<IllegalArgumentException> {
+                api.browse.getTrackRecommendations(
+                    targetAttributes = listOf(
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(
+                            3f
+                        )
+                    )
+                )
+            }
+            assertTrue(
+                api.browse.getTrackRecommendations(
+                    targetAttributes = listOf(
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
+                        TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                    ),
                     seedGenres = listOf("pop")
+                ).tracks.isNotEmpty()
             )
 
             assertFailsWithSuspend<IllegalArgumentException> {
                 api.browse.getTrackRecommendations(
-                        targetAttributes = listOf(
-                                TuneableTrackAttribute.Acousticness.asTrackAttribute(
-                                        3f
-                                )
+                    minAttributes = listOf(
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(
+                            3f
                         )
+                    )
                 )
             }
             assertTrue(
-                    api.browse.getTrackRecommendations(
-                            targetAttributes = listOf(
-                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
-                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
-                            ),
-                            seedGenres = listOf("pop")
-                    ).tracks.isNotEmpty()
-            )
-
-            assertFailsWithSuspend<IllegalArgumentException> {
                 api.browse.getTrackRecommendations(
-                        minAttributes = listOf(
-                                TuneableTrackAttribute.Acousticness.asTrackAttribute(
-                                        3f
-                                )
-                        )
-                )
-            }
-            assertTrue(
-                    api.browse.getTrackRecommendations(
-                            minAttributes = listOf(
-                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
-                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
-                            ),
-                            seedGenres = listOf("pop")
-                    ).tracks.isNotEmpty()
+                    minAttributes = listOf(
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
+                        TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                    ),
+                    seedGenres = listOf("pop")
+                ).tracks.isNotEmpty()
             )
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getTrackRecommendations(
-                        maxAttributes = listOf(
-                                TuneableTrackAttribute.Speechiness.asTrackAttribute(
-                                        0.9f
-                                )
+                    maxAttributes = listOf(
+                        TuneableTrackAttribute.Speechiness.asTrackAttribute(
+                            0.9f
                         )
+                    )
                 )
             }
             assertTrue(
-                    api.browse.getTrackRecommendations(
-                            maxAttributes = listOf(
-                                    TuneableTrackAttribute.Acousticness.asTrackAttribute(0.9f),
-                                    TuneableTrackAttribute.Danceability.asTrackAttribute(0.9f)
-                            ),
-                            seedGenres = listOf("pop")
-                    ).tracks.isNotEmpty()
+                api.browse.getTrackRecommendations(
+                    maxAttributes = listOf(
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(0.9f),
+                        TuneableTrackAttribute.Danceability.asTrackAttribute(0.9f)
+                    ),
+                    seedGenres = listOf("pop")
+                ).tracks.isNotEmpty()
             )
 
             assertTrue(TuneableTrackAttribute.values().first().asTrackAttribute(0f).value == 0f)
         }
+    }
+
+    @Test
+    fun testTuneableTrackAttributeTypes() {
+        val float1: TuneableTrackAttribute<*> = TuneableTrackAttribute.Speechiness
+        val float2: TuneableTrackAttribute<*> = TuneableTrackAttribute.Acousticness
+        val int1: TuneableTrackAttribute<*> = TuneableTrackAttribute.Key
+        val int2: TuneableTrackAttribute<*> = TuneableTrackAttribute.Popularity
+
+        assertEquals(float1.typeClass, float2.typeClass)
+        assertEquals(int1.typeClass, int2.typeClass)
+        assertNotEquals(float1.typeClass, int1.typeClass)
     }
 }

@@ -6,6 +6,7 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Represents a Spotify Token, retrieved through instantiating a [SpotifyApi]
@@ -42,4 +43,8 @@ public data class Token(
     }
 }
 
-public data class TokenValidityResponse(val isValid: Boolean, val exception: Exception?)
+@Serializable
+public data class TokenValidityResponse(
+    val isValid: Boolean,
+    @Transient val exception: Exception? = null
+)
