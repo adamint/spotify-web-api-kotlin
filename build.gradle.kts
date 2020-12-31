@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.3.02"
+version = "3.3.03"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -64,10 +64,6 @@ android {
     }
     testOptions {
         this.unitTests.isReturnDefaultValues = true
-        @Suppress("UNCHECKED_CAST")
-        this.unitTests.all(closureOf<Test> {
-          //  this.useJUnitPlatform()
-        } as groovy.lang.Closure<Test>)
     }
     sourceSets {
         getByName("main") {
@@ -300,12 +296,10 @@ tasks {
     }
 
 
-    val publishJvm by registering(Task::class) {
+    val publishAllPublicationsToNexusRepositoryWithTests by registering(Task::class) {
         dependsOn.add(check)
-        dependsOn.add(dokkaHtml)
-        dependsOn.add("publishJvmPublicationToNexusRepository")
+        dependsOn.add("publishAllPublicationsToNexusRepository")
     }
-
 }
 
 
