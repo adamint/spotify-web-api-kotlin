@@ -31,10 +31,6 @@ buildscript {
     }
 }
 
-dependencies {
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.20")
-}
-
 group = "com.adamratzman"
 version = "3.3.01"
 
@@ -277,6 +273,18 @@ signing {
 tasks {
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
+
+        dokkaSourceSets {
+            configureEach {
+                skipDeprecated.set(true)
+
+                sourceLink {
+                    localDirectory.set(file("src"))
+                    remoteUrl.set(uri("https://github.com/adamint/spotify-web-api-kotlin/tree/master/src").toURL())
+                    remoteLineSuffix.set("#L")
+                }
+            }
+        }
     }
 
     spotless {

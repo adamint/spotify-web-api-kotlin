@@ -69,7 +69,7 @@ packagingOptions {
 ```
 
 ## Documentation
-The `spotify-web-api-kotlin` JavaDocs are hosted at https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/
+The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/).
 
 ## Have a question?
 If you have a question, you can:
@@ -97,7 +97,7 @@ By default, the SpotifyApi `Token` automatically regenerates when needed.
 This can be changed by overriding the `automaticRefresh` builder setting.
 
 There are four exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders.
+Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders.
 
 You will need:
 - Spotify application client id
@@ -165,7 +165,7 @@ This library contains helpful methods that can be used to simplify the PKCE auth
 This includes `getSpotifyPkceCodeChallenge` (not available in the Kotlin/JS target), which SHA256 hashes and base64url encodes the code 
 challenge, and `getPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
 
-Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.
+Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.
  
 **Takeaway**: Use PKCE authorization flow in applications where you cannot secure the client secret.
 
@@ -224,7 +224,7 @@ There are also several optional parameters, allowing you to set whether the auth
 for implicit grant flow, the state, and whether a re-authorization dialog should be shown to users.
 
 There are several exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders.
+Please see the [spotifyClientApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-api.html) for a full list of available builders.
 
 ##### Example: You've redirected the user back to your web server and have an authorization code (code).
 In this example, automatic token refresh is turned on by default.
@@ -275,7 +275,7 @@ Some highlights about the flow are:
 - It is client-side
 - It does not require a client secret
 
-Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders.
+Please see the [spotifyImplicitGrantApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-implicit-grant-api.html) for a full list of available builders.
  
 The Kotlin/JS target contains the `parseSpotifyCallbackHashToToken` method, which will parse the hash 
 for the current url into a Token object, with which you can then instantiate the api.
