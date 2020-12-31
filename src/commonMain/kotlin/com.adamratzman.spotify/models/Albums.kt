@@ -71,6 +71,7 @@ public data class SimpleAlbum(
     public suspend fun toFullAlbum(market: Market? = null): Album? = api.albums.getAlbum(id, market)
 }
 
+@Serializable
 public data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
 
 /**

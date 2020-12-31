@@ -14,6 +14,8 @@ import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()
@@ -225,7 +227,9 @@ public data class SpotifyRequest(
     val api: GenericSpotifyApi
 )
 
+@Serializable
 public data class CacheState(val data: String, val eTag: String?, val expireBy: Long = 0) {
+    @Transient
     private val cacheRegex = "max-age=(\\d+)".toRegex()
     internal fun isStillValid(): Boolean = getCurrentTimeMs() <= this.expireBy
 

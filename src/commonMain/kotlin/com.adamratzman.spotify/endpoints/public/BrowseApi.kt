@@ -24,6 +24,7 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
 import kotlin.reflect.KClass
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
@@ -313,6 +314,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  *
  * @param attribute The spotify id for the track attribute
  */
+@Serializable
 public sealed class TuneableTrackAttribute<T : Number>(
     public val attribute: String,
     public val integerOnly: Boolean,
@@ -460,6 +462,7 @@ public sealed class TuneableTrackAttribute<T : Number>(
 /**
  * The track attribute wrapper contains a set value for a specific [TuneableTrackAttribute]
  */
+@Serializable
 public data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {
     public companion object {
         public fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T): TrackAttribute<T> =
