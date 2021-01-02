@@ -5,7 +5,6 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyException.TimeoutException
-import com.adamratzman.spotify.base
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
@@ -19,16 +18,25 @@ import kotlinx.serialization.Transient
 
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()
-    internal val json get() = api.json
+    internal val json get() = api.spotifyApiOptions.json
+
+    internal fun endpointBuilder(path: String) = EndpointBuilder(path, api)
 
     protected fun checkBulkRequesting(maxSize: Int, itemSize: Int) {
-        if (itemSize > maxSize && !api.allowBulkRequests) {
-            throw BadRequestException("Too many items ($itemSize) provided, only $maxSize allowed", IllegalArgumentException("Bulk requests (SpotifyApi.allowBulkRequests) are not turned on, and too many items were provided"))
+        if (itemSize > maxSize && !api.spotifyApiOptions.allowBulkRequests) {
+            throw BadRequestException(
+                "Too many items ($itemSize) provided, only $maxSize allowed",
+                IllegalArgumentException("Bulk requests (Spotifyapi.spotifyApiOptions.allowBulkRequests) are not turned on, and too many items were provided")
+            )
         }
         if (itemSize == 0) throw BadRequestException("No items provided!")
     }
 
-    protected suspend fun <T, R> bulkRequest(chunkSize: Int, items: List<T>, producer: suspend (List<T>) -> R): List<R> {
+    protected suspend fun <T, R> bulkRequest(
+        chunkSize: Int,
+        items: List<T>,
+        producer: suspend (List<T>) -> R
+    ): List<R> {
         return items.chunked(chunkSize).map { chunk ->
             producer(chunk)
         }
@@ -63,7 +71,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         attemptedRefresh: Boolean = false
     ): String {
         if (api.token.shouldRefresh()) {
-            if (!api.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
+            if (!api.spotifyApiOptions.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
             else api.refreshToken()
         }
 
@@ -76,39 +84,42 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
 
         try {
-            return withTimeout(api.requestTimeoutMillis ?: 100 * 1000L) {
+            return withTimeout(api.spotifyApiOptions.requestTimeoutMillis ?: 100 * 1000L) {
                 try {
                     val document = createConnection(url, body, method, contentType).execute(
-                            cacheState?.eTag?.let {
-                                listOf(HttpHeader("If-None-Match", it))
-                            }
+                        cacheState?.eTag?.let {
+                            listOf(HttpHeader("If-None-Match", it))
+                        }
                     )
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
-                            url,
-                            body,
-                            method,
-                            false,
-                            contentType
+                        url,
+                        body,
+                        method,
+                        false,
+                        contentType
                     )
                 } catch (e: BadRequestException) {
                     if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
                         api.refreshToken()
 
                         execute(
-                                url,
-                                body,
-                                method,
-                                retry202,
-                                contentType,
-                                true
+                            url,
+                            body,
+                            method,
+                            retry202,
+                            contentType,
+                            true
                         )
                     } else throw e
                 }
             }
         } catch (e: TimeoutCancellationException) {
-            throw TimeoutException(e.message
-                    ?: "The request $spotifyRequest timed out after (${api.requestTimeoutMillis ?: 100 * 1000}ms.", e)
+            throw TimeoutException(
+                e.message
+                    ?: "The request $spotifyRequest timed out after (${api.spotifyApiOptions.requestTimeoutMillis ?: 100 * 1000}ms.",
+                e
+            )
         }
     }
 
@@ -130,7 +141,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         document.headers.find { it.key.equals("Cache-Control", true) }?.also { cacheControlHeader ->
             if (api.useCache) {
                 cache[spotifyRequest] = (cacheState ?: CacheState(
-                        responseBody, document.headers
+                    responseBody, document.headers
                         .find { it.key.equals("ETag", true) }?.value
                 )).update(cacheControlHeader.value)
             }
@@ -138,7 +149,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
 
         if (document.responseCode / 200 != 1 /* Check if status is not 2xx or 3xx */) {
             val response = try {
-                document.body.toObject(ErrorResponse.serializer(), api, json)
+                document.body.toObject(ErrorResponse.serializer(), api, api.spotifyApiOptions.json)
             } catch (e: Exception) {
                 ErrorResponse(ErrorObject(400, "malformed request sent"), e)
             }
@@ -153,17 +164,18 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         method: HttpRequestMethod = HttpRequestMethod.GET,
         contentType: String? = null
     ) = HttpConnection(
-            url,
-            method,
-            null,
-            body,
-            contentType,
-            listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
-            api
+        url,
+        method,
+        null,
+        body,
+        contentType,
+        listOf(HttpHeader("Authorization", "Bearer ${api.token.accessToken}")),
+        api
     )
 }
 
-internal class EndpointBuilder(private val path: String) {
+internal class EndpointBuilder(private val path: String, api: GenericSpotifyApi) {
+    val base = api.spotifyApiOptions.proxyBaseUrl ?: api.spotifyApiBase
     private val builder = StringBuilder(base + path)
 
     fun with(key: String, value: Any?): EndpointBuilder {
@@ -204,7 +216,7 @@ public class SpotifyCache {
         else {
             cachedRequests.entries.removeAll { !it.value.isStillValid() }
 
-            val cacheLimit = request.api.cacheLimit
+            val cacheLimit = request.api.spotifyApiOptions.cacheLimit
             val cacheUse = cachedRequests.size
 
             if (cacheLimit != null && cacheUse > cacheLimit) {
@@ -236,10 +248,10 @@ public data class CacheState(val data: String, val eTag: String?, val expireBy: 
     internal fun update(expireBy: String): CacheState {
         val group = cacheRegex.find(expireBy)?.groupValues
         val time =
-                group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
+            group?.getOrNull(1)?.toLongOrNull() ?: throw BadRequestException("Unable to match regex")
 
         return this.copy(
-                expireBy = getCurrentTimeMs() + 1000 * time
+            expireBy = getCurrentTimeMs() + 1000 * time
         )
     }
 }

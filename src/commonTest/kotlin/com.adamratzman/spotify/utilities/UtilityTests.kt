@@ -2,9 +2,9 @@
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyApiOptionsBuilder
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.runBlockingTest
@@ -105,14 +105,11 @@ class UtilityTests {
 
             assertFailsWithSuspend<IllegalStateException> {
                 spotifyClientApi(
-                        api.clientId,
-                        api.clientSecret,
-                        (api as SpotifyClientApi).redirectUri,
-                        api.token.copy(scopeString = null),
-                        SpotifyApiOptionsBuilder(
-                                requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE)
-                        )
-                ).build()
+                    api.clientId,
+                    api.clientSecret,
+                    (api as SpotifyClientApi).redirectUri,
+                    SpotifyUserAuthorization(token = api.token.copy(scopeString = null))
+                ) { requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE) }.build()
             }
         }
     }

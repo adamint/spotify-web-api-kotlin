@@ -3,6 +3,7 @@ package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.TimeoutException
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.runBlockingTest
@@ -26,15 +27,15 @@ class RestTests {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest
 
-            val testApi = spotifyAppApi(null, null, api.token).build()
-            val prevTimeout = testApi.requestTimeoutMillis
+            val testApi = spotifyAppApi(null, null, SpotifyUserAuthorization(token = api.token)).build()
+            val prevTimeout = testApi.spotifyApiOptions.requestTimeoutMillis
 
-            testApi.requestTimeoutMillis = 1
+            testApi.spotifyApiOptions.requestTimeoutMillis = 1
             assertFailsWithSuspend<TimeoutException> {
                 testApi.search.searchTrack("fail")
             }
 
-            testApi.requestTimeoutMillis = prevTimeout
+            testApi.spotifyApiOptions.requestTimeoutMillis = prevTimeout
         }
     }
 }

@@ -4,12 +4,8 @@ package com.adamratzman.spotify.endpoints.client
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.UserApi
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.adamratzman.spotify.models.serialization.toObject
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientProfileApi"))
-public typealias ClientUserAPI = ClientProfileApi
 
 /**
  * Endpoints for retrieving information about a user’s profile.
@@ -29,7 +25,7 @@ public class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
      */
     public suspend fun getClientProfile(): SpotifyUserInformation =
-            get(EndpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
+        get(endpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
 
     @Deprecated("Renamed to use `client` instead of `user`", ReplaceWith("getClientProfile"))
     public suspend fun getUserProfile(): SpotifyUserInformation = getClientProfile()

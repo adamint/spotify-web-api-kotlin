@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Album
@@ -15,9 +14,6 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("AlbumApi"))
-public typealias AlbumAPI = AlbumApi
 
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
@@ -36,13 +32,13 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return Full [Album] object if the provided id is found, otherwise null
      */
     public suspend fun getAlbum(album: String, market: Market? = null): Album? = catch {
-            get(
-                    EndpointBuilder("/albums/${AlbumUri(album).id}").with(
-                            "market",
-                            market?.name
-                    ).toString()
-            ).toObject(Album.serializer(), api, json)
-        }
+        get(
+            endpointBuilder("/albums/${AlbumUri(album).id}").with(
+                "market",
+                market?.name
+            ).toString()
+        ).toObject(Album.serializer(), api, json)
+    }
 
     /**
      * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
@@ -58,11 +54,11 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getAlbums(vararg albums: String, market: Market? = null): List<Album?> {
         checkBulkRequesting(20, albums.size)
         return bulkRequest(20, albums.toList()) { chunk ->
-                get(
-                        EndpointBuilder("/albums").with("ids", chunk.joinToString(",") { AlbumUri(it).id.encodeUrl() })
-                                .with("market", market?.name).toString()
-                ).toObject(AlbumsResponse.serializer(), api, json).albums
-            }.flatten()
+            get(
+                endpointBuilder("/albums").with("ids", chunk.joinToString(",") { AlbumUri(it).id.encodeUrl() })
+                    .with("market", market?.name).toString()
+            ).toObject(AlbumsResponse.serializer(), api, json).albums
+        }.flatten()
     }
 
     /**
@@ -80,14 +76,14 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getAlbumTracks(
         album: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleTrack> = get(
-                EndpointBuilder("/albums/${AlbumUri(album).id.encodeUrl()}/tracks").with("limit", limit).with(
-                        "offset",
-                        offset
-                ).with("market", market?.name)
-                        .toString()
-        ).toPagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
+        endpointBuilder("/albums/${AlbumUri(album).id.encodeUrl()}/tracks").with("limit", limit).with(
+            "offset",
+            offset
+        ).with("market", market?.name)
+            .toString()
+    ).toPagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
 }

@@ -79,7 +79,7 @@ class ClientPlaylistApiTest {
                     async { api.playlists.getPlaylist(globalViral50Uri)!!.tracks.getAllItemsNotNull() }
             ).awaitAll().flatten().mapNotNull { it.track?.uri?.uri }
 
-            api.allowBulkRequests = true
+            api.spotifyApiOptions.allowBulkRequests = true
 
             /*val playlistSize = { api.playlists.getClientPlaylist(createdPlaylist.id)!!.tracks.total }
             val sizeBefore = playlistSize()
@@ -88,7 +88,7 @@ class ClientPlaylistApiTest {
             api.playlists.removeTracksFromClientPlaylist(createdPlaylist.id, tracks=*tracks.toTypedArray())
             assertEquals(sizeBefore, playlistSize())*/
 
-            api.allowBulkRequests = false
+            api.spotifyApiOptions.allowBulkRequests = false
 
             tearDown()
         }

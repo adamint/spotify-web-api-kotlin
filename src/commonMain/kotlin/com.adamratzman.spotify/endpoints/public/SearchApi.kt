@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Artist
@@ -23,9 +22,6 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("SearchApi"))
-public typealias SearchAPI = SearchApi
 
 /**
  * Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
@@ -111,7 +107,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun search(
         query: String,
         vararg searchTypes: SearchType,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
         includeExternal: Boolean? = null
@@ -121,12 +117,13 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         val map = json.decodeFromString(createMapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
         return SpotifySearchResult(
-                map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
-                map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
-                map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
-                map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json),
-                map["episodes"]?.toString()?.toNullablePagingObject(SimpleEpisode.serializer(), endpoint = this, json = json),
-                map["shows"]?.toString()?.toNullablePagingObject(SimpleShow.serializer(), endpoint = this, json = json)
+            map["albums"]?.toString()?.toPagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
+            map["artists"]?.toString()?.toPagingObject(Artist.serializer(), endpoint = this, json = json),
+            map["playlists"]?.toString()?.toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
+            map["tracks"]?.toString()?.toPagingObject(Track.serializer(), endpoint = this, json = json),
+            map["episodes"]?.toString()
+                ?.toNullablePagingObject(SimpleEpisode.serializer(), endpoint = this, json = json),
+            map["shows"]?.toString()?.toNullablePagingObject(SimpleShow.serializer(), endpoint = this, json = json)
         )
     }
 
@@ -147,11 +144,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchPlaylist(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, SearchType.PLAYLIST))
-            .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
+        .toPagingObject(SimplePlaylist.serializer(), "playlists", this, json)
 
     /**
      * Get Spotify Catalog information about artists that match the keyword string. See [SearchApi.search] for more information
@@ -171,11 +168,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchArtist(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<Artist> = get(build(query, market, limit, offset, SearchType.ARTIST))
-            .toPagingObject(Artist.serializer(), "artists", this, json)
+        .toPagingObject(Artist.serializer(), "artists", this, json)
 
     /**
      * Get Spotify Catalog information about albums that match the keyword string. See [SearchApi.search] for more information
@@ -195,11 +192,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchAlbum(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, SearchType.ALBUM))
-            .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
+        .toPagingObject(SimpleAlbum.serializer(), "albums", this, json)
 
     /**
      * Get Spotify Catalog information about tracks that match the keyword string. See [SearchApi.search] for more information
@@ -219,11 +216,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchTrack(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<Track> = get(build(query, market, limit, offset, SearchType.TRACK))
-            .toPagingObject(Track.serializer(), "tracks", this, json)
+        .toPagingObject(Track.serializer(), "tracks", this, json)
 
     protected fun build(
         query: String,
@@ -233,8 +230,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         vararg types: SearchType,
         includeExternal: Boolean? = null
     ): String {
-        return EndpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
-                .with("market", market?.name).with("limit", limit).with("offset", offset)
-                .with("include_external", if (includeExternal == true) "audio" else null).toString()
+        return endpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
+            .with("market", market?.name).with("limit", limit).with("offset", offset)
+            .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }

@@ -8,7 +8,7 @@ package com.adamratzman.spotify
  * Each represents a distinct privilege and may be required by one or more endpoints as discussed
  * on the [Spotify Authorization Documentation](https://developer.spotify.com/documentation/general/guides/scopes/)
  *
- * @property uri The scope id
+ * @param uri The scope id
  */
 public enum class SpotifyScope(public val uri: String) {
     /**

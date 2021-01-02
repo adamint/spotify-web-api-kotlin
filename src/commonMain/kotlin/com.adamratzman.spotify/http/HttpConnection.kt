@@ -106,7 +106,7 @@ public class HttpConnection constructor(
 
                 if (respCode == 429) {
                     val ratelimit = response.headers["Retry-After"]!!.toLong() + 1L
-                    if (api?.retryWhenRateLimited == true) {
+                    if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
                         api.logger.logError(
                                 false,
                                 "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
@@ -120,7 +120,7 @@ public class HttpConnection constructor(
 
                 val body = response.readText()
                 if (respCode == 401 && body.contains("access token") &&
-                        api != null && api.automaticRefresh
+                        api != null && api.spotifyApiOptions.automaticRefresh
                 ) {
                     api.refreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
@@ -144,10 +144,10 @@ public class HttpConnection constructor(
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
             try {
-                val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.json ?: nonstrictJson).error
+                val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.spotifyApiOptions?.json ?: nonstrictJson).error
                 throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
             } catch (ignored: ParseException) {
-                val error = errorBody.toObject(AuthenticationError.serializer(), api, api?.json ?: nonstrictJson)
+                val error = errorBody.toObject(AuthenticationError.serializer(), api, api?.spotifyApiOptions?.json ?: nonstrictJson)
                 throw AuthenticationException(error)
             }
         }

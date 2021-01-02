@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PagingObject
@@ -20,9 +19,6 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("PlaylistApi"))
-public typealias PlaylistAPI = PlaylistApi
 
 /**
  * Endpoints for retrieving information about a user’s playlists
@@ -54,18 +50,18 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getUserPlaylists(
         user: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null
     ): PagingObject<SimplePlaylist> = get(
-            EndpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
-                    "offset", offset
-            ).toString()
+        endpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
+            "offset", offset
+        ).toString()
     ).toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
 
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
     public suspend fun getPlaylists(
         user: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null
     ): PagingObject<SimplePlaylist> = getUserPlaylists(user, limit, offset)
 
@@ -83,8 +79,8 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getPlaylist(playlist: String, market: Market? = null): Playlist? = catch {
         get(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
-                        .with("market", market?.name).toString()
+            endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
+                .with("market", market?.name).toString()
         ).toObject(Playlist.serializer(), api, json)
     }
 
@@ -104,14 +100,14 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getPlaylistTracks(
         playlist: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<PlaylistTrack> = get(
-            EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
-                    .with("offset", offset).with("market", market?.name).toString()
+        endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
+            .with("offset", offset).with("market", market?.name).toString()
     )
-            .toPagingObject(PlaylistTrack.serializer(), null, this, json)
+        .toPagingObject(PlaylistTrack.serializer(), null, this, json)
 
     /**
      * Get the current image(s) associated with a specific playlist.
@@ -126,6 +122,6 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the playlist cannot be found
      */
     public suspend fun getPlaylistCovers(playlist: String): List<SpotifyImage> =
-            get(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
-                    .toList(ListSerializer(SpotifyImage.serializer()), api, json).toList()
+        get(endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
+            .toList(ListSerializer(SpotifyImage.serializer()), api, json).toList()
 }
