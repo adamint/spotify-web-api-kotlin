@@ -14,20 +14,22 @@ class PkceTest {
     @Test
     fun testPkce() = runBlockingTest {
         if (getEnvironmentVariable("VERBOSE_TEST_ENABLED")?.toBoolean() == true &&
-                clientId != null) {
+            clientId != null
+        ) {
             val serverRedirectUri = "http://localhost:1337"
 
             val pkceCodeVerifier = (1..100).joinToString("") { "1" }
             val state = Random.nextLong().toString()
 
             println(
-                    getPkceAuthorizationUrl(
-                            *SpotifyScope.values(),
-                            clientId = clientId,
-                            redirectUri = serverRedirectUri,
-                            codeChallenge = getSpotifyPkceCodeChallenge(pkceCodeVerifier),
-                            state = state
-                    ))
+                getPkceAuthorizationUrl(
+                    *SpotifyScope.values(),
+                    clientId = clientId,
+                    redirectUri = serverRedirectUri,
+                    codeChallenge = getSpotifyPkceCodeChallenge(pkceCodeVerifier),
+                    state = state
+                )
+            )
 
             var stop = false
 
@@ -41,25 +43,28 @@ class PkceTest {
                     val actualState = request.queryParams("state")
                     if (code != null && actualState == state) {
                         val api = spotifyClientPkceApi(
-                                clientId,
-                                serverRedirectUri,
-                                code,
-                                pkceCodeVerifier,
-                                SpotifyApiOptionsBuilder(
-                                        onTokenRefresh = { println("refreshed token") },
-                                        testTokenValidity = true
-                                )
-                        ).build()
+                            clientId,
+                            serverRedirectUri,
+                            SpotifyUserAuthorization(
+                                authorizationCode = code,
+                                pkceCodeVerifier = pkceCodeVerifier
+                            )
+                        ) {
+                            onTokenRefresh = { println("refreshed token") }
+                            testTokenValidity = true
+                        }.build()
                         val token = api.token.copy(expiresIn = -1)
                         api.refreshToken()
                         // test that using same token will fail with auth exception
 
                         assertFailsWithSuspend<AuthenticationException> {
                             spotifyClientPkceApi(
-                                    clientId,
-                                    serverRedirectUri,
-                                    token,
-                                    pkceCodeVerifier
+                                clientId,
+                                serverRedirectUri,
+                                SpotifyUserAuthorization(
+                                    token = token,
+                                    pkceCodeVerifier = pkceCodeVerifier
+                                )
                             ).build().library.getSavedTracks()
                         }
 
@@ -73,7 +78,9 @@ class PkceTest {
 
             println("Waiting...")
 
-            while (!stop) { Thread.sleep(2000) }
+            while (!stop) {
+                Thread.sleep(2000)
+            }
         }
     }
 }

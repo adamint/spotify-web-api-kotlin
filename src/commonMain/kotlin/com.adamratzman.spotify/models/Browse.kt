@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 /**
  * Spotify music category
  *
- * @property href A link to the Web API endpoint returning full details of the category.
- * @property icons The category icon, in various sizes.
- * @property id The Spotify category ID of the category.
- * @property name The name of the category.
+ * @param href A link to the Web API endpoint returning full details of the category.
+ * @param icons The category icon, in various sizes.
+ * @param id The Spotify category ID of the category.
+ * @param name The name of the category.
  */
 @Serializable
 public data class SpotifyCategory(
@@ -24,14 +24,14 @@ public data class SpotifyCategory(
 /**
  * Seed from which the recommendation was constructed
  *
- * @property initialPoolSize The number of recommended tracks available for this seed.
- * @property afterFilteringSize The number of tracks available after min_* and max_* filters have been applied.
- * @property afterRelinkingSize The number of tracks available after relinking for regional availability.
- * @property href A link to the full track or artist data for this seed. For tracks this will be a link to a Track
+ * @param initialPoolSize The number of recommended tracks available for this seed.
+ * @param afterFilteringSize The number of tracks available after min_* and max_* filters have been applied.
+ * @param afterRelinkingSize The number of tracks available after relinking for regional availability.
+ * @param href A link to the full track or artist data for this seed. For tracks this will be a link to a Track
  * Object. For artists a link to an Artist Object. For genre seeds, this value will be null.
- * @property id The id used to select this seed. This will be the same as the string used in the
+ * @param id The id used to select this seed. This will be the same as the string used in the
  * seed_artists , seed_tracks or seed_genres parameter.
- * @property type The entity type of this seed. One of artist , track or genre.
+ * @param type The entity type of this seed. One of artist , track or genre.
  */
 @Serializable
 public data class RecommendationSeed(

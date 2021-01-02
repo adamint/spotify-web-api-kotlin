@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PlaylistUri
@@ -11,9 +10,6 @@ import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("FollowingApi"))
-public typealias FollowingAPI = FollowingApi
 
 /**
  * This endpoint allow you check the playlists that a Spotify user follows.
@@ -41,8 +37,8 @@ public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
 
         return bulkRequest(5, users.toList()) { chunk ->
             get(
-                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
-                            .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
+                    .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             ).toList(ListSerializer(Boolean.serializer()), api, json)
         }.flatten()
     }
@@ -60,7 +56,7 @@ public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws [BadRequestException] if the playlist is not found or if the user does not exist
      */
     public suspend fun isFollowingPlaylist(playlist: String, user: String): Boolean = areFollowingPlaylist(
-            playlist,
-            users = arrayOf(user)
+        playlist,
+        users = arrayOf(user)
     )[0]
 }

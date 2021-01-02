@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.3.03"
+version = "3.4.0"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -299,6 +299,7 @@ tasks {
     val publishAllPublicationsToNexusRepositoryWithTests by registering(Task::class) {
         dependsOn.add(check)
         dependsOn.add("publishAllPublicationsToNexusRepository")
+        dependsOn.add(dokkaHtml)
     }
 }
 

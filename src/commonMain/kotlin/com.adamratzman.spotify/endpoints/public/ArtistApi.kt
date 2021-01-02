@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Artist
@@ -19,11 +18,6 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
-public typealias ArtistsAPI = ArtistApi
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ArtistApi"))
-public typealias ArtistAPI = ArtistApi
 
 /**
  * Endpoints for retrieving information about one or more artists from the Spotify catalog.
@@ -41,10 +35,10 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [Artist] if valid artist id is provided, otherwise null
      */
     public suspend fun getArtist(artist: String): Artist? = catch {
-        get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}").toString()).toObject(
-                Artist.serializer(),
-                api,
-                json
+        get(endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}").toString()).toObject(
+            Artist.serializer(),
+            api,
+            json
         )
     }
 
@@ -62,9 +56,9 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
 
         return bulkRequest(50, artists.toList()) { chunk ->
             get(
-                    EndpointBuilder("/artists").with(
-                            "ids",
-                            chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/artists").with(
+                    "ids",
+                    chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
             ).toObject(ArtistList.serializer(), api, json).artists
         }.flatten()
     }
@@ -85,16 +79,16 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getArtistAlbums(
         artist: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
         vararg include: AlbumInclusionStrategy
     ): PagingObject<SimpleAlbum> = get(
-            EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/albums").with("limit", limit).with(
-                    "offset",
-                    offset
-            ).with("market", market?.name)
-                    .with("include_groups", include.joinToString(",") { it.keyword }).toString()
+        endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/albums").with("limit", limit).with(
+            "offset",
+            offset
+        ).with("market", market?.name)
+            .with("include_groups", include.joinToString(",") { it.keyword }).toString()
     ).toPagingObject(SimpleAlbum.serializer(), null, this, json)
 
     /**
@@ -126,10 +120,10 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of the top [Track]s of an artist in the given market
      */
     public suspend fun getArtistTopTracks(artist: String, market: Market = Market.US): List<Track> = get(
-            EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/top-tracks").with(
-                    "country",
-                    market.name
-            ).toString()
+        endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/top-tracks").with(
+            "country",
+            market.name
+        ).toString()
     ).toInnerArray(ListSerializer(Track.serializer()), "tracks", json)
 
     /**
@@ -144,6 +138,6 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of *never-null*, but possibly empty [Artist]s representing similar artists
      */
     public suspend fun getRelatedArtists(artist: String): List<Artist> =
-            get(EndpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/related-artists").toString())
-                    .toObject(ArtistList.serializer(), api, json).artists.filterNotNull()
+        get(endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/related-artists").toString())
+            .toObject(ArtistList.serializer(), api, json).artists.filterNotNull()
 }

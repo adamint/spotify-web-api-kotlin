@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Episode
@@ -38,7 +37,7 @@ public class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getEpisode(id: String, market: Market? = null): Episode? {
         return catch {
             get(
-                    EndpointBuilder("/episodes/${EpisodeUri(id).id.encodeUrl()}").with("market", market?.name).toString()
+                endpointBuilder("/episodes/${EpisodeUri(id).id.encodeUrl()}").with("market", market?.name).toString()
             ).toObject(Episode.serializer(), api, json)
         }
     }
@@ -65,8 +64,8 @@ public class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         checkBulkRequesting(50, ids.size)
         return bulkRequest(50, ids.toList()) { chunk ->
             get(
-                    EndpointBuilder("/episodes").with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })
-                            .with("market", market?.name).toString()
+                endpointBuilder("/episodes").with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })
+                    .with("market", market?.name).toString()
             ).toObject(EpisodeList.serializer(), api, json).episodes
         }.flatten()
     }

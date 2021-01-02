@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.client
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.AlbumUri
@@ -17,9 +16,6 @@ import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientLibraryApi"))
-public typealias ClientLibraryAPI = ClientLibraryApi
 
 /**
  * Endpoints for retrieving information about, and managing, tracks and albums that the current user has saved in their “Your Music” library.
@@ -42,12 +38,12 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of [SavedTrack] ordered by position in library
      */
     public suspend fun getSavedTracks(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SavedTrack> = get(
-            EndpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+        endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
+            .toString()
     ).toPagingObject(SavedTrack.serializer(), endpoint = this, json = json)
 
     /**
@@ -65,12 +61,12 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return Paging Object of [SavedAlbum] ordered by position in library
      */
     public suspend fun getSavedAlbums(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SavedAlbum> = get(
-            EndpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
-                    .toString()
+        endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
+            .toString()
     ).toPagingObject(SavedAlbum.serializer(), endpoint = this, json = json)
 
     /**
@@ -100,11 +96,14 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun contains(type: LibraryType, vararg ids: String): List<Boolean> {
-        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
+            "Too many ids (${ids.size}) provided, only 50 allowed",
+            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+        )
         return ids.toList().chunked(50).map { list ->
             get(
-                    EndpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
-                            .toString()
+                endpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
+                    .toString()
             ).toList(ListSerializer(Boolean.serializer()), api, json)
         }.flatten()
     }
@@ -136,9 +135,12 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun add(type: LibraryType, vararg ids: String) {
-        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
+            "Too many ids (${ids.size}) provided, only 50 allowed",
+            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+        )
         ids.toList().chunked(50).forEach { list ->
-            put(EndpointBuilder("/me/$type").with("ids", list.joinToString(",") { type.id(it).encodeUrl() }).toString())
+            put(endpointBuilder("/me/$type").with("ids", list.joinToString(",") { type.id(it).encodeUrl() }).toString())
         }
     }
 
@@ -173,12 +175,15 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun remove(type: LibraryType, vararg ids: String) {
-        if (ids.size > 50 && !api.allowBulkRequests) throw BadRequestException("Too many ids (${ids.size}) provided, only 50 allowed", IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided"))
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
+            "Too many ids (${ids.size}) provided, only 50 allowed",
+            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+        )
         ids.toList().chunked(50).forEach { list ->
             delete(
-                    EndpointBuilder("/me/$type").with(
-                            "ids",
-                            list.joinToString(",") { type.id(it).encodeUrl() }).toString()
+                endpointBuilder("/me/$type").with(
+                    "ids",
+                    list.joinToString(",") { type.id(it).encodeUrl() }).toString()
             )
         }
     }

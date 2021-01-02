@@ -115,15 +115,15 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
         val endpointFinal = endpoint!!
         return (if (type == FORWARDS) next else previous)?.let { endpoint!!.get(it) }?.let { json ->
             when (itemClazz) {
-                SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                Track::class -> json.toPagingObject(Track.serializer(), null, endpointFinal, endpointFinal.api.json, true)
-                PlaylistTrack::class -> json.toPagingObject(PlaylistTrack.serializer(), null, endpointFinal, endpointFinal.api.json, true)
+                SimpleTrack::class -> json.toPagingObject(SimpleTrack.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                SpotifyCategory::class -> json.toPagingObject(SpotifyCategory.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                SimpleAlbum::class -> json.toPagingObject(SimpleAlbum.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                SimplePlaylist::class -> json.toPagingObject(SimplePlaylist.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                SavedTrack::class -> json.toPagingObject(SavedTrack.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                SavedAlbum::class -> json.toPagingObject(SavedAlbum.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                Artist::class -> json.toPagingObject(Artist.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                Track::class -> json.toPagingObject(Track.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
+                PlaylistTrack::class -> json.toPagingObject(PlaylistTrack.serializer(), null, endpointFinal, endpointFinal.api.spotifyApiOptions.json, true)
                 else -> throw IllegalArgumentException("Unknown type in $href response")
             } as? Z
         }
@@ -233,13 +233,13 @@ public data class CursorBasedPagingObject<T : Any>(
                     PlayHistory.serializer(),
                     null,
                     endpoint!!,
-                    endpoint!!.api.json
+                    endpoint!!.api.spotifyApiOptions.json
             )
             Artist::class -> json.toCursorBasedPagingObject(
                     Artist.serializer(),
                     null,
                     endpoint!!,
-                    endpoint!!.api.json
+                    endpoint!!.api.spotifyApiOptions.json
             )
             else -> throw IllegalArgumentException("Unknown type in $href")
         } as? CursorBasedPagingObject<T>

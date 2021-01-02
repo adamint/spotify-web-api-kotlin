@@ -35,7 +35,7 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      */
     public suspend fun searchShow(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, SearchType.SHOW))
@@ -59,7 +59,7 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
      */
     public suspend fun searchEpisode(
         query: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, SearchType.EPISODE))

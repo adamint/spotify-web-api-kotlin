@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
@@ -32,9 +31,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientPlaylistApi"))
-public typealias ClientPlaylistAPI = ClientPlaylistApi
 
 /**
  * Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
@@ -77,8 +73,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (collaborative != null) body += buildJsonObject { put("collaborative", collaborative) }
 
         return post(
-                EndpointBuilder("/users/${UserUri(user ?: (api as SpotifyClientApi).getUserId()).id.encodeUrl()}/playlists").toString(),
-                body.toJson()
+            endpointBuilder("/users/${UserUri(user ?: (api as SpotifyClientApi).getUserId()).id.encodeUrl()}/playlists").toString(),
+            body.toJson()
         ).toObject(Playlist.serializer(), api, json)
     }
 
@@ -100,7 +96,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      */
 
     public suspend fun addTrackToClientPlaylist(playlist: String, track: String, position: Int? = null): Unit =
-            addTracksToClientPlaylist(playlist, track, position = position)
+        addTracksToClientPlaylist(playlist, track, position = position)
 
     /**
      * Add one or more tracks to a user’s playlist.
@@ -123,11 +119,16 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
 
         bulkRequest(100, tracks.toList()) { chunk ->
             val body = jsonMap()
-            body += buildJsonObject { put("uris", JsonArray(chunk.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))) }
+            body += buildJsonObject {
+                put(
+                    "uris",
+                    JsonArray(chunk.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))
+                )
+            }
             if (position != null) body += buildJsonObject { put("position", position) }
             post(
-                    EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-                    body.toJson()
+                endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
+                body.toJson()
             )
         }
     }
@@ -161,7 +162,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (collaborative != null) body += buildJsonObject { put("collaborative", collaborative) }
         if (description != null) body += buildJsonObject { put("description", description) }
         require(body.isNotEmpty()) { "At least one option must not be null" }
-        put(EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
+        put(endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
     }
 
     /**
@@ -181,13 +182,13 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @throws BadRequestException if the filters provided are illegal
      */
     public suspend fun getClientPlaylists(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null
     ): PagingObject<SimplePlaylist> {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
         require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
-        return get(EndpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-                .toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
+        return get(endpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
+            .toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
     }
 
     /**
@@ -217,7 +218,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @param playlist playlist id
      */
-    public suspend fun deleteClientPlaylist(playlist: String): String = (api as SpotifyClientApi).following.unfollowPlaylist(PlaylistUri(playlist).id)
+    public suspend fun deleteClientPlaylist(playlist: String): String =
+        (api as SpotifyClientApi).following.unfollowPlaylist(PlaylistUri(playlist).id)
 
     /**
      * Reorder a track or a group of tracks in a playlist.
@@ -255,8 +257,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
 
         return put(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-                body.toJson()
+            endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
+            body.toJson()
         ).toObject(PlaylistSnapshot.serializer(), api, json)
     }
 
@@ -276,10 +278,15 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      */
     public suspend fun setClientPlaylistTracks(playlist: String, vararg tracks: String) {
         val body = jsonMap()
-        body += buildJsonObject { put("uris", JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))) }
+        body += buildJsonObject {
+            put(
+                "uris",
+                JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))
+            )
+        }
         put(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-                body.toJson()
+            endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
+            body.toJson()
         )
     }
 
@@ -297,7 +304,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      *
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
-    public suspend fun replaceClientPlaylistTracks(playlist: String, vararg tracks: String): Unit = setClientPlaylistTracks(playlist, *tracks)
+    public suspend fun replaceClientPlaylistTracks(playlist: String, vararg tracks: String): Unit =
+        setClientPlaylistTracks(playlist, *tracks)
 
     /**
      * Remove all the tracks in a playlist
@@ -348,8 +356,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
             else -> throw IllegalArgumentException("No cover image was specified")
         }
         put(
-                EndpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString(),
-                data, contentType = "image/jpeg"
+            endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString(),
+            data, contentType = "image/jpeg"
         )
     }
 
@@ -436,25 +444,29 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (snapshotId != null && tracks.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 
         return bulkRequest(100, tracks.toList()) { chunk ->
-                val body = jsonMap()
-                if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
-                body += buildJsonObject {
-                    put("tracks", JsonArray(
-                            chunk.map { (track, positions) ->
-                                val json = jsonMap()
-                                json += buildJsonObject { put("uri", PlayableUri(track).uri) }
-                                if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
-                                    put("positions", JsonArray(
-                                            positions.positions.map(::JsonPrimitive)
-                                    ))
-                                }
-                                JsonObject(json)
-                            }))
-                }
-                delete(
-                        EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
-                ).toObject(PlaylistSnapshot.serializer(), api, json)
-            }.last()
+            val body = jsonMap()
+            if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
+            body += buildJsonObject {
+                put(
+                    "tracks", JsonArray(
+                        chunk.map { (track, positions) ->
+                            val json = jsonMap()
+                            json += buildJsonObject { put("uri", PlayableUri(track).uri) }
+                            if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
+                                put(
+                                    "positions", JsonArray(
+                                        positions.positions.map(::JsonPrimitive)
+                                    )
+                                )
+                            }
+                            JsonObject(json)
+                        })
+                )
+            }
+            delete(
+                endpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
+            ).toObject(PlaylistSnapshot.serializer(), api, json)
+        }.last()
     }
 }
 

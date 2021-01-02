@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.FollowingApi
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistUri
@@ -17,9 +16,6 @@ import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toList
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
-
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("ClientFollowingApi"))
-public typealias ClientFollowingAPI = ClientFollowingApi
 
 /**
  * These endpoints allow you manage the artists, users and playlists that a Spotify user follows.
@@ -57,10 +53,10 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return Whether the current user is following [playlistId]
      */
     public suspend fun isFollowingPlaylist(playlistId: String): Boolean =
-            isFollowingPlaylist(
-                    playlistId,
-                    (api as SpotifyClientApi).getUserId()
-            )
+        isFollowingPlaylist(
+            playlistId,
+            (api as SpotifyClientApi).getUserId()
+        )
 
     /**
      * Check to see if the current user is following one or more other Spotify users.
@@ -78,8 +74,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, users.size)
         return bulkRequest(50, users.toList()) { chunk ->
             get(
-                    EndpointBuilder("/me/following/contains").with("type", "user")
-                            .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following/contains").with("type", "user")
+                    .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             ).toList(ListSerializer(Boolean.serializer()), api, json)
         }.flatten()
     }
@@ -114,8 +110,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, artists.size)
         return bulkRequest(50, artists.toList()) { chunk ->
             get(
-                    EndpointBuilder("/me/following/contains").with("type", "artist")
-                            .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following/contains").with("type", "artist")
+                    .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
             ).toList(ListSerializer(Boolean.serializer()), api, json)
         }.flatten()
     }
@@ -134,13 +130,13 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * with full [Artist] objects
      */
     public suspend fun getFollowedArtists(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         after: String? = null
     ): CursorBasedPagingObject<Artist> = get(
-            EndpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
-                    "after",
-                    after
-            ).toString()
+        endpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
+            "after",
+            after
+        ).toString()
     ).toCursorBasedPagingObject(Artist.serializer(), "artists", this, json)
 
     /**
@@ -169,8 +165,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, users.size)
         bulkRequest(50, users.toList()) { chunk ->
             put(
-                    EndpointBuilder("/me/following").with("type", "user")
-                            .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following").with("type", "user")
+                    .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             )
         }
     }
@@ -201,8 +197,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, artists.size)
         bulkRequest(50, artists.toList()) { chunk ->
             put(
-                    EndpointBuilder("/me/following").with("type", "artist")
-                            .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following").with("type", "artist")
+                    .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
             )
         }
     }
@@ -227,8 +223,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if the playlist is not found
      */
     public suspend fun followPlaylist(playlist: String, followPublicly: Boolean = true): String = put(
-            EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
-            "{\"public\": $followPublicly}"
+        endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
+        "{\"public\": $followPublicly}"
     )
 
     /**
@@ -259,8 +255,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, users.size)
         bulkRequest(50, users.toList()) { list ->
             delete(
-                    EndpointBuilder("/me/following").with("type", "user")
-                            .with("ids", list.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following").with("type", "user")
+                    .with("ids", list.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
             )
         }
     }
@@ -294,8 +290,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         checkBulkRequesting(50, artists.size)
         bulkRequest(50, artists.toList()) { list ->
             delete(
-                    EndpointBuilder("/me/following").with("type", "artist")
-                            .with("ids", list.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                endpointBuilder("/me/following").with("type", "artist")
+                    .with("ids", list.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
             )
         }
     }
@@ -315,5 +311,6 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    public suspend fun unfollowPlaylist(playlist: String): String = delete(EndpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString())
+    public suspend fun unfollowPlaylist(playlist: String): String =
+        delete(endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString())
 }

@@ -3,7 +3,6 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ArtistUri
@@ -28,9 +27,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
-@Deprecated("Endpoint name has been updated for kotlin convention consistency", ReplaceWith("BrowseApi"))
-public typealias BrowseAPI = BrowseApi
-
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
  *
@@ -45,11 +41,11 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of genre ids
      */
     public suspend fun getAvailableGenreSeeds(): List<String> =
-            get(EndpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
-                    ListSerializer(String.serializer()),
-                    "genres",
-                    json
-            )
+        get(endpointBuilder("/recommendations/available-genre-seeds").toString()).toInnerArray(
+            ListSerializer(String.serializer()),
+            "genres",
+            json
+        )
 
     /**
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
@@ -65,14 +61,14 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [PagingObject] of new album released, ordered by release date (descending)
      */
     public suspend fun getNewReleases(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleAlbum> = get(
-            EndpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
-                    "country",
-                    market?.name
-            ).toString()
+        endpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
+            "country",
+            market?.name
+        ).toString()
     ).toPagingObject(SimpleAlbum.serializer(), "albums", endpoint = this, json = json)
 
     /**
@@ -96,18 +92,18 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [FeaturedPlaylists] object with the current featured message and featured playlists
      */
     public suspend fun getFeaturedPlaylists(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null,
         timestamp: Long? = null
     ): FeaturedPlaylists = get(
-            EndpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
-                    "market",
-                    market?.name
-            ).with("locale", locale).with("timestamp", timestamp?.let {
-                formatDate("yyyy-MM-dd'T'HH:mm:ss", it)
-            }).toString()
+        endpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
+            "market",
+            market?.name
+        ).with("locale", locale).with("timestamp", timestamp?.let {
+            formatDate("yyyy-MM-dd'T'HH:mm:ss", it)
+        }).toString()
     ).toObject(FeaturedPlaylists.serializer(), api, json)
 
     /**
@@ -128,15 +124,15 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
      */
     public suspend fun getCategoryList(
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         locale: Locale? = null,
         market: Market? = null
     ): PagingObject<SpotifyCategory> = get(
-            EndpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
-                    "market",
-                    market?.name
-            ).with("locale", locale).toString()
+        endpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
+            "market",
+            market?.name
+        ).with("locale", locale).toString()
     ).toPagingObject(SpotifyCategory.serializer(), "categories", endpoint = this, json = json)
 
     /**
@@ -159,8 +155,8 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market? = null,
         locale: Locale? = null
     ): SpotifyCategory = get(
-            EndpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
-                    .with("locale", locale).toString()
+        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
+            .with("locale", locale).toString()
     ).toObject(SpotifyCategory.serializer(), api, json)
 
     /**
@@ -178,15 +174,15 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getPlaylistsForCategory(
         categoryId: String,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimplePlaylist> = get(
-            EndpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists").with(
-                    "limit",
-                    limit
-            ).with("offset", offset)
-                    .with("market", market?.name).toString()
+        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists").with(
+            "limit",
+            limit
+        ).with("offset", offset)
+            .with("market", market?.name).toString()
     ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this, json = json)
 
     /**
@@ -226,22 +222,22 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         market: Market? = null,
         targetAttributes: List<TrackAttribute<*>> = listOf(),
         minAttributes: List<TrackAttribute<*>> = listOf(),
         maxAttributes: List<TrackAttribute<*>> = listOf()
     ): RecommendationResponse =
-            getRecommendations(
-                    seedArtists,
-                    seedGenres,
-                    seedTracks,
-                    limit,
-                    market,
-                    targetAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
-                    minAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
-                    maxAttributes.map { it.tuneableTrackAttribute to it.value }.toMap()
-            )
+        getRecommendations(
+            seedArtists,
+            seedGenres,
+            seedTracks,
+            limit,
+            market,
+            targetAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
+            minAttributes.map { it.tuneableTrackAttribute to it.value }.toMap(),
+            maxAttributes.map { it.tuneableTrackAttribute to it.value }.toMap()
+        )
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -281,7 +277,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
         seedTracks: List<String>? = null,
-        limit: Int? = api.defaultLimit,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
         market: Market? = null,
         targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
         minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
@@ -289,17 +285,17 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): RecommendationResponse {
         if (seedArtists?.isEmpty() != false && seedGenres?.isEmpty() != false && seedTracks?.isEmpty() != false) {
             throw BadRequestException(
-                    ErrorObject(
-                            400,
-                            "At least one seed (genre, artist, track) must be provided."
-                    )
+                ErrorObject(
+                    400,
+                    "At least one seed (genre, artist, track) must be provided."
+                )
             )
         }
 
-        val builder = EndpointBuilder("/recommendations").with("limit", limit).with("market", market?.name)
-                .with("seed_artists", seedArtists?.joinToString(",") { ArtistUri(it).id.encodeUrl() })
-                .with("seed_genres", seedGenres?.joinToString(",") { it.encodeUrl() })
-                .with("seed_tracks", seedTracks?.joinToString(",") { PlayableUri(it).id.encodeUrl() })
+        val builder = endpointBuilder("/recommendations").with("limit", limit).with("market", market?.name)
+            .with("seed_artists", seedArtists?.joinToString(",") { ArtistUri(it).id.encodeUrl() })
+            .with("seed_genres", seedGenres?.joinToString(",") { it.encodeUrl() })
+            .with("seed_tracks", seedTracks?.joinToString(",") { PlayableUri(it).id.encodeUrl() })
         targetAttributes.forEach { (attribute, value) -> builder.with("target_$attribute", value) }
         minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
         maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
@@ -435,30 +431,32 @@ public sealed class TuneableTrackAttribute<T : Number>(
         require(!(max != null && max.toDouble() < value.toDouble())) { "Attribute value for $this must be less than $max!" }
 
         @Suppress("UNCHECKED_CAST")
-        return TrackAttribute(this, when (typeClass) {
-            Int::class -> value.toInt() as T
-            Float::class -> value.toFloat() as T
-            Double::class -> value.toDouble() as T
-            else -> value.toDouble() as T
-        })
+        return TrackAttribute(
+            this, when (typeClass) {
+                Int::class -> value.toInt() as T
+                Float::class -> value.toFloat() as T
+                Double::class -> value.toDouble() as T
+                else -> value.toDouble() as T
+            }
+        )
     }
 
     public companion object {
         public fun values(): List<TuneableTrackAttribute<*>> = listOf(
-                Acousticness,
-                Danceability,
-                DurationInMilliseconds,
-                Energy,
-                Instrumentalness,
-                Key,
-                Liveness,
-                Loudness,
-                Mode,
-                Popularity,
-                Speechiness,
-                Tempo,
-                TimeSignature,
-                Valence
+            Acousticness,
+            Danceability,
+            DurationInMilliseconds,
+            Energy,
+            Instrumentalness,
+            Key,
+            Liveness,
+            Loudness,
+            Mode,
+            Popularity,
+            Speechiness,
+            Tempo,
+            TimeSignature,
+            Valence
         )
     }
 }
@@ -473,6 +471,6 @@ public sealed class TuneableTrackAttribute<T : Number>(
 public data class TrackAttribute<T : Number>(val tuneableTrackAttribute: TuneableTrackAttribute<T>, val value: T) {
     public companion object {
         public fun <T : Number> create(tuneableTrackAttribute: TuneableTrackAttribute<T>, value: T): TrackAttribute<T> =
-                tuneableTrackAttribute.asTrackAttribute(value)
+            tuneableTrackAttribute.asTrackAttribute(value)
     }
 }

@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.http.EndpointBuilder
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PagingObject
@@ -42,7 +41,7 @@ public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getShow(id: String, market: Market? = null): Show? {
         return catch {
             get(
-                    EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
+                endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market?.name).toString()
             ).toObject(Show.serializer(), api, json)
         }
     }
@@ -69,8 +68,8 @@ public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         checkBulkRequesting(50, ids.size)
         return bulkRequest(50, ids.toList()) { chunk ->
             get(
-                    EndpointBuilder("/shows").with("ids", chunk.joinToString(",") { ShowUri(it).id.encodeUrl() })
-                            .with("market", market?.name).toString()
+                endpointBuilder("/shows").with("ids", chunk.joinToString(",") { ShowUri(it).id.encodeUrl() })
+                    .with("market", market?.name).toString()
             ).toObject(ShowList.serializer(), api, json).shows
         }.flatten()
     }
@@ -98,8 +97,8 @@ public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleEpisode> = get(
-            EndpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
-                    .with("offset", offset).with("market", market?.name).toString()
+        endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
+            .with("offset", offset).with("market", market?.name).toString()
     )
-            .toPagingObject(SimpleEpisode.serializer(), null, this, json)
+        .toPagingObject(SimpleEpisode.serializer(), null, this, json)
 }
