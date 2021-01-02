@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.4.0"
+version = "3.4.01"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -286,7 +286,7 @@ tasks {
     spotless {
         kotlin {
             target("**/*.kt")
-            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */")
+            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */")
             ktlint()
         }
     }

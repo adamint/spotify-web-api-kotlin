@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyApi
@@ -11,12 +11,13 @@ import kotlinx.serialization.Transient
 /**
  * Represents a Spotify Token, retrieved through instantiating a [SpotifyApi]
  *
- * @property accessToken An access token that can be provided in subsequent calls,
+ * @param accessToken An access token that can be provided in subsequent calls,
  * for example to Spotify Web API services.
- * @property tokenType How the access token may be used: always “Bearer”.
- * @property expiresIn The time period (in seconds) for which the access token is valid.
- * @property refreshToken A token that can be sent to the Spotify Accounts service in place of an authorization code,
+ * @param tokenType How the access token may be used: always “Bearer”.
+ * @param expiresIn The time period (in seconds) for which the access token is valid.
+ * @param refreshToken A token that can be sent to the Spotify Accounts service in place of an authorization code,
  * null if the token was created using a method that does not support token refresh
+ *
  * @property scopes A list of scopes granted access for this [accessToken]. An
  * empty list means that the token can only be used to access public information.
  * @property expiresAt The time, in milliseconds, at which this Token expires

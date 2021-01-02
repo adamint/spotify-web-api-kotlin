@@ -1,10 +1,10 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyApi
+import com.adamratzman.spotify.SpotifyApiOptions
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.getExternalUrls
 import kotlinx.serialization.SerialName
@@ -56,6 +56,10 @@ public abstract class CoreObject : Identifiable() {
 public abstract class RelinkingAvailableResponse : CoreObject() {
     @SerialName("linked_from")
     public abstract val linkedTrack: LinkedTrack?
+
+    /**
+     * Check if this response has been relinked.
+     */
     public fun isRelinked(): Boolean = linkedTrack != null
 }
 
@@ -68,11 +72,11 @@ public class ExternalUrl(public val name: String, public val url: String)
 /**
  * An external id linked to the result object
  *
- * @property key The identifier type, for example:
+ * @param key The identifier type, for example:
 - "isrc" - International Standard Recording Code
 - "ean" - International Article Number
 - "upc" - Universal Product Code
- * @property id An external identifier for the object.
+ * @param id An external identifier for the object.
  */
 public class ExternalId(public val key: String, public val id: String)
 
@@ -97,8 +101,8 @@ public interface ResultEnum {
 /**
  * Wraps around [ErrorObject]. Serialized raw Spotify error response
  *
- * @property error The error code and message, as returned by Spotify
- * @property exception The associated Kotlin exception for this error
+ * @param error The error code and message, as returned by Spotify
+ * @param exception The associated Kotlin exception for this error
  */
 @Serializable
 public data class ErrorResponse(val error: ErrorObject, @Transient val exception: Exception? = null)
@@ -106,8 +110,8 @@ public data class ErrorResponse(val error: ErrorObject, @Transient val exception
 /**
  * An endpoint exception from Spotify
  *
- * @property status The HTTP status code
- * @property message A short description of the cause of the error.
+ * @param status The HTTP status code
+ * @param message A short description of the cause of the error.
  */
 @Serializable
 public data class ErrorObject(val status: Int, val message: String, val reason: String? = null)
@@ -115,8 +119,8 @@ public data class ErrorObject(val status: Int, val message: String, val reason: 
 /**
  * An exception during the authentication process
  *
- * @property error Short error message
- * @property description More detailed description of the error
+ * @param error Short error message
+ * @param description More detailed description of the error
  */
 @Serializable
 public data class AuthenticationError(
@@ -125,12 +129,9 @@ public data class AuthenticationError(
 )
 
 /**
- * Thrown when [SpotifyApi.retryWhenRateLimited] is false and requests have been ratelimited
+ * Thrown when [SpotifyApiOptions.retryWhenRateLimited] is false and requests have been ratelimited
  *
  * @param time the time, in seconds, until the next request can be sent
  */
 public class SpotifyRatelimitedException(time: Long) :
-        SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
-
-@Deprecated("Country enum has been updated to preserve consistency with Spotify documentation", ReplaceWith("Market"))
-public typealias CountryCode = Market
+    SpotifyException.UnNullableException("Calls to the Spotify API have been ratelimited for $time seconds until ${getCurrentTimeMs() + time * 1000}ms")
