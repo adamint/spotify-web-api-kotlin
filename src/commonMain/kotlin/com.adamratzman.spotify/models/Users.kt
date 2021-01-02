@@ -8,20 +8,20 @@ import kotlinx.serialization.Serializable
 /**
  * Private information about a Spotify user. Each field may require a specific scope.
  *
- * @property country The country of the user, as set in the user’s account profile. An ISO 3166-1 alpha-2
+ * @param country The country of the user, as set in the user’s account profile. An ISO 3166-1 alpha-2
  * country code. This field is only available when the current user has granted access to the [SpotifyScope.USER_READ_PRIVATE] scope.
- * @property displayName The name displayed on the user’s profile. null if not available.
- * @property email The user’s email address, as entered by the user when creating their account. Important! This email
+ * @param displayName The name displayed on the user’s profile. null if not available.
+ * @param email The user’s email address, as entered by the user when creating their account. Important! This email
  * address is unverified; there is no proof that it actually belongs to the user. This field is only
  * available when the current user has granted access to the [SpotifyScope.USER_READ_EMAIL] scope.
- * @property followers Information about the followers of the user.
- * @property href A link to the Web API endpoint for this user.
- * @property id The Spotify user ID for the user
- * @property images The user’s profile image.
- * @property product The user’s Spotify subscription level: “premium”, “free”, etc.
+ * @param followers Information about the followers of the user.
+ * @param href A link to the Web API endpoint for this user.
+ * @param id The Spotify user ID for the user
+ * @param images The user’s profile image.
+ * @param product The user’s Spotify subscription level: “premium”, “free”, etc.
  * (The subscription level “open” can be considered the same as “free”.) This field is only available when the
  * current user has granted access to the [SpotifyScope.USER_READ_PRIVATE] scope.
- * @property type The object type: “user”
+ * @param type The object type: “user”
  */
 @Serializable
 public data class SpotifyUserInformation(
@@ -43,12 +43,12 @@ public data class SpotifyUserInformation(
 /**
  * Public information about a Spotify user
  *
- * @property displayName The name displayed on the user’s profile. null if not available.
- * @property followers Information about the followers of this user.
- * @property href A link to the Web API endpoint for this user.
- * @property id The Spotify user ID for this user.
- * @property images The user’s profile image.
- * @property type The object type: “user”
+ * @param displayName The name displayed on the user’s profile. null if not available.
+ * @param followers Information about the followers of this user.
+ * @param href A link to the Web API endpoint for this user.
+ * @param id The Spotify user ID for this user.
+ * @param images The user’s profile image.
+ * @param type The object type: “user”
  */
 @Serializable
 public data class SpotifyPublicUser(
@@ -66,10 +66,10 @@ public data class SpotifyPublicUser(
 /**
  * Information about a Spotify user's followers
  *
- * @property href Will always be null, per the Spotify documentation,
+ * @param href Will always be null, per the Spotify documentation,
  * until the Web API is updated to support this.
  *
- * @property total -1 if the user object does not contain followers, otherwise the amount of followers the user has
+ * @param total -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 @Serializable
 public data class Followers(

@@ -500,8 +500,8 @@ public enum class AuthorizationType {
 /**
  * Spotify Api builder interface
  *
- * @property T The type of [SpotifyApi] to be built
- * @property B The associated Api builder for [T]
+ * @param T The type of [SpotifyApi] to be built
+ * @param B The associated Api builder for [T]
  */
 public interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>> {
     /**
@@ -811,14 +811,14 @@ public class SpotifyCredentials {
 /**
  * User-defined authorization parameters
  *
- * @property authorizationCode Only available when building [SpotifyClientApi]. Spotify auth code
- * @property token Build the API using an existing token. If you're building [SpotifyClientApi], this
+ * @param authorizationCode Only available when building [SpotifyClientApi]. Spotify auth code
+ * @param token Build the API using an existing token. If you're building [SpotifyClientApi], this
  * will be your **access** token. If you're building [SpotifyApi], it will be your **refresh** token
- * @property tokenString Build the API using an existing token (string). If you're building [SpotifyClientApi], this
+ * @param tokenString Build the API using an existing token (string). If you're building [SpotifyClientApi], this
  * will be your **access** token. If you're building [SpotifyApi], it will be your **refresh** token. There is a *very*
  * limited time constraint on these before the API automatically refreshes them
- * @property refreshTokenString Refresh token, given as a string, to be exchanged to Spotify for a new token
- * @property pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
+ * @param refreshTokenString Refresh token, given as a string, to be exchanged to Spotify for a new token
+ * @param pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
  */
 public class SpotifyUserAuthorization(
     public var authorizationCode: String? = null,

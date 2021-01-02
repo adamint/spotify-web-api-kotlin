@@ -48,6 +48,8 @@ private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSe
 /**
  * Represents a Spotify URI, parsed from either a Spotify ID or taken from an endpoint.
  *
+ * @param type The type (per Spotify) corresponding to the Uri.
+ *
  * @property uri retrieve this URI as a string
  * @property id representation of this uri as an id
  */
@@ -204,11 +206,6 @@ public sealed class PlayableUri(input: String, type: String, allowColon: Boolean
     }
 }
 
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlayableUri"))
-public typealias TrackURI = PlayableUri
-@Deprecated("renamed", ReplaceWith("PlayableUri", "com.adamratzman.com.adamratzman.spotify.models.PlayableUri"))
-public typealias TrackUri = PlayableUri
-
 /**
  * Represents a Spotify **Album** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
@@ -224,9 +221,6 @@ public class ShowUri(input: String) : ImmutableCollectionUri(input, "show") {
     public companion object : KSerializer<ShowUri> by SimpleUriSerializer(::ShowUri)
 }
 
-@Deprecated("renamed", ReplaceWith("AlbumUri", "com.adamratzman.com.adamratzman.spotify.models.AlbumUri"))
-public typealias AlbumURI = AlbumUri
-
 /**
  * Represents a Spotify **Artist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
@@ -235,9 +229,6 @@ public class ArtistUri(input: String) : SpotifyUri(input, "artist") {
     @Serializer(forClass = ArtistUri::class)
     public companion object : KSerializer<ArtistUri> by SimpleUriSerializer(::ArtistUri)
 }
-
-@Deprecated("renamed", ReplaceWith("ArtistUri", "com.adamratzman.com.adamratzman.spotify.models.ArtistUri"))
-public typealias ArtistURI = ArtistUri
 
 /**
  * Represents a Spotify **User** URI, parsed from either a Spotify ID or taken from an endpoint.
@@ -248,9 +239,6 @@ public class UserUri(input: String) : SpotifyUri(input, "user") {
     public companion object : KSerializer<UserUri> by SimpleUriSerializer(::UserUri)
 }
 
-@Deprecated("renamed", ReplaceWith("UserUri", "com.adamratzman.com.adamratzman.spotify.models.UserUri"))
-public typealias UserURI = UserUri
-
 /**
  * Represents a Spotify **Playlist** URI, parsed from either a Spotify ID or taken from an endpoint.
  */
@@ -259,9 +247,6 @@ public class PlaylistUri(input: String) : CollectionUri(input, "playlist") {
     @Serializer(forClass = PlaylistUri::class)
     public companion object : KSerializer<PlaylistUri> by SimpleUriSerializer(::PlaylistUri)
 }
-
-@Deprecated("renamed", ReplaceWith("PlaylistUri", "com.adamratzman.com.adamratzman.spotify.models.PlaylistUri"))
-public typealias PlaylistURI = PlaylistUri
 
 /**
  * Represents a Spotify **Track** URI, parsed from either a Spotify ID or taken from an endpoint.
@@ -280,9 +265,6 @@ public class LocalTrackUri(input: String) : PlayableUri(input, "local", allowCol
     @Serializer(forClass = LocalTrackUri::class)
     public companion object : KSerializer<LocalTrackUri> by SimpleUriSerializer(::LocalTrackUri)
 }
-
-@Deprecated("renamed", ReplaceWith("LocalTrackUri", "com.adamratzman.com.adamratzman.spotify.models.LocalTrackUri"))
-public typealias LocalTrackURI = LocalTrackUri
 
 @Serializable
 public class EpisodeUri(input: String) : PlayableUri(input, "episode") {

@@ -8,8 +8,8 @@ import kotlinx.serialization.Serializable
 /**
  * Local artist object (goes with [LocalTrack]) representing an artist on a local track
  *
- * @property name The name of the artist
- * @property type The object type: "artist"
+ * @param name The name of the artist
+ * @param type The object type: "artist"
  */
 @Serializable
 public data class SimpleLocalArtist(
@@ -20,13 +20,13 @@ public data class SimpleLocalArtist(
 /**
  * Local album object that goes with [LocalTrack] - represents the local album it was obtained from (likely "Local Files")
  *
- * @property artists The artists of the album.
- * @property name The name of the album. In case of an album takedown, the value may be an empty string.
- * @property type The object type: “album”
- * @property releaseDate The date the album was first released, for example 1981. Depending on the precision,
+ * @param artists The artists of the album.
+ * @param name The name of the album. In case of an album takedown, the value may be an empty string.
+ * @param type The object type: “album”
+ * @param releaseDate The date the album was first released, for example 1981. Depending on the precision,
  * it might be shown as 1981-12 or 1981-12-15.
- * @property releaseDatePrecision The precision with which release_date value is known: year , month , or day.
- * @property albumType The type of the album: one of “album”, “single”, or “compilation”.
+ * @param releaseDatePrecision The precision with which release_date value is known: year , month , or day.
+ * @param albumType The type of the album: one of “album”, “single”, or “compilation”.
  */
 @Serializable
 public data class SimpleLocalAlbum(
@@ -41,18 +41,18 @@ public data class SimpleLocalAlbum(
 /**
  * Local track object that representing a song uploaded from a client locally
  *
- * @property artists The artists who performed the track.
- * @property discNumber The disc number.
- * @property durationMs The track length in milliseconds.
- * @property explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
- * @property href A link to the Web API endpoint providing full details of the track.
- * @property id The Spotify ID for the track.
- * @property name The name of the track.
- * @property trackNumber The number of the track. If an album has several discs, the track number
+ * @param artists The artists who performed the track.
+ * @param discNumber The disc number.
+ * @param durationMs The track length in milliseconds.
+ * @param explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
+ * @param href A link to the Web API endpoint providing full details of the track.
+ * @param id The Spotify ID for the track.
+ * @param name The name of the track.
+ * @param trackNumber The number of the track. If an album has several discs, the track number
  * is the number on the specified disc.
- * @property type The object type: “track”.
- * @property isLocal Whether or not the track is from a local file.
- * @property popularity the popularity of this track. possibly null
+ * @param type The object type: “track”.
+ * @param isLocal Whether or not the track is from a local file.
+ * @param popularity the popularity of this track. possibly null
  */
 @Serializable
 public data class LocalTrack(

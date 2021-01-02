@@ -43,17 +43,16 @@ import kotlinx.serialization.json.Json
  * functionality and information between the [SpotifyClientApi] and [SpotifyAppApi]
  * implementations of the API
  *
- * @property clientId The application client id found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
- * @property clientSecret The application client secret found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
- * @property token The access token associated with this API instance
+ * @param clientId The application client id found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
+ * @param clientSecret The application client secret found on the application [dashboard](https://developer.spotify.com/dashboard/applications)
+ * @param token The access token associated with this API instance
+ * @param spotifyApiOptions Configurable Spotify API options.
  *
  * @property search Provides access to the Spotify [search endpoint](https://developer.spotify.com/documentation/web-api/reference/search/search/)
  * @property albums Provides access to Spotify [album endpoints](https://developer.spotify.com/documentation/web-api/reference/albums/)
  * @property browse Provides access to Spotify [browse endpoints](https://developer.spotify.com/documentation/web-api/reference/browse/)
  * @property artists Provides access to Spotify [artist endpoints](https://developer.spotify.com/documentation/web-api/reference/artists/)
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
- *
- * @property spotifyApiOptions Configurable Spotify API options.
  */
 public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     public val clientId: String?,

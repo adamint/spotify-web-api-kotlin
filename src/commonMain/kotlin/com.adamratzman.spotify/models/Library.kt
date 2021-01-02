@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 /**
  * Represents an album saved in a user's library
  *
- * @property addedAt The date and time the album was saved.
- * @property album Information about the album.
+ * @param addedAt The date and time the album was saved.
+ * @param album Information about the album.
  */
 @Serializable
 public data class SavedAlbum(
@@ -19,8 +19,8 @@ public data class SavedAlbum(
 /**
  * Represents a track saved in a user's library
  *
- * @property addedAt The date and time the track was saved.
- * @property track The track object.
+ * @param addedAt The date and time the track was saved.
+ * @param track The track object.
  */
 @Serializable
 public data class SavedTrack(

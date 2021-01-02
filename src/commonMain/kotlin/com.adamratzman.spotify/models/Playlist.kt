@@ -9,24 +9,25 @@ import kotlinx.serialization.Serializable
 /**
  * Simplified Playlist object that can be used to retrieve a full [Playlist]
  *
- * @property collaborative Returns true if context is not search and the owner allows other users to
+ * @param collaborative Returns true if context is not search and the owner allows other users to
  * modify the playlist. Otherwise returns false.
- * @property href A link to the Web API endpoint providing full details of the playlist.
- * @property id The Spotify ID for the playlist.
- * @property images Images for the playlist. The array may be empty or contain up to three images.
+ * @param href A link to the Web API endpoint providing full details of the playlist.
+ * @param id The Spotify ID for the playlist.
+ * @param images Images for the playlist. The array may be empty or contain up to three images.
  * The images are returned by size in descending order. See Working with Playlists.
  * Note: If returned, the source URL for the image ( url ) is temporary and will expire in less than a day.
- * @property name The name of the playlist.
- * @property owner The user who owns the playlist
- * @property primaryColor Unknown.
- * @property public The playlist’s public/private status: true the playlist is public, false the
+ * @param name The name of the playlist.
+ * @param owner The user who owns the playlist
+ * @param primaryColor Unknown.
+ * @param public The playlist’s public/private status: true the playlist is public, false the
  * playlist is private, null the playlist status is not relevant.
- * @property tracks A collection containing a link ( href ) to the Web API endpoint where full details of the
+ * @param tracks A collection containing a link ( href ) to the Web API endpoint where full details of the
  * playlist’s tracks can be retrieved, along with the total number of tracks in the playlist.
- * @property type The object type: “playlist”
+ * @param type The object type: “playlist”
+ * @param description The playlist description. Only returned for modified, verified playlists, otherwise null.
+ *
  * @property snapshot The version identifier for the current playlist. Can be supplied in other
  * requests to target a specific playlist version
- * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
  */
 @Serializable
 public data class SimplePlaylist(
@@ -61,11 +62,11 @@ public data class SimplePlaylist(
 /**
  * Represents a Spotify track inside a [Playlist]
  *
- * @property primaryColor Unknown. Undocumented field
- * @property addedAt The date and time the track was added. Note that some very old playlists may return null in this field.
- * @property addedBy The Spotify user who added the track. Note that some very old playlists may return null in this field.
- * @property isLocal Whether this track is a local file or not.
- * @property track Information about the track. In rare occasions, this field may be null if this track's API entry is broken.
+ * @param primaryColor Unknown. Undocumented field
+ * @param addedAt The date and time the track was added. Note that some very old playlists may return null in this field.
+ * @param addedBy The Spotify user who added the track. Note that some very old playlists may return null in this field.
+ * @param isLocal Whether this track is a local file or not.
+ * @param track Information about the track. In rare occasions, this field may be null if this track's API entry is broken.
  */
 @Serializable
 public data class PlaylistTrack(
@@ -80,24 +81,25 @@ public data class PlaylistTrack(
 /**
  * Represents a Playlist on Spotify
  *
- * @property collaborative Returns true if context is not search and the owner allows other users to modify the playlist.
+ * @param collaborative Returns true if context is not search and the owner allows other users to modify the playlist.
  * Otherwise returns false.
- * @property description The playlist description. Only returned for modified, verified playlists, otherwise null.
- * @property followers
- * @property href A link to the Web API endpoint providing full details of the playlist.
- * @property id The Spotify ID for the playlist.
- * @property primaryColor Unknown.
- * @property images Images for the playlist. The array may be empty or contain up to three images.
+ * @param description The playlist description. Only returned for modified, verified playlists, otherwise null.
+ * @param followers
+ * @param href A link to the Web API endpoint providing full details of the playlist.
+ * @param id The Spotify ID for the playlist.
+ * @param primaryColor Unknown.
+ * @param images Images for the playlist. The array may be empty or contain up to three images.
  * The images are returned by size in descending order.Note: If returned, the source URL for the
  * image ( url ) is temporary and will expire in less than a day.
- * @property name The name of the playlist.
- * @property owner The user who owns the playlist
- * @property public The playlist’s public/private status: true the playlist is public, false the playlist is private,
+ * @param name The name of the playlist.
+ * @param owner The user who owns the playlist
+ * @param public The playlist’s public/private status: true the playlist is public, false the playlist is private,
  * null the playlist status is not relevant
- * @property snapshot The version identifier for the current playlist. Can be supplied in other requests to target
  * a specific playlist version
- * @property tracks Information about the tracks of the playlist.
- * @property type The object type: “playlist”
+ * @param tracks Information about the tracks of the playlist.
+ * @param type The object type: “playlist”
+ *
+ * @property snapshot The version identifier for the current playlist. Can be supplied in other requests to target
  */
 @Serializable
 public data class Playlist(
@@ -125,9 +127,9 @@ public data class Playlist(
  * A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s tracks
  * can be retrieved, along with the total number of tracks in the playlist.
  *
- * @property href link to the Web API endpoint where full details of the playlist’s tracks
+ * @param href link to the Web API endpoint where full details of the playlist’s tracks
  * can be retrieved
- * @property total the total number of tracks in the playlist.
+ * @param total the total number of tracks in the playlist.
  */
 @Serializable
 public data class PlaylistTrackInfo(

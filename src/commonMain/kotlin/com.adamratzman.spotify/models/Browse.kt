@@ -45,8 +45,8 @@ public data class RecommendationSeed(
 ) : Identifiable()
 
 /**
- * @property seeds An array of recommendation seed objects.
- * @property tracks An array of track object (simplified) ordered according to the parameters supplied.
+ * @param seeds An array of recommendation seed objects.
+ * @param tracks An array of track object (simplified) ordered according to the parameters supplied.
  */
 @Serializable
 public data class RecommendationResponse(val seeds: List<RecommendationSeed>, val tracks: List<Track>)
@@ -54,8 +54,8 @@ public data class RecommendationResponse(val seeds: List<RecommendationSeed>, va
 /**
  * Spotify featured playlists (on the Browse tab)
  *
- * @property message the featured message in "Overview"
- * @property playlists [PagingObject] of returned items
+ * @param message the featured message in "Overview"
+ * @param playlists [PagingObject] of returned items
  */
 @Serializable
 public data class FeaturedPlaylists(val message: String, val playlists: PagingObject<SimplePlaylist>)

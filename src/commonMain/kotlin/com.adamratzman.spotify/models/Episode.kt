@@ -11,20 +11,21 @@ import kotlinx.serialization.Serializable
 /**
  * An episode (podcast) on Spotify
  *
- * @property audioPreviewUrl A URL to a 30 second preview (MP3 format) of the episode. null if not available.
- * @property description A description of the episode.
- * @property durationMs The episode length in milliseconds.
- * @property explicit Whether or not the episode has explicit content (true = yes it does; false = no it does not OR unknown).
- * @property images The cover art for the episode in various sizes, widest first.
- * @property isExternallyHosted True if the episode is hosted outside of Spotify’s CDN.
- * @property isPlayable True if the episode is playable in the given market. Otherwise false.
+ * @param audioPreviewUrl A URL to a 30 second preview (MP3 format) of the episode. null if not available.
+ * @param description A description of the episode.
+ * @param durationMs The episode length in milliseconds.
+ * @param explicit Whether or not the episode has explicit content (true = yes it does; false = no it does not OR unknown).
+ * @param images The cover art for the episode in various sizes, widest first.
+ * @param isExternallyHosted True if the episode is hosted outside of Spotify’s CDN.
+ * @param isPlayable True if the episode is playable in the given market. Otherwise false.
+ * @param name The name of the episode.
+ * @param releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
+ * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
+ * @param type The object type: "episode".
+ * @param show The show on which the episode belongs.
+ *
  * @property languages A list of the languages used in the episode, identified by their ISO 639 code.
  * @property releaseDate The date the episode was first released, for example "1981-12-15". Depending on the precision, it might be shown as "1981" or "1981-12".
- * @property name The name of the episode.
- * @property releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
- * @property resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
- * @property type The object type: "episode".
- * @property show The show on which the episode belongs.
  */
 @Serializable
 public data class Episode(
@@ -61,19 +62,20 @@ public data class Episode(
 /**
  * A simplified episode (podcast) on Spotify
  *
- * @property audioPreviewUrl A URL to a 30 second preview (MP3 format) of the episode. null if not available.
- * @property description A description of the episode.
- * @property durationMs The episode length in milliseconds.
- * @property explicit Whether or not the episode has explicit content (true = yes it does; false = no it does not OR unknown).
- * @property images The cover art for the episode in various sizes, widest first.
- * @property isExternallyHosted True if the episode is hosted outside of Spotify’s CDN.
- * @property isPlayable True if the episode is playable in the given market. Otherwise false.
+ * @param audioPreviewUrl A URL to a 30 second preview (MP3 format) of the episode. null if not available.
+ * @param description A description of the episode.
+ * @param durationMs The episode length in milliseconds.
+ * @param explicit Whether or not the episode has explicit content (true = yes it does; false = no it does not OR unknown).
+ * @param images The cover art for the episode in various sizes, widest first.
+ * @param isExternallyHosted True if the episode is hosted outside of Spotify’s CDN.
+ * @param isPlayable True if the episode is playable in the given market. Otherwise false.
+ * @param name The name of the episode.
+ * @param releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
+ * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
+ * @param type The object type: "episode".
+ *
  * @property languages A list of the languages used in the episode, identified by their ISO 639 code.
  * @property releaseDate The date the episode was first released, for example "1981-12-15". Depending on the precision, it might be shown as "1981" or "1981-12".
- * @property name The name of the episode.
- * @property releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
- * @property resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
- * @property type The object type: "episode".
  */
 @Serializable
 public data class SimpleEpisode(
@@ -90,7 +92,7 @@ public data class SimpleEpisode(
     @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")
     private val language: String? = null,
     @SerialName("languages") private val showLanguagesPrivate: List<String>,
-    private val name: String,
+    val name: String,
     @SerialName("release_date") private val releaseDateString: String,
     @SerialName("release_date_precision") val releaseDatePrecisionString: String,
     @SerialName("resume_point") val resumePoint: ResumePoint? = null,
@@ -116,8 +118,8 @@ public data class SimpleEpisode(
  * Represents the user’s most recent position in the episode. Set if the supplied access token is a user token and has
  * the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
  *
- * @property fullyPlayed Whether or not the episode has been fully played by the user.
- * @property resumePositionMs The user’s most recent position in the episode in milliseconds.
+ * @param fullyPlayed Whether or not the episode has been fully played by the user.
+ * @param resumePositionMs The user’s most recent position in the episode in milliseconds.
  */
 @Serializable
 public data class ResumePoint(

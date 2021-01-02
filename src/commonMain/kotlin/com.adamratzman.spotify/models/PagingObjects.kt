@@ -185,12 +185,12 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
  * items (whose value is an array of the requested objects) along with other keys like next and
  * cursors that can be useful in future calls.
  *
- * @property href A link to the Web API endpoint returning the full result of the request.
- * @property items The requested data.
- * @property limit The maximum number of items in the response (as set in the query or by default).
- * @property next URL to the next page of items. ( null if none)
- * @property total The maximum number of items available to return.
- * @property cursor The cursors used to find the next set of items..
+ * @param href A link to the Web API endpoint returning the full result of the request.
+ * @param items The requested data.
+ * @param limit The maximum number of items in the response (as set in the query or by default).
+ * @param next URL to the next page of items. ( null if none)
+ * @param total The maximum number of items available to return.
+ * @param cursor The cursors used to find the next set of items..
  */
 @Serializable
 public data class CursorBasedPagingObject<T : Any>(
@@ -273,8 +273,8 @@ public data class CursorBasedPagingObject<T : Any>(
 /**
  * The cursor to use as key to find the next (or previous) page of items.
  *
- * @property before The cursor to use as key to find the previous page of items.
- * @property after The cursor to use as key to find the next page of items.
+ * @param before The cursor to use as key to find the previous page of items.
+ * @param after The cursor to use as key to find the next page of items.
  */
 @Serializable
 public data class Cursor(val before: String? = null, val after: String? = null)
