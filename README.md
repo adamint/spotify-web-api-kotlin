@@ -37,7 +37,7 @@ repositories {
     jcenter()
 }
 
-implementation("com.adamratzman:spotify-api-kotlin-core:3.4.01")
+implementation("com.adamratzman:spotify-api-kotlin-core:3.4.03")
 ```
 
 Note that images and profiles are not supported on the Kotlin/JS target.
