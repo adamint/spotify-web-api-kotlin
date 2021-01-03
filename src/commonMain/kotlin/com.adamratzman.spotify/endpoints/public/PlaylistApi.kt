@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -88,6 +89,8 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Get full details of the tracks of a playlist owned by a Spotify user.
      *
      * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+     *
+     * **Warning:** if the playlist contains podcasts, the tracks will be null if you are using [SpotifyAppApi].
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/)**
      *

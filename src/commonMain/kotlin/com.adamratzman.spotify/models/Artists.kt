@@ -17,7 +17,7 @@ public data class SimpleArtist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    override val uri: ArtistUri,
+    override val uri: SpotifyUri,
 
     val name: String,
     val type: String

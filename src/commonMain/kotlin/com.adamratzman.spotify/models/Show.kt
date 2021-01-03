@@ -39,7 +39,7 @@ public data class SimpleShow(
     val name: String,
     val publisher: String,
     val type: String,
-    override val uri: ShowUri
+    override val uri: SpotifyUri
 ) : CoreObject() {
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
