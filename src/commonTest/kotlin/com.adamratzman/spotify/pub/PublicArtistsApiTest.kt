@@ -4,9 +4,9 @@ package com.adamratzman.spotify.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.public.ArtistApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,10 +17,14 @@ import kotlin.test.assertTrue
 class PublicArtistsApiTest {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+            println("Built API")
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testGetArtists() {
@@ -31,14 +35,14 @@ class PublicArtistsApiTest {
             assertNotNull(api.artists.getArtist("66CXWjxzNUsdJxJ2JdwvnR"))
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getArtists() }
             assertEquals(
-                    listOf(true, true),
-                    api.artists.getArtists("66CXWjxzNUsdJxJ2JdwvnR", "7wjeXCtRND2ZdKfMJFu6JC")
-                            .map { it != null }
+                listOf(true, true),
+                api.artists.getArtists("66CXWjxzNUsdJxJ2JdwvnR", "7wjeXCtRND2ZdKfMJFu6JC")
+                    .map { it != null }
             )
             assertEquals(
-                    listOf(false, true),
-                    api.artists.getArtists("dskjafjkajksdf", "66CXWjxzNUsdJxJ2JdwvnR")
-                            .map { it != null }
+                listOf(false, true),
+                api.artists.getArtists("dskjafjkajksdf", "66CXWjxzNUsdJxJ2JdwvnR")
+                    .map { it != null }
             )
         }
     }
@@ -49,10 +53,12 @@ class PublicArtistsApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getArtistAlbums("asfasdf") }
-            assertTrue(api.artists.getArtistAlbums("7wjeXCtRND2ZdKfMJFu6JC", 10,
-                    include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
+            assertTrue(api.artists.getArtistAlbums(
+                "7wjeXCtRND2ZdKfMJFu6JC", 10,
+                include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
             )
-                    .items.asSequence().map { it.name }.contains("Louane"))
+                .items.asSequence().map { it.name }.contains("Louane")
+            )
         }
     }
 

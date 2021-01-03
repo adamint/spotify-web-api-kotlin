@@ -16,9 +16,15 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
+expect fun SpotifyCache.f()
+
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()
     internal val json get() = api.spotifyApiOptions.json
+
+    init {
+        cache.f()
+    }
 
     internal fun endpointBuilder(path: String) = EndpointBuilder(path, api)
 

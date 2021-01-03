@@ -4,8 +4,8 @@ package com.adamratzman.spotify.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,10 +17,14 @@ import kotlin.test.assertTrue
 class PublicAlbumsApiTest {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+            println("Built API")
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testGetAlbums() {
@@ -35,10 +39,10 @@ class PublicAlbumsApiTest {
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.albums.getAlbums(market = Market.US) }
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.albums.getAlbums() }
             assertEquals(listOf(true, false),
-                    api.albums.getAlbums("1f1C1CjidKcWQyiIYcMvP2", "abc", market = Market.US)
-                            .map { it != null })
+                api.albums.getAlbums("1f1C1CjidKcWQyiIYcMvP2", "abc", market = Market.US)
+                    .map { it != null })
             assertEquals(listOf(true, false),
-                    api.albums.getAlbums("1f1C1CjidKcWQyiIYcMvP2", "abc").map { it != null })
+                api.albums.getAlbums("1f1C1CjidKcWQyiIYcMvP2", "abc").map { it != null })
         }
     }
 

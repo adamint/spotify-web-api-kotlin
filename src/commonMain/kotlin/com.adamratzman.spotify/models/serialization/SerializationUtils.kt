@@ -14,6 +14,8 @@ import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -57,7 +59,7 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
     }
 }
 
-internal fun <T : Any> String.toPagingObject(
+internal inline fun <reified T : Any> String.toPagingObject(
     tClazz: KClass<T>,
     tSerializer: KSerializer<T>,
     innerObjectName: String? = null,
@@ -66,11 +68,21 @@ internal fun <T : Any> String.toPagingObject(
     arbitraryInnerNameAllowed: Boolean = false,
     skipInnerNameFirstIfPossible: Boolean = true
 ): NullablePagingObject<T> {
+    println("here2")
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
+        println("here3 $tClazz")
         val map = this.parseJson {
-            val t = (String.serializer() to NullablePagingObject.serializer(tSerializer))
-            json.decodeFromString(MapSerializer(t.first, t.second), this)
+            val t = (String.serializer() to NullablePagingObject.serializer(tSerializer)).apply { println("serializer done") }
+                val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
+                val jsonElement = innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
+                ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
+            val objectString = json.encodeToString(jsonElement)
+
+            println(objectString)
+            println(json.decodeFromString<NullablePagingObject<T>>(objectString))
+            json.decodeFromString(MapSerializer(t.first, t.second), this).apply { println("decoded") }
         }
+        println("here4")
         return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
                 ?: error("") else error(""))
                 .apply {
@@ -82,6 +94,7 @@ internal fun <T : Any> String.toPagingObject(
                     }
                 }
     }
+    println("here5")
 
     return try {
         val pagingObject = this.parseJson { json.decodeFromString(NullablePagingObject.serializer(tSerializer), this) }

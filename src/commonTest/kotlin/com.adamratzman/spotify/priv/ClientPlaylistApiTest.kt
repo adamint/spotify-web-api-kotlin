@@ -4,33 +4,38 @@ package com.adamratzman.spotify.priv
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.platform
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi
     lateinit var createdPlaylist: Playlist
     lateinit var playlistsBefore: List<SimplePlaylist>
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { it as? SpotifyClientApi }?.let { api = it }
-        if (::api.isInitialized) {
-            playlistsBefore = api.playlists.getClientPlaylists().getAllItemsNotNull()
-            createdPlaylist = api.playlists.createClientPlaylist("this is a test playlist", "description")
+    init {
+        runBlockingTest {
+            (buildSpotifyApi() as? SpotifyClientApi)?.let { clientApi ->
+                api = clientApi
+                playlistsBefore = api.playlists.getClientPlaylists().getAllItemsNotNull()
+                createdPlaylist = api.playlists.createClientPlaylist("this is a test playlist", "description")
+
+            }
+            println("Built API")
         }
-        return ::api.isInitialized
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     private suspend fun tearDown() {
         if (::createdPlaylist.isInitialized) {

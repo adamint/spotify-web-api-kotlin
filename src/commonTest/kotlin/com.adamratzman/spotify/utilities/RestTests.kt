@@ -6,8 +6,8 @@ import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.spotifyAppApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -17,10 +17,14 @@ import kotlin.time.ExperimentalTime
 class RestTests {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+            println("Built API")
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testRequestTimeoutFailure() {

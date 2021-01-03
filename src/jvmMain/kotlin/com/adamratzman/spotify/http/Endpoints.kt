@@ -3,7 +3,7 @@ package com.adamratzman.spotify.http
 
 import java.net.URLEncoder
 import java.util.Base64
-
+actual fun SpotifyCache.f() {}
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 internal actual fun String.base64ByteEncode(): String {
     return Base64.getEncoder().encodeToString(toByteArray())

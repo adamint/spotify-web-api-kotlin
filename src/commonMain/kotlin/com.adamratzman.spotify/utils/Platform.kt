@@ -7,7 +7,8 @@ package com.adamratzman.spotify.utils
 public enum class Platform {
     JVM,
     ANDROID,
-    JS
+    JS,
+    NATIVE
 }
 
 public expect val platform: Platform

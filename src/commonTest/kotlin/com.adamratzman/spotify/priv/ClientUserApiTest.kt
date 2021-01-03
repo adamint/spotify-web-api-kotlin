@@ -2,17 +2,21 @@
 package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import kotlin.test.Test
 
 class ClientUserApiTest {
     lateinit var api: SpotifyClientApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { it as? SpotifyClientApi }?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
+            println("Built API")
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testClientProfile() {

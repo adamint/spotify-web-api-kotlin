@@ -6,6 +6,8 @@ import android.os.Build.VERSION_CODES
 import android.util.Base64
 import java.net.URLEncoder
 
+actual fun SpotifyCache.f() {}
+
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 
 internal actual fun String.base64ByteEncode(): String {
