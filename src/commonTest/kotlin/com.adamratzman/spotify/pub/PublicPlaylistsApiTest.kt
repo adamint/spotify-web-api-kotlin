@@ -2,9 +2,11 @@
 package com.adamratzman.spotify.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.models.LocalTrack
+import com.adamratzman.spotify.models.PodcastEpisodeTrack
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyApi
@@ -41,6 +43,15 @@ class PublicPlaylistsApiTest {
 
             assertEquals("run2", api.playlists.getPlaylist("78eWnYKwDksmCHAjOUNPEj")?.name)
             assertNull(api.playlists.getPlaylist("nope"))
+            assertTrue(api.playlists.getPlaylist("78eWnYKwDksmCHAjOUNPEj")!!.tracks.isNotEmpty())
+            val playlistWithLocalAndNonLocalTracks = api.playlists.getPlaylist("0vzdw0N41qZLbRDqyx2cE0")!!.tracks
+            assertEquals(LocalTrack::class, playlistWithLocalAndNonLocalTracks[0].track!!::class)
+            assertEquals(Track::class, playlistWithLocalAndNonLocalTracks[1].track!!::class)
+
+            if (api is SpotifyClientApi) {
+                val playlistWithPodcastsTracks = api.playlists.getPlaylist("37i9dQZF1DX8tN3OFXtAqt")!!.tracks
+                assertEquals(PodcastEpisodeTrack::class, playlistWithPodcastsTracks[0].track!!::class)
+            }
         }
     }
 
@@ -54,6 +65,11 @@ class PublicPlaylistsApiTest {
             assertEquals(LocalTrack::class, playlist[0].track!!::class)
             assertEquals(Track::class, playlist[1].track!!::class)
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.playlists.getPlaylistTracks("adskjfjkasdf") }
+
+            if (api is SpotifyClientApi) {
+                val playlistWithPodcasts = api.playlists.getPlaylistTracks("37i9dQZF1DX8tN3OFXtAqt")
+                assertEquals(PodcastEpisodeTrack::class, playlistWithPodcasts[0].track!!::class)
+            }
         }
     }
 
