@@ -30,7 +30,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class Episode(
     @SerialName("audio_preview_url") val audioPreviewUrl: String? = null,
-    val description: String,
+    val description: String? = null,
     @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
@@ -80,7 +80,7 @@ public data class Episode(
 @Serializable
 public data class SimpleEpisode(
     @SerialName("audio_preview_url") val audioPreviewUrl: String? = null,
-    val description: String,
+    val description: String? = null,
     @SerialName("duration_ms") val durationMs: Int,
     val explicit: Boolean,
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
