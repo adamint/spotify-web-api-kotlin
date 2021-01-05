@@ -4,7 +4,9 @@
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
+This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/). JS/Browser and Node, Android, and JVM targets are currently supported, with Kotlin/Native (Windows, macOS, Linux) support coming soon in the next minor version, 3.5.
+
+You can ask questions, get guidance, or get help contributing by joining our [Discord server](https://discord.gg/G6vqP3S). 
 
 ## Table of Contents
 * [Library installing](#library-installing)
@@ -74,7 +76,7 @@ The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.i
 ## Have a question?
 If you have a question, you can:
 
-1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
+1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues) or a discussion.
 2. Join our [Discord server](https://discord.gg/G6vqP3S)
 3. Contact me using **Adam#9261** on [Discord](https://discordapp.com)
 
