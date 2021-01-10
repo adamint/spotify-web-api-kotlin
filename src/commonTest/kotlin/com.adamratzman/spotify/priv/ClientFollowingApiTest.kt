@@ -71,8 +71,6 @@ class ClientFollowingApiTest {
                 )
             }
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.unfollowArtist("no u") }
-
-            println("here")
         }
     }
 

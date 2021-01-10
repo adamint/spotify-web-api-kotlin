@@ -111,7 +111,7 @@ class ClientPlaylistApiTest {
 
             api.playlists.addTracksToClientPlaylist(createdPlaylist.id, "3WDIhWoRWVcaHdRwMEHkkS", "7FjZU7XFs7P9jHI9Z0yRhK")
 
-            if (platform != Platform.ANDROID) {
+            if (platform !in listOf(Platform.ANDROID, Platform.NATIVE)) {
                 api.playlists.uploadClientPlaylistCover(
                         createdPlaylist.id,
                         imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
@@ -151,44 +151,60 @@ class ClientPlaylistApiTest {
 
             val trackIdOne = "3WDIhWoRWVcaHdRwMEHkkS"
             val trackIdTwo = "7FjZU7XFs7P9jHI9Z0yRhK"
+            println(1)
             api.playlists.addTracksToClientPlaylist(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo)
+            println(2)
 
             assertTrue(api.playlists.getPlaylistTracks(createdPlaylist.id).items.size == 4)
+            println(3)
 
             api.playlists.removeTrackFromClientPlaylist(createdPlaylist.id, trackIdOne)
+            println(4)
 
             assertEquals(
                     listOf(trackIdTwo, trackIdTwo),
                     api.playlists.getPlaylistTracks(createdPlaylist.id).items.map { it.track?.id })
+            println(5)
 
             api.playlists.addTrackToClientPlaylist(createdPlaylist.id, trackIdOne)
+            println(6)
 
             api.playlists.removeTrackFromClientPlaylist(createdPlaylist.id, trackIdTwo, SpotifyTrackPositions(1))
+            println(7)
 
             assertEquals(
                     listOf(trackIdTwo, trackIdOne),
                     api.playlists.getPlaylistTracks(createdPlaylist.id).items.map { it.track?.id })
+            println(8)
 
             api.playlists.setClientPlaylistTracks(createdPlaylist.id, trackIdOne, trackIdOne, trackIdTwo, trackIdTwo)
+            println(9)
 
             api.playlists.removeTracksFromClientPlaylist(createdPlaylist.id, trackIdOne, trackIdTwo)
+            println(10)
 
             assertTrue(api.playlists.getPlaylistTracks(createdPlaylist.id).items.isEmpty())
+            println(11)
 
             api.playlists.setClientPlaylistTracks(createdPlaylist.id, trackIdTwo, trackIdOne, trackIdTwo, trackIdTwo, trackIdOne)
+            println(12)
 
             api.playlists.removeTracksFromClientPlaylist(
                     createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(4)),
                     Pair(trackIdTwo, SpotifyTrackPositions(0))
             )
+            println(13)
 
             assertEquals(
                     listOf(trackIdOne, trackIdTwo, trackIdTwo),
                     api.playlists.getPlaylistTracks(createdPlaylist.id).items.map { it.track?.id })
+            println(14)
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.playlists.removeTracksFromClientPlaylist(createdPlaylist.id, Pair(trackIdOne, SpotifyTrackPositions(3)))
             }
+            println(15)
+
 
             tearDown()
         }

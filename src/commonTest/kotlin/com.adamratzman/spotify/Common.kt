@@ -43,18 +43,17 @@ suspend fun buildSpotifyApi() = when {
         }.build().also { instantiationCompleted = true; apiBacking = it }
     }
     clientId?.isNotBlank() == true -> {
-        println("building")
         spotifyAppApi {
             credentials {
                 clientId = com.adamratzman.spotify.clientId
                 clientSecret = com.adamratzman.spotify.clientSecret
             }
         }.build().also {
-            println("built");instantiationCompleted = true; apiBacking = it;println("through seq")
+            instantiationCompleted = true; apiBacking = it
         }
     }
     else -> null.also { instantiationCompleted = true }
-}?.also { print("done when") }
+}
 
 expect fun getEnvironmentVariable(name: String): String?
 
