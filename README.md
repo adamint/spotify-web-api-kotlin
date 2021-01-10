@@ -82,6 +82,7 @@ If you have a question, you can:
 | Images (Playlist covers)    | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
 | getSpotifyPkceCodeChallenge | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
 | Edit client playlist        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
+| Remove playlist tracks      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
 
 Please feel free to open an issue/discussion on GitHub or Discord if you need access to one of these features 
 or have an interest in implementing one, as direction can be provided.

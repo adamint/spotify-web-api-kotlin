@@ -10,12 +10,12 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.runBlockingTest
-import kotlinx.serialization.builtins.nullable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class JsonTests {
     lateinit var api: GenericSpotifyApi

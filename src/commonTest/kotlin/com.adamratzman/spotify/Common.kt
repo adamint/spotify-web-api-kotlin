@@ -1,23 +1,15 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import com.autodesk.coroutineworker.CoroutineWorker
 import kotlin.coroutines.CoroutineContext
+import kotlin.native.concurrent.ThreadLocal
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart.LAZY
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlin.native.concurrent.ThreadLocal
 
 val clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
 val clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
 val redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
 val tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
-
 
 // https://github.com/Kotlin/kotlinx.coroutines/issues/1996#issuecomment-728562784
 expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
