@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.endpoints.client.PlaylistSnapshot
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
@@ -34,7 +35,7 @@ public data class SimplePlaylist(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    override val uri: PlaylistUri,
+    override val uri: SpotifyUri,
 
     val collaborative: Boolean,
     val images: List<SpotifyImage>,
@@ -67,6 +68,7 @@ public data class SimplePlaylist(
  * @param addedBy The Spotify user who added the track. Note that some very old playlists may return null in this field.
  * @param isLocal Whether this track is a local file or not.
  * @param track Information about the track. In rare occasions, this field may be null if this track's API entry is broken.
+ * **Warning:** if this is a podcast, the track will be null if you are using [SpotifyAppApi].
  */
 @Serializable
 public data class PlaylistTrack(

@@ -40,7 +40,7 @@ public data class SimpleTrack(
     @SerialName("external_ids") private val externalIdsString: Map<String, String> = hashMapOf(),
     override val href: String,
     override val id: String,
-    override val uri: PlayableUri,
+    override val uri: SpotifyUri,
 
     val artists: List<SimpleArtist>,
     @SerialName("disc_number") val discNumber: Int,

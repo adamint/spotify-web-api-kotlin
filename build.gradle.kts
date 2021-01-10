@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.4.01"
+version = "3.4.03"
 
 tasks.withType<Test> {
     this.testLogging {

@@ -28,7 +28,7 @@ public data class SimpleShow(
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     val copyrights: List<SpotifyCopyright>,
-    val description: String,
+    val description: String? = null,
     val explicit: Boolean,
     override val href: String,
     override val id: String,
@@ -39,7 +39,7 @@ public data class SimpleShow(
     val name: String,
     val publisher: String,
     val type: String,
-    override val uri: ShowUri
+    override val uri: SpotifyUri
 ) : CoreObject() {
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
@@ -74,7 +74,7 @@ public data class SimpleShow(
 public data class Show(
     @SerialName("available_markets") private val availableMarketsString: List<String> = listOf(),
     val copyrights: List<SpotifyCopyright>,
-    val description: String,
+    val description: String? = null,
     val explicit: Boolean,
     val episodes: NullablePagingObject<SimpleEpisode>,
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
