@@ -95,9 +95,9 @@ public class HttpConnection constructor(
 
                 if (respCode == 502 && retryIf502) {
                     api?.logger?.logError(
-                            false,
-                            "Received 502 (Invalid response) for URL $url and $this (${response.readText()})\nRetrying..",
-                            null
+                        false,
+                        "Received 502 (Invalid response) for URL $url and $this (${response.readText()})\nRetrying..",
+                        null
                     )
                     return@let execute(additionalHeaders, retryIf502 = false)
                 } else if (respCode == 502 && !retryIf502) {
@@ -108,9 +108,9 @@ public class HttpConnection constructor(
                     val ratelimit = response.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
                         api.logger.logError(
-                                false,
-                                "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
-                                null
+                            false,
+                            "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
+                            null
                         )
 
                         delay(ratelimit * 1000)
@@ -120,7 +120,7 @@ public class HttpConnection constructor(
 
                 val body = response.readText()
                 if (respCode == 401 && body.contains("access token") &&
-                        api != null && api.spotifyApiOptions.automaticRefresh
+                    api != null && api.spotifyApiOptions.automaticRefresh
                 ) {
                     api.refreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
@@ -129,14 +129,14 @@ public class HttpConnection constructor(
                 }
 
                 return HttpResponse(
-                        responseCode = respCode,
-                        body = body,
-                        headers = response.headers.entries().map { (key, value) ->
-                            HttpHeader(
-                                    key,
-                                    value.getOrNull(0) ?: "null"
-                            )
-                        }
+                    responseCode = respCode,
+                    body = body,
+                    headers = response.headers.entries().map { (key, value) ->
+                        HttpHeader(
+                            key,
+                            value.getOrNull(0) ?: "null"
+                        )
+                    }
                 )
             }
         } catch (e: CancellationException) {
@@ -144,11 +144,23 @@ public class HttpConnection constructor(
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
             try {
-                val error = errorBody.toObject(ErrorResponse.serializer(), api, api?.spotifyApiOptions?.json ?: nonstrictJson).error
+                val error = errorBody.toObject(
+                    ErrorResponse.serializer(),
+                    api,
+                    api?.spotifyApiOptions?.json ?: nonstrictJson
+                ).error
                 throw BadRequestException(error.copy(reason = (error.reason ?: "") + " URL: $url"))
             } catch (ignored: ParseException) {
-                val error = errorBody.toObject(AuthenticationError.serializer(), api, api?.spotifyApiOptions?.json ?: nonstrictJson)
-                throw AuthenticationException(error)
+                try {
+                    val error = errorBody.toObject(
+                        AuthenticationError.serializer(),
+                        api,
+                        api?.spotifyApiOptions?.json ?: nonstrictJson
+                    )
+                    throw AuthenticationException(error)
+                } catch (ignored: ParseException) {
+                    throw e
+                }
             }
         }
     }

@@ -18,12 +18,13 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
-internal val nonstrictJson = Json {
-    isLenient = true
-    ignoreUnknownKeys = true
-    allowSpecialFloatingPointValues = true
-    useArrayPolymorphism = true
-}
+internal val nonstrictJson =
+    Json {
+        isLenient = true
+        ignoreUnknownKeys = true
+        allowSpecialFloatingPointValues = true
+        useArrayPolymorphism = true
+    }
 
 internal inline fun <reified T : Any> String.toObjectNullable(
     serializer: KSerializer<T>,
@@ -78,20 +79,24 @@ internal fun <T : Any> String.toPagingObject(
     skipInnerNameFirstIfPossible: Boolean = true
 ): NullablePagingObject<T> {
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
-        val map = this.parseJson {
-            val t = (String.serializer() to NullablePagingObject.serializer(tSerializer))
-            json.decodeFromString(MapSerializer(t.first, t.second), this)
+        val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
+        val jsonElement =
+            innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
+            ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
+        val objectString = jsonElement.toString()
+
+        val map = objectString.parseJson {
+            json.decodeFromString(NullablePagingObject.serializer(tSerializer), this)
         }
-        return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
-            ?: error("") else error(""))
-            .apply {
-                this.endpoint = endpoint
-                this.itemClazz = tClazz
-                this.items.map { obj ->
-                    if (obj is NeedsApi) obj.api = endpoint.api
-                    if (obj is PagingObjectBase<*, *>) obj.endpoint = endpoint
-                }
+
+        return map.apply {
+            this.endpoint = endpoint
+            this.itemClazz = tClazz
+            this.items.map { obj ->
+                if (obj is NeedsApi) obj.api = endpoint.api
+                if (obj is PagingObjectBase<*, *>) obj.endpoint = endpoint
             }
+        }
     }
 
     return try {
@@ -261,7 +266,7 @@ internal fun <T> String.parseJson(producer: String.() -> T): T =
         producer(this)
     } catch (e: Exception) {
         throw SpotifyException.ParseException(
-            "Unable to parse $this",
+            "Unable to parse $this (${e.message})",
             e
         )
     }

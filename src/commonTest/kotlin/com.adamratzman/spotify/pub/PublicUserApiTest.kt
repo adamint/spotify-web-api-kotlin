@@ -2,8 +2,8 @@
 package com.adamratzman.spotify.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.catch
 import kotlin.test.Test
 import kotlin.test.assertNull
@@ -12,10 +12,13 @@ import kotlin.test.assertTrue
 class PublicUserApiTest {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testPublicUser() {

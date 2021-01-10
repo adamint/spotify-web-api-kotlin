@@ -4,9 +4,9 @@ package com.adamratzman.spotify.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.public.TuneableTrackAttribute
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
@@ -20,10 +20,13 @@ import kotlin.test.assertTrue
 class BrowseApiTest {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testGenreSeeds() {
@@ -63,7 +66,6 @@ class BrowseApiTest {
     fun testGetPlaylistsByCategory() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest
-
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getPlaylistsForCategory(
                     "no u",

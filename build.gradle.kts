@@ -146,17 +146,30 @@ kotlin {
         }
     }
 
+    val hostOs = System.getProperty("os.name")
+    val isMingwX64 = hostOs.startsWith("Windows")
+    val nativeTarget = when {
+        hostOs == "Mac OS X" -> macosX64("native")
+        hostOs == "Linux" -> linuxX64("native")
+        isMingwX64 -> mingwX64("native")
+        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+    }
+
+
     targets {
         sourceSets {
-            val coroutineVersion = "1.4.2"
+            val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.4.1"
+            val kotlinxDatetimeVersion = "0.1.1"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+                    implementation("com.autodesk:coroutineworker:0.6.2")
                 }
             }
             val commonTest by getting {
@@ -221,6 +234,17 @@ kotlin {
                 }
             }
 
+            val nativeMain by getting {
+                dependencies {
+                    implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                }
+            }
+            val nativeTest by getting {
+                dependencies {
+
+                }
+            }
+
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
             }
@@ -260,8 +284,9 @@ publishing {
 
 signing {
     if (project.hasProperty("signing.keyId")
-            && project.hasProperty("signing.password")
-            && project.hasProperty("signing.secretKeyRingFile")) {
+        && project.hasProperty("signing.password")
+        && project.hasProperty("signing.secretKeyRingFile")
+    ) {
         sign(publishing.publications)
     }
 }

@@ -4,8 +4,8 @@ package com.adamratzman.spotify.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,10 +15,13 @@ import kotlin.test.assertTrue
 class PublicTracksApiTest {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testGetTrack() {
@@ -36,7 +39,9 @@ class PublicTracksApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertEquals(listOf(null, null), api.tracks.getTracks("hi", "dad", market = Market.US))
-            assertEquals(listOf("Alors souris", null), api.tracks.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").map { it?.name })
+            assertEquals(
+                listOf("Alors souris", null),
+                api.tracks.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").map { it?.name })
         }
     }
 
@@ -57,7 +62,9 @@ class PublicTracksApiTest {
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.tracks.getAudioFeatures("bad track") }
             assertEquals("0.0592", api.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())
-            assertEquals(listOf(null, "0.0592"), api.tracks.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").map { it?.acousticness?.toString() })
+            assertEquals(
+                listOf(null, "0.0592"),
+                api.tracks.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").map { it?.acousticness?.toString() })
             assertTrue(api.tracks.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").let {
                 it[0] == null && it[1] != null
             })

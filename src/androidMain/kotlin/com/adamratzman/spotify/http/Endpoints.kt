@@ -11,8 +11,8 @@ internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 internal actual fun String.base64ByteEncode(): String {
     return if (VERSION.SDK_INT >= VERSION_CODES.O) {
         java.util.Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(toByteArray())
+            .withoutPadding()
+            .encodeToString(toByteArray())
     } else {
         Base64.encodeToString(toByteArray(), Base64.DEFAULT)
     }
