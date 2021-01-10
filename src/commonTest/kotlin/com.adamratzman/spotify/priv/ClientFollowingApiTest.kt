@@ -18,7 +18,6 @@ class ClientFollowingApiTest {
     init {
         runBlockingTest {
             (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-            println("Built API")
         }
     }
 
@@ -26,21 +25,14 @@ class ClientFollowingApiTest {
 
     @Test
     fun testFollowUnfollowArtists() {
-        println("a")
         runBlockingTest {
-            println("b")
             if (!testPrereq()) {
-                println("d")
                 return@runBlockingTest
             }
-            println("c")
             val testArtistId = "7eCmccnRwPmRnWPw61x6jM"
-            println("1")
             if (api.following.isFollowingArtist(testArtistId)) {
-                println("2")
                 api.following.unfollowArtist(testArtistId)
             }
-            println("3")
 
             assertTrue(!api.following.isFollowingArtist(testArtistId))
 

@@ -72,7 +72,6 @@ internal fun <T : Any> String.toPagingObject(
         val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
         val jsonElement = innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
         ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
-        //println(jsonElement.toString())
         val objectString = jsonElement.toString()
 
         val map = objectString.parseJson {
@@ -220,8 +219,6 @@ internal fun <T> String.parseJson(producer: String.() -> T): T =
         try {
             producer(this)
         } catch (e: Exception) {
-            println(e.message)
-            println(e.cause)
             throw SpotifyException.ParseException(
                     "Unable to parse $this (${e.message})",
                     e

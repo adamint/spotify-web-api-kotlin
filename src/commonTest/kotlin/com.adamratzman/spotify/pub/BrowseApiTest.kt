@@ -23,7 +23,6 @@ class BrowseApiTest {
     init {
         runBlockingTest {
             buildSpotifyApi()?.let { api = it }
-            println("Built API")
         }
     }
 
@@ -67,16 +66,13 @@ class BrowseApiTest {
     fun testGetPlaylistsByCategory() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest
-            println("1")
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getPlaylistsForCategory(
                     "no u",
                     limit = 4
                 )
             }
-            println("2")
             assertTrue(api.browse.getPlaylistsForCategory("pop", 10, 0, Market.FR).items.isNotEmpty())
-            println("3")
         }
     }
 

@@ -18,7 +18,6 @@ class ShowApiTest {
     init {
         runBlockingTest {
             (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-            println("Built API")
         }
     }
 

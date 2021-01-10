@@ -18,7 +18,6 @@ class SearchApiTest {
     init {
         runBlockingTest {
             buildSpotifyApi()?.let { api = it }
-            println("Built API")
         }
     }
 
