@@ -20,7 +20,7 @@ public class SpotifyUriException(message: String) : SpotifyException.BadRequestE
 
 private fun String.matchType(type: String, allowColon: Boolean): String? {
     val uriContent = "[^:]".takeUnless { allowColon } ?: "."
-    val typeRegex = "^spotify:(?:.*:)*$type:($uriContent*)(?::.*)*$|^([^:]+)$".toRegex()
+    val typeRegex = "^spotify:(?:.*:)?$type:($uriContent*)(?::.*)*$|^([^:]+)\$".toRegex()
     val match = typeRegex.matchEntire(this)?.groupValues ?: return null
     return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
@@ -41,7 +41,10 @@ private fun String.remove(type: String, allowColon: Boolean): String {
 
 private class SimpleUriSerializer<T : SpotifyUri>(val ctor: (String) -> T) : KSerializer<T> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("SimpleUri", PrimitiveKind.STRING)
-    override fun deserialize(decoder: Decoder): T = ctor(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): T {
+        val str = decoder.decodeString()
+        return ctor(str)
+    }
     override fun serialize(encoder: Encoder, value: T) = encoder.encodeString(value.uri)
 }
 
@@ -150,7 +153,9 @@ public sealed class CollectionUri(input: String, type: String, allowColon: Boole
     @Serializer(forClass = CollectionUri::class)
     public companion object : KSerializer<CollectionUri> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("CollectionUri", PrimitiveKind.STRING)
-        override fun deserialize(decoder: Decoder): CollectionUri = CollectionUri(decoder.decodeString())
+        override fun deserialize(decoder: Decoder): CollectionUri {
+            return CollectionUri(decoder.decodeString())
+        }
         override fun serialize(encoder: Encoder, value: CollectionUri): Unit = encoder.encodeString(value.uri)
 
         public operator fun invoke(input: String): CollectionUri {
@@ -235,6 +240,7 @@ public class ArtistUri(input: String) : SpotifyUri(input, "artist") {
  */
 @Serializable
 public class UserUri(input: String) : SpotifyUri(input, "user") {
+
     @Serializer(forClass = UserUri::class)
     public companion object : KSerializer<UserUri> by SimpleUriSerializer(::UserUri)
 }

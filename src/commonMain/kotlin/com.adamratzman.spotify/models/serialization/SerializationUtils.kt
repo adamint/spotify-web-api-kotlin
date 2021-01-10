@@ -59,7 +59,7 @@ internal inline fun <reified T> String.toList(serializer: KSerializer<List<T>>, 
     }
 }
 
-internal inline fun <reified T : Any> String.toPagingObject(
+internal fun <T : Any> String.toPagingObject(
     tClazz: KClass<T>,
     tSerializer: KSerializer<T>,
     innerObjectName: String? = null,
@@ -68,24 +68,18 @@ internal inline fun <reified T : Any> String.toPagingObject(
     arbitraryInnerNameAllowed: Boolean = false,
     skipInnerNameFirstIfPossible: Boolean = true
 ): NullablePagingObject<T> {
-    println("here2")
     if (innerObjectName != null || (arbitraryInnerNameAllowed && !skipInnerNameFirstIfPossible)) {
-        println("here3 $tClazz")
-        val map = this.parseJson {
-            val t = (String.serializer() to NullablePagingObject.serializer(tSerializer)).apply { println("serializer done") }
-                val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
-                val jsonElement = innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
-                ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
-            val objectString = json.encodeToString(jsonElement)
+        val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
+        val jsonElement = innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
+        ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
+        //println(jsonElement.toString())
+        val objectString = jsonElement.toString()
 
-            println(objectString)
-            println(json.decodeFromString<NullablePagingObject<T>>(objectString))
-            json.decodeFromString(MapSerializer(t.first, t.second), this).apply { println("decoded") }
+        val map = objectString.parseJson {
+            json.decodeFromString(NullablePagingObject.serializer(tSerializer),this)
         }
-        println("here4")
-        return (map[innerObjectName] ?: if (arbitraryInnerNameAllowed) map.keys.firstOrNull()?.let { map[it] }
-                ?: error("") else error(""))
-                .apply {
+
+        return map.apply {
                     this.endpoint = endpoint
                     this.itemClazz = tClazz
                     this.items.map { obj ->
@@ -94,7 +88,6 @@ internal inline fun <reified T : Any> String.toPagingObject(
                     }
                 }
     }
-    println("here5")
 
     return try {
         val pagingObject = this.parseJson { json.decodeFromString(NullablePagingObject.serializer(tSerializer), this) }
@@ -227,8 +220,10 @@ internal fun <T> String.parseJson(producer: String.() -> T): T =
         try {
             producer(this)
         } catch (e: Exception) {
+            println(e.message)
+            println(e.cause)
             throw SpotifyException.ParseException(
-                    "Unable to parse $this",
+                    "Unable to parse $this (${e.message})",
                     e
             )
         }

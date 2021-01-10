@@ -180,8 +180,8 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             "limit",
             limit
         ).with("offset", offset)
-            .with("market", market?.name).toString().apply { println("here1") }
-    ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this, json = json).apply { println("heref") }
+            .with("market", market?.name).toString()
+    ).toPagingObject((SimplePlaylist.serializer()), "playlists", endpoint = this, json = json)
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
