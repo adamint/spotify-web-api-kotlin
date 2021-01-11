@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.4.03"
+version = "3.5.0-rc.1"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -94,7 +94,6 @@ kotlin {
         }
 
         mavenPublication {
-            artifactId = "spotify-api-kotlin-android"
             setupPom(artifactId)
         }
 
@@ -112,14 +111,12 @@ kotlin {
         }
 
         mavenPublication {
-            artifactId = "spotify-api-kotlin"
             setupPom(artifactId)
         }
     }
 
     js(KotlinJsCompilerType.LEGACY) {
         mavenPublication {
-            artifactId = "spotify-api-kotlin-js"
             setupPom(artifactId)
         }
 
@@ -147,11 +144,65 @@ kotlin {
     }
 
     val hostOs = System.getProperty("os.name")
+    val isMainHost = hostOs.contains("mac", true)
+    //val isMainPlatform =
     val isMingwX64 = hostOs.startsWith("Windows")
 
-    macosX64()
-    linuxX64()
-    mingwX64()
+    macosX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    linuxX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    mingwX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+
+    val publicationsFromMainHost =
+        listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
+
+    publishing {
+        publications {
+            matching { it.name in publicationsFromMainHost }.all {
+                val targetPublication = this@all
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
+            }
+
+            val kotlinMultiplatform by getting(MavenPublication::class) {
+                artifactId = "spotify-api-kotlin-core"
+                setupPom(artifactId)
+            }
+
+            /*val metadata by getting(MavenPublication::class) {
+                artifactId = "spotify-api-kotlin-metadata"
+                setupPom(artifactId)
+            }*/
+        }
+
+        repositories {
+            maven {
+                name = "nexus"
+                val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+
+                credentials {
+                    val nexusUsername: String? by project.extra
+                    val nexusPassword: String? by project.extra
+                    username = nexusUsername
+                    password = nexusPassword
+                }
+            }
+        }
+    }
 
     targets {
         sourceSets {
@@ -276,35 +327,6 @@ kotlin {
     }
 }
 
-publishing {
-    publications {
-        val kotlinMultiplatform by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-core"
-            setupPom(artifactId)
-        }
-
-        /*val metadata by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-metadata"
-            setupPom(artifactId)
-        }*/
-    }
-
-    repositories {
-        maven {
-            name = "nexus"
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-            credentials {
-                val nexusUsername: String? by project.extra
-                val nexusPassword: String? by project.extra
-                username = nexusUsername
-                password = nexusPassword
-            }
-        }
-    }
-}
 
 signing {
     if (project.hasProperty("signing.keyId")
@@ -382,3 +404,4 @@ fun MavenPublication.setupPom(publicationName: String) {
         }
     }
 }
+
