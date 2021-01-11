@@ -3,6 +3,9 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.JsonElement
 
 public expect fun getCurrentTimeMs(): Long
@@ -22,4 +25,5 @@ internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T?
 internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
-internal expect fun formatDate(format: String, date: Long): String
+internal fun formatDate(date: Long): String =
+    Instant.fromEpochMilliseconds(date).toLocalDateTime(TimeZone.currentSystemDefault()).toString()

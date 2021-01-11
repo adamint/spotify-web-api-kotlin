@@ -6,9 +6,9 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.spotifyApi
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import kotlin.test.Test
@@ -17,10 +17,13 @@ import kotlin.test.assertTrue
 class UtilityTests {
     lateinit var api: GenericSpotifyApi
 
-    private suspend fun testPrereq(): Boolean {
-        spotifyApi.await()?.let { api = it }
-        return ::api.isInitialized
+    init {
+        runBlockingTest {
+            buildSpotifyApi()?.let { api = it }
+        }
     }
+
+    fun testPrereq() = ::api.isInitialized
 
     @Test
     fun testInvalidApiBuilderParameters() {

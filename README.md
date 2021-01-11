@@ -42,8 +42,6 @@ repositories {
 implementation("com.adamratzman:spotify-api-kotlin-core:3.4.03")
 ```
 
-Note that images and profiles are not supported on the Kotlin/JS target.
-
 ### Android
 **If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
 ```
@@ -79,6 +77,17 @@ If you have a question, you can:
 1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues) or a discussion.
 2. Join our [Discord server](https://discord.gg/G6vqP3S)
 3. Contact me using **Adam#9261** on [Discord](https://discordapp.com)
+
+## Unsupported features on each platform:
+| Feature                     | JVM                | Android            | JS                 | Native (Mac/Windows/Linux) |
+|-----------------------------|--------------------|--------------------|--------------------|----------------------------|
+| Images (Playlist covers)    | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
+| getSpotifyPkceCodeChallenge | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
+| Edit client playlist        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
+| Remove playlist tracks      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
+
+Please feel free to open an issue/discussion on GitHub or Discord if you need access to one of these features 
+or have an interest in implementing one, as direction can be provided.
 
 ## Creating a new api instance
 To decide which api you need (SpotifyAppApi, SpotifyClientApi, SpotifyImplicitGrantApi), you can refer 

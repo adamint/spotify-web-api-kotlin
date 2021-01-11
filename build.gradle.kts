@@ -6,12 +6,12 @@ plugins {
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
+    id("com.android.library")
     kotlin("multiplatform") version "1.4.21"
     kotlin("plugin.serialization") version "1.4.21"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
-    id("com.android.library")
     id("kotlin-android-extensions")
 }
 
@@ -32,7 +32,7 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.4.03"
+version = "3.5.0-rc.1"
 
 tasks.withType<Test> {
     this.testLogging {
@@ -94,7 +94,6 @@ kotlin {
         }
 
         mavenPublication {
-            artifactId = "spotify-api-kotlin-android"
             setupPom(artifactId)
         }
 
@@ -112,14 +111,12 @@ kotlin {
         }
 
         mavenPublication {
-            artifactId = "spotify-api-kotlin"
             setupPom(artifactId)
         }
     }
 
     js(KotlinJsCompilerType.LEGACY) {
         mavenPublication {
-            artifactId = "spotify-api-kotlin-js"
             setupPom(artifactId)
         }
 
@@ -146,19 +143,83 @@ kotlin {
         }
     }
 
+    val hostOs = System.getProperty("os.name")
+    val isMainHost = hostOs.contains("mac", true)
+    //val isMainPlatform =
+    val isMingwX64 = hostOs.startsWith("Windows")
+
+    macosX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    linuxX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    mingwX64 {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+
+    val publicationsFromMainHost =
+        listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
+
+    publishing {
+        publications {
+            matching { it.name in publicationsFromMainHost }.all {
+                val targetPublication = this@all
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
+            }
+
+            val kotlinMultiplatform by getting(MavenPublication::class) {
+                artifactId = "spotify-api-kotlin-core"
+                setupPom(artifactId)
+            }
+
+            /*val metadata by getting(MavenPublication::class) {
+                artifactId = "spotify-api-kotlin-metadata"
+                setupPom(artifactId)
+            }*/
+        }
+
+        repositories {
+            maven {
+                name = "nexus"
+                val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+
+                credentials {
+                    val nexusUsername: String? by project.extra
+                    val nexusPassword: String? by project.extra
+                    username = nexusUsername
+                    password = nexusPassword
+                }
+            }
+        }
+    }
+
     targets {
         sourceSets {
-            val coroutineVersion = "1.4.2"
+            val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.4.1"
+            val kotlinxDatetimeVersion = "0.1.1"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
+
             val commonTest by getting {
                 dependencies {
                     implementation(kotlin("test-common"))
@@ -221,6 +282,44 @@ kotlin {
                 }
             }
 
+            val desktopMain by creating {
+                dependsOn(commonMain)
+
+                dependencies {
+                    implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                }
+            }
+
+            val desktopTest by creating {
+                dependencies {
+
+                }
+            }
+
+            val linuxX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val linuxX64Test by getting {
+                dependsOn(desktopTest)
+            }
+
+            val mingwX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val mingwX64Test by getting {
+                dependsOn(desktopTest)
+            }
+
+            val macosX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val macosX64Test by getting {
+                dependsOn(desktopTest)
+            }
+
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
             }
@@ -228,40 +327,12 @@ kotlin {
     }
 }
 
-publishing {
-    publications {
-        val kotlinMultiplatform by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-core"
-            setupPom(artifactId)
-        }
-
-        val metadata by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-metadata"
-            setupPom(artifactId)
-        }
-    }
-
-    repositories {
-        maven {
-            name = "nexus"
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-            credentials {
-                val nexusUsername: String? by project.extra
-                val nexusPassword: String? by project.extra
-                username = nexusUsername
-                password = nexusPassword
-            }
-        }
-    }
-}
 
 signing {
     if (project.hasProperty("signing.keyId")
-            && project.hasProperty("signing.password")
-            && project.hasProperty("signing.secretKeyRingFile")) {
+        && project.hasProperty("signing.password")
+        && project.hasProperty("signing.secretKeyRingFile")
+    ) {
         sign(publishing.publications)
     }
 }
@@ -333,3 +404,4 @@ fun MavenPublication.setupPom(publicationName: String) {
         }
     }
 }
+

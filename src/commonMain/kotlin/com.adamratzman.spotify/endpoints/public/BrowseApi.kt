@@ -101,9 +101,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
             "market",
             market?.name
-        ).with("locale", locale).with("timestamp", timestamp?.let {
-            formatDate("yyyy-MM-dd'T'HH:mm:ss", it)
-        }).toString()
+        ).with("locale", locale).with("timestamp", timestamp?.let { formatDate(it) }).toString()
     ).toObject(FeaturedPlaylists.serializer(), api, json)
 
     /**
@@ -183,7 +181,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             limit
         ).with("offset", offset)
             .with("market", market?.name).toString()
-    ).toPagingObject(SimplePlaylist.serializer(), "playlists", endpoint = this, json = json)
+    ).toPagingObject((SimplePlaylist.serializer()), "playlists", endpoint = this, json = json)
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
