@@ -846,6 +846,8 @@ public class SpotifyUserAuthorization(
  * @param requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  * @param proxyBaseUrl Provide if you have a proxy base URL that you would like to use instead of the Spotify API base
  * (https://api.spotify.com/v1).
+ * @param retryIfInternalServerError Whether to retry once if an internal server error (500..599) has been received
+ *
  */
 public data class SpotifyApiOptions(
     public var useCache: Boolean = true,
@@ -861,5 +863,6 @@ public data class SpotifyApiOptions(
     public var refreshTokenProducer: (suspend (GenericSpotifyApi) -> Token)? = null,
     public var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
     public var requiredScopes: List<SpotifyScope>? = null,
-    public var proxyBaseUrl: String? = null
+    public var proxyBaseUrl: String? = null,
+    public var retryIfInternalServerError: Boolean = true
 )

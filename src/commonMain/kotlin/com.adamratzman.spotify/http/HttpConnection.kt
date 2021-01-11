@@ -85,7 +85,7 @@ public class HttpConnection constructor(
 
     public suspend fun execute(
         additionalHeaders: List<HttpHeader>? = null,
-        retryIf502: Boolean = true
+        retryIfInternalServerError: Boolean = true
     ): HttpResponse {
         val httpRequest = buildRequest(additionalHeaders)
 
@@ -93,15 +93,15 @@ public class HttpConnection constructor(
             return HttpClient().request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
                 val respCode = response.status.value
 
-                if (respCode == 502 && retryIf502) {
+                if (respCode in 500..599 && retryIfInternalServerError) {
                     api?.logger?.logError(
                         false,
-                        "Received 502 (Invalid response) for URL $url and $this (${response.readText()})\nRetrying..",
+                        "Received $respCode (Internal Server Error) for URL $url and $this (${response.readText()})\nRetrying..",
                         null
                     )
-                    return@let execute(additionalHeaders, retryIf502 = false)
-                } else if (respCode == 502 && !retryIf502) {
-                    api?.logger?.logWarning("Recieved 502 (Invalid response) for URL $url and $this\nNot retrying")
+                    return@let execute(additionalHeaders, retryIfInternalServerError = false)
+                } else if (respCode in 500..599 && !retryIfInternalServerError) {
+                    api?.logger?.logWarning("Received $respCode (Internal Server Error) for URL $url and $this\nNot retrying")
                 }
 
                 if (respCode == 429) {
@@ -114,7 +114,7 @@ public class HttpConnection constructor(
                         )
 
                         delay(ratelimit * 1000)
-                        return@let execute(additionalHeaders, retryIf502 = retryIf502)
+                        return@let execute(additionalHeaders, retryIfInternalServerError = retryIfInternalServerError)
                     } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
@@ -125,7 +125,7 @@ public class HttpConnection constructor(
                     api.refreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
                     newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
-                    return execute(newAdditionalHeaders, retryIf502)
+                    return execute(newAdditionalHeaders, retryIfInternalServerError)
                 }
 
                 return HttpResponse(

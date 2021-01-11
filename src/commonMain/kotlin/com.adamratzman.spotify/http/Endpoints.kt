@@ -87,9 +87,10 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
             return withTimeout(api.spotifyApiOptions.requestTimeoutMillis ?: 100 * 1000L) {
                 try {
                     val document = createConnection(url, body, method, contentType).execute(
-                        cacheState?.eTag?.let {
+                        additionalHeaders = cacheState?.eTag?.let {
                             listOf(HttpHeader("If-None-Match", it))
-                        }
+                        },
+                        retryIfInternalServerError = api.spotifyApiOptions.retryIfInternalServerError
                     )
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
@@ -100,7 +101,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         contentType
                     )
                 } catch (e: BadRequestException) {
-                    if (e.statusCode?.equals(401) == true && !attemptedRefresh) {
+                    if (e.statusCode == 401 && !attemptedRefresh) {
                         api.refreshToken()
 
                         execute(
@@ -147,7 +148,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
             }
         }
 
-        if (document.responseCode / 200 != 1 /* Check if status is not 2xx or 3xx */) {
+        if (document.responseCode !in 200..399 /* Check if status is not 2xx or 3xx */) {
             val response = try {
                 document.body.toObject(ErrorResponse.serializer(), api, api.spotifyApiOptions.json)
             } catch (e: Exception) {
