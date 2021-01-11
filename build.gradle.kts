@@ -6,12 +6,12 @@ plugins {
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
+    id("com.android.library")
     kotlin("multiplatform") version "1.4.21"
     kotlin("plugin.serialization") version "1.4.21"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
-    id("com.android.library")
     id("kotlin-android-extensions")
 }
 
@@ -148,13 +148,10 @@ kotlin {
 
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
-    val nativeTarget = when {
-        hostOs == "Mac OS X" -> macosX64("native")
-        hostOs == "Linux" -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
 
+    macosX64()
+    linuxX64()
+    mingwX64()
 
     targets {
         sourceSets {
@@ -169,9 +166,9 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
-                    implementation("com.autodesk:coroutineworker:0.6.2")
                 }
             }
+
             val commonTest by getting {
                 dependencies {
                     implementation(kotlin("test-common"))
@@ -234,15 +231,42 @@ kotlin {
                 }
             }
 
-            val nativeMain by getting {
+            val desktopMain by creating {
+                dependsOn(commonMain)
+
                 dependencies {
                     implementation("io.ktor:ktor-client-curl:$ktorVersion")
                 }
             }
-            val nativeTest by getting {
+
+            val desktopTest by creating {
                 dependencies {
 
                 }
+            }
+
+            val linuxX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val linuxX64Test by getting {
+                dependsOn(desktopTest)
+            }
+
+            val mingwX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val mingwX64Test by getting {
+                dependsOn(desktopTest)
+            }
+
+            val macosX64Main by getting {
+                dependsOn(desktopMain)
+            }
+
+            val macosX64Test by getting {
+                dependsOn(desktopTest)
             }
 
             all {
@@ -259,10 +283,10 @@ publishing {
             setupPom(artifactId)
         }
 
-        val metadata by getting(MavenPublication::class) {
+        /*val metadata by getting(MavenPublication::class) {
             artifactId = "spotify-api-kotlin-metadata"
             setupPom(artifactId)
-        }
+        }*/
     }
 
     repositories {
