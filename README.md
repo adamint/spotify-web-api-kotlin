@@ -26,7 +26,7 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 * [Tips](#tips)
     + [Building the API](#building-the-api)
 * [Notes](#notes)
-    + [The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
+    + [LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
     + [Generic Requests](#generic-request)
     + [Track Relinking](#track-relinking)
 * [Contributing](#contributing)
@@ -373,7 +373,7 @@ runBlocking {
 ```
 
 ## Notes
-### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
+### LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
 can do with them!
 
