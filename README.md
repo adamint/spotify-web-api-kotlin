@@ -4,11 +4,13 @@
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/)
+This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/), 
+supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native 
+(macOS, Windows, Linux).
 
 ## Table of Contents
 * [Library installing](#library-installing)
-    + [JVM, Android, JS](#jvm-android-js)
+    + [JVM, Android, JS, Native](#jvm-android-js)
     + [Android information](#android)
 * [Documentation](#documentation)
 * [Need help, have a question, or want to contribute?](#have-a-question)
@@ -31,13 +33,13 @@ This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web
 
 ## Library installing
 
-### JVM, Android, JS
+### JVM, Android, JS, Native (macOS, Windows, Linux)
 ```
 repositories {
     jcenter()
 }
 
-implementation("com.adamratzman:spotify-api-kotlin-core:3.4.03")
+implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 ```
 
 ### Android
