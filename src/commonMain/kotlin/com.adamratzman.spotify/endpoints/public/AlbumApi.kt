@@ -4,14 +4,12 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Album
-import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.AlbumsResponse
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
@@ -85,5 +83,5 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             offset
         ).with("market", market?.name)
             .toString()
-    ).toPagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(SimpleTrack.serializer(), endpoint = this, json = json)
 }

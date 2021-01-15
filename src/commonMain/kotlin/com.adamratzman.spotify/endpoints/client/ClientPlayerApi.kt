@@ -15,7 +15,7 @@ import com.adamratzman.spotify.models.PlayHistory
 import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
-import com.adamratzman.spotify.models.serialization.toJson
+import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
@@ -79,7 +79,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): CursorBasedPagingObject<PlayHistory> = get(
         endpointBuilder("/me/player/recently-played")
             .with("limit", limit).with("before", before).with("after", after).toString()
-    ).toCursorBasedPagingObject(PlayHistory.serializer(), endpoint = this, json = json)
+    ).toCursorBasedPagingObject(PlayHistory::class, PlayHistory.serializer(), endpoint = this, json = json)
 
     /**
      * Get the object currently being played on the user’s Spotify account.
@@ -242,7 +242,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             else if (offsetPlayableUri != null) body += buildJsonObject {
                 put("offset", buildJsonObject { put("uri", offsetPlayableUri.uri) })
             }
-            put(url, body.toJson())
+            put(url, body.mapToJsonString())
         } else put(url)
     }
 
@@ -286,7 +286,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         val json = jsonMap()
         play?.let { json += buildJsonObject { put("play", it) } }
         json += buildJsonObject { put("device_ids", JsonArray(listOf(deviceId).map(::JsonPrimitive))) }
-        put(endpointBuilder("/me/player").toString(), json.toJson())
+        put(endpointBuilder("/me/player").toString(), json.mapToJsonString())
     }
 
     /**

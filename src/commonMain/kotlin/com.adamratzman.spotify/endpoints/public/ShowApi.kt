@@ -5,15 +5,13 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Show
 import com.adamratzman.spotify.models.ShowList
-import com.adamratzman.spotify.models.ShowUri
 import com.adamratzman.spotify.models.SimpleEpisode
 import com.adamratzman.spotify.models.SimpleShow
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 
@@ -100,5 +98,5 @@ public class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
             .with("offset", offset).with("market", market?.name).toString()
     )
-        .toPagingObject(SimpleEpisode.serializer(), null, this, json)
+        .toNonNullablePagingObject(SimpleEpisode.serializer(), null, this, json)
 }

@@ -6,17 +6,13 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
-import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.Playlist
-import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SimplePlaylist
-import com.adamratzman.spotify.models.UserUri
-import com.adamratzman.spotify.models.serialization.toJson
+import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.BufferedImage
 import com.adamratzman.spotify.utils.File
 import com.adamratzman.spotify.utils.convertFileToBufferedImage
@@ -74,7 +70,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
 
         return post(
             endpointBuilder("/users/${UserUri(user ?: (api as SpotifyClientApi).getUserId()).id.encodeUrl()}/playlists").toString(),
-            body.toJson()
+            body.mapToJsonString()
         ).toObject(Playlist.serializer(), api, json)
     }
 
@@ -128,7 +124,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
             if (position != null) body += buildJsonObject { put("position", position) }
             post(
                 endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-                body.toJson()
+                body.mapToJsonString()
             )
         }
     }
@@ -162,7 +158,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         if (collaborative != null) body += buildJsonObject { put("collaborative", collaborative) }
         if (description != null) body += buildJsonObject { put("description", description) }
         require(body.isNotEmpty()) { "At least one option must not be null" }
-        put(endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.toJson())
+        put(endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}").toString(), body.mapToJsonString())
     }
 
     /**
@@ -188,7 +184,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
         require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
         return get(endpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-            .toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
+            .toNonNullablePagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
     }
 
     /**
@@ -258,7 +254,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
 
         return put(
             endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-            body.toJson()
+            body.mapToJsonString()
         ).toObject(PlaylistSnapshot.serializer(), api, json)
     }
 
@@ -286,7 +282,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         }
         put(
             endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").toString(),
-            body.toJson()
+            body.mapToJsonString()
         )
     }
 
@@ -464,7 +460,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
                 )
             }
             delete(
-                endpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.toJson()
+                endpointBuilder("/playlists/${PlaylistUri(playlist).id}/tracks").toString(), body = body.mapToJsonString()
             ).toObject(PlaylistSnapshot.serializer(), api, json)
         }.last()
     }

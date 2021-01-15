@@ -6,17 +6,14 @@ import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.PlaylistTrack
-import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SpotifyImage
-import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
@@ -57,7 +54,7 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
             "offset", offset
         ).toString()
-    ).toPagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
 
     @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
     public suspend fun getPlaylists(
@@ -110,7 +107,7 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
             .with("offset", offset).with("market", market?.name).toString()
     )
-        .toPagingObject(PlaylistTrack.serializer(), null, this, json)
+        .toNonNullablePagingObject(PlaylistTrack.serializer(), null, this, json)
 
     /**
      * Get the current image(s) associated with a specific playlist.

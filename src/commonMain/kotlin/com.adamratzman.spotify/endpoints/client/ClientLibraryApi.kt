@@ -6,13 +6,11 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
-import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.PagingObject
-import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.SavedAlbum
 import com.adamratzman.spotify.models.SavedTrack
 import com.adamratzman.spotify.models.serialization.toList
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -44,7 +42,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): PagingObject<SavedTrack> = get(
         endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
             .toString()
-    ).toPagingObject(SavedTrack.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(SavedTrack.serializer(), endpoint = this, json = json)
 
     /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
@@ -67,7 +65,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): PagingObject<SavedAlbum> = get(
         endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
             .toString()
-    ).toPagingObject(SavedAlbum.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(SavedAlbum.serializer(), endpoint = this, json = json)
 
     /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.

@@ -7,7 +7,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
-import com.adamratzman.spotify.models.serialization.toPagingObject
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 
 /**
  * Endpoints for retrieving information about the user’s listening habits.
@@ -69,7 +69,7 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
     ): PagingObject<Artist> = get(
         endpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
             .with("time_range", timeRange).toString()
-    ).toPagingObject(Artist.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(Artist.serializer(), endpoint = this, json = json)
 
     /**
      * Get the current user’s top tracks based on calculated affinity.
@@ -99,5 +99,5 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
     ): PagingObject<Track> = get(
         endpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
             .with("time_range", timeRange).toString()
-    ).toPagingObject(Track.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(Track.serializer(), endpoint = this, json = json)
 }
