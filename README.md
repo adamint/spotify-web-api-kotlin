@@ -1,16 +1,22 @@
 # Kotlin Spotify Web API 
+A [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/),
+supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
+(macOS, Windows, Linux).
+
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
-[![Build Status](http://144.217.240.243:8111/app/rest/builds/aggregated/strob:(buildType:(project:(id:SpotifyWebApiKotlin)))/statusIcon.svg)](http://144.217.240.243:8111/project.html?projectId=SpotifyWebApiKotlin) 
-[![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin/spotify-web-api-kotlin/)
+[![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-This is the [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](https://developer.spotify.com/web-api/). JS/Browser and Node, Android, and JVM targets are currently supported, with Kotlin/Native (Windows, macOS, Linux) support coming soon in the next minor version, 3.5.
 
-You can ask questions, get guidance, or get help contributing by joining our [Discord server](https://discord.gg/G6vqP3S). 
+![Android Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_AndroidTests?label=Kotlin%2FAndroid%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
+![JS tests Status](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JsTests?label=Kotlin%2FJS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
+![JVM tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JvmTests?label=Kotlin%2FJVM%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
+![Linux Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_LinuxTests?label=Kotlin%2FLinux%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
+![macOS Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_RunTestsMac?label=Kotlin%2FmacOS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
 
 ## Table of Contents
 * [Library installing](#library-installing)
-    + [JVM, Android, JS](#jvm-android-js)
+    + [JVM, Android, JS, Native](#jvm-android-js)
     + [Android information](#android)
 * [Documentation](#documentation)
 * [Need help, have a question, or want to contribute?](#have-a-question)
@@ -26,20 +32,23 @@ You can ask questions, get guidance, or get help contributing by joining our [Di
 * [Tips](#tips)
     + [Building the API](#building-the-api)
 * [Notes](#notes)
-    + [The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
+    + [LinkedResults, PagingObjects, and Cursor-based Paging Objects](#the-benefits-of-linkedresults-pagingobjects-and-cursor-based-paging-objects)
     + [Generic Requests](#generic-request)
     + [Track Relinking](#track-relinking)
 * [Contributing](#contributing)
 
 ## Library installing
+Current version:
 
-### JVM, Android, JS
+[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+
+### JVM, Android, JS, Native (macOS, Windows, Linux)
 ```
 repositories {
     jcenter()
 }
 
-implementation("com.adamratzman:spotify-api-kotlin-core:3.4.03")
+implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 ```
 
 ### Android
@@ -74,7 +83,7 @@ The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.i
 ## Have a question?
 If you have a question, you can:
 
-1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues) or a discussion.
+1. Create an [issue](https://github.com/adamint/spotify-web-api-kotlin/issues)
 2. Join our [Discord server](https://discord.gg/G6vqP3S)
 3. Contact me using **Adam#9261** on [Discord](https://discordapp.com)
 
@@ -140,7 +149,7 @@ The `SpotifyClientApi` is a superset of `SpotifyApi`; thus, nothing changes if y
 access public data.
 This library does not provide a method to retrieve the code from your  callback url; instead,
 you must implement that with a web server. 
-Automatic refresh is available *only* when building with an authorization code or a 
+Automatic Token refresh is available *only* when building with an authorization code or a 
 `Token` object. Otherwise, it will expire `Token.expiresIn` seconds after creation.
 
 Make sure your application has requested the proper [Scopes](https://developer.spotify.com/web-api/using-spotifyScopes/) in order to 
@@ -373,7 +382,7 @@ runBlocking {
 ```
 
 ## Notes
-### The benefits of LinkedResults, PagingObjects, and Cursor-based Paging Objects
+### LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
 can do with them!
 

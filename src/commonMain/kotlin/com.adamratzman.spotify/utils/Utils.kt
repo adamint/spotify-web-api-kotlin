@@ -8,6 +8,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.JsonElement
 
+/**
+ * The current time in milliseconds since UNIX epoch.
+ */
 public expect fun getCurrentTimeMs(): Long
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()

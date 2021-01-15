@@ -159,7 +159,7 @@ public class HttpConnection constructor(
                     )
                     throw AuthenticationException(error)
                 } catch (ignored: ParseException) {
-                    throw e
+                    throw BadRequestException(e)
                 }
             }
         }
