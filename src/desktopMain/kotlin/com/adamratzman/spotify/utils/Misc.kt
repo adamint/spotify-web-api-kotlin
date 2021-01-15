@@ -3,6 +3,9 @@ package com.adamratzman.spotify.utils
 
 import kotlin.system.getTimeMillis
 
+/**
+ * The current time in milliseconds since UNIX epoch.
+ */
 public actual fun getCurrentTimeMs(): Long {
     return getTimeMillis()
 }

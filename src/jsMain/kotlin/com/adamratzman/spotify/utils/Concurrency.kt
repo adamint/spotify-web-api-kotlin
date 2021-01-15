@@ -1,7 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-@Suppress("unused")
+/**
+ * Represents a unit of time
+ */
 public actual enum class TimeUnit(public val multiplier: Int) {
     MILLISECONDS(1), SECONDS(1000), MINUTES(60000);
 
