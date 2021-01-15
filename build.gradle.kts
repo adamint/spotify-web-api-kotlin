@@ -32,7 +32,12 @@ buildscript {
 }
 
 group = "com.adamratzman"
-version = "3.5.0-rc.1"
+version = System.getenv("SPOTIFY_API_PUBLISH_VERSION") ?: "0.0.0.SNAPSHOT"
+
+System.getenv("signing.keyId")?.let { project.ext["signing.keyId"] = it }
+System.getenv("signing.password")?.let { project.ext["signing.password"] = it }
+System.getenv("signing.secretKeyRingFile")?.let { project.ext["signing.secretKeyRingFile"] = it }
+
 
 tasks.withType<Test> {
     this.testLogging {
@@ -195,8 +200,8 @@ kotlin {
                 url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
                 credentials {
-                    val nexusUsername: String? by project.extra
-                    val nexusPassword: String? by project.extra
+                    val nexusUsername: String? = System.getenv("nexus.username")
+                    val nexusPassword: String? = System.getenv("nexus.password")
                     username = nexusUsername
                     password = nexusPassword
                 }
@@ -327,7 +332,6 @@ kotlin {
     }
 }
 
-
 signing {
     if (project.hasProperty("signing.keyId")
         && project.hasProperty("signing.password")
@@ -376,6 +380,7 @@ tasks {
 
 
 fun MavenPublication.setupPom(publicationName: String) {
+    artifactId = artifactId.replace("-web", "")
     artifact(dokkaJar.get())
 
     pom {
@@ -390,8 +395,8 @@ fun MavenPublication.setupPom(publicationName: String) {
         }
         licenses {
             license {
-                name.set("The Apache Software License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                name.set("MIT License")
+                url.set("https://github.com/adamint/spotify-web-api-kotlin/blob/master/LICENSE")
                 distribution.set("repo")
             }
         }

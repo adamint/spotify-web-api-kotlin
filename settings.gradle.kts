@@ -28,5 +28,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "spotify-api-kotlin"
+rootProject.name = "spotify-web-api-kotlin"
 
