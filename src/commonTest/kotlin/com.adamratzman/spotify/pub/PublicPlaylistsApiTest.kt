@@ -85,4 +85,13 @@ class PublicPlaylistsApiTest {
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api.playlists.getPlaylistCovers("adskjfjkasdf") }
         }
     }
+
+    @Test
+    fun testConvertSimplePlaylistToPlaylist() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+            val simplePlaylist = api.playlists.getUserPlaylists("adamratzman1").first()!!
+            assertEquals(simplePlaylist.id, simplePlaylist.toFullPlaylist()?.id)
+        }
+    }
 }

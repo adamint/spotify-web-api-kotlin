@@ -202,7 +202,6 @@ internal inline fun <reified T : Any> String.toNullablePagingObject(
 internal fun Map<String, JsonElement>.mapToJsonString() = JsonObject(this).toString()
 
 internal fun List<NeedsApi?>.instantiateAllNeedsApiObjects(api: GenericSpotifyApi) {
-    println("run on ${this.size} items")
     this.instantiateLateinitsIfPagingObjects(api)
     asSequence().filterNotNull().map { member -> member.getMembersThatNeedApiInstantiation() }.flatten()
         .distinct()
