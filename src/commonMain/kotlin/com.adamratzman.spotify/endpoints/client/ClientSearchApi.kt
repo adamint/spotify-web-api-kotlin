@@ -39,7 +39,7 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, SearchType.SHOW))
-            .toNonNullablePagingObject(SimpleShow.serializer(), "shows", this, json)
+            .toNonNullablePagingObject(SimpleShow.serializer(), "shows", api, json)
 
     /**
      * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
@@ -63,5 +63,5 @@ public class ClientSearchApi(api: GenericSpotifyApi) : SearchApi(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, SearchType.EPISODE))
-                .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", this, json)
+                .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", api, json)
 }

@@ -84,6 +84,8 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
      */
     internal val spotifyApiBase = "https://api.spotify.com/v1"
 
+    internal val defaultEndpoint get() = tracks
+
     init {
         spotifyApiOptions.requiredScopes?.let { requiredScopes ->
             val tokenScopes = token.scopes ?: listOf()

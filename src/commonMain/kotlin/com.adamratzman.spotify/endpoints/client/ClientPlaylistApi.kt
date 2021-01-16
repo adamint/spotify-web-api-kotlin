@@ -6,13 +6,17 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
+import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.Playlist
+import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.mapToJsonString
-import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.BufferedImage
 import com.adamratzman.spotify.utils.File
 import com.adamratzman.spotify.utils.convertFileToBufferedImage
@@ -184,7 +188,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         require(!(limit != null && limit !in 1..50)) { "Limit must be between 1 and 50. Provided $limit" }
         require(!(offset != null && offset !in 0..100000)) { "Offset must be between 0 and 100,000. Provided $limit" }
         return get(endpointBuilder("/me/playlists").with("limit", limit).with("offset", offset).toString())
-            .toNonNullablePagingObject(SimplePlaylist.serializer(), endpoint = this, json = json)
+            .toNonNullablePagingObject(SimplePlaylist.serializer(), api = api, json = json)
     }
 
     /**

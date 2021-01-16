@@ -5,9 +5,11 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.encodeUrl
+import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.FeaturedPlaylists
 import com.adamratzman.spotify.models.PagingObject
+import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.RecommendationResponse
 import com.adamratzman.spotify.models.RecommendationSeed
 import com.adamratzman.spotify.models.SimpleAlbum
@@ -15,8 +17,8 @@ import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifyCategory
 import com.adamratzman.spotify.models.serialization.toInnerArray
-import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
+import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.formatDate
@@ -67,7 +69,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             "country",
             market?.name
         ).toString()
-    ).toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", endpoint = this, json = json)
+    ).toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api = api, json = json)
 
     /**
      * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
@@ -129,7 +131,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             "market",
             market?.name
         ).with("locale", locale).toString()
-    ).toNonNullablePagingObject(SpotifyCategory.serializer(), "categories", endpoint = this, json = json)
+    ).toNonNullablePagingObject(SpotifyCategory.serializer(), "categories", api = api, json = json)
 
     /**
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
@@ -179,7 +181,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             limit
         ).with("offset", offset)
             .with("market", market?.name).toString()
-    ).toNonNullablePagingObject((SimplePlaylist.serializer()), "playlists", endpoint = this, json = json)
+    ).toNonNullablePagingObject((SimplePlaylist.serializer()), "playlists", api = api, json = json)
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.

@@ -67,6 +67,8 @@ public data class SimpleTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
     public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + linkedTrack + this
 }
 
 /**
@@ -136,6 +138,8 @@ public data class Track(
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
     val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + album + linkedTrack + this
 }
 
 /**
@@ -163,6 +167,8 @@ public data class LinkedTrack(
      */
 
     public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 @Serializable

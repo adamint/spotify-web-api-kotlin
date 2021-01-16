@@ -69,7 +69,7 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
     ): PagingObject<Artist> = get(
         endpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
             .with("time_range", timeRange).toString()
-    ).toNonNullablePagingObject(Artist.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(Artist.serializer(), api = api, json = json)
 
     /**
      * Get the current user’s top tracks based on calculated affinity.
@@ -99,5 +99,5 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
     ): PagingObject<Track> = get(
         endpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
             .with("time_range", timeRange).toString()
-    ).toNonNullablePagingObject(Track.serializer(), endpoint = this, json = json)
+    ).toNonNullablePagingObject(Track.serializer(), api = api, json = json)
 }

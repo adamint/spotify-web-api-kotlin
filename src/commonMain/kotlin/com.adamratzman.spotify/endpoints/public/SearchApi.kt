@@ -16,8 +16,8 @@ import com.adamratzman.spotify.models.SimpleShow
 import com.adamratzman.spotify.models.SimpleTrack
 import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
-import com.adamratzman.spotify.models.serialization.toNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
+import com.adamratzman.spotify.models.serialization.toNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
@@ -117,13 +117,13 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         val map = json.decodeFromString(MapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
         return SpotifySearchResult(
-            map["albums"]?.toString()?.toNonNullablePagingObject(SimpleAlbum.serializer(), endpoint = this, json = json),
-            map["artists"]?.toString()?.toNonNullablePagingObject(Artist.serializer(), endpoint = this, json = json),
-            map["playlists"]?.toString()?.toNonNullablePagingObject(SimplePlaylist.serializer(), endpoint = this, json = json),
-            map["tracks"]?.toString()?.toNonNullablePagingObject(Track.serializer(), endpoint = this, json = json),
+            map["albums"]?.toString()?.toNonNullablePagingObject(SimpleAlbum.serializer(), api = api, json = json),
+            map["artists"]?.toString()?.toNonNullablePagingObject(Artist.serializer(), api = api, json = json),
+            map["playlists"]?.toString()?.toNonNullablePagingObject(SimplePlaylist.serializer(), api = api, json = json),
+            map["tracks"]?.toString()?.toNonNullablePagingObject(Track.serializer(), api = api, json = json),
             map["episodes"]?.toString()
-                ?.toNullablePagingObject(SimpleEpisode.serializer(), endpoint = this, json = json),
-            map["shows"]?.toString()?.toNullablePagingObject(SimpleShow.serializer(), endpoint = this, json = json)
+                ?.toNullablePagingObject(SimpleEpisode.serializer(), api = api, json = json),
+            map["shows"]?.toString()?.toNullablePagingObject(SimpleShow.serializer(), api = api, json = json)
         )
     }
 
@@ -148,7 +148,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, SearchType.PLAYLIST))
-        .toNonNullablePagingObject(SimplePlaylist.serializer(), "playlists", this, json)
+        .toNonNullablePagingObject(SimplePlaylist.serializer(), "playlists", api, json)
 
     /**
      * Get Spotify Catalog information about artists that match the keyword string. See [SearchApi.search] for more information
@@ -172,7 +172,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<Artist> = get(build(query, market, limit, offset, SearchType.ARTIST))
-        .toNonNullablePagingObject(Artist.serializer(), "artists", this, json)
+        .toNonNullablePagingObject(Artist.serializer(), "artists", api, json)
 
     /**
      * Get Spotify Catalog information about albums that match the keyword string. See [SearchApi.search] for more information
@@ -196,7 +196,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, SearchType.ALBUM))
-        .toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", this, json)
+        .toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api, json)
 
     /**
      * Get Spotify Catalog information about tracks that match the keyword string. See [SearchApi.search] for more information
@@ -220,7 +220,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<Track> = get(build(query, market, limit, offset, SearchType.TRACK))
-        .toNonNullablePagingObject(Track.serializer(), "tracks", this, json)
+        .toNonNullablePagingObject(Track.serializer(), "tracks", api, json)
 
     protected fun build(
         query: String,

@@ -13,9 +13,9 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Device
 import com.adamratzman.spotify.models.PlayHistory
 import com.adamratzman.spotify.models.PlayableUri
+import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
-import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
@@ -79,7 +79,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): CursorBasedPagingObject<PlayHistory> = get(
         endpointBuilder("/me/player/recently-played")
             .with("limit", limit).with("before", before).with("after", after).toString()
-    ).toCursorBasedPagingObject(PlayHistory::class, PlayHistory.serializer(), endpoint = this, json = json)
+    ).toCursorBasedPagingObject(PlayHistory::class, PlayHistory.serializer(), api = api, json = json)
 
     /**
      * Get the object currently being played on the user’s Spotify account.

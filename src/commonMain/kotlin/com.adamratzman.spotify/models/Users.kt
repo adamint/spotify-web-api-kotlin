@@ -38,7 +38,9 @@ public data class SpotifyUserInformation(
     val product: String? = null,
     @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings? = null,
     val type: String
-) : CoreObject()
+) : CoreObject() {
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
+}
 
 /**
  * Public information about a Spotify user
@@ -61,7 +63,9 @@ public data class SpotifyPublicUser(
     val followers: Followers = Followers(null, -1),
     val images: List<SpotifyImage> = listOf(),
     val type: String
-) : CoreObject()
+) : CoreObject() {
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
+}
 
 /**
  * Information about a Spotify user's followers
