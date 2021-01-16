@@ -26,6 +26,8 @@ public data class SimpleArtist(
      * Converts this [SimpleArtist] into a full [Artist] object
      */
     public suspend fun toFullArtist(): Artist? = api.artists.getArtist(id)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 /**
@@ -55,7 +57,9 @@ public data class Artist(
     val name: String,
     val popularity: Int,
     val type: String
-) : CoreObject()
+) : CoreObject() {
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
+}
 
 @Serializable
 internal data class ArtistList(val artists: List<Artist?>)

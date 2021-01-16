@@ -2,7 +2,7 @@
 package com.adamratzman.spotify.models
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -17,6 +17,7 @@ import kotlinx.serialization.json.jsonPrimitive
  * @property uri The URI associated with the object.
  * @property type The type of the playable.
  */
+@Serializable(with = PlayableSerializer::class)
 public interface Playable {
     public val href: String?
     public val id: String?
@@ -40,12 +41,13 @@ public interface Playable {
      *
      */
     public val asTrack: Track? get() = this as? Track
+}
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
-    @Serializer(forClass = Playable::class)
-    public companion object : KSerializer<Playable> by object : JsonContentPolymorphicSerializer<Playable>(Playable::class) {
+public object PlayableSerializer :
+    KSerializer<Playable> by object : JsonContentPolymorphicSerializer<Playable>(Playable::class) {
         override fun selectDeserializer(element: JsonElement): KSerializer<out Playable> {
-            return when (val uri: PlayableUri? = (element as? JsonObject)?.get("uri")?.jsonPrimitive?.contentOrNull?.let { PlayableUri(it) }) {
+            return when (val uri: PlayableUri? =
+                (element as? JsonObject)?.get("uri")?.jsonPrimitive?.contentOrNull?.let { PlayableUri(it) }) {
                 is LocalTrackUri -> LocalTrack.serializer()
                 is EpisodeUri -> PodcastEpisodeTrack.serializer()
                 is SpotifyTrackUri -> Track.serializer()
@@ -53,4 +55,3 @@ public interface Playable {
             }
         }
     }
-}

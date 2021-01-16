@@ -64,6 +64,8 @@ public data class PodcastEpisodeTrack(
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
     val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(album) + artists + linkedTrack + this
 }
 
 /**
@@ -115,6 +117,8 @@ public data class Episode(
         get() = (language?.let { showLanguagesPrivate + it } ?: showLanguagesPrivate).map { languageString ->
             Locale.valueOf(languageString.replace("-", "_"))
         }
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(show, this)
 }
 
 /**
@@ -171,6 +175,8 @@ public data class SimpleEpisode(
      */
     public suspend fun toFullEpisode(market: Market? = null): Episode? =
         (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 /**

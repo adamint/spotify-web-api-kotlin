@@ -7,6 +7,7 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
+import io.ktor.client.features.ServerResponseException
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
 
@@ -639,7 +640,10 @@ public class SpotifyClientApiBuilder(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                throw SpotifyException.AuthenticationException(
+                // BadRequestException -> ServerResponseException
+                if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
+                    throw SpotifyException.BadRequestException("Spotify internal server error", e)
+                } else throw SpotifyException.AuthenticationException(
                     "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
                     e
                 )
@@ -675,7 +679,9 @@ public class SpotifyClientApiBuilder(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                throw SpotifyException.AuthenticationException(
+                if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
+                    throw SpotifyException.BadRequestException("Spotify internal server error", e)
+                } else throw SpotifyException.AuthenticationException(
                     "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
                     e
                 )
@@ -783,7 +789,9 @@ public class SpotifyAppApiBuilder(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                throw SpotifyException.AuthenticationException(
+                if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
+                    throw SpotifyException.BadRequestException("Spotify internal server error", e)
+                } else throw SpotifyException.AuthenticationException(
                     "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)",
                     e
                 )

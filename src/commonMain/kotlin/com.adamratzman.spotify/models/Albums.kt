@@ -70,6 +70,8 @@ public data class SimpleAlbum(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
     public suspend fun toFullAlbum(market: Market? = null): Album? = api.albums.getAlbum(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + this
 }
 
 @Serializable
@@ -148,6 +150,8 @@ public data class Album(
     val albumType: AlbumResultType get() = AlbumResultType.values().first { it.id == albumTypeString }
 
     val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + tracks + this
 }
 
 /**

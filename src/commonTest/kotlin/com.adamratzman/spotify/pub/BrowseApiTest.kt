@@ -166,8 +166,7 @@ class BrowseApiTest {
             assertTrue(
                 api.browse.getTrackRecommendations(
                     targetAttributes = listOf(
-                        TuneableTrackAttribute.Acousticness.asTrackAttribute(1f),
-                        TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(1f)
                     ),
                     seedGenres = listOf("pop")
                 ).tracks.isNotEmpty()
@@ -185,8 +184,7 @@ class BrowseApiTest {
             assertTrue(
                 api.browse.getTrackRecommendations(
                     minAttributes = listOf(
-                        TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f),
-                        TuneableTrackAttribute.Danceability.asTrackAttribute(0.5f)
+                        TuneableTrackAttribute.Acousticness.asTrackAttribute(0.5f)
                     ),
                     seedGenres = listOf("pop")
                 ).tracks.isNotEmpty()

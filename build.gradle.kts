@@ -8,7 +8,7 @@ plugins {
     id("io.codearte.nexus-staging") version "0.22.0"
     id("com.android.library")
     kotlin("multiplatform") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.20"
     id("com.diffplug.gradle.spotless") version "4.4.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
@@ -213,7 +213,7 @@ kotlin {
         sourceSets {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
-            val ktorVersion = "1.4.1"
+            val ktorVersion = "1.5.0"
             val kotlinxDatetimeVersion = "0.1.1"
 
             val commonMain by getting {

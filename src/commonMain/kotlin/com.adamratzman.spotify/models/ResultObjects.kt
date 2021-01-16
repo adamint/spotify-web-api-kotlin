@@ -43,6 +43,8 @@ public abstract class CoreObject : Identifiable() {
     abstract override val href: String
     public abstract val uri: SpotifyUri
     public val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
+
+    public abstract override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?>
 }
 
 /**
@@ -89,6 +91,8 @@ public class ExternalId(public val key: String, public val id: String)
 public abstract class NeedsApi {
     @Transient
     public lateinit var api: GenericSpotifyApi
+
+    internal open fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 /**

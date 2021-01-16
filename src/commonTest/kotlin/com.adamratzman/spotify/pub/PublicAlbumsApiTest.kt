@@ -57,4 +57,13 @@ class PublicAlbumsApiTest {
             assertFalse(api.albums.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3, Market.US).items[0].isRelinked())
         }
     }
+
+    @Test
+    fun testConvertSimpleAlbumToAlbum() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+            val simpleAlbum = api.tracks.getTrack("53BHUFdQphHiZUUG3nx9zn")!!.album
+            assertEquals(simpleAlbum.id, simpleAlbum.toFullAlbum()?.id)
+        }
+    }
 }

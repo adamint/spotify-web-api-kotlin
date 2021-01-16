@@ -58,6 +58,8 @@ public data class SimplePlaylist(
      */
     public suspend fun toFullPlaylist(market: Market? = null): Playlist? =
             api.playlists.getPlaylist(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 /**
@@ -76,7 +78,7 @@ public data class PlaylistTrack(
     @SerialName("added_at") val addedAt: String? = null,
     @SerialName("added_by") val addedBy: SpotifyPublicUser? = null,
     @SerialName("is_local") val isLocal: Boolean? = null,
-    @Serializable(with = Playable.Companion::class) val track: Playable? = null,
+    @Serializable(with = PlayableSerializer::class) val track: Playable? = null,
     @SerialName("video_thumbnail") val videoThumbnail: VideoThumbnail? = null
 )
 
@@ -123,6 +125,8 @@ public data class Playlist(
     val type: String
 ) : CoreObject() {
     val snapshot: PlaylistSnapshot get() = PlaylistSnapshot(snapshotIdString)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(tracks, this)
 }
 
 /**

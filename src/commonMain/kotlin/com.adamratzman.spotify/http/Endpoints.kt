@@ -10,6 +10,7 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import kotlinx.coroutines.CancellationException
 import kotlin.math.ceil
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
@@ -115,7 +116,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                     } else throw e
                 }
             }
-        } catch (e: TimeoutCancellationException) {
+        } catch (e: CancellationException) {
             throw TimeoutException(
                 e.message
                     ?: "The request $spotifyRequest timed out after (${api.spotifyApiOptions.requestTimeoutMillis ?: 100 * 1000}ms.",

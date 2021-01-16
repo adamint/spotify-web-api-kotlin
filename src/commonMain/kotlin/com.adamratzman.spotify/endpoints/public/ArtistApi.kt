@@ -13,8 +13,8 @@ import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleAlbum
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toInnerArray
+import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.models.serialization.toPagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import kotlinx.serialization.builtins.ListSerializer
@@ -89,7 +89,7 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             offset
         ).with("market", market?.name)
             .with("include_groups", include.joinToString(",") { it.keyword }).toString()
-    ).toPagingObject(SimpleAlbum.serializer(), null, this, json)
+    ).toNonNullablePagingObject(SimpleAlbum.serializer(), null, api, json)
 
     /**
      * Describes object types to include when finding albums

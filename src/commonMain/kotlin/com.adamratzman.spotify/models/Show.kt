@@ -51,6 +51,8 @@ public data class SimpleShow(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
     public suspend fun toFullShow(market: Market? = null): Show? = (api as? SpotifyClientApi)?.shows?.getShow(id, market)
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 
 /**
@@ -92,6 +94,8 @@ public data class Show(
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
     val languages: List<Locale> get() = languagesString.map { Locale.valueOf(it.replace("-", "_")) }
+
+    override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(episodes, this)
 }
 
 @Serializable

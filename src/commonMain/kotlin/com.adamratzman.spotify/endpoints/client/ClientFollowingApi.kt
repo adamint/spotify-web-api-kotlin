@@ -137,7 +137,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
             "after",
             after
         ).toString()
-    ).toCursorBasedPagingObject(Artist.serializer(), "artists", this, json)
+    ).toCursorBasedPagingObject(Artist::class, Artist.serializer(), "artists", api, json)
 
     /**
      * Add the current user as a follower of another user
