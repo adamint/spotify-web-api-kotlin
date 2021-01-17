@@ -38,7 +38,6 @@ System.getenv("signing.keyId")?.let { project.ext["signing.keyId"] = it }
 System.getenv("signing.password")?.let { project.ext["signing.password"] = it }
 System.getenv("signing.secretKeyRingFile")?.let { project.ext["signing.secretKeyRingFile"] = it }
 
-
 tasks.withType<Test> {
     this.testLogging {
         this.showStandardStreams = true
@@ -173,40 +172,7 @@ kotlin {
         listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
 
     publishing {
-        publications {
-            matching { it.name in publicationsFromMainHost }.all {
-                val targetPublication = this@all
-                tasks.withType<AbstractPublishToMaven>()
-                    .matching { it.publication == targetPublication }
-                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
-            }
-
-            val kotlinMultiplatform by getting(MavenPublication::class) {
-                artifactId = "spotify-api-kotlin-core"
-                setupPom(artifactId)
-            }
-
-            /*val metadata by getting(MavenPublication::class) {
-                artifactId = "spotify-api-kotlin-metadata"
-                setupPom(artifactId)
-            }*/
-        }
-
-        repositories {
-            maven {
-                name = "nexus"
-                val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-                credentials {
-                    val nexusUsername: String? = System.getenv("nexus.username") ?: project.extra["nexusUsername"] as? String
-                    val nexusPassword: String? = System.getenv("nexus.password") ?: project.extra["nexusPassword"] as? String
-                    username = nexusUsername
-                    password = nexusPassword
-                }
-            }
-        }
+        if ("local" !in (version as String)) registerPublishing()
     }
 
     targets {
@@ -214,14 +180,14 @@ kotlin {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.0"
-            val kotlinxDatetimeVersion = "0.1.1"
+            val klockVersion = "2.0.3"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+                    implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
                 }
             }
 
@@ -296,9 +262,7 @@ kotlin {
             }
 
             val desktopTest by creating {
-                dependencies {
-
-                }
+                dependsOn(commonTest)
             }
 
             val linuxX64Main by getting {
@@ -330,6 +294,10 @@ kotlin {
             }
         }
     }
+}
+
+publishing {
+    if ("local" in (version as String)) registerPublishing()
 }
 
 signing {
@@ -410,3 +378,32 @@ fun MavenPublication.setupPom(publicationName: String) {
     }
 }
 
+fun PublishingExtension.registerPublishing() {
+    publications {
+        val kotlinMultiplatform by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin-core"
+            setupPom(artifactId)
+        }
+
+        /*val metadata by getting(MavenPublication::class) {
+            artifactId = "spotify-api-kotlin-metadata"
+            setupPom(artifactId)
+        }*/
+    }
+
+    repositories {
+        maven {
+            name = "nexus"
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+
+            credentials {
+                val nexusUsername: String? = System.getenv("nexus.username") ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
+                val nexusPassword: String? = System.getenv("nexus.password") ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
+                username = nexusUsername
+                password = nexusPassword
+            }
+        }
+    }
+}

@@ -11,4 +11,4 @@ public enum class Platform {
     NATIVE
 }
 
-public expect val platform: Platform
+public expect val currentApiPlatform: Platform

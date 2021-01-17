@@ -144,6 +144,29 @@ public class HttpConnection constructor(
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
             try {
+                if (e.response.status.value == 429) {
+                    val ratelimit = e.response.headers["Retry-After"]!!.toLong() + 1L
+                    if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
+                        api.logger.logError(
+                            false,
+                            "The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}",
+                            null
+                        )
+
+                        delay(ratelimit * 1000)
+                        return execute(additionalHeaders, retryIfInternalServerError = retryIfInternalServerError)
+                    } else throw SpotifyRatelimitedException(ratelimit)
+                }
+
+                if (e.response.status.value == 401 && errorBody.contains("access token") &&
+                    api != null && api.spotifyApiOptions.automaticRefresh
+                ) {
+                    api.refreshToken()
+                    val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
+                    newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
+                    return execute(newAdditionalHeaders, retryIfInternalServerError)
+                }
+
                 val error = errorBody.toObject(
                     ErrorResponse.serializer(),
                     api,

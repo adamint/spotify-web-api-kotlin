@@ -4,4 +4,4 @@ package com.adamratzman.spotify.utils
 /**
  * Actual platform that this program is run on.
  */
-public actual val platform: Platform = Platform.ANDROID
+public actual val currentApiPlatform: Platform = Platform.ANDROID
