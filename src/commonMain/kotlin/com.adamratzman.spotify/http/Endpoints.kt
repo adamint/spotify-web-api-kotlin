@@ -10,9 +10,8 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import kotlinx.coroutines.CancellationException
 import kotlin.math.ceil
-import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

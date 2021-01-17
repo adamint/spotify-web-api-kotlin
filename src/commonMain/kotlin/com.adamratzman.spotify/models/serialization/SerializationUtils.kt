@@ -9,13 +9,13 @@ import com.adamratzman.spotify.models.NullablePagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.instantiateLateinitsIfPagingObjects
+import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlin.reflect.KClass
 
 internal val nonstrictJson =
     Json {
