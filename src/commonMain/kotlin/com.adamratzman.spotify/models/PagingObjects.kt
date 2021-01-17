@@ -5,8 +5,8 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.PagingTraversalType.BACKWARDS
 import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
-import com.adamratzman.spotify.models.serialization.instantiateLateinitsForPagingObject
 import com.adamratzman.spotify.models.serialization.instantiateAllNeedsApiObjects
+import com.adamratzman.spotify.models.serialization.instantiateLateinitsForPagingObject
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import kotlin.coroutines.CoroutineContext
