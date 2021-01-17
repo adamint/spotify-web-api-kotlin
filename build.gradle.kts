@@ -296,9 +296,7 @@ kotlin {
             }
 
             val desktopTest by creating {
-                dependencies {
-
-                }
+                dependsOn(commonTest)
             }
 
             val linuxX64Main by getting {
