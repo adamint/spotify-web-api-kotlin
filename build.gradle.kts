@@ -172,7 +172,7 @@ kotlin {
         listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
 
     publishing {
-        registerPublishing()
+        if ("local" !in (version as String)) registerPublishing()
     }
 
     targets {
@@ -297,7 +297,7 @@ kotlin {
 }
 
 publishing {
-    registerPublishing()
+    if ("local" in (version as String)) registerPublishing()
 }
 
 signing {
