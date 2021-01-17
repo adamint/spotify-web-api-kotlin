@@ -200,8 +200,8 @@ kotlin {
                 url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
                 credentials {
-                    val nexusUsername: String? = System.getenv("nexus.username") ?: project.extra["nexusUsername"] as? String
-                    val nexusPassword: String? = System.getenv("nexus.password") ?: project.extra["nexusPassword"] as? String
+                    val nexusUsername: String? = System.getenv("nexus.username") ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
+                    val nexusPassword: String? = System.getenv("nexus.password") ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
                     username = nexusUsername
                     password = nexusPassword
                 }
