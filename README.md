@@ -3,7 +3,7 @@ A [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](http
 supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 (macOS, Windows, Linux).
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+[ ![latest version](https://api.bintray.com/packages/adamint/adamratzman/com.adamratzman%3Aspotify-api-kotlin-core/images/download.svg) ](https://bintray.com/adamint/adamratzman/com.adamratzman%3Aspotify-api-kotlin-core/_latestVersion)
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
@@ -40,7 +40,7 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 ## Library installing
 Current version:
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin)
+[ ![latest version](https://api.bintray.com/packages/adamint/adamratzman/com.adamratzman%3Aspotify-api-kotlin-core/images/download.svg) ](https://bintray.com/adamint/adamratzman/com.adamratzman%3Aspotify-api-kotlin-core/_latestVersion)
 
 ### JVM, Android, JS, Native (macOS, Windows, Linux)
 ```
