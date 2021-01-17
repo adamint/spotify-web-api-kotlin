@@ -214,14 +214,13 @@ kotlin {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.0"
-            val kotlinxDatetimeVersion = "0.1.1"
+            val klockVersion = "2.0.3"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
 
@@ -291,6 +290,7 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
+                    implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
                     implementation("io.ktor:ktor-client-curl:$ktorVersion")
                 }
             }
@@ -303,6 +303,10 @@ kotlin {
 
             val linuxX64Main by getting {
                 dependsOn(desktopMain)
+
+                dependencies {
+                    implementation("com.soywiz.korlibs.klock:klock-linuxx64:$klockVersion")
+                }
             }
 
             val linuxX64Test by getting {
@@ -311,6 +315,10 @@ kotlin {
 
             val mingwX64Main by getting {
                 dependsOn(desktopMain)
+
+                dependencies {
+                    implementation("com.soywiz.korlibs.klock:klock-mingwx64:$klockVersion")
+                }
             }
 
             val mingwX64Test by getting {
@@ -319,6 +327,10 @@ kotlin {
 
             val macosX64Main by getting {
                 dependsOn(desktopMain)
+
+                dependencies {
+                    implementation("com.soywiz.korlibs.klock:klock-macosx64:$klockVersion")
+                }
             }
 
             val macosX64Test by getting {

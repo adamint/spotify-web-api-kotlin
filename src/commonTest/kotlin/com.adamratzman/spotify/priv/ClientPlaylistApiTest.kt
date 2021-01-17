@@ -10,7 +10,7 @@ import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
-import com.adamratzman.spotify.utils.platform
+import com.adamratzman.spotify.utils.currentApiPlatform
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -99,7 +99,7 @@ class ClientPlaylistApiTest {
 
     @Test
     fun testEditPlaylists() {
-        if (platform != Platform.NATIVE) {
+        if (currentApiPlatform != Platform.NATIVE) {
             runBlockingTest {
                 if (!testPrereq()) return@runBlockingTest
 
@@ -114,7 +114,7 @@ class ClientPlaylistApiTest {
                     "7FjZU7XFs7P9jHI9Z0yRhK"
                 )
 
-                if (platform !in listOf(Platform.ANDROID, Platform.NATIVE)) {
+                if (currentApiPlatform !in listOf(Platform.ANDROID, Platform.NATIVE)) {
                     api.playlists.uploadClientPlaylistCover(
                         createdPlaylist.id,
                         imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
@@ -150,7 +150,7 @@ class ClientPlaylistApiTest {
 
     @Test
     fun testRemovePlaylistTracks() {
-        if (platform != Platform.NATIVE) {
+        if (currentApiPlatform != Platform.NATIVE) {
             runBlockingTest {
                 if (!testPrereq()) return@runBlockingTest
 
