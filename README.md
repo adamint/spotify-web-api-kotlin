@@ -6,6 +6,7 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
+[![codebeat badge](https://codebeat.co/badges/0ab613b0-31d7-4848-aebc-4ed1e51f069c)](https://codebeat.co/projects/github-com-adamint-spotify-web-api-kotlin-master)
 
 
 ![Android Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_AndroidTests?label=Kotlin%2FAndroid%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
