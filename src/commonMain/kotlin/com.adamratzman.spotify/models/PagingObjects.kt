@@ -244,7 +244,7 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
  * @param limit The maximum number of items in the response (as set in the query or by default).
  * @param next URL to the next page of items. ( null if none)
  * @param total The maximum number of items available to return.
- * @param cursor The cursors used to find the next set of items..
+ * @param cursor The cursors used to find the next set of items. If [items] is empty, cursor may be null.
  */
 @Serializable
 public data class CursorBasedPagingObject<T : Any>(
@@ -252,7 +252,7 @@ public data class CursorBasedPagingObject<T : Any>(
     override val items: List<T>,
     override val limit: Int,
     override val next: String? = null,
-    @SerialName("cursors") public val cursor: Cursor,
+    @SerialName("cursors") public val cursor: Cursor? = null,
     override val total: Int = 0,
     override val offset: Int = 0,
     override val previous: String? = null

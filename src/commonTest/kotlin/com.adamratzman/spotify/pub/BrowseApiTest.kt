@@ -114,15 +114,7 @@ class BrowseApiTest {
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getTrackRecommendations(seedArtists = listOf("abc"))
             }
-            assertTrue(api.browse.getTrackRecommendations(seedArtists = listOf("2C2sVVXanbOpymYBMpsi89")).tracks.isNotEmpty())
-            assertTrue(
-                api.browse.getTrackRecommendations(
-                    seedArtists = listOf(
-                        "2C2sVVXanbOpymYBMpsi89",
-                        "7lMgpN1tEBQKpRoUMKB8iw"
-                    )
-                ).tracks.isNotEmpty()
-            )
+            assertTrue(api.browse.getTrackRecommendations(seedArtists = listOf("1kNQXvepPjaPgUfeDAF2h6")).tracks.isNotEmpty())
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getTrackRecommendations(seedTracks = listOf("abc"))
