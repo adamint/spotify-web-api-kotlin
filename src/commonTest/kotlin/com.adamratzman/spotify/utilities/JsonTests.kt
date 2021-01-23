@@ -112,7 +112,7 @@ class JsonTests {
             assertEquals(emptyList(), pagingObject.items)
             assertEquals(50, pagingObject.limit)
             assertEquals("nextHref", pagingObject.next)
-            assertEquals("afterHref", pagingObject.cursor.after)
+            assertEquals("afterHref", pagingObject.cursor?.after)
             assertEquals(5, pagingObject.total)
         }
     }
