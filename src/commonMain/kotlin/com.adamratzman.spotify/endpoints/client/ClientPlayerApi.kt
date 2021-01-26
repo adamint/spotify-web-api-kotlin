@@ -199,7 +199,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Start or resume playback.
      *
-     * **Note:** You can only use one of the following: [offsetNum] or [offsetPlayableUri]
+     * **Note:** You can only use one of the following: [offsetNum], [offsetPlayableUri], or [collectionUri]
      *
      * **Specify nothing to play to simply resume playback**
      *
@@ -207,15 +207,16 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
+     * @param collectionUri Start playing an album, artist, or playlist
      * @param playableUrisToPlay [PlayableUri] (Track or Local track URIs) uris to play. these are converted into URIs. Max 100
      * @param offsetNum Indicates from where in the context playback should start. Only available when [playableUrisToPlay] is used.
-     * @param offsetPlayableUri Does the same as [offsetNum] but with a track/local track uri instead of place number
+     * @param offsetPlayableUri Start playing at a track/local track uri instead of place number ([offsetNum])
      * @param deviceId The device to play on
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     public suspend fun startPlayback(
-        collection: CollectionUri? = null,
+        collectionUri: CollectionUri? = null,
         offsetNum: Int? = null,
         offsetPlayableUri: PlayableUri? = null,
         deviceId: String? = null,
@@ -224,7 +225,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         val url = endpointBuilder("/me/player/play").with("device_id", deviceId).toString()
         val body = jsonMap()
         when {
-            collection != null -> body += buildJsonObject { put("context_uri", collection.uri) }
+            collectionUri != null -> body += buildJsonObject { put("context_uri", collectionUri.uri) }
             playableUrisToPlay.isNotEmpty() -> body += buildJsonObject {
                 put(
                     "uris", JsonArray(

@@ -12,6 +12,7 @@ import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class UtilityTests {
@@ -26,6 +27,15 @@ class UtilityTests {
     fun testPrereq() = ::api.isInitialized
 
     @Test
+    fun testPagingObjectTakeItemsSize() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest
+
+            assertEquals(60, api.browse.getNewReleases(limit = 12).take(60).size)
+        }
+    }
+
+            @Test
     fun testInvalidApiBuilderParameters() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest

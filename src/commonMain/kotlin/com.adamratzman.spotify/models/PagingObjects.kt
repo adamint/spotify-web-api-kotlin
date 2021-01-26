@@ -65,8 +65,6 @@ public class NullablePagingObject<T : Any>(
     override val previous: String? = null,
     override val total: Int = 0
 ) : AbstractPagingObject<T, NullablePagingObject<T>>() {
-    override fun get(index: Int): T? = items[index]
-
     public fun toPagingObject(): PagingObject<T> {
         val pagingObject = PagingObject(
             href, items.filterNotNull(), limit, next, offset, previous, total
@@ -75,6 +73,12 @@ public class NullablePagingObject<T : Any>(
 
         return pagingObject
     }
+
+    override fun get(index: Int): T? = items[index]
+    override fun iterator(): Iterator<T?> = items.iterator()
+    override fun listIterator(): ListIterator<T?> = items.listIterator()
+    override fun listIterator(index: Int): ListIterator<T?> = items.listIterator(index)
+    override fun subList(fromIndex: Int, toIndex: Int): List<T?> = items.subList(fromIndex, toIndex)
 }
 
 /**
@@ -93,6 +97,11 @@ public data class PagingObject<T : Any>(
     override val total: Int = 0
 ) : AbstractPagingObject<T, PagingObject<T>>() {
     override fun get(index: Int): T = items[index]
+
+    override fun iterator(): Iterator<T> = items.iterator()
+    override fun listIterator(): ListIterator<T> = items.listIterator()
+    override fun listIterator(index: Int): ListIterator<T> = items.listIterator(index)
+    override fun subList(fromIndex: Int, toIndex: Int): List<T> = items.subList(fromIndex, toIndex)
 }
 
 /**
@@ -257,8 +266,6 @@ public data class CursorBasedPagingObject<T : Any>(
     override val offset: Int = 0,
     override val previous: String? = null
 ) : PagingObjectBase<T, CursorBasedPagingObject<T>>() {
-    override fun get(index: Int): T = items[index]
-
     /**
      * Synchronously retrieve the next [total] paging objects associated with this [CursorBasedPagingObject], including this [CursorBasedPagingObject].
      *
@@ -324,6 +331,12 @@ public data class CursorBasedPagingObject<T : Any>(
 
         return pagingObjects.distinctBy { it.href }
     }
+
+    override fun get(index: Int): T = items[index]
+    override fun iterator(): Iterator<T> = items.iterator()
+    override fun listIterator(): ListIterator<T> = items.listIterator()
+    override fun listIterator(index: Int): ListIterator<T> = items.listIterator(index)
+    override fun subList(fromIndex: Int, toIndex: Int): List<T> = items.subList(fromIndex, toIndex)
 }
 
 /**
@@ -491,11 +504,7 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     override fun containsAll(elements: Collection<T?>): Boolean = items.containsAll(elements)
     override fun indexOf(element: T?): Int = items.indexOf(element)
     override fun isEmpty(): Boolean = items.isEmpty()
-    override fun iterator(): Iterator<T?> = items.iterator()
     override fun lastIndexOf(element: T?): Int = items.lastIndexOf(element)
-    override fun listIterator(): ListIterator<T?> = items.listIterator()
-    override fun listIterator(index: Int): ListIterator<T?> = items.listIterator(index)
-    override fun subList(fromIndex: Int, toIndex: Int): List<T?> = items.subList(fromIndex, toIndex)
 }
 
 internal fun Any.instantiateLateinitsIfPagingObjects(api: GenericSpotifyApi) = when (this) {
