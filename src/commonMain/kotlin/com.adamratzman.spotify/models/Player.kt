@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
 import com.adamratzman.spotify.utils.getExternalUrls
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
@@ -9,19 +10,21 @@ import kotlinx.serialization.Serializable
 /**
  * Context in which a track was played
  *
- * @param type The object type, e.g. “artist”, “playlist”, “album”.
+ * @param uri The Spotify URI for the context.
  * @param href A link to the Web API endpoint providing full details of the track.
- * @param uri The URI associated with the object
+ * @param typeString The object type, e.g. “artist”, “playlist”, “album”, “show”.
  *
+ * @property type The object type, e.g. “artist”, “playlist”, “album”, “show”.
  * @property externalUrls Known external URLs for this object
  */
 @Serializable
-public data class PlayHistoryContext(
+public data class SpotifyContext(
     @SerialName("external_urls") private val externalUrlsString: Map<String, String>,
     val href: String,
-    val uri: SpotifyUri,
-    val type: String
+    val uri: ContextUri,
+    @SerialName("type") val typeString: String
 ) {
+    val type: SpotifyContextType get() = SpotifyContextType.values().match(typeString)!!
     val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
 }
 
@@ -36,7 +39,7 @@ public data class PlayHistoryContext(
 public data class PlayHistory(
     val track: SimpleTrack,
     @SerialName("played_at") val playedAt: String,
-    val context: PlayHistoryContext? = null
+    val context: SpotifyContext? = null
 )
 
 /**
@@ -96,6 +99,7 @@ public enum class DeviceType(public val identifier: String) {
  * @param isPlaying If something is currently playing.
  * @param track The currently playing track. Can be null (e.g. If private session is enabled this will be null).
  * @param context A Context Object. Can be null (e.g. If private session is enabled this will be null).
+ * *Note*: this will likely be null when playing the first track in a playlist or show context.
  * @param shuffleState If shuffle is on or off
  *
  * @property repeatState If and how the playback is repeating
@@ -109,20 +113,10 @@ public data class CurrentlyPlayingContext(
     @SerialName("item") val track: Track? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
-    val context: Context? = null
+    val context: SpotifyContext? = null
 ) {
-    val repeatState: RepeatState get() = RepeatState.values().match(repeatStateString)!!
-}
-
-/**
- * How and if playback is repeating
- */
-public enum class RepeatState(public val identifier: String) : ResultEnum {
-    OFF("off"),
-    TRACK("track"),
-    CONTEXT("context");
-
-    override fun retrieveIdentifier(): String = identifier
+    val repeatState: ClientPlayerApi.PlayerRepeatState
+        get() = ClientPlayerApi.PlayerRepeatState.values().match(repeatStateString)!!
 }
 
 /**
@@ -139,11 +133,11 @@ public enum class RepeatState(public val identifier: String) : ResultEnum {
  */
 @Serializable
 public data class CurrentlyPlayingObject(
-    val context: PlayHistoryContext? = null,
+    val context: SpotifyContext? = null,
     val timestamp: Long,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @SerialName("item") val track: Track,
+    @SerialName("item") val track: Track? = null,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {
@@ -211,12 +205,11 @@ public enum class CurrentlyPlayingType(public val identifier: String) : ResultEn
     override fun retrieveIdentifier(): String = identifier
 }
 
-/**
- * Puts an object in-context by linking to other related endpoints
- */
-@Serializable
-public data class Context(
-    @SerialName("external_urls") private val externalUrlsString: Map<String, String>
-) {
-    val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
+public enum class SpotifyContextType(public val identifier: String) : ResultEnum {
+    Artist("artist"),
+    Playlist("playlist"),
+    Album("album"),
+    Show("show");
+
+    override fun retrieveIdentifier(): String = identifier
 }

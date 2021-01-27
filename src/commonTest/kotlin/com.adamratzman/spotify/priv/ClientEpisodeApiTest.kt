@@ -6,12 +6,12 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
-import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class EpisodeApiTest {
+class ClientEpisodeApiTest {
     lateinit var api: SpotifyClientApi
 
     init {
@@ -28,6 +28,7 @@ class EpisodeApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertNull(api.episodes.getEpisode("nonexistant episode"))
+            assertNotNull(api.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh"))
         }
     }
 
@@ -36,13 +37,14 @@ class EpisodeApiTest {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest
 
-            assertFailsWithSuspend<BadRequestException> { api.episodes.getEpisodes("hi", "dad", market = Market.US) }
+            assertFailsWithSuspend<BadRequestException> { api.episodes.getEpisodes("hi", "dad") }
             assertFailsWithSuspend<BadRequestException> {
                 api.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").map { it?.name }
             }
             assertEquals(
                 listOf("The 'Murder Hornets' And The Honey Bees"),
-                api.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh").map { it?.name })
+                api.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh").map { it?.name }
+            )
         }
     }
 }
