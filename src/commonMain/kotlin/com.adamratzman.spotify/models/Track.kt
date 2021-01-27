@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * identified by their ISO 3166-1 alpha-2 code.
  * @param discNumber The disc number (usually 1 unless the album consists of more than one disc).
  * @param durationMs The track length in milliseconds.
+ * @property length The track length in milliseconds. Alias of [durationMs]
  * @param explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
  * @param href A link to the Web API endpoint providing full details of the track.
  * @param id The Spotify ID for the track.
@@ -60,6 +61,8 @@ public data class SimpleTrack(
 
     val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
 
+    val length: Int get() = durationMs
+
     /**
      * Converts this [SimpleTrack] into a full [Track] object with the given
      * market
@@ -82,6 +85,7 @@ public data class SimpleTrack(
  * given market. Otherwise false.
  * @param discNumber The disc number (usually 1 unless the album consists of more than one disc).
  * @param durationMs The track length in milliseconds.
+ * @property length The track length in milliseconds. Alias of [durationMs]
  * @param explicit Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).
  * @param href A link to the Web API endpoint providing full details of the track.
  * @param id The Spotify ID for the track.
@@ -138,6 +142,8 @@ public data class Track(
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
 
     val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
+
+    val length: Int get() = durationMs
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + album + linkedTrack + this
 }

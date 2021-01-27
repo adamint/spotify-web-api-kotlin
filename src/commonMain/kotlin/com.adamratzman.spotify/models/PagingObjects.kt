@@ -74,7 +74,6 @@ public class NullablePagingObject<T : Any>(
         return pagingObject
     }
 
-    override fun get(index: Int): T? = items[index]
     override fun iterator(): Iterator<T?> = items.iterator()
     override fun listIterator(): ListIterator<T?> = items.listIterator()
     override fun listIterator(index: Int): ListIterator<T?> = items.listIterator(index)
@@ -96,7 +95,7 @@ public data class PagingObject<T : Any>(
     override val previous: String? = null,
     override val total: Int = 0
 ) : AbstractPagingObject<T, PagingObject<T>>() {
-    override fun get(index: Int): T = items[index]
+    override fun get(index: Int): T = super.get(index)!!
 
     override fun iterator(): Iterator<T> = items.iterator()
     override fun listIterator(): ListIterator<T> = items.listIterator()
@@ -332,7 +331,7 @@ public data class CursorBasedPagingObject<T : Any>(
         return pagingObjects.distinctBy { it.href }
     }
 
-    override fun get(index: Int): T = items[index]
+    override fun get(index: Int): T = super.get(index)!!
     override fun iterator(): Iterator<T> = items.iterator()
     override fun listIterator(): ListIterator<T> = items.listIterator()
     override fun listIterator(index: Int): ListIterator<T> = items.listIterator(index)
@@ -505,6 +504,7 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     override fun indexOf(element: T?): Int = items.indexOf(element)
     override fun isEmpty(): Boolean = items.isEmpty()
     override fun lastIndexOf(element: T?): Int = items.lastIndexOf(element)
+    override fun get(index: Int): T? = items[index]
 }
 
 internal fun Any.instantiateLateinitsIfPagingObjects(api: GenericSpotifyApi) = when (this) {

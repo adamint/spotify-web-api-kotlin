@@ -13,6 +13,7 @@ import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Device
 import com.adamratzman.spotify.models.PlayHistory
 import com.adamratzman.spotify.models.PlayableUri
+import com.adamratzman.spotify.models.ResultEnum
 import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
@@ -295,20 +296,22 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
      */
-    public enum class PlayerRepeatState {
+    public enum class PlayerRepeatState(public val identifier: String): ResultEnum {
         /**
          * Repeat the current track
          */
-        TRACK,
+        TRACK("track"),
 
         /**
          * Repeat the current context
          */
-        CONTEXT,
+        CONTEXT("context"),
 
         /**
          * Will turn repeat off
          */
-        OFF;
+        OFF("off");
+
+        override fun retrieveIdentifier(): String = identifier
     }
 }

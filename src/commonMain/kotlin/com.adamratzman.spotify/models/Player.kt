@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
 import com.adamratzman.spotify.utils.getExternalUrls
 import com.adamratzman.spotify.utils.match
 import kotlinx.serialization.SerialName
@@ -20,9 +21,17 @@ public data class PlayHistoryContext(
     @SerialName("external_urls") private val externalUrlsString: Map<String, String>,
     val href: String,
     val uri: SpotifyUri,
-    val type: String
+    @SerialName("type") val typeString: String
 ) {
+    val type: ContextType? get() = ContextType.values().find { it.spotifyType == typeString }
     val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
+
+    public enum class ContextType(public val spotifyType: String) {
+        ARTIST("artist"),
+        PLAYLIST("playlist"),
+        ALBUM("album"),
+        SHOW("show")
+    }
 }
 
 /**
@@ -111,18 +120,7 @@ public data class CurrentlyPlayingContext(
     @SerialName("repeat_state") val repeatStateString: String,
     val context: Context? = null
 ) {
-    val repeatState: RepeatState get() = RepeatState.values().match(repeatStateString)!!
-}
-
-/**
- * How and if playback is repeating
- */
-public enum class RepeatState(public val identifier: String) : ResultEnum {
-    OFF("off"),
-    TRACK("track"),
-    CONTEXT("context");
-
-    override fun retrieveIdentifier(): String = identifier
+    val repeatState: ClientPlayerApi.PlayerRepeatState get() = ClientPlayerApi.PlayerRepeatState.values().match(repeatStateString)!!
 }
 
 /**
