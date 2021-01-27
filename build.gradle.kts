@@ -9,7 +9,7 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform") version "1.4.21"
     kotlin("plugin.serialization") version "1.4.20"
-    id("com.diffplug.gradle.spotless") version "4.4.0"
+    id("com.diffplug.spotless") version "5.9.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
     id("kotlin-android-extensions")
@@ -134,7 +134,6 @@ kotlin {
                     useChromeHeadless()
                     webpackConfig.cssSupport.enabled = true
                 }
-                //   this.
             }
         }
 
@@ -147,10 +146,9 @@ kotlin {
         }
     }
 
-    val hostOs = System.getProperty("os.name")
-    val isMainHost = hostOs.contains("mac", true)
-    //val isMainPlatform =
-    val isMingwX64 = hostOs.startsWith("Windows")
+    // val hostOs = System.getProperty("os.name")
+    // val isMainHost = hostOs.contains("mac", true)
+    // val isMingwX64 = hostOs.startsWith("Windows")
 
     macosX64 {
         mavenPublication {
@@ -168,9 +166,6 @@ kotlin {
         }
     }
 
-    val publicationsFromMainHost =
-        listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
-
     publishing {
         if ("local" !in (version as String)) registerPublishing()
     }
@@ -180,7 +175,7 @@ kotlin {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.0"
-            val klockVersion = "2.0.3"
+            val klockVersion = "2.0.5"
 
             val commonMain by getting {
                 dependencies {
@@ -222,7 +217,7 @@ kotlin {
                     implementation(npm("text-encoding", "0.7.0"))
                     implementation("io.ktor:ktor-client-js:$ktorVersion")
                     implementation(npm("abort-controller", "3.0.0"))
-                    implementation(npm("node-fetch", "2.6.0"))
+                    implementation(npm("node-fetch", "2.6.1"))
                     implementation(kotlin("stdlib-js"))
 
                 }

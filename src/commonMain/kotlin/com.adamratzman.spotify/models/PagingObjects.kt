@@ -101,6 +101,10 @@ public data class PagingObject<T : Any>(
     override fun listIterator(): ListIterator<T> = items.listIterator()
     override fun listIterator(index: Int): ListIterator<T> = items.listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<T> = items.subList(fromIndex, toIndex)
+
+    override suspend fun take(n: Int): List<T> {
+        return super.take(n).filterNotNull()
+    }
 }
 
 /**
@@ -336,6 +340,10 @@ public data class CursorBasedPagingObject<T : Any>(
     override fun listIterator(): ListIterator<T> = items.listIterator()
     override fun listIterator(index: Int): ListIterator<T> = items.listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<T> = items.subList(fromIndex, toIndex)
+
+    override suspend fun take(n: Int): List<T> {
+        return super.take(n).filterNotNull()
+    }
 }
 
 /**
@@ -505,6 +513,16 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     override fun isEmpty(): Boolean = items.isEmpty()
     override fun lastIndexOf(element: T?): Int = items.lastIndexOf(element)
     override fun get(index: Int): T? = items[index]
+
+    /**
+     * Returns a list containing at most first [n] elements. Note that additional requests may be performed.
+     * The [limit] used in the request used to produce this [PagingObjectBase] will be respected, so choose [limit] carefully.
+     */
+    public open suspend fun take(n: Int): List<T?> {
+        if (n < 0) throw IllegalArgumentException("n must be non-negative.")
+        if (n in items.indices) return items.take(n)
+        return items + (getNext()?.take(n - size) ?: listOf())
+    }
 }
 
 internal fun Any.instantiateLateinitsIfPagingObjects(api: GenericSpotifyApi) = when (this) {

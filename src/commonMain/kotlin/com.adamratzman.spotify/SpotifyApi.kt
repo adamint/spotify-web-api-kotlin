@@ -4,7 +4,7 @@
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
+import com.adamratzman.spotify.endpoints.client.ClientEpisodeApi
 import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
 import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
 import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
@@ -12,6 +12,7 @@ import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistApi
 import com.adamratzman.spotify.endpoints.client.ClientProfileApi
 import com.adamratzman.spotify.endpoints.client.ClientSearchApi
+import com.adamratzman.spotify.endpoints.client.ClientShowApi
 import com.adamratzman.spotify.endpoints.public.AlbumApi
 import com.adamratzman.spotify.endpoints.public.ArtistApi
 import com.adamratzman.spotify.endpoints.public.BrowseApi
@@ -53,6 +54,8 @@ import kotlinx.serialization.json.Json
  * @property browse Provides access to Spotify [browse endpoints](https://developer.spotify.com/documentation/web-api/reference/browse/)
  * @property artists Provides access to Spotify [artist endpoints](https://developer.spotify.com/documentation/web-api/reference/artists/)
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
+ * @property episodes Provides access to Spotify [episode endpoints](https://developer.spotify.com/documentation/web-api/reference/episodes/)
+ * @property shows Provides access to Spotify [show endpoints](https://developer.spotify.com/documentation/web-api/reference/shows/)
  */
 public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     public val clientId: String?,
@@ -78,6 +81,8 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     public abstract val users: UserApi
     public abstract val tracks: TrackApi
     public abstract val following: FollowingApi
+    public abstract val episodes: EpisodeApi
+    public abstract val shows: ShowApi
 
     /**
      * Base url for Spotify web api calls
@@ -358,6 +363,8 @@ public class SpotifyAppApi internal constructor(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
+    override val episodes: EpisodeApi = EpisodeApi(this)
+    override val shows: ShowApi = ShowApi(this)
 
     /**
      * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
@@ -454,21 +461,8 @@ public open class SpotifyClientApi(
 
     override val search: ClientSearchApi = ClientSearchApi(this)
 
-    /**
-     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/episodes/) for retrieving
-     * information about one or more episodes from the Spotify catalog.
-     *
-     * @since 3.1.0
-     */
-    @SpotifyExperimentalHttpApi
-    public val episodes: EpisodeApi = EpisodeApi(this)
-
-    /**
-     * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/shows/) for retrieving
-     * information about one or more shows from the Spotify catalog.
-     */
-    @SpotifyExperimentalHttpApi
-    public val shows: ShowApi = ShowApi(this)
+    override val episodes: ClientEpisodeApi = ClientEpisodeApi(this)
+    override val shows: ClientShowApi = ClientShowApi(this)
 
     /**
      * Provides access to [endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/) for retrieving

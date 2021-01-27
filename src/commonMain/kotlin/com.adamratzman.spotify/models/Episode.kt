@@ -1,7 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
-import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
@@ -173,8 +172,7 @@ public data class SimpleEpisode(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public suspend fun toFullEpisode(market: Market? = null): Episode? =
-        (api as? SpotifyClientApi)?.episodes?.getEpisode(id, market)
+    public suspend fun toFullEpisode(market: Market): Episode? = api.episodes.getEpisode(id, market)
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }

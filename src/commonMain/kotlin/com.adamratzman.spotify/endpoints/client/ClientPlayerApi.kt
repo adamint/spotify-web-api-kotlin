@@ -6,7 +6,7 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.CollectionUri
+import com.adamratzman.spotify.models.ContextUri
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
 import com.adamratzman.spotify.models.CurrentlyPlayingObject
 import com.adamratzman.spotify.models.CursorBasedPagingObject
@@ -18,6 +18,13 @@ import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toInnerObject
 import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.models.toAlbumUri
+import com.adamratzman.spotify.models.toArtistUri
+import com.adamratzman.spotify.models.toEpisodeUri
+import com.adamratzman.spotify.models.toLocalTrackUri
+import com.adamratzman.spotify.models.toPlaylistUri
+import com.adamratzman.spotify.models.toShowUri
+import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.builtins.ListSerializer
@@ -157,13 +164,13 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-volume-for-users-playback/)**
      *
-     * @param volume The volume to set. Must be a value from 0 to 100 inclusive.
+     * @param volumePercent The volume to set. Must be a value from 0 to 100 inclusive.
      * @param deviceId The device to play on
      */
-    public suspend fun setVolume(volume: Int, deviceId: String? = null) {
-        require(volume in 0..100) { "Volume must be within 0 to 100 inclusive. Provided: $volume" }
+    public suspend fun setVolume(volumePercent: Int, deviceId: String? = null) {
+        require(volumePercent in 0..100) { "Volume must be within 0 to 100 inclusive. Provided: $volumePercent" }
         put(
-            endpointBuilder("/me/player/volume").with("volume_percent", volume).with(
+            endpointBuilder("/me/player/volume").with("volume_percent", volumePercent).with(
                 "device_id",
                 deviceId
             ).toString()
@@ -200,7 +207,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Start or resume playback.
      *
-     * **Note:** You can only use one of the following: [offsetNum], [offsetPlayableUri], or [collectionUri]
+     * **Note:** You can only use one of the following: [offsetIndex], [offsetLocalTrackId], [offsetTrackId], [offsetEpisodeId]
      *
      * **Specify nothing to play to simply resume playback**
      *
@@ -208,26 +215,99 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
-     * @param collectionUri Start playing an album, artist, or playlist
-     * @param playableUrisToPlay [PlayableUri] (Track or Local track URIs) uris to play. these are converted into URIs. Max 100
-     * @param offsetNum Indicates from where in the context playback should start. Only available when [playableUrisToPlay] is used.
-     * @param offsetPlayableUri Start playing at a track/local track uri instead of place number ([offsetNum])
+     * @param artistId Start playing an artist
+     * @param playlistId Start playing a playlist
+     * @param albumId Start playing an album
+     * @param artistId Start playing an artist
+     *
+     * @param offsetLocalTrackId Start playing at a local track in the given/current context
+     * @param offsetTrackId Start playing at a track in the given/current context
+     * @param offsetEpisodeId Start playing at an episode in the given/current context
+     *
+     * @param offsetIndex Indicates from where in the given/current context playback should start. Zero-based indexing.
+     *
+     * @param localTrackIdsToPlay A list of local track ids to play. Max 100 combined between [localTrackIdsToPlay], [trackIdsToPlay], and [episodeIdsToPlay]
+     * @param trackIdsToPlay A list of track ids to play. Max 100 combined between [localTrackIdsToPlay], [trackIdsToPlay], and [episodeIdsToPlay]
+     * @param episodeIdsToPlay A list of episode ids to play. Max 100 combined between [localTrackIdsToPlay], [trackIdsToPlay], and [episodeIdsToPlay]
+     *
      * @param deviceId The device to play on
      *
      * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
      */
     public suspend fun startPlayback(
-        collectionUri: CollectionUri? = null,
-        offsetNum: Int? = null,
+        // context uris
+        artistId: String? = null,
+        playlistId: String? = null,
+        albumId: String? = null,
+        showId: String? = null,
+        // offset playables
+        offsetLocalTrackId: String? = null,
+        offsetTrackId: String? = null,
+        offsetEpisodeId: String? = null,
+        // offset num
+        offsetIndex: Int? = null,
+        // ids of playables to play
+        trackIdsToPlay: List<String>? = null,
+        localTrackIdsToPlay: List<String>? = null,
+        episodeIdsToPlay: List<String>? = null,
+        deviceId: String? = null
+    ) {
+        if (listOfNotNull(artistId, playlistId, albumId, showId).size > 1) {
+            throw IllegalArgumentException("Only one of: artistId, playlistId, albumId, showId can be specified.")
+        }
+        val contextUri =
+            artistId?.toArtistUri() ?: playlistId?.toPlaylistUri() ?: albumId?.toAlbumUri() ?: showId?.toShowUri()
+
+        if (listOfNotNull(offsetLocalTrackId, offsetTrackId, offsetEpisodeId, offsetIndex).size > 1) {
+            throw IllegalArgumentException("Only one of: offsetXXId or offsetIndex can be specified.")
+        }
+
+        val offsetPlayableUri =
+            offsetLocalTrackId?.toLocalTrackUri() ?: offsetTrackId?.toTrackUri() ?: offsetEpisodeId?.toEpisodeUri()
+        val playableUrisToPlay =
+            localTrackIdsToPlay?.map { it.toLocalTrackUri() } ?: trackIdsToPlay?.map { it.toTrackUri() }
+            ?: episodeIdsToPlay?.map { it.toEpisodeUri() }
+
+        startPlayback(
+            contextUri,
+            offsetIndex,
+            offsetPlayableUri,
+            playableUrisToPlay,
+            deviceId
+        )
+    }
+
+    /**
+     * Start or resume playback.
+     *
+     * **Note:** You can only use one of the following: [offsetIndex], [offsetPlayableUri]
+     *
+     * **Specify nothing to play to simply resume playback**
+     *
+     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
+     *
+     * @param contextUri Start playing an album, artist, show, or playlist
+     * @param playableUrisToPlay [PlayableUri] (Track, Local track, or Episode URIs) uris to play. these are converted into URIs. Max 100
+     * @param offsetIndex Indicates from where in the given/current context playback should start. Only available when [playableUrisToPlay] is used.
+     * @param offsetPlayableUri Start playing at a track/local track/episode uri in the given/current context instead of index ([offsetIndex])
+     * @param deviceId The device to play on
+     *
+     * @throws BadRequestException if more than one type of play type is specified or the offset is illegal.
+     */
+    public suspend fun startPlayback(
+        contextUri: ContextUri? = null,
+        offsetIndex: Int? = null,
         offsetPlayableUri: PlayableUri? = null,
-        deviceId: String? = null,
-        playableUrisToPlay: List<PlayableUri> = emptyList()
+        playableUrisToPlay: List<PlayableUri>? = null,
+        deviceId: String? = null
     ) {
         val url = endpointBuilder("/me/player/play").with("device_id", deviceId).toString()
         val body = jsonMap()
         when {
-            collectionUri != null -> body += buildJsonObject { put("context_uri", collectionUri.uri) }
-            playableUrisToPlay.isNotEmpty() -> body += buildJsonObject {
+            contextUri != null -> body += buildJsonObject { put("context_uri", contextUri.uri) }
+            playableUrisToPlay?.isNotEmpty() == true -> body += buildJsonObject {
                 put(
                     "uris", JsonArray(
                         playableUrisToPlay.map { it.uri }.map(::JsonPrimitive)
@@ -236,10 +316,10 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             }
         }
         if (body.keys.isNotEmpty()) {
-            if (offsetNum != null) body += buildJsonObject {
+            if (offsetIndex != null) body += buildJsonObject {
                 put(
                     "offset",
-                    buildJsonObject { put("position", offsetNum) })
+                    buildJsonObject { put("position", offsetIndex) })
             }
             else if (offsetPlayableUri != null) body += buildJsonObject {
                 put("offset", buildJsonObject { put("uri", offsetPlayableUri.uri) })
@@ -269,7 +349,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      * @param shuffle Whether to enable shuffling of playback
      */
-    public suspend fun toggleShuffle(shuffle: Boolean = true, deviceId: String? = null): String =
+    public suspend fun toggleShuffle(shuffle: Boolean, deviceId: String? = null): String =
         put(endpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).toString())
 
     /**
@@ -296,7 +376,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
      */
-    public enum class PlayerRepeatState(public val identifier: String): ResultEnum {
+    public enum class PlayerRepeatState(public val identifier: String) : ResultEnum {
         /**
          * Repeat the current track
          */
