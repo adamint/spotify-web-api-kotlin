@@ -175,7 +175,7 @@ kotlin {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.0"
-            val klockVersion = "2.0.5"
+            val klockVersion = "2.0.3"
 
             val commonMain by getting {
                 dependencies {
