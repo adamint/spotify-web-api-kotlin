@@ -107,6 +107,8 @@ public sealed class SpotifyUri(input: String, public val type: String, allowColo
          * Creates a abstract SpotifyUri of given input. Doesn't allow ambiguity by disallowing creation by id.
          * */
         public operator fun invoke(input: String): SpotifyUri {
+            val inputUriModified = input.removeSuffix(":recommended")
+
             val constructors = listOf(
                 ::ArtistUri,
                 PlayableUri.Companion::invoke,
@@ -115,10 +117,10 @@ public sealed class SpotifyUri(input: String, public val type: String, allowColo
                 ::PlaylistUri
             )
             for (ctor in constructors) {
-                safeInitiate(input, ctor)?.takeIf { it.uri == input }?.also { return it }
+                safeInitiate(inputUriModified, ctor)?.takeIf { it.uri == inputUriModified }?.also { return it }
             }
 
-            throw SpotifyUriException("Illegal Spotify ID/URI: '$input' isn't convertible to any arbitrary id")
+            throw SpotifyUriException("Illegal Spotify ID/URI: '$inputUriModified' isn't convertible to any arbitrary id")
         }
 
         /**
