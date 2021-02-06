@@ -37,7 +37,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param id The internal id
      */
-    public enum class SearchType(internal val id: String) {
+    public enum class SearchType(public val id: String) {
         ALBUM("album"),
         TRACK("track"),
         ARTIST("artist"),

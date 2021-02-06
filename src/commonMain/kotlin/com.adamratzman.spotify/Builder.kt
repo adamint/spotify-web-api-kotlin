@@ -7,7 +7,9 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
+import com.soywiz.krypto.SHA256
 import io.ktor.client.features.ServerResponseException
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
 
@@ -76,7 +78,14 @@ public fun getPkceAuthorizationUrl(
 /**
  * A utility to get the pkce code challenge for a corresponding code verifier. Only available on JVM/Android
  */
-public expect fun getSpotifyPkceCodeChallenge(codeVerifier: String): String
+public fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
+    if (codeVerifier.length !in 43..128) throw IllegalArgumentException("Code verifier must be between 43 and 128 characters long")
+
+    var sha256 = SHA256.digest(codeVerifier.toByteArray()).base64
+    while (sha256.endsWith("=")) sha256 = sha256.removeSuffix("=")
+
+    return sha256.replace("/", "_").replace("+", "-")
+}
 
 // ==============================================
 

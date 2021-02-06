@@ -7,8 +7,8 @@ plugins {
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
     id("com.android.library")
-    kotlin("multiplatform") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.20"
+    kotlin("multiplatform") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("com.diffplug.spotless") version "5.9.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
@@ -27,7 +27,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
     }
 }
 
@@ -132,6 +132,7 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
+                    //useChrome()
                     webpackConfig.cssSupport.enabled = true
                 }
             }
@@ -183,6 +184,7 @@ kotlin {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
                     implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+                    implementation("com.soywiz.korlibs.krypto:krypto:2.0.6")
                 }
             }
 
@@ -226,6 +228,10 @@ kotlin {
             val jsTest by getting {
                 dependencies {
                     implementation(kotlin("test-js"))
+
+                   // implementation("io.kotest:kotest-assertions-core-js:4.3.2")
+                   // implementation("io.kotest:kotest-framework-api-js:4.3.2")
+                   // implementation("io.kotest:kotest-framework-engine-js:4.3.2")
                 }
             }
 
@@ -394,8 +400,10 @@ fun PublishingExtension.registerPublishing() {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                val nexusUsername: String? = System.getenv("nexus.username") ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
-                val nexusPassword: String? = System.getenv("nexus.password") ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
+                val nexusUsername: String? = System.getenv("nexus.username")
+                    ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
+                val nexusPassword: String? = System.getenv("nexus.password")
+                    ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
                 username = nexusUsername
                 password = nexusPassword
             }
