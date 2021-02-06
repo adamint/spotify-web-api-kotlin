@@ -6,7 +6,7 @@ import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
+import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.Episode
 import com.adamratzman.spotify.models.EpisodeList
 import com.adamratzman.spotify.models.EpisodeUri

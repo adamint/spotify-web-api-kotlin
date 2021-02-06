@@ -4,7 +4,7 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
+import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toList

@@ -30,14 +30,14 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.http.SpotifyRequest
-import com.adamratzman.spotify.http.base64ByteEncode
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
-import kotlin.jvm.JvmOverloads
+import com.adamratzman.spotify.utils.base64ByteEncode
 import kotlinx.serialization.json.Json
+import kotlin.jvm.JvmOverloads
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -69,7 +69,6 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
 
             field = value
         }
-    public val logger: SpotifyLogger = SpotifyLogger(spotifyApiOptions.enableLogger)
     public val expireTime: Long get() = token.expiresAt
     public var runExecutableFunctions: Boolean = true
 
@@ -148,15 +147,6 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
 
     private fun clearCaches(vararg endpoints: SpotifyEndpoint) {
         endpoints.forEach { it.cache.clear() }
-    }
-
-    /**
-     * Allows enabling and disabling the logger
-     *
-     * @param enable Whether to enable the logger
-     */
-    public fun useLogger(enable: Boolean) {
-        logger.enabled = enable
     }
 
     /**
@@ -622,8 +612,7 @@ public open class SpotifyClientApi(
                 ).execute()
             }
 
-            if (response.responseCode / 200 == 1) {
-                api.logger.logInfo("Successfully refreshed the Spotify token")
+            if (response.responseCode in 200..399) {
                 response.body.toObject(Token.serializer(), api, api.spotifyApiOptions.json)
             } else throw BadRequestException(
                 response.body.toObject(

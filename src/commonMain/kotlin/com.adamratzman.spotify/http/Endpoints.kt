@@ -10,11 +10,11 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import kotlin.math.ceil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.math.ceil
 
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()
@@ -90,7 +90,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         additionalHeaders = cacheState?.eTag?.let {
                             listOf(HttpHeader("If-None-Match", it))
                         },
-                        retryIfInternalServerError = api.spotifyApiOptions.retryIfInternalServerError
+                        retryIfInternalServerErrorLeft = api.spotifyApiOptions.retryOnInternalServerErrorTimes
                     )
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
@@ -256,6 +256,3 @@ public data class CacheState(val data: String, val eTag: String?, val expireBy: 
         )
     }
 }
-
-internal expect fun String.base64ByteEncode(): String
-internal expect fun String.encodeUrl(): String
