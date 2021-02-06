@@ -882,5 +882,5 @@ public data class SpotifyApiOptions(
     public var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
     public var requiredScopes: List<SpotifyScope>? = null,
     public var proxyBaseUrl: String? = null,
-    public var retryOnInternalServerErrorTimes: Int? = 5,
+    public var retryOnInternalServerErrorTimes: Int? = 5
 )

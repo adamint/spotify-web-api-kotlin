@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.FollowingApi
-import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.CursorBasedPagingObject
@@ -14,6 +13,7 @@ import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toList
+import com.adamratzman.spotify.utils.encodeUrl
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 

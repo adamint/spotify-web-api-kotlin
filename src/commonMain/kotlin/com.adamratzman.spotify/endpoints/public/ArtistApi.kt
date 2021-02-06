@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.ArtistList
 import com.adamratzman.spotify.models.ArtistUri
@@ -17,6 +16,7 @@ import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encodeUrl
 import kotlinx.serialization.builtins.ListSerializer
 
 /**

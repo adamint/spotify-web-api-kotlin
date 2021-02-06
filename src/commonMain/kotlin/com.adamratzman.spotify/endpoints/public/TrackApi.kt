@@ -4,7 +4,6 @@ package com.adamratzman.spotify.endpoints.public
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.AudioAnalysis
 import com.adamratzman.spotify.models.AudioFeatures
 import com.adamratzman.spotify.models.AudioFeaturesResponse
@@ -14,6 +13,7 @@ import com.adamratzman.spotify.models.TrackList
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encodeUrl
 
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.

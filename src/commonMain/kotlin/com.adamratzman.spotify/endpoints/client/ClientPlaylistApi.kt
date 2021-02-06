@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
-import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.PlayableUri
@@ -23,6 +22,7 @@ import com.adamratzman.spotify.utils.convertFileToBufferedImage
 import com.adamratzman.spotify.utils.convertLocalImagePathToBufferedImage
 import com.adamratzman.spotify.utils.convertUrlPathToBufferedImage
 import com.adamratzman.spotify.utils.encodeBufferedImageToBase64String
+import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

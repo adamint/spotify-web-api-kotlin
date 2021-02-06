@@ -36,8 +36,8 @@ import com.adamratzman.spotify.models.TokenValidityResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
-import kotlinx.serialization.json.Json
 import kotlin.jvm.JvmOverloads
+import kotlinx.serialization.json.Json
 
 /**
  * Represents an instance of the Spotify API client, with common
