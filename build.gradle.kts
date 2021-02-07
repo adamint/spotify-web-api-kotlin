@@ -175,16 +175,22 @@ kotlin {
         sourceSets {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
-            val ktorVersion = "1.5.0"
-            val klockVersion = "2.0.3"
+            val ktorVersion = "1.5.1"
+            val korlibsVersion = "2.0.6"
 
             val commonMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"){
+                        version {
+                            strictly(coroutineVersion)
+                        }
+                    }
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
-                    implementation("com.soywiz.korlibs.krypto:krypto:2.0.6")
+                    implementation("com.soywiz.korlibs.klock:klock:$korlibsVersion")
+                    implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
+                    implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
+
                 }
             }
 

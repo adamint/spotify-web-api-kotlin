@@ -90,8 +90,6 @@ If you have a question, you can:
 ## Unsupported features on each platform:
 | Feature                     | JVM                | Android            | JS                 | Native (Mac/Windows/Linux) |
 |-----------------------------|--------------------|--------------------|--------------------|----------------------------|
-| Images (Playlist covers)    | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
-| getSpotifyPkceCodeChallenge | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
 | Edit client playlist        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
 | Remove playlist tracks      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
 
@@ -182,7 +180,7 @@ hash the code verifier using the SHA256 algorithm. Then, base64url encode the ha
 the code challenge used to authorize the user.
 
 This library contains helpful methods that can be used to simplify the PKCE authorization process.
-This includes `getSpotifyPkceCodeChallenge` (not available in the Kotlin/JS target), which SHA256 hashes and base64url encodes the code 
+This includes `getSpotifyPkceCodeChallenge`, which SHA256 hashes and base64url encodes the code 
 challenge, and `getPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
 
 Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.

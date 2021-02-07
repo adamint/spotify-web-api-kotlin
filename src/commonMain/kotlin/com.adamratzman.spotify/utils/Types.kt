@@ -12,7 +12,3 @@ public expect class ConcurrentHashMap<K, V>() {
 }
 
 public expect fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>>
-
-public expect class BufferedImage
-
-public expect class File

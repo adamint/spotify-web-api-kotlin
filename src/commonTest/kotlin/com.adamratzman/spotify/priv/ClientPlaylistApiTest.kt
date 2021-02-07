@@ -4,50 +4,50 @@ package com.adamratzman.spotify.priv
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.currentApiPlatform
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi
     lateinit var createdPlaylist: Playlist
     lateinit var playlistsBefore: List<SimplePlaylist>
 
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { clientApi ->
-                api = clientApi
-                playlistsBefore = api.playlists.getClientPlaylists().getAllItemsNotNull()
-                createdPlaylist = api.playlists.createClientPlaylist("this is a test playlist", "description")
-            }
+    private suspend fun init() {
+        if (::api.isInitialized) {
+            playlistsBefore = api.playlists.getClientPlaylists().getAllItemsNotNull()
+            createdPlaylist = api.playlists.createClientPlaylist("this is a test playlist", "description")
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    suspend fun testPrereq(): Boolean {
+        if (!::api.isInitialized) return false
+        init()
+        return true
+    }
 
     private suspend fun tearDown() {
         if (::createdPlaylist.isInitialized) {
             coroutineScope {
                 api.playlists.getClientPlaylists().getAllItemsNotNull()
-                        .filter { it.name == "this is a test playlist" }
-                        .map {
-                            async {
-                                if (api.following.isFollowingPlaylist(it.id)) {
-                                    api.playlists.deleteClientPlaylist(it.id)
-                                }
+                    .filter { it.name == "this is a test playlist" }
+                    .map {
+                        async {
+                            if (api.following.isFollowingPlaylist(it.id)) {
+                                api.playlists.deleteClientPlaylist(it.id)
                             }
                         }
-                        .awaitAll()
+                    }
+                    .awaitAll()
             }
         }
     }
@@ -58,8 +58,8 @@ class ClientPlaylistApiTest {
             if (!testPrereq()) return@runBlockingTest
 
             assertEquals(
-                    api.playlists.getClientPlaylists().getAllItemsNotNull().size - 1,
-                    playlistsBefore.size
+                api.playlists.getClientPlaylists().getAllItemsNotNull().size - 1,
+                playlistsBefore.size
             )
 
             tearDown()
@@ -77,9 +77,9 @@ class ClientPlaylistApiTest {
             val globalViral50Uri = "spotify:playlist:37i9dQZEVXbLiRSasKsNU9"
 
             val tracks = listOf(
-                    async { api.playlists.getPlaylist(usTop50Uri)!!.tracks.getAllItemsNotNull() },
-                    async { api.playlists.getPlaylist(globalTop50Uri)!!.tracks.getAllItemsNotNull() },
-                    async { api.playlists.getPlaylist(globalViral50Uri)!!.tracks.getAllItemsNotNull() }
+                async { api.playlists.getPlaylist(usTop50Uri)!!.tracks.getAllItemsNotNull() },
+                async { api.playlists.getPlaylist(globalTop50Uri)!!.tracks.getAllItemsNotNull() },
+                async { api.playlists.getPlaylist(globalViral50Uri)!!.tracks.getAllItemsNotNull() }
             ).awaitAll().flatten().mapNotNull { it.track?.uri?.uri }
 
             api.spotifyApiOptions.allowBulkRequests = true
@@ -114,12 +114,10 @@ class ClientPlaylistApiTest {
                     "7FjZU7XFs7P9jHI9Z0yRhK"
                 )
 
-                if (currentApiPlatform !in listOf(Platform.ANDROID, Platform.NATIVE)) {
-                    api.playlists.uploadClientPlaylistCover(
-                        createdPlaylist.id,
-                        imageUrl = "https://developer.spotify.com/assets/WebAPI_intro.png"
-                    )
-                }
+                api.playlists.uploadClientPlaylistCover(
+                    createdPlaylist.id,
+                    imageUrl = "http://www.personal.psu.edu/kbl5192/jpg.jpg"
+                )
 
                 var updatedPlaylist = api.playlists.getClientPlaylist(createdPlaylist.id)!!
                 val fullPlaylist = updatedPlaylist.toFullPlaylist()!!

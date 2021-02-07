@@ -73,12 +73,12 @@ public data class SpotifyPublicUser(
  * @param href Will always be null, per the Spotify documentation,
  * until the Web API is updated to support this.
  *
- * @param total -1 if the user object does not contain followers, otherwise the amount of followers the user has
+ * @param total Null or -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
 @Serializable
 public data class Followers(
     val href: String? = null,
-    @SerialName("total") val total: Int
+    @SerialName("total") val total: Int? = null
 )
 
 @Serializable
