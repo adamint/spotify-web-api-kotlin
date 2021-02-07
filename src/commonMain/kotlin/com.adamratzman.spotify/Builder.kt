@@ -863,7 +863,7 @@ public class SpotifyUserAuthorization(
  * (https://api.spotify.com/v1).
  * @param retryOnInternalServerErrorTimes Whether and how often to retry once if an internal server error (500..599) has been received. Set to 0
  * to avoid retrying at all, or set to null to keep retrying until success.
- *
+ * @param enableDebugMode Whether to enable debug mode (false by default). With debug mode, all response JSON will be outputted to console.
  */
 public data class SpotifyApiOptions(
     public var useCache: Boolean = true,
@@ -880,5 +880,6 @@ public data class SpotifyApiOptions(
     public var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
     public var requiredScopes: List<SpotifyScope>? = null,
     public var proxyBaseUrl: String? = null,
-    public var retryOnInternalServerErrorTimes: Int? = 5
+    public var retryOnInternalServerErrorTimes: Int? = 5,
+    public var enableDebugMode: Boolean = false
 )

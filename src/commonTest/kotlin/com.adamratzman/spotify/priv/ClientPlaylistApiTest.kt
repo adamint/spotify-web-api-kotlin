@@ -4,6 +4,7 @@ package com.adamratzman.spotify.priv
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
+import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
@@ -21,6 +22,12 @@ class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi
     lateinit var createdPlaylist: Playlist
     lateinit var playlistsBefore: List<SimplePlaylist>
+
+    init {
+        runBlockingTest {
+            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
+        }
+    }
 
     private suspend fun init() {
         if (::api.isInitialized) {

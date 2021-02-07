@@ -89,7 +89,7 @@ public class HttpConnection constructor(
         retryIfInternalServerErrorLeft: Int? = SpotifyApiOptions().retryOnInternalServerErrorTimes // default
     ): HttpResponse {
         val httpRequest = buildRequest(additionalHeaders)
-
+        if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: Request: $this")
         try {
             return HttpClient().request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
                 val respCode = response.status.value
@@ -118,6 +118,8 @@ public class HttpConnection constructor(
                 }
 
                 val body = response.readText()
+                if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $body")
+
                 if (respCode == 401 && body.contains("access token") &&
                     api != null && api.spotifyApiOptions.automaticRefresh
                 ) {
@@ -145,12 +147,23 @@ public class HttpConnection constructor(
             throw e
         } catch (e: ResponseException) {
             val errorBody = e.response.readText()
+            if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $errorBody")
             try {
-                if (e.response.status.value == 429) {
+                val respCode = e.response.status.value
+
+                if (respCode in 500..599 && (retryIfInternalServerErrorLeft == null || retryIfInternalServerErrorLeft == -1 || retryIfInternalServerErrorLeft > 0)) {
+                    return execute(
+                        additionalHeaders,
+                        retryIfInternalServerErrorLeft =
+                        if (retryIfInternalServerErrorLeft != null && retryIfInternalServerErrorLeft != -1) retryIfInternalServerErrorLeft - 1
+                        else retryIfInternalServerErrorLeft
+                    )
+                }
+
+                if (respCode == 429) {
                     val ratelimit = e.response.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
-                        println("The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}")
-
+                        // println("The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}")
                         delay(ratelimit * 1000)
                         return execute(
                             additionalHeaders,
@@ -165,7 +178,10 @@ public class HttpConnection constructor(
                     api.refreshToken()
                     val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
                     newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
-                    return execute(newAdditionalHeaders, retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft)
+                    return execute(
+                        newAdditionalHeaders,
+                        retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft
+                    )
                 }
 
                 val error = errorBody.toObject(
