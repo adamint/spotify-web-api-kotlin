@@ -30,7 +30,7 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
     + [SpotifyApiBuilder block & setting API options](#spotifyapibuilder-block--setting-api-options)
         * [API options](#api-options)
     + [Using the API](#using-the-api)
-* [Platform-specific wrappers and information]("#platform-specific-wrappers-and-information")
+* [Platform-specific wrappers and information](#platform-specific-wrappers-and-information)
     + [JavaScript: Spotify Web Playback SDK wrapper](#js-spotify-web-playback-sdk-wrapper)
 * [Tips](#tips)
     + [Building the API](#building-the-api)
@@ -385,10 +385,45 @@ for playing music via Spotify in the browser on your own site.
 To do this, you need to create a `Player` instance and then use the associated methods to register listeners, play, 
 and get current context.
 
-**Please see an example of how to do this [here](https://github.com/adamint/spotify-web-api-browser-example/blob/95df60810611ddb961a7a2cb0c874a76d4471aa7/src/main/kotlin/com/adamratzman/layouts/HomePageComponent.kt#L38)**. 
+Please see an example of how to do this [here](https://github.com/adamint/spotify-web-api-browser-example/blob/95df60810611ddb961a7a2cb0c874a76d4471aa7/src/main/kotlin/com/adamratzman/layouts/HomePageComponent.kt#L38). 
 An example project, [spotify-web-api-browser-example](https://github.com/adamint/spotify-web-api-browser-example), 
 demonstrates how to create a frontend JS Kotlin application with Spotify integration and 
 that will play music in the browser.
+
+**Notes**:
+1. You must include the Spotify player JS script by including `<script src="https://sdk.scdn.co/spotify-player.js"></script>`
+2. You must define a `window.onSpotifyWebPlaybackSDKReady` function immediately afterwards - this should load your main application bundle.
+    Otherwise, you will get errors. An example is below:
+   
+```html
+<html>
+<head>
+    ...
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script>
+        jQuery.loadScript = function (url, callback) {
+            jQuery.ajax({
+                url: url,
+                dataType: 'script',
+                success: callback,
+                async: true
+            });
+        }
+    </script>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            $.loadScript("main.bundle.js")
+        }
+    </script>
+</head>
+<body>
+....
+</body>
+</html>
+```
 
 ## Tips
 

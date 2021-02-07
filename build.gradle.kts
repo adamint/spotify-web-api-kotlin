@@ -173,18 +173,12 @@ kotlin {
 
     targets {
         sourceSets {
-            val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.1"
             val korlibsVersion = "2.0.6"
 
             val commonMain by getting {
                 dependencies {
-                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"){
-                        version {
-                            strictly(coroutineVersion)
-                        }
-                    }
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
                     implementation("com.soywiz.korlibs.klock:klock:$korlibsVersion")
@@ -264,6 +258,13 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
+                    val coroutineMTVersion = "1.4.2-native-mt"
+
+                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
+                        version {
+                            strictly(coroutineMTVersion)
+                        }
+                    }
                     implementation("io.ktor:ktor-client-curl:$ktorVersion")
                 }
             }
