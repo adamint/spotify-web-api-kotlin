@@ -30,6 +30,8 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
     + [SpotifyApiBuilder block & setting API options](#spotifyapibuilder-block--setting-api-options)
         * [API options](#api-options)
     + [Using the API](#using-the-api)
+* [Platform-specific wrappers and information]("#platform-specific-wrappers-and-information")
+    + [JavaScript: Spotify Web Playback SDK wrapper](#js-spotify-web-playback-sdk-wrapper)
 * [Tips](#tips)
     + [Building the API](#building-the-api)
 * [Notes](#notes)
@@ -51,6 +53,9 @@ repositories {
 
 implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 ```
+
+### JS
+Please see 
 
 ### Android
 **If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
@@ -91,8 +96,6 @@ If you have a question, you can:
 ## Unsupported features on each platform:
 | Feature                     | JVM                | Android            | JS                 | Native (Mac/Windows/Linux) |
 |-----------------------------|--------------------|--------------------|--------------------|----------------------------|
-| Images (Playlist covers)    | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
-| getSpotifyPkceCodeChallenge | :heavy_check_mark: | :heavy_check_mark: | Unsupported        | Unsupported                |
 | Edit client playlist        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
 | Remove playlist tracks      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Unsupported                |
 
@@ -183,7 +186,7 @@ hash the code verifier using the SHA256 algorithm. Then, base64url encode the ha
 the code challenge used to authorize the user.
 
 This library contains helpful methods that can be used to simplify the PKCE authorization process.
-This includes `getSpotifyPkceCodeChallenge` (not available in the Kotlin/JS target), which SHA256 hashes and base64url encodes the code 
+This includes `getSpotifyPkceCodeChallenge`, which SHA256 hashes and base64url encodes the code 
 challenge, and `getPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
 
 Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.
@@ -371,6 +374,21 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 - `ClientPersonalizationApi` (get user top tracks and artists)
 - `ClientLibraryApi` (get and manage saved tracks and albums)
 - `ClientPlayerApi` (view and control Spotify playback)
+
+## Platform-specific wrappers and information
+### Android authentication
+
+### JS Spotify Web Playback SDK wrapper
+`spotify-web-api-kotlin` provides a wrapper around Spotify's [Web Playback SDK](https://developer.spotify.com/documentation/web-playback-sdk/reference/) 
+for playing music via Spotify in the browser on your own site.
+
+To do this, you need to create a `Player` instance and then use the associated methods to register listeners, play, 
+and get current context.
+
+**Please see an example of how to do this [here](https://github.com/adamint/spotify-web-api-browser-example/blob/95df60810611ddb961a7a2cb0c874a76d4471aa7/src/main/kotlin/com/adamratzman/layouts/HomePageComponent.kt#L38)**. 
+An example project, [spotify-web-api-browser-example](https://github.com/adamint/spotify-web-api-browser-example), 
+demonstrates how to create a frontend JS Kotlin application with Spotify integration and 
+that will play music in the browser.
 
 ## Tips
 

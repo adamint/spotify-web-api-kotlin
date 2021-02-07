@@ -6,7 +6,6 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.public.PlaylistApi
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.PlayableUri
@@ -18,12 +17,13 @@ import com.adamratzman.spotify.models.serialization.mapToJsonString
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.BufferedImage
-import com.adamratzman.spotify.utils.File
+import com.adamratzman.spotify.utils.convertBufferedImageToBase64JpegString
 import com.adamratzman.spotify.utils.convertFileToBufferedImage
 import com.adamratzman.spotify.utils.convertLocalImagePathToBufferedImage
 import com.adamratzman.spotify.utils.convertUrlPathToBufferedImage
-import com.adamratzman.spotify.utils.encodeBufferedImageToBase64String
+import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.jsonMap
+import com.soywiz.korio.file.VfsFile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
@@ -334,7 +334,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @param playlist the id or uri for the playlist.
      * @param imagePath Optionally specify the full local path to the image
      * @param imageUrl Optionally specify a URL to the image
-     * @param imageFile Optionally specify the image [File]
+     * @param imageFile Optionally specify the image [VfsFile]. Note that in each platform, there is a [toVfs] method to convert
+     * the platform's file type to a [VfsFile]. For example, `java.util.File.toVfs()` will return a [VfsFile].
      * @param image Optionally specify the image's [BufferedImage] object
      * @param imageData Optionally specify the Base64-encoded image data yourself
      *
@@ -343,16 +344,16 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     public suspend fun uploadClientPlaylistCover(
         playlist: String,
         imagePath: String? = null,
-        imageFile: File? = null,
+        imageFile: VfsFile? = null,
         image: BufferedImage? = null,
         imageData: String? = null,
         imageUrl: String? = null
     ) {
         val data = imageData ?: when {
-            image != null -> encodeBufferedImageToBase64String(image)
-            imageFile != null -> encodeBufferedImageToBase64String(convertFileToBufferedImage(imageFile))
-            imageUrl != null -> encodeBufferedImageToBase64String(convertUrlPathToBufferedImage(imageUrl))
-            imagePath != null -> encodeBufferedImageToBase64String(convertLocalImagePathToBufferedImage(imagePath))
+            image != null -> convertBufferedImageToBase64JpegString(image)
+            imageFile != null -> convertBufferedImageToBase64JpegString(convertFileToBufferedImage(imageFile))
+            imageUrl != null -> convertBufferedImageToBase64JpegString(convertUrlPathToBufferedImage(imageUrl))
+            imagePath != null -> convertBufferedImageToBase64JpegString(convertLocalImagePathToBufferedImage(imagePath))
             else -> throw IllegalArgumentException("No cover image was specified")
         }
         put(

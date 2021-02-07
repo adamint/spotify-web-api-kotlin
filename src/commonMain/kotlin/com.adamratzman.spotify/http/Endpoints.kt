@@ -90,7 +90,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         additionalHeaders = cacheState?.eTag?.let {
                             listOf(HttpHeader("If-None-Match", it))
                         },
-                        retryIfInternalServerError = api.spotifyApiOptions.retryIfInternalServerError
+                        retryIfInternalServerErrorLeft = api.spotifyApiOptions.retryOnInternalServerErrorTimes
                     )
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
@@ -256,6 +256,3 @@ public data class CacheState(val data: String, val eTag: String?, val expireBy: 
         )
     }
 }
-
-internal expect fun String.base64ByteEncode(): String
-internal expect fun String.encodeUrl(): String

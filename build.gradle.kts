@@ -7,8 +7,8 @@ plugins {
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
     id("com.android.library")
-    kotlin("multiplatform") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.20"
+    kotlin("multiplatform") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("com.diffplug.spotless") version "5.9.0"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.20"
@@ -27,7 +27,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
     }
 }
 
@@ -132,6 +132,7 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
+                    //useChrome()
                     webpackConfig.cssSupport.enabled = true
                 }
             }
@@ -174,15 +175,22 @@ kotlin {
         sourceSets {
             val coroutineVersion = "1.4.2-native-mt"
             val serializationVersion = "1.0.1"
-            val ktorVersion = "1.5.0"
-            val klockVersion = "2.0.3"
+            val ktorVersion = "1.5.1"
+            val korlibsVersion = "2.0.6"
 
             val commonMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"){
+                        version {
+                            strictly(coroutineVersion)
+                        }
+                    }
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+                    implementation("com.soywiz.korlibs.klock:klock:$korlibsVersion")
+                    implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
+                    implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
+
                 }
             }
 
@@ -226,6 +234,10 @@ kotlin {
             val jsTest by getting {
                 dependencies {
                     implementation(kotlin("test-js"))
+
+                   // implementation("io.kotest:kotest-assertions-core-js:4.3.2")
+                   // implementation("io.kotest:kotest-framework-api-js:4.3.2")
+                   // implementation("io.kotest:kotest-framework-engine-js:4.3.2")
                 }
             }
 
@@ -394,8 +406,10 @@ fun PublishingExtension.registerPublishing() {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                val nexusUsername: String? = System.getenv("nexus.username") ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
-                val nexusPassword: String? = System.getenv("nexus.password") ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
+                val nexusUsername: String? = System.getenv("nexus.username")
+                    ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
+                val nexusPassword: String? = System.getenv("nexus.password")
+                    ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
                 username = nexusUsername
                 password = nexusPassword
             }

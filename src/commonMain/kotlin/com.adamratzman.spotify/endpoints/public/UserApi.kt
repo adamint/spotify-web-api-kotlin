@@ -3,11 +3,11 @@ package com.adamratzman.spotify.endpoints.public
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.SpotifyPublicUser
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encodeUrl
 
 /**
  * Endpoints for retrieving information about a user’s profile.

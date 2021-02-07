@@ -7,7 +7,10 @@ import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
+import com.adamratzman.spotify.utils.urlEncodeBase64String
+import com.soywiz.krypto.SHA256
 import io.ktor.client.features.ServerResponseException
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
 
@@ -76,7 +79,11 @@ public fun getPkceAuthorizationUrl(
 /**
  * A utility to get the pkce code challenge for a corresponding code verifier. Only available on JVM/Android
  */
-public expect fun getSpotifyPkceCodeChallenge(codeVerifier: String): String
+public fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
+    if (codeVerifier.length !in 43..128) throw IllegalArgumentException("Code verifier must be between 43 and 128 characters long")
+    val sha256 = SHA256.digest(codeVerifier.toByteArray()).base64
+    return sha256.urlEncodeBase64String()
+}
 
 // ==============================================
 
@@ -854,8 +861,9 @@ public class SpotifyUserAuthorization(
  * @param requiredScopes Scopes that your application requires to function (only applicable to [SpotifyClientApi] and [SpotifyImplicitGrantApi]).
  * @param proxyBaseUrl Provide if you have a proxy base URL that you would like to use instead of the Spotify API base
  * (https://api.spotify.com/v1).
- * @param retryIfInternalServerError Whether to retry once if an internal server error (500..599) has been received
- *
+ * @param retryOnInternalServerErrorTimes Whether and how often to retry once if an internal server error (500..599) has been received. Set to 0
+ * to avoid retrying at all, or set to null to keep retrying until success.
+ * @param enableDebugMode Whether to enable debug mode (false by default). With debug mode, all response JSON will be outputted to console.
  */
 public data class SpotifyApiOptions(
     public var useCache: Boolean = true,
@@ -872,5 +880,6 @@ public data class SpotifyApiOptions(
     public var onTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null,
     public var requiredScopes: List<SpotifyScope>? = null,
     public var proxyBaseUrl: String? = null,
-    public var retryIfInternalServerError: Boolean = true
+    public var retryOnInternalServerErrorTimes: Int? = 5,
+    public var enableDebugMode: Boolean = false
 )

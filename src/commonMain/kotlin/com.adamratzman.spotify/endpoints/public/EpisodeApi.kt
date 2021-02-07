@@ -6,13 +6,13 @@ import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.encodeUrl
 import com.adamratzman.spotify.models.Episode
 import com.adamratzman.spotify.models.EpisodeList
 import com.adamratzman.spotify.models.EpisodeUri
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.encodeUrl
 
 /**
  * Endpoints for retrieving information about one or more episodes from the Spotify catalog.

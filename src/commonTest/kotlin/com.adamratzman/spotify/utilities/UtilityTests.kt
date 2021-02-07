@@ -8,6 +8,7 @@ import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.getEnvironmentVariable
+import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
@@ -25,6 +26,12 @@ class UtilityTests {
     }
 
     fun testPrereq() = ::api.isInitialized
+
+    @Test
+    fun testGeneratePkceCodeChallenge() {
+        assertEquals("c7jV_d4sQ658HgwINAR77Idumz1ik1lIb1JNlOva75E", getSpotifyPkceCodeChallenge("thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"))
+        assertEquals("9Y__uhKapn7GO_ElcaQpd8C3hdOyqTzAU4VXyR2iEV0", getSpotifyPkceCodeChallenge("12345678901234567890123456789012345678901234567890"))
+    }
 
     @Test
     fun testPagingObjectTakeItemsSize() {

@@ -3,12 +3,13 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
+import com.soywiz.klock.DateTime
 import kotlinx.serialization.json.JsonElement
 
 /**
  * The current time in milliseconds since UNIX epoch.
  */
-public expect fun getCurrentTimeMs(): Long
+public fun getCurrentTimeMs(): Long = DateTime.nowUnixLong()
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 

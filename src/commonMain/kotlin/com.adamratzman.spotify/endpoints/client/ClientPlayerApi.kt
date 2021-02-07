@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.annotations.SpotifyExperimentalFunctionApi
@@ -97,12 +98,16 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
      */
     public suspend fun getCurrentlyPlaying(): CurrentlyPlayingObject? {
-        val obj =
-            catch {
-                get(endpointBuilder("/me/player/currently-playing").toString())
-                    .toObject(CurrentlyPlayingObject.serializer(), api, json)
-            }
-        return if (obj?.timestamp == null) null else obj
+        return try {
+            val obj =
+                catch {
+                    get(endpointBuilder("/me/player/currently-playing").toString())
+                        .toObject(CurrentlyPlayingObject.serializer(), api, json)
+                }
+            if (obj?.timestamp == null) null else obj
+        } catch (pe: SpotifyException.ParseException) {
+            null
+        }
     }
 
     /**
