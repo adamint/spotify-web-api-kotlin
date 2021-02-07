@@ -114,30 +114,27 @@ class BrowseApiTest {
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getTrackRecommendations(seedArtists = listOf("abc"))
             }
-            assertTrue(api.browse.getTrackRecommendations(seedArtists = listOf("1kNQXvepPjaPgUfeDAF2h6")).tracks.isNotEmpty())
+            api.browse.getTrackRecommendations(seedArtists = listOf("1kNQXvepPjaPgUfeDAF2h6"))
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api.browse.getTrackRecommendations(seedTracks = listOf("abc"))
             }
-            assertTrue(api.browse.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).tracks.isNotEmpty())
-            assertTrue(
-                api.browse.getTrackRecommendations(
-                    seedTracks = listOf(
-                        "6d9iYQG2JvTTEgcndW81lt",
-                        "3Uyt0WO3wOopnUBCe9BaXl"
-                    )
-                ).tracks.isNotEmpty()
-            )
+            api.browse.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).tracks
+            api.browse.getTrackRecommendations(
+                seedTracks = listOf(
+                    "6d9iYQG2JvTTEgcndW81lt",
+                    "3Uyt0WO3wOopnUBCe9BaXl"
+                )
+            ).tracks
 
             api.browse.getTrackRecommendations(seedGenres = listOf("abc"))
-            assertTrue(api.browse.getTrackRecommendations(seedGenres = listOf("pop")).tracks.isNotEmpty())
-            assertTrue(
-                api.browse.getTrackRecommendations(
-                    seedGenres = listOf(
-                        "pop",
-                        "latinx"
-                    )
-                ).tracks.isNotEmpty()
+            api.browse.getTrackRecommendations(seedGenres = listOf("pop"))
+
+            api.browse.getTrackRecommendations(
+                seedGenres = listOf(
+                    "pop",
+                    "latinx"
+                )
             )
 
             api.browse.getTrackRecommendations(
