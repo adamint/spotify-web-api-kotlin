@@ -107,7 +107,7 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
         )
 
     /**
-     *
+     * Get/set when the Spotify access token will expire, in milliseconds from UNIX epoch. This will be one hour from authentication.
      */
     public var spotifyTokenExpiresAt: Long?
         get() {
@@ -119,10 +119,17 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
             else encryptedPreferences.edit().putLong(SpotifyTokenExpiryKey, value).apply()
         }
 
+    /**
+     * Get/set the Spotify access token (the access token string, not the wrapped [Token]).
+     */
     public var spotifyAccessToken: String?
         get() = encryptedPreferences.getString(SpotifyAccessTokenKey, null)
         set(value) = encryptedPreferences.edit().putString(SpotifyAccessTokenKey, value).apply()
 
+    /**
+     * Get/set the Spotify [Token] obtained from [spotifyToken].
+     * If the token has expired according to [spotifyTokenExpiresAt], this will return null.
+     */
     public var spotifyToken: Token?
         get() {
             val tokenExpiresAt = spotifyTokenExpiresAt ?: return null
@@ -141,15 +148,28 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
             }
         }
 
+    /**
+     * Create a new [SpotifyImplicitGrantApi] instance using the [spotifyToken] stored using this credential store.
+     *
+     * @param block Applied configuration to the [SpotifyImplicitGrantApi]
+     */
     public fun getSpotifyImplicitGrantApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyImplicitGrantApi? {
         val token = spotifyToken ?: return null
         return spotifyImplicitGrantApi(clientId, token, block ?: {})
     }
 
+    /**
+     * Sets [spotifyToken] using [SpotifyImplicitGrantApi.token]. This wraps around [spotifyToken]'s setter.
+     *
+     * @param api A valid [SpotifyImplicitGrantApi]
+     */
     public fun setSpotifyImplicitGrantApi(api: SpotifyImplicitGrantApi) {
         spotifyToken = api.token
     }
 
+    /**
+     * Clear the [SharedPreferences] instance corresponding to the Spotify credentials.
+     */
     @SuppressLint("ApplySharedPref")
     public fun clear(): Boolean = try {
         encryptedPreferences.edit().clear().commit()
