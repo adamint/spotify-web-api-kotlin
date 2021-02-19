@@ -176,6 +176,10 @@ kotlin {
             val serializationVersion = "1.0.1"
             val ktorVersion = "1.5.1"
             val korlibsVersion = "2.0.6"
+            val sparkVersion = "2.9.3"
+            val androidSpotifyAuthVersion = "1.2.3"
+            val androidCryptoVersion = "1.1.0-alpha03"
+            val coroutineMTVersion = "1.4.2-native-mt"
 
             val commonMain by getting {
                 dependencies {
@@ -209,7 +213,7 @@ kotlin {
             val jvmTest by getting {
                 dependencies {
                     implementation(kotlin("test-junit"))
-                    implementation("com.sparkjava:spark-core:2.9.3")
+                    implementation("com.sparkjava:spark-core:$sparkVersion")
                     runtimeOnly(kotlin("reflect"))
                 }
             }
@@ -228,10 +232,6 @@ kotlin {
             val jsTest by getting {
                 dependencies {
                     implementation(kotlin("test-js"))
-
-                   // implementation("io.kotest:kotest-assertions-core-js:4.3.2")
-                   // implementation("io.kotest:kotest-framework-api-js:4.3.2")
-                   // implementation("io.kotest:kotest-framework-engine-js:4.3.2")
                 }
             }
 
@@ -242,14 +242,16 @@ kotlin {
                 }
 
                 dependencies {
+                    implementation("com.spotify.android:auth:$androidSpotifyAuthVersion")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation("androidx.security:security-crypto:$androidCryptoVersion")
                 }
             }
 
             val androidTest by getting {
                 dependencies {
                     implementation(kotlin("test-junit"))
-                    implementation("com.sparkjava:spark-core:2.9.3")
+                    implementation("com.sparkjava:spark-core:$sparkVersion")
                     runtimeOnly(kotlin("reflect"))
                 }
             }
@@ -258,8 +260,6 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
-                    val coroutineMTVersion = "1.4.2-native-mt"
-
                     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
                         version {
                             strictly(coroutineMTVersion)

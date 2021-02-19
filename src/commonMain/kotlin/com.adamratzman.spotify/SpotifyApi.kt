@@ -222,7 +222,7 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     public suspend fun refreshToken(): Token = spotifyApiOptions.refreshTokenProducer?.invoke(this)?.apply {
         this@SpotifyApi.token = this
         spotifyApiOptions.onTokenRefresh?.let { it(this@SpotifyApi) }
-    } ?: throw IllegalStateException("The refreshTokenProducer is null.")
+    } ?: throw SpotifyException.ReAuthenticationNeededException(IllegalStateException("The refreshTokenProducer is null."))
 
     public companion object {
         internal suspend fun testTokenValidity(api: GenericSpotifyApi) {
