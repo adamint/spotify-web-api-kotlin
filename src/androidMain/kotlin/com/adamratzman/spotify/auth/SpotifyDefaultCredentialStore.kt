@@ -2,73 +2,24 @@ package com.adamratzman.spotify.auth
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyApiOptions
-import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
-import com.adamratzman.spotify.auth.SpotifyDefaultAuthHelper.activityBack
+import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.models.Token
+import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.spotifyImplicitGrantApi
+import com.adamratzman.spotify.utils.logToConsole
 
-// Starting login activity
-
-/**
- * Start Spotify login activity within an existing activity.
- */
-public inline fun <reified T : AbstractSpotifyLoginActivity> Activity.startSpotifyLoginActivity() {
-    startSpotifyLoginActivity(T::class.java)
-}
-
-/**
- * Start Spotify login activity within an existing activity.
- *
- * @param spotifyLoginImplementationClass Your implementation of [AbstractSpotifyLoginActivity], defining what to do on Spotify login
- */
-public fun <T : AbstractSpotifyLoginActivity> Activity.startSpotifyLoginActivity(spotifyLoginImplementationClass: Class<T>) {
-    startActivity(Intent(this, spotifyLoginImplementationClass))
-}
-
-
-/**
- * Basic authentication guard - verifies that the user is logged in to Spotify and uses [SpotifyDefaultAuthHelper] to
- * handle re-authentication and redirection back to the activity.
- *
- * Note: this should only be used for small applications.
- *
- * @param spotifyLoginImplementationClass Your implementation of [AbstractSpotifyLoginActivity], defining what to do on Spotify login
- * @param classBackTo The activity to return to if re-authentication is necessary
- * @block The code block to execute
- */
-public fun <T> Activity.guardValidSpotifyApi(
-    spotifyLoginImplementationClass: Class<out AbstractSpotifyLoginActivity>,
-    classBackTo: Class<out Activity>? = null,
-    block: () -> T
-): T? {
-    return try {
-        block()
-    } catch (e: SpotifyException.ReAuthenticationNeededException) {
-        activityBack = classBackTo
-        startSpotifyLoginActivity(spotifyLoginImplementationClass)
-        null
-    }
-}
-
-/**
- * Default authentiction helper for Android. Contains static variables useful in authentication.
- *
- */
-public object SpotifyDefaultAuthHelper {
-    /**
-     * The activity to return to if re-authentication is necessary. Null except during authentication when using [guardValidSpotifyApi]
-     */
-    public var activityBack: Class<out Activity>? = null
-}
 
 /**
  * Provided credential store for holding current Spotify token credentials, allowing you to easily store and retrieve
@@ -79,7 +30,11 @@ public object SpotifyDefaultAuthHelper {
  *
  */
 @RequiresApi(Build.VERSION_CODES.M)
-public class SpotifyDefaultCredentialStore constructor(private val clientId: String, applicationContext: Context) {
+public class SpotifyDefaultCredentialStore constructor(
+    private val clientId: String,
+    private val redirectUri: String,
+    applicationContext: Context
+) {
     public companion object {
         /**
          * The key used with spotify token expiry in [EncryptedSharedPreferences]
@@ -91,7 +46,19 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
          */
         public const val SpotifyAccessTokenKey: String = "spotifyAccessToken"
 
+        /**
+         * The key used with spotify refresh token in [EncryptedSharedPreferences]
+         */
+        public const val SpotifyRefreshTokenKey: String = "spotifyRefreshToken"
+
+        /**
+         * The activity to return to if re-authentication is necessary on implicit authentication. Null except during authentication when using [guardValidImplicitSpotifyApi]
+         */
+        public var activityBackOnImplicitAuth: Class<out Activity>? = null
     }
+
+
+    public var credentialTypeStored: CredentialType? = null
 
     /**
      * The [EncryptedSharedPreferences] that this API saves to/retrieves from.
@@ -127,6 +94,14 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
         set(value) = encryptedPreferences.edit().putString(SpotifyAccessTokenKey, value).apply()
 
     /**
+     * Get/set the Spotify refresh token.
+     */
+    public var spotifyRefreshToken: String?
+        get() = encryptedPreferences.getString(SpotifyRefreshTokenKey, null)
+        set(value) = encryptedPreferences.edit().putString(SpotifyRefreshTokenKey, value).apply()
+
+
+    /**
      * Get/set the Spotify [Token] obtained from [spotifyToken].
      * If the token has expired according to [spotifyTokenExpiresAt], this will return null.
      */
@@ -136,15 +111,28 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
             val accessToken = spotifyAccessToken ?: return null
             if (tokenExpiresAt < System.currentTimeMillis()) return null
 
-            return Token(accessToken, "Bearer", (tokenExpiresAt - System.currentTimeMillis()).toInt() / 1000)
+            val refreshToken = spotifyRefreshToken
+            return Token(
+                accessToken,
+                "Bearer",
+                (tokenExpiresAt - System.currentTimeMillis()).toInt() / 1000,
+                refreshToken
+            )
         }
         set(token) {
             if (token == null) {
                 spotifyAccessToken = null
                 spotifyTokenExpiresAt = null
+                spotifyRefreshToken = null
+
+                credentialTypeStored = null
             } else {
                 spotifyAccessToken = token.accessToken
                 spotifyTokenExpiresAt = token.expiresAt
+                spotifyRefreshToken = token.refreshToken
+
+                credentialTypeStored =
+                    if (token.refreshToken != null) CredentialType.Pkce else CredentialType.ImplicitGrant
             }
         }
 
@@ -159,11 +147,33 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
     }
 
     /**
-     * Sets [spotifyToken] using [SpotifyImplicitGrantApi.token]. This wraps around [spotifyToken]'s setter.
+     * Create a new [SpotifyClientApi] instance using the [spotifyToken] stored using this credential store.
      *
-     * @param api A valid [SpotifyImplicitGrantApi]
+     * @param block Applied configuration to the [SpotifyImplicitGrantApi]
      */
-    public fun setSpotifyImplicitGrantApi(api: SpotifyImplicitGrantApi) {
+    public suspend fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
+        val token = spotifyToken ?: return null
+        return spotifyClientPkceApi(
+            clientId,
+            redirectUri,
+            SpotifyUserAuthorization(token = token),
+            block ?: {}
+        ).build().apply {
+            val previousAfterTokenRefresh = spotifyApiOptions.afterTokenRefresh
+            spotifyApiOptions.afterTokenRefresh = {
+                spotifyToken = this.token
+                logToConsole("Refreshed Spotify PKCE token in credential store... $token")
+                previousAfterTokenRefresh?.invoke(this)
+            }
+        }
+    }
+
+    /**
+     * Sets [spotifyToken] using [SpotifyApi.token]. This wraps around [spotifyToken]'s setter.
+     *
+     * @param api A valid [GenericSpotifyApi]
+     */
+    public fun setSpotifyApi(api: GenericSpotifyApi) {
         spotifyToken = api.token
     }
 
@@ -179,6 +189,12 @@ public class SpotifyDefaultCredentialStore constructor(private val clientId: Str
     }
 }
 
+public enum class CredentialType {
+    ImplicitGrant,
+    Pkce
+}
 
-
-
+@RequiresApi(Build.VERSION_CODES.M)
+public fun Application.getDefaultCredentialStore(clientId: String, redirectUri: String): SpotifyDefaultCredentialStore {
+    return SpotifyDefaultCredentialStore(clientId, redirectUri, applicationContext)
+}

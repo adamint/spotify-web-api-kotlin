@@ -77,7 +77,8 @@ public class HttpConnection constructor(
         }
 
         // let additionalHeaders overwrite headers
-        val allHeaders = this@HttpConnection.headers + (additionalHeaders ?: listOf())
+        val allHeaders = if (additionalHeaders == null) this@HttpConnection.headers
+        else this@HttpConnection.headers.filter { oldHeaders -> oldHeaders.key !in additionalHeaders.map { it.key } } + additionalHeaders
 
         allHeaders.forEach { (key, value) ->
             header(key, value)
@@ -107,8 +108,6 @@ public class HttpConnection constructor(
                 if (respCode == 429) {
                     val ratelimit = response.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
-                        println("The request ($url) was ratelimited for $ratelimit seconds at ${getCurrentTimeMs()}")
-
                         delay(ratelimit * 1000)
                         return@let execute(
                             additionalHeaders,
@@ -124,8 +123,10 @@ public class HttpConnection constructor(
                     api != null && api.spotifyApiOptions.automaticRefresh
                 ) {
                     api.refreshToken()
-                    val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
-                    newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
+                    val newAdditionalHeaders =
+                        additionalHeaders?.toMutableList()?.filter { it.key != "Authorization" }?.toMutableList()
+                            ?: mutableListOf()
+                    newAdditionalHeaders.add(HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
                     return execute(
                         newAdditionalHeaders,
                         retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft
@@ -176,8 +177,10 @@ public class HttpConnection constructor(
                     api != null && api.spotifyApiOptions.automaticRefresh
                 ) {
                     api.refreshToken()
-                    val newAdditionalHeaders = additionalHeaders?.toMutableList() ?: mutableListOf()
-                    newAdditionalHeaders.add(0, HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
+                    val newAdditionalHeaders =
+                        additionalHeaders?.toMutableList()?.filter { it.key != "Authorization" }?.toMutableList()
+                            ?: mutableListOf()
+                    newAdditionalHeaders.add(HttpHeader("Authorization", "Bearer ${api.token.accessToken}"))
                     return execute(
                         newAdditionalHeaders,
                         retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft
