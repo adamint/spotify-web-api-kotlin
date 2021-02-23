@@ -13,7 +13,7 @@ import kotlinx.serialization.Transient
  *
  * @param accessToken An access token that can be provided in subsequent calls,
  * for example to Spotify Web API services.
- * @param tokenType How the access token may be used: always “Bearer”.
+ * @param tokenType How the access token may be used: always Bearer”.
  * @param expiresIn The time period (in seconds) for which the access token is valid.
  * @param refreshToken A token that can be sent to the Spotify Accounts service in place of an authorization code,
  * null if the token was created using a method that does not support token refresh

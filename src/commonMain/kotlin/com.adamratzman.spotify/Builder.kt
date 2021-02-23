@@ -341,6 +341,8 @@ public fun spotifyClientPkceApi(
 
     authorization(authorization)
     options(block)
+
+    usesPkceAuth = true
 }
 
 /**
@@ -592,11 +594,16 @@ public interface ISpotifyClientApiBuilder : ISpotifyApiBuilder<SpotifyClientApi,
 
 /**
  * [SpotifyClientApi] builder for api creation using client authorization
+ *
+ * @param usesPkceAuth Set this if PKCE authorization is used to build this API. **Note**: this is not required to be true if
+ * [SpotifyUserAuthorization.pkceCodeVerifier] (`options.pkceCodeVerifier`) is set. If `options.pkceCodeVerifier`, this builder will
+ * always build a Spotify client api with PKCE auth.
  */
 public class SpotifyClientApiBuilder(
     override var credentials: SpotifyCredentials = SpotifyCredentials(),
     override var authorization: SpotifyUserAuthorization = SpotifyUserAuthorization(),
-    override var options: SpotifyApiOptions = SpotifyApiOptions()
+    override var options: SpotifyApiOptions = SpotifyApiOptions(),
+    public var usesPkceAuth: Boolean? = null
 ) : ISpotifyClientApiBuilder {
     override fun getAuthorizationUrl(vararg scopes: SpotifyScope, state: String?): String {
         require(credentials.redirectUri != null && credentials.clientId != null) { "You didn't specify a redirect uri or client id in the credentials block!" }
@@ -640,7 +647,7 @@ public class SpotifyClientApiBuilder(
                     clientSecret = clientSecret,
                     redirectUri = redirectUri,
                     token = response.body.toObject(Token.serializer(), null, options.json),
-                    usesPkceAuth = false,
+                    usesPkceAuth = usesPkceAuth == true,
                     enableDefaultTokenRefreshProducerIfNoneExists = enableDefaultTokenRefreshProducerIfNoneExists,
                     spotifyApiOptions = options
                 )
@@ -698,7 +705,7 @@ public class SpotifyClientApiBuilder(
                 clientSecret = clientSecret,
                 redirectUri = redirectUri,
                 token = authorization.token!!,
-                usesPkceAuth = authorization.pkceCodeVerifier != null,
+                usesPkceAuth = authorization.pkceCodeVerifier != null || usesPkceAuth == true,
                 enableDefaultTokenRefreshProducerIfNoneExists = enableDefaultTokenRefreshProducerIfNoneExists,
                 spotifyApiOptions = options
             )
@@ -881,5 +888,6 @@ public data class SpotifyApiOptions(
     public var requiredScopes: List<SpotifyScope>? = null,
     public var proxyBaseUrl: String? = null,
     public var retryOnInternalServerErrorTimes: Int? = 5,
-    public var enableDebugMode: Boolean = false
+    public var enableDebugMode: Boolean = false,
+    public var afterTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null
 )
