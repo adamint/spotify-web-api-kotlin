@@ -71,7 +71,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         attemptedRefresh: Boolean = false
     ): String {
         if (api.token.shouldRefresh()) {
-            if (!api.spotifyApiOptions.automaticRefresh) throw SpotifyException.AuthenticationException("The access token has expired.")
+            if (!api.spotifyApiOptions.automaticRefresh) throw SpotifyException.ReAuthenticationNeededException(message = "The access token has expired.")
             else api.refreshToken()
         }
 

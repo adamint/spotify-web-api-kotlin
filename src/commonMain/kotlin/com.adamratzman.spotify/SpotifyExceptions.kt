@@ -49,5 +49,5 @@ public sealed class SpotifyException(message: String, cause: Throwable? = null) 
     /**
      * Exception signifying that re-authentication via spotify-auth is necessary. Thrown by default when refreshTokenProducer is null.
      */
-    public class ReAuthenticationNeededException(cause: Throwable? = null) : SpotifyException("Re-authentication is needed.", cause)
+    public class ReAuthenticationNeededException(cause: Throwable? = null, message: String? = null) : SpotifyException(message ?: "Re-authentication is needed.", cause)
 }

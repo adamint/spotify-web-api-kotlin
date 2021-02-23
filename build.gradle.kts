@@ -119,7 +119,7 @@ kotlin {
         }
     }
 
-    js(KotlinJsCompilerType.LEGACY) {
+    js(KotlinJsCompilerType.BOTH) {
         mavenPublication {
             setupPom(artifactId)
         }

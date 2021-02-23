@@ -2,7 +2,6 @@ package com.adamratzman.spotify.auth.implicit
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
@@ -46,16 +45,16 @@ public interface SpotifyImplicitLoginActivity {
      *
      * @param spotifyApi Valid, usable [SpotifyImplicitGrantApi] that you can use to make requests.
      */
-    public fun onSuccessfulAuthentication(spotifyApi: SpotifyImplicitGrantApi)
+    public fun onSuccess(spotifyApi: SpotifyImplicitGrantApi)
 
     /**
      * Override this to define what to do after authentication has failed. You may want to use [SpotifyDefaultCredentialStore] to remove any stored token.
      */
-    public fun onAuthenticationFailed(errorMessage: String)
+    public fun onFailure(errorMessage: String)
 
 
     /**
-     * Override this to define what to do after [onSuccessfulAuthentication] has run.
+     * Override this to define what to do after [onSuccess] has run.
      * The default behavior is to finish the activity, and redirect the user back to the activity set on [SpotifyDefaultCredentialStore.activityBackOnImplicitAuth]
      * only if [guardValidImplicitSpotifyApi] has been used or if [SpotifyDefaultCredentialStore.activityBackOnImplicitAuth] has been set.
      */
@@ -98,18 +97,18 @@ public interface SpotifyImplicitLoginActivity {
                         token = token
                     )
                     logToConsole("Built implicit grant api. Executing success handler..")
-                    onSuccessfulAuthentication(api)
+                    onSuccess(api)
                     redirectAfterOnSuccessAuthentication()
                 }
                 // AuthorizationResponse.Type.CODE -> TODO()
                 //AuthorizationResponse.Type.UNKNOWN -> TODO()
                 AuthorizationResponse.Type.ERROR -> {
                     logToConsole("Got error in authorization... executing error handler")
-                    onAuthenticationFailed(response.error ?: "Generic authentication error")
+                    onFailure(response.error ?: "Generic authentication error")
                 }
                 AuthorizationResponse.Type.EMPTY -> {
                     logToConsole("Got empty authorization... executing error handler")
-                    onAuthenticationFailed(response.error ?: "Authentication empty")
+                    onFailure(response.error ?: "Authentication empty")
                 }
             }
             activity.finish()

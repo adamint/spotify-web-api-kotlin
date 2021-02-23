@@ -57,7 +57,11 @@ implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 Please see 
 
 ### Android
-**If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:**
+**Note**: For information on how to integrate implicit/PKCE authentication, Spotify app remote, and Spotify broadcast notifications into 
+your application, please see the [Android README](README_ANDROID.md).
+
+
+*If you declare any release types not named debug or release, you may see "Could not resolve com.adamratzman:spotify-api-kotlin-android:VERSION". You need to do the following for each release type not named debug or release:*
 ```
 android {
     buildTypes {
@@ -435,6 +439,11 @@ runBlocking {
 ```
 
 ## Notes
+### Re-authentication
+If you are using an authorization flow or token that does not support automatic token refresh, `SpotifyException.ReAuthenticationNeededException` 
+will be thrown. You should put your requests, if creating an application, behind a try/catch block to re-authenticate users if this 
+exception is thrown.
+
 ### LinkedResults, PagingObjects, and Cursor-based Paging Objects
 Spotify provides these three object models in order to simplify our lives as developers. So let's see what we
 can do with them!

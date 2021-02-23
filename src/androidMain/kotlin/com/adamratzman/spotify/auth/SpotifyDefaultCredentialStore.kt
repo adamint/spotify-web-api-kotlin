@@ -30,7 +30,7 @@ import com.adamratzman.spotify.utils.logToConsole
  *
  */
 @RequiresApi(Build.VERSION_CODES.M)
-public class SpotifyDefaultCredentialStore constructor(
+public class SpotifyDefaultCredentialStore(
     private val clientId: String,
     private val redirectUri: String,
     applicationContext: Context
