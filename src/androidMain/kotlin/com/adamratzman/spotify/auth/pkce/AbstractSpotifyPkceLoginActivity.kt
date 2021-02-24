@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.pkce
 
 import android.content.Intent
@@ -15,13 +16,13 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import com.adamratzman.spotify.auth.getDefaultCredentialStore
-import com.adamratzman.spotify.getPkceAuthorizationUrl
+import com.adamratzman.spotify.getSpotifyPkceAuthorizationUrl
 import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.utils.logToConsole
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 
 /**
  * This class hooks into spotify-web-api-kotlin to provide PKCE authorization for Android application. Paired with [SpotifyDefaultCredentialStore] to easily store credentials.
@@ -59,7 +60,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     /**
      * Get the authorization url that the client will be redirected to during PKCE authorization.
      */
-    public fun getAuthorizationUrl(): Uri = getPkceAuthorizationUrl(
+    public fun getAuthorizationUrl(): Uri = getSpotifyPkceAuthorizationUrl(
         *scopes.toTypedArray(),
         clientId = clientId,
         redirectUri = redirectUri,
@@ -162,7 +163,6 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                             IllegalArgumentException("API token was blank")
                         )
                     }
-
                 } catch (exception: Exception) {
                     setProgressBarInvisible()
                     logToConsole("Got error in authorization... executing error handler")
@@ -182,5 +182,4 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     private fun setProgressBarVisible() {
         findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.VISIBLE
     }
-
 }

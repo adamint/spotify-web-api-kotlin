@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.pkce
 
 import android.app.Activity
@@ -6,8 +7,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 public fun Intent?.isSpotifyPkceAuthIntent(redirectUri: String): Boolean {
-    return this != null
-            && (dataString?.startsWith("$redirectUri/?code=") == true || dataString?.startsWith("$redirectUri/?error=") == true)
+    return this != null &&
+            (dataString?.startsWith("$redirectUri/?code=") == true || dataString?.startsWith("$redirectUri/?error=") == true)
 }
 
 /**

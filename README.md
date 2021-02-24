@@ -193,18 +193,18 @@ the code challenge used to authorize the user.
 
 This library contains helpful methods that can be used to simplify the PKCE authorization process.
 This includes `getSpotifyPkceCodeChallenge`, which SHA256 hashes and base64url encodes the code 
-challenge, and `getPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
+challenge, and `getSpotifyPkceAuthorizationUrl`, which allows you to generate an easy authorization url for PKCE flow.
 
 Please see the [spotifyClientPkceApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-client-pkce-api.html) for a full list of available builders.
  
 **Takeaway**: Use PKCE authorization flow in applications where you cannot secure the client secret.
 
-To get a PKCE authorization url, to which you can redirect a user, you can use the `getPkceAuthorizationUrl`
+To get a PKCE authorization url, to which you can redirect a user, you can use the `getSpotifyPkceAuthorizationUrl`
 top-level method. An example is shown below, requesting 4 different scopes.
 ```kotlin
 val codeVerifier = "thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"
 val codeChallenge = getSpotifyPkceCodeChallenge(codeVerifier) // helper method
-val url: String = getPkceAuthorizationUrl(
+val url: String = getSpotifyPkceAuthorizationUrl(
     SpotifyScope.PLAYLIST_READ_PRIVATE,
     SpotifyScope.PLAYLIST_MODIFY_PRIVATE,
     SpotifyScope.USER_FOLLOW_READ,

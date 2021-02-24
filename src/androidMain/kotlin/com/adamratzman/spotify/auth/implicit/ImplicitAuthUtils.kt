@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.implicit
 
 import android.app.Activity
@@ -46,4 +47,3 @@ public fun <T> Activity.guardValidImplicitSpotifyApi(
         null
     }
 }
-

@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.implicit
 
 import android.app.Activity
@@ -52,7 +53,6 @@ public interface SpotifyImplicitLoginActivity {
      */
     public fun onFailure(errorMessage: String)
 
-
     /**
      * Override this to define what to do after [onSuccess] has run.
      * The default behavior is to finish the activity, and redirect the user back to the activity set on [SpotifyDefaultCredentialStore.activityBackOnImplicitAuth]
@@ -90,7 +90,7 @@ public interface SpotifyImplicitLoginActivity {
                     val token = Token(
                         response.accessToken,
                         response.type.name,
-                        response.expiresIn,
+                        response.expiresIn
                     )
                     val api = spotifyImplicitGrantApi(
                         clientId = clientId,
@@ -101,7 +101,7 @@ public interface SpotifyImplicitLoginActivity {
                     redirectAfterOnSuccessAuthentication()
                 }
                 // AuthorizationResponse.Type.CODE -> TODO()
-                //AuthorizationResponse.Type.UNKNOWN -> TODO()
+                // AuthorizationResponse.Type.UNKNOWN -> TODO()
                 AuthorizationResponse.Type.ERROR -> {
                     logToConsole("Got error in authorization... executing error handler")
                     onFailure(response.error ?: "Generic authentication error")
@@ -113,7 +113,5 @@ public interface SpotifyImplicitLoginActivity {
             }
             activity.finish()
         }
-
     }
-
 }
