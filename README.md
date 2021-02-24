@@ -55,7 +55,8 @@ implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 ```
 
 ### JS
-Please see 
+Please see the [JS Spotify Web Playback SDK wrapper](#js-spotify-web-playback-sdk-wrapper) to learn how to use Spotify's web playback SDK in a browser application.
+
 
 ### Android
 **Note**: For information on how to integrate implicit/PKCE authentication, Spotify app remote, and Spotify broadcast notifications into 
@@ -114,6 +115,7 @@ to the sections below or the [Spotify authorization guide](https://developer.spo
 - If you're using the api in Kotlin/JS browser, use SpotifyImplicitGrantApi
 - If you need access to client resources in an Android or other application, use SpotifyClientApi with PKCE
 
+**Note**: You can use the online [Spotify OAuth Token Generator](https://adamratzman.com/projects/spotify/generate-token) tool to generate a client token for local testing.
 
 ### SpotifyAppApi
 This provides access only to public Spotify endpoints.
@@ -380,7 +382,10 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 - `ClientPlayerApi` (view and control Spotify playback)
 
 ## Platform-specific wrappers and information
+
 ### Android authentication
+For information on how to integrate implicit/PKCE authentication, Spotify app remote, and Spotify broadcast notifications into 
+your application, please see the [Android README](README_ANDROID.md).
 
 ### JS Spotify Web Playback SDK wrapper
 `spotify-web-api-kotlin` provides a wrapper around Spotify's [Web Playback SDK](https://developer.spotify.com/documentation/web-playback-sdk/reference/) 
