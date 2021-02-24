@@ -22,7 +22,7 @@ class PkceTest {
             val state = Random.nextLong().toString()
 
             println(
-                getPkceAuthorizationUrl(
+                getSpotifyPkceAuthorizationUrl(
                     *SpotifyScope.values(),
                     clientId = clientId,
                     redirectUri = serverRedirectUri,

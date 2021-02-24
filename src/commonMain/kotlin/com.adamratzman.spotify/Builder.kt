@@ -60,7 +60,7 @@ public fun getSpotifyAuthorizationUrl(
  * Then, base64url encode the hash that you generated.
  *
  */
-public fun getPkceAuthorizationUrl(
+public fun getSpotifyPkceAuthorizationUrl(
     vararg scopes: SpotifyScope,
     clientId: String,
     redirectUri: String,
@@ -340,6 +340,40 @@ public fun spotifyClientPkceApi(
     }
 
     authorization(authorization)
+    options(block)
+
+    usesPkceAuth = true
+}
+
+/**
+ * Instantiate a new [SpotifyClientApiBuilder]. This is for **PKCE authorization**.
+ *
+ * Use case: I am using the PKCE client authorization flow.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
+ * @param authorizationCode Only available when building [SpotifyClientApi]. Spotify auth code
+ * @param block Override default API options such as the cache limit
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+public fun spotifyClientPkceApi(
+    clientId: String?,
+    redirectUri: String?,
+    authorizationCode: String,
+    pkceCodeVerifier: String,
+    block: SpotifyApiOptions.() -> Unit = {}
+): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.redirectUri = redirectUri
+    }
+
+    authorization {
+        this.authorizationCode = authorizationCode
+        this.pkceCodeVerifier = pkceCodeVerifier
+    }
     options(block)
 
     usesPkceAuth = true

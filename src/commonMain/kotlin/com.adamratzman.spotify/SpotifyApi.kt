@@ -169,7 +169,7 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
         )
     }
 
-    public fun getPkceAuthorizationUrl(
+    public fun getSpotifyPkceAuthorizationUrl(
         vararg scopes: SpotifyScope,
         redirectUri: String,
         codeChallenge: String,

@@ -15,7 +15,7 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import com.adamratzman.spotify.auth.getDefaultCredentialStore
-import com.adamratzman.spotify.getPkceAuthorizationUrl
+import com.adamratzman.spotify.getSpotifyPkceAuthorizationUrl
 import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.utils.logToConsole
@@ -59,7 +59,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     /**
      * Get the authorization url that the client will be redirected to during PKCE authorization.
      */
-    public fun getAuthorizationUrl(): Uri = getPkceAuthorizationUrl(
+    public fun getAuthorizationUrl(): Uri = getSpotifyPkceAuthorizationUrl(
         *scopes.toTypedArray(),
         clientId = clientId,
         redirectUri = redirectUri,
