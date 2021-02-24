@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.pkce
 
 import android.content.Intent
@@ -20,8 +21,8 @@ import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.utils.logToConsole
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 
 /**
  * This class hooks into spotify-web-api-kotlin to provide PKCE authorization for Android application. Paired with [SpotifyDefaultCredentialStore] to easily store credentials.
@@ -162,7 +163,6 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                             IllegalArgumentException("API token was blank")
                         )
                     }
-
                 } catch (exception: Exception) {
                     setProgressBarInvisible()
                     logToConsole("Got error in authorization... executing error handler")
@@ -182,5 +182,4 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     private fun setProgressBarVisible() {
         findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.VISIBLE
     }
-
 }

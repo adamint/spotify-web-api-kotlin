@@ -286,4 +286,3 @@ public external interface Track {
 public external interface WebPlaybackInstance {
     public var device_id: String
 }
-

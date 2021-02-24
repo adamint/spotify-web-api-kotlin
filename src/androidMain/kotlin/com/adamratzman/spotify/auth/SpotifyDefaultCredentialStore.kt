@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth
 
 import android.annotation.SuppressLint
@@ -19,7 +20,6 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.spotifyImplicitGrantApi
 import com.adamratzman.spotify.utils.logToConsole
-
 
 /**
  * Provided credential store for holding current Spotify token credentials, allowing you to easily store and retrieve
@@ -56,7 +56,6 @@ public class SpotifyDefaultCredentialStore(
          */
         public var activityBackOnImplicitAuth: Class<out Activity>? = null
     }
-
 
     public var credentialTypeStored: CredentialType? = null
 
@@ -99,7 +98,6 @@ public class SpotifyDefaultCredentialStore(
     public var spotifyRefreshToken: String?
         get() = encryptedPreferences.getString(SpotifyRefreshTokenKey, null)
         set(value) = encryptedPreferences.edit().putString(SpotifyRefreshTokenKey, value).apply()
-
 
     /**
      * Get/set the Spotify [Token] obtained from [spotifyToken].

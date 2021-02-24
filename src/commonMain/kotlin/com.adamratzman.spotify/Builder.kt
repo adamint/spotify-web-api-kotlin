@@ -191,6 +191,38 @@ public fun spotifyAppApi(
 }
 
 /**
+ * Instantiate a new [SpotifyAppApiBuilder] using a [Token]
+ *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, I have an existing token,
+ * and I don't want to deal with advanced configuration.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param token Build the API using an existing token.
+ * @param block Override default API options such as the cache limit
+ *
+ * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
+ */
+public fun spotifyAppApi(
+    clientId: String?,
+    clientSecret: String?,
+    token: Token,
+    block: SpotifyApiOptions.() -> Unit = {}
+): SpotifyAppApiBuilder = SpotifyAppApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+    }
+
+    authorization {
+        this.token = token
+    }
+
+    options(block)
+}
+
+/**
  * Instantiate a new [SpotifyAppApiBuilder] by providing a builder initialization [block].
  *
  * **Note**: You **must** provide your app credentials in the [SpotifyAppApiBuilder.credentials] block
@@ -285,6 +317,40 @@ public fun spotifyClientApi(
 }
 
 /**
+ * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri],
+ * with an existing [SpotifyUserAuthorization].
+ *
+ * Use case: I am using the client authorization flow.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param token Build the API using an existing token.
+ * @param block Override default API options such as the cache limit
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+public fun spotifyClientApi(
+    clientId: String?,
+    clientSecret: String?,
+    redirectUri: String?,
+    token: Token,
+    block: SpotifyApiOptions.() -> Unit = {}
+): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+        this.redirectUri = redirectUri
+    }
+
+    authorization {
+        this.token = token
+    }
+
+    options(block)
+}
+
+/**
  * Instantiate a new [SpotifyClientApiBuilder] by providing a builder initialization [block]
  *
  * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
@@ -373,6 +439,37 @@ public fun spotifyClientPkceApi(
     authorization {
         this.authorizationCode = authorizationCode
         this.pkceCodeVerifier = pkceCodeVerifier
+    }
+    options(block)
+
+    usesPkceAuth = true
+}
+
+/**
+ * Instantiate a new [SpotifyClientApiBuilder]. This is for **PKCE authorization**.
+ *
+ * Use case: I am using the PKCE client authorization flow.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param token Build the API using an existing token.
+ * @param block Override default API options such as the cache limit
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+public fun spotifyClientPkceApi(
+    clientId: String?,
+    redirectUri: String?,
+    token: Token,
+    block: SpotifyApiOptions.() -> Unit = {}
+): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.redirectUri = redirectUri
+    }
+
+    authorization {
+        this.token = token
     }
     options(block)
 

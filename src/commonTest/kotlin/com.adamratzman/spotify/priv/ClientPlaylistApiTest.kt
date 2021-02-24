@@ -11,12 +11,12 @@ import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.currentApiPlatform
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class ClientPlaylistApiTest {
     lateinit var api: SpotifyClientApi

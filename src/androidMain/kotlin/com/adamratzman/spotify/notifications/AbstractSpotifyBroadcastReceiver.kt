@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.notifications
 
 import android.content.BroadcastReceiver
@@ -43,7 +44,6 @@ public abstract class AbstractSpotifyBroadcastReceiver : BroadcastReceiver() {
                 )
             )
         }
-
     }
 
     /**
@@ -80,7 +80,6 @@ public abstract class AbstractSpotifyBroadcastReceiver : BroadcastReceiver() {
     public companion object {
         public const val BaseSpotifyNotificationId: String = "com.spotify.music"
     }
-
 }
 
 /**
@@ -122,7 +121,7 @@ public data class SpotifyMetadataChangedData(
  * A playback state change is sent whenever the user presses play/pause, or when seeking the track position. It uses the intent action com.spotify.music.playbackstatechanged.
  *
  * @param playing True if playing, false if paused.
- * @param positionInMs    The current playback position in milliseconds.
+ * @param positionInMs The current playback position in milliseconds.
  * @param timeSentInMs When the notification was sent.
  */
 public data class SpotifyPlaybackStateChangedData(

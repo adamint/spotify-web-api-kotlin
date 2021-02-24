@@ -26,7 +26,6 @@ public actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.Concurren
 
 public actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()
 
-
 // safeLet retrieved from: https://stackoverflow.com/a/35522422/6422820
 private fun <T1 : Any, T2 : Any, T3 : Any, R : Any> safeLet(p1: T1?, p2: T2?, p3: T3?, block: (T1, T2, T3) -> R?): R? =
     if (p1 != null && p2 != null && p3 != null) block(p1, p2, p3) else null

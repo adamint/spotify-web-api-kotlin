@@ -11,7 +11,6 @@ public fun setOnSpotifyWebPlaybackSDKReady(callback: suspend () -> Unit) {
     dynamicWindow["onSpotifyWebPlaybackSDKReady"] = callback
 }
 
-
 public enum class SpotifyWebPlaybackEvent(public val spotifyId: String) {
     /**
      * Emitted when the Web Playback SDK has successfully connected and is ready to stream content in the browser from Spotify. Type [PlaybackPlayerListener]

@@ -1,3 +1,4 @@
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.implicit
 
 import android.app.Activity
@@ -17,13 +18,11 @@ public abstract class AbstractSpotifyAppImplicitLoginActivity : SpotifyImplicitL
     public override val activity: Activity = this
     public override val useDefaultRedirectHandler: Boolean = true
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         triggerLoginActivity()
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
