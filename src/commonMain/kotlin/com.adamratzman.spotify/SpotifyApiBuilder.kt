@@ -114,7 +114,29 @@ public fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
 public fun spotifyImplicitGrantApi(
     clientId: String?,
     token: Token,
-    block: SpotifyApiOptions.() -> Unit = { }
+): SpotifyImplicitGrantApi = SpotifyImplicitGrantApi(
+    clientId,
+    token,
+    SpotifyApiOptions()
+)
+
+
+/**
+ * Instantiate a new [SpotifyImplicitGrantApi] using a Spotify [clientId], and [token] retrieved from the implicit
+ * grant flow.
+ *
+ * Use case: I have a token obtained after implicit grant authorization.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param token Token created from the hash response in the implicit grant callback
+ * @param block Block to set API options
+ *
+ * @return [SpotifyImplicitGrantApi] that can immediately begin making calls
+ */
+public fun spotifyImplicitGrantApi(
+    clientId: String?,
+    token: Token,
+    block: SpotifyApiOptions.() -> Unit
 ): SpotifyImplicitGrantApi = SpotifyImplicitGrantApi(
     clientId,
     token,
@@ -134,6 +156,28 @@ public fun spotifyImplicitGrantApi(
                 ||----w |
                 ||     ||
  */
+
+/**
+ * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret].
+ *
+ * Use case: I am using the client credentials flow.
+ * I only need access to public Spotify API endpoints, might have an existing token,
+ * and might want to deal with advanced configuration.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ *
+ * @return Configurable [SpotifyAppApiBuilder] that, when built, creates a new [SpotifyAppApi]
+ */
+public fun spotifyAppApi(
+    clientId: String,
+    clientSecret: String
+): SpotifyAppApiBuilder = SpotifyAppApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+    }
+}
 
 /**
  * Instantiate a new [SpotifyAppApiBuilder] using a Spotify [clientId] and [clientSecret], with the ability to configure
@@ -252,6 +296,35 @@ public fun spotifyAppApi(block: SpotifyAppApiBuilder.() -> Unit): SpotifyAppApiB
  */
 
 /**
+ * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri].
+ *
+ * **Note**: If trying to build [SpotifyClientApi], you **must** provide client authorization in the [SpotifyClientApiBuilder.authorization]
+ * block
+ *
+ * Use case: I am using the client authorization flow.
+ * I want access to both public and client Spotify API endpoints, and I want
+ * to configure authorization and other settings myself.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+public fun spotifyClientApi(
+    clientId: String,
+    clientSecret: String,
+    redirectUri: String
+): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.clientSecret = clientSecret
+        this.redirectUri = redirectUri
+    }
+}
+
+
+/**
  * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri], with the ability to configure
  * the api settings by providing a builder initialization [block]
  *
@@ -273,7 +346,7 @@ public fun spotifyClientApi(
     clientId: String,
     clientSecret: String,
     redirectUri: String,
-    block: SpotifyClientApiBuilder.() -> Unit = {}
+    block: SpotifyClientApiBuilder.() -> Unit
 ): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply(block).apply {
     credentials {
         this.clientId = clientId
@@ -420,6 +493,37 @@ public fun spotifyClientPkceApi(
  * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
  * @param pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
  * @param authorizationCode Only available when building [SpotifyClientApi]. Spotify auth code
+ *
+ * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
+ */
+public fun spotifyClientPkceApi(
+    clientId: String?,
+    redirectUri: String?,
+    authorizationCode: String,
+    pkceCodeVerifier: String
+): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
+    credentials {
+        this.clientId = clientId
+        this.redirectUri = redirectUri
+    }
+
+    authorization {
+        this.authorizationCode = authorizationCode
+        this.pkceCodeVerifier = pkceCodeVerifier
+    }
+
+    usesPkceAuth = true
+}
+
+/**
+ * Instantiate a new [SpotifyClientApiBuilder]. This is for **PKCE authorization**.
+ *
+ * Use case: I am using the PKCE client authorization flow.
+ *
+ * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param redirectUri Spotify [redirect uri](https://developer.spotify.com/documentation/general/guides/app-settings/)
+ * @param pkceCodeVerifier The code verifier generated that the client authenticated with (using its code challenge)
+ * @param authorizationCode Only available when building [SpotifyClientApi]. Spotify auth code
  * @param block Override default API options such as the cache limit
  *
  * @return Configurable [SpotifyClientApiBuilder] that, when built, creates a new [SpotifyClientApi]
@@ -429,7 +533,7 @@ public fun spotifyClientPkceApi(
     redirectUri: String?,
     authorizationCode: String,
     pkceCodeVerifier: String,
-    block: SpotifyApiOptions.() -> Unit = {}
+    block: SpotifyApiOptions.() -> Unit
 ): SpotifyClientApiBuilder = SpotifyClientApiBuilder().apply {
     credentials {
         this.clientId = clientId

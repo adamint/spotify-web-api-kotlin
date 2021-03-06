@@ -31,6 +31,8 @@ supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
         * [API options](#api-options)
     + [Using the API](#using-the-api)
 * [Platform-specific wrappers and information](#platform-specific-wrappers-and-information)
+    + [Java](#java)
+    + [Android authentication](#android-authentication)
     + [JavaScript: Spotify Web Playback SDK wrapper](#js-spotify-web-playback-sdk-wrapper)
 * [Tips](#tips)
     + [Building the API](#building-the-api)
@@ -54,9 +56,9 @@ repositories {
 implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
 ```
 
+
 ### JS
 Please see the [JS Spotify Web Playback SDK wrapper](#js-spotify-web-playback-sdk-wrapper) to learn how to use Spotify's web playback SDK in a browser application.
-
 
 ### Android
 **Note**: For information on how to integrate implicit/PKCE authentication, Spotify app remote, and Spotify broadcast notifications into 
@@ -382,6 +384,61 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 - `ClientPlayerApi` (view and control Spotify playback)
 
 ## Platform-specific wrappers and information
+
+### Java
+Unfortunately, coroutines don't play very nicely with Java code. Fortunately, however, we provide a wrapper around Kotlin's 
+`Continuation` class that allows you to directly implement `onSuccess` and `onFailure` handlers on API methods.
+
+Please see below for an example:
+
+```java
+import com.adamratzman.spotify.SpotifyApiBuilderKt;
+import com.adamratzman.spotify.SpotifyAppApi;
+import com.adamratzman.spotify.javainterop.SpotifyContinuation;
+import com.adamratzman.spotify.models.Album;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ExecutionException;
+
+public class SpotifyTestApp {
+    static SpotifyAppApi api;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        var id = "spotify-client-id";
+        var secret = "spotify-client-secret";
+        SpotifyApiBuilderKt.spotifyAppApi(id, secret).build(true, new SpotifyContinuation<>() {
+            @Override
+            public void onSuccess(SpotifyAppApi spotifyAppApi) {
+                api = spotifyAppApi;
+                runAlbumSearch();
+            }
+
+            @Override
+            public void onFailure(@NotNull Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        });
+
+        Thread.sleep(1000000);
+    }
+
+    public static void runAlbumSearch() {
+        api.getAlbums().getAlbum("spotify:album:0b23AHutIA1BOW0u1dZ6wM", null, new SpotifyContinuation<>() {
+            @Override
+            public void onSuccess(Album album) {
+                System.out.println("Album name is: " + album.getName() + ". Exiting now..");
+
+                System.exit(0);
+            }
+
+            @Override
+            public void onFailure(@NotNull Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        });
+    }
+}
+```
 
 ### Android authentication
 For information on how to integrate implicit/PKCE authentication, Spotify app remote, and Spotify broadcast notifications into 

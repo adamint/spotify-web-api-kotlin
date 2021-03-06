@@ -7,7 +7,7 @@ plugins {
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
     id("com.android.library")
-    kotlin("multiplatform") version "1.4.30"
+    kotlin("multiplatform") version "1.4.31"
     kotlin("plugin.serialization") version "1.4.30"
     id("com.diffplug.spotless") version "5.9.0"
     id("com.moowork.node") version "1.3.1"
@@ -27,7 +27,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31")
     }
 }
 
@@ -199,7 +199,12 @@ kotlin {
                 }
             }
 
+            val commonJvmLikeMain by creating {
+                dependsOn(commonMain)
+            }
+
             val jvmMain by getting {
+                dependsOn(commonJvmLikeMain)
                 repositories {
                     mavenCentral()
                     jcenter()
@@ -236,6 +241,8 @@ kotlin {
             }
 
             val androidMain by getting {
+                dependsOn(commonJvmLikeMain)
+
                 repositories {
                     mavenCentral()
                     jcenter()
