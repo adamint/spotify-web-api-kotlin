@@ -20,6 +20,7 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.spotifyImplicitGrantApi
 import com.adamratzman.spotify.utils.logToConsole
+import kotlinx.coroutines.runBlocking
 
 /**
  * Provided credential store for holding current Spotify token credentials, allowing you to easily store and retrieve
@@ -149,19 +150,21 @@ public class SpotifyDefaultCredentialStore(
      *
      * @param block Applied configuration to the [SpotifyImplicitGrantApi]
      */
-    public suspend fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
+    public fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
         val token = spotifyToken ?: return null
-        return spotifyClientPkceApi(
-            clientId,
-            redirectUri,
-            SpotifyUserAuthorization(token = token),
-            block ?: {}
-        ).build().apply {
-            val previousAfterTokenRefresh = spotifyApiOptions.afterTokenRefresh
-            spotifyApiOptions.afterTokenRefresh = {
-                spotifyToken = this.token
-                logToConsole("Refreshed Spotify PKCE token in credential store... $token")
-                previousAfterTokenRefresh?.invoke(this)
+        return runBlocking {
+            spotifyClientPkceApi(
+                clientId,
+                redirectUri,
+                SpotifyUserAuthorization(token = token),
+                block ?: {}
+            ).build().apply {
+                val previousAfterTokenRefresh = spotifyApiOptions.afterTokenRefresh
+                spotifyApiOptions.afterTokenRefresh = {
+                    spotifyToken = this.token
+                    logToConsole("Refreshed Spotify PKCE token in credential store... $token")
+                    previousAfterTokenRefresh?.invoke(this)
+                }
             }
         }
     }
