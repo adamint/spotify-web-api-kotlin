@@ -17,6 +17,7 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.models.Token
+import com.adamratzman.spotify.refreshSpotifyClientToken
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.spotifyImplicitGrantApi
 import com.adamratzman.spotify.utils.logToConsole
@@ -148,10 +149,18 @@ public class SpotifyDefaultCredentialStore(
     /**
      * Create a new [SpotifyClientApi] instance using the [spotifyToken] stored using this credential store.
      *
-     * @param block Applied configuration to the [SpotifyImplicitGrantApi]
+     * @param block Applied configuration to the [SpotifyClientApi]
      */
     public fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
-        val token = spotifyToken ?: return null
+        val token = spotifyToken
+            ?: if (spotifyRefreshToken != null) {
+                runBlocking {
+                    val newToken = refreshSpotifyClientToken(clientId, null, spotifyRefreshToken, true)
+                    spotifyToken = newToken
+                    newToken
+                }
+            } else return null
+
         return runBlocking {
             spotifyClientPkceApi(
                 clientId,
@@ -178,6 +187,15 @@ public class SpotifyDefaultCredentialStore(
         spotifyToken = api.token
     }
 
+    /**
+     * Returns whether the [Token] stored in this Credential Store is refreshable (whether there is a refresh token associated
+     * with it).
+     */
+    public fun canApiBeRefreshed(): Boolean {
+        return spotifyRefreshToken != null
+    }
+    
+    
     /**
      * Clear the [SharedPreferences] instance corresponding to the Spotify credentials.
      */

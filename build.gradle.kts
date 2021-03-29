@@ -3,11 +3,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
+   // id("lt.petuska.npm.publish") version "1.1.2"
+    kotlin("multiplatform") version "1.4.31"
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
     id("com.android.library")
-    kotlin("multiplatform") version "1.4.31"
     kotlin("plugin.serialization") version "1.4.30"
     id("com.diffplug.spotless") version "5.9.0"
     id("com.moowork.node") version "1.3.1"
@@ -119,7 +120,9 @@ kotlin {
         }
     }
 
-    js(KotlinJsCompilerType.BOTH) {
+    js(if (project.hasProperty("irOnly")) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
+        //binaries.library()
+
         mavenPublication {
             setupPom(artifactId)
         }
@@ -141,7 +144,7 @@ kotlin {
         nodejs {
             testTask {
                 useMocha {
-                    timeout = "5000"
+                    timeout = "15000"
                 }
             }
         }
@@ -201,6 +204,10 @@ kotlin {
 
             val commonJvmLikeMain by creating {
                 dependsOn(commonMain)
+
+                dependencies {
+                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.3")
+                }
             }
 
             val jvmMain by getting {
@@ -327,6 +334,25 @@ signing {
 }
 
 tasks {
+    /*npmPublishing {
+        readme = file("README.MD")
+
+        repositories {
+            repository("npmjs") {
+                registry = uri("https://registry.npmjs.org")
+                (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
+                println("auth token: $authToken")
+            }
+        }
+
+        publications {
+            publication("js") {
+                bundleKotlinDependencies = true
+                shrinkwrapBundledDependencies = true
+            }
+        }
+    }*/
+
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
 

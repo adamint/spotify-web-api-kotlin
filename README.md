@@ -3,6 +3,8 @@ A [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](http
 supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 (macOS, Windows, Linux).
 
+**Use this library with Kotlin, Java, JavaScript, or native code!**
+
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
