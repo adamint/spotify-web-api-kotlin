@@ -33,6 +33,7 @@ import com.adamratzman.spotify.http.SpotifyRequest
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
+import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
@@ -588,51 +589,7 @@ public open class SpotifyClientApi(
 
             require(api.clientId != null) { "The client id is not set" }
 
-            val response = if (!api.usesPkceAuth) {
-                require(api.clientSecret != null) { "The client secret is not set" }
-                executeTokenRequest(
-                    HttpConnection(
-                        "https://accounts.spotify.com/api/token",
-                        HttpRequestMethod.POST,
-                        getDefaultClientApiTokenBody(api),
-                        null,
-                        "application/x-www-form-urlencoded",
-                        listOf(),
-                        api
-                    ), api.clientId, api.clientSecret
-                )
-            } else {
-                HttpConnection(
-                    "https://accounts.spotify.com/api/token",
-                    HttpRequestMethod.POST,
-                    getDefaultClientApiTokenBody(api),
-                    null,
-                    "application/x-www-form-urlencoded",
-                    listOf(),
-                    api
-                ).execute()
-            }
-
-            if (response.responseCode in 200..399) {
-                response.body.toObject(Token.serializer(), api, api.spotifyApiOptions.json)
-            } else throw BadRequestException(
-                response.body.toObject(
-                    AuthenticationError.serializer(),
-                    api,
-                    api.spotifyApiOptions.json
-                )
-            )
-        }
-
-        private fun getDefaultClientApiTokenBody(api: SpotifyClientApi): Map<String, String?> {
-            val map = mutableMapOf(
-                "grant_type" to "refresh_token",
-                "refresh_token" to api.token.refreshToken
-            )
-
-            if (api.usesPkceAuth) map += "client_id" to api.clientId
-
-            return map
+           refreshSpotifyClientToken(api.clientId, api.clientSecret, api.token.refreshToken, api.usesPkceAuth)
         }
     }
 }
@@ -686,6 +643,67 @@ internal suspend fun executeTokenRequest(
                 "Authorization",
                 "Basic ${"$clientId:$clientSecret".base64ByteEncode()}"
             )
+        )
+    )
+}
+
+/**
+ * Refresh a Spotify client token
+ *
+ * @param clientId The Spotify application client id.
+ * @param clientSecret The Spotify application client secret (not needed for PKCE).
+ * @param refreshToken The refresh token.
+ * @param usesPkceAuth Whether this token was created using PKCE auth or not.
+ */
+public suspend fun refreshSpotifyClientToken(
+    clientId: String,
+    clientSecret: String?,
+    refreshToken: String?,
+    usesPkceAuth: Boolean
+): Token {
+    fun getDefaultClientApiTokenBody(): Map<String, String?> {
+        val map = mutableMapOf(
+            "grant_type" to "refresh_token",
+            "refresh_token" to refreshToken
+        )
+
+        if (usesPkceAuth) map += "client_id" to clientId
+
+        return map
+    }
+
+    val response = if (!usesPkceAuth) {
+        require(clientSecret != null) { "The client secret is not set" }
+        executeTokenRequest(
+            HttpConnection(
+                "https://accounts.spotify.com/api/token",
+                HttpRequestMethod.POST,
+                getDefaultClientApiTokenBody(),
+                null,
+                "application/x-www-form-urlencoded",
+                listOf(),
+                null
+            ), clientId, clientSecret
+        )
+    } else {
+        HttpConnection(
+            "https://accounts.spotify.com/api/token",
+            HttpRequestMethod.POST,
+            getDefaultClientApiTokenBody(),
+            null,
+            "application/x-www-form-urlencoded",
+            listOf(),
+            null
+        ).execute()
+    }
+
+    return if (response.responseCode in 200..399) {
+        response.body.toObject(Token.serializer(), null, nonstrictJson)
+    } else throw BadRequestException(
+        response.body.toObject(
+            AuthenticationError.serializer(),
+            null,
+            nonstrictJson
         )
     )
 }
