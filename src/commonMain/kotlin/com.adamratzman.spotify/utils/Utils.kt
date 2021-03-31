@@ -3,13 +3,14 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
-import com.soywiz.klock.DateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.json.JsonElement
 
 /**
  * The current time in milliseconds since UNIX epoch.
  */
-public fun getCurrentTimeMs(): Long = DateTime.nowUnixLong()
+public fun getCurrentTimeMs(): Long = Clock.System.now().toEpochMilliseconds()
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
@@ -26,4 +27,9 @@ internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T?
 internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
-internal expect fun formatDate(format: String, date: Long): String
+/**
+ * Format date to ISO 8601 format
+ */
+internal fun formatDate(date: Long): String {
+    return Instant.fromEpochMilliseconds(date).toString()
+}
