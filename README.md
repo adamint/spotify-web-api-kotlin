@@ -3,7 +3,7 @@ A [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](http
 supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 (macOS, Windows, Linux).
 
-**Use this library with Kotlin, Java, JavaScript, or native code!**
+**Use this library in Kotlin, Java, JavaScript, or native code!** Because this library targets both iOS and Android, it can also be used in KMM ([Kotlin Multiplatform Mobile](https://kotlinlang.org/lp/mobile/)) applications as a shared source.
 
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/)
@@ -49,7 +49,7 @@ Current version:
 
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 
-### JVM, Android, JS, Native (macOS, Windows, Linux)
+### JVM, Android, JS, Native Desktop (macOS, Windows, Linux), iOS/tvOS
 ```
 repositories {
     jcenter()
