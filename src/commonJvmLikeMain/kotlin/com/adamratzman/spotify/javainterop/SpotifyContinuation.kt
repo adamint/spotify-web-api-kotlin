@@ -11,20 +11,20 @@ import kotlin.coroutines.EmptyCoroutineContext
  * on JVM via traditional continuations. **Please use this class as a callback anytime you are using Java code with this library.**
  *
  */
-abstract class SpotifyContinuation<in T> : Continuation<T> {
+public abstract class SpotifyContinuation<in T> : Continuation<T> {
     /**
      * Invoke a function with the callback [value]
      *
      * @param value The value retrieved from the Spotify API.
      */
-    abstract fun onSuccess(value: T)
+    public abstract fun onSuccess(value: T)
 
     /**
      * Handle exceptions during this API call.
      *
      * @param exception The exception that was thrown during the call.
      */
-    abstract fun onFailure(exception: Throwable)
+    public abstract fun onFailure(exception: Throwable)
 
     override fun resumeWith(result: Result<T>) {
         result.fold(::onSuccess, ::onFailure)

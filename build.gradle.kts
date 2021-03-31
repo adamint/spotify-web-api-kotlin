@@ -1,5 +1,6 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
@@ -169,6 +170,40 @@ kotlin {
             setupPom(artifactId)
         }
     }
+    ios {
+        binaries {
+            framework {
+                baseName = "spotify"
+            }
+        }
+
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    tvos {
+        binaries {
+            framework {
+                baseName = "spotify"
+            }
+        }
+
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }
+    // disabled due to lack of coroutine/serialization library support (yet)
+    /*watchos {
+     binaries {
+            framework {
+                baseName = "spotify"
+            }
+        }
+
+        mavenPublication {
+            setupPom(artifactId)
+        }
+    }*/
 
     publishing {
         if ("local" !in (version as String)) registerPublishing()
@@ -176,7 +211,7 @@ kotlin {
 
     targets {
         sourceSets {
-            val serializationVersion = "1.0.1"
+            val serializationVersion = "1.1.0"
             val ktorVersion = "1.5.1"
             val korlibsVersion = "2.0.6"
             val sparkVersion = "2.9.3"
@@ -188,7 +223,7 @@ kotlin {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("com.soywiz.korlibs.klock:klock:$korlibsVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
 
@@ -312,6 +347,47 @@ kotlin {
             val macosX64Test by getting {
                 dependsOn(desktopTest)
             }
+
+            val nativeDarwinMain by creating {
+                dependsOn(commonMain)
+
+                dependencies {
+                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
+                        version {
+                            strictly(coroutineMTVersion)
+                        }
+                    }
+                    implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                }
+            }
+
+            val nativeDarwinTest by creating {
+                dependsOn(commonTest)
+            }
+
+            val iosMain by getting {
+                dependsOn(nativeDarwinMain)
+            }
+
+            val iosTest by getting {
+                dependsOn(nativeDarwinTest)
+            }
+
+            val tvosMain by getting {
+                dependsOn(nativeDarwinMain)
+            }
+
+            val tvosTest by getting {
+                dependsOn(nativeDarwinTest)
+            }
+
+                /* val watchosMain by getting {
+                dependsOn(nativeDarwinMain)
+            }
+
+            val watchosTest by getting {
+                dependsOn(nativeDarwinTest)
+            }*/
 
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
@@ -452,3 +528,18 @@ fun PublishingExtension.registerPublishing() {
         }
     }
 }
+
+
+val packForXcode by tasks.creating(Sync::class) {
+    group = "build"
+    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
+    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
+    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
+    val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
+    inputs.property("mode", mode)
+    dependsOn(framework.linkTask)
+    val targetDir = File(buildDir, "xcode-frameworks")
+    from({ framework.outputDirectory })
+    into(targetDir)
+}
+tasks.getByName("build").dependsOn(packForXcode)
