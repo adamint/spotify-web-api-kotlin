@@ -6,7 +6,7 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.ClientSearchApi
-import com.adamratzman.spotify.endpoints.public.SearchApi
+import com.adamratzman.spotify.endpoints.pub.SearchApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test

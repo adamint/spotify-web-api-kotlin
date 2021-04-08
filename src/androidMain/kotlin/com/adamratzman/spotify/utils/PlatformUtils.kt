@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.soywiz.korio.async.runBlockingNoJs
+import kotlinx.coroutines.CoroutineScope
 import java.net.URLEncoder
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
@@ -32,4 +34,8 @@ internal fun toast(context: Context?, message: String?, duration: Int = Toast.LE
 
 internal fun logToConsole(message: String) {
     Log.i("spotify-web-api-kotlin", message)
+}
+
+public actual fun <T> runBlockingOnJvmAndNative(block: suspend CoroutineScope.() -> T): T {
+    return runBlockingNoJs { block() }
 }

@@ -3,6 +3,7 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.models.ResultEnum
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.json.JsonElement
@@ -33,3 +34,5 @@ internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
 internal fun formatDate(date: Long): String {
     return Instant.fromEpochMilliseconds(date).toString()
 }
+
+public expect fun <T> runBlockingOnJvmAndNative(block: suspend CoroutineScope.() -> T): T

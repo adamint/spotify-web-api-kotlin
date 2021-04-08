@@ -4,7 +4,7 @@ package com.adamratzman.spotify.endpoints.client
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.endpoints.public.ShowApi
+import com.adamratzman.spotify.endpoints.pub.ShowApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Show
 import com.adamratzman.spotify.models.ShowList

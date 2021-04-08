@@ -5,7 +5,7 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.endpoints.public.PlaylistApi
+import com.adamratzman.spotify.endpoints.pub.PlaylistApi
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.PlayableUri

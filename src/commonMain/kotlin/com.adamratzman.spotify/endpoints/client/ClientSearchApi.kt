@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.endpoints.public.SearchApi
+import com.adamratzman.spotify.endpoints.pub.SearchApi
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.SimpleEpisode
 import com.adamratzman.spotify.models.SimpleShow

@@ -3,7 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.endpoints.public.UserApi
+import com.adamratzman.spotify.endpoints.pub.UserApi
 import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.adamratzman.spotify.models.serialization.toObject
 

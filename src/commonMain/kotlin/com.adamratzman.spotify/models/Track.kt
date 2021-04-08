@@ -171,7 +171,6 @@ public data class LinkedTrack(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-
     public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
