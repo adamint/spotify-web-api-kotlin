@@ -3,6 +3,9 @@ A [Kotlin](https://kotlinlang.org/) implementation of the [Spotify Web API](http
 supporting Kotlin/JS, Kotlin/Android, Kotlin/JVM, and Kotlin/Native
 (macOS, Windows, Linux).
 
+This library has first-class support for Java and is a viable alternative for Java development. 
+Please see [the Java section](#java) for more details.
+
 **Use this library in Kotlin, Java, JavaScript, Swift, or native code!** Because this library targets both iOS and Android, it can also be used in KMM ([Kotlin Multiplatform Mobile](https://kotlinlang.org/lp/mobile/)) applications as a shared source.
 
 [![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
@@ -388,6 +391,9 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 ## Platform-specific wrappers and information
 
 ### Java
+This library has first-class support for Java! You have 
+
+
 Unfortunately, coroutines don't play very nicely with Java code. Fortunately, however, we provide a wrapper around Kotlin's 
 `Continuation` class that allows you to directly implement `onSuccess` and `onFailure` handlers on API methods.
 
