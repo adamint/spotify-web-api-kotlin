@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -79,5 +80,24 @@ public data class LocalTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      */
-    public suspend fun searchForSpotifyTrack(limit: Int? = null, offset: Int? = null, market: Market? = null): PagingObject<Track> = api.search.searchTrack(name, limit, offset, market)
+    public suspend fun searchForSpotifyTrack(
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
+    ): PagingObject<Track> = api.search.searchTrack(name, limit, offset, market)
+
+    /**
+     * Search for this local track by name in Spotify's track catalog.
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     */
+    public fun searchForSpotifyTrackRestAction(
+        limit: Int? = null,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<Track>> = SpotifyRestAction { searchForSpotifyTrack(limit, offset, market) }
+
 }

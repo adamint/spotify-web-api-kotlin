@@ -3,4 +3,4 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.models.ExternalUrl
 
-internal fun getExternalUrls(externalUrlsString: Map<String, String>) = externalUrlsString.map { ExternalUrl(it.key, it.value) }
+public fun getExternalUrls(externalUrlsString: Map<String, String>): List<ExternalUrl> = externalUrlsString.map { ExternalUrl(it.key, it.value) }

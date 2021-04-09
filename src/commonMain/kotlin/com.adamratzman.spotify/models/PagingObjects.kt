@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.PagingTraversalType.BACKWARDS
 import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
@@ -195,7 +196,6 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
         }
     }
 
-    @SpotifyExperimentalHttpApi
     override suspend fun getWithNextTotalPagingObjects(total: Int): List<Z> {
         @Suppress("UNCHECKED_CAST") val pagingObjects = mutableListOf(this as Z)
 
@@ -236,7 +236,6 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
      * @param total The total amount of [AbstractPagingObject] to request, which includes this [AbstractPagingObject].
      * @since 3.0.0
      */
-    @SpotifyExperimentalHttpApi
     @Suppress("UNCHECKED_CAST")
     public suspend fun getWithNext(total: Int): List<Z> = getWithNextTotalPagingObjects(total)
 
@@ -275,7 +274,6 @@ public data class CursorBasedPagingObject<T : Any>(
      * @param total The total amount of [CursorBasedPagingObject] to request, which includes this [CursorBasedPagingObject].
      * @since 3.0.0
      */
-    @SpotifyExperimentalHttpApi
     @Suppress("UNCHECKED_CAST")
     public suspend fun getWithNext(total: Int): List<CursorBasedPagingObject<T>> = getWithNextTotalPagingObjects(total)
 
@@ -322,7 +320,6 @@ public data class CursorBasedPagingObject<T : Any>(
         return pagingObjects
     }
 
-    @SpotifyExperimentalHttpApi
     override suspend fun getWithNextTotalPagingObjects(total: Int): List<CursorBasedPagingObject<T>> {
         val pagingObjects = mutableListOf(this)
 
@@ -391,9 +388,20 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     public abstract suspend fun getAllPagingObjects(): List<Z>
 
     /**
+     * Retrieve all [PagingObjectBase] associated with this rest action
+     */
+    public fun getAllPagingObjectsRestAction(): SpotifyRestAction<List<Z>> = SpotifyRestAction { getAllPagingObjects() }
+
+
+    /**
      * Retrieve all [T] associated with this rest action
      */
     public abstract suspend fun getAllItems(): List<T?>
+
+    /**
+     * Retrieve all [T] associated with this rest action
+     */
+    public fun getAllItemsRestAction(): SpotifyRestAction<List<T?>> = SpotifyRestAction { getAllItems() }
 
     /**
      * Synchronously retrieve the next [total] paging objects associated with this [PagingObjectBase], including this [PagingObjectBase].
@@ -401,11 +409,23 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
      * @param total The total amount of [PagingObjectBase] to request, which includes this [PagingObjectBase].
      * @since 3.0.0
      */
-    @SpotifyExperimentalHttpApi
     public abstract suspend fun getWithNextTotalPagingObjects(total: Int): List<Z>
 
+    /**
+     * Synchronously retrieve the next [total] paging objects associated with this [PagingObjectBase], including this [PagingObjectBase].
+     *
+     * @param total The total amount of [PagingObjectBase] to request, which includes this [PagingObjectBase].
+     * @since 3.0.0
+     */
+    public fun getWithNextTotalPagingObjectsRestAction(total: Int): SpotifyRestAction<List<Z>> = SpotifyRestAction { getWithNextTotalPagingObjects(total) }
+
     public suspend fun getNext(): Z? = get(FORWARDS)
+
+    public fun getNextRestAction(): SpotifyRestAction<Z?> = SpotifyRestAction { getNext() }
+
     public suspend fun getPrevious(): Z? = get(BACKWARDS)
+
+    public fun getPreviousRestAction(): SpotifyRestAction<Z?> = SpotifyRestAction { getPrevious() }
 
     /**
      * Get all items of type [T] associated with the request. Filters out null objects.
@@ -413,19 +433,29 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     public suspend fun getAllItemsNotNull(): List<T> = getAllItems().filterNotNull()
 
     /**
+     * Get all items of type [T] associated with the request. Filters out null objects.
+     */
+    public fun getAllItemsNotNullRestAction(): SpotifyRestAction<List<T>> = SpotifyRestAction { getAllItemsNotNull() }
+
+    /**
      * Retrieve the items associated with the next [total] paging objects associated with this rest action, including the current one.
      *
      * @param total The total amount of [PagingObjectBase] to request, including the [PagingObjectBase] associated with the current request.
      * @since 3.0.0
      */
-    @SpotifyExperimentalHttpApi
     public suspend fun getWithNextItems(total: Int): List<T?> =
         getWithNextTotalPagingObjects(total).map { it.items }.flatten()
 
     /**
+     * Retrieve the items associated with the next [total] paging objects associated with this rest action, including the current one.
+     *
+     * @param total The total amount of [PagingObjectBase] to request, including the [PagingObjectBase] associated with the current request.
+     * @since 3.0.0
+     */
+    public fun getWithNextItemsRestAction(total: Int): SpotifyRestAction<List<T?>> = SpotifyRestAction { getWithNextItems(total) }
+    /**
      * Flow from current page backwards.
      * */
-    @ExperimentalCoroutinesApi
     public fun flowBackward(): Flow<Z> = flow<Z> {
         if (previous == null) return@flow
         var next = getPrevious()

@@ -4,6 +4,7 @@ package com.adamratzman.spotify.endpoints.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.PagingObject
@@ -59,12 +60,33 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         ).toString()
     ).toNonNullablePagingObject(SimplePlaylist.serializer(), api = api, json = json)
 
-    @Deprecated("Renamed `getUserPlaylists`", ReplaceWith("getUserPlaylists"))
-    public suspend fun getPlaylists(
+    /**
+     * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
+     * [PagingObject] (blame Spotify)
+     *
+     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope
+     * to have been authorized by the user. Note that this scope alone will not return a collaborative playlist, even
+     * though they are always private.
+     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
+     * scope to have been authorized by the user.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-list-users-playlists/)**
+     *
+     * @param user The user’s Spotify user ID.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @return [PagingObject] of [SimplePlaylist]s **ONLY if** the user can be found. Otherwise, an empty paging object is returned.
+     * This does not have the detail of full [Playlist] objects.
+     *
+     * @throws BadRequestException if the user is not found (404)
+     *
+     */
+    public fun getUserPlaylistsRestAction(
         user: String,
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null
-    ): PagingObject<SimplePlaylist> = getUserPlaylists(user, limit, offset)
+    ): SpotifyRestAction<PagingObject<SimplePlaylist>> = SpotifyRestAction { getUserPlaylists(user, limit, offset) }
 
     /**
      * Get a playlist owned by a Spotify user.
@@ -84,6 +106,23 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                 .with("market", market?.name).toString()
         ).toObject(Playlist.serializer(), api, json)
     }
+
+    /**
+     * Get a playlist owned by a Spotify user.
+     *
+     * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/)**
+     *
+     * @param playlist The id or uri for the playlist.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     *
+     * @throws BadRequestException if the playlist is not found
+     */
+    public fun getPlaylistRestAction(playlist: String, market: Market? = null): SpotifyRestAction<Playlist?> =
+        SpotifyRestAction {
+            getPlaylist(playlist, market)
+        }
 
     /**
      * Get full details of the tracks of a playlist owned by a Spotify user.
@@ -113,6 +152,30 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         .toNonNullablePagingObject(PlaylistTrack.serializer(), null, api, json)
 
     /**
+     * Get full details of the tracks of a playlist owned by a Spotify user.
+     *
+     * **Note that** both Public and Private playlists belonging to any user are retrievable on provision of a valid access token.
+     *
+     * **Warning:** if the playlist contains podcasts, the tracks will be null if you are using [SpotifyAppApi].
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/)**
+     *
+     * @param playlist The id or uri for the playlist.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @throws BadRequestException if the playlist cannot be found
+     */
+    public fun getPlaylistTracksRestAction(
+        playlist: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<PlaylistTrack>> =
+        SpotifyRestAction { getPlaylistTracks(playlist, limit, offset, market) }
+
+    /**
      * Get the current image(s) associated with a specific playlist.
      *
      * This access token must be issued on behalf of the user. Current playlist image for both Public and Private
@@ -127,4 +190,19 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getPlaylistCovers(playlist: String): List<SpotifyImage> =
         get(endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString())
             .toList(ListSerializer(SpotifyImage.serializer()), api, json).toList()
+
+    /**
+     * Get the current image(s) associated with a specific playlist.
+     *
+     * This access token must be issued on behalf of the user. Current playlist image for both Public and Private
+     * playlists of any user are retrievable on provision of a valid access token.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/)**
+     *
+     * @param playlist The id or uri for the playlist.
+     *
+     * @throws BadRequestException if the playlist cannot be found
+     */
+    public fun getPlaylistCoversRestAction(playlist: String): SpotifyRestAction<List<SpotifyImage>> =
+        SpotifyRestAction { getPlaylistCovers(playlist) }
 }
