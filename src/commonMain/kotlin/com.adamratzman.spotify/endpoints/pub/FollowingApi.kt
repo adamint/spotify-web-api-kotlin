@@ -1,8 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
-package com.adamratzman.spotify.endpoints.public
+package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.UserUri
@@ -44,6 +45,23 @@ public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     /**
+     * Check to see if one or more Spotify users are following a specified playlist.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     *
+     * @param playlist playlist id or uri
+     * @param users user ids or uris to check. Maximum **5**.
+     *
+     * @return List of Booleans representing whether the user follows the playlist. User IDs **not** found will return false
+     *
+     * @throws [BadRequestException] if the playlist is not found OR any user in the list does not exist
+     */
+    public fun areFollowingPlaylistRestAction(
+        playlist: String,
+        vararg users: String
+    ): SpotifyRestAction<List<Boolean>> = SpotifyRestAction { areFollowingPlaylist(playlist, *users) }
+
+    /**
      * Check to see if a specific Spotify user is following the specified playlist.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
@@ -59,4 +77,19 @@ public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         playlist,
         users = arrayOf(user)
     )[0]
+
+    /**
+     * Check to see if a specific Spotify user is following the specified playlist.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
+     *
+     * @param playlist playlist id or uri
+     * @param user Spotify user id
+     *
+     * @return booleans representing whether the user follows the playlist. User IDs **not** found will return false
+     *
+     * @throws [BadRequestException] if the playlist is not found or if the user does not exist
+     */
+    public fun isFollowingPlaylistRestAction(playlist: String, user: String): SpotifyRestAction<Boolean> =
+        SpotifyRestAction { isFollowingPlaylist(playlist, user) }
 }

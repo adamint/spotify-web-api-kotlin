@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -26,6 +27,11 @@ public data class SimpleArtist(
      * Converts this [SimpleArtist] into a full [Artist] object
      */
     public suspend fun toFullArtist(): Artist? = api.artists.getArtist(id)
+
+    /**
+     * Converts this [SimpleArtist] into a full [Artist] object
+     */
+    public fun toFullArtistRestAction(): SpotifyRestAction<Artist?> = SpotifyRestAction { toFullArtist() }
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }

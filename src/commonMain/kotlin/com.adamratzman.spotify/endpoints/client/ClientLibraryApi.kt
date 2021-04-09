@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.AlbumUri
@@ -47,6 +48,26 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ).toNonNullablePagingObject(SavedTrack.serializer(), api = api, json = json)
 
     /**
+     * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return [PagingObject] of [SavedTrack] ordered by position in library
+     */
+    public fun getSavedTracksRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SavedTrack>> = SpotifyRestAction {  getSavedTracks(limit, offset, market) }
+
+    /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
@@ -70,6 +91,26 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ).toNonNullablePagingObject(SavedAlbum.serializer(), api = api, json = json)
 
     /**
+     * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Paging Object of [SavedAlbum] ordered by position in library
+     */
+    public fun getSavedAlbumsRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SavedAlbum>> = SpotifyRestAction { getSavedAlbums(limit, offset, market) }
+
+    /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
@@ -82,6 +123,20 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if [id] is not found
      */
     public suspend fun contains(type: LibraryType, id: String): Boolean = contains(type, ids = arrayOf(id))[0]
+
+    /**
+     * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of object (album or track)
+     * @param id The id or uri of the object
+     *
+     * @throws BadRequestException if [id] is not found
+     */
+    public fun containsRestAction(type: LibraryType, id: String): SpotifyRestAction<Boolean> = SpotifyRestAction { contains(type, ids = arrayOf(id))[0] }
 
     /**
      * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
@@ -109,6 +164,22 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     /**
+     * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of objects (album or track)
+     * @param ids The ids or uris of the objects. Maximum **50** ids.
+     *
+     * @throws BadRequestException if any of the provided ids is invalid
+     */
+    public fun containsRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
+        return SpotifyRestAction {  contains(type, *ids)}
+    }
+
+    /**
      * Save one of [LibraryType] to the current user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
@@ -121,6 +192,21 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if the id is invalid
      */
     public suspend fun add(type: LibraryType, id: String): Unit = add(type, ids = arrayOf(id))
+
+    /**
+     * Save one of [LibraryType] to the current user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of object (album or track)
+     * @param id The id or uri of the object
+     *
+     * @throws BadRequestException if the id is invalid
+     */
+    public fun addRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, id)}
+
 
     /**
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
@@ -145,6 +231,20 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     /**
+     * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of objects to check against (album or track)
+     * @param ids The ids or uris of the objects. Maximum **50** ids.
+     *
+     * @throws BadRequestException if any of the provided ids is invalid
+     */
+    public fun addRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, *ids) }
+
+    /**
      * Remove one of [LibraryType] (track or album) from the current user’s ‘Your Music’ library.
      *
      * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
@@ -159,6 +259,23 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun remove(type: LibraryType, id: String): Unit = remove(type, ids = arrayOf(id))
+
+    /**
+     * Remove one of [LibraryType] (track or album) from the current user’s ‘Your Music’ library.
+     *
+     * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of object to check against (album or track)
+     * @param id The id or uri of the object
+     *
+     * @throws BadRequestException if any of the provided ids is invalid
+     */
+    public fun removeRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { remove(type, ids = arrayOf(id)) }
+
 
     /**
      * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.
@@ -186,6 +303,24 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                     list.joinToString(",") { type.id(it).encodeUrl() }).toString()
             )
         }
+    }
+
+    /**
+     * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.
+     *
+     * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
+
+     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
+     *
+     * @param type The type of objects to check against (album or track)
+     * @param ids The ids or uris of the objects. Maximum **50** ids.
+     *
+     * @throws BadRequestException if any of the provided ids is invalid
+     */
+    public fun removeRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> = SpotifyRestAction {
+        remove(type, *ids)
     }
 }
 

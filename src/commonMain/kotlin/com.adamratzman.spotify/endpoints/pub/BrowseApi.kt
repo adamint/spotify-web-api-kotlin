@@ -1,8 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
-package com.adamratzman.spotify.endpoints.public
+package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.ErrorObject
@@ -22,10 +23,10 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.formatDate
-import kotlin.reflect.KClass
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlin.reflect.KClass
 
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
@@ -46,6 +47,16 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             "genres",
             json
         )
+
+    /**
+     * Retrieve a list of available genres seed parameter values for recommendations.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     *
+     * @return List of genre ids
+     */
+    public fun getAvailableGenreSeedsRestAction(): SpotifyRestAction<List<String>> =
+        SpotifyRestAction { getAvailableGenreSeeds() }
 
     /**
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
@@ -70,6 +81,25 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             market?.name
         ).toString()
     ).toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api = api, json = json)
+
+    /**
+     * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/)**
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @throws BadRequestException if filter parameters are illegal
+     * @return [PagingObject] of new album released, ordered by release date (descending)
+     */
+    public fun getNewReleasesRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SimpleAlbum>> = SpotifyRestAction { getNewReleases(limit, offset, market) }
 
     /**
      * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
@@ -105,6 +135,35 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ).toObject(FeaturedPlaylists.serializer(), api, json)
 
     /**
+     * Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)**
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * Provide this parameter if you want the results returned in a particular language (where available).
+     * Note that, if locale is not supplied, or if the specified language is not available,
+     * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
+     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     * @param timestamp Use this parameter (time in milliseconds) to specify the user’s local time to get results tailored for that specific
+     * date and time in the day. If not provided, the response defaults to the current UTC time.
+     *
+     * @throws BadRequestException if filter parameters are illegal or [locale] does not exist
+     * @return [FeaturedPlaylists] object with the current featured message and featured playlists
+     */
+    public fun getFeaturedPlaylistsRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        locale: Locale? = null,
+        market: Market? = null,
+        timestamp: Long? = null
+    ): SpotifyRestAction<FeaturedPlaylists> =
+        SpotifyRestAction { getFeaturedPlaylists(limit, offset, locale, market, timestamp) }
+
+    /**
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
@@ -134,6 +193,31 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ).toNonNullablePagingObject(SpotifyCategory.serializer(), "categories", api = api, json = json)
 
     /**
+     * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/)**
+     *
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * Provide this parameter if you want the results returned in a particular language (where available).
+     * Note that, if locale is not supplied, or if the specified language is not available,
+     * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
+     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Default category list if [locale] is invalid, otherwise the localized PagingObject
+     */
+    public fun getCategoryListRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        locale: Locale? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SpotifyCategory>> =
+        SpotifyRestAction { getCategoryList(limit, offset, locale, market) }
+
+    /**
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-category/)**
@@ -156,6 +240,27 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
             .with("locale", locale).toString()
     ).toObject(SpotifyCategory.serializer(), api, json)
+
+    /**
+     * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-category/)**
+     *
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * Provide this parameter if you want the results returned in a particular language (where available).
+     * Note that, if locale is not supplied, or if the specified language is not available,
+     * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
+     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @throws BadRequestException if [categoryId] is not found or [locale] does not exist on Spotify
+     */
+    public fun getCategoryRestAction(
+        categoryId: String,
+        market: Market? = null,
+        locale: Locale? = null
+    ): SpotifyRestAction<SpotifyCategory> = SpotifyRestAction { getCategory(categoryId, market, locale) }
 
     /**
      * Get a list of Spotify playlists tagged with a particular category.
@@ -182,6 +287,27 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         ).with("offset", offset)
             .with("market", market?.name).toString()
     ).toNonNullablePagingObject((SimplePlaylist.serializer()), "playlists", api = api, json = json)
+
+    /**
+     * Get a list of Spotify playlists tagged with a particular category.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/)**
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @throws BadRequestException if [categoryId] is not found or filters are illegal
+     * @return [PagingObject] of top playlists tagged with [categoryId]
+     */
+    public fun getPlaylistsForCategoryRestAction(
+        categoryId: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SimplePlaylist>> =
+        SpotifyRestAction { getPlaylistsForCategory(categoryId, limit, offset, market) }
 
     /**
      * Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -215,7 +341,6 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any filter is applied illegally
      */
-    @Suppress("DEPRECATION")
     public suspend fun getTrackRecommendations(
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
@@ -268,9 +393,62 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return [RecommendationResponse] with [RecommendationSeed]s used and [SimpleTrack]s found
      *
      * @throws BadRequestException if any filter is applied illegally
+     */
+    public fun getTrackRecommendationsRestAction(
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        market: Market? = null,
+        targetAttributes: List<TrackAttribute<*>> = listOf(),
+        minAttributes: List<TrackAttribute<*>> = listOf(),
+        maxAttributes: List<TrackAttribute<*>> = listOf()
+    ): SpotifyRestAction<RecommendationResponse> = SpotifyRestAction {
+        getTrackRecommendations(
+            seedArtists,
+            seedGenres,
+            seedTracks,
+            limit,
+            market,
+            targetAttributes,
+            minAttributes,
+            maxAttributes
+        )
+    }
+
+    /**
+     * Create a playlist-style listening experience based on seed artists, tracks and genres.
+     * Recommendations are generated based on the available information for a given seed entity and matched against similar
+     * artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned
+     * together with pool size details. For artists and tracks that are very new or obscure there might not be enough data
+     * to generate a list of tracks.
+     *
+     * **5** seeds of any combination of [seedArtists], [seedGenres], and [seedTracks] can be provided. AT LEAST 1 seed must be provided.
+     *
+     * **All attributes** are weighted equally.
+     *
+     * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
+     * and descriptions of tuneable track attributes and their ranges.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     *
+     * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
+     * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
+     * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     * @param targetAttributes For each of the tunable track attributes a target value may be provided.
+     * Tracks with the attribute values nearest to the target values will be preferred.
+     * @param minAttributes For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided.
+     * @param maxAttributes For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided.
+     * For example, setting max instrumentalness equal to 0.35 would filter out most tracks that are likely to be instrumental.
+     *
+     * @return [RecommendationResponse] with [RecommendationSeed]s used and [SimpleTrack]s found
+     *
+     * @throws BadRequestException if any filter is applied illegally
      *
      */
-    @Deprecated("Ambiguous track attribute setting. Please use BrowseAPI#getTrackRecommendations instead")
     public suspend fun getRecommendations(
         seedArtists: List<String>? = null,
         seedGenres: List<String>? = null,
@@ -298,6 +476,61 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         minAttributes.forEach { (attribute, value) -> builder.with("min_$attribute", value) }
         maxAttributes.forEach { (attribute, value) -> builder.with("max_$attribute", value) }
         return get(builder.toString()).toObject(RecommendationResponse.serializer(), api, json)
+    }
+
+    /**
+     * Create a playlist-style listening experience based on seed artists, tracks and genres.
+     * Recommendations are generated based on the available information for a given seed entity and matched against similar
+     * artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned
+     * together with pool size details. For artists and tracks that are very new or obscure there might not be enough data
+     * to generate a list of tracks.
+     *
+     * **5** seeds of any combination of [seedArtists], [seedGenres], and [seedTracks] can be provided. AT LEAST 1 seed must be provided.
+     *
+     * **All attributes** are weighted equally.
+     *
+     * See [here](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#tuneable-track-attributes) for a list
+     * and descriptions of tuneable track attributes and their ranges.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/)**
+     *
+     * @param seedArtists A possibly null provided list of <b>Artist IDs</b> to be used to generate recommendations
+     * @param seedGenres A possibly null provided list of <b>Genre IDs</b> to be used to generate recommendations. Invalid genres are ignored
+     * @param seedTracks A possibly null provided list of <b>Track IDs</b> to be used to generate recommendations
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     * @param targetAttributes For each of the tunable track attributes a target value may be provided.
+     * Tracks with the attribute values nearest to the target values will be preferred.
+     * @param minAttributes For each tunable track attribute, a hard floor on the selected track attribute’s value can be provided.
+     * @param maxAttributes For each tunable track attribute, a hard ceiling on the selected track attribute’s value can be provided.
+     * For example, setting max instrumentalness equal to 0.35 would filter out most tracks that are likely to be instrumental.
+     *
+     * @return [RecommendationResponse] with [RecommendationSeed]s used and [SimpleTrack]s found
+     *
+     * @throws BadRequestException if any filter is applied illegally
+     *
+     */
+    public fun getRecommendationsRestAction(
+        seedArtists: List<String>? = null,
+        seedGenres: List<String>? = null,
+        seedTracks: List<String>? = null,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        market: Market? = null,
+        targetAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
+        minAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf(),
+        maxAttributes: Map<TuneableTrackAttribute<*>, Number> = mapOf()
+    ): SpotifyRestAction<RecommendationResponse> = SpotifyRestAction {
+        getRecommendations(
+            seedArtists,
+            seedGenres,
+            seedTracks,
+            limit,
+            market,
+            targetAttributes,
+            minAttributes,
+            maxAttributes
+        )
     }
 }
 

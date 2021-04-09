@@ -13,16 +13,16 @@ import com.adamratzman.spotify.endpoints.client.ClientPlaylistApi
 import com.adamratzman.spotify.endpoints.client.ClientProfileApi
 import com.adamratzman.spotify.endpoints.client.ClientSearchApi
 import com.adamratzman.spotify.endpoints.client.ClientShowApi
-import com.adamratzman.spotify.endpoints.public.AlbumApi
-import com.adamratzman.spotify.endpoints.public.ArtistApi
-import com.adamratzman.spotify.endpoints.public.BrowseApi
-import com.adamratzman.spotify.endpoints.public.EpisodeApi
-import com.adamratzman.spotify.endpoints.public.FollowingApi
-import com.adamratzman.spotify.endpoints.public.PlaylistApi
-import com.adamratzman.spotify.endpoints.public.SearchApi
-import com.adamratzman.spotify.endpoints.public.ShowApi
-import com.adamratzman.spotify.endpoints.public.TrackApi
-import com.adamratzman.spotify.endpoints.public.UserApi
+import com.adamratzman.spotify.endpoints.pub.AlbumApi
+import com.adamratzman.spotify.endpoints.pub.ArtistApi
+import com.adamratzman.spotify.endpoints.pub.BrowseApi
+import com.adamratzman.spotify.endpoints.pub.EpisodeApi
+import com.adamratzman.spotify.endpoints.pub.FollowingApi
+import com.adamratzman.spotify.endpoints.pub.PlaylistApi
+import com.adamratzman.spotify.endpoints.pub.SearchApi
+import com.adamratzman.spotify.endpoints.pub.ShowApi
+import com.adamratzman.spotify.endpoints.pub.TrackApi
+import com.adamratzman.spotify.endpoints.pub.UserApi
 import com.adamratzman.spotify.http.CacheState
 import com.adamratzman.spotify.http.HttpConnection
 import com.adamratzman.spotify.http.HttpHeader
@@ -37,8 +37,8 @@ import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
-import kotlin.jvm.JvmOverloads
 import kotlinx.serialization.json.Json
+import kotlin.jvm.JvmOverloads
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -213,6 +213,20 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     }
 
     /**
+     * Tests whether the current [token] is actually valid. By default, an endpoint is called *once* to verify
+     * validity.
+     *
+     * @param makeTestRequest Whether to also make an endpoint request to verify authentication.
+     *
+     * @return [TokenValidityResponse] containing whether this token is valid, and if not, an Exception explaining why
+     */
+    @JvmOverloads
+    public fun isTokenValidRestAction(makeTestRequest: Boolean = true): SpotifyRestAction<TokenValidityResponse> =
+        SpotifyRestAction {
+            isTokenValid(makeTestRequest)
+        }
+
+    /**
      * If the method used to create the [token] supports token refresh and
      * the information in [token] is accurate, attempt to refresh the token
      *
@@ -224,7 +238,18 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
         this@SpotifyApi.token = this
         spotifyApiOptions.onTokenRefresh?.invoke(this@SpotifyApi)
         spotifyApiOptions.afterTokenRefresh?.invoke(this@SpotifyApi)
-    } ?: throw SpotifyException.ReAuthenticationNeededException(IllegalStateException("The refreshTokenProducer is null."))
+    }
+        ?: throw SpotifyException.ReAuthenticationNeededException(IllegalStateException("The refreshTokenProducer is null."))
+
+    /**
+     * If the method used to create the [token] supports token refresh and
+     * the information in [token] is accurate, attempt to refresh the token
+     *
+     * @return The old access token if refresh was successful
+     * @throws BadRequestException if refresh fails
+     * @throws IllegalStateException if [SpotifyApiOptions.refreshTokenProducer] is null
+     */
+    public fun refreshTokenRestAction(): SpotifyRestAction<Token> = SpotifyRestAction { refreshToken() }
 
     public companion object {
         internal suspend fun testTokenValidity(api: GenericSpotifyApi) {
@@ -327,6 +352,22 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
 
             throw BadRequestException(response.body.toObject(AuthenticationError.serializer(), null, json))
         }
+
+        /**
+         *
+         * Get an application token (can only access public methods) that can be used to instantiate a new [SpotifyAppApi]
+         *
+         * @param clientId Spotify [client id](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param clientSecret Spotify [client secret](https://developer.spotify.com/documentation/general/guides/app-settings/)
+         * @param api The Spotify Api instance, or null if one doesn't exist yet
+         * @param json The json instance that will deserialize the response.
+         */
+        public fun getCredentialedTokenRestAction(
+            clientId: String,
+            clientSecret: String,
+            api: GenericSpotifyApi?,
+            json: Json = api?.spotifyApiOptions?.json ?: Json.Default
+        ): SpotifyRestAction<Token> = SpotifyRestAction { getCredentialedToken(clientId, clientSecret, api, json) }
     }
 }
 
@@ -501,18 +542,23 @@ public open class SpotifyClientApi(
      */
     public val player: ClientPlayerApi = ClientPlayerApi(this)
 
-    private lateinit var userIdBacking: String
+    private var userIdBacking: String? = null
 
     private suspend fun initiatizeUserIdBacking(): String {
         userIdBacking = users.getClientProfile().id
-        return userIdBacking
+        return userIdBacking!!
     }
 
     /**
      * The Spotify user id to which the api instance is connected
      */
     public suspend fun getUserId(): String =
-        if (::userIdBacking.isInitialized) userIdBacking else initiatizeUserIdBacking()
+        if (userIdBacking != null) userIdBacking!! else initiatizeUserIdBacking()
+
+    /**
+     * The Spotify user id to which the api instance is connected
+     */
+    public fun getUserIdRestAction(): SpotifyRestAction<String> = SpotifyRestAction { getUserId() }
 
     /**
      * Stop all automatic functions like refreshToken or clearCache and shut down the scheduled
@@ -575,6 +621,12 @@ public open class SpotifyClientApi(
     public suspend fun hasScope(scope: SpotifyScope): Boolean? = hasScopes(scope)
 
     /**
+     * Whether the current access token allows access to scope [scope]
+     */
+    public fun hasScopeRestAction(scope: SpotifyScope): SpotifyRestAction<Boolean?> =
+        SpotifyRestAction { hasScope(scope) }
+
+    /**
      * Whether the current access token allows access to all of the provided scopes
      */
     public suspend fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean? =
@@ -583,13 +635,21 @@ public open class SpotifyClientApi(
                 token.scopes?.contains(scope) == true &&
                 scopes.all { token.scopes?.contains(it) == true }
 
+    /**
+     * Whether the current access token allows access to all of the provided scopes
+     */
+    public fun hasScopesRestAction(scope: SpotifyScope, vararg scopes: SpotifyScope): SpotifyRestAction<Boolean?> =
+        SpotifyRestAction {
+            hasScopes(scope, *scopes)
+        }
+
     public companion object {
         private val defaultClientApiTokenRefreshProducer: suspend (GenericSpotifyApi) -> Token = { api ->
             api as SpotifyClientApi
 
             require(api.clientId != null) { "The client id is not set" }
 
-           refreshSpotifyClientToken(api.clientId, api.clientSecret, api.token.refreshToken, api.usesPkceAuth)
+            refreshSpotifyClientToken(api.clientId, api.clientSecret, api.token.refreshToken, api.usesPkceAuth)
         }
     }
 }
@@ -707,3 +767,21 @@ public suspend fun refreshSpotifyClientToken(
         )
     )
 }
+
+/**
+ * Refresh a Spotify client token
+ *
+ * @param clientId The Spotify application client id.
+ * @param clientSecret The Spotify application client secret (not needed for PKCE).
+ * @param refreshToken The refresh token.
+ * @param usesPkceAuth Whether this token was created using PKCE auth or not.
+ */
+public fun refreshSpotifyClientTokenRestAction(
+    clientId: String,
+    clientSecret: String?,
+    refreshToken: String?,
+    usesPkceAuth: Boolean
+): SpotifyRestAction<Token> =
+    SpotifyRestAction { refreshSpotifyClientToken(clientId, clientSecret, refreshToken, usesPkceAuth) }
+
+

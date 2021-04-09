@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
    // id("lt.petuska.npm.publish") version "1.1.2"
-    kotlin("multiplatform") version "1.4.31"
+    kotlin("multiplatform") version "1.4.32"
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.22.0"
@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
     }
 }
 
@@ -216,8 +216,8 @@ kotlin {
             val korlibsVersion = "2.0.6"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.3"
-            val androidCryptoVersion = "1.1.0-alpha03"
-            val coroutineMTVersion = "1.4.2-native-mt"
+            val androidCryptoVersion = "1.0.0-rc04"
+            val coroutineMTVersion = "1.4.3-native-mt"
 
             val commonMain by getting {
                 dependencies {

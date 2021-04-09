@@ -1,5 +1,5 @@
 pluginManagement {
-    val mainKotlinVersion = "1.4.31"
+    val mainKotlinVersion = "1.4.32"
 
     resolutionStrategy {
         eachPlugin {
@@ -29,4 +29,6 @@ pluginManagement {
 }
 
 rootProject.name = "spotify-web-api-kotlin"
-
+include("java-interop-basic-sample")
+findProject(":java-interop-basic-sample")?.name = "java-interop-basic"
+include("java-interop-sample")

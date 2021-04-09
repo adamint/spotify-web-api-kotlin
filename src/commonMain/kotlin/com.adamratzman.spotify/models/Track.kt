@@ -1,6 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
+import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.utils.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -70,6 +71,15 @@ public data class SimpleTrack(
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
     public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
+
+    /**
+     * Converts this [SimpleTrack] into a full [Track] object with the given
+     * market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
+    public fun toFullTrackRestAction(market: Market? = null): SpotifyRestAction<Track?> =
+        SpotifyRestAction { toFullTrack(market) }
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + linkedTrack + this
 }
@@ -171,8 +181,16 @@ public data class LinkedTrack(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-
     public suspend fun toFullTrack(market: Market? = null): Track? = api.tracks.getTrack(id, market)
+
+    /**
+     * Converts this [SimpleTrack] into a full [Track] object with the given
+     * market
+     *
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     */
+    public fun toFullTrackRestAction(market: Market? = null): SpotifyRestAction<Track?> =
+        SpotifyRestAction { toFullTrack(market) }
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }

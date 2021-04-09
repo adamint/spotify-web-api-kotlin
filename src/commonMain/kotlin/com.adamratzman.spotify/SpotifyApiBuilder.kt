@@ -692,9 +692,22 @@ public class SpotifyApiBuilder(
     }
 
     /**
+     * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
+     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     */
+    public fun buildRestAction(type: AuthorizationType): SpotifyRestAction<GenericSpotifyApi> = SpotifyRestAction {
+        build(type)
+    }
+
+    /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
     public suspend fun buildPublic(): SpotifyAppApi = buildCredentialed()
+
+    /**
+    * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
+    */
+    public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction{ buildPublic() }
 
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
@@ -709,6 +722,11 @@ public class SpotifyApiBuilder(
     }.build()
 
     /**
+     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
+     */
+    public fun buildCredentialedRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildCredentialed() }
+
+    /**
      * Create a new [SpotifyClientApi] that has access to public endpoints, in addition to endpoints
      * requiring scopes contained in the client authorization request
      */
@@ -721,6 +739,12 @@ public class SpotifyApiBuilder(
         authorization(authorization)
         options(options)
     }.build()
+
+    /**
+     * Create a new [SpotifyClientApi] that has access to public endpoints, in addition to endpoints
+     * requiring scopes contained in the client authorization request
+     */
+    public fun buildClientRestAction(): SpotifyRestAction<SpotifyClientApi> = SpotifyRestAction { buildClient() }
 }
 
 /**
@@ -811,6 +835,13 @@ public interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder
      * Build the [T] by provided information
      */
     public suspend fun build(enableDefaultTokenRefreshProducerIfNoneExists: Boolean = true): T
+
+    /**
+     * Build the [T] by provided information
+     */
+    public fun buildRestAction(enableDefaultTokenRefreshProducerIfNoneExists: Boolean = true): SpotifyRestAction<T> = SpotifyRestAction {
+        build(enableDefaultTokenRefreshProducerIfNoneExists)
+    }
 }
 
 /**
