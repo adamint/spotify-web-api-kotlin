@@ -542,18 +542,18 @@ public open class SpotifyClientApi(
      */
     public val player: ClientPlayerApi = ClientPlayerApi(this)
 
-    private lateinit var userIdBacking: String
+    private var userIdBacking: String? = null
 
     private suspend fun initiatizeUserIdBacking(): String {
         userIdBacking = users.getClientProfile().id
-        return userIdBacking
+        return userIdBacking!!
     }
 
     /**
      * The Spotify user id to which the api instance is connected
      */
     public suspend fun getUserId(): String =
-        if (::userIdBacking.isInitialized) userIdBacking else initiatizeUserIdBacking()
+        if (userIdBacking != null) userIdBacking!! else initiatizeUserIdBacking()
 
     /**
      * The Spotify user id to which the api instance is connected

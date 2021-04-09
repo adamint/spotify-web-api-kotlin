@@ -209,8 +209,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * with full [Artist] objects
      */
     public suspend fun getFollowedArtists(
-        limit: Int?,
-        after: String?
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        after: String? = null
     ): CursorBasedPagingObject<Artist> = get(
         endpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
             "after",
@@ -232,8 +232,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * with full [Artist] objects
      */
     public fun getFollowedArtistsRestAction(
-        limit: Int?,
-        after: String?
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        after: String? = null
     ): SpotifyRestAction<CursorBasedPagingObject<Artist>> = SpotifyRestAction { getFollowedArtists(limit, after) }
 
     /**
@@ -313,7 +313,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    public fun followArtistRestAction(artistId: String) = SpotifyRestAction { followArtist(artistId) }
+    public fun followArtistRestAction(artistId: String): SpotifyRestAction<Unit> = SpotifyRestAction { followArtist(artistId) }
 
     /**
      * Add the current user as a follower of other artists
@@ -369,7 +369,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    public suspend fun followPlaylist(playlist: String, followPublicly: Boolean): String = put(
+    public suspend fun followPlaylist(playlist: String, followPublicly: Boolean = true): String = put(
         endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
         "{\"public\": $followPublicly}"
     )
