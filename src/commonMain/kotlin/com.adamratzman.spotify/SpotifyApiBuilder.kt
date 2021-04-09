@@ -708,7 +708,7 @@ public class SpotifyApiBuilder(
     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
     */
     public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction{ buildPublic() }
-    
+
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
