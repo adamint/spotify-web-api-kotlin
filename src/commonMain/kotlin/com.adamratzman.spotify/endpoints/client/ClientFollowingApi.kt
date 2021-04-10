@@ -89,7 +89,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws [BadRequestException] if the playlist is not found
      * @return Whether the current user is following [playlistId]
      */
-    public fun isFollowingPlaylistRestAction(playlistId: String) =
+    public fun isFollowingPlaylistRestAction(playlistId: String): SpotifyRestAction<Boolean> =
         SpotifyRestAction { isFollowingPlaylist(playlistId) }
 
     /**

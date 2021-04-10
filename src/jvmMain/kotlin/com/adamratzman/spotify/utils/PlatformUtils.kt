@@ -1,8 +1,7 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-import com.soywiz.korio.async.runBlockingNoJs
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 import java.net.URLEncoder
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
@@ -16,6 +15,6 @@ public actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.Concurren
 
 public actual fun <K, V> ConcurrentHashMap<K, V>.asList(): List<Pair<K, V>> = toList()
 
-public actual fun <T> runBlockingOnJvmAndNative(block: suspend CoroutineScope.() -> T): T {
-    return runBlockingNoJs { block() }
+public actual fun <T> runBlockingOnJvmAndNative(block: suspend () -> T): T {
+    return runBlocking { block() }
 }

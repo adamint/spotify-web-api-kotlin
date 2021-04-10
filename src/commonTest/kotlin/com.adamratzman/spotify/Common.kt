@@ -12,7 +12,7 @@ val redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
 val tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
 
 // https://github.com/Kotlin/kotlinx.coroutines/issues/1996#issuecomment-728562784
-expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
+expect fun runBlockingTest(block: suspend () -> Unit)
 expect val testCoroutineContext: CoroutineContext
 
 @ThreadLocal

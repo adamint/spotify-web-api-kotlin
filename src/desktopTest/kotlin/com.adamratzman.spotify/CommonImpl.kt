@@ -15,5 +15,5 @@ actual fun getEnvironmentVariable(name: String): String? {
 actual fun Exception.stackTrace() = printStackTrace()
 
 actual val testCoroutineContext: CoroutineContext = MainScope().coroutineContext
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) =
-    runBlocking { this.block() }
+actual fun runBlockingTest(block: suspend () -> Unit) =
+    runBlocking { block() }

@@ -20,4 +20,4 @@ external interface Process {
 
 val testScope = MainScope()
 actual val testCoroutineContext: CoroutineContext = testScope.coroutineContext
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): dynamic = testScope.promise { this.block() }
+actual fun runBlockingTest(block: suspend () -> Unit): dynamic = testScope.promise { block() }

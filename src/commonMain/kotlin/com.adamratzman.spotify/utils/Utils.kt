@@ -35,4 +35,4 @@ internal fun formatDate(date: Long): String {
     return Instant.fromEpochMilliseconds(date).toString()
 }
 
-public expect fun <T> runBlockingOnJvmAndNative(block: suspend CoroutineScope.() -> T): T
+public expect fun <T> runBlockingOnJvmAndNative(block: suspend () -> T): T
