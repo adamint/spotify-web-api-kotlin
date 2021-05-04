@@ -15,7 +15,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PublicArtistsApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -23,24 +23,24 @@ class PublicArtistsApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetArtists() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertNull(api.artists.getArtist("adkjlasdf"))
-            assertNotNull(api.artists.getArtist("66CXWjxzNUsdJxJ2JdwvnR"))
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getArtists() }
+            assertNull(api!!.artists.getArtist("adkjlasdf"))
+            assertNotNull(api!!.artists.getArtist("66CXWjxzNUsdJxJ2JdwvnR"))
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.artists.getArtists() }
             assertEquals(
                 listOf(true, true),
-                api.artists.getArtists("66CXWjxzNUsdJxJ2JdwvnR", "7wjeXCtRND2ZdKfMJFu6JC")
+                api!!.artists.getArtists("66CXWjxzNUsdJxJ2JdwvnR", "7wjeXCtRND2ZdKfMJFu6JC")
                     .map { it != null }
             )
             assertEquals(
                 listOf(false, true),
-                api.artists.getArtists("dskjafjkajksdf", "66CXWjxzNUsdJxJ2JdwvnR")
+                api!!.artists.getArtists("dskjafjkajksdf", "66CXWjxzNUsdJxJ2JdwvnR")
                     .map { it != null }
             )
         }
@@ -49,10 +49,10 @@ class PublicArtistsApiTest {
     @Test
     fun testGetArtistAlbums() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getArtistAlbums("asfasdf") }
-            assertTrue(api.artists.getArtistAlbums(
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.artists.getArtistAlbums("asfasdf") }
+            assertTrue(api!!.artists.getArtistAlbums(
                 "7wjeXCtRND2ZdKfMJFu6JC", 10,
                 include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
             )
@@ -64,22 +64,22 @@ class PublicArtistsApiTest {
     @Test
     fun testGetRelatedArtists() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getRelatedArtists("") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getRelatedArtists("no") }
-            assertTrue(api.artists.getRelatedArtists("0X2BH1fck6amBIoJhDVmmJ").isNotEmpty())
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.artists.getRelatedArtists("") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.artists.getRelatedArtists("no") }
+            assertTrue(api!!.artists.getRelatedArtists("0X2BH1fck6amBIoJhDVmmJ").isNotEmpty())
         }
     }
 
     @Test
     fun testGetArtistTopTracksByMarket() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.artists.getArtistTopTracks("no") }
-            assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW").isNotEmpty())
-            assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", Market.FR).isNotEmpty())
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.artists.getArtistTopTracks("no") }
+            assertTrue(api!!.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW").isNotEmpty())
+            assertTrue(api!!.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", Market.FR).isNotEmpty())
         }
     }
 }

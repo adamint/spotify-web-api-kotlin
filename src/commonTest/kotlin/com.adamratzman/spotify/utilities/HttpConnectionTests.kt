@@ -90,28 +90,28 @@ class HttpConnectionTests {
     @Test
     fun testRetry() = runBlockingTest {
         spotifyApi.await()?.let { api ->
-            api.useCache = false
-            api.retryWhenRateLimited = true
-            api.clearCache()
+            api!!.useCache = false
+            api!!.retryWhenRateLimited = true
+            api!!.clearCache()
             for (it in 1..2500) {
-                api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")
+                api!!.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")
             }
-            api.useCache = true
-            api.retryWhenRateLimited = false
+            api!!.useCache = true
+            api!!.retryWhenRateLimited = false
         }
     }
 
     @Test
     fun testThrowExceptionWhenCantRetry() = runBlockingTest {
         spotifyApi.await()?.let { api ->
-            api.retryWhenRateLimited = false
-            api.useCache = false
+            api!!.retryWhenRateLimited = false
+            api!!.useCache = false
             assertFailsWithSuspend<SpotifyRatelimitedException> {
                 repeat((1..50000).count()) {
-                    println(api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")?.name)
+                    println(api!!.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")?.name)
                 }
             }
-            api.useCache = true
+            api!!.useCache = true
         }
     }*/
 }

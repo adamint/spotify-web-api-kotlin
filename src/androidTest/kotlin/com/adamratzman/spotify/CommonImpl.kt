@@ -31,4 +31,4 @@ public actual fun Exception.stackTrace() {
 public actual val testCoroutineContext: CoroutineContext =
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 
-public actual fun runBlockingTest(block: suspend () -> Unit): Unit = runBlocking(testCoroutineContext) { this.block() }
+public actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): Unit = runBlocking(testCoroutineContext) { this.block() }

@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class EpisodeApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     val market = Market.US
 
@@ -22,30 +22,30 @@ class EpisodeApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetEpisode() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertNull(api.episodes.getEpisode("nonexistant episode", market = market))
-            assertEquals("The 'Murder Hornets' And The Honey Bees", api.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh", market = market)?.name)
+            assertNull(api!!.episodes.getEpisode("nonexistant episode", market = market))
+            assertEquals("The 'Murder Hornets' And The Honey Bees", api!!.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh", market = market)?.name)
         }
     }
 
     @Test
     fun testGetEpisodes() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.episodes.getEpisodes("hi", "dad", market = market) }
+            assertFailsWithSuspend<BadRequestException> { api!!.episodes.getEpisodes("hi", "dad", market = market) }
             assertFailsWithSuspend<BadRequestException> {
-                api.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j", market = market).map { it?.name }
+                api!!.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j", market = market).map { it?.name }
             }
             assertEquals(
                 listOf("The 'Murder Hornets' And The Honey Bees"),
-                api.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh", market = market).map { it?.name }
+                api!!.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh", market = market).map { it?.name }
             )
         }
     }

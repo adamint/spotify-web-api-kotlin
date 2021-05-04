@@ -12,7 +12,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class ClientEpisodeApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -20,30 +20,30 @@ class ClientEpisodeApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetEpisode() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api
 
-            assertNull(api.episodes.getEpisode("nonexistant episode"))
-            assertNotNull(api.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh"))
+            assertNull(api!!.episodes.getEpisode("nonexistant episode"))
+            assertNotNull(api!!.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh"))
         }
     }
 
     @Test
     fun testGetEpisodes() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
-
-            assertFailsWithSuspend<BadRequestException> { api.episodes.getEpisodes("hi", "dad") }
+            if (!testPrereq()) return@runBlockingTest else api!!
+            
+            assertFailsWithSuspend<BadRequestException> { api!!.episodes.getEpisodes("hi", "dad") }
             assertFailsWithSuspend<BadRequestException> {
-                api.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").map { it?.name }
+                api!!.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").map { it?.name }
             }
             assertEquals(
                 listOf("The 'Murder Hornets' And The Honey Bees"),
-                api.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh").map { it?.name }
+                api!!.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh").map { it?.name }
             )
         }
     }

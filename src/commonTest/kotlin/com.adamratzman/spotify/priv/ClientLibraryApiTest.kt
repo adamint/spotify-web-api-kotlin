@@ -12,7 +12,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ClientLibraryApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -20,37 +20,37 @@ class ClientLibraryApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testLibraryTracks() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
-            if (api.library.contains(LibraryType.TRACK, testTrack)) {
-                api.library.remove(LibraryType.TRACK, testTrack)
+            if (api!!.library.contains(LibraryType.TRACK, testTrack)) {
+                api!!.library.remove(LibraryType.TRACK, testTrack)
             }
 
-            assertFalse(api.library.contains(LibraryType.TRACK, testTrack))
+            assertFalse(api!!.library.contains(LibraryType.TRACK, testTrack))
             assertFalse(
-                api.library.getSavedTracks().getAllItemsNotNull()
+                api!!.library.getSavedTracks().getAllItemsNotNull()
                     .map { it.track.id }.contains(testTrack)
             )
 
-            api.library.add(LibraryType.TRACK, testTrack)
+            api!!.library.add(LibraryType.TRACK, testTrack)
 
-            assertTrue(api.library.contains(LibraryType.TRACK, testTrack))
+            assertTrue(api!!.library.contains(LibraryType.TRACK, testTrack))
             assertTrue(
-                api.library.getSavedTracks().getAllItemsNotNull()
+                api!!.library.getSavedTracks().getAllItemsNotNull()
                     .map { it.track.id }.contains(testTrack)
             )
 
-            api.library.remove(LibraryType.TRACK, testTrack)
+            api!!.library.remove(LibraryType.TRACK, testTrack)
 
-            assertFalse(api.library.contains(LibraryType.TRACK, testTrack))
+            assertFalse(api!!.library.contains(LibraryType.TRACK, testTrack))
             assertFalse(
-                api.library.getSavedTracks().getAllItemsNotNull()
+                api!!.library.getSavedTracks().getAllItemsNotNull()
                     .map { it.track.id }.contains(testTrack)
             )
         }
@@ -59,32 +59,32 @@ class ClientLibraryApiTest {
     @Test
     fun testLibraryAlbums() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             val testAlbum = "1UAt4G020TgW3lb2CkXr2N"
-            if (api.library.contains(LibraryType.ALBUM, testAlbum)) {
-                api.library.remove(LibraryType.ALBUM, testAlbum)
+            if (api!!.library.contains(LibraryType.ALBUM, testAlbum)) {
+                api!!.library.remove(LibraryType.ALBUM, testAlbum)
             }
 
-            assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum))
+            assertFalse(api!!.library.contains(LibraryType.ALBUM, testAlbum))
             assertFalse(
-                api.library.getSavedAlbums().getAllItemsNotNull()
+                api!!.library.getSavedAlbums().getAllItemsNotNull()
                     .map { it.album.id }.contains(testAlbum)
             )
 
-            api.library.add(LibraryType.ALBUM, testAlbum)
+            api!!.library.add(LibraryType.ALBUM, testAlbum)
 
-            assertTrue(api.library.contains(LibraryType.ALBUM, testAlbum))
+            assertTrue(api!!.library.contains(LibraryType.ALBUM, testAlbum))
             assertTrue(
-                api.library.getSavedAlbums().getAllItemsNotNull()
+                api!!.library.getSavedAlbums().getAllItemsNotNull()
                     .map { it.album.id }.contains(testAlbum)
             )
 
-            api.library.remove(LibraryType.ALBUM, testAlbum)
+            api!!.library.remove(LibraryType.ALBUM, testAlbum)
 
-            assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum))
+            assertFalse(api!!.library.contains(LibraryType.ALBUM, testAlbum))
             assertFalse(
-                api.library.getSavedAlbums().getAllItemsNotNull()
+                api!!.library.getSavedAlbums().getAllItemsNotNull()
                     .map { it.album.id }.contains(testAlbum)
             )
         }
@@ -93,31 +93,31 @@ class ClientLibraryApiTest {
     @Test
     fun testInvalidInputs() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.library.remove(
+                api!!.library.remove(
                     LibraryType.TRACK,
                     "ajksdfkjasjfd"
                 )
             }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.library.contains(
+                api!!.library.contains(
                     LibraryType.TRACK,
                     "adsfjk"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.library.add(LibraryType.TRACK, "wer") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.add(LibraryType.TRACK, "wer") }
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.library.remove(
+                api!!.library.remove(
                     LibraryType.ALBUM,
                     "elkars"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.library.contains(LibraryType.ALBUM, "") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.ALBUM, "") }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.library.add(
+                api!!.library.add(
                     LibraryType.ALBUM,
                     "oieriwkjrjkawer"
                 )

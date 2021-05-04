@@ -12,12 +12,13 @@ import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
+import com.soywiz.korio.lang.assert
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class UtilityTests {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -25,27 +26,46 @@ class UtilityTests {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
+
+    @Test
+    fun testPagingObjectGetAllItems() {
+        if (!testPrereq()) return
+
+        runBlockingTest {
+            val spotifyWfhPlaylist = api!!.playlists.getPlaylist("spotify:playlist:37i9dQZF1DWTLSN7iG21yC")!!
+            val totalTracks = spotifyWfhPlaylist.tracks.total
+            println(spotifyWfhPlaylist.tracks.total)
+            val allTracks = spotifyWfhPlaylist.tracks.getAllItemsNotNull()
+            assertEquals(totalTracks, allTracks.size)
+        }
+    }
 
     @Test
     fun testGeneratePkceCodeChallenge() {
-        assertEquals("c7jV_d4sQ658HgwINAR77Idumz1ik1lIb1JNlOva75E", getSpotifyPkceCodeChallenge("thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"))
-        assertEquals("9Y__uhKapn7GO_ElcaQpd8C3hdOyqTzAU4VXyR2iEV0", getSpotifyPkceCodeChallenge("12345678901234567890123456789012345678901234567890"))
+        assertEquals(
+            "c7jV_d4sQ658HgwINAR77Idumz1ik1lIb1JNlOva75E",
+            getSpotifyPkceCodeChallenge("thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters")
+        )
+        assertEquals(
+            "9Y__uhKapn7GO_ElcaQpd8C3hdOyqTzAU4VXyR2iEV0",
+            getSpotifyPkceCodeChallenge("12345678901234567890123456789012345678901234567890")
+        )
     }
 
     @Test
     fun testPagingObjectTakeItemsSize() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertEquals(60, api.browse.getNewReleases(limit = 12).take(60).size)
+            assertEquals(60, api!!.browse.getNewReleases(limit = 12).take(60).size)
         }
     }
 
-            @Test
+    @Test
     fun testInvalidApiBuilderParameters() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertFailsWithSuspend<IllegalArgumentException> {
                 spotifyAppApi { }.build()
@@ -94,7 +114,7 @@ class UtilityTests {
     @Test
     fun testAutomaticRefresh() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             var test = false
             val api = spotifyAppApi {
@@ -108,13 +128,13 @@ class UtilityTests {
                 }
             }.build()
 
-            api.token = api.token.copy(expiresIn = -1)
-            val currentToken = api.token
+            api!!.token = api!!.token.copy(expiresIn = -1)
+            val currentToken = api!!.token
 
-            api.browse.getAvailableGenreSeeds()
+            api!!.browse.getAvailableGenreSeeds()
 
             assertTrue(test)
-            assertTrue(api.token.accessToken != currentToken.accessToken)
+            assertTrue(api!!.token.accessToken != currentToken.accessToken)
         }
     }
 
@@ -125,10 +145,10 @@ class UtilityTests {
 
             assertFailsWithSuspend<IllegalStateException> {
                 spotifyClientApi(
-                    api.clientId,
-                    api.clientSecret,
+                    api!!.clientId,
+                    api!!.clientSecret,
                     (api as SpotifyClientApi).redirectUri,
-                    SpotifyUserAuthorization(token = api.token.copy(scopeString = null))
+                    SpotifyUserAuthorization(token = api!!.token.copy(scopeString = null))
                 ) { requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE) }.build()
             }
         }

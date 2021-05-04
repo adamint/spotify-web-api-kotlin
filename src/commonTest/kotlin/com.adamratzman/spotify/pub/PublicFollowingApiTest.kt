@@ -10,7 +10,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class PublicFollowingApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -18,31 +18,31 @@ class PublicFollowingApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testUsersFollowingPlaylist() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.areFollowingPlaylist(
+                api!!.following.areFollowingPlaylist(
                     "37i9dQZF1DXcBWIGoYBM5M",
                     "udontexist89"
                 )[0]
             }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M")
+                api!!.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M")
             }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.areFollowingPlaylist("asdkfjajksdfjkasdf", "adamratzman1")
+                api!!.following.areFollowingPlaylist("asdkfjajksdfjkasdf", "adamratzman1")
             }
             assertEquals(
                 listOf(true, false),
-                api.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M", "adamratzman1", "adamratzman")
+                api!!.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M", "adamratzman1", "adamratzman")
             )
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M", "udontexist89", "adamratzman1")
+                api!!.following.areFollowingPlaylist("37i9dQZF1DXcBWIGoYBM5M", "udontexist89", "adamratzman1")
             }
         }
     }

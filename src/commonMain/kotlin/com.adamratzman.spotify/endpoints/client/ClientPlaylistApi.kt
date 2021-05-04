@@ -155,7 +155,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
+     * **[Api Reference] (https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
      * @param tracks Spotify track ids. Maximum 100

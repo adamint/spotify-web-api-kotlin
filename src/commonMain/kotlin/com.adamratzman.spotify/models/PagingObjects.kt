@@ -3,15 +3,12 @@ package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyRestAction
-import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.models.PagingTraversalType.BACKWARDS
 import com.adamratzman.spotify.models.PagingTraversalType.FORWARDS
 import com.adamratzman.spotify.models.serialization.instantiateAllNeedsApiObjects
 import com.adamratzman.spotify.models.serialization.instantiateLateinitsForPagingObject
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
-import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -25,6 +22,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -70,7 +69,7 @@ public class NullablePagingObject<T : Any>(
         val pagingObject = PagingObject(
             href, items.filterNotNull(), limit, next, offset, previous, total
         )
-        pagingObject.instantiateLateinitsForPagingObject(itemClazz, api)
+        pagingObject.instantiateLateinitsForPagingObject(itemClass, api)
 
         return pagingObject
     }
@@ -127,7 +126,7 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
     @Suppress("UNCHECKED_CAST")
     override suspend fun get(type: PagingTraversalType): Z? {
         return (if (type == FORWARDS) next else previous)?.let { api.defaultEndpoint.get(it) }?.let { json ->
-            when (itemClazz) {
+            when (itemClass) {
                 SimpleTrack::class -> json.toNonNullablePagingObject(
                     SimpleTrack.serializer(),
                     null,
@@ -191,7 +190,7 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
                     api.spotifyApiOptions.json,
                     true
                 )
-                else -> throw IllegalArgumentException("Unknown type in $href response")
+                else -> throw IllegalArgumentException("Unknown type ($itemClass) in $href response")
             } as? Z
         }
     }
@@ -290,7 +289,7 @@ public data class CursorBasedPagingObject<T : Any>(
     @Suppress("UNCHECKED_CAST")
     public suspend fun getCursorBasedPagingObject(url: String): CursorBasedPagingObject<T>? {
         val json = api.defaultEndpoint.get(url)
-        return when (itemClazz) {
+        return when (itemClass) {
             PlayHistory::class -> json.toCursorBasedPagingObject(
                 PlayHistory::class,
                 PlayHistory.serializer(),
@@ -378,7 +377,7 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
     }
 
     @Transient
-    internal var itemClazz: KClass<T>? = null
+    internal var itemClass: KClass<T>? = null
 
     internal abstract suspend fun get(type: PagingTraversalType): Z?
 
@@ -417,7 +416,8 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
      * @param total The total amount of [PagingObjectBase] to request, which includes this [PagingObjectBase].
      * @since 3.0.0
      */
-    public fun getWithNextTotalPagingObjectsRestAction(total: Int): SpotifyRestAction<List<Z>> = SpotifyRestAction { getWithNextTotalPagingObjects(total) }
+    public fun getWithNextTotalPagingObjectsRestAction(total: Int): SpotifyRestAction<List<Z>> =
+        SpotifyRestAction { getWithNextTotalPagingObjects(total) }
 
     public suspend fun getNext(): Z? = get(FORWARDS)
 
@@ -452,7 +452,9 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
      * @param total The total amount of [PagingObjectBase] to request, including the [PagingObjectBase] associated with the current request.
      * @since 3.0.0
      */
-    public fun getWithNextItemsRestAction(total: Int): SpotifyRestAction<List<T?>> = SpotifyRestAction { getWithNextItems(total) }
+    public fun getWithNextItemsRestAction(total: Int): SpotifyRestAction<List<T?>> =
+        SpotifyRestAction { getWithNextItems(total) }
+
     /**
      * Flow from current page backwards.
      * */
@@ -556,9 +558,35 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
 }
 
 internal fun Any.instantiateLateinitsIfPagingObjects(api: GenericSpotifyApi) = when (this) {
-    is FeaturedPlaylists -> this.playlists
-    is Show -> this.episodes
-    is Album -> this.tracks
-    is Playlist -> this.tracks
+    is FeaturedPlaylists -> {
+        this.playlists.itemClass = SimplePlaylist::class
+        listOf(this.playlists)
+    }
+    is Show -> {
+        this.episodes.itemClass = SimpleEpisode::class
+        listOf(this.episodes)
+    }
+    is Album -> {
+        this.tracks.itemClass = SimpleTrack::class
+        listOf(this.tracks)
+    }
+    is Playlist -> {
+        this.tracks.itemClass = PlaylistTrack::class
+        listOf(this.tracks)
+    }
+    is SpotifySearchResult -> {
+        this.albums?.itemClass = SimpleAlbum::class
+        this.artists?.itemClass = Artist::class
+        this.episodes?.itemClass = SimpleEpisode::class
+        this.playlists?.itemClass = SimplePlaylist::class
+        this.shows?.itemClass = SimpleShow::class
+        this.tracks?.itemClass = Track::class
+        listOfNotNull(albums, artists, episodes, playlists, shows, tracks)
+    }
     else -> null
-}?.let { it.api = api; it.getMembersThatNeedApiInstantiation().instantiateAllNeedsApiObjects(api) }
+}?.let { objs ->
+    objs.forEach { obj ->
+        obj.api = api
+        obj.getMembersThatNeedApiInstantiation().instantiateAllNeedsApiObjects(api)
+    }
+}

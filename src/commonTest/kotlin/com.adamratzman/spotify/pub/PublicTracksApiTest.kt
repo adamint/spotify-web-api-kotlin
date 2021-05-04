@@ -13,7 +13,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PublicTracksApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -21,51 +21,51 @@ class PublicTracksApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetTrack() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertEquals("Bénabar", api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")!!.artists[0].name)
-            assertNull(api.tracks.getTrack("nonexistant track"))
+            assertEquals("Bénabar", api!!.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")!!.artists[0].name)
+            assertNull(api!!.tracks.getTrack("nonexistant track"))
         }
     }
 
     @Test
     fun testGetTracks() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertEquals(listOf(null, null), api.tracks.getTracks("hi", "dad", market = Market.US))
+            assertEquals(listOf(null, null), api!!.tracks.getTracks("hi", "dad", market = Market.US))
             assertEquals(
                 listOf("Alors souris", null),
-                api.tracks.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").map { it?.name })
+                api!!.tracks.getTracks("0o4jSZBxOQUiDKzMJSqR4x", "j").map { it?.name })
         }
     }
 
     @Test
     fun testAudioAnalysis() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.tracks.getAudioAnalysis("bad track") }
-            assertEquals("165.61333", api.tracks.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").track.duration.toString())
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.tracks.getAudioAnalysis("bad track") }
+            assertEquals("165.61333", api!!.tracks.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").track.duration.toString())
         }
     }
 
     @Test
     fun testAudioFeatures() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.tracks.getAudioFeatures("bad track") }
-            assertEquals("0.0592", api.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.tracks.getAudioFeatures("bad track") }
+            assertEquals("0.0592", api!!.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())
             assertEquals(
                 listOf(null, "0.0592"),
-                api.tracks.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").map { it?.acousticness?.toString() })
-            assertTrue(api.tracks.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").let {
+                api!!.tracks.getAudioFeatures("hkiuhi", "6AH3IbS61PiabZYKVBqKAk").map { it?.acousticness?.toString() })
+            assertTrue(api!!.tracks.getAudioFeatures("bad track", "0o4jSZBxOQUiDKzMJSqR4x").let {
                 it[0] == null && it[1] != null
             })
         }

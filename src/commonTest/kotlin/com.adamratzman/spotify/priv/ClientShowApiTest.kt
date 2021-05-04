@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ClientShowApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -20,30 +20,30 @@ class ClientShowApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetShow() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertNull(api.shows.getShow("invalid-show"))
-            assertEquals("Freakonomics Radio", api.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1")?.name)
+            assertNull(api!!.shows.getShow("invalid-show"))
+            assertEquals("Freakonomics Radio", api!!.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1")?.name)
         }
     }
 
     @Test
     fun testGetShows() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShows("hi", "dad") }
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShows("hi", "dad") }
             assertFailsWithSuspend<BadRequestException> {
-                api.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j").map { it?.name }
+                api!!.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j").map { it?.name }
             }
             assertEquals(
                 listOf("Freakonomics Radio"),
-                api.shows.getShows("6z4NLXyHPga1UmSJsPK7G1").map { it?.name }
+                api!!.shows.getShows("6z4NLXyHPga1UmSJsPK7G1").map { it?.name }
             )
         }
     }
@@ -51,11 +51,11 @@ class ClientShowApiTest {
     @Test
     fun testGetShowEpisodes() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShowEpisodes("hi") }
-            val show = api.shows.getShow("6z4NLXyHPga1UmSJsPK7G1")!!
-            assertEquals(show.id, api.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id)
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShowEpisodes("hi") }
+            val show = api!!.shows.getShow("6z4NLXyHPga1UmSJsPK7G1")!!
+            assertEquals(show.id, api!!.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id)
         }
     }
 }
