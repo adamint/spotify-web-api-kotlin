@@ -147,7 +147,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         playlist: String,
         track: String,
         position: Int? = null
-    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTrackToClientPlaylistRestAction(playlist, track, position) }
+    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTrackToClientPlaylist(playlist, track, position) }
 
     /**
      * Add one or more tracks to a user’s playlist.
