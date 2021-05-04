@@ -5,7 +5,6 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
-import com.adamratzman.spotify.endpoints.client.ClientSearchApi
 import com.adamratzman.spotify.endpoints.pub.SearchApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
@@ -87,9 +86,14 @@ class SearchApiTest {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            (api!!.search as? ClientSearchApi)?.let { clientSearchApi ->
-                assertTrue(clientSearchApi.searchShow("f").items.isNotEmpty())
-                assertFailsWithSuspend<SpotifyException.BadRequestException> { clientSearchApi.searchShow("").items.size }
+            (api!!.search as? SearchApi)?.let { clientSearchApi ->
+                assertTrue(clientSearchApi.searchShow("f", market = Market.US).items.isNotEmpty())
+                assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                    clientSearchApi.searchShow(
+                        "",
+                        market = Market.US
+                    ).items.size
+                }
             }
         }
     }
@@ -99,9 +103,14 @@ class SearchApiTest {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            (api!!.search as? ClientSearchApi)?.let { clientSearchApi ->
-                assertTrue(clientSearchApi.searchEpisode("f").items.isNotEmpty())
-                assertFailsWithSuspend<SpotifyException.BadRequestException> { clientSearchApi.searchEpisode("").items.size }
+            (api!!.search as? SearchApi)?.let { clientSearchApi ->
+                assertTrue(clientSearchApi.searchEpisode("f", market = Market.US).items.isNotEmpty())
+                assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                    clientSearchApi.searchEpisode(
+                        "",
+                        market = Market.US
+                    ).items.size
+                }
             }
         }
     }

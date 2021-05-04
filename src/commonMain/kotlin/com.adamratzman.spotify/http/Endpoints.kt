@@ -5,12 +5,16 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyException.TimeoutException
+import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.models.ErrorObject
 import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -26,10 +30,18 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         if (itemSize > maxSize && !api.spotifyApiOptions.allowBulkRequests) {
             throw BadRequestException(
                 "Too many items ($itemSize) provided, only $maxSize allowed",
-                IllegalArgumentException("Bulk requests (Spotifyapi.spotifyApiOptions.allowBulkRequests) are not turned on, and too many items were provided")
+                IllegalArgumentException("Bulk requests (SpotifyApi.spotifyApiOptions.allowBulkRequests) are not turned on, and too many items were provided")
             )
         }
         if (itemSize == 0) throw BadRequestException("No items provided!")
+    }
+
+    protected fun requireScopes(vararg requiredScopes: SpotifyScope, anyOf: Boolean = false) {
+        val scopes = api.token.scopes ?: return
+        val notFoundScopes = requiredScopes.filter { it !in scopes }
+        if ((!anyOf && notFoundScopes.isNotEmpty()) || (anyOf && scopes.none { it in requiredScopes })) {
+            throw SpotifyException.SpotifyScopesNeededException(missingScopes = notFoundScopes)
+        }
     }
 
     protected suspend fun <T, R> bulkRequest(
@@ -37,8 +49,12 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         items: List<T>,
         producer: suspend (List<T>) -> R
     ): List<R> {
-        return items.chunked(chunkSize).map { chunk ->
-            producer(chunk)
+        return coroutineScope {
+            items.chunked(chunkSize).map { chunk ->
+                async {
+                    producer(chunk)
+                }
+            }.awaitAll()
         }
     }
 

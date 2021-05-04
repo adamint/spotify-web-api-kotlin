@@ -59,8 +59,9 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return possibly-null [Episode].
      */
-    public fun getEpisodeRestAction(id: String, market: Market): SpotifyRestAction<Episode?> =
-        SpotifyRestAction { getEpisode(id, market) }
+    public fun getEpisodeRestAction(id: String, market: Market): SpotifyRestAction<Episode?> {
+        return SpotifyRestAction { getEpisode(id, market) }
+    }
 
     /**
      * Get Spotify catalog information for multiple episodes based on their Spotify IDs.
@@ -82,6 +83,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getEpisodes(vararg ids: String, market: Market): List<Episode?> {
         checkBulkRequesting(50, ids.size)
+
         return bulkRequest(50, ids.toList()) { chunk ->
             get(
                 endpointBuilder("/episodes").with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })
@@ -108,8 +110,9 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @return List of possibly-null [Episode] objects.
      * @throws BadRequestException If any invalid show id is provided
      */
-    public fun getEpisodesRestAction(vararg ids: String, market: Market): SpotifyRestAction<List<Episode?>> =
-        SpotifyRestAction {
+    public fun getEpisodesRestAction(vararg ids: String, market: Market): SpotifyRestAction<List<Episode?>> {
+        return SpotifyRestAction {
             getEpisodes(*ids, market = market)
         }
+    }
 }

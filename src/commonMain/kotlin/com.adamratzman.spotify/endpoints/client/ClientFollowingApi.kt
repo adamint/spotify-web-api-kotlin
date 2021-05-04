@@ -36,7 +36,10 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if [user] is a non-existing id
      * @return Whether the current user is following [user]
      */
-    public suspend fun isFollowingUser(user: String): Boolean = isFollowingUsers(user)[0]
+    public suspend fun isFollowingUser(user: String): Boolean {
+        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        return isFollowingUsers(user)[0]
+    }
 
     /**
      * Check to see if the current user is following another Spotify user.
@@ -50,8 +53,9 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if [user] is a non-existing id
      * @return Whether the current user is following [user]
      */
-    public fun isFollowingUserRestAction(user: String): SpotifyRestAction<Boolean> =
-        SpotifyRestAction { isFollowingUser(user) }
+    public fun isFollowingUserRestAction(user: String): SpotifyRestAction<Boolean> {
+        return SpotifyRestAction { isFollowingUser(user) }
+    }
 
     /**
      * Check to see if the current Spotify user is following the specified playlist.
@@ -68,11 +72,12 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws [BadRequestException] if the playlist is not found
      * @return Whether the current user is following [playlistId]
      */
-    public suspend fun isFollowingPlaylist(playlistId: String): Boolean =
-        isFollowingPlaylist(
+    public suspend fun isFollowingPlaylist(playlistId: String): Boolean {
+        return isFollowingPlaylist(
             playlistId,
             (api as SpotifyClientApi).getUserId()
         )
+    }
 
     /**
      * Check to see if the current Spotify user is following the specified playlist.
@@ -105,6 +110,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return A list of booleans corresponding to [users] of whether the current user is following that user
      */
     public suspend fun isFollowingUsers(vararg users: String): List<Boolean> {
+        requireScopes(SpotifyScope.USER_FOLLOW_READ)
         checkBulkRequesting(50, users.size)
         return bulkRequest(50, users.toList()) { chunk ->
             get(
@@ -126,8 +132,9 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if [users] contains a non-existing id
      * @return A list of booleans corresponding to [users] of whether the current user is following that user
      */
-    public fun isFollowingUsersRestAction(vararg users: String): SpotifyRestAction<List<Boolean>> =
-        SpotifyRestAction { isFollowingUsers(*users) }
+    public fun isFollowingUsersRestAction(vararg users: String): SpotifyRestAction<List<Boolean>> {
+        return SpotifyRestAction { isFollowingUsers(*users) }
+    }
 
     /**
      * Check to see if the current user is following a Spotify artist.
@@ -155,8 +162,9 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if [artist] is a non-existing id
      * @return Whether the current user is following [artist]
      */
-    public fun isFollowingArtistRestAction(artist: String): SpotifyRestAction<Boolean> =
-        SpotifyRestAction { isFollowingArtist(artist) }
+    public fun isFollowingArtistRestAction(artist: String): SpotifyRestAction<Boolean> {
+        return SpotifyRestAction { isFollowingArtist(artist) }
+    }
 
     /**
      * Check to see if the current user is following one or more artists.
@@ -171,6 +179,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return A list of booleans corresponding to [artists] of whether the current user is following that artist
      */
     public suspend fun isFollowingArtists(vararg artists: String): List<Boolean> {
+        requireScopes(SpotifyScope.USER_FOLLOW_READ)
         checkBulkRequesting(50, artists.size)
         return bulkRequest(50, artists.toList()) { chunk ->
             get(
@@ -192,8 +201,9 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if [artists] contains a non-existing id
      * @return A list of booleans corresponding to [artists] of whether the current user is following that artist
      */
-    public fun isFollowingArtistsRestAction(vararg artists: String): SpotifyRestAction<List<Boolean>> =
-        SpotifyRestAction { isFollowingArtists(*artists) }
+    public fun isFollowingArtistsRestAction(vararg artists: String): SpotifyRestAction<List<Boolean>> {
+        return SpotifyRestAction { isFollowingArtists(*artists) }
+    }
 
     /**
      * Get the current user’s followed artists.
@@ -211,12 +221,15 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun getFollowedArtists(
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         after: String? = null
-    ): CursorBasedPagingObject<Artist> = get(
-        endpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
-            "after",
-            after
-        ).toString()
-    ).toCursorBasedPagingObject(Artist::class, Artist.serializer(), "artists", api, json)
+    ): CursorBasedPagingObject<Artist> {
+        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        return get(
+            endpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
+                "after",
+                after
+            ).toString()
+        ).toCursorBasedPagingObject(Artist::class, Artist.serializer(), "artists", api, json)
+    }
 
     /**
      * Get the current user’s followed artists.
@@ -270,6 +283,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun followUsers(vararg users: String) {
+        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, users.size)
         bulkRequest(50, users.toList()) { chunk ->
             put(
@@ -313,7 +327,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if an invalid id is provided
      */
-    public fun followArtistRestAction(artistId: String): SpotifyRestAction<Unit> = SpotifyRestAction { followArtist(artistId) }
+    public fun followArtistRestAction(artistId: String): SpotifyRestAction<Unit> =
+        SpotifyRestAction { followArtist(artistId) }
 
     /**
      * Add the current user as a follower of other artists
@@ -327,6 +342,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun followArtists(vararg artists: String) {
+        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, artists.size)
         bulkRequest(50, artists.toList()) { chunk ->
             put(
@@ -369,10 +385,14 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    public suspend fun followPlaylist(playlist: String, followPublicly: Boolean = true): String = put(
-        endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
-        "{\"public\": $followPublicly}"
-    )
+    public suspend fun followPlaylist(playlist: String, followPublicly: Boolean = true): String {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
+        return put(
+            endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
+            "{\"public\": $followPublicly}"
+        )
+    }
 
     /**
      * Add the current user as a follower of a playlist.
@@ -393,10 +413,13 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    public fun followPlaylistRestAction(playlist: String, followPublicly: Boolean): SpotifyRestAction<String> =
-        SpotifyRestAction {
+    public fun followPlaylistRestAction(playlist: String, followPublicly: Boolean): SpotifyRestAction<String> {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
+        return SpotifyRestAction {
             followPlaylist(playlist, followPublicly)
         }
+    }
 
     /**
      * Remove the current user as a follower of another user
@@ -437,6 +460,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun unfollowUsers(vararg users: String) {
+        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, users.size)
         bulkRequest(50, users.toList()) { list ->
             delete(
@@ -502,6 +526,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun unfollowArtists(vararg artists: String) {
+        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, artists.size)
         bulkRequest(50, artists.toList()) { list ->
             delete(
@@ -542,8 +567,11 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      *
      * @throws BadRequestException if the playlist is not found
      */
-    public suspend fun unfollowPlaylist(playlist: String): String =
-        delete(endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString())
+    public suspend fun unfollowPlaylist(playlist: String): String {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
+        return delete(endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString())
+    }
 
     /**
      * Remove the current user as a follower of a playlist.

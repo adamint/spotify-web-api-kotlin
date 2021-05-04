@@ -12,7 +12,6 @@ import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
-import com.soywiz.korio.lang.assert
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -35,7 +34,6 @@ class UtilityTests {
         runBlockingTest {
             val spotifyWfhPlaylist = api!!.playlists.getPlaylist("spotify:playlist:37i9dQZF1DWTLSN7iG21yC")!!
             val totalTracks = spotifyWfhPlaylist.tracks.total
-            println(spotifyWfhPlaylist.tracks.total)
             val allTracks = spotifyWfhPlaylist.tracks.getAllItemsNotNull()
             assertEquals(totalTracks, allTracks.size)
         }
@@ -128,13 +126,13 @@ class UtilityTests {
                 }
             }.build()
 
-            api!!.token = api!!.token.copy(expiresIn = -1)
-            val currentToken = api!!.token
+            api.token = api.token.copy(expiresIn = -1)
+            val currentToken = api.token
 
-            api!!.browse.getAvailableGenreSeeds()
+            api.browse.getAvailableGenreSeeds()
 
             assertTrue(test)
-            assertTrue(api!!.token.accessToken != currentToken.accessToken)
+            assertTrue(api.token.accessToken != currentToken.accessToken)
         }
     }
 

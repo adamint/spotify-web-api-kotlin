@@ -42,10 +42,14 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SavedTrack> = get(
-        endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
-            .toString()
-    ).toNonNullablePagingObject(SavedTrack.serializer(), api = api, json = json)
+    ): PagingObject<SavedTrack> {
+        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+
+        return get(
+            endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
+                .toString()
+        ).toNonNullablePagingObject(SavedTrack.serializer(), api = api, json = json)
+    }
 
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
@@ -85,10 +89,14 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SavedAlbum> = get(
-        endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
-            .toString()
-    ).toNonNullablePagingObject(SavedAlbum.serializer(), api = api, json = json)
+    ): PagingObject<SavedAlbum> {
+        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+
+        return get(
+            endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
+                .toString()
+        ).toNonNullablePagingObject(SavedAlbum.serializer(), api = api, json = json)
+    }
 
     /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
@@ -151,6 +159,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun contains(type: LibraryType, vararg ids: String): List<Boolean> {
+        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
             "Too many ids (${ids.size}) provided, only 50 allowed",
             IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
@@ -221,6 +231,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun add(type: LibraryType, vararg ids: String) {
+        requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
+
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
             "Too many ids (${ids.size}) provided, only 50 allowed",
             IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
@@ -292,6 +304,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun remove(type: LibraryType, vararg ids: String) {
+        requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
+
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
             "Too many ids (${ids.size}) provided, only 50 allowed",
             IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
