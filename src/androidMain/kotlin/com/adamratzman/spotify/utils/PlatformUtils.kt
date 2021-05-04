@@ -5,9 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
 import java.net.URLEncoder
+import kotlinx.coroutines.runBlocking
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 

@@ -11,6 +11,7 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import kotlin.math.ceil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -18,7 +19,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.math.ceil
 
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()

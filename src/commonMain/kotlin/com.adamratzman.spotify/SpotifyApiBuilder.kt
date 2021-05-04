@@ -113,13 +113,12 @@ public fun getSpotifyPkceCodeChallenge(codeVerifier: String): String {
  */
 public fun spotifyImplicitGrantApi(
     clientId: String?,
-    token: Token,
+    token: Token
 ): SpotifyImplicitGrantApi = SpotifyImplicitGrantApi(
     clientId,
     token,
     SpotifyApiOptions()
 )
-
 
 /**
  * Instantiate a new [SpotifyImplicitGrantApi] using a Spotify [clientId], and [token] retrieved from the implicit
@@ -322,7 +321,6 @@ public fun spotifyClientApi(
         this.redirectUri = redirectUri
     }
 }
-
 
 /**
  * Instantiate a new [SpotifyClientApiBuilder] using a Spotify [clientId], [clientSecret], and [redirectUri], with the ability to configure
@@ -707,7 +705,7 @@ public class SpotifyApiBuilder(
     /**
     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
     */
-    public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction{ buildPublic() }
+    public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildPublic() }
 
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data

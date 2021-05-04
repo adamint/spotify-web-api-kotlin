@@ -36,7 +36,7 @@ class ClientEpisodeApiTest {
     fun testGetEpisodes() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
-            
+
             assertFailsWithSuspend<BadRequestException> { api!!.episodes.getEpisodes("hi", "dad") }
             assertFailsWithSuspend<BadRequestException> {
                 api!!.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").map { it?.name }

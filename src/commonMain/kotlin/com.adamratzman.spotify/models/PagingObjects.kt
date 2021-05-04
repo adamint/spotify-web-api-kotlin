@@ -9,6 +9,8 @@ import com.adamratzman.spotify.models.serialization.instantiateAllNeedsApiObject
 import com.adamratzman.spotify.models.serialization.instantiateLateinitsForPagingObject
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
+import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -22,8 +24,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -390,7 +390,6 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
      * Retrieve all [PagingObjectBase] associated with this rest action
      */
     public fun getAllPagingObjectsRestAction(): SpotifyRestAction<List<Z>> = SpotifyRestAction { getAllPagingObjects() }
-
 
     /**
      * Retrieve all [T] associated with this rest action

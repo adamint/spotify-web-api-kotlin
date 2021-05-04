@@ -1,8 +1,8 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
-import kotlinx.coroutines.runBlocking
 import java.net.URLEncoder
+import kotlinx.coroutines.runBlocking
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 

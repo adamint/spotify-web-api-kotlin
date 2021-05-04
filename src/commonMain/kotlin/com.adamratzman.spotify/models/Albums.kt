@@ -80,7 +80,6 @@ public data class SimpleAlbum(
      */
     public fun toFullAlbumRestAction(market: Market? = null): SpotifyRestAction<Album?> = SpotifyRestAction { toFullAlbum(market) }
 
-
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + this
 }
 

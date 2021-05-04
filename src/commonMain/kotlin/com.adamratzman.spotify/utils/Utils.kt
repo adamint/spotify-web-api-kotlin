@@ -2,9 +2,7 @@
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.models.ResultEnum
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.json.JsonElement

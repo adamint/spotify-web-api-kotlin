@@ -69,7 +69,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): SpotifyRestAction<PagingObject<SavedTrack>> = SpotifyRestAction {  getSavedTracks(limit, offset, market) }
+    ): SpotifyRestAction<PagingObject<SavedTrack>> = SpotifyRestAction { getSavedTracks(limit, offset, market) }
 
     /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
@@ -186,7 +186,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public fun containsRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<List<Boolean>> {
-        return SpotifyRestAction {  contains(type, *ids)}
+        return SpotifyRestAction { contains(type, *ids) }
     }
 
     /**
@@ -215,8 +215,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the id is invalid
      */
-    public fun addRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, id)}
-
+    public fun addRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, id) }
 
     /**
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
@@ -287,7 +286,6 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public fun removeRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { remove(type, ids = arrayOf(id)) }
-
 
     /**
      * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.

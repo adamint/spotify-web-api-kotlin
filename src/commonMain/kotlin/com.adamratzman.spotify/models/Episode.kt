@@ -182,7 +182,6 @@ public data class SimpleEpisode(
      */
     public fun toFullEpisodeRestAction(market: Market): SpotifyRestAction<Episode?> = SpotifyRestAction { toFullEpisode(market) }
 
-
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }
 

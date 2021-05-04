@@ -193,7 +193,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null,
         includeExternal: Boolean? = null
-    ): SpotifyRestAction<SpotifySearchResult> = SpotifyRestAction { search(query, *searchTypes,limit= limit,offset= offset, market=market, includeExternal = includeExternal) }
+    ): SpotifyRestAction<SpotifySearchResult> = SpotifyRestAction { search(query, *searchTypes, limit = limit, offset = offset, market = market, includeExternal = includeExternal) }
 
     /**
      * Get Spotify Catalog information about playlists that match the keyword string. See [SearchApi.search] for more information

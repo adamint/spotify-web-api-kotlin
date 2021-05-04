@@ -36,8 +36,8 @@ import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
-import kotlinx.serialization.json.Json
 import kotlin.jvm.JvmOverloads
+import kotlinx.serialization.json.Json
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -781,5 +781,3 @@ public fun refreshSpotifyClientTokenRestAction(
     usesPkceAuth: Boolean
 ): SpotifyRestAction<Token> =
     SpotifyRestAction { refreshSpotifyClientToken(clientId, clientSecret, refreshToken, usesPkceAuth) }
-
-
