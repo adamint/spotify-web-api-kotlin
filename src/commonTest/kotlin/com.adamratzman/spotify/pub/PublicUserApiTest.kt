@@ -10,7 +10,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PublicUserApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -18,15 +18,15 @@ class PublicUserApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testPublicUser() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertTrue(catch { api.users.getProfile("adamratzman1")!!.followers.total } != null)
-            assertNull(api.users.getProfile("non-existant-user"))
+            assertTrue(catch { api!!.users.getProfile("adamratzman1")!!.followers.total } != null)
+            assertNull(api!!.users.getProfile("non-existant-user"))
         }
     }
 }

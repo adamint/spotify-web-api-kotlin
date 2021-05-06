@@ -67,10 +67,14 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): PagingObject<Artist> = get(
-        endpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
-            .with("time_range", timeRange).toString()
-    ).toNonNullablePagingObject(Artist.serializer(), api = api, json = json)
+    ): PagingObject<Artist> {
+        requireScopes(SpotifyScope.USER_TOP_READ)
+
+        return get(
+            endpointBuilder("/me/top/artists").with("limit", limit).with("offset", offset)
+                .with("time_range", timeRange).toString()
+        ).toNonNullablePagingObject(Artist.serializer(), api = api, json = json)
+    }
 
     /**
      * Get the current user’s top artists based on calculated affinity.
@@ -124,10 +128,14 @@ public class ClientPersonalizationApi(api: GenericSpotifyApi) : SpotifyEndpoint(
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         timeRange: TimeRange? = null
-    ): PagingObject<Track> = get(
-        endpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
-            .with("time_range", timeRange).toString()
-    ).toNonNullablePagingObject(Track.serializer(), api = api, json = json)
+    ): PagingObject<Track> {
+        requireScopes(SpotifyScope.USER_TOP_READ)
+
+        return get(
+            endpointBuilder("/me/top/tracks").with("limit", limit).with("offset", offset)
+                .with("time_range", timeRange).toString()
+        ).toNonNullablePagingObject(Track.serializer(), api = api, json = json)
+    }
 
     /**
      * Get the current user’s top tracks based on calculated affinity.

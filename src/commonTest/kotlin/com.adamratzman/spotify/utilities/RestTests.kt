@@ -15,7 +15,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 @SpotifyExperimentalHttpApi
 class RestTests {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -23,14 +23,14 @@ class RestTests {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testRequestTimeoutFailure() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            val testApi = spotifyAppApi(null, null, SpotifyUserAuthorization(token = api.token)).build()
+            val testApi = spotifyAppApi(null, null, SpotifyUserAuthorization(token = api!!.token)).build()
             val prevTimeout = testApi.spotifyApiOptions.requestTimeoutMillis
 
             testApi.spotifyApiOptions.requestTimeoutMillis = 1

@@ -48,11 +48,15 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/)**
      */
-    public suspend fun getDevices(): List<Device> = get(endpointBuilder("/me/player/devices").toString()).toInnerObject(
-        ListSerializer(Device.serializer()),
-        "devices",
-        json
-    )
+    public suspend fun getDevices(): List<Device> {
+        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
+
+        return get(endpointBuilder("/me/player/devices").toString()).toInnerObject(
+            ListSerializer(Device.serializer()),
+            "devices",
+            json
+        )
+    }
 
     /**
      * Get information about a user’s available devices.
@@ -71,6 +75,8 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
      */
     public suspend fun getCurrentContext(): CurrentlyPlayingContext? {
+        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
+
         val obj = catch {
             get(endpointBuilder("/me/player").toString())
                 .toObject(CurrentlyPlayingContext.serializer(), api, json)
@@ -104,10 +110,14 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         before: String? = null,
         after: String? = null
-    ): CursorBasedPagingObject<PlayHistory> = get(
-        endpointBuilder("/me/player/recently-played")
-            .with("limit", limit).with("before", before).with("after", after).toString()
-    ).toCursorBasedPagingObject(PlayHistory::class, PlayHistory.serializer(), api = api, json = json)
+    ): CursorBasedPagingObject<PlayHistory> {
+        requireScopes(SpotifyScope.USER_READ_RECENTLY_PLAYED)
+
+        return get(
+            endpointBuilder("/me/player/recently-played")
+                .with("limit", limit).with("before", before).with("after", after).toString()
+        ).toCursorBasedPagingObject(PlayHistory::class, PlayHistory.serializer(), api = api, json = json)
+    }
 
     /**
      * Get tracks from the current user’s recently played tracks.
@@ -136,6 +146,8 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
      */
     public suspend fun getCurrentlyPlaying(): CurrentlyPlayingObject? {
+        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE, SpotifyScope.USER_READ_CURRENTLY_PLAYING, anyOf = true)
+
         return try {
             val obj =
                 catch {
@@ -167,8 +179,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param deviceId The device to play on
      */
-    public suspend fun pause(deviceId: String? = null): String =
-        put(endpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
+    public suspend fun pause(deviceId: String? = null): String {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
+        return put(endpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
+    }
 
     /**
      * Pause playback on the user’s account.
@@ -194,6 +209,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun seek(positionMs: Long, deviceId: String? = null) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
         require(positionMs >= 0) { "Position must not be negative!" }
         put(
             endpointBuilder("/me/player/seek").with("position_ms", positionMs).with(
@@ -229,6 +245,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
         put(
             endpointBuilder("/me/player/repeat").with("state", state.toString().toLowerCase()).with(
                 "device_id",
@@ -263,6 +280,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun setVolume(volumePercent: Int, deviceId: String? = null) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
         require(volumePercent in 0..100) { "Volume must be within 0 to 100 inclusive. Provided: $volumePercent" }
         put(
             endpointBuilder("/me/player/volume").with("volume_percent", volumePercent).with(
@@ -296,8 +314,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param deviceId The device to play on
      */
-    public suspend fun skipForward(deviceId: String? = null): String =
-        post(endpointBuilder("/me/player/next").with("device_id", deviceId).toString())
+    public suspend fun skipForward(deviceId: String? = null): String {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
+        return post(endpointBuilder("/me/player/next").with("device_id", deviceId).toString())
+    }
 
     /**
      * Skips to the next track in the user’s queue.
@@ -324,8 +345,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param deviceId The device to play on
      */
-    public suspend fun skipBehind(deviceId: String? = null): String =
-        post(endpointBuilder("/me/player/previous").with("device_id", deviceId).toString())
+    public suspend fun skipBehind(deviceId: String? = null): String {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
+        return post(endpointBuilder("/me/player/previous").with("device_id", deviceId).toString())
+    }
 
     /**
      * Skips to previous track in the user’s queue.
@@ -390,6 +414,8 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         episodeIdsToPlay: List<String>? = null,
         deviceId: String? = null
     ) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
         if (listOfNotNull(artistId, playlistId, albumId, showId).size > 1) {
             throw IllegalArgumentException("Only one of: artistId, playlistId, albumId, showId can be specified.")
         }
@@ -505,6 +531,8 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         playableUrisToPlay: List<PlayableUri>? = null,
         deviceId: String? = null
     ) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
         val url = endpointBuilder("/me/player/play").with("device_id", deviceId).toString()
         val body = jsonMap()
         when {
@@ -591,8 +619,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      * @param shuffle Whether to enable shuffling of playback
      */
-    public suspend fun toggleShuffle(shuffle: Boolean, deviceId: String? = null): String =
-        put(endpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).toString())
+    public suspend fun toggleShuffle(shuffle: Boolean, deviceId: String? = null): String {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
+        return put(endpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).toString())
+    }
 
     /**
      * Toggle shuffle on or off for user’s playback.
@@ -620,6 +651,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param play Whether to immediately start playback on the transferred device
      */
     public suspend fun transferPlayback(deviceId: String, play: Boolean? = null) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
         //    require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
         val json = jsonMap()
         play?.let { json += buildJsonObject { put("play", it) } }

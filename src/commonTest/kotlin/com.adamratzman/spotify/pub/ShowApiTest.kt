@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ShowApiTest {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     val market = Market.US
 
@@ -22,30 +22,30 @@ class ShowApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetShow() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertNull(api.shows.getShow("invalid-show", market = market))
-            assertEquals("Freakonomics Radio", api.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1", market = market)?.name)
+            assertNull(api!!.shows.getShow("invalid-show", market = market))
+            assertEquals("Freakonomics Radio", api!!.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1", market = market)?.name)
         }
     }
 
     @Test
     fun testGetShows() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShows("hi", "dad", market = market) }
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShows("hi", "dad", market = market) }
             assertFailsWithSuspend<BadRequestException> {
-                api.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j", market = market).map { it?.name }
+                api!!.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j", market = market).map { it?.name }
             }
             assertEquals(
                 listOf("Freakonomics Radio"),
-                api.shows.getShows("6z4NLXyHPga1UmSJsPK7G1", market = market).map { it?.name }
+                api!!.shows.getShows("6z4NLXyHPga1UmSJsPK7G1", market = market).map { it?.name }
             )
         }
     }
@@ -53,11 +53,11 @@ class ShowApiTest {
     @Test
     fun testGetShowEpisodes() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShowEpisodes("hi", market = market) }
-            val show = api.shows.getShow("6z4NLXyHPga1UmSJsPK7G1", market = market)!!
-            assertEquals(show.id, api.shows.getShowEpisodes(show.id, market = market).first()?.toFullEpisode(market)?.show?.id)
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShowEpisodes("hi", market = market) }
+            val show = api!!.shows.getShow("6z4NLXyHPga1UmSJsPK7G1", market = market)!!
+            assertEquals(show.id, api!!.shows.getShowEpisodes(show.id, market = market).first()?.toFullEpisode(market)?.show?.id)
         }
     }
 }

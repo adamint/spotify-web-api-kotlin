@@ -7,7 +7,7 @@ import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
 
 class ClientUserApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -15,14 +15,14 @@ class ClientUserApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testClientProfile() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            api.users.getClientProfile().displayName
+            api!!.users.getClientProfile().displayName
         }
     }
 }

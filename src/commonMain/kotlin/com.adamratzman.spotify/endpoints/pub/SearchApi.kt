@@ -193,7 +193,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null,
         includeExternal: Boolean? = null
-    ): SpotifyRestAction<SpotifySearchResult> = SpotifyRestAction { search(query, *searchTypes,limit= limit,offset= offset, market=market, includeExternal = includeExternal) }
+    ): SpotifyRestAction<SpotifySearchResult> = SpotifyRestAction { search(query, *searchTypes, limit = limit, offset = offset, market = market, includeExternal = includeExternal) }
 
     /**
      * Get Spotify Catalog information about playlists that match the keyword string. See [SearchApi.search] for more information
@@ -382,6 +382,100 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): SpotifyRestAction<PagingObject<Track>> = SpotifyRestAction { searchTrack(query, limit, offset, market) }
 
     /**
+     * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleShow] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    public suspend fun searchShow(
+        query: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market
+    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, SearchType.SHOW))
+        .toNonNullablePagingObject(SimpleShow.serializer(), "shows", api, json)
+
+    /**
+     * Get Spotify Catalog information about shows that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleShow] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    public fun searchShowRestAction(
+        query: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market
+    ): SpotifyRestAction<PagingObject<SimpleShow>> = SpotifyRestAction { searchShow(query, limit, offset, market) }
+
+    /**
+     * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleEpisode] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    public suspend fun searchEpisode(
+        query: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market
+    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, SearchType.EPISODE))
+        .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", api, json)
+
+    /**
+     * Get Spotify Catalog information about episodes that match the keyword string. See [SearchApi.search] for more information
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
+     *
+     * @param query Search query keywords and optional field filters and operators.
+     * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
+     * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     *
+     * @see [SearchApi.search]
+     *
+     * @return [PagingObject] of non-full [SimpleEpisode] objects ordered by likelihood of correct match
+     *
+     * @throws BadRequestException if filters are illegal or query is malformed
+     */
+    public fun searchEpisodeRestAction(
+        query: String,
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market
+    ): SpotifyRestAction<PagingObject<SimpleEpisode>> = SpotifyRestAction { searchEpisode(query, limit, offset, market) }
+
+    /**
      * Get Spotify Catalog information about any searchable type that match the keyword string. See [SearchApi.search] for more information
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
@@ -399,7 +493,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
+        market: Market
     ): SpotifySearchResult = search(query, *SearchType.values(), limit = limit, offset = offset, market = market)
 
     /**
@@ -420,7 +514,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         query: String,
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
+        market: Market
     ): SpotifyRestAction<SpotifySearchResult> = SpotifyRestAction { searchAllTypes(query, limit, offset, market) }
 
     protected fun build(

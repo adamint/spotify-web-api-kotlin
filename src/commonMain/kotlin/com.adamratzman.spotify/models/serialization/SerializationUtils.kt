@@ -218,5 +218,5 @@ internal fun <T : Any, Z : PagingObjectBase<T, Z>> PagingObjectBase<T, Z>.instan
 ) {
     getMembersThatNeedApiInstantiation().instantiateAllNeedsApiObjects(api)
     this.api = api
-    this.itemClazz = tClazz
+    this.itemClass = tClazz
 }

@@ -5,22 +5,22 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
    // id("lt.petuska.npm.publish") version "1.1.2"
-    kotlin("multiplatform") version "1.4.31"
+    kotlin("multiplatform") version "1.5.0"
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.22.0"
+    id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.4.30"
-    id("com.diffplug.spotless") version "5.9.0"
+    kotlin("plugin.serialization") version "1.5.0"
+    id("com.diffplug.spotless") version "5.12.4"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "1.4.20"
+    id("org.jetbrains.dokka") version "1.4.30"
     id("kotlin-android-extensions")
 }
 
 repositories {
-    jcenter()
     google()
     maven("https://kotlin.bintray.com/kotlinx")
+    mavenCentral()
 }
 
 buildscript {
@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0")
     }
 }
 
@@ -211,19 +211,20 @@ kotlin {
 
     targets {
         sourceSets {
-            val serializationVersion = "1.1.0"
-            val ktorVersion = "1.5.1"
-            val korlibsVersion = "2.0.6"
+            val serializationVersion = "1.2.0"
+            val ktorVersion = "1.5.4"
+            val korlibsVersion = "2.0.7"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.3"
             val androidCryptoVersion = "1.1.0-alpha03"
-            val coroutineMTVersion = "1.4.2-native-mt"
+            val coroutineMTVersion = "1.4.3-native-mt"
+            val kotlinxDatetimeVersion = "0.2.0"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
 

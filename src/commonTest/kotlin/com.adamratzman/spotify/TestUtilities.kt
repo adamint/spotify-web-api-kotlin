@@ -2,14 +2,13 @@
 package com.adamratzman.spotify
 
 abstract class AbstractTest<T : GenericSpotifyApi> {
-    lateinit var api: T
+    var api: T? = null
 
     suspend fun build(): Boolean {
         return try {
             @Suppress("UNCHECKED_CAST")
             (buildSpotifyApi() as? T)?.let { api = it }
-            println(api as? T)
-            ::api.isInitialized
+            api != null
         } catch (cce: ClassCastException) {
             false
         }

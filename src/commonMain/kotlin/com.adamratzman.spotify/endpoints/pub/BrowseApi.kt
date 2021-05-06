@@ -23,10 +23,10 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.formatDate
+import kotlin.reflect.KClass
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlin.reflect.KClass
 
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.

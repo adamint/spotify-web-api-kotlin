@@ -18,7 +18,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class JsonTests {
-    lateinit var api: GenericSpotifyApi
+    var api: GenericSpotifyApi? = null
 
     init {
         runBlockingTest {
@@ -26,17 +26,17 @@ class JsonTests {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testArtistSerialization() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(
                 Json.encodeToString(
                     Artist.serializer().nullable,
-                    api.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN")
+                    api!!.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN")
                 ).isNotEmpty()
             )
         }
@@ -45,12 +45,12 @@ class JsonTests {
     @Test
     fun testTrackSerialization() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(
                 Json.encodeToString(
                     Track.serializer().nullable,
-                    api.tracks.getTrack("spotify:track:6kcHg7XL6SKyPNd78daRBL")
+                    api!!.tracks.getTrack("spotify:track:6kcHg7XL6SKyPNd78daRBL")
                 ).isNotEmpty()
             )
         }
@@ -59,12 +59,12 @@ class JsonTests {
     @Test
     fun testAlbumSerialization() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(
                 Json.encodeToString(
                     Album.serializer().nullable,
-                    api.albums.getAlbum("spotify:album:6ggQNps98xaXMY0OZWevEH")
+                    api!!.albums.getAlbum("spotify:album:6ggQNps98xaXMY0OZWevEH")
                 ).isNotEmpty()
             )
         }
@@ -73,10 +73,10 @@ class JsonTests {
     @Test
     fun testArtistDeserialization() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             val json =
-                """{"external_urls":{"spotify":"https://open.spotify.com/artist/5WUlDfRSoLAfcVSX1WnrxN"},"href":"https://api.spotify.com/v1/artists/5WUlDfRSoLAfcVSX1WnrxN","id":"5WUlDfRSoLAfcVSX1WnrxN","uri":"spotify:artist:5WUlDfRSoLAfcVSX1WnrxN","followers":{"href":null,"total":14675484},"genres":["australian dance","australian pop","dance pop","pop"],"images":[{"height":1333,"url":"https://i.scdn.co/image/652b6bb0dfaf8aa444f4414ee018699260e74306","width":1000},{"height":853,"url":"https://i.scdn.co/image/a82822ab211cbe28a0a1dbcb16902a1a8a2ea791","width":640},{"height":267,"url":"https://i.scdn.co/image/dd3e336d456172bbda56b543c5389e1490903a30","width":200},{"height":85,"url":"https://i.scdn.co/image/95a2aa98384b31336b8d56f8b470c45b12dcd550","width":64}],"name":"Sia","popularity":88,"type":"artist"}"""
+                """{"external_urls":{"spotify":"https://open.spotify.com/artist/5WUlDfRSoLAfcVSX1WnrxN"},"href":"https://api!!.spotify.com/v1/artists/5WUlDfRSoLAfcVSX1WnrxN","id":"5WUlDfRSoLAfcVSX1WnrxN","uri":"spotify:artist:5WUlDfRSoLAfcVSX1WnrxN","followers":{"href":null,"total":14675484},"genres":["australian dance","australian pop","dance pop","pop"],"images":[{"height":1333,"url":"https://i.scdn.co/image/652b6bb0dfaf8aa444f4414ee018699260e74306","width":1000},{"height":853,"url":"https://i.scdn.co/image/a82822ab211cbe28a0a1dbcb16902a1a8a2ea791","width":640},{"height":267,"url":"https://i.scdn.co/image/dd3e336d456172bbda56b543c5389e1490903a30","width":200},{"height":85,"url":"https://i.scdn.co/image/95a2aa98384b31336b8d56f8b470c45b12dcd550","width":64}],"name":"Sia","popularity":88,"type":"artist"}"""
             val artist = Json.decodeFromString<Artist>(json)
             assertEquals(ArtistUri("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN"), artist.uri)
             assertEquals("5WUlDfRSoLAfcVSX1WnrxN", artist.id)

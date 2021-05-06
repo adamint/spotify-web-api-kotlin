@@ -9,7 +9,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class ClientPersonalizationApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -17,15 +17,15 @@ class ClientPersonalizationApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetTopArtists() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(
-                api.personalization
+                api!!.personalization
                     .getTopArtists(5, timeRange = ClientPersonalizationApi.TimeRange.MEDIUM_TERM)
                     .items
                     .isNotEmpty()
@@ -36,9 +36,9 @@ class ClientPersonalizationApiTest {
     @Test
     fun testGetTopTracks() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertTrue(api.personalization.getTopTracks(5).items.isNotEmpty())
+            assertTrue(api!!.personalization.getTopTracks(5).items.isNotEmpty())
         }
     }
 }

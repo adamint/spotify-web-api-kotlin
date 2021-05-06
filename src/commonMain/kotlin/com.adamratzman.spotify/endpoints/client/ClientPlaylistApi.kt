@@ -66,6 +66,10 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         collaborative: Boolean? = null,
         user: String? = null
     ): Playlist {
+        if (public == null || public) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC)
+        else if (collaborative == null || !collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
+        else if (collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
+
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         val body = jsonMap()
         body += buildJsonObject { put("name", name) }
@@ -147,7 +151,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         playlist: String,
         track: String,
         position: Int? = null
-    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTrackToClientPlaylistRestAction(playlist, track, position) }
+    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTrackToClientPlaylist(playlist, track, position) }
 
     /**
      * Add one or more tracks to a user’s playlist.
@@ -155,7 +159,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
+     * **[Api Reference] (https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
      * @param tracks Spotify track ids. Maximum 100
@@ -166,6 +170,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
      */
     public suspend fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null) {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
         checkBulkRequesting(100, tracks.size)
 
         bulkRequest(100, tracks.toList()) { chunk ->
@@ -229,6 +234,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         collaborative: Boolean? = null,
         description: String? = null
     ) {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
         val body = jsonMap()
         if (name != null) body += buildJsonObject { put("name", name) }
         if (public != null) body += buildJsonObject { put("public", public) }
@@ -397,6 +404,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         insertionPoint: Int,
         snapshotId: String? = null
     ): PlaylistSnapshot {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
         val body = jsonMap()
         body += buildJsonObject { put("range_start", reorderRangeStart) }
         body += buildJsonObject { put("insert_before", insertionPoint) }
@@ -462,6 +471,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @throws BadRequestException if playlist is not found or illegal tracks are provided
      */
     public suspend fun setClientPlaylistTracks(playlist: String, vararg tracks: String) {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
         val body = jsonMap()
         body += buildJsonObject {
             put(
@@ -583,6 +594,9 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         imageData: String? = null,
         imageUrl: String? = null
     ) {
+        requireScopes(SpotifyScope.UGC_IMAGE_UPLOAD)
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+
         val data = imageData ?: when {
             image != null -> convertBufferedImageToBase64JpegString(image)
             imageFile != null -> convertBufferedImageToBase64JpegString(convertFileToBufferedImage(imageFile))
@@ -786,6 +800,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         tracks: Array<Pair<String, SpotifyTrackPositions?>>,
         snapshotId: String?
     ): PlaylistSnapshot {
+        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
         checkBulkRequesting(100, tracks.size)
         if (snapshotId != null && tracks.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 

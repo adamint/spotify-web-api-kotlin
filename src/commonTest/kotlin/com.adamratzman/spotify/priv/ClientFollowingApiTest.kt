@@ -13,7 +13,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ClientFollowingApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -21,7 +21,7 @@ class ClientFollowingApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testFollowUnfollowArtists() {
@@ -30,87 +30,87 @@ class ClientFollowingApiTest {
                 return@runBlockingTest
             }
             val testArtistId = "7eCmccnRwPmRnWPw61x6jM"
-            if (api.following.isFollowingArtist(testArtistId)) {
-                api.following.unfollowArtist(testArtistId)
+            if (api!!.following.isFollowingArtist(testArtistId)) {
+                api!!.following.unfollowArtist(testArtistId)
             }
 
-            assertTrue(!api.following.isFollowingArtist(testArtistId))
+            assertTrue(!api!!.following.isFollowingArtist(testArtistId))
 
-            val beforeFollowing = api.following.getFollowedArtists().getAllItemsNotNull()
+            val beforeFollowing = api!!.following.getFollowedArtists().getAllItemsNotNull()
 
             assertNull(beforeFollowing.find { it.id == testArtistId })
 
-            api.following.followArtist(testArtistId)
-            api.following.followArtist(testArtistId)
+            api!!.following.followArtist(testArtistId)
+            api!!.following.followArtist(testArtistId)
 
-            assertTrue(api.following.isFollowingArtist(testArtistId))
+            assertTrue(api!!.following.isFollowingArtist(testArtistId))
 
-            assertEquals(1, api.following.getFollowedArtists().getAllItems().size - beforeFollowing.size)
+            assertEquals(1, api!!.following.getFollowedArtists().getAllItems().size - beforeFollowing.size)
 
-            api.following.unfollowArtist(testArtistId)
-            api.following.unfollowArtist(testArtistId)
+            api!!.following.unfollowArtist(testArtistId)
+            api!!.following.unfollowArtist(testArtistId)
 
-            assertEquals(beforeFollowing.size, api.following.getFollowedArtists().getAllItems().size)
+            assertEquals(beforeFollowing.size, api!!.following.getFollowedArtists().getAllItems().size)
 
-            assertTrue(!api.following.isFollowingArtist(testArtistId))
+            assertTrue(!api!!.following.isFollowingArtist(testArtistId))
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.isFollowingArtist("no u") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.followArtist("no u") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.isFollowingArtist("no u") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.followArtist("no u") }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.followArtists(
+                api!!.following.followArtists(
                     testArtistId,
                     "no u"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.unfollowArtist("no u") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.unfollowArtist("no u") }
         }
     }
 
     @Test
     fun testFollowUnfollowUsers() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             val testUserId = "adamratzman"
 
-            if (api.following.isFollowingUser(testUserId)) {
-                api.following.unfollowUser(testUserId)
+            if (api!!.following.isFollowingUser(testUserId)) {
+                api!!.following.unfollowUser(testUserId)
             }
 
-            api.following.followUser(testUserId)
+            api!!.following.followUser(testUserId)
 
-            assertTrue(api.following.isFollowingUser(testUserId))
+            assertTrue(api!!.following.isFollowingUser(testUserId))
 
-            api.following.unfollowUser(testUserId)
+            api!!.following.unfollowUser(testUserId)
 
-            assertFalse(api.following.isFollowingUser(testUserId))
+            assertFalse(api!!.following.isFollowingUser(testUserId))
         }
     }
 
     @Test
     fun testFollowUnfollowPlaylists() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
             val playlistId = "37i9dQZF1DXcBWIGoYBM5M"
-            if (api.following.isFollowingPlaylist(playlistId)) {
-                api.following.unfollowPlaylist(playlistId)
+            if (api!!.following.isFollowingPlaylist(playlistId)) {
+                api!!.following.unfollowPlaylist(playlistId)
             }
 
-            assertFalse(api.following.isFollowingPlaylist(playlistId))
+            assertFalse(api!!.following.isFollowingPlaylist(playlistId))
 
-            api.following.followPlaylist(playlistId)
+            api!!.following.followPlaylist(playlistId)
 
-            assertTrue(api.following.isFollowingPlaylist(playlistId))
+            assertTrue(api!!.following.isFollowingPlaylist(playlistId))
 
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                api.following.isFollowingPlaylist(
+                api!!.following.isFollowingPlaylist(
                     " no u",
                     "no u"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.unfollowPlaylist("no-u") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api.following.followPlaylist("nou") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.unfollowPlaylist("no-u") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.followPlaylist("nou") }
         }
     }
 }

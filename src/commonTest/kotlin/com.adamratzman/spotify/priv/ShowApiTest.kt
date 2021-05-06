@@ -13,7 +13,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ShowApiTest {
-    lateinit var api: SpotifyClientApi
+    var api: SpotifyClientApi? = null
 
     init {
         runBlockingTest {
@@ -21,43 +21,43 @@ class ShowApiTest {
         }
     }
 
-    fun testPrereq() = ::api.isInitialized
+    fun testPrereq() = api != null
 
     @Test
     fun testGetShow() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            val show = api.shows.getShow("1iohmBNlRooIVtukKeavRa")!!
+            val show = api!!.shows.getShow("1iohmBNlRooIVtukKeavRa")!!
             assertEquals("Love Letters", show.name)
             assertTrue(show.episodes.isNotEmpty())
 
-            assertNull(api.shows.getShow("nonexistant show"))
+            assertNull(api!!.shows.getShow("nonexistant show"))
         }
     }
 
     @Test
     fun testGetShows() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShows("hi", "dad", market = Market.US) }
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShows("hi", "dad", market = Market.US) }
             assertFailsWithSuspend<BadRequestException> {
-                api.shows.getShows("1iohmBNlRooIVtukKeavRa", "j").map { it?.name }
+                api!!.shows.getShows("1iohmBNlRooIVtukKeavRa", "j").map { it?.name }
             }
             assertEquals(
                 listOf("Love Letters", "Freakonomics Radio"),
-                api.shows.getShows("1iohmBNlRooIVtukKeavRa", "6z4NLXyHPga1UmSJsPK7G1").map { it?.name })
+                api!!.shows.getShows("1iohmBNlRooIVtukKeavRa", "6z4NLXyHPga1UmSJsPK7G1").map { it?.name })
         }
     }
 
     @Test
     fun testGetShowEpisodes() {
         runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest
+            if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertTrue(api.shows.getShowEpisodes("1iohmBNlRooIVtukKeavRa").items.isNotEmpty())
-            assertFailsWithSuspend<BadRequestException> { api.shows.getShowEpisodes("adskjfjkasdf") }
+            assertTrue(api!!.shows.getShowEpisodes("1iohmBNlRooIVtukKeavRa").items.isNotEmpty())
+            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShowEpisodes("adskjfjkasdf") }
         }
     }
 }

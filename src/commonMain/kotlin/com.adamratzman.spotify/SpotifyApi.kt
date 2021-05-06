@@ -11,7 +11,6 @@ import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
 import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
 import com.adamratzman.spotify.endpoints.client.ClientPlaylistApi
 import com.adamratzman.spotify.endpoints.client.ClientProfileApi
-import com.adamratzman.spotify.endpoints.client.ClientSearchApi
 import com.adamratzman.spotify.endpoints.client.ClientShowApi
 import com.adamratzman.spotify.endpoints.pub.AlbumApi
 import com.adamratzman.spotify.endpoints.pub.ArtistApi
@@ -37,8 +36,8 @@ import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
-import kotlinx.serialization.json.Json
 import kotlin.jvm.JvmOverloads
+import kotlinx.serialization.json.Json
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -491,8 +490,7 @@ public open class SpotifyClientApi(
     override val browse: BrowseApi = BrowseApi(this)
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
-
-    override val search: ClientSearchApi = ClientSearchApi(this)
+    override val search: SearchApi = SearchApi(this)
 
     override val episodes: ClientEpisodeApi = ClientEpisodeApi(this)
     override val shows: ClientShowApi = ClientShowApi(this)
@@ -783,5 +781,3 @@ public fun refreshSpotifyClientTokenRestAction(
     usesPkceAuth: Boolean
 ): SpotifyRestAction<Token> =
     SpotifyRestAction { refreshSpotifyClientToken(clientId, clientSecret, refreshToken, usesPkceAuth) }
-
-

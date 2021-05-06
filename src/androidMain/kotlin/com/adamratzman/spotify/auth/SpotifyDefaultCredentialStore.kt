@@ -194,8 +194,7 @@ public class SpotifyDefaultCredentialStore(
     public fun canApiBeRefreshed(): Boolean {
         return spotifyRefreshToken != null
     }
-    
-    
+
     /**
      * Clear the [SharedPreferences] instance corresponding to the Spotify credentials.
      */

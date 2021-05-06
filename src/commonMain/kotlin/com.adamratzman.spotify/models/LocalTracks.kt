@@ -99,5 +99,4 @@ public data class LocalTrack(
         offset: Int? = null,
         market: Market? = null
     ): SpotifyRestAction<PagingObject<Track>> = SpotifyRestAction { searchForSpotifyTrack(limit, offset, market) }
-
 }
