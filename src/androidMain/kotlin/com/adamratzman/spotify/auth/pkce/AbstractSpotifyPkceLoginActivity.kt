@@ -86,10 +86,15 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.spotify_pkce_auth_layout)
 
-        authorizationIntent = Intent(Intent.ACTION_VIEW, getAuthorizationUrl())
         credentialStore = application.getDefaultCredentialStore(clientId, redirectUri)
 
-        startActivity(authorizationIntent)
+        // This activity is recreated on every launch, therefore we need to make sure not to
+        // launch the activity when a Spotify intent result has been received
+        if (intent?.isSpotifyPkceAuthIntent(redirectUri) == false) {
+            authorizationIntent = Intent(Intent.ACTION_VIEW, getAuthorizationUrl())
+            startActivity(authorizationIntent)
+            finish()
+        }
     }
 
     /**
