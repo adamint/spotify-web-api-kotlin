@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
-   // id("lt.petuska.npm.publish") version "1.1.2"
+    id("lt.petuska.npm.publish") version "1.1.2"
     kotlin("multiplatform") version "1.5.0"
     `maven-publish`
     signing
@@ -26,6 +26,7 @@ repositories {
 buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.4")
@@ -119,10 +120,11 @@ kotlin {
         mavenPublication {
             setupPom(artifactId)
         }
+
     }
 
-    js(if (project.hasProperty("irOnly")) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
-        //binaries.library()
+    val irOnlyJs = project.hasProperty("irOnly")
+    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
 
         mavenPublication {
             setupPom(artifactId)
@@ -149,6 +151,8 @@ kotlin {
                 }
             }
         }
+
+        if (irOnlyJs) binaries.library()
     }
 
     // val hostOs = System.getProperty("os.name")
@@ -192,6 +196,7 @@ kotlin {
             setupPom(artifactId)
         }
     }
+
     // disabled due to lack of coroutine/serialization library support (yet)
     /*watchos {
      binaries {
@@ -312,7 +317,7 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
-                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
                         version {
                             strictly(coroutineMTVersion)
                         }
@@ -353,7 +358,7 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
-                    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
                         version {
                             strictly(coroutineMTVersion)
                         }
@@ -382,13 +387,13 @@ kotlin {
                 dependsOn(nativeDarwinTest)
             }
 
-                /* val watchosMain by getting {
-                dependsOn(nativeDarwinMain)
-            }
+            /* val watchosMain by getting {
+            dependsOn(nativeDarwinMain)
+        }
 
-            val watchosTest by getting {
-                dependsOn(nativeDarwinTest)
-            }*/
+        val watchosTest by getting {
+            dependsOn(nativeDarwinTest)
+        }*/
 
             all {
                 languageSettings.useExperimentalAnnotation("kotlin.Experimental")
@@ -407,6 +412,16 @@ signing {
         && project.hasProperty("signing.secretKeyRingFile")
     ) {
         sign(publishing.publications)
+    }
+}
+
+npmPublishing {
+    repositories {
+        repository("npmjs") {
+            registry = uri("https://registry.npmjs.org")
+            (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
+            println("auth token: $authToken")
+        }
     }
 }
 

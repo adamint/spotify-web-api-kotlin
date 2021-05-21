@@ -40,7 +40,7 @@ import kotlinx.serialization.json.put
  */
 public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
-     * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+     * Create a playlist for a Spotify user. (The playlist will be empty until you add playables.)
      *
      * Creating a public playlist for a user requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * creating a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
@@ -57,7 +57,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * collaborative playlist you must also set public to false . To create collaborative playlists you must have
      * granted [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] and [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scopes.
      *
-     * @return The created [Playlist] object with no tracks
+     * @return The created [Playlist] object with no playables
      */
     public suspend fun createClientPlaylist(
         name: String,
@@ -84,7 +84,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     }
 
     /**
-     * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+     * Create a playlist for a Spotify user. (The playlist will be empty until you add playables.)
      *
      * Creating a public playlist for a user requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
      * creating a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
@@ -101,7 +101,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * collaborative playlist you must also set public to false . To create collaborative playlists you must have
      * granted [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] and [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scopes.
      *
-     * @return The created [Playlist] object with no tracks
+     * @return The created [Playlist] object with no playables
      */
     public fun createClientPlaylistRestAction(
         name: String,
@@ -113,72 +113,72 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         SpotifyRestAction { createClientPlaylist(name, description, public, collaborative, user) }
 
     /**
-     * Add a track to a user’s playlist.
+     * Add a [Playable] to a user’s playlist.
      *
-     * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param track Track id or uri
-     * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
-     * first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
-     * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
+     * @param playable Playable uri
+     * @param position The position to insert the playables, a zero-based index. For example, to insert the playables in the
+     * first position: position=0; to insert the playables in the third position: position=2. If omitted, the playables will
+     * be appended to the playlist. Playables are added in the order they are listed in the query string or request body.
      *
-     * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
+     * @throws BadRequestException if any invalid playable ids is provided or the playlist is not found
      */
-    public suspend fun addTrackToClientPlaylist(playlist: String, track: String, position: Int? = null): Unit =
-        addTracksToClientPlaylist(playlist, track, position = position)
+    public suspend fun addPlayableToClientPlaylist(playlist: String, playable: PlayableUri, position: Int? = null): Unit =
+        addPlayablesToClientPlaylist(playlist, playable, position = position)
 
     /**
-     * Add a track to a user’s playlist.
+     * Add a [Playable] to a user’s playlist.
      *
-     * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param track Track id or uri
-     * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
-     * first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
-     * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
+     * @param playable Playable uri
+     * @param position The position to insert the playables, a zero-based index. For example, to insert the playables in the
+     * first position: position=0; to insert the playables in the third position: position=2. If omitted, the playables will
+     * be appended to the playlist. Playables are added in the order they are listed in the query string or request body.
      *
-     * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
+     * @throws BadRequestException if any invalid playable ids is provided or the playlist is not found
      */
-    public fun addTrackToClientPlaylistRestAction(
+    public fun addPlayableToClientPlaylistRestAction(
         playlist: String,
-        track: String,
+        playable: PlayableUri,
         position: Int? = null
-    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTrackToClientPlaylist(playlist, track, position) }
+    ): SpotifyRestAction<Unit> = SpotifyRestAction { addPlayableToClientPlaylist(playlist, playable, position) }
 
     /**
-     * Add one or more tracks to a user’s playlist.
+     * Add a [Playable] to a user’s playlist.
      *
-     * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
-     * **[Api Reference] (https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks Spotify track ids. Maximum 100
-     * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
-     * first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
-     * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
+     * @param playables Playable uris. Max 100 without bulk requesting enabled
+     * @param position The position to insert the playables, a zero-based index. For example, to insert the playables in the
+     * first position: position=0; to insert the playables in the third position: position=2. If omitted, the playables will
+     * be appended to the playlist. Playables are added in the order they are listed in the query string or request body.
      *
-     * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
+     * @throws BadRequestException if any invalid playable ids is provided or the playlist is not found
      */
-    public suspend fun addTracksToClientPlaylist(playlist: String, vararg tracks: String, position: Int? = null) {
+    public suspend fun addPlayablesToClientPlaylist(playlist: String, vararg playables: PlayableUri, position: Int? = null) {
         requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
-        checkBulkRequesting(100, tracks.size)
+        checkBulkRequesting(100, playables.size)
 
-        bulkRequest(100, tracks.toList()) { chunk ->
+        bulkRequest(100, playables.toList()) { chunk ->
             val body = jsonMap()
             body += buildJsonObject {
                 put(
                     "uris",
-                    JsonArray(chunk.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))
+                    JsonArray(chunk.map { it.uri }.map(::JsonPrimitive))
                 )
             }
             if (position != null) body += buildJsonObject { put("position", position) }
@@ -190,26 +190,26 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     }
 
     /**
-     * Add one or more tracks to a user’s playlist.
+     * Add a [Playable] to a user’s playlist.
      *
-     * Adding tracks to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding tracks to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks Spotify track ids. Maximum 100
-     * @param position The position to insert the tracks, a zero-based index. For example, to insert the tracks in the
-     * first position: position=0; to insert the tracks in the third position: position=2. If omitted, the tracks will
-     * be appended to the playlist. Tracks are added in the order they are listed in the query string or request body.
+     * @param playables Playable uris. Max 100 without bulk requesting enabled
+     * @param position The position to insert the playables, a zero-based index. For example, to insert the playables in the
+     * first position: position=0; to insert the playables in the third position: position=2. If omitted, the playables will
+     * be appended to the playlist. Playables are added in the order they are listed in the query string or request body.
      *
-     * @throws BadRequestException if any invalid track ids is provided or the playlist is not found
+     * @throws BadRequestException if any invalid playable ids is provided or the playlist is not found
      */
-    public fun addTracksToClientPlaylistRestAction(
+    public fun addPlayablesToClientPlaylistRestAction(
         playlist: String,
-        vararg tracks: String,
+        vararg playables: PlayableUri,
         position: Int? = null
-    ): SpotifyRestAction<Unit> = SpotifyRestAction { addTracksToClientPlaylist(playlist, *tracks, position = position) }
+    ): SpotifyRestAction<Unit> = SpotifyRestAction { addPlayablesToClientPlaylist(playlist, *playables, position = position) }
 
     /**
      * Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
@@ -282,7 +282,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
-     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param offset The index of the first playable to return. Default: 0. Use with limit to get the next set of playables
      *
      * @throws BadRequestException if the filters provided are illegal
      */
@@ -308,7 +308,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
-     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param offset The index of the first playable to return. Default: 0. Use with limit to get the next set of playables
      *
      * @throws BadRequestException if the filters provided are illegal
      */
@@ -376,28 +376,28 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         SpotifyRestAction { deleteClientPlaylist(playlist) }
 
     /**
-     * Reorder a track or a group of tracks in a playlist.
+     * Reorder a playable or a group of playables in a playlist.
      *
-     * When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
+     * When reordering playables, the timestamp indicating when they were added and the user who added them will be kept
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
-     * when the tracks are reordered.
+     * when the playables are reordered.
      *
-     * Reordering tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * reordering tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Reordering playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * reordering playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param reorderRangeStart The position of the first track to be reordered.
-     * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
-     * The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
-     * Example: To move the tracks at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
-     * @param insertionPoint The position where the tracks should be inserted. To reorder the tracks to the end of the playlist, simply set insert_before to the position after the last track.
+     * @param reorderRangeStart The position of the first playable to be reordered.
+     * @param reorderRangeLength The amount of playables to be reordered. Defaults to 1 if not set.
+     * The range of playables to be reordered begins from the range_start position, and includes the range_length subsequent playables.
+     * Example: To move the playables at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
+     * @param insertionPoint The position where the playables should be inserted. To reorder the playables to the end of the playlist, simply set insert_before to the position after the last track.
      * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    public suspend fun reorderClientPlaylistTracks(
+    public suspend fun reorderClientPlaylistPlayables(
         playlist: String,
         reorderRangeStart: Int,
         reorderRangeLength: Int? = null,
@@ -419,35 +419,35 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     }
 
     /**
-     * Reorder a track or a group of tracks in a playlist.
+     * Reorder a playable or a group of playables in a playlist.
      *
-     * When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept
+     * When reordering playables, the timestamp indicating when they were added and the user who added them will be kept
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
-     * when the tracks are reordered.
+     * when the playables are reordered.
      *
-     * Reordering tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * reordering tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Reordering playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * reordering playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param reorderRangeStart The position of the first track to be reordered.
-     * @param reorderRangeLength The amount of tracks to be reordered. Defaults to 1 if not set.
-     * The range of tracks to be reordered begins from the range_start position, and includes the range_length subsequent tracks.
-     * Example: To move the tracks at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
-     * @param insertionPoint The position where the tracks should be inserted. To reorder the tracks to the end of the playlist, simply set insert_before to the position after the last track.
+     * @param reorderRangeStart The position of the first playable to be reordered.
+     * @param reorderRangeLength The amount of playables to be reordered. Defaults to 1 if not set.
+     * The range of playables to be reordered begins from the range_start position, and includes the range_length subsequent playables.
+     * Example: To move the playables at index 9-10 to the start of the playlist, range_start is set to 9, and range_length is set to 2.
+     * @param insertionPoint The position where the playables should be inserted. To reorder the playables to the end of the playlist, simply set insert_before to the position after the last track.
      * @param snapshotId the playlist snapshot against which to apply this action. **recommended to have**
      *
      * @throws BadRequestException if the playlist is not found or illegal filters are applied
      */
-    public fun reorderClientPlaylistTracksRestAction(
+    public fun reorderClientPlaylistPlayablesRestAction(
         playlist: String,
         reorderRangeStart: Int,
         reorderRangeLength: Int? = null,
         insertionPoint: Int,
         snapshotId: String? = null
     ): SpotifyRestAction<PlaylistSnapshot> = SpotifyRestAction {
-        reorderClientPlaylistTracks(
+        reorderClientPlaylistPlayables(
             playlist,
             reorderRangeStart,
             reorderRangeLength,
@@ -457,27 +457,27 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     }
 
     /**
-     * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
-     * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
+     * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
+     * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks The Spotify track ids. Maximum **100**.
+     * @param playables The Spotify playable uris. Maximum **100** without bulk requesting enabled.
      *
-     * @throws BadRequestException if playlist is not found or illegal tracks are provided
+     * @throws BadRequestException if playlist is not found or illegal playables are provided
      */
-    public suspend fun setClientPlaylistTracks(playlist: String, vararg tracks: String) {
+    public suspend fun setClientPlaylistPlayables(playlist: String, vararg playables: PlayableUri) {
         requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
 
         val body = jsonMap()
         body += buildJsonObject {
             put(
                 "uris",
-                JsonArray(tracks.map { PlayableUri(PlayableUri(it).id.encodeUrl()).uri }.map(::JsonPrimitive))
+                JsonArray(playables.map { it.uri }.map(::JsonPrimitive))
             )
         }
         put(
@@ -487,80 +487,80 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     }
 
     /**
-     * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
-     * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
+     * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
+     * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks The Spotify track ids. Maximum **100**.
+     * @param playables The Spotify playable uris. Maximum **100** without bulk requesting enabled.
      *
-     * @throws BadRequestException if playlist is not found or illegal tracks are provided
+     * @throws BadRequestException if playlist is not found or illegal playables are provided
      */
-    public fun setClientPlaylistTracksRestAction(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> =
+    public fun setClientPlaylistPlayablesRestAction(playlist: String, vararg playables: PlayableUri): SpotifyRestAction<Unit> =
         SpotifyRestAction {
-            setClientPlaylistTracks(playlist, *tracks)
+            setClientPlaylistPlayables(playlist, *playables)
         }
 
     /**
-     * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
-     * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
+     * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
+     * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks The Spotify track ids. Maximum **100**.
+     * @param playables The Spotify playable uris. Maximum **100** without bulk requesting enabled.
      *
-     * @throws BadRequestException if playlist is not found or illegal tracks are provided
+     * @throws BadRequestException if playlist is not found or illegal playables are provided
      */
-    public suspend fun replaceClientPlaylistTracks(playlist: String, vararg tracks: String): Unit =
-        setClientPlaylistTracks(playlist, *tracks)
+    public suspend fun replaceClientPlaylistPlayables(playlist: String, vararg playables: PlayableUri): Unit =
+        setClientPlaylistPlayables(playlist, *playables)
 
     /**
-     * Replace all the tracks in a playlist, overwriting its existing tracks. This powerful request can be useful
-     * for replacing tracks, re-ordering existing tracks, or clearing the playlist.
+     * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
+     * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting tracks in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting tracks in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist The id or uri for the playlist.
-     * @param tracks The Spotify track ids. Maximum **100**.
+     * @param playables The Spotify playable uris. Maximum **100** without bulk requesting enabled.
      *
-     * @throws BadRequestException if playlist is not found or illegal tracks are provided
+     * @throws BadRequestException if playlist is not found or illegal playables are provided
      */
-    public fun replaceClientPlaylistTracksRestAction(playlist: String, vararg tracks: String): SpotifyRestAction<Unit> =
+    public fun replaceClientPlaylistPlayablesRestAction(playlist: String, vararg playables: PlayableUri): SpotifyRestAction<Unit> =
         SpotifyRestAction {
-            replaceClientPlaylistTracks(playlist, *tracks)
+            replaceClientPlaylistPlayables(playlist, *playables)
         }
 
     /**
-     * Remove all the tracks in a playlist
+     * Remove all the playables in a playlist
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist the id or uri for the playlist.
      */
-    public suspend fun removeAllClientPlaylistTracks(playlist: String) {
-        setClientPlaylistTracks(playlist)
+    public suspend fun removeAllClientPlaylistPlayables(playlist: String) {
+        setClientPlaylistPlayables(playlist)
     }
 
     /**
-     * Remove all the tracks in a playlist
+     * Remove all the playables in a playlist
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
      * @param playlist the id or uri for the playlist.
      */
-    public fun removeAllClientPlaylistTracksRestAction(playlist: String): SpotifyRestAction<Unit> = SpotifyRestAction {
-        removeAllClientPlaylistTracks(playlist)
+    public fun removeAllClientPlaylistPlayablesRestAction(playlist: String): SpotifyRestAction<Unit> = SpotifyRestAction {
+        removeAllClientPlaylistPlayables(playlist)
     }
 
     /**
@@ -644,175 +644,175 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         SpotifyRestAction { uploadClientPlaylistCover(playlist, imagePath, imageFile, image, imageData, imageUrl) }
 
     /**
-     * Remove a track in the specified positions (zero-based) from the specified playlist.
+     * Remove a playable in the specified positions (zero-based) from the specified playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param track The track id
-     * @param positions The positions at which the track is located in the playlist
+     * @param playable The playable uri
+     * @param positions The positions at which the playable is located in the playlist
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public suspend fun removeTrackFromClientPlaylist(
+    public suspend fun removePlayableFromClientPlaylist(
         playlist: String,
-        track: String,
-        positions: SpotifyTrackPositions,
+        playable: PlayableUri,
+        positions: SpotifyPlayablePositions,
         snapshotId: String? = null
-    ): PlaylistSnapshot = removeTracksFromClientPlaylist(playlist, track to positions, snapshotId = snapshotId)
+    ): PlaylistSnapshot = removePlayablesFromClientPlaylist(playlist, playable to positions, snapshotId = snapshotId)
 
     /**
-     * Remove a track in the specified positions (zero-based) from the specified playlist.
+     * Remove a playable in the specified positions (zero-based) from the specified playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param track The track id
-     * @param positions The positions at which the track is located in the playlist
+     * @param playable The playable uri
+     * @param positions The positions at which the playable is located in the playlist
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public fun removeTrackFromClientPlaylistRestAction(
+    public fun removePlayableFromClientPlaylistRestAction(
         playlist: String,
-        track: String,
-        positions: SpotifyTrackPositions,
+        playable: PlayableUri,
+        positions: SpotifyPlayablePositions,
         snapshotId: String? = null
     ): SpotifyRestAction<PlaylistSnapshot> =
-        SpotifyRestAction { removeTrackFromClientPlaylist(playlist, track, positions, snapshotId) }
+        SpotifyRestAction { removePlayableFromClientPlaylist(playlist, playable, positions, snapshotId) }
 
     /**
-     * Remove all occurrences of a track from the specified playlist.
+     * Remove all occurrences of a playable from the specified playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param track The track id
+     * @param playable The playable uri
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public suspend fun removeTrackFromClientPlaylist(
+    public suspend fun removePlayableFromClientPlaylist(
         playlist: String,
-        track: String,
+        playable: PlayableUri,
         snapshotId: String? = null
-    ): PlaylistSnapshot = removeTracksFromClientPlaylist(playlist, track, snapshotId = snapshotId)
+    ): PlaylistSnapshot = removePlayablesFromClientPlaylist(playlist, playable, snapshotId = snapshotId)
 
     /**
-     * Remove all occurrences of a track from the specified playlist.
+     * Remove all occurrences of a playable from the specified playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param track The track id
+     * @param playable The playable uri
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public fun removeTrackFromClientPlaylistRestAction(
+    public fun removePlayableFromClientPlaylistRestAction(
         playlist: String,
-        track: String,
-        snapshotId: String? = null
-    ): SpotifyRestAction<PlaylistSnapshot> =
-        SpotifyRestAction { removeTrackFromClientPlaylist(playlist, track, snapshotId) }
-
-    /**
-     * Remove all occurrences of the specified tracks from the given playlist.
-     *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
-     *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
-     *
-     * @param playlist The playlist id
-     * @param tracks An array of track ids. Maximum **100**.
-     * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
-     */
-    public suspend fun removeTracksFromClientPlaylist(
-        playlist: String,
-        vararg tracks: String,
-        snapshotId: String? = null
-    ): PlaylistSnapshot = removePlaylistTracksImpl(playlist, tracks.map { it to null }.toTypedArray(), snapshotId)
-
-    /**
-     * Remove all occurrences of the specified tracks from the given playlist.
-     *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
-     *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
-     *
-     * @param playlist The playlist id
-     * @param tracks An array of track ids. Maximum **100**.
-     * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
-     */
-    public fun removeTracksFromClientPlaylistRestAction(
-        playlist: String,
-        vararg tracks: String,
+        playable: PlayableUri,
         snapshotId: String? = null
     ): SpotifyRestAction<PlaylistSnapshot> =
-        SpotifyRestAction { removeTracksFromClientPlaylist(playlist, *tracks, snapshotId = snapshotId) }
+        SpotifyRestAction { removePlayableFromClientPlaylist(playlist, playable, snapshotId) }
 
     /**
-     * Remove tracks (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
+     * Remove all occurrences of the specified playables from the given playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based). Maximum **100**.
+     * @param playables An array of playable uris. Maximum **100** without bulk requesting.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public suspend fun removeTracksFromClientPlaylist(
+    public suspend fun removePlayablesFromClientPlaylist(
         playlist: String,
-        vararg tracks: Pair<String, SpotifyTrackPositions>,
+        vararg playables: PlayableUri,
         snapshotId: String? = null
-    ): PlaylistSnapshot = removePlaylistTracksImpl(playlist, tracks.toList().toTypedArray(), snapshotId)
+    ): PlaylistSnapshot = removePlaylistPlayablesImpl(playlist, playables.map { it to null }.toTypedArray(), snapshotId)
 
     /**
-     * Remove tracks (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
+     * Remove all occurrences of the specified playables from the given playlist.
      *
-     * Removing tracks from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing tracks from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
      * @param playlist The playlist id
-     * @param tracks An array of [Pair]s of track ids *and* track positions (zero-based). Maximum **100**.
+     * @param playables An array of playable uris. Maximum **100** without bulk requesting.
      * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
      */
-    public fun removeTracksFromClientPlaylistRestAction(
+    public fun removePlayablesFromClientPlaylistRestAction(
         playlist: String,
-        vararg tracks: Pair<String, SpotifyTrackPositions>,
+        vararg playables: PlayableUri,
         snapshotId: String? = null
     ): SpotifyRestAction<PlaylistSnapshot> =
-        SpotifyRestAction { removeTracksFromClientPlaylist(playlist, *tracks, snapshotId = snapshotId) }
+        SpotifyRestAction { removePlayablesFromClientPlaylist(playlist, *playables, snapshotId = snapshotId) }
 
-    private suspend fun removePlaylistTracksImpl(
+    /**
+     * Remove playables (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
+     *
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
+     *
+     * @param playlist The playlist id
+     * @param playables An array of [Pair]s of playable uris *and* playable positions (zero-based). Maximum **100**.
+     * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
+     */
+    public suspend fun removePlayablesFromClientPlaylist(
         playlist: String,
-        tracks: Array<Pair<String, SpotifyTrackPositions?>>,
+        vararg playables: Pair<PlayableUri, SpotifyPlayablePositions>,
+        snapshotId: String? = null
+    ): PlaylistSnapshot = removePlaylistPlayablesImpl(playlist, playables.toList().toTypedArray(), snapshotId)
+
+    /**
+     * Remove playables (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
+     *
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
+     *
+     * @param playlist The playlist id
+     * @param playables An array of [Pair]s of playable uris *and* playable positions (zero-based). Maximum **100**.
+     * @param snapshotId The playlist snapshot against which to apply this action. **recommended to have**
+     */
+    public fun removePlayablesFromClientPlaylistRestAction(
+        playlist: String,
+        vararg playables: Pair<PlayableUri, SpotifyPlayablePositions>,
+        snapshotId: String? = null
+    ): SpotifyRestAction<PlaylistSnapshot> =
+        SpotifyRestAction { removePlayablesFromClientPlaylist(playlist, *playables, snapshotId = snapshotId) }
+
+    private suspend fun removePlaylistPlayablesImpl(
+        playlist: String,
+        playables: Array<Pair<PlayableUri, SpotifyPlayablePositions?>>,
         snapshotId: String?
     ): PlaylistSnapshot {
         requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
-        checkBulkRequesting(100, tracks.size)
-        if (snapshotId != null && tracks.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
+        checkBulkRequesting(100, playables.size)
+        if (snapshotId != null && playables.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 
-        return bulkRequest(100, tracks.toList()) { chunk ->
+        return bulkRequest(100, playables.toList()) { chunk ->
             val body = jsonMap()
             if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
             body += buildJsonObject {
                 put(
                     "tracks", JsonArray(
-                        chunk.map { (track, positions) ->
+                        chunk.map { (playable, positions) ->
                             val json = jsonMap()
-                            json += buildJsonObject { put("uri", PlayableUri(track).uri) }
+                            json += buildJsonObject { put("uri", playable.uri) }
                             if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
                                 put(
                                     "positions", JsonArray(
@@ -841,8 +841,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
 public data class PlaylistSnapshot(@SerialName("snapshot_id") val snapshotId: String)
 
 /**
- * Represents the positions inside a playlist's items list of where to locate the track
+ * Represents the positions inside a playlist's playables list of where to locate the playable
  *
- * @param positions Track positions (zero-based)
+ * @param positions Playable positions (zero-based)
  */
-public class SpotifyTrackPositions(public vararg val positions: Int)
+public class SpotifyPlayablePositions(public vararg val positions: Int)

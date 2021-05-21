@@ -5,7 +5,7 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
-import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
+import com.adamratzman.spotify.endpoints.client.SpotifyPlayablePositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.runBlockingTest
@@ -56,6 +56,13 @@ class ClientPlaylistApiTest {
                     }
                     .awaitAll()
             }
+        }
+
+        coroutineScope {
+            api!!.playlists.getClientPlaylists(limit = 50).getAllItemsNotNull()
+                .filter { it.name == "test playlist" }
+                .map { playlist -> async { api!!.playlists.deleteClientPlaylist(playlist.id) } }
+                .awaitAll()
         }
     }
 
@@ -179,7 +186,7 @@ class ClientPlaylistApiTest {
 
                 api!!.playlists.addTrackToClientPlaylist(createdPlaylist!!.id, trackIdOne)
 
-                api!!.playlists.removeTrackFromClientPlaylist(createdPlaylist!!.id, trackIdTwo, SpotifyTrackPositions(1))
+                api!!.playlists.removeTrackFromClientPlaylist(createdPlaylist!!.id, trackIdTwo, SpotifyPlayablePositions(1))
 
                 assertEquals(
                     listOf(trackIdTwo, trackIdOne),
@@ -207,8 +214,8 @@ class ClientPlaylistApiTest {
                 )
 
                 api!!.playlists.removeTracksFromClientPlaylist(
-                    createdPlaylist!!.id, Pair(trackIdOne, SpotifyTrackPositions(4)),
-                    Pair(trackIdTwo, SpotifyTrackPositions(0))
+                    createdPlaylist!!.id, Pair(trackIdOne, SpotifyPlayablePositions(4)),
+                    Pair(trackIdTwo, SpotifyPlayablePositions(0))
                 )
 
                 assertEquals(
@@ -218,7 +225,7 @@ class ClientPlaylistApiTest {
                 assertFailsWithSuspend<SpotifyException.BadRequestException> {
                     api!!.playlists.removeTracksFromClientPlaylist(
                         createdPlaylist!!.id,
-                        Pair(trackIdOne, SpotifyTrackPositions(3))
+                        Pair(trackIdOne, SpotifyPlayablePositions(3))
                     )
                 }
 

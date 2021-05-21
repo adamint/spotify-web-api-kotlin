@@ -91,10 +91,73 @@ class ClientLibraryApiTest {
     }
 
     @Test
+    fun testLibraryEpisodes() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest else api!!
+
+            val testEpisode = "5outVI1srKZtqwPrthvkKb"
+            if (api!!.library.contains(LibraryType.EPISODE, testEpisode)) {
+                api!!.library.remove(LibraryType.EPISODE, testEpisode)
+            }
+
+            assertFalse(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertFalse(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
+            )
+
+            api!!.library.add(LibraryType.EPISODE, testEpisode)
+
+            assertTrue(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertTrue(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
+            )
+
+            api!!.library.remove(LibraryType.EPISODE, testEpisode)
+
+            assertFalse(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertFalse(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
+            )
+        }
+    }
+
+    @Test
+    fun testLibraryShows() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest else api!!
+
+            val testShow = "6z4NLXyHPga1UmSJsPK7G1"
+            if (api!!.library.contains(LibraryType.SHOW, testShow)) {
+                api!!.library.remove(LibraryType.SHOW, testShow)
+            }
+
+            assertFalse(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertFalse(
+                api!!.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
+            )
+
+            api!!.library.add(LibraryType.SHOW, testShow)
+
+            assertTrue(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertTrue(
+                api!!.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
+            )
+
+            api!!.library.remove(LibraryType.SHOW, testShow)
+
+            assertFalse(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertFalse(
+                api!!.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
+            )
+        }
+    }
+
+    @Test
     fun testInvalidInputs() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
 
+            // tracks
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.TRACK,
@@ -109,6 +172,7 @@ class ClientLibraryApiTest {
             }
             assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.add(LibraryType.TRACK, "wer") }
 
+            // album
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.ALBUM,
@@ -119,6 +183,36 @@ class ClientLibraryApiTest {
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api!!.library.add(
                     LibraryType.ALBUM,
+                    "oieriwkjrjkawer"
+                )
+            }
+
+            // shows
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api!!.library.remove(
+                    LibraryType.SHOW,
+                    "elkars"
+                )
+            }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.SHOW, "") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api!!.library.add(
+                    LibraryType.SHOW,
+                    "oieriwkjrjkawer"
+                )
+            }
+
+            // episodes
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api!!.library.remove(
+                    LibraryType.EPISODE,
+                    "elkars"
+                )
+            }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.EPISODE, "") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api!!.library.add(
+                    LibraryType.EPISODE,
                     "oieriwkjrjkawer"
                 )
             }

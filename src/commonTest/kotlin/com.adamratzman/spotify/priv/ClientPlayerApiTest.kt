@@ -12,6 +12,7 @@ import com.adamratzman.spotify.models.toAlbumUri
 import com.adamratzman.spotify.models.toArtistUri
 import com.adamratzman.spotify.models.toPlaylistUri
 import com.adamratzman.spotify.models.toShowUri
+import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -109,6 +110,23 @@ class ClientPlayerApiTest {
     }
 
     @Test
+    fun testAddItemToEndOfQueue() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest else api!!
+            val device = api!!.player.getDevices().first()
+            api!!.player.startPlayback(playlistId = "098OivbzwUNzzDShgF6U4A") // two tracks
+            val trackId = "7lPN2DXiMsVn7XUKtOW1CS"
+            api!!.player.addItemToEndOfQueue(trackId.toTrackUri(), device.id)
+
+            api!!.player.skipForward() // skip first
+            api!!.player.skipForward() // skip second
+            delay(2000)
+            // we should now be at track
+            assertEquals(trackId, api!!.player.getCurrentlyPlaying()?.context?.uri?.id)
+        }
+    }
+
+    @Test
     fun testSeek() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
@@ -186,7 +204,9 @@ class ClientPlayerApiTest {
             assertEquals(albumUri, api!!.player.getCurrentContext()?.context?.uri)
 
             // play tracks normally
-            val trackUris = api!!.playlists.getPlaylist(playlistUri.id)!!.tracks.take(5).mapNotNull { it.track?.asTrack }.map { it.uri }
+            val trackUris =
+                api!!.playlists.getPlaylist(playlistUri.id)!!.tracks.take(5).mapNotNull { it.track?.asTrack }
+                    .map { it.uri }
             api!!.player.startPlayback(
                 playableUrisToPlay = trackUris
             )
