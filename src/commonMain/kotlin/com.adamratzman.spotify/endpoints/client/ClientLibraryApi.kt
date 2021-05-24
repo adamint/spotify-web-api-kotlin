@@ -6,11 +6,7 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.AlbumUri
-import com.adamratzman.spotify.models.PagingObject
-import com.adamratzman.spotify.models.PlayableUri
-import com.adamratzman.spotify.models.SavedAlbum
-import com.adamratzman.spotify.models.SavedTrack
+import com.adamratzman.spotify.models.*
 import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
@@ -119,6 +115,100 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): SpotifyRestAction<PagingObject<SavedAlbum>> = SpotifyRestAction { getSavedAlbums(limit, offset, market) }
 
     /**
+     * Get a list of the episodes saved in the current Spotify user’s library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-episodes)**
+     *
+     * @param limit The number of objects to return. Default: 20 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Paging Object of [SavedEpisode] ordered by position in library
+     */
+    public suspend fun getSavedEpisodes(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): PagingObject<SavedEpisode> {
+        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+
+        return get(
+            endpointBuilder("/me/episodes").with("limit", limit).with("offset", offset).with("market", market?.name)
+                .toString()
+        ).toNonNullablePagingObject(SavedEpisode.serializer(), api = api, json = json)
+    }
+
+    /**
+     * Get a list of the episodes saved in the current Spotify user’s library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-episodes)**
+     *
+     * @param limit The number of objects to return. Default: 20 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Paging Object of [SavedEpisode] ordered by position in library
+     */
+    public fun getSavedEpisodesRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SavedEpisode>> = SpotifyRestAction { getSavedEpisodes(limit, offset, market) }
+
+    /**
+     * Get a list of the shows saved in the current Spotify user’s library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-shows)**
+     *
+     * @param limit The number of objects to return. Default: 20 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Paging Object of [SavedShow] ordered by position in library
+     */
+    public suspend fun getSavedShows(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): PagingObject<SavedShow> {
+        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+
+        return get(
+            endpointBuilder("/me/shows").with("limit", limit).with("offset", offset).with("market", market?.name)
+                .toString()
+        ).toNonNullablePagingObject(SavedShow.serializer(), api = api, json = json)
+    }
+
+    /**
+     * Get a list of the shows saved in the current Spotify user’s library.
+     *
+     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-shows)**
+     *
+     * @param limit The number of objects to return. Default: 20 (or api limit). Minimum: 1. Maximum: 50.
+     * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
+     * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
+     * If omitted, the returned items will be relevant to all countries.
+     *
+     * @return Paging Object of [SavedEpisode] ordered by position in library
+     */
+    public fun getSavedShowsRestAction(
+        limit: Int? = api.spotifyApiOptions.defaultLimit,
+        offset: Int? = null,
+        market: Market? = null
+    ): SpotifyRestAction<PagingObject<SavedShow>> = SpotifyRestAction { getSavedShows(limit, offset, market) }
+
+    /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
      * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
@@ -144,7 +234,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if [id] is not found
      */
-    public fun containsRestAction(type: LibraryType, id: String): SpotifyRestAction<Boolean> = SpotifyRestAction { contains(type, ids = arrayOf(id))[0] }
+    public fun containsRestAction(type: LibraryType, id: String): SpotifyRestAction<Boolean> =
+        SpotifyRestAction { contains(type, ids = arrayOf(id))[0] }
 
     /**
      * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
@@ -215,7 +306,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if the id is invalid
      */
-    public fun addRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, id) }
+    public fun addRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> =
+        SpotifyRestAction { add(type, id) }
 
     /**
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
@@ -253,7 +345,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    public fun addRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> = SpotifyRestAction { add(type, *ids) }
+    public fun addRestAction(type: LibraryType, vararg ids: String): SpotifyRestAction<Unit> =
+        SpotifyRestAction { add(type, *ids) }
 
     /**
      * Remove one of [LibraryType] (track or album) from the current user’s ‘Your Music’ library.
@@ -285,7 +378,8 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @throws BadRequestException if any of the provided ids is invalid
      */
-    public fun removeRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> = SpotifyRestAction { remove(type, ids = arrayOf(id)) }
+    public fun removeRestAction(type: LibraryType, id: String): SpotifyRestAction<Unit> =
+        SpotifyRestAction { remove(type, ids = arrayOf(id)) }
 
     /**
      * Remove one or more of the [LibraryType] (tracks or albums) from the current user’s ‘Your Music’ library.
@@ -344,7 +438,9 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  */
 public enum class LibraryType(private val value: String, internal val id: (String) -> String) {
     TRACK("tracks", { PlayableUri(it).id }),
-    ALBUM("albums", { AlbumUri(it).id });
+    ALBUM("albums", { AlbumUri(it).id }),
+    EPISODE("episodes", { EpisodeUri(it).id }),
+    SHOW("shows", { ShowUri(it).id });
 
     override fun toString(): String = value
 }

@@ -91,6 +91,74 @@ class ClientLibraryApiTest {
     }
 
     @Test
+    fun testLibraryEpisodes() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest else api!!
+
+            val testEpisode = "4YYj9Yqas3Ss5kKulNKHjp"
+            if (api!!.library.contains(LibraryType.EPISODE, testEpisode)) {
+                api!!.library.remove(LibraryType.EPISODE, testEpisode)
+            }
+
+            assertFalse(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertFalse(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull()
+                    .map { it.episode.id }.contains(testEpisode)
+            )
+
+            api!!.library.add(LibraryType.EPISODE, testEpisode)
+
+            assertTrue(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertTrue(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull()
+                    .map { it.episode.id }.contains(testEpisode)
+            )
+
+            api!!.library.remove(LibraryType.EPISODE, testEpisode)
+
+            assertFalse(api!!.library.contains(LibraryType.EPISODE, testEpisode))
+            assertFalse(
+                api!!.library.getSavedEpisodes().getAllItemsNotNull()
+                    .map { it.episode.id }.contains(testEpisode)
+            )
+        }
+    }
+
+    @Test
+    fun testLibraryShows() {
+        runBlockingTest {
+            if (!testPrereq()) return@runBlockingTest else api!!
+
+            val testShow = "5Fsq9rBZmD8wO1HiZJ0tl3"
+            if (api!!.library.contains(LibraryType.SHOW, testShow)) {
+                api!!.library.remove(LibraryType.SHOW, testShow)
+            }
+
+            assertFalse(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertFalse(
+                api!!.library.getSavedShows().getAllItemsNotNull()
+                    .map { it.show.id }.contains(testShow)
+            )
+
+            api!!.library.add(LibraryType.SHOW, testShow)
+
+            assertTrue(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertTrue(
+                api!!.library.getSavedShows().getAllItemsNotNull()
+                    .map { it.show.id }.contains(testShow)
+            )
+
+            api!!.library.remove(LibraryType.SHOW, testShow)
+
+            assertFalse(api!!.library.contains(LibraryType.SHOW, testShow))
+            assertFalse(
+                api!!.library.getSavedShows().getAllItemsNotNull()
+                    .map { it.show.id }.contains(testShow)
+            )
+        }
+    }
+
+    @Test
     fun testInvalidInputs() {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
@@ -115,7 +183,12 @@ class ClientLibraryApiTest {
                     "elkars"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.ALBUM, "") }
+            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                api!!.library.contains(
+                    LibraryType.ALBUM,
+                    ""
+                )
+            }
             assertFailsWithSuspend<SpotifyException.BadRequestException> {
                 api!!.library.add(
                     LibraryType.ALBUM,

@@ -27,3 +27,27 @@ public data class SavedTrack(
     @SerialName("added_at") val addedAt: String,
     val track: Track
 )
+
+/**
+ * Represents a episode saved in a user's library
+ *
+ * @param addedAt The date and time the track was saved.
+ * @param episode The episode object.
+ */
+@Serializable
+public data class SavedEpisode(
+    @SerialName("added_at") val addedAt: String,
+    val episode: Episode
+)
+
+/**
+ * Represents a show saved in a user's library
+ *
+ * @param addedAt The date and time the track was saved.
+ * @param show The show object.
+ */
+@Serializable
+public data class SavedShow(
+    @SerialName("added_at") val addedAt: String,
+    val show: SimpleShow
+)
