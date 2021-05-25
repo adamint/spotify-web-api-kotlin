@@ -5,9 +5,10 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
-import com.adamratzman.spotify.endpoints.client.SpotifyTrackPositions
+import com.adamratzman.spotify.endpoints.client.SpotifyPlayablePositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
+import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.currentApiPlatform
@@ -57,6 +58,13 @@ class ClientPlaylistApiTest {
                     .awaitAll()
             }
         }
+
+        coroutineScope {
+            api!!.playlists.getClientPlaylists(limit = 50).getAllItemsNotNull()
+                .filter { it.name == "test playlist" }
+                .map { playlist -> async { api!!.playlists.deleteClientPlaylist(playlist.id) } }
+                .awaitAll()
+        }
     }
 
     @Test
@@ -93,7 +101,7 @@ class ClientPlaylistApiTest {
 
             /*val playlistSize = { api!!.playlists.getClientPlaylist(createdPlaylist!!.id)!!.tracks.total }
             val sizeBefore = playlistSize()
-            api!!.playlists.addTracksToClientPlaylist(createdPlaylist!!.id, tracks=*tracks.toTypedArray())
+            api!!.playlists.addPlayablesToClientPlaylist(createdPlaylist!!.id, tracks=*tracks.toTypedArray())
             assertEquals(sizeBefore.plus(tracks.size), playlistSize())
             api!!.playlists.removeTracksFromClientPlaylist(createdPlaylist!!.id, tracks=*tracks.toTypedArray())
             assertEquals(sizeBefore, playlistSize())*/
@@ -115,10 +123,10 @@ class ClientPlaylistApiTest {
                     collaborative = true, description = "description 2"
                 )
 
-                api!!.playlists.addTracksToClientPlaylist(
+                api!!.playlists.addPlayablesToClientPlaylist(
                     createdPlaylist!!.id,
-                    "3WDIhWoRWVcaHdRwMEHkkS",
-                    "7FjZU7XFs7P9jHI9Z0yRhK"
+                    "3WDIhWoRWVcaHdRwMEHkkS".toTrackUri(),
+                    "7FjZU7XFs7P9jHI9Z0yRhK".toTrackUri()
                 )
 
                 api!!.playlists.uploadClientPlaylistCover(
@@ -136,13 +144,13 @@ class ClientPlaylistApiTest {
 
                 assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images.isNotEmpty())
 
-                api!!.playlists.reorderClientPlaylistTracks(updatedPlaylist.id, 1, insertionPoint = 0)
+                api!!.playlists.reorderClientPlaylistPlayables(updatedPlaylist.id, 1, insertionPoint = 0)
 
                 updatedPlaylist = api!!.playlists.getClientPlaylist(createdPlaylist!!.id)!!
 
                 assertTrue(updatedPlaylist.toFullPlaylist()?.tracks?.items?.get(0)?.track?.id == "7FjZU7XFs7P9jHI9Z0yRhK")
 
-                api!!.playlists.removeAllClientPlaylistTracks(updatedPlaylist.id)
+                api!!.playlists.removeAllClientPlaylistPlayables(updatedPlaylist.id)
 
                 updatedPlaylist = api!!.playlists.getClientPlaylist(createdPlaylist!!.id)!!
 
@@ -154,71 +162,71 @@ class ClientPlaylistApiTest {
     }
 
     @Test
-    fun testRemovePlaylistTracks() {
+    fun testRemovePlaylistPlayables() {
         if (currentApiPlatform != Platform.NATIVE) {
             runBlockingTest {
                 if (!testPrereq()) return@runBlockingTest else api!!
 
-                val trackIdOne = "3WDIhWoRWVcaHdRwMEHkkS"
-                val trackIdTwo = "7FjZU7XFs7P9jHI9Z0yRhK"
-                api!!.playlists.addTracksToClientPlaylist(
+                val playableUriOne = "3WDIhWoRWVcaHdRwMEHkkS".toTrackUri()
+                val playableUriTwo = "7FjZU7XFs7P9jHI9Z0yRhK".toTrackUri()
+                api!!.playlists.addPlayablesToClientPlaylist(
                     createdPlaylist!!.id,
-                    trackIdOne,
-                    trackIdOne,
-                    trackIdTwo,
-                    trackIdTwo
+                    playableUriOne,
+                    playableUriOne,
+                    playableUriTwo,
+                    playableUriTwo
                 )
 
                 assertTrue(api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.size == 4)
 
-                api!!.playlists.removeTrackFromClientPlaylist(createdPlaylist!!.id, trackIdOne)
+                api!!.playlists.removePlayableFromClientPlaylist(createdPlaylist!!.id, playableUriOne)
 
                 assertEquals(
-                    listOf(trackIdTwo, trackIdTwo),
-                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.id })
+                    listOf(playableUriTwo, playableUriTwo),
+                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
 
-                api!!.playlists.addTrackToClientPlaylist(createdPlaylist!!.id, trackIdOne)
+                api!!.playlists.addPlayableToClientPlaylist(createdPlaylist!!.id, playableUriOne)
 
-                api!!.playlists.removeTrackFromClientPlaylist(createdPlaylist!!.id, trackIdTwo, SpotifyTrackPositions(1))
+                api!!.playlists.removePlayableFromClientPlaylist(createdPlaylist!!.id, playableUriTwo, SpotifyPlayablePositions(1))
 
                 assertEquals(
-                    listOf(trackIdTwo, trackIdOne),
-                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.id })
+                    listOf(playableUriTwo, playableUriOne),
+                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
 
-                api!!.playlists.setClientPlaylistTracks(
+                api!!.playlists.setClientPlaylistPlayables(
                     createdPlaylist!!.id,
-                    trackIdOne,
-                    trackIdOne,
-                    trackIdTwo,
-                    trackIdTwo
+                    playableUriOne,
+                    playableUriOne,
+                    playableUriTwo,
+                    playableUriTwo
                 )
 
-                api!!.playlists.removeTracksFromClientPlaylist(createdPlaylist!!.id, trackIdOne, trackIdTwo)
+                api!!.playlists.removePlayablesFromClientPlaylist(createdPlaylist!!.id, playableUriOne, playableUriTwo)
 
                 assertTrue(api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.isEmpty())
 
-                api!!.playlists.setClientPlaylistTracks(
+                api!!.playlists.setClientPlaylistPlayables(
                     createdPlaylist!!.id,
-                    trackIdTwo,
-                    trackIdOne,
-                    trackIdTwo,
-                    trackIdTwo,
-                    trackIdOne
+                    playableUriTwo,
+                    playableUriOne,
+                    playableUriTwo,
+                    playableUriTwo,
+                    playableUriOne
                 )
 
-                api!!.playlists.removeTracksFromClientPlaylist(
-                    createdPlaylist!!.id, Pair(trackIdOne, SpotifyTrackPositions(4)),
-                    Pair(trackIdTwo, SpotifyTrackPositions(0))
+                api!!.playlists.removePlayablesFromClientPlaylist(
+                    createdPlaylist!!.id, Pair(playableUriOne, SpotifyPlayablePositions(4)),
+                    Pair(playableUriTwo, SpotifyPlayablePositions(0))
                 )
 
                 assertEquals(
-                    listOf(trackIdOne, trackIdTwo, trackIdTwo),
-                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.id })
+                    listOf(playableUriOne, playableUriTwo, playableUriTwo),
+                    api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
 
                 assertFailsWithSuspend<SpotifyException.BadRequestException> {
-                    api!!.playlists.removeTracksFromClientPlaylist(
+                    api!!.playlists.removePlayablesFromClientPlaylist(
                         createdPlaylist!!.id,
-                        Pair(trackIdOne, SpotifyTrackPositions(3))
+                        Pair(playableUriOne, SpotifyPlayablePositions(3))
                     )
                 }
 

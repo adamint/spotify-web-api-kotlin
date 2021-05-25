@@ -179,10 +179,10 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param deviceId The device to play on
      */
-    public suspend fun pause(deviceId: String? = null): String {
+    public suspend fun pause(deviceId: String? = null) {
         requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
 
-        return put(endpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
+        put(endpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
     }
 
     /**
@@ -194,8 +194,9 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param deviceId The device to play on
      */
-    public fun pauseRestAction(deviceId: String? = null): SpotifyRestAction<String> =
-        SpotifyRestAction { pause(deviceId) }
+    public fun pauseRestAction(deviceId: String? = null): SpotifyRestAction<Unit> {
+        return SpotifyRestAction { pause(deviceId) }
+    }
 
     /**
      * Seeks to the given position in the user’s currently playing track.
@@ -673,6 +674,42 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         SpotifyRestAction {
             transferPlayback(deviceId, play)
         }
+
+    /**
+     * Add an item to the end of the user’s current playback queue.
+     * Please note that all items in the queue will be played before resuming the current playlist/album playing, if there is one.
+     *
+     * This method is provided **AS-IS** until Spotify
+     * exposes device queue. Please consider managing the player queue within your application.
+     *
+     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-add-to-queue)**
+     *
+     * @param uri The uri of the item to add to the queue. Must be a track or an episode uri.
+     * @param deviceId The device to play on.
+     */
+    public suspend fun addItemToEndOfQueue(uri: PlayableUri, deviceId: String? = null) {
+        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+
+        post(endpointBuilder("/me/player/queue").with("uri", uri.uri).with("device_id", deviceId).toString())
+    }
+
+    /**
+     * Add an item to the end of the user’s current playback queue.
+     *
+     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-add-to-queue)**
+     *
+     * @param uri The uri of the item to add to the queue. Must be a track or an episode uri.
+     * @param deviceId The device to play on.
+     */
+    public fun addItemToEndOfQueueRestAction(uri: PlayableUri, deviceId: String? = null): SpotifyRestAction<Unit> {
+        return SpotifyRestAction {
+            addItemToEndOfQueue(uri, deviceId)
+        }
+    }
 
     /**
      * What state the player can repeat in.

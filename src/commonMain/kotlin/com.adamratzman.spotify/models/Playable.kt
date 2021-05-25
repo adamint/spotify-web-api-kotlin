@@ -25,19 +25,19 @@ public interface Playable {
     public val type: String
 
     /**
-     * This Playable as a local track.
+     * This Playable as a local track, or else null if it is an episode or track.
      *
      */
     public val asLocalTrack: LocalTrack? get() = this as? LocalTrack
 
     /**
-     * This Playable as an episode.
+     * This Playable as an episode (podcast), or else null if it is a local track or track.
      *
      */
     public val asPodcastEpisodeTrack: PodcastEpisodeTrack? get() = this as? PodcastEpisodeTrack
 
     /**
-     * This Playable as a track.
+     * This Playable as a track, or else null if it is a local track or episode (podcast).
      *
      */
     public val asTrack: Track? get() = this as? Track

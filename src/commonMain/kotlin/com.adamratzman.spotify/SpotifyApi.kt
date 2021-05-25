@@ -17,6 +17,7 @@ import com.adamratzman.spotify.endpoints.pub.ArtistApi
 import com.adamratzman.spotify.endpoints.pub.BrowseApi
 import com.adamratzman.spotify.endpoints.pub.EpisodeApi
 import com.adamratzman.spotify.endpoints.pub.FollowingApi
+import com.adamratzman.spotify.endpoints.pub.MarketsApi
 import com.adamratzman.spotify.endpoints.pub.PlaylistApi
 import com.adamratzman.spotify.endpoints.pub.SearchApi
 import com.adamratzman.spotify.endpoints.pub.ShowApi
@@ -56,6 +57,7 @@ import kotlinx.serialization.json.Json
  * @property tracks Provides access to Spotify [track endpoints](https://developer.spotify.com/documentation/web-api/reference/tracks/)
  * @property episodes Provides access to Spotify [episode endpoints](https://developer.spotify.com/documentation/web-api/reference/episodes/)
  * @property shows Provides access to Spotify [show endpoints](https://developer.spotify.com/documentation/web-api/reference/shows/)
+ * @property markets Provides access to Spotify [market endpoints](https://developer.spotify.com/documentation/web-api/reference/#category-markets)
  */
 public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B>>(
     public val clientId: String?,
@@ -82,6 +84,7 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     public abstract val following: FollowingApi
     public abstract val episodes: EpisodeApi
     public abstract val shows: ShowApi
+    public abstract val markets: MarketsApi
 
     /**
      * Base url for Spotify web api calls
@@ -397,6 +400,7 @@ public class SpotifyAppApi internal constructor(
     override val tracks: TrackApi = TrackApi(this)
     override val episodes: EpisodeApi = EpisodeApi(this)
     override val shows: ShowApi = ShowApi(this)
+    override val markets: MarketsApi = MarketsApi(this)
 
     /**
      * Provides access to **public** Spotify [playlist endpoints](https://developer.spotify.com/documentation/web-api/reference/playlists/)
@@ -491,6 +495,7 @@ public open class SpotifyClientApi(
     override val artists: ArtistApi = ArtistApi(this)
     override val tracks: TrackApi = TrackApi(this)
     override val search: SearchApi = SearchApi(this)
+    override val markets: MarketsApi = MarketsApi(this)
 
     override val episodes: ClientEpisodeApi = ClientEpisodeApi(this)
     override val shows: ClientShowApi = ClientShowApi(this)
