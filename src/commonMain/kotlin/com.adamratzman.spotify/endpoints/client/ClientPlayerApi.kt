@@ -677,6 +677,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
 
     /**
      * Add an item to the end of the user’s current playback queue.
+     * Please note that all items in the queue will be played before resuming the current playlist/album playing, if there is one.
      *
      * This method is provided **AS-IS** until Spotify
      * exposes device queue. Please consider managing the player queue within your application.
