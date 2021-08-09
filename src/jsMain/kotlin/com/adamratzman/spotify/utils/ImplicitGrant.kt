@@ -5,14 +5,15 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.models.Token
-import kotlinx.browser.window
 import org.w3c.dom.url.URLSearchParams
+/*
+import kotlinx.browser.window
 
 /**
  * Parse the current url into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]
  */
 public fun parseSpotifyCallbackHashToToken(): Token = parseSpotifyCallbackHashToToken(window.location.hash.substring(1))
-
+*/
 /**
  * Parse the hash string into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]
  *

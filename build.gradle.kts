@@ -5,13 +5,13 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
     id("lt.petuska.npm.publish") version "1.1.2"
-    kotlin("multiplatform") version "1.5.0"
+    kotlin("multiplatform") version "1.5.21"
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.5.0"
-    id("com.diffplug.spotless") version "5.12.4"
+    kotlin("plugin.serialization") version "1.5.21"
+    id("com.diffplug.spotless") version "5.14.2"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.4.30"
     id("kotlin-android-extensions")
@@ -19,7 +19,6 @@ plugins {
 
 repositories {
     google()
-    maven("https://kotlin.bintray.com/kotlinx")
     mavenCentral()
 }
 
@@ -29,8 +28,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.4")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0")
+        classpath("com.android.tools.build:gradle:4.2.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     }
 }
 
@@ -60,8 +59,6 @@ android {
         minSdkVersion(15)
         targetSdkVersion(30)
         compileSdkVersion(30)
-        versionCode = 1
-        versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -124,7 +121,7 @@ kotlin {
     }
 
     val irOnlyJs = project.hasProperty("irOnly")
-    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
+    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.LEGACY) {
 
         mavenPublication {
             setupPom(artifactId)
@@ -216,14 +213,14 @@ kotlin {
 
     targets {
         sourceSets {
-            val serializationVersion = "1.2.0"
-            val ktorVersion = "1.5.4"
-            val korlibsVersion = "2.0.7"
+            val serializationVersion = "1.2.2"
+            val ktorVersion = "1.6.2"
+            val korlibsVersion = "2.2.0"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.3"
-            val androidCryptoVersion = "1.1.0-alpha03"
-            val coroutineMTVersion = "1.4.3-native-mt"
-            val kotlinxDatetimeVersion = "0.2.0"
+            val androidCryptoVersion = "1.0.0"
+            val coroutineMTVersion = "1.5.1-native-mt"
+            val kotlinxDatetimeVersion = "0.2.1"
 
             val commonMain by getting {
                 dependencies {
@@ -255,7 +252,6 @@ kotlin {
                 dependsOn(commonJvmLikeMain)
                 repositories {
                     mavenCentral()
-                    jcenter()
                 }
 
                 dependencies {
@@ -293,7 +289,6 @@ kotlin {
 
                 repositories {
                     mavenCentral()
-                    jcenter()
                 }
 
                 dependencies {
@@ -301,7 +296,7 @@ kotlin {
                     implementation("com.pnikosis:materialish-progress:1.7")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:1.2.0")
+                    implementation("androidx.appcompat:appcompat:1.3.1")
                 }
             }
 
@@ -420,7 +415,6 @@ npmPublishing {
         repository("npmjs") {
             registry = uri("https://registry.npmjs.org")
             (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
-            println("auth token: $authToken")
         }
     }
 }
@@ -433,7 +427,6 @@ tasks {
             repository("npmjs") {
                 registry = uri("https://registry.npmjs.org")
                 (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
-                println("auth token: $authToken")
             }
         }
 

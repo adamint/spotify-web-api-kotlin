@@ -1,7 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import kotlin.coroutines.CoroutineContext
 import kotlin.native.concurrent.ThreadLocal
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +12,6 @@ val tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
 
 // https://github.com/Kotlin/kotlinx.coroutines/issues/1996#issuecomment-728562784
 expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
-expect val testCoroutineContext: CoroutineContext
 
 @ThreadLocal
 var instantiationCompleted: Boolean = false
@@ -46,6 +44,33 @@ suspend fun buildSpotifyApi() = when {
     }
     else -> null.also { instantiationCompleted = true }
 }
+
+fun buildSpotifyApiSync() = when {
+    tokenString?.isNotBlank() == true -> {
+        spotifyClientApi {
+            credentials {
+                clientId = com.adamratzman.spotify.clientId
+                clientSecret = com.adamratzman.spotify.clientSecret
+                redirectUri = com.adamratzman.spotify.redirectUri
+            }
+            authorization {
+                tokenString = com.adamratzman.spotify.tokenString
+            }
+        }.buildRestAction().complete().also { instantiationCompleted = true; apiBacking = it }
+    }
+    clientId?.isNotBlank() == true -> {
+        spotifyAppApi {
+            credentials {
+                clientId = com.adamratzman.spotify.clientId
+                clientSecret = com.adamratzman.spotify.clientSecret
+            }
+        }.buildRestAction().complete().also {
+            instantiationCompleted = true; apiBacking = it
+        }
+    }
+    else -> null.also { instantiationCompleted = true }
+}
+
 
 expect fun getEnvironmentVariable(name: String): String?
 

@@ -5,7 +5,6 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.SpotifyUserAuthorization
-import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
@@ -14,6 +13,7 @@ import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class UtilityTests {
@@ -65,23 +65,23 @@ class UtilityTests {
         runBlockingTest {
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<IllegalArgumentException> {
+            assertFailsWith<IllegalArgumentException> {
                 spotifyAppApi { }.build()
             }
 
-            assertFailsWithSuspend<IllegalArgumentException> {
+            assertFailsWith<IllegalArgumentException> {
                 spotifyClientApi {
                     credentials {
                         clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
                     }
                 }.build()
             }
-            assertFailsWithSuspend<IllegalArgumentException> {
+            assertFailsWith<IllegalArgumentException> {
                 spotifyClientApi { }.build()
             }
 
             if (api is SpotifyClientApi) {
-                assertFailsWithSuspend<IllegalArgumentException> {
+                assertFailsWith<IllegalArgumentException> {
                     spotifyClientApi {
                         credentials {
                             clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
@@ -141,7 +141,7 @@ class UtilityTests {
         runBlockingTest {
             if (!testPrereq() || api !is SpotifyClientApi) return@runBlockingTest
 
-            assertFailsWithSuspend<IllegalStateException> {
+            assertFailsWith<IllegalStateException> {
                 spotifyClientApi(
                     api!!.clientId,
                     api!!.clientSecret,

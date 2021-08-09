@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import spark.Spark.exception
 import spark.Spark.get
 import spark.Spark.port
+import kotlin.test.assertFailsWith
 
 class PkceTest {
 
@@ -57,7 +58,7 @@ class PkceTest {
                         api.refreshToken()
                         // test that using same token will fail with auth exception
 
-                        assertFailsWithSuspend<AuthenticationException> {
+                        assertFailsWith<AuthenticationException> {
                             spotifyClientPkceApi(
                                 clientId,
                                 serverRedirectUri,

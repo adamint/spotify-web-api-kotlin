@@ -4,6 +4,7 @@ package com.adamratzman.spotify
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlockingOnJvmAndNative
+import com.soywiz.korio.async.runBlockingNoJs
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

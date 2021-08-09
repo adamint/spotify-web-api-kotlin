@@ -1,10 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.SpotifyPlayablePositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
@@ -12,23 +11,18 @@ import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.currentApiPlatform
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-class ClientPlaylistApiTest {
-    var api: SpotifyClientApi? = null
+class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     var createdPlaylist: Playlist? = null
     var playlistsBefore: List<SimplePlaylist>? = null
 
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
 
     private suspend fun init() {
         if (api != null) {
@@ -37,7 +31,7 @@ class ClientPlaylistApiTest {
         }
     }
 
-    suspend fun testPrereq(): Boolean {
+    suspend fun testPrereqOverride(): Boolean {
         if (api == null) return false
         init()
         return true
@@ -69,8 +63,9 @@ class ClientPlaylistApiTest {
 
     @Test
     fun testGetClientPlaylists() {
-        runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest else api!!
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
+            if (!testPrereqOverride()) return@runBlockingTest else api!!
 
             assertEquals(
                 api!!.playlists.getClientPlaylists().getAllItemsNotNull().size - 1,
@@ -84,8 +79,9 @@ class ClientPlaylistApiTest {
     @Suppress("UNUSED_VARIABLE")
     @Test
     fun testAddAndRemoveChunkedTracks() {
-        runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest else api!!
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
+            if (!testPrereqOverride()) return@runBlockingTest else api!!
 
             val usTop50Uri = "spotify:playlist:37i9dQZEVXbLRQDuF5jeBp"
             val globalTop50Uri = "spotify:playlist:37i9dQZEVXbMDoHDwVN2tF"
@@ -114,9 +110,10 @@ class ClientPlaylistApiTest {
 
     @Test
     fun testEditPlaylists() {
-        if (currentApiPlatform != Platform.NATIVE) {
-            runBlockingTest {
-                if (!testPrereq()) return@runBlockingTest else api!!
+        if (/*currentApiPlatform != Platform.NATIVE*/true) {
+            return runBlockingTest {
+                super.build<SpotifyClientApi>()
+                if (!testPrereqOverride()) return@runBlockingTest else api!!
 
                 api!!.playlists.changeClientPlaylistDetails(
                     createdPlaylist!!.id, "test playlist", public = false,
@@ -164,8 +161,9 @@ class ClientPlaylistApiTest {
     @Test
     fun testRemovePlaylistPlayables() {
         if (currentApiPlatform != Platform.NATIVE) {
-            runBlockingTest {
-                if (!testPrereq()) return@runBlockingTest else api!!
+            return runBlockingTest {
+                super.build<SpotifyClientApi>()
+                if (!testPrereqOverride()) return@runBlockingTest else api!!
 
                 val playableUriOne = "3WDIhWoRWVcaHdRwMEHkkS".toTrackUri()
                 val playableUriTwo = "7FjZU7XFs7P9jHI9Z0yRhK".toTrackUri()
@@ -187,7 +185,11 @@ class ClientPlaylistApiTest {
 
                 api!!.playlists.addPlayableToClientPlaylist(createdPlaylist!!.id, playableUriOne)
 
-                api!!.playlists.removePlayableFromClientPlaylist(createdPlaylist!!.id, playableUriTwo, SpotifyPlayablePositions(1))
+                api!!.playlists.removePlayableFromClientPlaylist(
+                    createdPlaylist!!.id,
+                    playableUriTwo,
+                    SpotifyPlayablePositions(1)
+                )
 
                 assertEquals(
                     listOf(playableUriTwo, playableUriOne),
@@ -223,7 +225,7 @@ class ClientPlaylistApiTest {
                     listOf(playableUriOne, playableUriTwo, playableUriTwo),
                     api!!.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
 
-                assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     api!!.playlists.removePlayablesFromClientPlaylist(
                         createdPlaylist!!.id,
                         Pair(playableUriOne, SpotifyPlayablePositions(3))

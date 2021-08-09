@@ -4,15 +4,30 @@ package com.adamratzman.spotify
 abstract class AbstractTest<T : GenericSpotifyApi> {
     var api: T? = null
 
-    suspend fun build(): Boolean {
+    fun testPrereq() = api != null
+
+    suspend inline fun <reified Z : T> build(): Boolean {
+        return try {
+            val f = buildSpotifyApi()
+            @Suppress("UNCHECKED_CAST")
+            (f as? T)?.let { if (f is Z) api = it }
+            api != null
+        } catch (cce: Exception) {
+            println("here")
+            false
+        }
+    }
+
+    fun buildSync(): Boolean {
         return try {
             @Suppress("UNCHECKED_CAST")
-            (buildSpotifyApi() as? T)?.let { api = it }
+            (buildSpotifyApiSync() as? T)?.let { api = it }
             api != null
         } catch (cce: ClassCastException) {
             false
         }
     }
+
 }
 
 typealias GenericSpotifyApiTest = AbstractTest<GenericSpotifyApi>

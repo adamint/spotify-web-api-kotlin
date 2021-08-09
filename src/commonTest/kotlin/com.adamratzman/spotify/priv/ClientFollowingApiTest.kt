@@ -1,31 +1,22 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class ClientFollowingApiTest {
-    var api: SpotifyClientApi? = null
-
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class ClientFollowingApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
     fun testFollowUnfollowArtists() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) {
                 return@runBlockingTest
             }
@@ -54,21 +45,22 @@ class ClientFollowingApiTest {
 
             assertTrue(!api!!.following.isFollowingArtist(testArtistId))
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.isFollowingArtist("no u") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.followArtist("no u") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.following.isFollowingArtist("no u") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.following.followArtist("no u") }
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.following.followArtists(
                     testArtistId,
                     "no u"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.unfollowArtist("no u") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.following.unfollowArtist("no u") }
         }
     }
 
     @Test
     fun testFollowUnfollowUsers() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val testUserId = "adamratzman"
@@ -89,7 +81,8 @@ class ClientFollowingApiTest {
 
     @Test
     fun testFollowUnfollowPlaylists() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val playlistId = "37i9dQZF1DXcBWIGoYBM5M"
@@ -103,14 +96,14 @@ class ClientFollowingApiTest {
 
             assertTrue(api!!.following.isFollowingPlaylist(playlistId))
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.following.isFollowingPlaylist(
                     " no u",
                     "no u"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.unfollowPlaylist("no-u") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.following.followPlaylist("nou") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.following.unfollowPlaylist("no-u") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.following.followPlaylist("nou") }
         }
     }
 }

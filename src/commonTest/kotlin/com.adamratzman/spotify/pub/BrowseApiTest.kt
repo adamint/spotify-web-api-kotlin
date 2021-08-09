@@ -1,10 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.pub.TuneableTrackAttribute
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Locale
@@ -12,25 +11,17 @@ import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 
-class BrowseApiTest {
-    var api: GenericSpotifyApi? = null
-
-    init {
-        runBlockingTest {
-            buildSpotifyApi()?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class BrowseApiTest: AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testGenreSeeds() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             assertTrue(api!!.browse.getAvailableGenreSeeds().isNotEmpty())
         }
@@ -38,7 +29,8 @@ class BrowseApiTest {
 
     @Test
     fun testGetCategoryList() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertNotSame(
@@ -52,21 +44,23 @@ class BrowseApiTest {
 
     @Test
     fun testGetCategory() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             assertNotNull(api!!.browse.getCategory("pop"))
             assertNotNull(api!!.browse.getCategory("pop", Market.FR))
             assertNotNull(api!!.browse.getCategory("pop", Market.FR, locale = Locale.en_US))
             assertNotNull(api!!.browse.getCategory("pop", Market.FR, locale = Locale.sr_ME))
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.browse.getCategory("no u", Market.US) }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.browse.getCategory("no u", Market.US) }
         }
     }
 
     @Test
     fun testGetPlaylistsByCategory() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.browse.getPlaylistsForCategory(
                     "no u",
                     limit = 4
@@ -78,7 +72,8 @@ class BrowseApiTest {
 
     @Test
     fun testGetFeaturedPlaylists() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(
@@ -95,7 +90,8 @@ class BrowseApiTest {
 
     @Test
     fun testGetNewReleases() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(api!!.browse.getNewReleases(market = Market.CA).items.isNotEmpty())
@@ -106,17 +102,18 @@ class BrowseApiTest {
 
     @Test
     fun testGetRecommendations() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.browse.getTrackRecommendations() }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.browse.getTrackRecommendations() }
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.browse.getTrackRecommendations(seedArtists = listOf("abc"))
             }
             api!!.browse.getTrackRecommendations(seedArtists = listOf("1kNQXvepPjaPgUfeDAF2h6"))
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.browse.getTrackRecommendations(seedTracks = listOf("abc"))
             }
             api!!.browse.getTrackRecommendations(seedTracks = listOf("3Uyt0WO3wOopnUBCe9BaXl")).tracks
@@ -143,7 +140,7 @@ class BrowseApiTest {
                 seedGenres = listOf("pop")
             )
 
-            assertFailsWithSuspend<IllegalArgumentException> {
+            assertFailsWith<IllegalArgumentException> {
                 api!!.browse.getTrackRecommendations(
                     targetAttributes = listOf(
                         TuneableTrackAttribute.Acousticness.asTrackAttribute(
@@ -161,7 +158,7 @@ class BrowseApiTest {
                 ).tracks.isNotEmpty()
             )
 
-            assertFailsWithSuspend<IllegalArgumentException> {
+            assertFailsWith<IllegalArgumentException> {
                 api!!.browse.getTrackRecommendations(
                     minAttributes = listOf(
                         TuneableTrackAttribute.Acousticness.asTrackAttribute(
@@ -179,7 +176,7 @@ class BrowseApiTest {
                 ).tracks.isNotEmpty()
             )
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.browse.getTrackRecommendations(
                     maxAttributes = listOf(
                         TuneableTrackAttribute.Speechiness.asTrackAttribute(

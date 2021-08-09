@@ -5,11 +5,11 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
-import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.spotifyAppApi
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -34,7 +34,7 @@ class RestTests {
             val prevTimeout = testApi.spotifyApiOptions.requestTimeoutMillis
 
             testApi.spotifyApiOptions.requestTimeoutMillis = 1
-            assertFailsWithSuspend<TimeoutException> {
+            assertFailsWith<TimeoutException> {
                 testApi.search.searchTrack("fail")
             }
 
