@@ -4,8 +4,8 @@
 #
 version: 2
 orbs:
-  gradle: circleci/gradle@2.2.0
-  win: circleci/windows@2.2.0
+  gradle: circleci/gradle@3.0.1
+  win: circleci/windows@3.0.1
 jobs:
   test_linux:
     docker:
