@@ -1,49 +1,41 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class ClientEpisodeApiTest {
-    var api: SpotifyClientApi? = null
-
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class ClientEpisodeApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
     fun testGetEpisode() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api
 
             assertNull(api!!.episodes.getEpisode("nonexistant episode"))
-            assertNotNull(api!!.episodes.getEpisode("4IhgnOc8rwMW70agMWVVfh"))
+            assertNotNull(api!!.episodes.getEpisode("3lMZTE81Pbrp0U12WZe27l"))
         }
     }
 
     @Test
     fun testGetEpisodes() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api!!.episodes.getEpisodes("hi", "dad") }
-            assertFailsWithSuspend<BadRequestException> {
+            assertFailsWith<BadRequestException> { api!!.episodes.getEpisodes("hi", "dad") }
+            assertFailsWith<BadRequestException> {
                 api!!.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j").map { it?.name }
             }
             assertEquals(
-                listOf("The 'Murder Hornets' And The Honey Bees"),
-                api!!.episodes.getEpisodes("4IhgnOc8rwMW70agMWVVfh").map { it?.name }
+                listOf("The Great Inflation (Classic)"),
+                api!!.episodes.getEpisodes("3lMZTE81Pbrp0U12WZe27l").map { it?.name }
             )
         }
     }

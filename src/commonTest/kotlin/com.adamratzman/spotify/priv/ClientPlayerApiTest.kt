@@ -1,8 +1,8 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
 import com.adamratzman.spotify.models.CurrentlyPlayingType
 import com.adamratzman.spotify.models.PlayableUri
@@ -24,20 +24,11 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
 @ExperimentalTime
-class ClientPlayerApiTest {
-    var api: SpotifyClientApi? = null
-
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
     fun testGetDevices() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             assertTrue(api!!.player.getDevices().isNotEmpty())
         }
@@ -45,7 +36,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testGetCurrentContext() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
             api!!.player.startPlayback(
@@ -75,7 +67,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testGetRecentlyPlayed() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             api!!.player.getRecentlyPlayed()
         }
@@ -83,7 +76,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testGetCurrentlyPlaying() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
 
@@ -112,7 +106,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testAddItemToEndOfQueue() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
             val playlist = api!!.playlists.getPlaylist("098OivbzwUNzzDShgF6U4A")!!
@@ -134,7 +129,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testSeek() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
 
@@ -161,7 +157,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testSetPlaybackOptions() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
             val volume = 50
@@ -179,7 +176,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testStartPlayback() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
 
@@ -253,7 +251,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testSkipForwardBackward() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val device = api!!.player.getDevices().first()
 
@@ -278,7 +277,8 @@ class ClientPlayerApiTest {
 
     @Test
     fun testTransferPlayback() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             if (api!!.player.getDevices().size < 2) {
                 println("Active devices < 2 (${api!!.player.getDevices()}), so skipping transfer playback test")

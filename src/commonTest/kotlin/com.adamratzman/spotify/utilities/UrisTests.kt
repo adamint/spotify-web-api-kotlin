@@ -1,7 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.models.AlbumUri
 import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.LocalTrackUri
@@ -12,46 +11,47 @@ import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.runBlockingTest
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.serialization.json.Json
 
 class UrisTests {
     @Test
     fun testSpotifyTrackUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 SpotifyTrackUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 SpotifyTrackUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 SpotifyTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
 
             assertEquals(
-                    "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
+                "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
             )
 
             assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
+                "1Z9UVqWuRJ7zToOiVnlXRO",
+                SpotifyTrackUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").id
             )
 
             assertEquals(
-                    "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").uri
+                "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                SpotifyTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").uri
             )
 
             assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    SpotifyTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").id
+                "1Z9UVqWuRJ7zToOiVnlXRO",
+                SpotifyTrackUri("1Z9UVqWuRJ7zToOiVnlXRO").id
             )
         }
     }
@@ -59,30 +59,30 @@ class UrisTests {
     @Test
     fun testLocalTrackUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 LocalTrackUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 LocalTrackUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 LocalTrackUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 LocalTrackUri("artist:album:name:id").uri
             }
 
             assertEquals(
-                    "spotify:local:artist:album:name:id",
-                    LocalTrackUri("spotify:local:artist:album:name:id").uri
+                "spotify:local:artist:album:name:id",
+                LocalTrackUri("spotify:local:artist:album:name:id").uri
             )
 
             assertEquals(
-                    "artist:album:name:id",
-                    LocalTrackUri("spotify:local:artist:album:name:id").id
+                "artist:album:name:id",
+                LocalTrackUri("spotify:local:artist:album:name:id").id
             )
         }
     }
@@ -90,35 +90,35 @@ class UrisTests {
     @Test
     fun testTrackUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlayableUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlayableUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlayableUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
 
             val trackUri = PlayableUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO")
             assertEquals(
-                    SpotifyTrackUri::class,
-                    trackUri::class
+                SpotifyTrackUri::class,
+                trackUri::class
             )
             assertEquals(
-                    "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
-                    trackUri.uri
+                "spotify:track:1Z9UVqWuRJ7zToOiVnlXRO",
+                trackUri.uri
             )
             assertEquals(
-                    "1Z9UVqWuRJ7zToOiVnlXRO",
-                    trackUri.id
+                "1Z9UVqWuRJ7zToOiVnlXRO",
+                trackUri.id
             )
 
             assertEquals(
-                    SpotifyTrackUri::class,
-                    trackUri::class
+                SpotifyTrackUri::class,
+                trackUri::class
             )
         }
     }
@@ -126,70 +126,70 @@ class UrisTests {
     @Test
     fun testUserUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 UserUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 UserUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 UserUri("a:invalid").id
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 UserUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
             }
 
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             )
 
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             )
 
             assertEquals(
-                    UserUri::class,
-                    SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")::class
+                UserUri::class,
+                SpotifyUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83")::class
             )
 
             assertEquals(
-                    "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
+                "7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").id
             )
 
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("7r7uq6qxa4ymx3wnjd9mm6i83").uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("7r7uq6qxa4ymx3wnjd9mm6i83").uri
             )
 
             assertEquals(
-                    "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("7r7uq6qxa4ymx3wnjd9mm6i83").id
+                "7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("7r7uq6qxa4ymx3wnjd9mm6i83").id
             )
 
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
             )
 
             assertEquals(
-                    "7r7uq6qxa4ymx3wnjd9mm6i83",
-                    UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                "7r7uq6qxa4ymx3wnjd9mm6i83",
+                UserUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
             )
 
             assertEquals(
-                    "spotify:user:",
-                    UserUri("spotify:user:").uri
+                "spotify:user:",
+                UserUri("spotify:user:").uri
             )
 
             assertEquals(
-                    "",
-                    UserUri("spotify:user:").id
+                "",
+                UserUri("spotify:user:").id
             )
         }
     }
@@ -197,50 +197,50 @@ class UrisTests {
     @Test
     fun testPlaylistUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlaylistUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlaylistUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlaylistUri("a:invalid").id
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 PlaylistUri("spotify:track:1Z9UVqWuRJ7zToOiVnlXRO").uri
             }
 
             assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").uri
             )
 
             assertEquals(
-                    "66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
+                "66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("spotify:playlist:66wcLiS5R50akaQ3onDyZd").id
             )
 
             assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("66wcLiS5R50akaQ3onDyZd").uri
+                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("66wcLiS5R50akaQ3onDyZd").uri
             )
 
             assertEquals(
-                    "66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("66wcLiS5R50akaQ3onDyZd").id
+                "66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("66wcLiS5R50akaQ3onDyZd").id
             )
 
             assertEquals(
-                    "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
+                "spotify:playlist:66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").uri
             )
 
             assertEquals(
-                    "66wcLiS5R50akaQ3onDyZd",
-                    PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
+                "66wcLiS5R50akaQ3onDyZd",
+                PlaylistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83:playlist:66wcLiS5R50akaQ3onDyZd").id
             )
         }
     }
@@ -248,40 +248,40 @@ class UrisTests {
     @Test
     fun testAlbumUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 AlbumUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 AlbumUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 AlbumUri("a:invalid").id
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 AlbumUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
 
             assertEquals(
-                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
+                "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").uri
             )
 
             assertEquals(
-                    "0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
+                "0W0ag2P4h1Fmp7PnGJVvIJ",
+                AlbumUri("spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ").id
             )
 
             assertEquals(
-                    "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("0W0ag2P4h1Fmp7PnGJVvIJ").uri
+                "spotify:album:0W0ag2P4h1Fmp7PnGJVvIJ",
+                AlbumUri("0W0ag2P4h1Fmp7PnGJVvIJ").uri
             )
 
             assertEquals(
-                    "0W0ag2P4h1Fmp7PnGJVvIJ",
-                    AlbumUri("0W0ag2P4h1Fmp7PnGJVvIJ").id
+                "0W0ag2P4h1Fmp7PnGJVvIJ",
+                AlbumUri("0W0ag2P4h1Fmp7PnGJVvIJ").id
             )
         }
     }
@@ -289,40 +289,40 @@ class UrisTests {
     @Test
     fun testArtistUri() {
         runBlockingTest {
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 ArtistUri("a:invalid")
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 ArtistUri("a:invalid").uri
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 ArtistUri("a:invalid").id
             }
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 ArtistUri("spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83").uri
             }
 
             assertEquals(
-                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
+                "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").uri
             )
 
             assertEquals(
-                    "1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
+                "1XLjkBxFokuDTlHt0mQkRe",
+                ArtistUri("spotify:artist:1XLjkBxFokuDTlHt0mQkRe").id
             )
 
             assertEquals(
-                    "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("1XLjkBxFokuDTlHt0mQkRe").uri
+                "spotify:artist:1XLjkBxFokuDTlHt0mQkRe",
+                ArtistUri("1XLjkBxFokuDTlHt0mQkRe").uri
             )
 
             assertEquals(
-                    "1XLjkBxFokuDTlHt0mQkRe",
-                    ArtistUri("1XLjkBxFokuDTlHt0mQkRe").id
+                "1XLjkBxFokuDTlHt0mQkRe",
+                ArtistUri("1XLjkBxFokuDTlHt0mQkRe").id
             )
         }
     }
@@ -331,29 +331,29 @@ class UrisTests {
     fun testUriSerialization() {
         runBlockingTest {
             val spotifyUri: SpotifyUri =
-                    Json.decodeFromString(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
+                Json.decodeFromString(SpotifyUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
-                    UserUri::class,
-                    spotifyUri::class
+                UserUri::class,
+                spotifyUri::class
             )
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    spotifyUri.uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                spotifyUri.uri
             )
 
             val userUri = Json.decodeFromString(UserUri.serializer(), "\"spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83\"")
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    userUri.uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                userUri.uri
             )
 
-            assertFailsWithSuspend<SpotifyUriException> {
+            assertFailsWith<SpotifyUriException> {
                 Json.decodeFromString(SpotifyUri.serializer(), "\"7r7uq6qxa4ymx3wnjd9mm6i83\"")
             }
 
             assertEquals(
-                    "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
-                    userUri.uri
+                "spotify:user:7r7uq6qxa4ymx3wnjd9mm6i83",
+                userUri.uri
             )
         }
     }

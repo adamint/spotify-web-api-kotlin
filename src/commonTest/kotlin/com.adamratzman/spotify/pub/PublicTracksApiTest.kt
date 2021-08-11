@@ -1,31 +1,22 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class PublicTracksApiTest {
-    var api: GenericSpotifyApi? = null
-
-    init {
-        runBlockingTest {
-            buildSpotifyApi()?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class PublicTracksApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testGetTrack() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertEquals("Bénabar", api!!.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")!!.artists[0].name)
@@ -35,7 +26,8 @@ class PublicTracksApiTest {
 
     @Test
     fun testGetTracks() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertEquals(listOf(null, null), api!!.tracks.getTracks("hi", "dad", market = Market.US))
@@ -47,20 +39,22 @@ class PublicTracksApiTest {
 
     @Test
     fun testAudioAnalysis() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.tracks.getAudioAnalysis("bad track") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.tracks.getAudioAnalysis("bad track") }
             assertEquals("165.61333", api!!.tracks.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").track.duration.toString())
         }
     }
 
     @Test
     fun testAudioFeatures() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.tracks.getAudioFeatures("bad track") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.tracks.getAudioFeatures("bad track") }
             assertEquals("0.0592", api!!.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())
             assertEquals(
                 listOf(null, "0.0592"),

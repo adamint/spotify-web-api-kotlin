@@ -1,30 +1,22 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.pub.SearchApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
-class SearchApiTest {
-    var api: GenericSpotifyApi? = null
-
-    init {
-        runBlockingTest {
-            buildSpotifyApi()?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testSearchMultiple() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val query = api!!.search.search("lo", *SearchApi.SearchType.values())
             assertTrue(
@@ -43,27 +35,34 @@ class SearchApiTest {
 
     @Test
     fun testSearchTrack() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(api!!.search.searchTrack("hello", 1, 1, Market.US).items.isNotEmpty())
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.search.searchTrack("").items.size }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.search.searchTrack("").items.size }
         }
     }
 
     @Test
     fun testSearchAlbum() {
-        runBlockingTest {
+        return runBlockingTest {
+            println("h1...")
+            super.build<GenericSpotifyApi>()
+            println("2..")
             if (!testPrereq()) return@runBlockingTest else api!!
-
+            println("3...")
             assertTrue(api!!.search.searchAlbum("le début").items.isNotEmpty())
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.search.searchAlbum("").items.size }
+            println("4...")
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.search.searchAlbum("").items.size }
+            println("5...")
         }
     }
 
     @Test
     fun testSearchPlaylist() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(api!!.search.searchPlaylist("test").items.isNotEmpty())
@@ -73,22 +72,24 @@ class SearchApiTest {
 
     @Test
     fun testSearchArtist() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(api!!.search.searchArtist("amir").items.isNotEmpty())
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.search.searchArtist("").items.size }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.search.searchArtist("").items.size }
         }
     }
 
     @Test
     fun testSearchShow() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             (api!!.search as? SearchApi)?.let { clientSearchApi ->
                 assertTrue(clientSearchApi.searchShow("f", market = Market.US).items.isNotEmpty())
-                assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     clientSearchApi.searchShow(
                         "",
                         market = Market.US
@@ -100,12 +101,13 @@ class SearchApiTest {
 
     @Test
     fun testSearchEpisode() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             (api!!.search as? SearchApi)?.let { clientSearchApi ->
                 assertTrue(clientSearchApi.searchEpisode("f", market = Market.US).items.isNotEmpty())
-                assertFailsWithSuspend<SpotifyException.BadRequestException> {
+                assertFailsWith<SpotifyException.BadRequestException> {
                     clientSearchApi.searchEpisode(
                         "",
                         market = Market.US

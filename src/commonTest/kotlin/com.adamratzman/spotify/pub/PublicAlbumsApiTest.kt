@@ -1,33 +1,24 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.pub
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class PublicAlbumsApiTest {
-    var api: GenericSpotifyApi? = null
-
-    init {
-        runBlockingTest {
-            buildSpotifyApi()?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class PublicAlbumsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testGetAlbums() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertNull(api!!.albums.getAlbum("asdf", Market.FR))
@@ -35,8 +26,8 @@ class PublicAlbumsApiTest {
             assertNotNull(api!!.albums.getAlbum("1f1C1CjidKcWQyiIYcMvP2"))
             assertNotNull(api!!.albums.getAlbum("1f1C1CjidKcWQyiIYcMvP2", Market.US))
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.albums.getAlbums(market = Market.US) }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.albums.getAlbums() }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.albums.getAlbums(market = Market.US) }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.albums.getAlbums() }
             assertEquals(listOf(true, false),
                 api!!.albums.getAlbums("1f1C1CjidKcWQyiIYcMvP2", "abc", market = Market.US)
                     .map { it != null })
@@ -47,10 +38,11 @@ class PublicAlbumsApiTest {
 
     @Test
     fun testGetAlbumsTracks() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.albums.getAlbumTracks("no") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.albums.getAlbumTracks("no") }
 
             assertTrue(api!!.albums.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3, Market.US).items.isNotEmpty())
             assertTrue(api!!.albums.getAlbumTracks("29ct57rVIi3MIFyKJYUWrZ", 4, 3).items.isNotEmpty())
@@ -60,7 +52,8 @@ class PublicAlbumsApiTest {
 
     @Test
     fun testConvertSimpleAlbumToAlbum() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
             val simpleAlbum = api!!.tracks.getTrack("53BHUFdQphHiZUUG3nx9zn")!!.album
             assertEquals(simpleAlbum.id, simpleAlbum.toFullAlbum()?.id)

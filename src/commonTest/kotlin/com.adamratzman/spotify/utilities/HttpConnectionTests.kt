@@ -106,7 +106,7 @@ class HttpConnectionTests {
         spotifyApi.await()?.let { api ->
             api!!.retryWhenRateLimited = false
             api!!.useCache = false
-            assertFailsWithSuspend<SpotifyRatelimitedException> {
+            assertFailsWith<SpotifyRatelimitedException> {
                 repeat((1..50000).count()) {
                     println(api!!.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")?.name)
                 }

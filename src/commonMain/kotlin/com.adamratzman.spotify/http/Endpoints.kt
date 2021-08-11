@@ -61,7 +61,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     }
 
     internal suspend fun get(url: String): String {
-        return execute(url)
+        return execute(url).apply { println("body: $url") }
     }
 
     internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {

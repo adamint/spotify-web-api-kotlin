@@ -1,30 +1,21 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Market
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 
-class ClientShowApiTest {
-    var api: SpotifyClientApi? = null
-
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class ClientShowApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
     fun testGetShow() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertNull(api!!.shows.getShow("invalid-show"))
@@ -34,11 +25,12 @@ class ClientShowApiTest {
 
     @Test
     fun testGetShows() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShows("hi", "dad") }
-            assertFailsWithSuspend<BadRequestException> {
+            assertFailsWith<BadRequestException> { api!!.shows.getShows("hi", "dad") }
+            assertFailsWith<BadRequestException> {
                 api!!.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j").map { it?.name }
             }
             assertEquals(
@@ -50,12 +42,16 @@ class ClientShowApiTest {
 
     @Test
     fun testGetShowEpisodes() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
-            assertFailsWithSuspend<BadRequestException> { api!!.shows.getShowEpisodes("hi") }
+            assertFailsWith<BadRequestException> { api!!.shows.getShowEpisodes("hi") }
             val show = api!!.shows.getShow("6z4NLXyHPga1UmSJsPK7G1")!!
-            assertEquals(show.id, api!!.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id)
+            assertEquals(
+                show.id,
+                api!!.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id
+            )
         }
     }
 }

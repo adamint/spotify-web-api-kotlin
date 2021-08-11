@@ -1,30 +1,21 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.priv
 
+import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
-import com.adamratzman.spotify.assertFailsWithSuspend
-import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.endpoints.client.LibraryType
 import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class ClientLibraryApiTest {
-    var api: SpotifyClientApi? = null
-
-    init {
-        runBlockingTest {
-            (buildSpotifyApi() as? SpotifyClientApi)?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
+class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
     fun testLibraryTracks() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
@@ -58,7 +49,8 @@ class ClientLibraryApiTest {
 
     @Test
     fun testLibraryAlbums() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val testAlbum = "1UAt4G020TgW3lb2CkXr2N"
@@ -92,7 +84,8 @@ class ClientLibraryApiTest {
 
     @Test
     fun testLibraryEpisodes() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val testEpisode = "5outVI1srKZtqwPrthvkKb"
@@ -123,7 +116,8 @@ class ClientLibraryApiTest {
 
     @Test
     fun testLibraryShows() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             val testShow = "6z4NLXyHPga1UmSJsPK7G1"
@@ -154,33 +148,39 @@ class ClientLibraryApiTest {
 
     @Test
     fun testInvalidInputs() {
-        runBlockingTest {
+        return runBlockingTest {
+            super.build<SpotifyClientApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
 
             // tracks
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.TRACK,
                     "ajksdfkjasjfd"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.contains(
                     LibraryType.TRACK,
                     "adsfjk"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.add(LibraryType.TRACK, "wer") }
+            assertFailsWith<SpotifyException.BadRequestException> { api!!.library.add(LibraryType.TRACK, "wer") }
 
             // album
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.ALBUM,
                     "elkars"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.ALBUM, "") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
+                api!!.library.contains(
+                    LibraryType.ALBUM,
+                    ""
+                )
+            }
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.add(
                     LibraryType.ALBUM,
                     "oieriwkjrjkawer"
@@ -188,14 +188,19 @@ class ClientLibraryApiTest {
             }
 
             // shows
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.SHOW,
                     "elkars"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.SHOW, "") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
+                api!!.library.contains(
+                    LibraryType.SHOW,
+                    ""
+                )
+            }
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.add(
                     LibraryType.SHOW,
                     "oieriwkjrjkawer"
@@ -203,14 +208,19 @@ class ClientLibraryApiTest {
             }
 
             // episodes
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.remove(
                     LibraryType.EPISODE,
                     "elkars"
                 )
             }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> { api!!.library.contains(LibraryType.EPISODE, "") }
-            assertFailsWithSuspend<SpotifyException.BadRequestException> {
+            assertFailsWith<SpotifyException.BadRequestException> {
+                api!!.library.contains(
+                    LibraryType.EPISODE,
+                    ""
+                )
+            }
+            assertFailsWith<SpotifyException.BadRequestException> {
                 api!!.library.add(
                     LibraryType.EPISODE,
                     "oieriwkjrjkawer"
