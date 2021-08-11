@@ -28,7 +28,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.2")
+        classpath("com.android.tools.build:gradle:4.1.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     }
 }
@@ -121,7 +121,7 @@ kotlin {
     }
 
     val irOnlyJs = project.hasProperty("irOnly")
-    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.LEGACY) {
+    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
 
         mavenPublication {
             setupPom(artifactId)

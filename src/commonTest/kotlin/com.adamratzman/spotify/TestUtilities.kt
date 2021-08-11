@@ -13,7 +13,6 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
             (f as? T)?.let { if (f is Z) api = it }
             api != null
         } catch (cce: Exception) {
-            println("here")
             false
         }
     }

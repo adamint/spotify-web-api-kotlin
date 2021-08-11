@@ -8,8 +8,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 
 actual fun getEnvironmentVariable(name: String): String? {
-    println("here $name")
-    println(process.env[name].unsafeCast<String?>())
     return process.env[name].unsafeCast<String?>()
 }
 
