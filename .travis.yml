@@ -8,3 +8,7 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+addons:
+  homebrew:
+    packages:
+      - android-studio
