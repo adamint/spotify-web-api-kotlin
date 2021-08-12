@@ -13,7 +13,7 @@ plugins {
     kotlin("plugin.serialization") version "1.5.21"
     id("com.diffplug.spotless") version "5.14.2"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "1.4.30"
+    id("org.jetbrains.dokka") version "1.5.0"
     id("kotlin-android-extensions")
 }
 

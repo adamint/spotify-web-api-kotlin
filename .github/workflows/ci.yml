@@ -14,29 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     environment: testing
     container: mingc/android-build-box
+    env:
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
     - name: Test secret
       run: echo "client id secret is $SPOTIFY_CLIENT_ID"
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test android
-      run: gradle testDebugUnitTest
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      run: ./gradlew testDebugUnitTest
     - name: Test jvm
-      run: gradle jvmTest
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      run: ./gradlew jvmTest
     - name: Test linux
-      run: gradle linuxX64Test
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      run: ./gradlew linuxX64Test
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
@@ -46,24 +37,18 @@ jobs:
   test_mac:
     runs-on: macos-latest
     environment: testing
+    env:
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
     - name: Test mac
       run: gradle macosX64Test
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test ios
       run: gradle iosX64Test
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test tvos
       run: gradle tvosX64Test
-      env:
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
@@ -73,14 +58,14 @@ jobs:
   test_windows:
     runs-on: windows-latest
     environment: testing
+    env:
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
     - name: Test windows
       run: gradle mingwX64Test
-      env: # Or as an environment variable
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
