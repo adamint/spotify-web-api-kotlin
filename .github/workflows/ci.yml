@@ -12,48 +12,49 @@ on:
 jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
-    container: mingc/android-build-box
     steps:
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Test android
-      run: ./gradlew testDebugUnitTest
+      run: gradle testDebugUnitTest
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test jvm
-      run: ./gradlew jvmTest
+      run: gradle jvmTest
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test linux
-      run: ./gradlew linuxX64Test
+      run: gradle linuxX64Test
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
   test_mac:
     runs-on: macos-latest
     steps:
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Test mac
-      run: ./gradlew macosX64Test
+      run: gradle macosX64Test
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test ios
-      run: ./gradlew iosX64Test
+      run: gradle iosX64Test
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test tvos
-      run: ./gradlew tvosX64Test
+      run: gradle tvosX64Test
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
   test_windows:
     runs-on: windows-latest
     steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Test windows
       run: gradle mingwX64Test
       env: # Or as an environment variable
