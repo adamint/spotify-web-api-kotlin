@@ -13,13 +13,14 @@ jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
     environment: testing
-    container: mingc/android-build-box
     env:
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
       SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
+    - name: Install curl
+      run: sudo apt-get install curl
     - name: Test secret
       run: echo "client id secret is $SPOTIFY_CLIENT_ID"
     - name: Test android

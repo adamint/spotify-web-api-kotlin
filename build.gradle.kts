@@ -402,10 +402,13 @@ publishing {
 }
 
 signing {
-    if (project.hasProperty("signing.keyId")
-        && project.hasProperty("signing.password")
-        && project.hasProperty("signing.secretKeyRingFile")
+    if (project.hasProperty("signing_key_id")
+        && project.hasProperty("signing_key_password")
     ) {
+        useInMemoryPgpKeys(
+            project.property("signing_key_id") as? String,
+            project.property("signing_key_password") as? String
+        )
         sign(publishing.publications)
     }
 }
@@ -527,10 +530,8 @@ fun PublishingExtension.registerPublishing() {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                val nexusUsername: String? = System.getenv("nexus.username")
-                    ?: if (project.extra.has("nexusUsername")) project.extra["nexusUsername"] as? String else null
-                val nexusPassword: String? = System.getenv("nexus.password")
-                    ?: if (project.extra.has("nexusPassword")) project.extra["nexusPassword"] as? String else null
+                val nexusUsername: String? by project
+                val nexusPassword: String? by project
                 username = nexusUsername
                 password = nexusPassword
             }
