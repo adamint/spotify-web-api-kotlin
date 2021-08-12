@@ -18,10 +18,19 @@ jobs:
       run: chmod +x gradlew
     - name: Test android
       run: ./gradlew testDebugUnitTest
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test jvm
       run: ./gradlew jvmTest
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test linux
       run: ./gradlew linuxX64Test
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
   test_mac:
     runs-on: macos-latest
     steps:
@@ -29,14 +38,26 @@ jobs:
       run: chmod +x gradlew
     - name: Test mac
       run: ./gradlew macosX64Test
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test ios
       run: ./gradlew iosX64Test
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test tvos
-      run: ./gradlew tvosX64Test    
+      run: ./gradlew tvosX64Test
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
   test_windows:
     runs-on: windows-latest
     steps:
     - name: Test windows
       run: gradle mingwX64Test
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     
       
