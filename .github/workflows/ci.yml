@@ -1,0 +1,42 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Project CI
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  test_android_jvm_linux:
+    runs-on: ubuntu-latest
+    container: mingc/android-build-box
+    steps:
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Test android
+      run: ./gradlew testDebugUnitTest
+    - name: Test jvm
+      run: ./gradlew jvmTest
+    - name: Test linux
+      run: ./gradlew linuxX64Test
+  test_mac:
+    runs-on: macos-latest
+    steps:
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Test mac
+      run: ./gradlew macosX64Test
+    - name: Test ios
+      run: ./gradlew iosX64Test
+    - name: Test tvos
+      run: ./gradlew tvosX64Test    
+  test_windows:
+    runs-on: windows-latest
+    steps:
+    - name: Test windows
+      run: gradle mingwX64Test
+    
+      
