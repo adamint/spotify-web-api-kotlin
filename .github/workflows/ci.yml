@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
+    - name: Test secret
+      run: echo "client id secret is $SPOTIFY_CLIENT_ID"
+      env:
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test android
       run: gradle testDebugUnitTest
       env:
