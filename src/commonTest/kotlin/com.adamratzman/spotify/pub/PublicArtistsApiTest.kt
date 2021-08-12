@@ -18,8 +18,12 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testGetArtists() {
         return runBlockingTest {
+            println("here")
             super.build<GenericSpotifyApi>()
+            println("here2")
+            println(api)
             if (!testPrereq()) return@runBlockingTest else api!!
+            println("here3")
             assertNull(api!!.artists.getArtist("adkjlasdf"))
             assertNotNull(api!!.artists.getArtist("66CXWjxzNUsdJxJ2JdwvnR"))
             assertFailsWith<SpotifyException.BadRequestException> { api!!.artists.getArtists() }

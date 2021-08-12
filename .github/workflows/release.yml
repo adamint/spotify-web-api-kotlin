@@ -1,0 +1,76 @@
+name: Deployment workflow
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Semantic version number to release'
+        required: true
+      spotify_test_client_token:
+        description: 'Spotify client redirect token (for client tests before release)'
+        required: true
+      spotify_test_redirect_uri:
+        description: 'Spotify redirect uri'
+        required: true
+env:
+  SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+  SPOTIFY_TOKEN_STRING: ${{ event.inputs.spotify_test_client_token }}
+  SPOTIFY_REDIRECT_URI: ${{ event.inputs.spotify_test_redirect_uri }}
+  ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+  ORG_GRADLE_PROJECT_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+  ORG_GRADLE_PROJECT_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+  ORG_GRADLE_PROJECT_SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+  SPOTIFY_API_PUBLISH_VERSION: ${{ event.inputs.release_version }}
+jobs:
+  release_android_jvm_linux:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Install curl
+        run: sudo apt-get install -y curl libcurl4-openssl-dev
+      - name: Verify Android
+        run: gradle testDebugUnitTest
+      - name: Verify JVM
+        run: gradle jvmTest
+      - name: Publish JVM/Linux/Android
+        run: gradle publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository
+  release_mac:
+    runs-on: macos-latest
+    environment: release
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Verify macOS
+        run: gradle macosX64Test
+      - name: Publish macOS/tvOS/iOS
+        run: gradle publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishTvosX64PublicationToNexusRepository
+  release_windows:
+    runs-on: windows-latest
+    environment: release
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Verify windows
+        run: gradle mingwX64Test
+      - name: Publish windows
+        run: gradle publishMingwX64PublicationToNexusRepository
+  release_docs:
+    runs-on: windows-latest
+    environment: release
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Build docs
+        run: gradle dokkaHtml
+      - name: Push docs to docs repo
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'build'
+          destination-github-username: 'adamint'
+          destination-repository-name: 'spotify-web-api-kotlin-docs'
+          user-email: adam@adamratzman.com
+          target-branch: main

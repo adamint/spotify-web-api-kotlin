@@ -9,10 +9,11 @@ import kotlinx.coroutines.runBlocking
 import platform.posix.getenv
 
 actual fun getEnvironmentVariable(name: String): String? {
-    return getenv(name)?.toKString()
+    return getenv(name)?.toKString().apply { println("env variable $name: $this") }
 }
 
 actual fun Exception.stackTrace() = printStackTrace()
 
+val testCoroutineContext: CoroutineContext = MainScope().coroutineContext
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) =
     runBlocking { block() }

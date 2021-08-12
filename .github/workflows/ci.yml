@@ -52,40 +52,6 @@ jobs:
         name: code-coverage-report
         path: build/reports
       if: always()
-  test_ios:
-    runs-on: macos-latest
-    environment: testing
-    env:
-      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v2
-      - name: Test ios
-        run: gradle iosX64Test
-      - name: Archive test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: build/reports
-        if: always()
-  test_tvos:
-    runs-on: macos-latest
-    environment: testing
-    env:
-      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v2
-      - name: Test tvos
-        run: gradle tvosX64Test
-      - name: Archive test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: build/reports
-        if: always()
   test_windows:
     runs-on: windows-latest
     environment: testing
