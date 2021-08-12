@@ -12,6 +12,7 @@ on:
 jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
+    environment: testing
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
@@ -38,6 +39,7 @@ jobs:
       if: always()
   test_mac:
     runs-on: macos-latest
+    environment: testing
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
@@ -64,6 +66,7 @@ jobs:
       if: always()
   test_windows:
     runs-on: windows-latest
+    environment: testing
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
