@@ -13,12 +13,8 @@ jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out repository code
+    - name: Check out repo
       uses: actions/checkout@v2
-    - name: see tasks
-      run: ls
-    - name: cd to repo
-      run: cd spotify-web-api-kotlin
     - name: Test android
       run: gradle testDebugUnitTest
       env: # Or as an environment variable
@@ -37,6 +33,8 @@ jobs:
   test_mac:
     runs-on: macos-latest
     steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Test mac
       run: gradle macosX64Test
       env: # Or as an environment variable
@@ -55,6 +53,8 @@ jobs:
   test_windows:
     runs-on: windows-latest
     steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Test windows
       run: gradle mingwX64Test
       env: # Or as an environment variable
