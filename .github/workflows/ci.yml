@@ -13,6 +13,11 @@ jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
     steps:
+    - name: see tasks
+      run: gradle tasks
+      env: # Or as an environment variable
+        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test android
       run: gradle testDebugUnitTest
       env: # Or as an environment variable
