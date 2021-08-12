@@ -20,7 +20,7 @@ jobs:
     - name: Check out repo
       uses: actions/checkout@v2
     - name: Install curl
-      run: sudo apt-get install -y curl libcurl-dev
+      run: sudo apt-get install -y curl libcurl4-openssl-dev
     - name: Test secret
       run: echo "client id secret is $SPOTIFY_CLIENT_ID"
     - name: Test android
