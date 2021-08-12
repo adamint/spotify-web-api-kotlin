@@ -13,6 +13,7 @@ jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
     environment: testing
+    container: mingc/android-build-box
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
