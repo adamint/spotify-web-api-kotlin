@@ -13,11 +13,12 @@ jobs:
   test_android_jvm_linux:
     runs-on: ubuntu-latest
     steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
     - name: see tasks
       run: ls
-      env: # Or as an environment variable
-        SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-        SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+    - name: cd to repo
+      run: cd spotify-web-api-kotlin
     - name: Test android
       run: gradle testDebugUnitTest
       env: # Or as an environment variable
