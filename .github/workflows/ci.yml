@@ -17,19 +17,24 @@ jobs:
       uses: actions/checkout@v2
     - name: Test android
       run: gradle testDebugUnitTest
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test jvm
       run: gradle jvmTest
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test linux
       run: gradle linuxX64Test
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+    - name: Archive test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: build/reports
   test_mac:
     runs-on: macos-latest
     steps:
@@ -37,19 +42,24 @@ jobs:
       uses: actions/checkout@v2
     - name: Test mac
       run: gradle macosX64Test
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test ios
       run: gradle iosX64Test
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
     - name: Test tvos
       run: gradle tvosX64Test
-      env: # Or as an environment variable
+      env:
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+    - name: Archive test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: build/reports
   test_windows:
     runs-on: windows-latest
     steps:
@@ -60,5 +70,9 @@ jobs:
       env: # Or as an environment variable
         SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
         SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-    
+    - name: Archive test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: build/reports
       

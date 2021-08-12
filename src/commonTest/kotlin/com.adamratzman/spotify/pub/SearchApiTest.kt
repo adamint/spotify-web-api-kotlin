@@ -47,15 +47,10 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testSearchAlbum() {
         return runBlockingTest {
-            println("h1...")
             super.build<GenericSpotifyApi>()
-            println("2..")
             if (!testPrereq()) return@runBlockingTest else api!!
-            println("3...")
             assertTrue(api!!.search.searchAlbum("le début").items.isNotEmpty())
-            println("4...")
             assertFailsWith<SpotifyException.BadRequestException> { api!!.search.searchAlbum("").items.size }
-            println("5...")
         }
     }
 
