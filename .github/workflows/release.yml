@@ -57,7 +57,7 @@ jobs:
       - name: Publish windows
         run: gradle publishMingwX64PublicationToNexusRepository
   release_docs:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: release
     steps:
       - name: Check out repo
