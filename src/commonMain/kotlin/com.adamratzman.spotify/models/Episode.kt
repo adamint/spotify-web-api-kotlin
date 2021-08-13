@@ -103,14 +103,14 @@ public data class Episode(
     private val language: String? = null,
     @SerialName("languages") private val showLanguagesPrivate: List<String>,
     val name: String,
-    @SerialName("release_date") private val releaseDateString: String,
-    @SerialName("release_date_precision") val releaseDatePrecisionString: String,
+    @SerialName("release_date") private val releaseDateString: String? = null,
+    @SerialName("release_date_precision") val releaseDatePrecisionString: String? = null,
     @SerialName("resume_point") val resumePoint: ResumePoint? = null,
     val show: SimpleShow,
     val type: String,
     override val uri: EpisodeUri
 ) : CoreObject() {
-    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate? get() = releaseDateString?.let { getReleaseDate(releaseDateString) }
 
     @Suppress("DEPRECATION")
     val languages: List<Locale>
@@ -155,13 +155,13 @@ public data class SimpleEpisode(
     private val language: String? = null,
     @SerialName("languages") private val showLanguagesPrivate: List<String>,
     val name: String,
-    @SerialName("release_date") private val releaseDateString: String,
-    @SerialName("release_date_precision") val releaseDatePrecisionString: String,
+    @SerialName("release_date") private val releaseDateString: String? = null,
+    @SerialName("release_date_precision") val releaseDatePrecisionString: String? = null,
     @SerialName("resume_point") val resumePoint: ResumePoint? = null,
     val type: String,
     override val uri: SpotifyUri
 ) : CoreObject() {
-    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate? get() = releaseDateString?.let { getReleaseDate(releaseDateString) }
 
     @Suppress("DEPRECATION")
     val languages: List<Locale>
@@ -180,7 +180,8 @@ public data class SimpleEpisode(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullEpisodeRestAction(market: Market): SpotifyRestAction<Episode?> = SpotifyRestAction { toFullEpisode(market) }
+    public fun toFullEpisodeRestAction(market: Market): SpotifyRestAction<Episode?> =
+        SpotifyRestAction { toFullEpisode(market) }
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
 }

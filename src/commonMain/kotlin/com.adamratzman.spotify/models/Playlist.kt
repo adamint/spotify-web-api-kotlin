@@ -154,4 +154,4 @@ public data class PlaylistTrackInfo(
 )
 
 @Serializable
-public data class VideoThumbnail(val url: String?)
+public data class VideoThumbnail(val url: String? = null)

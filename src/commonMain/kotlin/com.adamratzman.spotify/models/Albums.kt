@@ -45,8 +45,8 @@ public data class SimpleAlbum(
     val name: String,
     val type: String,
     val restrictions: Restrictions? = null,
-    @SerialName("release_date") private val releaseDateString: String,
-    @SerialName("release_date_precision") val releaseDatePrecisionString: String,
+    @SerialName("release_date") private val releaseDateString: String? = null,
+    @SerialName("release_date_precision") val releaseDatePrecisionString: String? = null,
     @SerialName("total_tracks") val totalTracks: Int? = null,
     @SerialName("album_group") private val albumGroupString: String? = null
 ) : CoreObject() {
@@ -57,7 +57,7 @@ public data class SimpleAlbum(
             AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
         }
 
-    val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
+    val releaseDate: ReleaseDate? get() = releaseDateString?.let { getReleaseDate(releaseDateString) }
 
     val albumGroup: AlbumResultType?
         get() = albumGroupString?.let { _ ->
@@ -78,7 +78,8 @@ public data class SimpleAlbum(
      *
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      */
-    public fun toFullAlbumRestAction(market: Market? = null): SpotifyRestAction<Album?> = SpotifyRestAction { toFullAlbum(market) }
+    public fun toFullAlbumRestAction(market: Market? = null): SpotifyRestAction<Album?> =
+        SpotifyRestAction { toFullAlbum(market) }
 
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = artists + this
 }
@@ -176,9 +177,9 @@ public data class SpotifyCopyright(
 ) {
     val text: String
         get() = textString
-                .removePrefix("(P)")
-                .removePrefix("(C)")
-                .trim()
+            .removePrefix("(P)")
+            .removePrefix("(C)")
+            .trim()
 
     val type: CopyrightType get() = CopyrightType.values().match(typeString)!!
 }
