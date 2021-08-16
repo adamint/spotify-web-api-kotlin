@@ -1,11 +1,11 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package co.scdn.sdk
-/*
+
 import com.adamratzman.spotify.webplayer.Error
 import com.adamratzman.spotify.webplayer.PlaybackState
 import com.adamratzman.spotify.webplayer.WebPlaybackInstance
 import kotlinx.browser.window
-/*
+
 public fun setOnSpotifyWebPlaybackSDKReady(callback: suspend () -> Unit) {
     val dynamicWindow: dynamic = window
     dynamicWindow["onSpotifyWebPlaybackSDKReady"] = callback
@@ -52,4 +52,3 @@ public enum class SpotifyWebPlaybackEvent(public val spotifyId: String) {
 public typealias ErrorListener = (err: Error) -> Unit
 public typealias PlaybackPlayerListener = (inst: WebPlaybackInstance) -> Unit
 public typealias PlaybackStateListener = (s: PlaybackState) -> Unit
-*/

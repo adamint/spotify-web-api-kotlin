@@ -1,7 +1,6 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 @file:Suppress("PropertyName", "unused")
 
-/*
 package com.adamratzman.spotify.webplayer
 
 import co.scdn.sdk.ErrorListener
@@ -63,7 +62,7 @@ public external interface PlaybackRestrictions {
     public var disallow_seeking_reasons: Array<String>
     public var disallow_skipping_next_reasons: Array<String>
     public var disallow_skipping_prev_reasons: Array<String>
-}*//*
+}
 
 /**
  * This is an object that is provided every time Spotify.Player#getCurrentState is called. It contains information on context, permissions, playback state, the user’s session, and more.
@@ -286,4 +285,3 @@ public external interface Track {
 public external interface WebPlaybackInstance {
     public var device_id: String
 }
-*/

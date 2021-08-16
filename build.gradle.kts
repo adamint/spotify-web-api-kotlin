@@ -121,7 +121,7 @@ kotlin {
     }
 
     val irOnlyJs = project.hasProperty("irOnly")
-    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
+    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.IR) {
 
         mavenPublication {
             setupPom(artifactId)
@@ -129,6 +129,7 @@ kotlin {
 
         browser {
             webpackTask {
+                output.globalObject = "this"
                 output.libraryTarget = Target.UMD
             }
 
@@ -145,6 +146,28 @@ kotlin {
             testTask {
                 useMocha {
                     timeout = "15000"
+                }
+            }
+        }
+
+        if (irOnlyJs) binaries.library()
+    }
+
+    js("jsBrowserExtensions", if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.IR) {
+        mavenPublication {
+            setupPom(artifactId)
+        }
+
+        browser {
+            webpackTask {
+                output.libraryTarget = "plain"//Target.
+            }
+
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                    //useChrome()
+                    webpackConfig.cssSupport.enabled = true
                 }
             }
         }
@@ -212,6 +235,8 @@ kotlin {
     }
 
     targets {
+        val kotlinxDatetimeVersion = "0.2.1"
+
         sourceSets {
             val serializationVersion = "1.2.2"
             val ktorVersion = "1.6.2"
@@ -220,13 +245,11 @@ kotlin {
             val androidSpotifyAuthVersion = "1.2.3"
             val androidCryptoVersion = "1.0.0"
             val coroutineMTVersion = "1.5.1-native-mt"
-            val kotlinxDatetimeVersion = "0.2.1"
 
             val commonMain by getting {
                 dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
 
@@ -244,6 +267,7 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                     implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.3")
                 }
             }
@@ -274,7 +298,6 @@ kotlin {
                     implementation(npm("abort-controller", "3.0.0"))
                     implementation(npm("node-fetch", "2.6.1"))
                     implementation(kotlin("stdlib-js"))
-
                 }
             }
 
@@ -282,6 +305,16 @@ kotlin {
                 dependencies {
                     implementation(kotlin("test-js"))
                 }
+            }
+
+            val jsBrowserExtensionsMain by getting {
+                dependsOn(jsMain)
+
+            }
+
+            val jsBrowserExtensionsTest by getting {
+                dependsOn(jsTest)
+
             }
 
             val androidMain by getting {
@@ -318,6 +351,7 @@ kotlin {
                         }
                     }
                     implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
 
@@ -359,6 +393,7 @@ kotlin {
                         }
                     }
                     implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
 
@@ -479,7 +514,9 @@ tasks {
 
 
 fun MavenPublication.setupPom(publicationName: String) {
-    artifactId = artifactId.replace("-web", "")
+    artifactId = artifactId
+        .replace("-web", "")
+        .replace("jsbrowserextensions", "js-browser-extensions")
     artifact(dokkaJar.get())
 
     pom {

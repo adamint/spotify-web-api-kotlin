@@ -6,6 +6,7 @@ import io.ktor.http.encodeURLQueryComponent
 import kotlin.js.Promise
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import kotlin.js.Date
 
 internal actual fun String.encodeUrl() = encodeURLQueryComponent()
 
@@ -24,4 +25,16 @@ public actual fun <T> runBlockingOnJvmAndNative(block: suspend () -> T): T {
 
 public fun <T> SpotifyRestAction<T>.asPromise(): Promise<T> = GlobalScope.promise {
     supplier()
+}
+
+/**
+ * The current time in milliseconds since UNIX epoch.
+ */
+public actual fun getCurrentTimeMs(): Long = Date.now().toLong()
+
+/**
+ * Format date to ISO 8601 format
+ */
+internal actual fun formatDate(date: Long): String {
+    return Date(date).toISOString()
 }

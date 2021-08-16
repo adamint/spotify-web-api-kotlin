@@ -218,9 +218,9 @@ host. Ex: for the redirect uri `myapp://authcallback`, the scheme is `myapp` and
             android:name="YOUR_CLASS_IMPLEMENTING_AbstractSpotifyAppImplicitLoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
             <data android:scheme="YOUR_REDIRECT_SCHEME" android:host="YOUR_REDIRECT_HOST"/>
         </intent-filter>
     </activity>

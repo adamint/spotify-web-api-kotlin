@@ -7,7 +7,6 @@ import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.file.std.UrlVfs
 import com.soywiz.korio.file.std.localVfs
 import com.soywiz.krypto.encoding.Base64
-import io.ktor.utils.io.core.String
 
 /**
  * Represents an image. Please use convertXToBufferedImage and convertBufferedImageToX methods to read and write [BufferedImage]
