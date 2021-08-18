@@ -121,7 +121,7 @@ kotlin {
     }
 
     val irOnlyJs = project.hasProperty("irOnly")
-    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.IR) {
+    js(if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.BOTH) {
 
         mavenPublication {
             setupPom(artifactId)
@@ -149,28 +149,6 @@ kotlin {
                 }
             }
         }*/
-
-        if (irOnlyJs) binaries.library()
-    }
-
-    js("jsBrowserExtensions", if (irOnlyJs) KotlinJsCompilerType.IR else KotlinJsCompilerType.IR) {
-        mavenPublication {
-            setupPom(artifactId)
-        }
-
-        browser {
-            webpackTask {
-                output.libraryTarget = "plain"//Target.
-            }
-
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    //useChrome()
-                    webpackConfig.cssSupport.enabled = true
-                }
-            }
-        }
 
         if (irOnlyJs) binaries.library()
     }
@@ -305,16 +283,6 @@ kotlin {
                 dependencies {
                     implementation(kotlin("test-js"))
                 }
-            }
-
-            val jsBrowserExtensionsMain by getting {
-                dependsOn(jsMain)
-
-            }
-
-            val jsBrowserExtensionsTest by getting {
-                dependsOn(jsTest)
-
             }
 
             val androidMain by getting {
@@ -516,7 +484,6 @@ tasks {
 fun MavenPublication.setupPom(publicationName: String) {
     artifactId = artifactId
         .replace("-web", "")
-        .replace("jsbrowserextensions", "js-browser-extensions")
     artifact(dokkaJar.get())
 
     pom {

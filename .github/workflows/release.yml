@@ -33,9 +33,9 @@ jobs:
       - name: Verify Android
         run: gradle testDebugUnitTest
       - name: Verify JVM/JS
-        run: gradle jvmTest jsTest jsBrowserExtensionsLegacyTest
+        run: gradle jvmTest jsLegacyTest jsIrTest
       - name: Publish JVM/Linux/Android
-        run: gradle publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository publishJsPublicationToNexusRepository publishJsBrowserExtensionsPublicationToNexusRepository
+        run: gradle publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository publishJsPublicationToNexusRepository
       - name: Archive test results
         uses: actions/upload-artifact@v2
         with:
