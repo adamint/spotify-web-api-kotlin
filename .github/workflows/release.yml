@@ -36,6 +36,12 @@ jobs:
         run: gradle jvmTest jsIrTest jsBrowserExtensionsLegacyTest
       - name: Publish JVM/Linux/Android
         run: gradle publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository publishJsPublicationToNexusRepository publishJsBrowserExtensionsPublicationToNexusRepository
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: build/reports
+        if: always()
   release_mac:
     runs-on: macos-latest
     environment: release
