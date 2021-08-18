@@ -142,13 +142,13 @@ kotlin {
             }
         }
 
-        nodejs {
+        /*nodejs {
             testTask {
                 useMocha {
                     timeout = "15000"
                 }
             }
-        }
+        }*/
 
         if (irOnlyJs) binaries.library()
     }

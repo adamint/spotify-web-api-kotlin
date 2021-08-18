@@ -25,7 +25,6 @@ class EpisodeApiTest : AbstractTest<GenericSpotifyApi>() {
                 "The Great Inflation (Classic)",
                 api!!.episodes.getEpisode("3lMZTE81Pbrp0U12WZe27l", market = market)?.name
             )
-            println("sample episode: ${api!!.episodes.getEpisode("3lMZTE81Pbrp0U12WZe27l", market)?.name}")
         }
     }
 
