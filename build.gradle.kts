@@ -406,11 +406,11 @@ publishing {
 
 signing {
     if (project.hasProperty("SIGNING_KEY")
-        && project.hasProperty("SIGNING_KEY_PASSWORD")
+        && project.hasProperty("SIGNING_PASSWORD")
     ) {
         useInMemoryPgpKeys(
             project.findProperty("SIGNING_KEY") as? String,
-            project.findProperty("SIGNING_KEY_PASSWORD") as? String
+            project.findProperty("SIGNING_PASSWORD") as? String
         )
         sign(publishing.publications)
     }
