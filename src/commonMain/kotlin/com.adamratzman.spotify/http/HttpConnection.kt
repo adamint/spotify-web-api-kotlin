@@ -91,7 +91,7 @@ public class HttpConnection constructor(
         val httpRequest = buildRequest(additionalHeaders)
         if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: Request: $this")
         try {
-            return HttpClient().request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
+            return httpClient.request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
                 val respCode = response.status.value
 
                 if (respCode in 500..599 && (retryIfInternalServerErrorLeft == null || retryIfInternalServerErrorLeft == -1 || retryIfInternalServerErrorLeft > 0)) {
@@ -215,6 +215,12 @@ public class HttpConnection constructor(
             |contentType=$contentType,
             |headers=${headers.toList()}
             |  )""".trimMargin()
+    }
+
+    internal companion object {
+        internal val httpClient = HttpClient {
+            expectSuccess = false
+        }
     }
 }
 
