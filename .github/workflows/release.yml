@@ -17,7 +17,7 @@ env:
   SPOTIFY_TOKEN_STRING: ${{ github.event.inputs.spotify_test_client_token }}
   SPOTIFY_REDIRECT_URI: ${{ github.event.inputs.spotify_test_redirect_uri }}
   ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-  ORG_GRADLE_PROJECT_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+  ORG_GRADLE_PROJECT_NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
   ORG_GRADLE_PROJECT_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
   ORG_GRADLE_PROJECT_SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
   SPOTIFY_API_PUBLISH_VERSION: ${{ github.event.inputs.release_version }}

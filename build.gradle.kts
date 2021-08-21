@@ -420,7 +420,7 @@ npmPublishing {
     repositories {
         repository("npmjs") {
             registry = uri("https://registry.npmjs.org")
-            (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
+            (project.properties["npmauthtoken"] as? String)?.let { authToken = it }
         }
     }
 }
