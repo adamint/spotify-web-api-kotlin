@@ -45,21 +45,19 @@ jobs:
   release_mac:
     runs-on: macos-latest
     environment: release
+    needs: release_android_jvm_linux_js
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
-      - name: Verify macOS
-        run: gradle macosX64Test
       - name: Publish macOS/tvOS/iOS
         run: gradle publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishTvosX64PublicationToNexusRepository
   release_windows:
     runs-on: windows-latest
     environment: release
+    needs: release_android_jvm_linux_js
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
-      - name: Verify windows
-        run: gradle mingwX64Test
       - name: Publish windows
         run: gradle publishMingwX64PublicationToNexusRepository
   release_docs:
