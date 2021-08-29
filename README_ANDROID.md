@@ -315,3 +315,7 @@ class ViewBroadcastsActivity : BaseActivity() {
 }
 
 ```
+
+## Compatibility below Android API26
+
+Older versions of Android do not include some of the required Java8 APIs. To target these older APIs, you must enable [Java8 API Desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) in your app.
