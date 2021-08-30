@@ -71,7 +71,6 @@ fun buildSpotifyApiSync() = when {
     else -> null.also { instantiationCompleted = true }
 }
 
-
 expect fun getEnvironmentVariable(name: String): String?
 
 expect fun Exception.stackTrace()

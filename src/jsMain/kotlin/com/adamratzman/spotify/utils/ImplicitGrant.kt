@@ -5,9 +5,8 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyImplicitGrantApi
 import com.adamratzman.spotify.models.Token
-import org.w3c.dom.url.URLSearchParams
-
 import kotlinx.browser.window
+import org.w3c.dom.url.URLSearchParams
 
 /**
  * Parse the current url into a valid [Token] to be used when instantiating a new [SpotifyImplicitGrantApi]

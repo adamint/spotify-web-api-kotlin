@@ -248,7 +248,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null) {
         requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
         put(
-            endpointBuilder("/me/player/repeat").with("state", state.toString().toLowerCase()).with(
+            endpointBuilder("/me/player/repeat").with("state", state.toString().lowercase()).with(
                 "device_id",
                 deviceId
             ).toString()

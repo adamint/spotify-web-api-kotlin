@@ -30,5 +30,4 @@ internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T?
 internal fun <T : ResultEnum> Array<T>.match(identifier: String) =
     firstOrNull { it.retrieveIdentifier().toString().equals(identifier, true) }
 
-
 public expect fun <T> runBlockingOnJvmAndNative(block: suspend () -> T): T

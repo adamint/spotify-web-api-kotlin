@@ -11,18 +11,17 @@ import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.runBlockingTest
 import com.adamratzman.spotify.utils.Platform
 import com.adamratzman.spotify.utils.currentApiPlatform
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     var createdPlaylist: Playlist? = null
     var playlistsBefore: List<SimplePlaylist>? = null
-
 
     private suspend fun init() {
         if (api != null) {

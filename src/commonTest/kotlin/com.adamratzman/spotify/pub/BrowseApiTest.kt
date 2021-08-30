@@ -17,7 +17,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 
-class BrowseApiTest: AbstractTest<GenericSpotifyApi>() {
+class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
     fun testGenreSeeds() {
         return runBlockingTest {

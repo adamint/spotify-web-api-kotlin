@@ -11,12 +11,12 @@ import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.UserUri
 import com.adamratzman.spotify.runBlockingTest
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.Json
 
 class UrisTests {
     @Test

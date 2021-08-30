@@ -3,10 +3,10 @@ package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
 import io.ktor.http.encodeURLQueryComponent
+import kotlin.js.Date
 import kotlin.js.Promise
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
-import kotlin.js.Date
 
 internal actual fun String.encodeUrl() = encodeURLQueryComponent()
 
