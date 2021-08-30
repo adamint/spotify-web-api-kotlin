@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 actual fun getEnvironmentVariable(name: String): String? {
-    //return if (jsTypeOf("process") === undefined) null else js("process")?.env[name].unsafeCast<String?>()
+    // return if (jsTypeOf("process") === undefined) null else js("process")?.env[name].unsafeCast<String?>()
     return null
 }
 

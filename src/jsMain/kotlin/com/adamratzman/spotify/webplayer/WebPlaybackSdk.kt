@@ -1,4 +1,5 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+@file:JsQualifier("window.Spotify")
 @file:Suppress("PropertyName", "unused")
 
 package com.adamratzman.spotify.webplayer

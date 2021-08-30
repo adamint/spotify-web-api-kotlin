@@ -26,7 +26,6 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
             false
         }
     }
-
 }
 
 typealias GenericSpotifyApiTest = AbstractTest<GenericSpotifyApi>

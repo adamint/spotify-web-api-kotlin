@@ -4,11 +4,11 @@ package com.adamratzman.spotify
 import com.adamratzman.spotify.SpotifyException.AuthenticationException
 import kotlin.random.Random
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlinx.coroutines.runBlocking
 import spark.Spark.exception
 import spark.Spark.get
 import spark.Spark.port
-import kotlin.test.assertFailsWith
 
 class PkceTest {
 
