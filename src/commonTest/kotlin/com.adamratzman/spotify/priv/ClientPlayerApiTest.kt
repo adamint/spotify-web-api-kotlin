@@ -3,6 +3,7 @@ package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.models.CurrentlyPlayingType
 import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.SpotifyContextType
@@ -25,6 +26,10 @@ import kotlinx.coroutines.delay
 
 @ExperimentalTime
 class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
+    override fun testPrereq(): Boolean {
+        return super.testPrereq() && getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
+    }
+
     @Test
     fun testGetDevices() {
         return runBlockingTest {
