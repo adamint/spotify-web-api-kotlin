@@ -4,7 +4,7 @@ package com.adamratzman.spotify
 abstract class AbstractTest<T : GenericSpotifyApi> {
     var api: T? = null
 
-    fun testPrereq() = api != null
+    open fun testPrereq() = api != null
 
     suspend inline fun <reified Z : T> build(): Boolean {
         return try {
