@@ -1,12 +1,11 @@
 package com.adamratzman.spotify.utils
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 /**
  * The current time in milliseconds since UNIX epoch.
  */
-actual fun getCurrentTimeMs(): Long = Clock.System.now().toEpochMilliseconds()
+actual fun getCurrentTimeMs(): Long = System.currentTimeMillis()
 
 /**
  * Format date to ISO 8601 format
