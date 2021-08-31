@@ -76,10 +76,8 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimpleAlbum> = get(
-        endpointBuilder("/browse/new-releases").with("limit", limit).with("offset", offset).with(
-            "country",
-            market?.name
-        ).toString()
+        endpointBuilder("/browse/new-releases").with("limit", limit)
+            .with("offset", offset).with("country", market?.name).toString()
     ).toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api = api, json = json)
 
     /**
@@ -281,11 +279,10 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SimplePlaylist> = get(
-        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists").with(
-            "limit",
-            limit
-        ).with("offset", offset)
-            .with("market", market?.name).toString()
+        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists")
+            .with("limit", limit)
+            .with("offset", offset)
+            .with("country", market?.name).toString()
     ).toNonNullablePagingObject((SimplePlaylist.serializer()), "playlists", api = api, json = json)
 
     /**

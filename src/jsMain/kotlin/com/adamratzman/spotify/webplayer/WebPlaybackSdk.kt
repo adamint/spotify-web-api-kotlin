@@ -133,6 +133,14 @@ public open external class Player(options: PlayerInit) {
     public open fun getCurrentState(): Promise<PlaybackState?>
 
     /**
+     * Some browsers prevent autoplay of media by ensuring that all playback is triggered by
+     * synchronous event-paths originating from user interaction such as a click.
+     * This event allows you to manually activate the element if action is deferred or done
+     * in a separate execution context than the user action.
+     */
+    public fun activateElement(): Promise<Any>
+
+    /**
      * Get the local volume currently set in the Web Playback SDK.
      * @return Returns a Promise containing the local volume (as a Float between 0 and 1).
      */
