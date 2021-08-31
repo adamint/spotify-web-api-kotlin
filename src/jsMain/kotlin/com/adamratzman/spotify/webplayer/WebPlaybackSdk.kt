@@ -103,7 +103,7 @@ public external interface PlaybackTrackWindow {
  */
 public external interface PlayerInit {
     public var name: String
-    public fun getOAuthToken(cb: (token: String) -> Unit)
+    public var getOAuthToken: (cb: (token: String) -> Unit) -> Unit
     public var volume: Number?
         get() = definedExternally
         set(value) = definedExternally
