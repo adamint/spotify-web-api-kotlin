@@ -13,13 +13,6 @@ Please see [the Java section](#java) for more details.
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 [![codebeat badge](https://codebeat.co/badges/0ab613b0-31d7-4848-aebc-4ed1e51f069c)](https://codebeat.co/projects/github-com-adamint-spotify-web-api-kotlin-master)
 
-
-![Android Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_AndroidTests?label=Kotlin%2FAndroid%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![JS tests Status](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JsTests?label=Kotlin%2FJS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![JVM tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JvmTests?label=Kotlin%2FJVM%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![Linux Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_LinuxTests?label=Kotlin%2FLinux%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![macOS Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_RunTestsMac?label=Kotlin%2FmacOS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-
 ## Table of Contents
 * [Library installing](#library-installing)
     + [JVM, Android, JS, Native](#jvm-android-js)
