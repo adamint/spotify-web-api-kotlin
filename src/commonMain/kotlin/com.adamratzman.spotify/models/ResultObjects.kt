@@ -129,7 +129,7 @@ public data class ErrorObject(val status: Int, val message: String, val reason: 
 @Serializable
 public data class AuthenticationError(
     val error: String,
-    @SerialName("error_description") val description: String
+    @SerialName("error_description") val description: String? = null
 )
 
 /**

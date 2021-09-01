@@ -1849,7 +1849,7 @@ public enum class Market(
     /**
      * A special Market for endpoints to return content available in the user's own market
      */
-    from_token("from_token", "ZZZ", 999, Assignment.NOT_USED);
+    FROM_TOKEN("from_token", "ZZZ", 999, Assignment.NOT_USED);
 
     /**
      * Code assignment state in [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1).

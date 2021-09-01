@@ -103,7 +103,7 @@ public external interface PlaybackTrackWindow {
  */
 public external interface PlayerInit {
     public var name: String
-    public fun getOAuthToken(cb: (token: String) -> Unit)
+    public var getOAuthToken: (cb: (token: String) -> Unit) -> Unit
     public var volume: Number?
         get() = definedExternally
         set(value) = definedExternally
@@ -131,6 +131,14 @@ public open external class Player(options: PlayerInit) {
      * @return Returns a Promise. It will return either a WebPlaybackState object or null depending on if the user is successfully connected.
      */
     public open fun getCurrentState(): Promise<PlaybackState?>
+
+    /**
+     * Some browsers prevent autoplay of media by ensuring that all playback is triggered by
+     * synchronous event-paths originating from user interaction such as a click.
+     * This event allows you to manually activate the element if action is deferred or done
+     * in a separate execution context than the user action.
+     */
+    public fun activateElement(): Promise<Any>
 
     /**
      * Get the local volume currently set in the Web Playback SDK.
