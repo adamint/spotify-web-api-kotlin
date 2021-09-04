@@ -8,7 +8,7 @@ Please see [the Java section](#java) for more details.
 
 **Use this library in Kotlin, Java, JavaScript, Swift, or native code!** Because this library targets both iOS and Android, it can also be used in KMM ([Kotlin Multiplatform Mobile](https://kotlinlang.org/lp/mobile/)) applications as a shared source.
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
+[![Maven CEntral](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 [![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 [![codebeat badge](https://codebeat.co/badges/0ab613b0-31d7-4848-aebc-4ed1e51f069c)](https://codebeat.co/projects/github-com-adamint-spotify-web-api-kotlin-master)
@@ -43,12 +43,12 @@ Please see [the Java section](#java) for more details.
 ## Library installing
 Current version:
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 
 ### JVM, Android, JS, Native Desktop (macOS, Windows, Linux), iOS/tvOS
 ```
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
