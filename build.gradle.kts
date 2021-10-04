@@ -150,7 +150,7 @@ kotlin {
             }
         }*/
 
-        if (irOnlyJs) binaries.library()
+        if (irOnlyJs) binaries.executable()
     }
 
     // val hostOs = System.getProperty("os.name")
