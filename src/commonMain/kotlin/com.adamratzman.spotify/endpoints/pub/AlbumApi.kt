@@ -68,7 +68,7 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getAlbums(vararg albums: String, market: Market? = null): List<Album?> {
         checkBulkRequesting(20, albums.size)
-        return bulkRequest(20, albums.toList()) { chunk ->
+        return bulkStatelessRequest(20, albums.toList()) { chunk ->
             get(
                 endpointBuilder("/albums").with("ids", chunk.joinToString(",") { AlbumUri(it).id.encodeUrl() })
                     .with("market", market?.name).toString()

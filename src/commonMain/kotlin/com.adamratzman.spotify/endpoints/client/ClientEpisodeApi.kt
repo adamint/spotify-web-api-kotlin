@@ -75,7 +75,7 @@ public class ClientEpisodeApi(api: GenericSpotifyApi) : EpisodeApi(api) {
         requireScopes(SpotifyScope.USER_READ_PLAYBACK_POSITION)
         checkBulkRequesting(50, ids.size)
 
-        return bulkRequest(50, ids.toList()) { chunk ->
+        return bulkStatelessRequest(50, ids.toList()) { chunk ->
             get(
                 endpointBuilder("/episodes")
                     .with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })

@@ -66,7 +66,7 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getArtists(vararg artists: String): List<Artist?> {
         checkBulkRequesting(50, artists.size)
 
-        return bulkRequest(50, artists.toList()) { chunk ->
+        return bulkStatelessRequest(50, artists.toList()) { chunk ->
             get(
                 endpointBuilder("/artists").with(
                     "ids",

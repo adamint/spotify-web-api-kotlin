@@ -5,12 +5,12 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
     id("lt.petuska.npm.publish") version "1.1.2"
-    kotlin("multiplatform") version "1.5.21"
+    kotlin("multiplatform") version "1.5.31"
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.5.21"
+    kotlin("plugin.serialization") version "1.5.31"
     id("com.diffplug.spotless") version "5.14.2"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.5.0"
@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     }
 }
 

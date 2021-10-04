@@ -112,7 +112,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun isFollowingUsers(vararg users: String): List<Boolean> {
         requireScopes(SpotifyScope.USER_FOLLOW_READ)
         checkBulkRequesting(50, users.size)
-        return bulkRequest(50, users.toList()) { chunk ->
+        return bulkStatelessRequest(50, users.toList()) { chunk ->
             get(
                 endpointBuilder("/me/following/contains").with("type", "user")
                     .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
@@ -181,7 +181,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun isFollowingArtists(vararg artists: String): List<Boolean> {
         requireScopes(SpotifyScope.USER_FOLLOW_READ)
         checkBulkRequesting(50, artists.size)
-        return bulkRequest(50, artists.toList()) { chunk ->
+        return bulkStatelessRequest(50, artists.toList()) { chunk ->
             get(
                 endpointBuilder("/me/following/contains").with("type", "artist")
                     .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
@@ -285,7 +285,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun followUsers(vararg users: String) {
         requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, users.size)
-        bulkRequest(50, users.toList()) { chunk ->
+        bulkStatelessRequest(50, users.toList()) { chunk ->
             put(
                 endpointBuilder("/me/following").with("type", "user")
                     .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
@@ -344,7 +344,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun followArtists(vararg artists: String) {
         requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, artists.size)
-        bulkRequest(50, artists.toList()) { chunk ->
+        bulkStatelessRequest(50, artists.toList()) { chunk ->
             put(
                 endpointBuilder("/me/following").with("type", "artist")
                     .with("ids", chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
@@ -462,7 +462,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun unfollowUsers(vararg users: String) {
         requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, users.size)
-        bulkRequest(50, users.toList()) { list ->
+        bulkStatelessRequest(50, users.toList()) { list ->
             delete(
                 endpointBuilder("/me/following").with("type", "user")
                     .with("ids", list.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()
@@ -528,7 +528,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     public suspend fun unfollowArtists(vararg artists: String) {
         requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
         checkBulkRequesting(50, artists.size)
-        bulkRequest(50, artists.toList()) { list ->
+        bulkStatelessRequest(50, artists.toList()) { list ->
             delete(
                 endpointBuilder("/me/following").with("type", "artist")
                     .with("ids", list.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
