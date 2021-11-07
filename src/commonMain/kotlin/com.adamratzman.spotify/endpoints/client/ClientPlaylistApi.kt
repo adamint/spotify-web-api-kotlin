@@ -173,7 +173,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
         checkBulkRequesting(100, playables.size)
 
-        bulkRequest(100, playables.toList()) { chunk ->
+        bulkStatefulRequest(100, playables.toList()) { chunk ->
             val body = jsonMap()
             body += buildJsonObject {
                 put(
@@ -804,7 +804,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         checkBulkRequesting(100, playables.size)
         if (snapshotId != null && playables.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 
-        return bulkRequest(100, playables.toList()) { chunk ->
+        return bulkStatefulRequest(100, playables.toList()) { chunk ->
             val body = jsonMap()
             if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
             body += buildJsonObject {

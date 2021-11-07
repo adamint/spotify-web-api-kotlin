@@ -44,7 +44,10 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
     }
 
-    protected suspend fun <T, R> bulkRequest(
+    /**
+     * Allow support for parallel execution of chunked requests
+     */
+    protected suspend fun <T, R> bulkStatelessRequest(
         chunkSize: Int,
         items: List<T>,
         producer: suspend (List<T>) -> R
@@ -57,6 +60,20 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
             }.awaitAll()
         }
     }
+
+    /**
+     * Allow sequential execution of chunked requests for stateful requests
+     */
+    protected suspend fun <T, R> bulkStatefulRequest(
+        chunkSize: Int,
+        items: List<T>,
+        producer: suspend (List<T>) -> R
+    ): List<R> {
+        return coroutineScope {
+            items.chunked(chunkSize).map { chunk -> producer(chunk) }
+        }
+    }
+
 
     internal suspend fun get(url: String): String {
         return execute(url)

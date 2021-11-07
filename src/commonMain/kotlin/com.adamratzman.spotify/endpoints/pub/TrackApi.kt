@@ -66,7 +66,7 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getTracks(vararg tracks: String, market: Market? = null): List<Track?> {
         checkBulkRequesting(50, tracks.size)
-        return bulkRequest(50, tracks.toList()) { chunk ->
+        return bulkStatelessRequest(50, tracks.toList()) { chunk ->
             get(
                 endpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
                     .with("market", market?.name).toString()
@@ -166,7 +166,7 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getAudioFeatures(vararg tracks: String): List<AudioFeatures?> {
         checkBulkRequesting(100, tracks.size)
-        return bulkRequest(100, tracks.toList()) { chunk ->
+        return bulkStatelessRequest(100, tracks.toList()) { chunk ->
             get(
                 endpointBuilder("/audio-features").with(
                     "ids",

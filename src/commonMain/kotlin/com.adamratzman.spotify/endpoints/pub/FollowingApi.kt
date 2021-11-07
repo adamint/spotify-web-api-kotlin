@@ -36,7 +36,7 @@ public open class FollowingApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): List<Boolean> {
         checkBulkRequesting(5, users.size)
 
-        return bulkRequest(5, users.toList()) { chunk ->
+        return bulkStatelessRequest(5, users.toList()) { chunk ->
             get(
                 endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/followers/contains")
                     .with("ids", chunk.joinToString(",") { UserUri(it).id.encodeUrl() }).toString()

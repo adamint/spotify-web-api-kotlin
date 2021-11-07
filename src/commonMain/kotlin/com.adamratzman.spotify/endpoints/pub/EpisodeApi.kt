@@ -84,7 +84,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getEpisodes(vararg ids: String, market: Market): List<Episode?> {
         checkBulkRequesting(50, ids.size)
 
-        return bulkRequest(50, ids.toList()) { chunk ->
+        return bulkStatelessRequest(50, ids.toList()) { chunk ->
             get(
                 endpointBuilder("/episodes").with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })
                     .with("market", market.name).toString()
