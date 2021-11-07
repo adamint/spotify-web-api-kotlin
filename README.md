@@ -8,17 +8,10 @@ Please see [the Java section](#java) for more details.
 
 **Use this library in Kotlin, Java, JavaScript, Swift, or native code!** Because this library targets both iOS and Android, it can also be used in KMM ([Kotlin Multiplatform Mobile](https://kotlinlang.org/lp/mobile/)) applications as a shared source.
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
-[![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/index.html)
+[![Maven CEntral](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
+[![](https://img.shields.io/badge/Documentation-latest-orange.svg)](https://adamint.github.io/spotify-web-api-kotlin-docs/)
 ![](https://img.shields.io/badge/License-MIT-blue.svg)
 [![codebeat badge](https://codebeat.co/badges/0ab613b0-31d7-4848-aebc-4ed1e51f069c)](https://codebeat.co/projects/github-com-adamint-spotify-web-api-kotlin-master)
-
-
-![Android Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_AndroidTests?label=Kotlin%2FAndroid%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![JS tests Status](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JsTests?label=Kotlin%2FJS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![JVM tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_JvmTests?label=Kotlin%2FJVM%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![Linux Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_LinuxTests?label=Kotlin%2FLinux%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
-![macOS Tests](https://img.shields.io/teamcity/build/s/SpotifyWebApiKotlin_RunTestsMac?label=Kotlin%2FmacOS%20Tests&server=https%3A%2F%2Fadam.beta.teamcity.com)
 
 ## Table of Contents
 * [Library installing](#library-installing)
@@ -50,12 +43,12 @@ Please see [the Java section](#java) for more details.
 ## Library installing
 Current version:
 
-[![JCenter](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 
 ### JVM, Android, JS, Native Desktop (macOS, Windows, Linux), iOS/tvOS
 ```
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 implementation("com.adamratzman:spotify-api-kotlin-core:VERSION")
@@ -96,7 +89,7 @@ packagingOptions {
 ```
 
 ## Documentation
-The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/index.html).
+The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.io/spotify-web-api-kotlin-docs/).
 
 ## Have a question?
 If you have a question, you can:
@@ -134,7 +127,7 @@ By default, the SpotifyApi `Token` automatically regenerates when needed.
 This can be changed by overriding the `automaticRefresh` builder setting.
 
 There are four exposed builders, depending on the level of control you need over api creation. 
-Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/spotify-app-api.html) for a full list of available builders.
+Please see the [spotifyAppApi builder docs](https://adamint.github.io/spotify-web-api-kotlin-docs/spotify-web-api-kotlin/com.adamratzman.spotify/-spotify-app-api/index.html) for a full list of available builders.
 
 You will need:
 - Spotify application client id
