@@ -213,16 +213,16 @@ kotlin {
     }
 
     targets {
-        val kotlinxDatetimeVersion = "0.2.1"
+        val kotlinxDatetimeVersion = "0.3.1"
 
         sourceSets {
-            val serializationVersion = "1.2.2"
-            val ktorVersion = "1.6.2"
+            val serializationVersion = "1.3.0"
+            val ktorVersion = "1.6.5"
             val korlibsVersion = "2.2.0"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.3"
             val androidCryptoVersion = "1.0.0"
-            val coroutineMTVersion = "1.5.1-native-mt"
+            val coroutineMTVersion = "1.5.2-native-mt"
 
             val commonMain by getting {
                 dependencies {

@@ -5,6 +5,7 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyApiOptions
 import com.adamratzman.spotify.SpotifyException
+import com.adamratzman.spotify.utils.ExternalUrls
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.getExternalUrls
 import kotlinx.serialization.SerialName
@@ -42,7 +43,7 @@ public abstract class CoreObject : Identifiable() {
     protected abstract val externalUrlsString: Map<String, String>
     abstract override val href: String
     public abstract val uri: SpotifyUri
-    public val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
+    public val externalUrls: ExternalUrls get() = getExternalUrls(externalUrlsString)
 
     public abstract override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?>
 }

@@ -109,7 +109,7 @@ public open class SpotifyRestAction<T> internal constructor(public val supplier:
         consumer: (T) -> Unit
     ) {
         val runAt = getCurrentTimeMs() + timeUnit.toMillis(quantity.toLong())
-        GlobalScope.launch {
+        scope.launch {
             delay(getCurrentTimeMs() - runAt)
 
             try {
