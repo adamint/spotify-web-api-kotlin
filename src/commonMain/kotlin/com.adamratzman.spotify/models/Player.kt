@@ -97,7 +97,7 @@ public enum class DeviceType(public val identifier: String) {
  * @param device The device that is currently active
  * @param progressMs Progress into the currently playing track. Can be null (e.g. If private session is enabled this will be null).
  * @param isPlaying If something is currently playing.
- * @param track The currently playing track. Can be null (e.g. If private session is enabled this will be null).
+ * @param item The currently playing item (track or episode). Can be null (e.g. If private session is enabled this will be null).
  * @param context A Context Object. Can be null (e.g. If private session is enabled this will be null).
  * *Note*: this will likely be null when playing the first track in a playlist or show context.
  * @param shuffleState If shuffle is on or off
@@ -110,7 +110,7 @@ public data class CurrentlyPlayingContext(
     val device: Device,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @SerialName("item") val track: Track? = null,
+    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
     val context: SpotifyContext? = null
@@ -126,7 +126,7 @@ public data class CurrentlyPlayingContext(
  * @param timestamp Unix Millisecond Timestamp when data was fetched
  * @param progressMs Progress into the currently playing track. Can be null.
  * @param isPlaying If something is currently playing.
- * @param track The currently playing track. Can be null.
+ * @param item The currently playing track or episode. Can be null.
  * @param actions Allows to update the user interface based on which playback actions are available within the current context
  *
  * @property currentlyPlayingType The object type of the currently playing item. Can be one of track, episode, ad or unknown.
@@ -137,7 +137,7 @@ public data class CurrentlyPlayingObject(
     val timestamp: Long,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @SerialName("item") val track: Track? = null,
+    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {

@@ -85,8 +85,8 @@ public interface SpotifyImplicitLoginActivity {
         if (requestCode == state) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
             logToConsole("Got implicit auth response of ${response.type}")
-            when (response.type) {
-                AuthorizationResponse.Type.TOKEN -> {
+            when {
+                response.type == AuthorizationResponse.Type.TOKEN -> {
                     val token = Token(
                         response.accessToken,
                         response.type.name,
@@ -102,11 +102,11 @@ public interface SpotifyImplicitLoginActivity {
                 }
                 // AuthorizationResponse.Type.CODE -> TODO()
                 // AuthorizationResponse.Type.UNKNOWN -> TODO()
-                AuthorizationResponse.Type.ERROR -> {
+                response.type == AuthorizationResponse.Type.ERROR -> {
                     logToConsole("Got error in authorization... executing error handler")
                     onFailure(response.error ?: "Generic authentication error")
                 }
-                AuthorizationResponse.Type.EMPTY -> {
+                response.type == AuthorizationResponse.Type.EMPTY -> {
                     logToConsole("Got empty authorization... executing error handler")
                     onFailure(response.error ?: "Authentication empty")
                 }

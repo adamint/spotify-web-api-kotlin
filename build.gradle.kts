@@ -14,7 +14,6 @@ plugins {
     id("com.diffplug.spotless") version "5.14.2"
     id("com.moowork.node") version "1.3.1"
     id("org.jetbrains.dokka") version "1.5.0"
-    id("kotlin-android-extensions")
 }
 
 repositories {
@@ -28,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.0")
+        classpath("com.android.tools.build:gradle:4.1.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     }
 }
@@ -56,7 +55,7 @@ android {
         exclude("META-INF/*.md")
     }
     defaultConfig {
-        minSdkVersion(15)
+        minSdkVersion(23)
         targetSdkVersion(30)
         compileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -69,7 +68,9 @@ android {
     testOptions {
         this.unitTests.isReturnDefaultValues = true
     }
-    sourceSets {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+    /*sourceSets {
         getByName("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
             java.setSrcDirs(listOf("src/androidMain/kotlin"))
@@ -79,7 +80,7 @@ android {
             java.setSrcDirs(listOf("src/androidTest/kotlin"))
             res.setSrcDirs(listOf("src/androidTest/res"))
         }
-    }
+    }*/
 }
 
 val dokkaJar by tasks.registering(Jar::class) {
@@ -217,7 +218,7 @@ kotlin {
 
         sourceSets {
             val serializationVersion = "1.3.0"
-            val ktorVersion = "1.6.5"
+            val ktorVersion = "1.6.3"
             val korlibsVersion = "2.2.0"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.3"
@@ -394,7 +395,7 @@ kotlin {
         }*/
 
             all {
-                languageSettings.useExperimentalAnnotation("kotlin.Experimental")
+                languageSettings.optIn("kotlin.RequiresOptIn")
             }
         }
     }

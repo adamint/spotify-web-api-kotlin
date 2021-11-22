@@ -11,6 +11,7 @@ import kotlin.coroutines.suspendCoroutine
 import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -78,6 +79,7 @@ public open class SpotifyRestAction<T> internal constructor(public val supplier:
      * @param failure Consumer to invoke when an exception is thrown by [supplier]
      * @param consumer to be invoked with [T] after successful completion of [supplier]
      */
+    @OptIn(DelicateCoroutinesApi::class)
     @JvmOverloads
     public fun queue(failure: ((Throwable) -> Unit) = { throw it }, consumer: ((T) -> Unit) = {}) {
         hasRunBacking = true
@@ -100,6 +102,7 @@ public open class SpotifyRestAction<T> internal constructor(public val supplier:
      * @param timeUnit the unit that [quantity] is in
      * @param consumer to be invoked with [T] after successful completion of [supplier]
      */
+    @OptIn(DelicateCoroutinesApi::class)
     @JvmOverloads
     public fun queueAfter(
         quantity: Int,
