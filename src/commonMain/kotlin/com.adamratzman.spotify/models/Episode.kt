@@ -107,9 +107,9 @@ public data class Episode(
     @SerialName("release_date_precision") val releaseDatePrecisionString: String? = null,
     @SerialName("resume_point") val resumePoint: ResumePoint? = null,
     val show: SimpleShow,
-    val type: String,
+    override val type: String,
     override val uri: EpisodeUri
-) : CoreObject() {
+) : CoreObject(), Playable {
     val releaseDate: ReleaseDate? get() = releaseDateString?.let { getReleaseDate(releaseDateString) }
 
     @Suppress("DEPRECATION")

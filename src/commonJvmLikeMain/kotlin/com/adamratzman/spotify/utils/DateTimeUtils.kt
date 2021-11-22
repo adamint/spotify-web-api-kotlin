@@ -6,7 +6,7 @@ import kotlinx.datetime.Instant
 /**
  * The current time in milliseconds since UNIX epoch.
  */
-actual fun getCurrentTimeMs(): Long = System.currentTimeMillis()
+public actual fun getCurrentTimeMs(): Long = System.currentTimeMillis()
 
 /**
  * Format date to ISO 8601 format

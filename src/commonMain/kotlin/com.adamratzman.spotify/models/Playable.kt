@@ -49,7 +49,10 @@ public object PlayableSerializer :
             return when (val uri: PlayableUri? =
                 (element as? JsonObject)?.get("uri")?.jsonPrimitive?.contentOrNull?.let { PlayableUri(it) }) {
                 is LocalTrackUri -> LocalTrack.serializer()
-                is EpisodeUri -> PodcastEpisodeTrack.serializer()
+                is EpisodeUri -> {
+                    if ((element as? JsonObject)?.get("show") != null) Episode.serializer()
+                    else PodcastEpisodeTrack.serializer()
+                }
                 is SpotifyTrackUri -> Track.serializer()
                 null -> throw IllegalStateException("Couldn't find a serializer for uri $uri")
             }

@@ -5,7 +5,9 @@ import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.models.CurrentlyPlayingType
+import com.adamratzman.spotify.models.Episode
 import com.adamratzman.spotify.models.PlayableUri
+import com.adamratzman.spotify.models.PodcastEpisodeTrack
 import com.adamratzman.spotify.models.SpotifyContextType
 import com.adamratzman.spotify.models.SpotifyTrackUri
 import com.adamratzman.spotify.models.Track
@@ -27,7 +29,9 @@ import kotlinx.coroutines.delay
 @ExperimentalTime
 class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     override fun testPrereq(): Boolean {
-        return super.testPrereq() && getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
+        val result = super.testPrereq() && getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
+        if (!result) println("Prereq failed")
+        return result
     }
 
     @Test
@@ -52,12 +56,12 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             delay(1000)
             val getCurrentContext = suspend { api!!.player.getCurrentContext() }
             var context = getCurrentContext()
-            assertTrue(context != null && context.isPlaying && context.track?.id == "6WcinC5nKan2DMFUfjVerX")
+            assertTrue(context != null && context.isPlaying && context.item?.id == "6WcinC5nKan2DMFUfjVerX")
             api!!.player.pause()
             context = getCurrentContext()!!
 
             assertTrue(!context.isPlaying)
-            assertNotNull(context.track?.id)
+            assertNotNull(context.item?.id)
 
             val playlist = api!!.playlists.getPlaylist("37i9dQZF1DXcBWIGoYBM5M")!!
             api!!.player.startPlayback(
@@ -65,7 +69,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             )
             delay(1000)
             context = getCurrentContext()
-            assertTrue(context != null && context.isPlaying && context.track?.id == playlist.tracks.items.first().track!!.id)
+            assertTrue(context != null && context.isPlaying && context.item?.id == playlist.tracks.items.first().track!!.id)
             api!!.player.pause()
         }
     }
@@ -123,11 +127,11 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             api!!.player.skipForward() // skip first
             delay(2000)
             // we have nothing in the queue so the next in queue gets played before resuming playlist
-            assertEquals(trackId, api!!.player.getCurrentlyPlaying()?.track?.uri?.id)
+            assertEquals(trackId, api!!.player.getCurrentlyPlaying()?.item?.uri?.id)
             api!!.player.skipForward() // skip second
             delay(2000)
             // now we're back in the playlist
-            assertEquals(playlist.tracks[1].track!!.asTrack!!.id, api!!.player.getCurrentlyPlaying()?.track?.uri?.id)
+            assertEquals(playlist.tracks[1].track!!.asTrack!!.id, api!!.player.getCurrentlyPlaying()?.item?.uri?.id)
             api!!.player.skipForward() // skip second
         }
     }
@@ -203,11 +207,16 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             assertEquals(artistUri, api!!.player.getCurrentContext()?.context?.uri)
 
             api!!.player.startPlayback(contextUri = showUri, deviceId = device.id)
-            delay(2000)
-            // can't check more specifics because context/track are both null for episodes (for some reason?)
+
+            delay(2500)
+
             assertEquals(
                 CurrentlyPlayingType.EPISODE,
-                api!!.player.getCurrentlyPlaying()?.currentlyPlayingType
+                api!!.player.getCurrentlyPlaying()!!.currentlyPlayingType
+            )
+            assertEquals(
+                showUri.id,
+                (api!!.player.getCurrentlyPlaying()!!.item as? Episode)?.show?.id
             )
 
             api!!.player.startPlayback(contextUri = albumUri, deviceId = device.id)
@@ -222,37 +231,37 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
                 playableUrisToPlay = trackUris
             )
             delay(1000)
-            assertEquals(trackUris.first().id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(trackUris.first().id, api!!.player.getCurrentlyPlaying()?.item?.id)
             api!!.player.skipForward()
             delay(1000)
-            assertEquals(trackUris[1].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(trackUris[1].id, api!!.player.getCurrentlyPlaying()?.item?.id)
 
             // play tracks with offset index
             val offsetIndex = 2
             api!!.player.startPlayback(playableUrisToPlay = trackUris, offsetIndex = offsetIndex)
             delay(1000)
-            assertEquals(trackUris[2].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(trackUris[2].id, api!!.player.getCurrentlyPlaying()?.item?.id)
             api!!.player.skipForward()
             delay(1000)
-            assertEquals(trackUris[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(trackUris[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.item?.id)
 
             // play tracks with offset track
             val offsetTrackUri = trackUris[offsetIndex]
             api!!.player.startPlayback(playableUrisToPlay = trackUris, offsetPlayableUri = offsetTrackUri)
             delay(1000)
-            assertEquals(offsetTrackUri.id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(offsetTrackUri.id, api!!.player.getCurrentlyPlaying()?.item?.id)
             api!!.player.skipForward()
             delay(1000)
-            assertEquals(trackUris[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(trackUris[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.item?.id)
 
             // play playlist with offset track
             val playlistTracks = api!!.playlists.getPlaylist(playlistUri.id)!!.tracks.map { it?.track as Track }
             api!!.player.startPlayback(contextUri = playlistUri, offsetIndex = offsetIndex)
             delay(2500)
-            assertEquals(playlistTracks[offsetIndex].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(playlistTracks[offsetIndex].id, api!!.player.getCurrentlyPlaying()?.item?.id)
             api!!.player.skipForward()
             delay(2000)
-            assertEquals(playlistTracks[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.track?.id)
+            assertEquals(playlistTracks[offsetIndex + 1].id, api!!.player.getCurrentlyPlaying()?.item?.id)
         }
     }
 
@@ -271,12 +280,12 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             delay(1000)
 
             api!!.player.skipForward()
-            delay(500)
-            assertEquals(playlist.tracks[1].track!!.id, api!!.player.getCurrentlyPlaying()!!.track?.id)
+            delay(1500)
+            assertEquals(playlist.tracks[1].track!!.id, api!!.player.getCurrentlyPlaying()!!.item?.id)
 
             api!!.player.skipBehind()
-            delay(500)
-            assertEquals(playlist.tracks[0].track!!.id, api!!.player.getCurrentlyPlaying()!!.track?.id)
+            delay(1500)
+            assertEquals(playlist.tracks[0].track!!.id, api!!.player.getCurrentlyPlaying()!!.item?.id)
 
             api!!.player.pause()
         }

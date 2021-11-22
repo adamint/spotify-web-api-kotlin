@@ -2,6 +2,7 @@
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
+import com.adamratzman.spotify.SpotifyAppApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyRestAction
@@ -10,6 +11,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.ContextUri
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
 import com.adamratzman.spotify.models.CurrentlyPlayingObject
+import com.adamratzman.spotify.models.CurrentlyPlayingType
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.Device
 import com.adamratzman.spotify.models.PlayHistory
@@ -26,6 +28,7 @@ import com.adamratzman.spotify.models.toLocalTrackUri
 import com.adamratzman.spotify.models.toPlaylistUri
 import com.adamratzman.spotify.models.toShowUri
 import com.adamratzman.spotify.models.toTrackUri
+import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.builtins.ListSerializer
@@ -73,12 +76,29 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
+     *
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
+     * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+     * Note: If neither market or user country are provided, the content is considered unavailable for the client.
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      */
-    public suspend fun getCurrentContext(): CurrentlyPlayingContext? {
+    public suspend fun getCurrentContext(
+        additionalTypes: List<CurrentlyPlayingType> = listOf(
+            CurrentlyPlayingType.TRACK,
+            CurrentlyPlayingType.EPISODE
+        ),
+        market: Market? = null
+    ): CurrentlyPlayingContext? {
         requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
 
         val obj = catch {
-            get(endpointBuilder("/me/player").toString())
+            get(
+                endpointBuilder("/me/player")
+                    .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
+                    .with("market", market?.name)
+                    .toString()
+            )
                 .toObject(CurrentlyPlayingContext.serializer(), api, json)
         }
         return if (obj?.timestamp == null) null else obj
@@ -90,12 +110,24 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
+     *
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
+     * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+     * Note: If neither market or user country are provided, the content is considered unavailable for the client.
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      */
-    public fun getCurrentContextRestAction(): SpotifyRestAction<CurrentlyPlayingContext?> =
-        SpotifyRestAction { getCurrentContext() }
+    public fun getCurrentContextRestAction(
+        additionalTypes: List<CurrentlyPlayingType> = listOf(
+            CurrentlyPlayingType.TRACK,
+            CurrentlyPlayingType.EPISODE
+        ),
+        market: Market? = null
+    ): SpotifyRestAction<CurrentlyPlayingContext?> =
+        SpotifyRestAction { getCurrentContext(additionalTypes, market) }
 
     /**
-     * Get tracks from the current user’s recently played tracks.
+     * Get tracks from the current user’s recently played tracks. Note: Currently doesn't support podcast episodes.
      *
      * **Requires** the [SpotifyScope.USER_READ_RECENTLY_PLAYED] scope
      *
@@ -120,7 +152,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Get tracks from the current user’s recently played tracks.
+     * Get tracks from the current user’s recently played tracks. Note: Currently doesn't support podcast episodes.
      *
      * **Requires** the [SpotifyScope.USER_READ_RECENTLY_PLAYED] scope
      *
@@ -144,18 +176,36 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **Requires** *either* the [SpotifyScope.USER_READ_PLAYBACK_STATE] or [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scopes
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
+     *
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
+     * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+     * Note: If neither market or user country are provided, the content is considered unavailable for the client.
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      */
-    public suspend fun getCurrentlyPlaying(): CurrentlyPlayingObject? {
+    public suspend fun getCurrentlyPlaying(
+        additionalTypes: List<CurrentlyPlayingType> = listOf(
+            CurrentlyPlayingType.TRACK,
+            CurrentlyPlayingType.EPISODE
+        ),
+        market: Market? = null
+    ): CurrentlyPlayingObject? {
         requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE, SpotifyScope.USER_READ_CURRENTLY_PLAYING, anyOf = true)
 
         return try {
             val obj =
                 catch {
-                    get(endpointBuilder("/me/player/currently-playing").toString())
+                    get(
+                        endpointBuilder("/me/player/currently-playing")
+                            .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
+                            .with("market", market?.name)
+                            .toString()
+                    )
                         .toObject(CurrentlyPlayingObject.serializer(), api, json)
                 }
             if (obj?.timestamp == null) null else obj
         } catch (pe: SpotifyException.ParseException) {
+            pe.printStackTrace()
             null
         }
     }
@@ -166,9 +216,21 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * **Requires** *either* the [SpotifyScope.USER_READ_PLAYBACK_STATE] or [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scopes
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
+     *
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
+     * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+     * Note: If neither market or user country are provided, the content is considered unavailable for the client.
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      */
-    public fun getCurrentlyPlayingRestAction(): SpotifyRestAction<CurrentlyPlayingObject?> =
-        SpotifyRestAction { getCurrentlyPlaying() }
+    public fun getCurrentlyPlayingRestAction(
+        additionalTypes: List<CurrentlyPlayingType> = listOf(
+            CurrentlyPlayingType.TRACK,
+            CurrentlyPlayingType.EPISODE
+        ),
+        market: Market? = null
+    ): SpotifyRestAction<CurrentlyPlayingObject?> =
+        SpotifyRestAction { getCurrentlyPlaying(additionalTypes, market) }
 
     /**
      * Pause playback on the user’s account.

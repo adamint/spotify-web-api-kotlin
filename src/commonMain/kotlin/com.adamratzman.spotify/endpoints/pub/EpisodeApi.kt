@@ -32,7 +32,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
-     * Users can view the country that is associated with their account in the account settings. **Required for [SpotifyAppApi]**
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
      * @return possibly-null [Episode].
      */
@@ -55,7 +55,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
-     * Users can view the country that is associated with their account in the account settings. **Required for [SpotifyAppApi]**
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
      * @return possibly-null [Episode].
      */
@@ -76,7 +76,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
-     * Users can view the country that is associated with their account in the account settings. **Required for [SpotifyAppApi]**
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
      * @return List of possibly-null [Episode] objects.
      * @throws BadRequestException If any invalid show id is provided
@@ -105,7 +105,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
-     * Users can view the country that is associated with their account in the account settings. **Required for [SpotifyAppApi]**
+     * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
      * @return List of possibly-null [Episode] objects.
      * @throws BadRequestException If any invalid show id is provided

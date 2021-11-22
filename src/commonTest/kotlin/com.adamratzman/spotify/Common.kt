@@ -15,6 +15,7 @@ expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
 
 @ThreadLocal
 var instantiationCompleted: Boolean = false
+
 @ThreadLocal
 private lateinit var apiBacking: GenericSpotifyApi
 
@@ -43,7 +44,7 @@ suspend fun buildSpotifyApi() = when {
         }
     }
     else -> null.also { instantiationCompleted = true }
-}
+}?.also { if (getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true") it.spotifyApiOptions.enableDebugMode = true }
 
 fun buildSpotifyApiSync() = when {
     tokenString?.isNotBlank() == true -> {
@@ -69,7 +70,7 @@ fun buildSpotifyApiSync() = when {
         }
     }
     else -> null.also { instantiationCompleted = true }
-}
+}?.also { if (getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true") it.spotifyApiOptions.enableDebugMode = true }
 
 expect fun getEnvironmentVariable(name: String): String?
 
@@ -82,6 +83,9 @@ suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline bl
         throw AssertionError(noExceptionMessage)
     } catch (exception: Throwable) {
         if (exception.message == noExceptionMessage) throw exception
-        assertTrue(exception is T, "Expected ${T::class.simpleName} exception to be thrown, but exception ${exception::class.simpleName} (${exception.message}) was thrown.")
+        assertTrue(
+            exception is T,
+            "Expected ${T::class.simpleName} exception to be thrown, but exception ${exception::class.simpleName} (${exception.message}) was thrown."
+        )
     }
 }
