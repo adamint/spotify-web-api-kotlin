@@ -144,13 +144,13 @@ Example creation, using an existing Token and setting automatic token refresh to
 ```kotlin
 val token = spotifyAppApi(spotifyClientId, spotifyClientSecret).build().token
 val api = spotifyAppApi(
-    "clientId",
-    "clientSecret",
-    token,
-    SpotifyApiOptionsBuilder(
-        automaticRefresh = false
-    )
-)
+  "clientId",
+  "clientSecret",
+  token
+) { 
+  automaticRefresh = false 
+}.build()
+
 println(api.browse.getNewReleases()) // use it
 ```
 
@@ -228,11 +228,11 @@ val api = spotifyClientPkceApi(
     "clientId", // optional. include for token refresh
     "your-redirect-uri", // optional. include for token refresh
     code,
-    codeVerifier, // the same code verifier you used to generate the code challenge
-    SpotifyApiOptionsBuilder(
-        retryWhenRateLimited = false
-    )
-).build()
+    codeVerifier // the same code verifier you used to generate the code challenge
+) {
+  retryWhenRateLimited = false
+}.build()
+
 println(api.library.getSavedTracks().take(10).filterNotNull().map { it.track.name })
 ```
 
@@ -277,13 +277,12 @@ val api = spotifyClientApi(
     "clientId",
     "clientSecret",
     "your-redirect-uri",
-    token,
-    SpotifyApiOptionsBuilder(
-        onTokenRefresh = { 
-            println("Token refreshed at ${System.currentTimeMillis()}")
-        }
-    )
-).build()
+    token
+) {
+  onTokenRefresh = {
+    println("Token refreshed at ${System.currentTimeMillis()}")
+  }
+}.build()
 println(api.personalization.getTopTracks(limit = 5).items.map { it.name })
 ```
 
