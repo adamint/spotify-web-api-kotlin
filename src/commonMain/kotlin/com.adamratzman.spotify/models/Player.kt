@@ -37,7 +37,7 @@ public data class SpotifyContext(
  */
 @Serializable
 public data class PlayHistory(
-    val track: SimpleTrack,
+    val track: Track,
     @SerialName("played_at") val playedAt: String,
     val context: SpotifyContext? = null
 )
