@@ -96,7 +96,7 @@ kotlin {
 
     android {
         compilations.all {
-            kotlinOptions.jvmTarget = "8"
+            kotlinOptions.jvmTarget = "1.8"
         }
 
         mavenPublication {
@@ -110,7 +110,7 @@ kotlin {
 
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "8"
+            kotlinOptions.jvmTarget = "1.8"
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
