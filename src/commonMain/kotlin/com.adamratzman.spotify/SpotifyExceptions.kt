@@ -3,7 +3,7 @@ package com.adamratzman.spotify
 
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.ErrorObject
-import io.ktor.client.features.ResponseException
+import io.ktor.client.plugins.ResponseException
 
 public sealed class SpotifyException(message: String, cause: Throwable? = null) : Exception(message, cause) {
     public abstract class UnNullableException(message: String) : SpotifyException(message)

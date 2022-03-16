@@ -11,6 +11,7 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
+import io.ktor.http.HttpStatusCode
 import kotlin.math.ceil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -76,15 +77,19 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
 
 
     internal suspend fun get(url: String): String {
-        return execute(url)
+        return execute<String>(url)
+    }
+
+    internal suspend fun getNullable(url: String): String? {
+        return execute<String?>(url)
     }
 
     internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
-        return execute(url, body, HttpRequestMethod.POST, contentType = contentType)
+        return execute<String>(url, body, HttpRequestMethod.POST, contentType = contentType)
     }
 
     internal suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
-        return execute(url, body, HttpRequestMethod.PUT, contentType = contentType)
+        return execute<String>(url, body, HttpRequestMethod.PUT, contentType = contentType)
     }
 
     internal suspend fun delete(
@@ -92,10 +97,10 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         body: String? = null,
         contentType: String? = null
     ): String {
-        return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
+        return execute<String>(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
-    private suspend fun execute(
+    private suspend fun <T: String?> execute(
         url: String,
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
@@ -117,7 +122,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
 
         try {
-            return withTimeout(api.spotifyApiOptions.requestTimeoutMillis ?: 100 * 1000L) {
+            return withTimeout(api.spotifyApiOptions.requestTimeoutMillis ?: (100 * 1000L)) {
                 try {
                     val document = createConnection(url, body, method, contentType).execute(
                         additionalHeaders = cacheState?.eTag?.let {
@@ -126,7 +131,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         retryIfInternalServerErrorLeft = api.spotifyApiOptions.retryOnInternalServerErrorTimes
                     )
 
-                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute(
+                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute<T>(
                         url,
                         body,
                         method,
@@ -137,7 +142,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                     if (e.statusCode == 401 && !attemptedRefresh) {
                         api.refreshToken()
 
-                        execute(
+                        execute<T>(
                             url,
                             body,
                             method,
@@ -165,9 +170,12 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     ): String? {
         val statusCode = document.responseCode
 
-        if (statusCode == HttpConnectionStatus.HTTP_NOT_MODIFIED.code) {
+        if (statusCode == HttpStatusCode.NotModified.value) {
             requireNotNull(cacheState?.eTag) { "304 status only allowed on Etag-able endpoints" }
             return cacheState?.data
+        }
+        else if (statusCode == HttpStatusCode.NoContent.value) {
+            return null
         }
 
         val responseBody = document.body

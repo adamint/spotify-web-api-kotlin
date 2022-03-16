@@ -12,12 +12,13 @@ import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import io.ktor.client.HttpClient
-import io.ktor.client.features.ResponseException
+import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.client.statement.readText
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
@@ -61,19 +62,21 @@ public class HttpConnection constructor(
         url(this@HttpConnection.url)
         method = this@HttpConnection.method.externalMethod
 
-        body = when (this@HttpConnection.method) {
-            HttpRequestMethod.DELETE -> {
-                bodyString.toByteArrayContent() ?: body
-            }
-            HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
-                val contentString = if (contentType == ContentType.Application.FormUrlEncoded) {
-                    bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&") ?: bodyString
-                } else bodyString
+        setBody(
+            when (this@HttpConnection.method) {
+                HttpRequestMethod.DELETE -> {
+                    bodyString.toByteArrayContent() ?: body
+                }
+                HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
+                    val contentString = if (contentType == ContentType.Application.FormUrlEncoded) {
+                        bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&") ?: bodyString
+                    } else bodyString
 
-                contentString.toByteArrayContent() ?: ByteArrayContent("".toByteArray(), contentType)
+                    contentString.toByteArrayContent() ?: ByteArrayContent("".toByteArray(), contentType)
+                }
+                else -> body
             }
-            else -> body
-        }
+        )
 
         // let additionalHeaders overwrite headers
         val allHeaders = if (additionalHeaders == null) this@HttpConnection.headers
@@ -91,7 +94,7 @@ public class HttpConnection constructor(
         val httpRequest = buildRequest(additionalHeaders)
         if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: Request: $this")
         try {
-            return httpClient.request<io.ktor.client.statement.HttpResponse>(httpRequest).let { response ->
+            return httpClient.request(httpRequest).let { response ->
                 val respCode = response.status.value
 
                 if (respCode in 500..599 && (retryIfInternalServerErrorLeft == null || retryIfInternalServerErrorLeft == -1 || retryIfInternalServerErrorLeft > 0)) {
@@ -115,12 +118,10 @@ public class HttpConnection constructor(
                     } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
-                val body = response.readText()
+                val body: String = response.bodyAsText()
                 if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $body")
 
-                if (respCode == 401 && body.contains("access token") &&
-                    api != null && api.spotifyApiOptions.automaticRefresh
-                ) {
+                if (respCode == 401 && body.contains("access token") && api?.spotifyApiOptions?.automaticRefresh == true) {
                     api.refreshToken()
                     val newAdditionalHeaders =
                         additionalHeaders?.toMutableList()?.filter { it.key != "Authorization" }?.toMutableList()
@@ -146,7 +147,7 @@ public class HttpConnection constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
-            val errorBody = e.response.readText()
+            val errorBody = e.response.bodyAsText()
             if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $errorBody")
             try {
                 val respCode = e.response.status.value
@@ -222,8 +223,4 @@ public class HttpConnection constructor(
             expectSuccess = false
         }
     }
-}
-
-public enum class HttpConnectionStatus(public val code: Int) {
-    HTTP_NOT_MODIFIED(304);
 }
