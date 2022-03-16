@@ -28,6 +28,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Install curl
         run: sudo apt-get install -y curl libcurl4-openssl-dev
       - name: Verify Android
