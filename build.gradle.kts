@@ -298,7 +298,7 @@ kotlin {
                     implementation("com.pnikosis:materialish-progress:1.7")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:1.4.1")
+                    implementation("androidx.appcompat:appcompat:1.3.1")
                 }
             }
 
