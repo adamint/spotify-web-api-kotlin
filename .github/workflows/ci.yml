@@ -71,6 +71,11 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
+    - name: Install java 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
     - name: Test windows
       run: gradle mingwX64Test
     - name: Archive test results
