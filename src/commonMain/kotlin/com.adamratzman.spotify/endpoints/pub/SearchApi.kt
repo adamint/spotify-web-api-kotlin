@@ -87,7 +87,18 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords and optional field filters and operators. You can narrow down your search using field filters. The available filters are album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre. Each field filter only applies to certain result types.
+
+    The artist filter can be used while searching albums, artists or tracks.
+    The album and year filters can be used while searching albums or tracks. You can filter on a single year or a range (e.g. 1955-1960).
+    The genre filter can be use while searching tracks and artists.
+    The isrc and track filters can be used while searching tracks.
+    The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.
+
+    You can also use the NOT operator to exclude keywords from your search.
+
+    Example value:
+    "remaster%20track:Doxy+artist:Miles%20Davis"
      * @param searchTypes A list of item types to search across. Search results include hits from all the specified item types.
      * @param limit Maximum number of results to return.
     Default: 20
@@ -103,7 +114,10 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     - Playlist results are not affected by the market parameter.
     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
     - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
+     **Note**: episodes will not be returned if this is NOT specified
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
+     *
+     * @throws IllegalArgumentException if no search types are provided, or if [SearchType.EPISODE] is provided but [market] is not
      */
     public suspend fun search(
         query: String,
@@ -114,6 +128,10 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         includeExternal: Boolean? = null
     ): SpotifySearchResult {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
+        if (SearchType.EPISODE in searchTypes) {
+            requireNotNull(market) { "Market must be provided when SearchType.EPISODE is requested"}
+        }
+
         val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
         val map = json.decodeFromString(MapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
@@ -184,6 +202,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     - Playlist results are not affected by the market parameter.
     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
     - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
+
+     **Note**: episodes will not be returned if this is NOT specified
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      */
     public fun searchRestAction(
