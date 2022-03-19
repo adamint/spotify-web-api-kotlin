@@ -73,6 +73,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+      - run: choco install curl
       - name: Publish windows
         run: gradle publishMingwX64PublicationToNexusRepository
   release_docs:

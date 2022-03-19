@@ -76,6 +76,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
+    - run: choco install curl
     - name: Test windows
       run: gradle mingwX64Test
     - name: Archive test results
