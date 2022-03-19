@@ -6,7 +6,7 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
 
     open fun testPrereq(): Boolean {
         val result = api != null
-        if (!result) println("Prereq failed.")
+        if (!result) println("Prereq failed in ${this::class.simpleName}.")
         return result
     }
 
@@ -17,6 +17,7 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
             (f as? T)?.let { if (f is Z) api = it }
             api != null
         } catch (cce: Exception) {
+            cce.printStackTrace()
             false
         }
     }

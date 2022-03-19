@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     override fun testPrereq(): Boolean {
         val result = super.testPrereq() && getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
-        if (!result) println("Prereq failed")
+        if (!result) println("Prereq failed in ${this::class.simpleName}")
         return result
     }
 
