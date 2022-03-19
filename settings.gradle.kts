@@ -1,20 +1,27 @@
 pluginManagement {
-    val mainKotlinVersion = "1.5.0"
+    val kotlinVersion: String by settings
+    val androidBuildToolsVersion: String by settings
+
+    plugins {
+        id("org.jetbrains.kotlin.multiplatform").version(kotlinVersion)
+        id("org.jetbrains.kotlin.plugin.serialization").version(kotlinVersion)
+        id("org.jetbrains.dokka").version(kotlinVersion)
+    }
 
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "kotlin-multiplatform") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
             }
             if (requested.id.id == "org.jetbrains.kotlin.jvm") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
             }
             if (requested.id.id == "kotlinx-serialization") {
-                useModule("org.jetbrains.kotlin:kotlin-serialization:$mainKotlinVersion")
-            } else if (requested.id.namespace == "com.android") {
-                useModule("com.android.tools.build:gradle:3.5.4")
+                useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
+            } else if (requested.id.id == "com.android.library") {
+                useModule("com.android.tools.build:gradle:$androidBuildToolsVersion")
             } else if (requested.id.id == "kotlin-android-extensions") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$mainKotlinVersion")
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
             }
         }
     }
@@ -28,6 +35,3 @@ pluginManagement {
 }
 
 rootProject.name = "spotify-web-api-kotlin"
-include("java-interop-basic-sample")
-findProject(":java-interop-basic-sample")?.name = "java-interop-basic"
-include("java-interop-sample")

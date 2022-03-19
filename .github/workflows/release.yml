@@ -28,6 +28,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Install curl
         run: sudo apt-get install -y curl libcurl4-openssl-dev
       - name: Verify Android
@@ -49,6 +54,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Publish macOS/tvOS/iOS
         run: gradle publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishTvosX64PublicationToNexusRepository
   release_windows:
@@ -58,6 +68,12 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - run: choco install curl
       - name: Publish windows
         run: gradle publishMingwX64PublicationToNexusRepository
   release_docs:
@@ -66,6 +82,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Build docs
         run: gradle dokkaHtml
       - name: Push docs to docs repo

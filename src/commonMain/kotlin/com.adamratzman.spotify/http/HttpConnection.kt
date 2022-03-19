@@ -11,6 +11,7 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
+import com.soywiz.korio.dynamic.KDynamic.Companion.toLong
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
@@ -115,12 +116,10 @@ public class HttpConnection constructor(
                     } else throw SpotifyRatelimitedException(ratelimit)
                 }
 
-                val body = response.readText()
+                val body: String = response.readText()
                 if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $body")
 
-                if (respCode == 401 && body.contains("access token") &&
-                    api != null && api.spotifyApiOptions.automaticRefresh
-                ) {
+                if (respCode == 401 && body.contains("access token") && api?.spotifyApiOptions?.automaticRefresh == true) {
                     api.refreshToken()
                     val newAdditionalHeaders =
                         additionalHeaders?.toMutableList()?.filter { it.key != "Authorization" }?.toMutableList()
@@ -222,8 +221,4 @@ public class HttpConnection constructor(
             expectSuccess = false
         }
     }
-}
-
-public enum class HttpConnectionStatus(public val code: Int) {
-    HTTP_NOT_MODIFIED(304);
 }

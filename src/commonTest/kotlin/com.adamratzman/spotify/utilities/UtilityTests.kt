@@ -32,7 +32,7 @@ class UtilityTests {
         if (!testPrereq()) return
 
         runBlockingTest {
-            val spotifyWfhPlaylist = api!!.playlists.getPlaylist("spotify:playlist:37i9dQZF1DWTLSN7iG21yC")!!
+            val spotifyWfhPlaylist = api!!.playlists.getPlaylist("37i9dQZF1DWTLSN7iG21yC")!!
             val totalTracks = spotifyWfhPlaylist.tracks.total
             val allTracks = spotifyWfhPlaylist.tracks.getAllItemsNotNull()
             assertEquals(totalTracks, allTracks.size)

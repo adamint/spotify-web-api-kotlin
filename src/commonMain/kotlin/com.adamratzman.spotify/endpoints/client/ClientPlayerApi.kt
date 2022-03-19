@@ -93,13 +93,12 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
 
         val obj = catch {
-            get(
+            getNullable(
                 endpointBuilder("/me/player")
                     .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
                     .with("market", market?.name)
                     .toString()
-            )
-                .toObject(CurrentlyPlayingContext.serializer(), api, json)
+            )?.toObject(CurrentlyPlayingContext.serializer(), api, json)
         }
         return if (obj?.timestamp == null) null else obj
     }

@@ -39,7 +39,7 @@ class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
             assertEquals("run2", api!!.playlists.getPlaylist("78eWnYKwDksmCHAjOUNPEj")?.name)
             assertNull(api!!.playlists.getPlaylist("nope"))
             assertTrue(api!!.playlists.getPlaylist("78eWnYKwDksmCHAjOUNPEj")!!.tracks.isNotEmpty())
-            val playlistWithLocalAndNonLocalTracks = api!!.playlists.getPlaylist("0vzdw0N41qZLbRDqyx2cE0")!!.tracks
+            val playlistWithLocalAndNonLocalTracks = api!!.playlists.getPlaylist("627gNjNzj3sOrSiDm5acc2")!!.tracks
             assertEquals(LocalTrack::class, playlistWithLocalAndNonLocalTracks[0].track!!::class)
             assertEquals(Track::class, playlistWithLocalAndNonLocalTracks[1].track!!::class)
 
@@ -57,7 +57,7 @@ class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
             if (!testPrereq()) return@runBlockingTest else api!!
 
             assertTrue(api!!.playlists.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").items.isNotEmpty())
-            val playlist = api!!.playlists.getPlaylistTracks("0vzdw0N41qZLbRDqyx2cE0")
+            val playlist = api!!.playlists.getPlaylistTracks("627gNjNzj3sOrSiDm5acc2")
             assertEquals(LocalTrack::class, playlist[0].track!!::class)
             assertEquals(Track::class, playlist[1].track!!::class)
             assertFailsWith<SpotifyException.BadRequestException> { api!!.playlists.getPlaylistTracks("adskjfjkasdf") }

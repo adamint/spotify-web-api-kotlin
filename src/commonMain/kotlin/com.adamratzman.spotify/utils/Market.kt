@@ -1,6 +1,8 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
+import com.adamratzman.spotify.SpotifyAppApi
+
 /*
  * Copyright (C) 2012-2019 Neo Visionaries Inc.
  *
@@ -20,81 +22,7 @@ package com.adamratzman.spotify.utils
 /**
  * [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) country code.
  *
- *
- *
- * Enum names of this enum themselves are represented by
- * [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
- * code (2-letter upper-case alphabets). There are instance methods to get the
- * country name ([.getName]), the
- * [ISO 3166-1 alpha-3](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3)
- * code ([.getAlpha3]) and the
- * [ISO 3166-1 numeric](http://en.wikipedia.org/wiki/ISO_3166-1_numeric)
- * code ([.getNumeric]).
- * In addition, there are static methods to get a `Market` instance that
- * corresponds to a given alpha-2/alpha-3/numeric code ([.getByCode],
- * [.getByCode]).
- *
- *
- * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
- * <span style="color: darkgreen;">// List all the country codes.</span>
- * for (Market code : Market.values())
- * {
- * <span style="color: darkgreen;">// For example, "[US] United States" is printed.</span>
- * System.out.format(<span style="color: darkred;">"[%s] %s\n"</span>, code, code.[.getName]);
- * }
- *
- * <span style="color: darkgreen;">// Get a Market instance by ISO 3166-1 code.</span>
- * Market code = Market.[getByCode][.getByCode](<span style="color: darkred;">"JP"</span>);
- *
- * <span style="color: darkgreen;">// Print all the information. Output will be:</span>
- * <span style="color: darkgreen;">//</span>
- * <span style="color: darkgreen;">//     Country name            = Japan</span>
- * <span style="color: darkgreen;">//     ISO 3166-1 alpha-2 code = JP</span>
- * <span style="color: darkgreen;">//     ISO 3166-1 alpha-3 code = JPN</span>
- * <span style="color: darkgreen;">//     ISO 3166-1 numeric code = 392</span>
- * <span style="color: darkgreen;">//     Assignment state        = OFFICIALLY_ASSIGNED</span>
- * <span style="color: darkgreen;">//</span>
- * System.out.println(<span style="color: darkred;">"Country name            = "</span> + code.[.getName]);
- * System.out.println(<span style="color: darkred;">"ISO 3166-1 alpha-2 code = "</span> + code.[.getAlpha2]);
- * System.out.println(<span style="color: darkred;">"ISO 3166-1 alpha-3 code = "</span> + code.[.getAlpha3]);
- * System.out.println(<span style="color: darkred;">"ISO 3166-1 numeric code = "</span> + code.[.getNumeric]);
- * System.out.println(<span style="color: darkred;">"Assignment state        = "</span> + code.[.getAssignment]);
- *
- * <span style="color: darkgreen;">// Convert to a Locale instance.</span>
- *
- * <span style="color: darkgreen;">// Get a Market by a Locale instance.</span>
- * code = Market.[getByLocale][.getByLocale](locale);
- *
- * <span style="color: darkgreen;">// Get the currency of the country.</span>
- *
- * <span style="color: darkgreen;">// Get a list by a regular expression for names.
- * //
- * // The list will contain:
- * //
- * //     Market.AE ed Arab Emirates
- * //     Market.GB ed Kingdom
- * //     Market.TZ : Tanzania, United Republic of
- * //     Market.UK ed Kingdom
- * //     Market.UM ed States Minor Outlying Islands
- * //     Market.US ed States
- * //</span>
- * List&lt;Market&gt; list = Market.[findByName][.findByName](<span style="color: darkred;">".*United.*"</span>);
- *
- * <span style="color: darkgreen;">
- * // For backward compatibility for older versions than 1.16, some
- * // 4-letter ISO 3166-3 codes are accepted by getByCode(String, boolean)
- * // and its variants. To be concrete:
- * //
- * //     [ANHH](https://en.wikipedia.org/wiki/ISO_3166-3#ANHH) : Market.AN
- * //     [BUMM](https://en.wikipedia.org/wiki/ISO_3166-3#BUMM) : Market.BU
- * //     [CSXX](https://en.wikipedia.org/wiki/ISO_3166-3#CSXX) : Market.CS
- * //     [NTHH](https://en.wikipedia.org/wiki/ISO_3166-3#NTHH) : Market.NT
- * //     [TPTL](https://en.wikipedia.org/wiki/ISO_3166-3#TPTL) : Market.TP
- * //     [YUCS](https://en.wikipedia.org/wiki/ISO_3166-3#YUCS) : Market.YU
- * //     [ZRCD](https://en.wikipedia.org/wiki/ISO_3166-3#ZRCD) : Market.ZR
- * //</span>
- * code = Market.[getByCode][.getByCode](<span style="color: darkred;">"ANHH"</span>);
-</pre> *
+ * **Note**: Use [Market.FROM_TOKEN] if you want to use the client's locale. This should not be used with [SpotifyAppApi]
  *
  * @author Takahiko Kawasaki (https://github.com/TakahikoKawasaki/nv-i18n)
  */
