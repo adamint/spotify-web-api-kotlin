@@ -218,7 +218,7 @@ kotlin {
 
         sourceSets {
             val serializationVersion = "1.3.2"
-            val ktorVersion = "2.0.0-beta-1"
+            val ktorVersion = "1.6.8"
             val korlibsVersion = "2.2.0"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.5"
