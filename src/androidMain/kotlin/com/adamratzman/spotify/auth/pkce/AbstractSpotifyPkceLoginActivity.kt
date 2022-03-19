@@ -92,6 +92,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
         // launch the activity when a Spotify intent result has been received
         if (intent?.isSpotifyPkceAuthIntent(redirectUri) == false) {
             authorizationIntent = Intent(Intent.ACTION_VIEW, getAuthorizationUrl())
+            credentialStore.currentSpotifyPkceCodeVerifier = pkceCodeVerifier
             startActivity(authorizationIntent)
             finish()
         }
@@ -150,7 +151,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                         redirectUri = redirectUri,
                         authorization = SpotifyUserAuthorization(
                             authorizationCode = authorizationCode,
-                            pkceCodeVerifier = pkceCodeVerifier
+                            pkceCodeVerifier = credentialStore.currentSpotifyPkceCodeVerifier
                         ),
                         options ?: {}
                     ).build()

@@ -54,6 +54,11 @@ public class SpotifyDefaultCredentialStore(
         public const val SpotifyRefreshTokenKey: String = "spotifyRefreshToken"
 
         /**
+         * The PKCE code verifier key currently being used in [EncryptedSharedPreferences]
+         */
+        public const val SpotifyCurrentPkceCodeVerifierKey: String = "spotifyCurrentPkceCodeVerifier"
+
+        /**
          * The activity to return to if re-authentication is necessary on implicit authentication. Null except during authentication when using [guardValidImplicitSpotifyApi]
          */
         public var activityBackOnImplicitAuth: Class<out Activity>? = null
@@ -100,6 +105,13 @@ public class SpotifyDefaultCredentialStore(
     public var spotifyRefreshToken: String?
         get() = encryptedPreferences.getString(SpotifyRefreshTokenKey, null)
         set(value) = encryptedPreferences.edit().putString(SpotifyRefreshTokenKey, value).apply()
+
+    /**
+     * Get/set the current Spotify PKCE code verifier.
+     */
+    public var currentSpotifyPkceCodeVerifier: String?
+        get() = encryptedPreferences.getString(SpotifyCurrentPkceCodeVerifierKey, null)
+        set(value) = encryptedPreferences.edit().putString(SpotifyCurrentPkceCodeVerifierKey, value).apply()
 
     /**
      * Get/set the Spotify [Token] obtained from [spotifyToken].
