@@ -62,27 +62,3 @@ jobs:
         name: code-coverage-report
         path: build/reports
       if: always()
-  test_windows:
-    runs-on: windows-latest
-    environment: testing
-    env:
-      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@v2
-    - name: Install java 11
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
-    - run: choco install curl
-    - name: Test windows
-      run: gradle mingwX64Test
-    - name: Archive test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: code-coverage-report
-        path: build/reports
-      if: always()
-      
