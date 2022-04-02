@@ -14,9 +14,10 @@ Please see [the Java section](#java) for more details.
 [![codebeat badge](https://codebeat.co/badges/0ab613b0-31d7-4848-aebc-4ed1e51f069c)](https://codebeat.co/projects/github-com-adamint-spotify-web-api-kotlin-master)
 
 ## Table of Contents
-* [Library installing](#library-installing)
-    + [JVM, Android, JS, Native](#jvm-android-js)
+* [Oerview and how to install](#overview-and-how-to-install)
+    + [JVM, Android, JS, Native](#jvm-android-js-native-apple)
     + [Android information](#android)
+      * [Android sample app](#android-sample-application)
 * [Documentation](#documentation)
 * [Need help, have a question, or want to contribute?](#have-a-question)
 * [Creating a new api instance](#creating-a-new-api-instance)
@@ -40,12 +41,12 @@ Please see [the Java section](#java) for more details.
     + [Track Relinking](#track-relinking)
 * [Contributing](#contributing)
 
-## Library installing
+## Overview and how to install
 Current version:
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adamratzman/spotify-api-kotlin-core)
 
-### JVM, Android, JS, Native Desktop (macOS, Windows, Linux), iOS/tvOS
+### JVM, Android, JS, Native, Apple
 ```
 repositories {
     mavenCentral()
@@ -87,6 +88,9 @@ packagingOptions {
 	exclude 'META-INF/*.kotlin_module'
 }
 ```
+
+#### Android sample application
+You can find a simple sample application demonstrating how to use spotify-web-api-kotlin in a modern Android app, as well as how to integrate with the Spotify app, [here](https://github.com/Nielssg/Spotify-Api-Test-App).
 
 ## Documentation
 The `spotify-web-api-kotlin` JavaDocs are hosted [here](https://adamint.github.io/spotify-web-api-kotlin-docs/).
