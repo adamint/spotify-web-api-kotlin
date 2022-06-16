@@ -3,9 +3,9 @@ package com.adamratzman.spotify
 
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.ErrorObject
-import io.ktor.client.features.ResponseException
+import io.ktor.client.plugins.ResponseException
 
-public sealed class SpotifyException(message: String, cause: Throwable? = null) : Exception(message, cause) {
+public sealed class SpotifyException(message: String?, cause: Throwable? = null) : Exception(message, cause) {
     public abstract class UnNullableException(message: String) : SpotifyException(message)
 
     /**
@@ -79,4 +79,28 @@ public sealed class SpotifyException(message: String, cause: Throwable? = null) 
             cause = cause,
             message = "You tried to call a method that requires the following missing scopes: $missingScopes. Please make sure that your token is requested with these scopes."
         )
+}
+
+public sealed class SpotifyAppRemoteException(message: String?, cause: Throwable? = null) :
+    SpotifyException(message, cause) {
+    public class SpotifyAppRemoteConnectionFailedException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteAuthenticationException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteUnsupportedFeatureVersionException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteOfflineModeException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteUserNotAuthorizedException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteNotLoggedInException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
+
+    public class SpotifyAppRemoteGeneralException(message: String?, cause: Throwable? = null) :
+        SpotifyAppRemoteException(message, cause)
 }

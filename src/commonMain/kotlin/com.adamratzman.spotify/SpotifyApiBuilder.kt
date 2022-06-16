@@ -9,7 +9,7 @@ import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.urlEncodeBase64String
 import com.soywiz.krypto.SHA256
-import io.ktor.client.features.ServerResponseException
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.Json
@@ -703,8 +703,8 @@ public class SpotifyApiBuilder(
     public suspend fun buildPublic(): SpotifyAppApi = buildCredentialed()
 
     /**
-    * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
-    */
+     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
+     */
     public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildPublic() }
 
     /**
@@ -722,7 +722,8 @@ public class SpotifyApiBuilder(
     /**
      * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
      */
-    public fun buildCredentialedRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildCredentialed() }
+    public fun buildCredentialedRestAction(): SpotifyRestAction<SpotifyAppApi> =
+        SpotifyRestAction { buildCredentialed() }
 
     /**
      * Create a new [SpotifyClientApi] that has access to public endpoints, in addition to endpoints
@@ -837,9 +838,10 @@ public interface ISpotifyApiBuilder<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder
     /**
      * Build the [T] by provided information
      */
-    public fun buildRestAction(enableDefaultTokenRefreshProducerIfNoneExists: Boolean = true): SpotifyRestAction<T> = SpotifyRestAction {
-        build(enableDefaultTokenRefreshProducerIfNoneExists)
-    }
+    public fun buildRestAction(enableDefaultTokenRefreshProducerIfNoneExists: Boolean = true): SpotifyRestAction<T> =
+        SpotifyRestAction {
+            build(enableDefaultTokenRefreshProducerIfNoneExists)
+        }
 }
 
 /**

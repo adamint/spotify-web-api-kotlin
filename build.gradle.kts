@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
@@ -11,9 +13,9 @@ plugins {
     id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
     kotlin("plugin.serialization")
-    id("com.diffplug.spotless") version "6.3.0"
+    id("com.diffplug.spotless") version "6.7.2"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka") version "1.6.21"
 }
 
 repositories {
@@ -46,17 +48,17 @@ tasks.withType<Test> {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
-        exclude("META-INF/*.md")
+        resources.excludes.add("META-INF/*.md")
     }
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 30
         compileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -214,11 +216,10 @@ kotlin {
     }
 
     targets {
-        val kotlinxDatetimeVersion = "0.3.1"
-
         sourceSets {
-            val serializationVersion = "1.3.2"
-            val ktorVersion = "1.6.8"
+            val kotlinxDatetimeVersion = "0.3.2"
+            val serializationVersion = "1.3.3"
+            val ktorVersion = "2.0.2"
             val korlibsVersion = "2.2.0"
             val sparkVersion = "2.9.3"
             val androidSpotifyAuthVersion = "1.2.5"
@@ -294,11 +295,12 @@ kotlin {
                 }
 
                 dependencies {
+                    api("com.adamratzman:spotify-remote-republish:1.1")
                     api("com.spotify.android:auth:$androidSpotifyAuthVersion")
                     implementation("com.pnikosis:materialish-progress:1.7")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:1.3.1")
+                    implementation("androidx.appcompat:appcompat:1.4.2")
                 }
             }
 
