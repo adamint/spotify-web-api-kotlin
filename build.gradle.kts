@@ -301,7 +301,6 @@ kotlin {
                     implementation("androidx.appcompat:appcompat:1.3.1")
                 }
             }
-
             val androidTest by getting {
                 dependencies {
                     implementation(kotlin("test-junit"))
