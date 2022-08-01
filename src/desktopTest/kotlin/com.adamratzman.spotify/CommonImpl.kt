@@ -16,4 +16,4 @@ actual fun Exception.stackTrace() = printStackTrace()
 
 val testCoroutineContext: CoroutineContext = MainScope().coroutineContext
 actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) =
-    runBlocking { block() }
+    runBlocking(testCoroutineContext) { block() }

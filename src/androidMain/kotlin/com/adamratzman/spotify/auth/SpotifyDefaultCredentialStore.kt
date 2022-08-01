@@ -39,6 +39,11 @@ public class SpotifyDefaultCredentialStore(
 ) {
     public companion object {
         /**
+         * The key used with spotify scope string in [EncryptedSharedPreferences]
+         */
+        public const val SpotifyScopeStringKey: String = "spotifyTokenScopes"
+
+        /**
          * The key used with spotify token expiry in [EncryptedSharedPreferences]
          */
         public const val SpotifyTokenExpiryKey: String = "spotifyTokenExpiry"
@@ -107,6 +112,13 @@ public class SpotifyDefaultCredentialStore(
         set(value) = encryptedPreferences.edit().putString(SpotifyRefreshTokenKey, value).apply()
 
     /**
+     * Get/set the Spotify scope string.
+     */
+    public var spotifyScopeString: String?
+        get() = encryptedPreferences.getString(SpotifyScopeStringKey, null)
+        set(value) = encryptedPreferences.edit().putString(SpotifyScopeStringKey, value).apply()
+
+    /**
      * Get/set the current Spotify PKCE code verifier.
      */
     public var currentSpotifyPkceCodeVerifier: String?
@@ -128,7 +140,8 @@ public class SpotifyDefaultCredentialStore(
                 accessToken,
                 "Bearer",
                 (tokenExpiresAt - System.currentTimeMillis()).toInt() / 1000,
-                refreshToken
+                refreshToken,
+                scopeString = spotifyScopeString
             )
         }
         set(token) {
@@ -138,10 +151,12 @@ public class SpotifyDefaultCredentialStore(
                 spotifyRefreshToken = null
 
                 credentialTypeStored = null
+                spotifyScopeString = null
             } else {
                 spotifyAccessToken = token.accessToken
                 spotifyTokenExpiresAt = token.expiresAt
                 spotifyRefreshToken = token.refreshToken
+                spotifyScopeString = token.scopeString
 
                 credentialTypeStored =
                     if (token.refreshToken != null) CredentialType.Pkce else CredentialType.ImplicitGrant
