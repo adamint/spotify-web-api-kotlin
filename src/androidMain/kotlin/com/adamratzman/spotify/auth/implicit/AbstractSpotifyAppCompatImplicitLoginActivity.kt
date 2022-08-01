@@ -24,6 +24,7 @@ public abstract class AbstractSpotifyAppCompatImplicitLoginActivity : SpotifyImp
         triggerLoginActivity()
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         processActivityResult(requestCode, resultCode, intent)
