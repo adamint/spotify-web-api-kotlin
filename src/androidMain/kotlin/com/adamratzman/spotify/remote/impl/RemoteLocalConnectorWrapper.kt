@@ -34,8 +34,7 @@ import kotlinx.coroutines.runBlocking
 internal class RemoteLocalConnectorWrapper(
     private val mSpotifyLocator: SpotifyLocator,
     private val mSdkRemoteClientConnectorFactory: SdkRemoteClientConnectorFactory
-) :
-    RemoteConnectorWrapper {
+) : RemoteConnectorWrapper {
     override suspend fun connect(
         context: Context,
         api: SpotifyClientApi,

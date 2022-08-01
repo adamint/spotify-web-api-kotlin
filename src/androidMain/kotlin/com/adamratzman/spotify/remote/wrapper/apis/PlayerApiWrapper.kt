@@ -125,26 +125,43 @@ public class PlayerApiWrapper(private val spotifyAppRemoteWrapper: SpotifyAppRem
     }
 }
 
+/**
+ * Represents the state of Spotify's audio crossfade setting. This setting enable crossfading between tracks.
+ *
+ * @param isEnabled Whether crossfade is enabled.
+ * @param durationInMillis How long the crossfade is for.
+ */
 @Serializable
 public data class CrossfadeStateWrapper(
     val isEnabled: Boolean,
     val durationInMillis: Int
 )
 
+/**
+ * The kind of stream type (only alarm is specified).
+ */
 public enum class StreamTypeWrapper(internal val id: String) {
     Alarm("ALARM")
 }
 
-public enum class PodcastPlaybackSpeedWrapper(internal val id: String) {
-    Playback100Percent("PLAYBACK_SPEED_100"),
-    Playback120Percent("PLAYBACK_SPEED_120"),
-    Playback150Percent("PLAYBACK_SPEED_150"),
-    Playback200Percent("PLAYBACK_SPEED_200"),
-    Playback300Percent("PLAYBACK_SPEED_300"),
-    Playback50Percent("PLAYBACK_SPEED_50"),
-    Playback80Percent("PLAYBACK_SPEED_80"),
+/**
+ * The speed at which to play the podcast.
+ *
+ * @
+ */
+public enum class PodcastPlaybackSpeedWrapper(public val speedMultiplier: Float, internal val id: String) {
+    Playback100Percent(1f, "PLAYBACK_SPEED_100"),
+    Playback120Percent(1.2f, "PLAYBACK_SPEED_120"),
+    Playback150Percent(1.5f, "PLAYBACK_SPEED_150"),
+    Playback200Percent(2f, "PLAYBACK_SPEED_200"),
+    Playback300Percent(3f, "PLAYBACK_SPEED_300"),
+    Playback50Percent(0.5f, "PLAYBACK_SPEED_50"),
+    Playback80Percent(0.8f, "PLAYBACK_SPEED_80"),
 }
 
+/**
+ * What kind of repeat mode to set/that is set.
+ */
 public enum class RepeatModeWrapper(internal val id: Int) {
     Off(0),
     One(1),
@@ -159,6 +176,7 @@ public data class PlayerContextWrapper(
     val uri: String
 )
 
+@Serializable
 public data class PlayerStateWrapper(
     val isPaused: Boolean,
     val playerOptions: PlayerOptionsWrapper,
@@ -168,11 +186,13 @@ public data class PlayerStateWrapper(
     val track: PlayerTrackWrapper
 )
 
+@Serializable
 public data class PlayerOptionsWrapper(
     val isShuffling: Boolean,
     val repeatMode: RepeatModeWrapper
 )
 
+@Serializable
 public data class PlayerRestrictionsWrapper(
     val canRepeatContext: Boolean,
     val canRepeatTrack: Boolean,
@@ -182,6 +202,7 @@ public data class PlayerRestrictionsWrapper(
     val canToggleShuffle: Boolean
 )
 
+@Serializable
 public data class PlayerTrackWrapper(
     val album: PlayerAlbumWrapper,
     val artist: PlayerArtistWrapper,
@@ -194,11 +215,13 @@ public data class PlayerTrackWrapper(
     val uri: String
 )
 
+@Serializable
 public data class PlayerAlbumWrapper(
     val name: String,
     val uri: String
 )
 
+@Serializable
 public data class PlayerArtistWrapper(
     val name: String,
     val uri: String
