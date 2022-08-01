@@ -221,7 +221,7 @@ kotlin {
         sourceSets {
             val kotlinxDatetimeVersion = "0.3.2"
             val serializationVersion = "1.3.2"
-            val ktorVersion = "2.0.2"
+            val ktorVersion = "1.6.8"
             val sparkVersion = "2.9.3"
 
             val korlibsVersion = "2.2.0"
