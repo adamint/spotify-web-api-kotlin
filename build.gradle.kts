@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
@@ -11,9 +13,9 @@ plugins {
     id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
     kotlin("plugin.serialization")
-    id("com.diffplug.spotless") version "6.3.0"
+    id("com.diffplug.spotless") version "6.7.2"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka") version "1.7.10"
 }
 
 repositories {
@@ -46,18 +48,18 @@ tasks.withType<Test> {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
-        exclude("META-INF/*.md")
+        resources.excludes.add("META-INF/*.md")
     }
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
-        compileSdkVersion(30)
+        minSdk = 23
+        targetSdk = 30
+        setCompileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -217,10 +219,12 @@ kotlin {
         val kotlinxDatetimeVersion = "0.3.1"
 
         sourceSets {
-            val serializationVersion = "1.3.2"
-            val ktorVersion = "1.6.8"
-            val korlibsVersion = "2.2.0"
+            val kotlinxDatetimeVersion = "0.4.0"
+            val serializationVersion = "1.3.3"
+            val ktorVersion = "2.0.3"
             val sparkVersion = "2.9.3"
+
+            val korlibsVersion = "2.2.0"
             val androidSpotifyAuthVersion = "1.2.5"
             val androidCryptoVersion = "1.0.0"
             val coroutineMTVersion = "1.6.0-native-mt"
@@ -231,7 +235,6 @@ kotlin {
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
-
                 }
             }
 
@@ -298,7 +301,7 @@ kotlin {
                     implementation("com.pnikosis:materialish-progress:1.7")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:1.3.1")
+                    implementation("androidx.appcompat:appcompat:1.4.2")
                 }
             }
 
