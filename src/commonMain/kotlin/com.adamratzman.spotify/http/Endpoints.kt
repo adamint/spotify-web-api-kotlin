@@ -75,13 +75,12 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
     }
 
-
     internal suspend fun get(url: String): String {
         return execute<String>(url)
     }
 
     internal suspend fun getNullable(url: String): String? {
-        return execute<String?>(url)
+        return execute<String?>(url, retryOnNull = false)
     }
 
     internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
@@ -100,14 +99,16 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         return execute<String>(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
-    private suspend fun <T: String?> execute(
+    @Suppress("UNCHECKED_CAST")
+    private suspend fun <ReturnType: String?> execute(
         url: String,
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
         retry202: Boolean = true,
         contentType: String? = null,
-        attemptedRefresh: Boolean = false
-    ): String {
+        attemptedRefresh: Boolean = false,
+        retryOnNull: Boolean = true
+    ): ReturnType {
         if (api.token.shouldRefresh()) {
             if (!api.spotifyApiOptions.automaticRefresh) throw SpotifyException.ReAuthenticationNeededException(message = "The access token has expired.")
             else api.refreshToken()
@@ -116,7 +117,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         val spotifyRequest = SpotifyRequest(url, method, body, api)
         val cacheState = if (api.useCache) cache[spotifyRequest] else null
 
-        if (cacheState?.isStillValid() == true) return cacheState.data
+        if (cacheState?.isStillValid() == true) return cacheState.data as ReturnType
         else if (cacheState?.let { it.eTag == null } == true) {
             cache -= spotifyRequest
         }
@@ -131,18 +132,18 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         retryIfInternalServerErrorLeft = api.spotifyApiOptions.retryOnInternalServerErrorTimes
                     )
 
-                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: execute<T>(
-                        url,
-                        body,
-                        method,
-                        false,
-                        contentType
-                    )
+                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: run {
+                        if (retryOnNull) {
+                            execute<ReturnType>(url, body, method, false, contentType)
+                        } else {
+                            null
+                        }
+                    }
                 } catch (e: BadRequestException) {
                     if (e.statusCode == 401 && !attemptedRefresh) {
                         api.refreshToken()
 
-                        execute<T>(
+                        execute<ReturnType>(
                             url,
                             body,
                             method,
@@ -152,7 +153,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                         )
                     } else throw e
                 }
-            }
+            } as ReturnType
         } catch (e: CancellationException) {
             throw TimeoutException(
                 e.message
