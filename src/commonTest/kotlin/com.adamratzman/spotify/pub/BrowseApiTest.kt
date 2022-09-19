@@ -47,10 +47,11 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
         return runBlockingTest {
             super.build<GenericSpotifyApi>()
             if (!testPrereq()) return@runBlockingTest else api!!
-            assertNotNull(api!!.browse.getCategory("pop"))
-            assertNotNull(api!!.browse.getCategory("pop", Market.FR))
-            assertNotNull(api!!.browse.getCategory("pop", Market.FR, locale = Locale.en_US))
-            assertNotNull(api!!.browse.getCategory("pop", Market.FR, locale = Locale.sr_ME))
+            val firstCategoryId = api!!.browse.getCategoryList(limit = 1, market = Market.FR).first()!!.id
+            assertNotNull(api!!.browse.getCategory(firstCategoryId))
+            assertNotNull(api!!.browse.getCategory(firstCategoryId, Market.FR))
+            assertNotNull(api!!.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.en_US))
+            assertNotNull(api!!.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.sr_ME))
             assertFailsWith<SpotifyException.BadRequestException> { api!!.browse.getCategory("no u", Market.US) }
         }
     }
@@ -66,7 +67,7 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
                     limit = 4
                 )
             }
-            assertTrue(api!!.browse.getPlaylistsForCategory("pop", 10, 0, Market.FR).items.isNotEmpty())
+            assertTrue(api!!.browse.getPlaylistsForCategory(api!!.browse.getCategoryList(limit = 1).first()!!.id, 10, 0, Market.FR).items.isNotEmpty())
         }
     }
 

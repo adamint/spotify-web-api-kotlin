@@ -127,7 +127,7 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
 
                 api!!.playlists.uploadClientPlaylistCover(
                     createdPlaylist!!.id,
-                    imageUrl = "http://www.personal.psu.edu/kbl5192/jpg.jpg"
+                    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/240px-Cat03.jpg"
                 )
 
                 var updatedPlaylist = api!!.playlists.getClientPlaylist(createdPlaylist!!.id)!!
