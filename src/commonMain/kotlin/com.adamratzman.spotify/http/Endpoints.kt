@@ -75,20 +75,20 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
     }
 
-    internal suspend fun get(url: String): String {
+    internal open suspend fun get(url: String): String {
         return execute<String>(url)
     }
 
     internal suspend fun getNullable(url: String): String? {
-        return execute<String?>(url, retryOnNull = false)
+        return execute(url, retryOnNull = false)
     }
 
-    internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
-        return execute<String>(url, body, HttpRequestMethod.POST, contentType = contentType)
+    internal open suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
+        return execute(url, body, HttpRequestMethod.POST, contentType = contentType)
     }
 
-    internal suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
-        return execute<String>(url, body, HttpRequestMethod.PUT, contentType = contentType)
+    internal open suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
+        return execute(url, body, HttpRequestMethod.PUT, contentType = contentType)
     }
 
     internal suspend fun delete(
@@ -96,7 +96,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         body: String? = null,
         contentType: String? = null
     ): String {
-        return execute<String>(url, body, HttpRequestMethod.DELETE, contentType = contentType)
+        return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
     }
 
     @Suppress("UNCHECKED_CAST")

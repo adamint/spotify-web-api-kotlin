@@ -1,15 +1,9 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.promise
+actual fun areLivePkceTestsEnabled(): Boolean = false
+actual fun arePlayerTestsEnabled(): Boolean = false
 
-actual fun getEnvironmentVariable(name: String): String? {
-    // return if (jsTypeOf("process") === undefined) null else js("process")?.env[name].unsafeCast<String?>()
-    return null
-}
-
-actual fun Exception.stackTrace() = println(this)
-
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): dynamic = GlobalScope.promise { block() }
+actual fun getTestClientId(): String? = null
+actual fun getTestClientSecret(): String? = null
+actual suspend fun buildSpotifyApi(): GenericSpotifyApi? = null

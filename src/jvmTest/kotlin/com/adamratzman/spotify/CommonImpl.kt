@@ -1,21 +1,45 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import java.util.concurrent.Executors
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.runBlocking
+actual fun getTestClientId(): String? = System.getenv("SPOTIFY_CLIENT_ID")
+actual fun getTestClientSecret(): String? = System.getenv("SPOTIFY_CLIENT_SECRET")
 
-actual fun getEnvironmentVariable(name: String): String? {
-    return System.getenv(name) ?: System.getProperty(name)
+actual fun arePlayerTestsEnabled(): Boolean {
+    return System.getenv("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
 }
 
-actual fun Exception.stackTrace() {
-    println(this.stackTrace.joinToString("\n") { it.toString() })
-    this.printStackTrace()
+actual fun areLivePkceTestsEnabled(): Boolean {
+    return System.getenv("VERBOSE_TEST_ENABLED")?.toBoolean() ?: false
 }
 
-val testCoroutineContext: CoroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+actual suspend fun buildSpotifyApi(): GenericSpotifyApi? {
+    val clientId = getTestClientId()
+    val clientSecret = getTestClientSecret()
+    val redirectUri = System.getenv("SPOTIFY_REDIRECT_URI")
+    val tokenString = System.getenv("SPOTIFY_TOKEN_STRING")
+    val logHttp = System.getenv("SPOTIFY_LOG_HTTP")
 
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) = runBlocking(testCoroutineContext) { block() }
+    return when {
+        tokenString?.isNotBlank() == true -> {
+            spotifyClientApi {
+                credentials {
+                    this.clientId = clientId
+                    this.clientSecret = clientSecret
+                    this.redirectUri = redirectUri
+                }
+                authorization {
+                    this.tokenString = tokenString
+                }
+            }.build()
+        }
+        clientId?.isNotBlank() == true -> {
+            spotifyAppApi {
+                credentials {
+                    this.clientId = clientId
+                    this.clientSecret = clientSecret
+                }
+            }.build()
+        }
+        else -> null
+    }?.also { if (logHttp == "true") it.spotifyApiOptions.enableDebugMode = true }
+}

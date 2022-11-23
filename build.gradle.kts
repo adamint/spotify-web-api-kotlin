@@ -156,10 +156,6 @@ kotlin {
         binaries.executable()
     }
 
-    // val hostOs = System.getProperty("os.name")
-    // val isMainHost = hostOs.contains("mac", true)
-    // val isMingwX64 = hostOs.startsWith("Windows")
-
     macosX64 {
         mavenPublication {
             setupPom(artifactId)
@@ -216,8 +212,6 @@ kotlin {
     }
 
     targets {
-        val kotlinxDatetimeVersion = "0.3.1"
-
         sourceSets {
             val kotlinxDatetimeVersion = "0.4.0"
             val serializationVersion = "1.3.3"
@@ -227,7 +221,7 @@ kotlin {
             val korlibsVersion = "2.2.0"
             val androidSpotifyAuthVersion = "1.2.5"
             val androidCryptoVersion = "1.0.0"
-            val coroutineMTVersion = "1.6.0-native-mt"
+            val coroutineMTVersion = "1.6.4"
 
             val commonMain by getting {
                 dependencies {
@@ -240,6 +234,7 @@ kotlin {
 
             val commonTest by getting {
                 dependencies {
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
                     implementation(kotlin("test-common"))
                     implementation(kotlin("test-annotations-common"))
                 }

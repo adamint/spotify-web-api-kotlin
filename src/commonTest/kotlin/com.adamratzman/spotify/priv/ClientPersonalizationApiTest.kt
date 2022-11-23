@@ -1,36 +1,35 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.adamratzman.spotify.priv
 
 import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
-import com.adamratzman.spotify.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 
 class ClientPersonalizationApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testGetTopArtists() {
-        return runBlockingTest {
-            super.build<SpotifyClientApi>()
-            if (!testPrereq()) return@runBlockingTest else api!!
+    fun testGetTopArtists() = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>()
+        if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
-            assertTrue(
-                api!!.personalization
-                    .getTopArtists(5, timeRange = ClientPersonalizationApi.TimeRange.MEDIUM_TERM)
-                    .items
-                    .isNotEmpty()
-            )
-        }
+        assertTrue(
+            api.personalization.getTopArtists(
+                5,
+                timeRange = ClientPersonalizationApi.TimeRange.MEDIUM_TERM
+            ).items.isNotEmpty()
+        )
     }
 
     @Test
-    fun testGetTopTracks() {
-        return runBlockingTest {
-            super.build<SpotifyClientApi>()
-            if (!testPrereq()) return@runBlockingTest else api!!
+    fun testGetTopTracks() = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>()
+        if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
-            assertTrue(api!!.personalization.getTopTracks(5).items.isNotEmpty())
-        }
+        assertTrue(api.personalization.getTopTracks(5).items.isNotEmpty())
     }
 }
