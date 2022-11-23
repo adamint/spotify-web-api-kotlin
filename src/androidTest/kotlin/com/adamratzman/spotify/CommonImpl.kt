@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 
-public fun setFinalStatic(field: Field, newValue: Any?) {
+private fun setFinalStatic(field: Field, newValue: Any?) {
     field.isAccessible = true
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
     modifiersField.isAccessible = true
@@ -18,17 +18,54 @@ public fun setFinalStatic(field: Field, newValue: Any?) {
     field.set(null, newValue)
 }
 
-public actual fun getEnvironmentVariable(name: String): String? {
+private fun getEnvironmentVariable(name: String): String? {
     setFinalStatic(VERSION::class.java.getField("SDK_INT"), 26)
     return System.getenv(name) ?: System.getProperty(name)
 }
 
-public actual fun Exception.stackTrace() {
-    println(this.stackTrace.joinToString("\n") { it.toString() })
-    this.printStackTrace()
+actual fun getTestClientId(): String? = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+actual fun getTestClientSecret(): String? = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
+actual fun getTestRedirectUri(): String? = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
+actual fun getTestTokenString(): String? = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
+actual fun isHttpLoggingEnabled(): Boolean = getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true"
+actual fun arePlayerTestsEnabled(): Boolean = getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
+actual fun areLivePkceTestsEnabled(): Boolean = getEnvironmentVariable("VERBOSE_TEST_ENABLED")?.toBoolean() ?: false
+
+actual suspend fun buildSpotifyApi(): GenericSpotifyApi? {
+    val clientId = getTestClientId()
+    val clientSecret = getTestClientSecret()
+    val tokenString = getTestTokenString()
+    val logHttp = isHttpLoggingEnabled()
+
+    return when {
+        tokenString?.isNotBlank() == true -> {
+            spotifyClientApi {
+                credentials {
+                    this.clientId = clientId
+                    this.clientSecret = clientSecret
+                    this.redirectUri = getTestRedirectUri()
+                }
+                authorization {
+                    this.tokenString = tokenString
+                }
+                options {
+                    this.enableDebugMode = logHttp
+                }
+            }.build()
+        }
+
+        clientId?.isNotBlank() == true -> {
+            spotifyAppApi {
+                credentials {
+                    this.clientId = clientId
+                    this.clientSecret = clientSecret
+                }
+                options {
+                    this.enableDebugMode = logHttp
+                }
+            }.build()
+        }
+
+        else -> null
+    }
 }
-
-public val testCoroutineContext: CoroutineContext =
-        Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-
-public actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): Unit = runBlocking(testCoroutineContext) { this.block() }

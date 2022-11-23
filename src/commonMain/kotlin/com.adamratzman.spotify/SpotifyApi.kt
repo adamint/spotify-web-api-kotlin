@@ -24,7 +24,7 @@ import com.adamratzman.spotify.endpoints.pub.ShowApi
 import com.adamratzman.spotify.endpoints.pub.TrackApi
 import com.adamratzman.spotify.endpoints.pub.UserApi
 import com.adamratzman.spotify.http.CacheState
-import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpHeader
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.HttpResponse
@@ -339,7 +339,7 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
             json: Json = api?.spotifyApiOptions?.json ?: Json.Default
         ): Token {
             val response = executeTokenRequest(
-                HttpConnection(
+                HttpRequest(
                     "https://accounts.spotify.com/api/token",
                     HttpRequestMethod.POST,
                     mapOf("grant_type" to "client_credentials"),
@@ -696,11 +696,11 @@ public suspend fun getCredentialedToken(
 ): Token = SpotifyApi.getCredentialedToken(clientId, clientSecret, api, json)
 
 internal suspend fun executeTokenRequest(
-    httpConnection: HttpConnection,
+    httpRequest: HttpRequest,
     clientId: String,
     clientSecret: String
 ): HttpResponse {
-    return httpConnection.execute(
+    return httpRequest.execute(
         listOf(
             HttpHeader(
                 "Authorization",
@@ -738,7 +738,7 @@ public suspend fun refreshSpotifyClientToken(
     val response = if (!usesPkceAuth) {
         require(clientSecret != null) { "The client secret is not set" }
         executeTokenRequest(
-            HttpConnection(
+            HttpRequest(
                 "https://accounts.spotify.com/api/token",
                 HttpRequestMethod.POST,
                 getDefaultClientApiTokenBody(),
@@ -749,7 +749,7 @@ public suspend fun refreshSpotifyClientToken(
             ), clientId, clientSecret
         )
     } else {
-        HttpConnection(
+        HttpRequest(
             "https://accounts.spotify.com/api/token",
             HttpRequestMethod.POST,
             getDefaultClientApiTokenBody(),

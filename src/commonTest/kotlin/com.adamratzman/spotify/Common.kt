@@ -13,6 +13,10 @@ expect fun areLivePkceTestsEnabled(): Boolean
 expect fun arePlayerTestsEnabled(): Boolean
 expect fun getTestClientId(): String?
 expect fun getTestClientSecret(): String?
+expect fun getTestRedirectUri(): String?
+expect fun getTestTokenString(): String?
+expect fun isHttpLoggingEnabled(): Boolean
+
 expect suspend fun buildSpotifyApi(): GenericSpotifyApi?
 
 suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline block: suspend () -> Unit) {

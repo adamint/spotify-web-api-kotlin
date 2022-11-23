@@ -11,6 +11,8 @@ import com.adamratzman.spotify.models.ErrorResponse
 import com.adamratzman.spotify.models.SpotifyRatelimitedException
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
+import com.soywiz.klogger.Console
+import com.soywiz.korio.async.launch
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
@@ -24,6 +26,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 
@@ -40,10 +43,12 @@ public data class HttpHeader(val key: String, val value: String)
 @Serializable
 public data class HttpResponse(val responseCode: Int, val body: String, val headers: List<HttpHeader>)
 
+public typealias HttpConnection = HttpRequest
+
 /**
  * Provides a fast, easy, and slim way to execute and retrieve HTTP GET, POST, PUT, and DELETE requests
  */
-public class HttpConnection constructor(
+public class HttpRequest constructor(
     public val url: String,
     public val method: HttpRequestMethod,
     public val bodyMap: Map<*, *>?,
@@ -59,14 +64,15 @@ public class HttpConnection constructor(
     }
 
     public fun buildRequest(additionalHeaders: List<HttpHeader>?): HttpRequestBuilder = HttpRequestBuilder().apply {
-        url(this@HttpConnection.url)
-        method = this@HttpConnection.method.externalMethod
+        url(this@HttpRequest.url)
+        method = this@HttpRequest.method.externalMethod
 
         setBody(
-            when (this@HttpConnection.method) {
+            when (this@HttpRequest.method) {
                 HttpRequestMethod.DELETE -> {
                     bodyString.toByteArrayContent() ?: body
                 }
+
                 HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
                     val contentString = if (contentType == ContentType.Application.FormUrlEncoded) {
                         bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&") ?: bodyString
@@ -74,13 +80,14 @@ public class HttpConnection constructor(
 
                     contentString.toByteArrayContent() ?: ByteArrayContent("".toByteArray(), contentType)
                 }
+
                 else -> body
             }
         )
 
         // let additionalHeaders overwrite headers
-        val allHeaders = if (additionalHeaders == null) this@HttpConnection.headers
-        else this@HttpConnection.headers.filter { oldHeaders -> oldHeaders.key !in additionalHeaders.map { it.key } } + additionalHeaders
+        val allHeaders = if (additionalHeaders == null) this@HttpRequest.headers
+        else this@HttpRequest.headers.filter { oldHeaders -> oldHeaders.key !in additionalHeaders.map { it.key } } + additionalHeaders
 
         allHeaders.forEach { (key, value) ->
             header(key, value)
@@ -92,7 +99,7 @@ public class HttpConnection constructor(
         retryIfInternalServerErrorLeft: Int? = SpotifyApiOptions().retryOnInternalServerErrorTimes // default
     ): HttpResponse {
         val httpRequest = buildRequest(additionalHeaders)
-        if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: Request: $this")
+        if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Request: $this")
         try {
             return httpClient.request(httpRequest).let { response ->
                 val respCode = response.status.value
@@ -119,7 +126,7 @@ public class HttpConnection constructor(
                 }
 
                 val body: String = response.bodyAsText()
-                if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $body")
+                if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Request body: $body")
 
                 if (respCode == 401 && body.contains("access token") && api?.spotifyApiOptions?.automaticRefresh == true) {
                     api.refreshToken()
@@ -133,7 +140,7 @@ public class HttpConnection constructor(
                     )
                 }
 
-                return HttpResponse(
+                val response = HttpResponse(
                     responseCode = respCode,
                     body = body,
                     headers = response.headers.entries().map { (key, value) ->
@@ -143,12 +150,20 @@ public class HttpConnection constructor(
                         )
                     }
                 )
+
+                api?.spotifyApiOptions?.httpResponseSubscriber?.let { subscriber ->
+                    launch(currentCoroutineContext()) {
+                        subscriber(this, response)
+                    }
+                }
+
+                return response
             }
         } catch (e: CancellationException) {
             throw e
         } catch (e: ResponseException) {
             val errorBody = e.response.bodyAsText()
-            if (api?.spotifyApiOptions?.enableDebugMode == true) println("DEBUG MODE: $errorBody")
+            if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Error body: $errorBody")
             try {
                 val respCode = e.response.status.value
 

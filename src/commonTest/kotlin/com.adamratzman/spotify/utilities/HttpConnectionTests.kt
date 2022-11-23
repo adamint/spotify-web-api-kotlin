@@ -3,7 +3,7 @@
 
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpRequestMethod
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -18,7 +18,7 @@ import kotlinx.serialization.json.jsonPrimitive
 class HttpConnectionTests {
     @Test
     fun testGetRequest() = runTestOnDefaultDispatcher {
-        val (response, body) = HttpConnection(
+        val (response, body) = HttpRequest(
             "https://httpbin.org/get?query=string",
             HttpRequestMethod.GET,
             null,
@@ -44,7 +44,7 @@ class HttpConnectionTests {
 
     @Test
     fun testPostRequest() = runTestOnDefaultDispatcher {
-        val (response, body) = HttpConnection(
+        val (response, body) = HttpRequest(
             "https://httpbin.org/post?query=string",
             HttpRequestMethod.POST,
             null,
@@ -72,7 +72,7 @@ class HttpConnectionTests {
 
     @Test
     fun testDeleteRequest() = runTestOnDefaultDispatcher {
-        val (response, _) = HttpConnection(
+        val (response, _) = HttpRequest(
             "https://httpbin.org/delete?query=string",
             HttpRequestMethod.DELETE,
             null,

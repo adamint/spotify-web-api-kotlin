@@ -2,8 +2,9 @@
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyApi.Companion.getCredentialedToken
-import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpRequestMethod
+import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
@@ -891,7 +892,7 @@ public class SpotifyClientApiBuilder(
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
                 val response = executeTokenRequest(
-                    HttpConnection(
+                    HttpRequest(
                         "https://accounts.spotify.com/api/token",
                         HttpRequestMethod.POST,
                         mapOf(
@@ -929,7 +930,7 @@ public class SpotifyClientApiBuilder(
             authorization.authorizationCode != null && authorization.pkceCodeVerifier != null -> try {
                 require(clientId != null && redirectUri != null) { "You need to specify a valid clientId and redirectUri in the credentials block!" }
 
-                val response = HttpConnection(
+                val response = HttpRequest(
                     "https://accounts.spotify.com/api/token",
                     HttpRequestMethod.POST,
                     mapOf(
@@ -1136,6 +1137,7 @@ public class SpotifyUserAuthorization(
  * to avoid retrying at all, or set to null to keep retrying until success.
  * @param enableDebugMode Whether to enable debug mode (false by default). With debug mode, all response JSON will be outputted to console.
  * @param afterTokenRefresh An optional block to execute after token refresh has been completed.
+ * @param httpResponseSubscriber An optional suspending method to subscribe to successful http responses.
  */
 public data class SpotifyApiOptions(
     public var useCache: Boolean = true,
@@ -1154,5 +1156,6 @@ public data class SpotifyApiOptions(
     public var proxyBaseUrl: String? = null,
     public var retryOnInternalServerErrorTimes: Int? = 5,
     public var enableDebugMode: Boolean = false,
+    public var httpResponseSubscriber: (suspend (request: HttpRequest, response: HttpResponse) -> Unit)? = null,
     public var afterTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null
 )
