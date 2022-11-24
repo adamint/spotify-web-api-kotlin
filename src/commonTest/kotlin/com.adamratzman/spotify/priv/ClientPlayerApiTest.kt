@@ -86,7 +86,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
 
         val device = api.player.getDevices().first()
 
-        val trackId = "7lPN2DXiMsVn7XUKtOW1CS"
+        val trackId = "1VsVY1ySdH3nVSWnLT5vCf"
         api.player.startPlayback(
             playableUrisToPlay = listOf(PlayableUri("spotify:track:$trackId")),
             deviceId = device.id
@@ -117,7 +117,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         val device = api.player.getDevices().first()
         val playlist = api.playlists.getPlaylist("098OivbzwUNzzDShgF6U4A")!!
         api.player.startPlayback(playlistId = playlist.id) // two tracks
-        val trackId = "7lPN2DXiMsVn7XUKtOW1CS"
+        val trackId = "1VsVY1ySdH3nVSWnLT5vCf"
         api.player.addItemToEndOfQueue(trackId.toTrackUri(), device.id)
         delay(1000)
         api.player.skipForward() // skip first
@@ -139,7 +139,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
 
         val device = api.player.getDevices().first()
 
-        val trackId = "7lPN2DXiMsVn7XUKtOW1CS"
+        val trackId = "1VsVY1ySdH3nVSWnLT5vCf"
         val track = api.tracks.getTrack(trackId)!!
         api.player.startPlayback(
             playableUrisToPlay = listOf(PlayableUri("spotify:track:$trackId")),
@@ -226,7 +226,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         api.player.startPlayback(
             playableUrisToPlay = trackUris
         )
-        delay(1000)
+        delay(2500)
         assertEquals(trackUris.first().id, api.player.getCurrentlyPlaying()?.item?.id)
         api.player.skipForward()
         delay(1000)
@@ -301,7 +301,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         val toDevice = devices[1]
 
         api.player.startPlayback(
-            playableUrisToPlay = listOf(PlayableUri("spotify:track:7lPN2DXiMsVn7XUKtOW1CS")),
+            playableUrisToPlay = listOf(PlayableUri("spotify:track:1VsVY1ySdH3nVSWnLT5vCf")),
             deviceId = fromDevice.id
         )
         delay(1000)

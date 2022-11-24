@@ -19,10 +19,11 @@ actual suspend fun buildSpotifyApi(): GenericSpotifyApi? {
 
     val optionsCreator: (SpotifyApiOptions.() -> Unit) = {
         this.enableDebugMode = logHttp
+        this.enableLogger = true
         this.httpResponseSubscriber = { request, response ->
-            println("=== request ${requestNumber} ===")
+            /*println("=== request ${requestNumber} ===")
             println(request)
-            println(response)
+            println(response)*/
             requestNumber++
         }
     }

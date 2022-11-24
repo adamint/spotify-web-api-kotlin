@@ -105,6 +105,7 @@ public class HttpRequest constructor(
                 val respCode = response.status.value
 
                 if (respCode in 500..599 && (retryIfInternalServerErrorLeft == null || retryIfInternalServerErrorLeft == -1 || retryIfInternalServerErrorLeft > 0)) {
+                    if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Received internal server error ${respCode}, attempting to retry (${retryIfInternalServerErrorLeft} tries left)")
                     return@let execute(
                         additionalHeaders,
                         retryIfInternalServerErrorLeft =
@@ -115,6 +116,7 @@ public class HttpRequest constructor(
                 // otherwise, if it's 5xx and retryIfInternalServerErrorLeft == 0 we just continue and fail
 
                 if (respCode == 429) {
+                    if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Received 429, attempting to retry")
                     val ratelimit = response.headers["Retry-After"]!!.toLong() + 1L
                     if (api?.spotifyApiOptions?.retryWhenRateLimited == true) {
                         delay(ratelimit * 1000)
@@ -140,7 +142,7 @@ public class HttpRequest constructor(
                     )
                 }
 
-                val response = HttpResponse(
+                val httpResponseToReturn = HttpResponse(
                     responseCode = respCode,
                     body = body,
                     headers = response.headers.entries().map { (key, value) ->
@@ -153,11 +155,11 @@ public class HttpRequest constructor(
 
                 api?.spotifyApiOptions?.httpResponseSubscriber?.let { subscriber ->
                     launch(currentCoroutineContext()) {
-                        subscriber(this, response)
+                        subscriber(this, httpResponseToReturn)
                     }
                 }
 
-                return response
+                return httpResponseToReturn
             }
         } catch (e: CancellationException) {
             throw e

@@ -84,11 +84,11 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     }
 
     internal open suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
-        return execute(url, body, HttpRequestMethod.POST, contentType = contentType)
+        return execute(url, body, HttpRequestMethod.POST, contentType = contentType, retryOnNull = false)
     }
 
     internal open suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
-        return execute(url, body, HttpRequestMethod.PUT, contentType = contentType)
+        return execute(url, body, HttpRequestMethod.PUT, contentType = contentType, retryOnNull = false)
     }
 
     internal suspend fun delete(
@@ -96,7 +96,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         body: String? = null,
         contentType: String? = null
     ): String {
-        return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType)
+        return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType, retryOnNull = false)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -134,7 +134,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: run {
                         if (retryOnNull) {
-                            execute<ReturnType>(url, body, method, false, contentType)
+                            execute<ReturnType>(url, body, method, false, contentType, retryOnNull)
                         } else {
                             null
                         }
@@ -149,7 +149,8 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                             method,
                             retry202,
                             contentType,
-                            true
+                            true,
+                            retryOnNull
                         )
                     } else throw e
                 }
