@@ -6,16 +6,14 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
-    id("lt.petuska.npm.publish") version "1.1.2"
     kotlin("multiplatform")
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.30.0"
     id("com.android.library")
     kotlin("plugin.serialization")
-    id("com.diffplug.spotless") version "6.7.2"
+    id("com.diffplug.spotless") version "6.11.0"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.dokka") version "1.7.20"
 }
 
 repositories {
@@ -29,23 +27,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:")
+        classpath("com.android.tools.build:gradle:") // resolved in settings.gradle.kts
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:") // resolved in settings.gradle.kts
     }
 }
+
+// --- spotify-web-api-kotlin info ---
+val libraryVersion: String = System.getenv("SPOTIFY_API_PUBLISH_VERSION") ?: "0.0.0.SNAPSHOT"
 
 group = "com.adamratzman"
-version = System.getenv("SPOTIFY_API_PUBLISH_VERSION") ?: "0.0.0.SNAPSHOT"
+version = libraryVersion
 
-System.getenv("signing.keyId")?.let { project.ext["signing.keyId"] = it }
-System.getenv("signing.password")?.let { project.ext["signing.password"] = it }
-System.getenv("signing.secretKeyRingFile")?.let { project.ext["signing.secretKeyRingFile"] = it }
-
-tasks.withType<Test> {
-    this.testLogging {
-        this.showStandardStreams = true
-    }
-}
 
 android {
     compileSdk = 30
@@ -54,7 +46,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
-        resources.excludes.add("META-INF/*.md")
+        resources.excludes.add("META-INF/*.md") // needed to prevent android compilation errors
     }
     defaultConfig {
         minSdk = 23
@@ -62,6 +54,7 @@ android {
         setCompileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -70,26 +63,14 @@ android {
     testOptions {
         this.unitTests.isReturnDefaultValues = true
     }
-    //sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].setRoot("src/androidMain")
     sourceSets["test"].setRoot("src/androidTest")
-    /*sourceSets {
-        getByName("main") {
-            manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            java.setSrcDirs(listOf("src/androidMain/kotlin"))
-            res.setSrcDirs(listOf("src/androidMain/res"))
-        }
-        getByName("test") {
-            java.setSrcDirs(listOf("src/androidTest/kotlin"))
-            res.setSrcDirs(listOf("src/androidTest/res"))
-        }
-    }*/
 }
 
-val dokkaJar by tasks.registering(Jar::class) {
+// invoked in kotlin closure, needs to be registered before
+val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Docs"
-    classifier = "javadoc"
+    description = "spotify-web-api-kotlin generated documentation"
     from(tasks.dokkaHtml)
 }
 
@@ -97,13 +78,9 @@ kotlin {
     explicitApiWarning()
 
     android {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
+        compilations.all { kotlinOptions.jvmTarget = "1.8" }
 
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
 
         publishLibraryVariants("debug", "release")
 
@@ -118,17 +95,11 @@ kotlin {
             useJUnit()
         }
 
-        mavenPublication {
-            setupPom(artifactId)
-        }
-
+        mavenPublication { setupPom(artifactId) }
     }
 
     js(KotlinJsCompilerType.IR) {
-
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
 
         browser {
             webpackTask {
@@ -139,102 +110,73 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
-                    //useChrome()
                     webpackConfig.cssSupport.enabled = true
                 }
             }
         }
 
-        /*nodejs {
-            testTask {
-                useMocha {
-                    timeout = "15000"
-                }
-            }
-        }*/
-
         binaries.executable()
     }
 
     macosX64 {
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }
+
     linuxX64 {
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }
+
     mingwX64 {
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }
+
     ios {
-        binaries {
-            framework {
-                baseName = "spotify"
-            }
-        }
+        binaries { framework { baseName = "spotify" } }
 
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }
+
+    // !! unable to include currently due to korlibs not being available !!
+    /*
     tvos {
-        binaries {
-            framework {
-                baseName = "spotify"
-            }
-        }
+        binaries { framework { baseName = "spotify" } }
 
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }
 
-    // disabled due to lack of coroutine/serialization library support (yet)
-    /*watchos {
-     binaries {
-            framework {
-                baseName = "spotify"
-            }
-        }
+    watchos {
+        binaries { framework { baseName = "spotify" } }
 
-        mavenPublication {
-            setupPom(artifactId)
-        }
+        mavenPublication { setupPom(artifactId) }
     }*/
 
     publishing {
-        if ("local" !in (version as String)) registerPublishing()
+        registerPublishing()
     }
 
     targets {
         sourceSets {
-            val kotlinxDatetimeVersion = "0.4.0"
-            val serializationVersion = "1.3.3"
-            val ktorVersion = "2.0.3"
-            val sparkVersion = "2.9.3"
+            val kotlinxDatetimeVersion: String by project
+            val kotlinxSerializationVersion: String by project
+            val kotlinxCoroutinesVersion: String by project
+            val ktorVersion: String by project
 
-            val korlibsVersion = "2.2.0"
-            val androidSpotifyAuthVersion = "1.2.5"
-            val androidCryptoVersion = "1.0.0"
-            val coroutineMTVersion = "1.6.4"
+            val sparkVersion: String by project
+            val korlibsVersion: String by project
 
             val commonMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
                     implementation("io.ktor:ktor-client-core:$ktorVersion")
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
 
             val commonTest by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
                     implementation(kotlin("test-common"))
                     implementation(kotlin("test-annotations-common"))
                 }
@@ -244,7 +186,6 @@ kotlin {
                 dependsOn(commonMain)
 
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                     implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.3")
                 }
             }
@@ -270,10 +211,7 @@ kotlin {
 
             val jsMain by getting {
                 dependencies {
-                    implementation(npm("text-encoding", "0.7.0"))
                     implementation("io.ktor:ktor-client-js:$ktorVersion")
-                    implementation(npm("abort-controller", "3.0.0"))
-                    implementation(npm("node-fetch", "2.6.1"))
                     implementation(kotlin("stdlib-js"))
                 }
             }
@@ -292,13 +230,17 @@ kotlin {
                 }
 
                 dependencies {
+                    val androidSpotifyAuthVersion: String by project
+                    val androidCryptoVersion: String by project
+                    val androidxCompatVersion: String by project
+
                     api("com.spotify.android:auth:$androidSpotifyAuthVersion")
-                    implementation("com.pnikosis:materialish-progress:1.7")
                     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                     implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:1.4.2")
+                    implementation("androidx.appcompat:appcompat:$androidxCompatVersion")
                 }
             }
+
             val androidTest by getting {
                 dependencies {
                     implementation(kotlin("test-junit"))
@@ -307,141 +249,49 @@ kotlin {
                 }
             }
 
+            // as kotlin/native, they require special ktor versions
             val desktopMain by creating {
                 dependsOn(commonMain)
 
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
-                        version {
-                            strictly(coroutineMTVersion)
-                        }
-                    }
                     implementation("io.ktor:ktor-client-curl:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
-            }
-
-            val desktopTest by creating {
-                dependsOn(commonTest)
-            }
-
-            val linuxX64Main by getting {
-                dependsOn(desktopMain)
-            }
-
-            val linuxX64Test by getting {
-                dependsOn(desktopTest)
-            }
-
-            val mingwX64Main by getting {
-                dependsOn(desktopMain)
-            }
-
-            val mingwX64Test by getting {
-                dependsOn(desktopTest)
-            }
-
-            val macosX64Main by getting {
-                dependsOn(desktopMain)
-            }
-
-            val macosX64Test by getting {
-                dependsOn(desktopTest)
             }
 
             val nativeDarwinMain by creating {
                 dependsOn(commonMain)
 
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineMTVersion") {
-                        version {
-                            strictly(coroutineMTVersion)
-                        }
-                    }
                     implementation("io.ktor:ktor-client-ios:$ktorVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
                 }
             }
 
-            val nativeDarwinTest by creating {
-                dependsOn(commonTest)
-            }
+            // desktop targets
+            val desktopTest by creating { dependsOn(commonTest) }
+            val linuxX64Main by getting { dependsOn(desktopMain) }
+            val linuxX64Test by getting { dependsOn(desktopTest) }
+            val mingwX64Main by getting { dependsOn(desktopMain) }
+            val mingwX64Test by getting { dependsOn(desktopTest) }
+            val macosX64Main by getting { dependsOn(desktopMain) }
+            val macosX64Test by getting { dependsOn(desktopTest) }
 
-            val iosMain by getting {
-                dependsOn(nativeDarwinMain)
-            }
+            // darwin targets
+            val nativeDarwinTest by creating { dependsOn(commonTest) }
+            val iosMain by getting { dependsOn(nativeDarwinMain) }
+            val iosTest by getting { dependsOn(nativeDarwinTest) }
 
-            val iosTest by getting {
-                dependsOn(nativeDarwinTest)
-            }
+            // !! unable to include currently due to korlibs not being available !!
+            //val tvosMain by getting { dependsOn(nativeDarwinMain) }
+            //val tvosTest by getting { dependsOn(nativeDarwinTest) }
+            //val watchosMain by getting { dependsOn(nativeDarwinMain) }
+            //val watchosTest by getting { dependsOn(nativeDarwinTest) }
 
-            val tvosMain by getting {
-                dependsOn(nativeDarwinMain)
-            }
-
-            val tvosTest by getting {
-                dependsOn(nativeDarwinTest)
-            }
-
-            /* val watchosMain by getting {
-            dependsOn(nativeDarwinMain)
-        }
-
-        val watchosTest by getting {
-            dependsOn(nativeDarwinTest)
-        }*/
-
-            all {
-                languageSettings.optIn("kotlin.RequiresOptIn")
-            }
-        }
-    }
-}
-
-publishing {
-    if ("local" in (version as String)) registerPublishing()
-}
-
-signing {
-    if (project.hasProperty("SIGNING_KEY")
-        && project.hasProperty("SIGNING_PASSWORD")
-    ) {
-        useInMemoryPgpKeys(
-            project.findProperty("SIGNING_KEY") as? String,
-            project.findProperty("SIGNING_PASSWORD") as? String
-        )
-        sign(publishing.publications)
-    }
-}
-
-npmPublishing {
-    repositories {
-        repository("npmjs") {
-            registry = uri("https://registry.npmjs.org")
-            (project.properties["npmauthtoken"] as? String)?.let { authToken = it }
+            all { languageSettings.optIn("kotlin.RequiresOptIn") }
         }
     }
 }
 
 tasks {
-    /*npmPublishing {
-        readme = file("README.MD")
-
-        repositories {
-            repository("npmjs") {
-                registry = uri("https://registry.npmjs.org")
-                (project.properties.get("npmauthtoken") as? String)?.let { authToken = it }
-            }
-        }
-
-        publications {
-            publication("js") {
-                bundleKotlinDependencies = true
-                shrinkwrapBundledDependencies = true
-            }
-        }
-    }*/
-
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
 
@@ -461,13 +311,9 @@ tasks {
     spotless {
         kotlin {
             target("**/*.kt")
-            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */")
+            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */")
             ktlint()
         }
-    }
-
-    nexusStaging {
-        packageGroup = "com.adamratzman"
     }
 
 
@@ -476,12 +322,31 @@ tasks {
         dependsOn.add("publishAllPublicationsToNexusRepository")
         dependsOn.add(dokkaHtml)
     }
+
+    withType<Test> {
+        testLogging {
+            showStandardStreams = true
+        }
+    }
+
+    val packForXcode by creating(Sync::class) {
+        group = "build"
+        val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
+        val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
+        val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
+        val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
+        inputs.property("mode", mode)
+        dependsOn(framework.linkTask)
+        val targetDir = File(buildDir, "xcode-frameworks")
+        from({ framework.outputDirectory })
+        into(targetDir)
+    }
+    getByName("build").dependsOn(packForXcode)
 }
 
 
 fun MavenPublication.setupPom(publicationName: String) {
-    artifactId = artifactId
-        .replace("-web", "")
+    artifactId = artifactId.replace("-web", "")
     artifact(dokkaJar.get())
 
     pom {
@@ -489,11 +354,13 @@ fun MavenPublication.setupPom(publicationName: String) {
         description.set("A Kotlin wrapper for the Spotify Web API.")
         url.set("https://github.com/adamint/spotify-web-api-kotlin")
         inceptionYear.set("2018")
+
         scm {
             url.set("https://github.com/adamint/spotify-web-api-kotlin")
             connection.set("scm:https://github.com/adamint/spotify-web-api-kotlin.git")
             developerConnection.set("scm:git://github.com/adamint/spotify-web-api-kotlin.git")
         }
+
         licenses {
             license {
                 name.set("MIT License")
@@ -511,29 +378,33 @@ fun MavenPublication.setupPom(publicationName: String) {
     }
 }
 
+
+// --- Publishing ---
+
+// Publishing credentials (user gradle.properties)
+val nexusUsername: String? = project.findProperty("NEXUS_USERNAME") as? String
+val nexusPassword: String? = project.findProperty("NEXUS_PASSWORD") as? String
+
+
 fun PublishingExtension.registerPublishing() {
     publications {
         val kotlinMultiplatform by getting(MavenPublication::class) {
             artifactId = "spotify-api-kotlin-core"
             setupPom(artifactId)
         }
-
-        /*val metadata by getting(MavenPublication::class) {
-            artifactId = "spotify-api-kotlin-metadata"
-            setupPom(artifactId)
-        }*/
     }
 
     repositories {
         maven {
             name = "nexus"
+
+            // Publishing locations
             val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                val nexusUsername: String? = project.findProperty("NEXUS_USERNAME") as? String
-                val nexusPassword: String? = project.findProperty("NEXUS_PASSWORD") as? String
                 username = nexusUsername
                 password = nexusPassword
             }
@@ -541,17 +412,16 @@ fun PublishingExtension.registerPublishing() {
     }
 }
 
+// --- Signing ---
+val signingKey = project.findProperty("SIGNING_KEY") as? String
+val signingPassword = project.findProperty("SIGNING_PASSWORD") as? String
 
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
+signing {
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(
+            project.findProperty("SIGNING_KEY") as? String,
+            project.findProperty("SIGNING_PASSWORD") as? String
+        )
+        sign(publishing.publications)
+    }
 }
-tasks.getByName("build").dependsOn(packForXcode)
