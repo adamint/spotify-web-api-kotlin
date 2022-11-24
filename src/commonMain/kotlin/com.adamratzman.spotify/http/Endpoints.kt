@@ -100,7 +100,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <ReturnType: String?> execute(
+    internal open suspend fun <ReturnType: String?> execute(
         url: String,
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,

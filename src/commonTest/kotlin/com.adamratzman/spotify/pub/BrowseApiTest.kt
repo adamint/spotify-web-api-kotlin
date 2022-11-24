@@ -19,19 +19,18 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
-
     @Test
-    fun testGenreSeeds() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGenreSeeds(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGenreSeeds.name)
         assertTrue(api.browse.getAvailableGenreSeeds().isNotEmpty())
     }
 
     @Test
-    fun testGetCategoryList() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetCategoryList(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetCategoryList.name)
 
         assertNotSame(
             api.browse.getCategoryList(locale = Locale.ar_AE).items[0],
@@ -42,8 +41,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetCategory() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetCategory(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetCategory.name)
 
         val firstCategoryId = api.browse.getCategoryList(limit = 1, market = Market.FR).first()!!.id
         assertNotNull(api.browse.getCategory(firstCategoryId))
@@ -54,8 +53,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetPlaylistsByCategory() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetPlaylistsByCategory(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetPlaylistsByCategory.name)
 
         assertFailsWith<SpotifyException.BadRequestException> {
             api.browse.getPlaylistsForCategory(
@@ -74,8 +73,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetFeaturedPlaylists() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetFeaturedPlaylists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetFeaturedPlaylists.name)
 
         assertTrue(
             api.browse.getFeaturedPlaylists(
@@ -89,8 +88,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetNewReleases() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetNewReleases(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetNewReleases.name)
 
         assertTrue(api.browse.getNewReleases(market = Market.CA).items.isNotEmpty())
         assertTrue(api.browse.getNewReleases(limit = 1, offset = 3).items.isNotEmpty())
@@ -98,8 +97,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetRecommendations() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetRecommendations(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetRecommendations.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.browse.getTrackRecommendations() }
 

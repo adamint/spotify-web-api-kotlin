@@ -8,10 +8,11 @@ import com.adamratzman.spotify.SpotifyClientApi
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientFollowingApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testFollowUnfollowArtists() = runTestOnDefaultDispatcher {
+    fun testFollowUnfollowArtists(): TestResult = runTestOnDefaultDispatcher {
         return@runTestOnDefaultDispatcher // TODO https://github.com/adamint/spotify-web-api-kotlin/issues/309
 
         /*buildApi(SpotifyClientApi::class)
@@ -54,7 +55,7 @@ class ClientFollowingApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testFollowUnfollowUsers() = runTestOnDefaultDispatcher {
+    fun testFollowUnfollowUsers(): TestResult = runTestOnDefaultDispatcher {
         return@runTestOnDefaultDispatcher // TODO https://github.com/adamint/spotify-web-api-kotlin/issues/309
 
         /*buildApi(SpotifyClientApi::class)
@@ -76,7 +77,7 @@ class ClientFollowingApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testFollowUnfollowPlaylists() = runTestOnDefaultDispatcher {
+    fun testFollowUnfollowPlaylists(): TestResult = runTestOnDefaultDispatcher {
         return@runTestOnDefaultDispatcher // TODO https://github.com/adamint/spotify-web-api-kotlin/issues/309
 
         /*buildApi(SpotifyClientApi::class)

@@ -16,11 +16,12 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testGetArtists() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetArtists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetArtists.name)
 
         assertNull(api.artists.getArtist("adkjlasdf"))
         assertNotNull(api.artists.getArtist("66CXWjxzNUsdJxJ2JdwvnR"))
@@ -38,8 +39,8 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetArtistAlbums() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetArtistAlbums(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetArtistAlbums.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getArtistAlbums("asfasdf") }
         assertTrue(
@@ -52,8 +53,8 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetRelatedArtists() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetRelatedArtists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetRelatedArtists.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getRelatedArtists("") }
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getRelatedArtists("no") }
@@ -61,8 +62,8 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetArtistTopTracksByMarket() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetArtistTopTracksByMarket(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetArtistTopTracksByMarket.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getArtistTopTracks("no") }
         assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW").isNotEmpty())

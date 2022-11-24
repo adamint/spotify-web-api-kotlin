@@ -19,6 +19,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     var createdPlaylist: Playlist? = null
@@ -54,8 +55,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetClientPlaylists() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetClientPlaylists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetClientPlaylists.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         init()
@@ -69,8 +70,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testAddAndRemoveChunkedTracks() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testAddAndRemoveChunkedTracks(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testAddAndRemoveChunkedTracks.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         init()
@@ -100,8 +101,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testEditPlaylists() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testEditPlaylists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testEditPlaylists.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         init()
@@ -148,8 +149,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testRemovePlaylistPlayables() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testRemovePlaylistPlayables(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testRemovePlaylistPlayables.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         init()

@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.toArtistUri
 import com.adamratzman.spotify.models.toPlaylistUri
 import com.adamratzman.spotify.models.toShowUri
 import com.adamratzman.spotify.models.toTrackUri
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -26,12 +27,12 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testGetDevices() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetDevices(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetDevices.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -39,8 +40,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetCurrentContext() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetCurrentContext(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetCurrentContext.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -70,8 +71,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetRecentlyPlayed() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetRecentlyPlayed(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetRecentlyPlayed.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -79,8 +80,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetCurrentlyPlaying() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetCurrentlyPlaying(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetCurrentlyPlaying.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -109,8 +110,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testAddItemToEndOfQueue() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testAddItemToEndOfQueue(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testAddItemToEndOfQueue.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -132,8 +133,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testSeek() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testSeek(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testSeek.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -181,8 +182,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }*/
 
     @Test
-    fun testStartPlayback() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testStartPlayback(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testStartPlayback.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -261,8 +262,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testSkipForwardBackward() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testSkipForwardBackward(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testSkipForwardBackward.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
@@ -287,8 +288,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testTransferPlayback() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testTransferPlayback(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testTransferPlayback.name)
         if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 

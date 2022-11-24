@@ -1,0 +1,28 @@
+{
+    "request": {
+        "url": "https://api.spotify.com/v1/me/player/devices",
+        "method": "GET"
+    },
+    "response": {
+        "responseCode": 200,
+        "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "private, max-age=0",
+            "x-robots-tag": "noindex, nofollow",
+            "access-control-allow-origin": "*",
+            "access-control-allow-headers": "Accept, App-Platform, Authorization, Content-Type, Origin, Retry-After, Spotify-App-Version, X-Cloud-Trace-Context, client-token, content-access-token",
+            "access-control-allow-methods": "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+            "access-control-allow-credentials": "true",
+            "access-control-max-age": "604800",
+            "Content-Length": "486",
+            "strict-transport-security": "max-age=31536000",
+            "x-content-type-options": "nosniff",
+            "vary": "Accept-Encoding",
+            "date": "Thu, 24 Nov 2022 03:59:03 GMT",
+            "server": "envoy",
+            "Via": "HTTP/2 edgeproxy, 1.1 google",
+            "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        },
+        "body": "{\n  \"devices\" : [ {\n    \"id\" : \"52f4a75f1d28eb87facce2f55ea22c3ed9ec3d7a\",\n    \"is_active\" : true,\n    \"is_private_session\" : false,\n    \"is_restricted\" : false,\n    \"name\" : \"Adam’s MacBook Pro\",\n    \"type\" : \"Computer\",\n    \"volume_percent\" : 69\n  }, {\n    \"id\" : \"a50ad2d171ed33716375234df65bfc61741fb760\",\n    \"is_active\" : false,\n    \"is_private_session\" : false,\n    \"is_restricted\" : false,\n    \"name\" : \"ADAMRATZMAN\",\n    \"type\" : \"Computer\",\n    \"volume_percent\" : 80\n  } ]\n}"
+    }
+}

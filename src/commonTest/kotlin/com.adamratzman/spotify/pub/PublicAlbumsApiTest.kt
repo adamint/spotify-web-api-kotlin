@@ -16,11 +16,12 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class PublicAlbumsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testGetAlbums() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetAlbums(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetAlbums.name)
 
         assertNull(api.albums.getAlbum("asdf", Market.FR))
         assertNull(api.albums.getAlbum("asdf"))
@@ -37,8 +38,8 @@ class PublicAlbumsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetAlbumsTracks() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetAlbumsTracks(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetAlbumsTracks.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.albums.getAlbumTracks("no") }
 
@@ -48,8 +49,8 @@ class PublicAlbumsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testConvertSimpleAlbumToAlbum() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testConvertSimpleAlbumToAlbum(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testConvertSimpleAlbumToAlbum.name)
 
         val simpleAlbum = api.tracks.getTrack("53BHUFdQphHiZUUG3nx9zn")!!.album
         assertEquals(simpleAlbum.id, simpleAlbum.toFullAlbum()?.id)

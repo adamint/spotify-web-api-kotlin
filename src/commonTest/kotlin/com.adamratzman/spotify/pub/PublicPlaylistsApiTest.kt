@@ -17,11 +17,12 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testGetUserPlaylists() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetUserPlaylists(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetUserPlaylists.name)
 
         assertTrue(api.playlists.getUserPlaylists("adamratzman1").items.isNotEmpty())
         assertTrue(api.playlists.getUserPlaylists("adamratzman1").items.isNotEmpty())
@@ -31,8 +32,8 @@ class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetPlaylist() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetPlaylist(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetPlaylist.name)
 
         assertEquals("run2", api.playlists.getPlaylist("78eWnYKwDksmCHAjOUNPEj")?.name)
         assertNull(api.playlists.getPlaylist("nope"))
@@ -48,8 +49,8 @@ class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetPlaylistTracks() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetPlaylistTracks(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetPlaylistTracks.name)
 
         assertTrue(api.playlists.getPlaylistTracks("78eWnYKwDksmCHAjOUNPEj").items.isNotEmpty())
         val playlist = api.playlists.getPlaylistTracks("627gNjNzj3sOrSiDm5acc2")
@@ -64,16 +65,16 @@ class PublicPlaylistsApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetPlaylistCover() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetPlaylistCover(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetPlaylistCover.name)
 
         assertTrue(api.playlists.getPlaylistCovers("37i9dQZF1DXcBWIGoYBM5M").isNotEmpty())
         assertFailsWith<SpotifyException.BadRequestException> { api.playlists.getPlaylistCovers("adskjfjkasdf") }
     }
 
     @Test
-    fun testConvertSimplePlaylistToPlaylist() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testConvertSimplePlaylistToPlaylist(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testConvertSimplePlaylistToPlaylist.name)
 
         val simplePlaylist = api.playlists.getUserPlaylists("adamratzman1").first()!!
         assertEquals(simplePlaylist.id, simplePlaylist.toFullPlaylist()?.id)

@@ -8,11 +8,12 @@ import com.adamratzman.spotify.SpotifyClientApi
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientUserApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testClientProfile() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testClientProfile(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testClientProfile.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         api.users.getClientProfile().displayName

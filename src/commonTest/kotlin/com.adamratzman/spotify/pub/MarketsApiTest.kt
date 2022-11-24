@@ -9,11 +9,12 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class MarketsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testGetAvailableMarkets() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetAvailableMarkets(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetAvailableMarkets.name)
         assertTrue(api.markets.getAvailableMarkets().isNotEmpty())
     }
 }

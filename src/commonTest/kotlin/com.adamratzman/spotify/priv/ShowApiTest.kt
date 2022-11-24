@@ -14,11 +14,12 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ShowApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testGetShow() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetShow(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetShow.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val show = api.shows.getShow("1iohmBNlRooIVtukKeavRa")!!
@@ -29,8 +30,8 @@ class ShowApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetShows() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetShows(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetShows.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         assertFailsWith<BadRequestException> { api.shows.getShows("hi", "dad", market = Market.US) }
@@ -43,8 +44,8 @@ class ShowApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetShowEpisodes() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetShowEpisodes(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetShowEpisodes.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         assertTrue(api.shows.getShowEpisodes("1iohmBNlRooIVtukKeavRa").items.isNotEmpty())

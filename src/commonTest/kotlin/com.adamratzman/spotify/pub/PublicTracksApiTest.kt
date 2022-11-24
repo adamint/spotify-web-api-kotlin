@@ -14,19 +14,20 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class PublicTracksApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testGetTrack() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetTrack(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetTrack.name)
 
         assertEquals("Bénabar", api.tracks.getTrack("5OT3k9lPxI2jkaryRK3Aop")!!.artists[0].name)
         assertNull(api.tracks.getTrack("nonexistant track"))
     }
 
     @Test
-    fun testGetTracks() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetTracks(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetTracks.name)
 
         assertEquals(listOf(null, null), api.tracks.getTracks("hi", "dad", market = Market.US))
         assertEquals(
@@ -35,16 +36,16 @@ class PublicTracksApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testAudioAnalysis() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testAudioAnalysis(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testAudioAnalysis.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.tracks.getAudioAnalysis("bad track") }
         assertEquals("165.61333", api.tracks.getAudioAnalysis("0o4jSZBxOQUiDKzMJSqR4x").track.duration.toString())
     }
 
     @Test
-    fun testAudioFeatures() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testAudioFeatures(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testAudioFeatures.name)
 
         assertFailsWith<SpotifyException.BadRequestException> { api.tracks.getAudioFeatures("bad track") }
         assertEquals("0.0592", api.tracks.getAudioFeatures("6AH3IbS61PiabZYKVBqKAk").acousticness.toString())

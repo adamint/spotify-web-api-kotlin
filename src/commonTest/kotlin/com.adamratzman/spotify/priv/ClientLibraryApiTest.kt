@@ -13,11 +13,12 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testLibraryTracks() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testLibraryTracks(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testLibraryTracks.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
@@ -49,8 +50,8 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testLibraryAlbums() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testLibraryAlbums(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testLibraryAlbums.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testAlbum = "1UAt4G020TgW3lb2CkXr2N"
@@ -82,8 +83,8 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testLibraryEpisodes() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testLibraryEpisodes(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testLibraryEpisodes.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testEpisode = "5outVI1srKZtqwPrthvkKb"
@@ -112,8 +113,8 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testLibraryShows() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testLibraryShows(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testLibraryShows.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testShow = "6z4NLXyHPga1UmSJsPK7G1"
@@ -142,8 +143,8 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testInvalidInputs() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testInvalidInputs(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testInvalidInputs.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         // tracks

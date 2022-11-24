@@ -6,4 +6,6 @@ actual fun arePlayerTestsEnabled(): Boolean = false
 
 actual fun getTestClientId(): String? = null
 actual fun getTestClientSecret(): String? = null
+actual fun getResponseCacher(): ResponseCacher? = null
+
 actual suspend fun buildSpotifyApi(): GenericSpotifyApi? = null

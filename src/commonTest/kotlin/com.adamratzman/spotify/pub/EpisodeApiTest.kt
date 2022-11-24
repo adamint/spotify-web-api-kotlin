@@ -13,13 +13,14 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class EpisodeApiTest : AbstractTest<GenericSpotifyApi>() {
     private val market = Market.US
 
     @Test
-    fun testGetEpisode() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetEpisode(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetEpisode.name)
 
         assertNull(api.episodes.getEpisode("nonexistant episode", market = market))
         assertEquals(
@@ -29,8 +30,8 @@ class EpisodeApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testGetEpisodes() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testGetEpisodes(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testGetEpisodes.name)
 
         assertFailsWith<BadRequestException> { api.episodes.getEpisodes("hi", "dad", market = market) }
         assertFailsWith<BadRequestException> {

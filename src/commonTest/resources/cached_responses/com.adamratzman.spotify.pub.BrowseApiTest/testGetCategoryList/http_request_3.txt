@@ -1,0 +1,28 @@
+{
+    "request": {
+        "url": "https://api.spotify.com/v1/browse/categories?limit=4&offset=3&market=CA&locale=fr_FR",
+        "method": "GET"
+    },
+    "response": {
+        "responseCode": 200,
+        "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "public, max-age=600",
+            "x-robots-tag": "noindex, nofollow",
+            "access-control-allow-origin": "*",
+            "access-control-allow-headers": "Accept, App-Platform, Authorization, Content-Type, Origin, Retry-After, Spotify-App-Version, X-Cloud-Trace-Context, client-token, content-access-token",
+            "access-control-allow-methods": "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+            "access-control-allow-credentials": "true",
+            "access-control-max-age": "604800",
+            "Content-Length": "1729",
+            "strict-transport-security": "max-age=31536000",
+            "x-content-type-options": "nosniff",
+            "vary": "Accept-Encoding",
+            "date": "Thu, 24 Nov 2022 04:00:47 GMT",
+            "server": "envoy",
+            "Via": "HTTP/2 edgeproxy, 1.1 google",
+            "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        },
+        "body": "{\n  \"categories\" : {\n    \"href\" : \"https://api.spotify.com/v1/browse/categories?country=CA&locale=fr_fr&offset=3&limit=4\",\n    \"items\" : [ {\n      \"href\" : \"https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFLVaM30PMBm4\",\n      \"icons\" : [ {\n        \"height\" : null,\n        \"url\" : \"https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg\",\n        \"width\" : null\n      } ],\n      \"id\" : \"0JQ5DAqbMKFLVaM30PMBm4\",\n      \"name\" : \"Été\"\n    }, {\n      \"href\" : \"https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFKLfwjuJMoNC\",\n      \"icons\" : [ {\n        \"height\" : null,\n        \"url\" : \"https://t.scdn.co/images/a2e0ebe2ebed4566ba1d8236b869241f.jpeg\",\n        \"width\" : null\n      } ],\n      \"id\" : \"0JQ5DAqbMKFKLfwjuJMoNC\",\n      \"name\" : \"Country\"\n    }, {\n      \"href\" : \"https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFDXXwE9BDJAr\",\n      \"icons\" : [ {\n        \"height\" : 274,\n        \"url\" : \"https://t.scdn.co/media/derived/rock_9ce79e0a4ef901bbd10494f5b855d3cc_0_0_274_274.jpg\",\n        \"width\" : 274\n      } ],\n      \"id\" : \"0JQ5DAqbMKFDXXwE9BDJAr\",\n      \"name\" : \"Rock\"\n    }, {\n      \"href\" : \"https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFzHmL4tf05da\",\n      \"icons\" : [ {\n        \"height\" : 274,\n        \"url\" : \"https://t.scdn.co/media/original/mood-274x274_976986a31ac8c49794cbdc7246fd5ad7_274x274.jpg\",\n        \"width\" : 274\n      } ],\n      \"id\" : \"0JQ5DAqbMKFzHmL4tf05da\",\n      \"name\" : \"Ambiance\"\n    } ],\n    \"limit\" : 4,\n    \"next\" : \"https://api.spotify.com/v1/browse/categories?country=CA&locale=fr_fr&offset=7&limit=4\",\n    \"offset\" : 3,\n    \"previous\" : \"https://api.spotify.com/v1/browse/categories?country=CA&locale=fr_fr&offset=0&limit=4\",\n    \"total\" : 55\n  }\n}"
+    }
+}

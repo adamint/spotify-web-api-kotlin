@@ -11,6 +11,7 @@ import com.adamratzman.spotify.buildSpotifyApi
 import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.getTestClientId
 import com.adamratzman.spotify.getTestClientSecret
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import io.ktor.util.PlatformUtils
@@ -19,7 +20,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
 
 class UtilityTests {
     var api: GenericSpotifyApi? = null

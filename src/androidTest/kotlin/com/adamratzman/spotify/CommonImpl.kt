@@ -4,11 +4,6 @@ package com.adamratzman.spotify
 import android.os.Build.VERSION
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import java.util.concurrent.Executors
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.runBlocking
 
 private fun setFinalStatic(field: Field, newValue: Any?) {
     field.isAccessible = true
@@ -30,6 +25,7 @@ actual fun getTestTokenString(): String? = getEnvironmentVariable("SPOTIFY_TOKEN
 actual fun isHttpLoggingEnabled(): Boolean = getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true"
 actual fun arePlayerTestsEnabled(): Boolean = getEnvironmentVariable("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
 actual fun areLivePkceTestsEnabled(): Boolean = getEnvironmentVariable("VERBOSE_TEST_ENABLED")?.toBoolean() ?: false
+actual fun getResponseCacher(): ResponseCacher? = null
 
 actual suspend fun buildSpotifyApi(): GenericSpotifyApi? {
     val clientId = getTestClientId()

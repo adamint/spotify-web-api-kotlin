@@ -14,11 +14,12 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testSearchMultiple() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchMultiple(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchMultiple.name)
 
         val query = api.search.search("lo", *SearchApi.SearchType.values(), market = Market.US)
         assertTrue(
@@ -36,40 +37,40 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testSearchTrack() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchTrack(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchTrack.name)
 
         assertTrue(api.search.searchTrack("hello", 1, 1, Market.US).items.isNotEmpty())
         assertFailsWith<SpotifyException.BadRequestException> { api.search.searchTrack("").items.size }
     }
 
     @Test
-    fun testSearchAlbum() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchAlbum(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchAlbum.name)
 
         assertTrue(api.search.searchAlbum("le début").items.isNotEmpty())
         assertFailsWith<SpotifyException.BadRequestException> { api.search.searchAlbum("").items.size }
     }
 
     @Test
-    fun testSearchPlaylist() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchPlaylist(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchPlaylist.name)
 
         assertTrue(api.search.searchPlaylist("test").items.isNotEmpty())
         assertFailsWithSuspend<SpotifyException.BadRequestException> { api.search.searchPlaylist("").items.size }
     }
 
     @Test
-    fun testSearchArtist() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchArtist(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchArtist.name)
 
         assertTrue(api.search.searchArtist("amir").items.isNotEmpty())
         assertFailsWith<SpotifyException.BadRequestException> { api.search.searchArtist("").items.size }
     }
 
     @Test
-    fun testSearchShow() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchShow(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchShow.name)
 
         (api.search as? SearchApi)?.let { clientSearchApi ->
             assertTrue(clientSearchApi.searchShow("f", market = Market.US).items.isNotEmpty())
@@ -83,8 +84,8 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     }
 
     @Test
-    fun testSearchEpisode() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testSearchEpisode(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testSearchEpisode.name)
 
         (api.search as? SearchApi)?.let { clientSearchApi ->
             assertTrue(clientSearchApi.searchEpisode("f", market = Market.US).items.isNotEmpty())

@@ -11,11 +11,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class PublicFollowingApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
-    fun testUsersFollowingPlaylist() = runTestOnDefaultDispatcher {
-        buildApi()
+    fun testUsersFollowingPlaylist(): TestResult = runTestOnDefaultDispatcher {
+        buildApi(::testUsersFollowingPlaylist.name)
 
         assertFailsWith<SpotifyException.BadRequestException> {
             api.following.areFollowingPlaylist(

@@ -1,6 +1,8 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import com.adamratzman.spotify.http.HttpRequest
+import com.adamratzman.spotify.http.HttpResponse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +18,13 @@ expect fun getTestClientSecret(): String?
 expect fun getTestRedirectUri(): String?
 expect fun getTestTokenString(): String?
 expect fun isHttpLoggingEnabled(): Boolean
-
 expect suspend fun buildSpotifyApi(): GenericSpotifyApi?
+expect fun getResponseCacher(): ResponseCacher?
+
+interface ResponseCacher {
+    val cachedResponsesDirectoryPath: String
+    fun cacheResponse(className: String, testName: String, responseNumber: Int, request: HttpRequest, response: HttpResponse)
+}
 
 suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline block: suspend () -> Unit) {
     val noExceptionMessage = "Expected ${T::class.simpleName} exception to be thrown, but no exception was thrown."

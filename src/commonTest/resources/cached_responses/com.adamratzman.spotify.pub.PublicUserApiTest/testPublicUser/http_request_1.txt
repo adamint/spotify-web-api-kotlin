@@ -1,0 +1,28 @@
+{
+    "request": {
+        "url": "https://api.spotify.com/v1/users/non-existant-user",
+        "method": "GET"
+    },
+    "response": {
+        "responseCode": 404,
+        "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "private, max-age=0",
+            "x-robots-tag": "noindex, nofollow",
+            "access-control-allow-origin": "*",
+            "access-control-allow-headers": "Accept, App-Platform, Authorization, Content-Type, Origin, Retry-After, Spotify-App-Version, X-Cloud-Trace-Context, client-token, content-access-token",
+            "access-control-allow-methods": "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+            "access-control-allow-credentials": "true",
+            "access-control-max-age": "604800",
+            "Content-Length": "72",
+            "strict-transport-security": "max-age=31536000",
+            "x-content-type-options": "nosniff",
+            "vary": "Accept-Encoding",
+            "date": "Thu, 24 Nov 2022 04:01:03 GMT",
+            "server": "envoy",
+            "Via": "HTTP/2 edgeproxy, 1.1 google",
+            "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        },
+        "body": "{\n  \"error\" : {\n    \"status\" : 404,\n    \"message\" : \"No such user\"\n  }\n}"
+    }
+}

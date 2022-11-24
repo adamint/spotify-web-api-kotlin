@@ -13,11 +13,12 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 class ClientEpisodeApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
-    fun testGetEpisode() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetEpisode(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetEpisode.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         assertNull(api.episodes.getEpisode("nonexistant episode"))
@@ -25,8 +26,8 @@ class ClientEpisodeApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
-    fun testGetEpisodes() = runTestOnDefaultDispatcher {
-        buildApi<SpotifyClientApi>()
+    fun testGetEpisodes(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetEpisodes.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         assertFailsWith<BadRequestException> { api.episodes.getEpisodes("hi", "dad") }

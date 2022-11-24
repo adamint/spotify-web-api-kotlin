@@ -1,0 +1,29 @@
+{
+    "request": {
+        "url": "https://api.spotify.com/v1/me/shows?limit=50",
+        "method": "GET"
+    },
+    "response": {
+        "responseCode": 200,
+        "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "private, max-age=0",
+            "etag": "\"MC-ImE4YmEzOWM1ZWUxZjkzZmM0MTc2ZGJkMmZkYjk5OTdjIg==\"",
+            "vary": "Authorization, Accept-Encoding",
+            "x-robots-tag": "noindex, nofollow",
+            "access-control-allow-origin": "*",
+            "access-control-allow-headers": "Accept, App-Platform, Authorization, Content-Type, Origin, Retry-After, Spotify-App-Version, X-Cloud-Trace-Context, client-token, content-access-token",
+            "access-control-allow-methods": "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+            "access-control-allow-credentials": "true",
+            "access-control-max-age": "604800",
+            "Content-Length": "2952",
+            "strict-transport-security": "max-age=31536000",
+            "x-content-type-options": "nosniff",
+            "date": "Thu, 24 Nov 2022 03:58:47 GMT",
+            "server": "envoy",
+            "Via": "HTTP/2 edgeproxy, 1.1 google",
+            "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+        },
+        "body": "{\n  \"href\" : \"https://api.spotify.com/v1/me/shows?offset=0&limit=50\",\n  \"items\" : [ {\n    \"added_at\" : \"2021-08-03T01:00:59Z\",\n    \"show\" : {\n      \"available_markets\" : [ \"AD\", \"AE\", \"AG\", \"AL\", \"AM\", \"AO\", \"AR\", \"AT\", \"AU\", \"AZ\", \"BA\", \"BB\", \"BE\", \"BF\", \"BG\", \"BH\", \"BI\", \"BJ\", \"BN\", \"BO\", \"BR\", \"BS\", \"BT\", \"BW\", \"BZ\", \"CA\", \"CH\", \"CI\", \"CL\", \"CM\", \"CO\", \"CR\", \"CV\", \"CW\", \"CY\", \"CZ\", \"DE\", \"DJ\", \"DK\", \"DM\", \"DO\", \"DZ\", \"EC\", \"EE\", \"EG\", \"ES\", \"FI\", \"FJ\", \"FM\", \"FR\", \"GA\", \"GB\", \"GD\", \"GE\", \"GH\", \"GM\", \"GN\", \"GQ\", \"GR\", \"GT\", \"GW\", \"GY\", \"HK\", \"HN\", \"HR\", \"HT\", \"HU\", \"ID\", \"IE\", \"IL\", \"IN\", \"IS\", \"IT\", \"JM\", \"JO\", \"JP\", \"KE\", \"KH\", \"KI\", \"KM\", \"KN\", \"KR\", \"KW\", \"LA\", \"LB\", \"LC\", \"LI\", \"LR\", \"LS\", \"LT\", \"LU\", \"LV\", \"MA\", \"MC\", \"ME\", \"MG\", \"MH\", \"MK\", \"ML\", \"MN\", \"MO\", \"MR\", \"MT\", \"MU\", \"MV\", \"MW\", \"MX\", \"MY\", \"MZ\", \"NA\", \"NE\", \"NG\", \"NI\", \"NL\", \"NO\", \"NP\", \"NR\", \"NZ\", \"OM\", \"PA\", \"PE\", \"PG\", \"PH\", \"PL\", \"PS\", \"PT\", \"PW\", \"PY\", \"QA\", \"RO\", \"RS\", \"RW\", \"SA\", \"SB\", \"SC\", \"SE\", \"SG\", \"SI\", \"SK\", \"SL\", \"SM\", \"SN\", \"SR\", \"ST\", \"SV\", \"SZ\", \"TD\", \"TG\", \"TH\", \"TL\", \"TN\", \"TO\", \"TR\", \"TT\", \"TV\", \"TW\", \"TZ\", \"UA\", \"US\", \"UY\", \"UZ\", \"VC\", \"VN\", \"VU\", \"WS\", \"XK\", \"ZA\", \"ZM\", \"ZW\" ],\n      \"copyrights\" : [ ],\n      \"description\" : \"They’re natural-born leaders with a never-ending thirst for power. Through force and deceit, they rise through the ranks toward radicalism — eliminating anyone who stands in their way. Delve into the minds and motives behind the world’s most infamous leaders. Dictators is a Spotify Original from Parcast.\",\n      \"explicit\" : false,\n      \"external_urls\" : {\n        \"spotify\" : \"https://open.spotify.com/show/5JwUl9pJUndHkbiiJTKRqg\"\n      },\n      \"href\" : \"https://api.spotify.com/v1/shows/5JwUl9pJUndHkbiiJTKRqg\",\n      \"html_description\" : \"<p>They’re natural-born leaders with a never-ending thirst for power. Through force and deceit, they rise through the ranks toward radicalism — eliminating anyone who stands in their way. Delve into the minds and motives behind the world’s most infamous leaders. Dictators is a Spotify Original from Parcast.</p>\",\n      \"id\" : \"5JwUl9pJUndHkbiiJTKRqg\",\n      \"images\" : [ {\n        \"height\" : 640,\n        \"url\" : \"https://i.scdn.co/image/ab6765630000ba8a6b54f7a5f9afb77921d7ca0d\",\n        \"width\" : 640\n      }, {\n        \"height\" : 300,\n        \"url\" : \"https://i.scdn.co/image/ab67656300005f1f6b54f7a5f9afb77921d7ca0d\",\n        \"width\" : 300\n      }, {\n        \"height\" : 64,\n        \"url\" : \"https://i.scdn.co/image/ab6765630000f68d6b54f7a5f9afb77921d7ca0d\",\n        \"width\" : 64\n      } ],\n      \"is_externally_hosted\" : false,\n      \"languages\" : [ \"en\" ],\n      \"media_type\" : \"audio\",\n      \"name\" : \"Dictators \",\n      \"publisher\" : \"Parcast\",\n      \"total_episodes\" : 163,\n      \"type\" : \"show\",\n      \"uri\" : \"spotify:show:5JwUl9pJUndHkbiiJTKRqg\"\n    }\n  } ],\n  \"limit\" : 50,\n  \"next\" : null,\n  \"offset\" : 0,\n  \"previous\" : null,\n  \"total\" : 2\n}"
+    }
+}
