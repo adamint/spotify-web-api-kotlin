@@ -128,7 +128,9 @@ public class HttpRequest constructor(
                 }
 
                 val body: String = response.bodyAsText()
-                if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Request body: $body")
+                if (api?.spotifyApiOptions?.enableDebugMode == true) {
+                    Console.debug("Request status: $respCode - body: $body")
+                }
 
                 if (respCode == 401 && body.contains("access token") && api?.spotifyApiOptions?.automaticRefresh == true) {
                     api.refreshToken()

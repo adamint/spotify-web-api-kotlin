@@ -14,6 +14,7 @@ import kotlin.test.assertFailsWith
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 
 @ExperimentalTime
 @SpotifyExperimentalHttpApi
@@ -23,8 +24,8 @@ class RestTests {
     fun testPrereq() = api != null
 
     @Test
-    fun testRequestTimeoutFailure() = runTestOnDefaultDispatcher {
-        buildSpotifyApi()?.let { api = it }
+    fun testRequestTimeoutFailure(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testRequestTimeoutFailure.name)?.let { api = it }
 
         val testApi = spotifyAppApi(null, null, SpotifyUserAuthorization(token = api!!.token)).build()
         val prevTimeout = testApi.spotifyApiOptions.requestTimeoutMillis

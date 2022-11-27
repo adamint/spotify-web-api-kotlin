@@ -10,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 
 expect fun areLivePkceTestsEnabled(): Boolean
 expect fun arePlayerTestsEnabled(): Boolean
@@ -18,7 +19,7 @@ expect fun getTestClientSecret(): String?
 expect fun getTestRedirectUri(): String?
 expect fun getTestTokenString(): String?
 expect fun isHttpLoggingEnabled(): Boolean
-expect suspend fun buildSpotifyApi(): GenericSpotifyApi?
+expect suspend fun buildSpotifyApi(testClassQualifiedName: String, testName: String): GenericSpotifyApi?
 expect fun getResponseCacher(): ResponseCacher?
 
 interface ResponseCacher {
@@ -46,3 +47,10 @@ fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestR
         block()
     }
 }
+
+@Serializable
+data class CachedResponse(val request: Request, val response: Response)
+@Serializable
+data class Request(val url: String, val method: String, val body: String? = null)
+@Serializable
+data class Response(val responseCode: Int, val headers: Map<String, String>, val body: String)

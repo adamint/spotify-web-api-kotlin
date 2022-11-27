@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.fasterxml.jackson.databind.json.JsonMapper
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
@@ -190,6 +191,18 @@ kotlin {
                 }
             }
 
+            val commonJvmLikeTest by creating {
+                dependencies {
+                    implementation(kotlin("test-junit"))
+                    implementation("com.sparkjava:spark-core:$sparkVersion")
+                    runtimeOnly(kotlin("reflect"))
+                }
+            }
+
+            val commonNonJvmTargetsTest by creating {
+                dependsOn(commonTest)
+            }
+
             val jvmMain by getting {
                 dependsOn(commonJvmLikeMain)
                 repositories {
@@ -202,11 +215,7 @@ kotlin {
             }
 
             val jvmTest by getting {
-                dependencies {
-                    implementation(kotlin("test-junit"))
-                    implementation("com.sparkjava:spark-core:$sparkVersion")
-                    runtimeOnly(kotlin("reflect"))
-                }
+                dependsOn(commonJvmLikeTest)
             }
 
             val jsMain by getting {
@@ -217,6 +226,8 @@ kotlin {
             }
 
             val jsTest by getting {
+                dependsOn(commonNonJvmTargetsTest)
+
                 dependencies {
                     implementation(kotlin("test-js"))
                 }
@@ -242,11 +253,7 @@ kotlin {
             }
 
             val androidTest by getting {
-                dependencies {
-                    implementation(kotlin("test-junit"))
-                    implementation("com.sparkjava:spark-core:$sparkVersion")
-                    runtimeOnly(kotlin("reflect"))
-                }
+                dependsOn(commonJvmLikeTest)
             }
 
             // as kotlin/native, they require special ktor versions
@@ -267,7 +274,7 @@ kotlin {
             }
 
             // desktop targets
-            val desktopTest by creating { dependsOn(commonTest) }
+            val desktopTest by creating { dependsOn(commonNonJvmTargetsTest) }
             val linuxX64Main by getting { dependsOn(desktopMain) }
             val linuxX64Test by getting { dependsOn(desktopTest) }
             val mingwX64Main by getting { dependsOn(desktopMain) }
@@ -276,7 +283,7 @@ kotlin {
             val macosX64Test by getting { dependsOn(desktopTest) }
 
             // darwin targets
-            val nativeDarwinTest by creating { dependsOn(commonTest) }
+            val nativeDarwinTest by creating { dependsOn(commonNonJvmTargetsTest) }
             val iosMain by getting { dependsOn(nativeDarwinMain) }
             val iosTest by getting { dependsOn(nativeDarwinTest) }
 
@@ -424,4 +431,35 @@ signing {
         )
         sign(publishing.publications)
     }
+}
+
+// Test tasks
+tasks.register("updateNonJvmTestFakes") {
+    if (System.getenv("SPOTIFY_TOKEN_STRING") == null
+        || System.getenv("SHOULD_RECACHE_RESPONSES")?.toBoolean() != true
+    ) {
+        return@register
+    }
+
+    dependsOn("jvmTest")
+    val responseCacheDir =
+        System.getenv("RESPONSE_CACHE_DIR")?.let { File(it) }
+            ?: throw IllegalArgumentException("No response cache directory provided")
+    val commonTestResourcesSource = projectDir.resolve("src/commonTest/resources")
+    if (!commonTestResourcesSource.exists()) commonTestResourcesSource.mkdir()
+
+    val commonTestResourceFileToSet = commonTestResourcesSource.resolve("cached_responses.json")
+
+    if (commonTestResourceFileToSet.exists()) commonTestResourceFileToSet.delete()
+    commonTestResourceFileToSet.createNewFile()
+
+    val testToOrderedResponseMap: Map<String, List<String>> = responseCacheDir.walk()
+        .filter { it.isFile && it.name.matches("http_request_\\d+.txt".toRegex()) }
+        .groupBy { "${it.parentFile.parentFile.name}.${it.parentFile.name}" }
+        .map { (key, group) -> key to group.sorted().map { it.readText() } }
+        .toMap()
+
+    val jsonLiteral = JsonMapper().writeValueAsString(testToOrderedResponseMap)
+    commonTestResourceFileToSet.writeText(jsonLiteral)
+    println(commonTestResourceFileToSet.absolutePath)
 }

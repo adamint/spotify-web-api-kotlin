@@ -16,6 +16,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.test.TestResult
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -26,8 +27,8 @@ class JsonTests {
     fun testPrereq() = api != null
 
     @Test
-    fun testArtistSerialization() = runTestOnDefaultDispatcher {
-        if (api == null) buildSpotifyApi()?.let { api = it }
+    fun testArtistSerialization(): TestResult = runTestOnDefaultDispatcher {
+        if (api == null) buildSpotifyApi(this::class.simpleName!!, ::testArtistSerialization.name)?.let { api = it }
 
         assertTrue(
             Json.encodeToString(
@@ -37,8 +38,8 @@ class JsonTests {
     }
 
     @Test
-    fun testTrackSerialization() = runTestOnDefaultDispatcher {
-        if (api == null) buildSpotifyApi()?.let { api = it }
+    fun testTrackSerialization(): TestResult = runTestOnDefaultDispatcher {
+        if (api == null) buildSpotifyApi(this::class.simpleName!!, ::testTrackSerialization.name)?.let { api = it }
 
         assertTrue(
             Json.encodeToString(
@@ -48,8 +49,8 @@ class JsonTests {
     }
 
     @Test
-    fun testAlbumSerialization() = runTestOnDefaultDispatcher {
-        if (api == null) buildSpotifyApi()?.let { api = it }
+    fun testAlbumSerialization(): TestResult = runTestOnDefaultDispatcher {
+        if (api == null) buildSpotifyApi(this::class.simpleName!!, ::testAlbumSerialization.name)?.let { api = it }
 
         assertTrue(
             Json.encodeToString(
@@ -59,8 +60,8 @@ class JsonTests {
     }
 
     @Test
-    fun testArtistDeserialization() = runTestOnDefaultDispatcher {
-        if (api == null) buildSpotifyApi()?.let { api = it }
+    fun testArtistDeserialization(): TestResult = runTestOnDefaultDispatcher {
+        if (api == null) buildSpotifyApi(this::class.simpleName!!, ::testArtistDeserialization.name)?.let { api = it }
 
         val json =
             """{"external_urls":{"spotify":"https://open.spotify.com/artist/5WUlDfRSoLAfcVSX1WnrxN"},"href":"https://api!!.spotify.com/v1/artists/5WUlDfRSoLAfcVSX1WnrxN","id":"5WUlDfRSoLAfcVSX1WnrxN","uri":"spotify:artist:5WUlDfRSoLAfcVSX1WnrxN","followers":{"href":null,"total":14675484},"genres":["australian dance","australian pop","dance pop","pop"],"images":[{"height":1333,"url":"https://i.scdn.co/image/652b6bb0dfaf8aa444f4414ee018699260e74306","width":1000},{"height":853,"url":"https://i.scdn.co/image/a82822ab211cbe28a0a1dbcb16902a1a8a2ea791","width":640},{"height":267,"url":"https://i.scdn.co/image/dd3e336d456172bbda56b543c5389e1490903a30","width":200},{"height":85,"url":"https://i.scdn.co/image/95a2aa98384b31336b8d56f8b470c45b12dcd550","width":64}],"name":"Sia","popularity":88,"type":"artist"}"""

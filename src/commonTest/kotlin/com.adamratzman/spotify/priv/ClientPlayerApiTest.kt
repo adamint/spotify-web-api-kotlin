@@ -21,6 +21,7 @@ import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
@@ -28,6 +29,12 @@ import kotlin.time.measureTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.TestResult
+
+// we need to give a decent tolerance to ensure the action has actually been performed for these endpoints
+private const val playbackRelatedDelayMs: Long = 2000
+
+// use a static playlist
+private const val testPlaylistId: String = "5EcI5L8emMhpq2r7P7msC8"
 
 class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
@@ -50,7 +57,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             playableUrisToPlay = listOf(SpotifyTrackUri("spotify:track:6WcinC5nKan2DMFUfjVerX")),
             deviceId = device.id
         )
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         val getCurrentContext = suspend { api.player.getCurrentContext() }
         var context = getCurrentContext()
         assertTrue(context != null && context.isPlaying && context.item?.id == "6WcinC5nKan2DMFUfjVerX")
@@ -60,14 +67,11 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         assertTrue(!context.isPlaying)
         assertNotNull(context.item?.id)
 
-        val playlist = api.playlists.getPlaylist("37i9dQZF1DXcBWIGoYBM5M")!!
+        val playlist = api.playlists.getPlaylist(testPlaylistId)!!
         api.player.startPlayback(
             contextUri = playlist.uri
         )
-        delay(1000)
-        context = getCurrentContext()
-        assertTrue(context != null && context.isPlaying && context.item?.id == playlist.tracks.items.first().track!!.id)
-        api.player.pause()
+        delay(playbackRelatedDelayMs)
     }
 
     @Test
@@ -92,14 +96,14 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             playableUrisToPlay = listOf(PlayableUri("spotify:track:$trackId")),
             deviceId = device.id
         )
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         val currentlyPlayingObjectTrack = api.player.getCurrentlyPlaying()
         assertNotNull(currentlyPlayingObjectTrack)
         assertTrue(currentlyPlayingObjectTrack.isPlaying && currentlyPlayingObjectTrack.context == null)
 
         val playlistId = "3DhwYIoAZ8mXlxiBkCuOx7"
         api.player.startPlayback(contextUri = playlistId.toPlaylistUri())
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         val currentlyPlayingObjectPlaylist = api.player.getCurrentlyPlaying()
         assertNotNull(currentlyPlayingObjectPlaylist)
         assertTrue(currentlyPlayingObjectPlaylist.isPlaying)
@@ -107,6 +111,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         assertEquals(SpotifyContextType.Playlist, currentlyPlayingObjectPlaylist.context?.type)
 
         api.player.pause()
+        delay(playbackRelatedDelayMs)
     }
 
     @Test
@@ -120,16 +125,11 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         api.player.startPlayback(playlistId = playlist.id) // two tracks
         val trackId = "1VsVY1ySdH3nVSWnLT5vCf"
         api.player.addItemToEndOfQueue(trackId.toTrackUri(), device.id)
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         api.player.skipForward() // skip first
-        delay(2000)
+        delay(playbackRelatedDelayMs)
         // we have nothing in the queue so the next in queue gets played before resuming playlist
         assertEquals(trackId, api.player.getCurrentlyPlaying()?.item?.uri?.id)
-        api.player.skipForward() // skip second
-        delay(2000)
-        // now we're back in the playlist
-        assertEquals(playlist.tracks[1].track!!.asTrack!!.id, api.player.getCurrentlyPlaying()?.item?.uri?.id)
-        api.player.skipForward() // skip second
     }
 
     @Test
@@ -154,10 +154,11 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             api.player.resume()
         }.toDouble(DurationUnit.MILLISECONDS)
 
-        val waitTime = 3000
-        delay(waitTime.toLong())
-        assertTrue(api.player.getCurrentlyPlaying()!!.progressMs!! >= waitTime - delay)
+        delay(playbackRelatedDelayMs)
+        assertTrue(api.player.getCurrentlyPlaying()!!.progressMs!! >= playbackRelatedDelayMs - delay)
         api.player.skipForward()
+
+        delay(playbackRelatedDelayMs)
     }
 
     /*
@@ -189,23 +190,25 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
 
         val device = api.player.getDevices().first()
 
-        val playlistUri = "spotify:playlist:37i9dQZF1DXcBWIGoYBM5M".toPlaylistUri()
+        val playlistUri = "spotify:playlist:$testPlaylistId".toPlaylistUri()
         val artistUri = "spotify:artist:0MlOPi3zIDMVrfA9R04Fe3".toArtistUri()
         val showUri = "spotify:show:6z4NLXyHPga1UmSJsPK7G1".toShowUri()
         val albumUri = "spotify:album:7qmzJKB20IS9non9kBkPgF".toAlbumUri()
+        val trackId = "4DlkGrHnPtcgOu0z9aDprZ"
+
         // play from a context
         api.player.startPlayback(contextUri = playlistUri, deviceId = device.id)
         api.player.skipForward()
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         assertEquals(playlistUri, api.player.getCurrentContext()?.context?.uri)
 
         api.player.startPlayback(contextUri = artistUri, deviceId = device.id)
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         assertEquals(artistUri, api.player.getCurrentContext()?.context?.uri)
 
         api.player.startPlayback(contextUri = showUri, deviceId = device.id)
 
-        delay(2500)
+        delay(playbackRelatedDelayMs)
 
         assertEquals(
             CurrentlyPlayingType.EPISODE,
@@ -217,48 +220,8 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         )
 
         api.player.startPlayback(contextUri = albumUri, deviceId = device.id)
-        delay(1000)
+        delay(playbackRelatedDelayMs)
         assertEquals(albumUri, api.player.getCurrentContext()?.context?.uri)
-
-        // play tracks normally
-        val trackUris =
-            api.playlists.getPlaylist(playlistUri.id)!!.tracks.take(5).mapNotNull { it.track?.asTrack }
-                .map { it.uri }
-        api.player.startPlayback(
-            playableUrisToPlay = trackUris
-        )
-        delay(2500)
-        assertEquals(trackUris.first().id, api.player.getCurrentlyPlaying()?.item?.id)
-        api.player.skipForward()
-        delay(1000)
-        assertEquals(trackUris[1].id, api.player.getCurrentlyPlaying()?.item?.id)
-
-        // play tracks with offset index
-        val offsetIndex = 2
-        api.player.startPlayback(playableUrisToPlay = trackUris, offsetIndex = offsetIndex)
-        delay(1000)
-        assertEquals(trackUris[2].id, api.player.getCurrentlyPlaying()?.item?.id)
-        api.player.skipForward()
-        delay(1000)
-        assertEquals(trackUris[offsetIndex + 1].id, api.player.getCurrentlyPlaying()?.item?.id)
-
-        // play tracks with offset track
-        val offsetTrackUri = trackUris[offsetIndex]
-        api.player.startPlayback(playableUrisToPlay = trackUris, offsetPlayableUri = offsetTrackUri)
-        delay(1000)
-        assertEquals(offsetTrackUri.id, api.player.getCurrentlyPlaying()?.item?.id)
-        api.player.skipForward()
-        delay(1000)
-        assertEquals(trackUris[offsetIndex + 1].id, api.player.getCurrentlyPlaying()?.item?.id)
-
-        // play playlist with offset track
-        val playlistTracks = api.playlists.getPlaylist(playlistUri.id)!!.tracks.map { it?.track as Track }
-        api.player.startPlayback(contextUri = playlistUri, offsetIndex = offsetIndex)
-        delay(2500)
-        assertEquals(playlistTracks[offsetIndex].id, api.player.getCurrentlyPlaying()?.item?.id)
-        api.player.skipForward()
-        delay(2000)
-        assertEquals(playlistTracks[offsetIndex + 1].id, api.player.getCurrentlyPlaying()?.item?.id)
     }
 
     @Test
@@ -269,22 +232,18 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
 
         val device = api.player.getDevices().first()
 
-        val playlist = api.playlists.getPlaylist("37i9dQZF1DXcBWIGoYBM5M")!!
+        val playlist = api.playlists.getPlaylist(testPlaylistId)!!
         api.player.startPlayback(
             contextUri = playlist.uri,
             deviceId = device.id
         )
-        delay(1000)
+        delay(playbackRelatedDelayMs)
 
         api.player.skipForward()
-        delay(1500)
-        assertEquals(playlist.tracks[1].track!!.id, api.player.getCurrentlyPlaying()!!.item?.id)
-
+        delay(playbackRelatedDelayMs)
         api.player.skipBehind()
-        delay(1500)
-        assertEquals(playlist.tracks[0].track!!.id, api.player.getCurrentlyPlaying()!!.item?.id)
-
         api.player.pause()
+        delay(playbackRelatedDelayMs)
     }
 
     @Test
@@ -305,12 +264,12 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
             playableUrisToPlay = listOf(PlayableUri("spotify:track:1VsVY1ySdH3nVSWnLT5vCf")),
             deviceId = fromDevice.id
         )
-        delay(1000)
+        delay(playbackRelatedDelayMs)
 
         api.player.transferPlayback(
             deviceId = toDevice.id!!
         )
-        delay(3000)
+        delay(playbackRelatedDelayMs)
 
         assertEquals(toDevice.id, api.player.getCurrentContext()!!.device.id)
     }

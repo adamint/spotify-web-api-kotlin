@@ -20,13 +20,14 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 
 class UtilityTests {
     var api: GenericSpotifyApi? = null
 
     @Test
-    fun testPagingObjectGetAllItems() = runTestOnDefaultDispatcher {
-        buildSpotifyApi()?.let { api = it }
+    fun testPagingObjectGetAllItems(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testPagingObjectGetAllItems.name)?.let { api = it }
 
         val spotifyWfhPlaylist = api!!.playlists.getPlaylist("37i9dQZF1DWTLSN7iG21yC")!!
         val totalTracks = spotifyWfhPlaylist.tracks.total
@@ -47,8 +48,8 @@ class UtilityTests {
     }
 
     @Test
-    fun testPagingObjectTakeItemsSize() = runTestOnDefaultDispatcher {
-        buildSpotifyApi()?.let { api = it }
+    fun testPagingObjectTakeItemsSize(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testPagingObjectTakeItemsSize.name)?.let { api = it }
         assertEquals(24, api!!.browse.getNewReleases(limit = 12).take(24).size)
     }
 
@@ -128,8 +129,8 @@ class UtilityTests {
     }
 
     @Test
-    fun testRequiredScopes() = runTestOnDefaultDispatcher {
-        buildSpotifyApi()?.let { api = it }
+    fun testRequiredScopes(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testRequiredScopes.name)?.let { api = it }
         if (api !is SpotifyClientApi) return@runTestOnDefaultDispatcher
 
         assertFailsWith<IllegalStateException> {

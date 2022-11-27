@@ -4,20 +4,23 @@
 package com.adamratzman.spotify
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 abstract class AbstractTest<T : GenericSpotifyApi> {
     lateinit var api: T
     var apiInitialized: Boolean = false
-    var requestNumber = 0
+    val testClassQualifiedName = this::class.simpleName!!
 
     suspend inline fun <reified Z : T> buildApi(testName: String) {
         if (apiInitialized) return
+        var requestNumber = 0 // local to the specific test. used to fake request responses
 
-        val api = buildSpotifyApi()
+        val api = buildSpotifyApi(testClassQualifiedName, testName)
         if (api != null && api is Z) {
             api.spotifyApiOptions.httpResponseSubscriber = { request, response ->
                 getResponseCacher()?.cacheResponse(
-                    this::class.qualifiedName!!,
+                    testClassQualifiedName,
                     testName,
                     requestNumber,
                     request,
@@ -34,7 +37,7 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
     suspend fun isApiInitialized(): Boolean {
         return if (apiInitialized) true
         else {
-            println("Api is not initialized. buildSpotifyApi returns ${buildSpotifyApi()}")
+            println("Api is not initialized. buildSpotifyApi returns ${buildSpotifyApi(testClassQualifiedName, "n/a")}")
             false
         }
     }
