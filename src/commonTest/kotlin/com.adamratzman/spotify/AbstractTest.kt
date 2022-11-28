@@ -1,11 +1,9 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 abstract class AbstractTest<T : GenericSpotifyApi> {
     lateinit var api: T
@@ -35,8 +33,9 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
     }
 
     suspend fun isApiInitialized(): Boolean {
-        return if (apiInitialized) true
-        else {
+        return if (apiInitialized) {
+            true
+        } else {
             println("Api is not initialized. buildSpotifyApi returns ${buildSpotifyApi(testClassQualifiedName, "n/a")}")
             false
         }

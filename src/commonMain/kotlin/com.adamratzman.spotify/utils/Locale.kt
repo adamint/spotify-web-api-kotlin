@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 /**
@@ -15,7 +15,7 @@ package com.adamratzman.spotify.utils
  * <span style="color: darkgreen;">// List all the locale codes.</span>
  * for (LocaleCode code : LocaleCode.values())
  * {
- * String language = code.[.getLanguage].[getName()][Language.getName];
+ * String language = code.[.getLanguage].[getName()][Language.GEtName];
  * String country  = code.[.getCountry] != null
  * ? code.[.getCountry].[getName()][Market.getName] : null;
  *
@@ -51,383 +51,438 @@ package com.adamratzman.spotify.utils
  */
 public enum class Locale(public val language: Language, public val country: Market) {
     /**
-     * [Arabic][Language.ar]
+     * [Arabic][Language.AR]
      */
 
     /**
-     * [Arabic][Language.ar], [United Arab Emirates][Market.AE]
+     * [Arabic][Language.AR], [United Arab Emirates][Market.AE]
      */
-    ar_AE(Language.ar, Market.AE),
+    AR_AE(Language.AR, Market.AE),
+
     /**
-     * [Arabic][Language.ar], [Bahrain][Market.BH]
+     * [Arabic][Language.AR], [Bahrain][Market.BH]
      */
-    ar_BH(Language.ar, Market.BH),
+    AR_BH(Language.AR, Market.BH),
+
     /**
-     * [Arabic][Language.ar], [Algeria][Market.DZ]
+     * [Arabic][Language.AR], [Algeria][Market.DZ]
      */
-    ar_DZ(Language.ar, Market.DZ),
+    AR_DZ(Language.AR, Market.DZ),
+
     /**
-     * [Arabic][Language.ar], [Egypt][Market.EG]
+     * [Arabic][Language.AR], [Egypt][Market.EG]
      */
-    ar_EG(Language.ar, Market.EG),
+    AR_EG(Language.AR, Market.EG),
+
     /**
-     * [Arabic][Language.ar], [Iraq][Market.IQ]
+     * [Arabic][Language.AR], [Iraq][Market.IQ]
      */
-    ar_IQ(Language.ar, Market.IQ),
+    AR_IQ(Language.AR, Market.IQ),
+
     /**
-     * [Arabic][Language.ar], [Jordan][Market.JO]
+     * [Arabic][Language.AR], [Jordan][Market.JO]
      */
-    ar_JO(Language.ar, Market.JO),
+    AR_JO(Language.AR, Market.JO),
+
     /**
-     * [Arabic][Language.ar], [Kuwait][Market.KW]
+     * [Arabic][Language.AR], [Kuwait][Market.KW]
      */
-    ar_KW(Language.ar, Market.KW),
+    AR_KW(Language.AR, Market.KW),
+
     /**
-     * [Arabic][Language.ar], [Lebanon][Market.LB]
+     * [Arabic][Language.AR], [Lebanon][Market.LB]
      */
-    ar_LB(Language.ar, Market.LB),
+    AR_LB(Language.AR, Market.LB),
+
     /**
-     * [Arabic][Language.ar], [Libya][Market.LY]
+     * [Arabic][Language.AR], [Libya][Market.LY]
      */
-    ar_LY(Language.ar, Market.LY),
+    AR_LY(Language.AR, Market.LY),
+
     /**
-     * [Arabic][Language.ar], [Morocco][Market.MA]
+     * [Arabic][Language.AR], [Morocco][Market.MA]
      */
-    ar_MA(Language.ar, Market.MA),
+    AR_MA(Language.AR, Market.MA),
+
     /**
-     * [Arabic][Language.ar], [Oman][Market.OM]
+     * [Arabic][Language.AR], [Oman][Market.OM]
      */
-    ar_OM(Language.ar, Market.OM),
+    AR_OM(Language.AR, Market.OM),
+
     /**
-     * [Arabic][Language.ar], [Qatar][Market.QA]
+     * [Arabic][Language.AR], [Qatar][Market.QA]
      */
-    ar_QA(Language.ar, Market.QA),
+    AR_QA(Language.AR, Market.QA),
+
     /**
-     * [Arabic][Language.ar], [Saudi Arabia][Market.SA]
+     * [Arabic][Language.AR], [Saudi Arabia][Market.SA]
      */
-    ar_SA(Language.ar, Market.SA),
+    AR_SA(Language.AR, Market.SA),
+
     /**
-     * [Arabic][Language.ar], [Sudan][Market.SD]
+     * [Arabic][Language.AR], [Sudan][Market.SD]
      */
-    ar_SD(Language.ar, Market.SD),
+    AR_SD(Language.AR, Market.SD),
+
     /**
-     * [Arabic][Language.ar], [Syrian Arab Republic][Market.SY]
+     * [Arabic][Language.AR], [Syrian Arab Republic][Market.SY]
      */
-    ar_SY(Language.ar, Market.SY),
+    AR_SY(Language.AR, Market.SY),
+
     /**
-     * [Arabic][Language.ar], [Tunisia][Market.TN]
+     * [Arabic][Language.AR], [Tunisia][Market.TN]
      */
-    ar_TN(Language.ar, Market.TN),
+    AR_TN(Language.AR, Market.TN),
+
     /**
-     * [Arabic][Language.ar], [Yemen][Market.YE]
+     * [Arabic][Language.AR], [Yemen][Market.YE]
      */
-    ar_YE(Language.ar, Market.YE),
+    AR_YE(Language.AR, Market.YE),
     /**
-     * [Belarusian][Language.be]
+     * [Belarusian][Language.BE]
      */
 
     /**
-     * [Belarusian][Language.be], [Belarus][Market.BY]
+     * [Belarusian][Language.BE], [Belarus][Market.BY]
      */
-    be_BY(Language.be, Market.BY),
+    BE_BY(Language.BE, Market.BY),
     /**
-     * [Bulgarian][Language.bg]
-     */
-
-    /**
-     * [Bulgarian][Language.bg], [Bulgaria][Market.BG]
-     */
-    bg_BG(Language.bg, Market.BG),
-    /**
-     * [Catalan][Language.ca]
+     * [Bulgarian][Language.BG]
      */
 
     /**
-     * [Catalan][Language.ca], [Spain][Market.ES]
+     * [Bulgarian][Language.BG], [Bulgaria][Market.BG]
      */
-    ca_ES(Language.ca, Market.ES),
+    BG_BG(Language.BG, Market.BG),
     /**
-     * [Czech][Language.cs]
-     */
-
-    /**
-     * [Czech][Language.cs], [Czech Republic][Market.CZ]
-     */
-    cs_CZ(Language.cs, Market.CZ),
-    /**
-     * [Danish][Language.da]
+     * [Catalan][Language.CA]
      */
 
     /**
-     * [Danish][Language.da], [Denmark][Market.DK]
+     * [Catalan][Language.CA], [Spain][Market.ES]
      */
-    da_DK(Language.da, Market.DK),
+    CA_ES(Language.CA, Market.ES),
     /**
-     * [German][Language.de]
-     */
-
-    /**
-     * [German][Language.de], [Austria][Market.AT]
-     */
-    de_AT(Language.de, Market.AT),
-    /**
-     * [German][Language.de], [Switzerland][Market.CH]
-     */
-    de_CH(Language.de, Market.CH),
-    /**
-     * [German][Language.de], [Germany][Market.DE]
-     */
-    de_DE(Language.de, Market.DE),
-    /**
-     * [German][Language.de], [Luxembourg][Market.LU]
-     */
-    de_LU(Language.de, Market.LU),
-    /**
-     * [Greek][Language.el]
+     * [Czech][Language.CS]
      */
 
     /**
-     * [Greek][Language.el], [Cyprus][Market.CY]
+     * [Czech][Language.CS], [Czech Republic][Market.CZ]
      */
-    el_CY(Language.el, Market.CY),
+    CS_CZ(Language.CS, Market.CZ),
     /**
-     * [Greek][Language.el], [Greece][Market.GR]
-     */
-    el_GR(Language.el, Market.GR),
-    /**
-     * [English][Language.en]
+     * [Danish][Language.DA]
      */
 
     /**
-     * [English][Language.en], [Australia][Market.AU]
+     * [Danish][Language.DA], [Denmark][Market.DK]
      */
-    en_AU(Language.en, Market.AU),
+    DA_DK(Language.DA, Market.DK),
     /**
-     * [English][Language.en], [Canada][Market.CA]
+     * [German][Language.DE]
      */
-    en_CA(Language.en, Market.CA),
+
     /**
-     * [English][Language.en], [United Kingdom][Market.GB]
+     * [German][Language.DE], [Austria][Market.AT]
      */
-    en_GB(Language.en, Market.GB),
+    DE_AT(Language.DE, Market.AT),
+
     /**
-     * [English][Language.en], [Hong Kong][Market.HK]
+     * [German][Language.DE], [Switzerland][Market.CH]
+     */
+    DE_CH(Language.DE, Market.CH),
+
+    /**
+     * [German][Language.DE], [Germany][Market.DE]
+     */
+    DE_DE(Language.DE, Market.DE),
+
+    /**
+     * [German][Language.DE], [Luxembourg][Market.LU]
+     */
+    DE_LU(Language.DE, Market.LU),
+    /**
+     * [Greek][Language.EL]
+     */
+
+    /**
+     * [Greek][Language.EL], [Cyprus][Market.CY]
+     */
+    EL_CY(Language.EL, Market.CY),
+
+    /**
+     * [Greek][Language.EL], [Greece][Market.GR]
+     */
+    EL_GR(Language.EL, Market.GR),
+    /**
+     * [English][Language.EN]
+     */
+
+    /**
+     * [English][Language.EN], [Australia][Market.AU]
+     */
+    EN_AU(Language.EN, Market.AU),
+
+    /**
+     * [English][Language.EN], [Canada][Market.CA]
+     */
+    EN_CA(Language.EN, Market.CA),
+
+    /**
+     * [English][Language.EN], [United Kingdom][Market.GB]
+     */
+    EN_GB(Language.EN, Market.GB),
+
+    /**
+     * [English][Language.EN], [Hong Kong][Market.HK]
      *
      * @since 1.22
      */
-    en_HK(Language.en, Market.HK),
+    EN_HK(Language.EN, Market.HK),
+
     /**
-     * [English][Language.en], [Ireland][Market.IE]
+     * [English][Language.EN], [Ireland][Market.IE]
      */
-    en_IE(Language.en, Market.IE),
+    EN_IE(Language.EN, Market.IE),
+
     /**
-     * [English][Language.en], [India][Market.IN]
+     * [English][Language.EN], [India][Market.IN]
      */
-    en_IN(Language.en, Market.IN),
+    EN_IN(Language.EN, Market.IN),
+
     /**
-     * [English][Language.en], [Malta][Market.MT]
+     * [English][Language.EN], [Malta][Market.MT]
      */
-    en_MT(Language.en, Market.MT),
+    EN_MT(Language.EN, Market.MT),
+
     /**
-     * [English][Language.en], [New Zealand][Market.NZ]
+     * [English][Language.EN], [New Zealand][Market.NZ]
      */
-    en_NZ(Language.en, Market.NZ),
+    EN_NZ(Language.EN, Market.NZ),
+
     /**
-     * [English][Language.en], [Philippines][Market.PH]
+     * [English][Language.EN], [Philippines][Market.PH]
      */
-    en_PH(Language.en, Market.PH),
+    EN_PH(Language.EN, Market.PH),
+
     /**
-     * [English][Language.en], [Singapore][Market.SG]
+     * [English][Language.EN], [Singapore][Market.SG]
      */
-    en_SG(Language.en, Market.SG),
+    EN_SG(Language.EN, Market.SG),
+
     /**
-     * [English][Language.en], [United States][Market.US]
+     * [English][Language.EN], [United States][Market.US]
      */
-    en_US(Language.en, Market.US),
+    EN_US(Language.EN, Market.US),
+
     /**
-     * [English][Language.en], [South Africa][Market.ZA]
+     * [English][Language.EN], [South Africa][Market.ZA]
      */
-    en_ZA(Language.en, Market.ZA),
+    EN_ZA(Language.EN, Market.ZA),
     /**
-     * [Spanish][Language.es]
+     * [Spanish][Language.ES]
      */
 
     /**
-     * [Spanish][Language.es], [Argentina][Market.AR]
+     * [Spanish][Language.ES], [Argentina][Market.AR]
      */
-    es_AR(Language.es, Market.AR),
+    ES_AR(Language.ES, Market.AR),
+
     /**
-     * [Spanish][Language.es], [Bolivia, Plurinational State of][Market.BO]
+     * [Spanish][Language.ES], [Bolivia, Plurinational State of][Market.BO]
      */
-    es_BO(Language.es, Market.BO),
+    ES_BO(Language.ES, Market.BO),
+
     /**
-     * [Spanish][Language.es], [Chile][Market.CL]
+     * [Spanish][Language.ES], [Chile][Market.CL]
      */
-    es_CL(Language.es, Market.CL),
+    ES_CL(Language.ES, Market.CL),
+
     /**
-     * [Spanish][Language.es], [Colombia][Market.CO]
+     * [Spanish][Language.ES], [Colombia][Market.CO]
      */
-    es_CO(Language.es, Market.CO),
+    ES_CO(Language.ES, Market.CO),
+
     /**
-     * [Spanish][Language.es], [Costa Rica][Market.CR]
+     * [Spanish][Language.ES], [Costa Rica][Market.CR]
      */
-    es_CR(Language.es, Market.CR),
+    ES_CR(Language.ES, Market.CR),
+
     /**
-     * [Spanish][Language.es], [Dominican Republic][Market.DO]
+     * [Spanish][Language.ES], [Dominican Republic][Market.DO]
      */
-    es_DO(Language.es, Market.DO),
+    ES_DO(Language.ES, Market.DO),
+
     /**
-     * [Spanish][Language.es], [Ecuador][Market.EC]
+     * [Spanish][Language.ES], [Ecuador][Market.EC]
      */
-    es_EC(Language.es, Market.EC),
+    ES_EC(Language.ES, Market.EC),
+
     /**
-     * [Spanish][Language.es], [Spain][Market.ES]
+     * [Spanish][Language.ES], [Spain][Market.ES]
      */
-    es_ES(Language.es, Market.ES),
+    ES_ES(Language.ES, Market.ES),
+
     /**
-     * [Spanish][Language.es], [Guatemala][Market.GT]
+     * [Spanish][Language.ES], [Guatemala][Market.GT]
      */
-    es_GT(Language.es, Market.GT),
+    ES_GT(Language.ES, Market.GT),
+
     /**
-     * [Spanish][Language.es], [Honduras][Market.HN]
+     * [Spanish][Language.ES], [Honduras][Market.HN]
      */
-    es_HN(Language.es, Market.HN),
+    ES_HN(Language.ES, Market.HN),
+
     /**
-     * [Spanish][Language.es], [Mexico][Market.MX]
+     * [Spanish][Language.ES], [Mexico][Market.MX]
      */
-    es_MX(Language.es, Market.MX),
+    ES_MX(Language.ES, Market.MX),
+
     /**
-     * [Spanish][Language.es], [Nicaragua][Market.NI]
+     * [Spanish][Language.ES], [Nicaragua][Market.NI]
      */
-    es_NI(Language.es, Market.NI),
+    ES_NI(Language.ES, Market.NI),
+
     /**
-     * [Spanish][Language.es], [Panama][Market.PA]
+     * [Spanish][Language.ES], [Panama][Market.PA]
      */
-    es_PA(Language.es, Market.PA),
+    ES_PA(Language.ES, Market.PA),
+
     /**
-     * [Spanish][Language.es], [Peru][Market.PE]
+     * [Spanish][Language.ES], [Peru][Market.PE]
      */
-    es_PE(Language.es, Market.PE),
+    ES_PE(Language.ES, Market.PE),
+
     /**
-     * [Spanish][Language.es], [Puerto Rico][Market.PR]
+     * [Spanish][Language.ES], [Puerto Rico][Market.PR]
      */
-    es_PR(Language.es, Market.PR),
+    ES_PR(Language.ES, Market.PR),
+
     /**
-     * [Spanish][Language.es], [Paraguay][Market.PY]
+     * [Spanish][Language.ES], [Paraguay][Market.PY]
      */
-    es_PY(Language.es, Market.PY),
+    ES_PY(Language.ES, Market.PY),
+
     /**
-     * [Spanish][Language.es], [El Salvador][Market.SV]
+     * [Spanish][Language.ES], [El Salvador][Market.SV]
      */
-    es_SV(Language.es, Market.SV),
+    ES_SV(Language.ES, Market.SV),
+
     /**
-     * [Spanish][Language.es], [United States][Market.US]
+     * [Spanish][Language.ES], [United States][Market.US]
      */
-    es_US(Language.es, Market.US),
+    ES_US(Language.ES, Market.US),
+
     /**
-     * [Spanish][Language.es], [Uruguay][Market.UY]
+     * [Spanish][Language.ES], [Uruguay][Market.UY]
      */
-    es_UY(Language.es, Market.UY),
+    ES_UY(Language.ES, Market.UY),
+
     /**
-     * [Spanish][Language.es], [Venezuela, Bolivarian Republic of][Market.VE]
+     * [Spanish][Language.ES], [Venezuela, Bolivarian Republic of][Market.VE]
      */
-    es_VE(Language.es, Market.VE),
+    ES_VE(Language.ES, Market.VE),
     /**
-     * [Estonian][Language.et]
+     * [Estonian][Language.ET]
      */
 
     /**
-     * [Estonian][Language.et], [Estonia][Market.EE]
+     * [Estonian][Language.ET], [Estonia][Market.EE]
      */
-    et_EE(Language.et, Market.EE),
+    ET_EE(Language.ET, Market.EE),
     /**
-     * [Farsi][Language.fa]
+     * [Farsi][Language.FA]
      *
      * @since 1.21
      */
 
     /**
-     * [Farsi][Language.fa], [Iran][Market.IR]
+     * [Farsi][Language.FA], [Iran][Market.IR]
      *
      * @since 1.21
      */
-    fa_IR(Language.fa, Market.IR),
+    FA_IR(Language.FA, Market.IR),
     /**
-     * [Finnish][Language.fi]
+     * [Finnish][Language.FI]
      */
 
     /**
-     * [Finnish][Language.fi], [Finland][Market.FI]
+     * [Finnish][Language.FI], [Finland][Market.FI]
      */
-    fi_FI(Language.fi, Market.FI),
+    FI_FI(Language.FI, Market.FI),
     /**
-     * [French][Language.fr]
+     * [French][Language.FR]
      */
 
     /**
-     * [French][Language.fr], [Belgium][Market.BE]
+     * [French][Language.FR], [Belgium][Market.BE]
      */
-    fr_BE(Language.fr, Market.BE),
+    FR_BE(Language.FR, Market.BE),
+
     /**
-     * [French][Language.fr], [Canada][Market.CA]
+     * [French][Language.FR], [Canada][Market.CA]
      */
-    fr_CA(Language.fr, Market.CA),
+    FR_CA(Language.FR, Market.CA),
+
     /**
-     * [French][Language.fr], [Switzerland][Market.CH]
+     * [French][Language.FR], [Switzerland][Market.CH]
      */
-    fr_CH(Language.fr, Market.CH),
+    FR_CH(Language.FR, Market.CH),
+
     /**
-     * [French][Language.fr], [France][Market.FR]
+     * [French][Language.FR], [France][Market.FR]
      */
-    fr_FR(Language.fr, Market.FR),
+    FR_FR(Language.FR, Market.FR),
+
     /**
-     * [French][Language.fr], [Luxembourg][Market.LU]
+     * [French][Language.FR], [Luxembourg][Market.LU]
      */
-    fr_LU(Language.fr, Market.LU),
+    FR_LU(Language.FR, Market.LU),
     /**
-     * [Irish][Language.ga]
+     * [Irish][Language.GA]
      */
 
     /**
-     * [Irish][Language.ga], [Ireland][Market.IE]
+     * [Irish][Language.GA], [Ireland][Market.IE]
      */
-    ga_IE(Language.ga, Market.IE),
+    GA_IE(Language.GA, Market.IE),
     /**
-     * [Hebrew][Language.he]
+     * [Hebrew][Language.HE]
      */
 
     /**
-     * [Hebrew][Language.he], [Israel][Market.IL]
+     * [Hebrew][Language.HE], [Israel][Market.IL]
      */
-    he_IL(Language.he, Market.IL),
+    HE_IL(Language.HE, Market.IL),
+
     /**
-     * [Hindi][Language.hi], [India][Market.IN]
+     * [Hindi][Language.HI], [India][Market.IN]
      */
-    hi_IN(Language.hi, Market.IN),
+    HI_IN(Language.HI, Market.IN),
     /**
-     * [Croatian][Language.hr]
+     * [Croatian][Language.HR]
      */
 
     /**
-     * [Croatian][Language.hr], [Croatia][Market.HR]
+     * [Croatian][Language.HR], [Croatia][Market.HR]
      */
-    hr_HR(Language.hr, Market.HR),
+    HR_HR(Language.HR, Market.HR),
     /**
-     * [Hungarian][Language.hu]
+     * [Hungarian][Language.HU]
      */
 
     /**
-     * [Hungarian][Language.hu], [Hungary][Market.HU]
+     * [Hungarian][Language.HU], [Hungary][Market.HU]
      */
-    hu_HU(Language.hu, Market.HU),
+    HU_HU(Language.HU, Market.HU),
     /**
-     * [Indonesian][Language.id]
+     * [Indonesian][Language.ID]
      */
 
     /**
-     * [Indonesian][Language.id], [Indonesia][Market.ID]
+     * [Indonesian][Language.ID], [Indonesia][Market.ID]
      */
-    id_ID(Language.id, Market.ID),
+    ID_ID(Language.ID, Market.ID),
     /**
      * [Icelandic][LanguageCode. is]
      */
@@ -435,283 +490,296 @@ public enum class Locale(public val language: Language, public val country: Mark
     /**
      * [Icelandic][LanguageCode. is], [Iceland][Market.IS]
      */
-    is_IS(Language.`is`, Market.IS),
+    IS_IS(Language.IS, Market.IS),
     /**
-     * [Italian][Language.it]
+     * [Italian][Language.IT]
      */
 
     /**
-     * [Italian][Language.it], [Switzerland][Market.CH]
+     * [Italian][Language.IT], [Switzerland][Market.CH]
      */
-    it_CH(Language.it, Market.CH),
+    IT_CH(Language.IT, Market.CH),
+
     /**
-     * [Italian][Language.it], [Italy][Market.IT]
+     * [Italian][Language.IT], [Italy][Market.IT]
      */
-    it_IT(Language.it, Market.IT),
+    IT_IT(Language.IT, Market.IT),
     /**
-     * [Japanese][Language.ja]
+     * [Japanese][Language.JA]
      */
 
     /**
-     * [Japanese][Language.ja], [Japan][Market.JP]
+     * [Japanese][Language.JA], [Japan][Market.JP]
      */
-    ja_JP(Language.ja, Market.JP),
+    JA_JP(Language.JA, Market.JP),
+
     /**
-     * [Kazakh][Language.kk], [Kazakhstan][Market.KZ]
+     * [Kazakh][Language.KK], [Kazakhstan][Market.KZ]
      *
      * @since 1.22
      */
-    kk_KZ(Language.kk, Market.KZ),
+    KK_KZ(Language.KK, Market.KZ),
     /**
-     * [Korean][Language.ko]
+     * [Korean][Language.KO]
      */
 
     /**
-     * [Korean][Language.ko], [Korea, Republic of][Market.KR]
+     * [Korean][Language.KO], [Korea, Republic of][Market.KR]
      */
-    ko_KR(Language.ko, Market.KR),
+    KO_KR(Language.KO, Market.KR),
     /**
-     * [Lithuanian][Language.lt]
-     */
-
-    /**
-     * [Lithuanian][Language.lt], [Lithuania][Market.LT]
-     */
-    lt_LT(Language.lt, Market.LT),
-    /**
-     * [Latvian][Language.lv]
+     * [Lithuanian][Language.LT]
      */
 
     /**
-     * [Latvian][Language.lv], [Latvia][Market.LV]
+     * [Lithuanian][Language.LT], [Lithuania][Market.LT]
      */
-    lv_LV(Language.lv, Market.LV),
+    LT_LT(Language.LT, Market.LT),
     /**
-     * [Macedonian][Language.mk]
-     */
-
-    /**
-     * [Macedonian][Language.mk], [Macedonia, the former Yugoslav Republic of][Market.MK]
-     */
-    mk_MK(Language.mk, Market.MK),
-    /**
-     * [Malay][Language.ms]
+     * [Latvian][Language.LV]
      */
 
     /**
-     * [Malay][Language.ms], [Malaysia][Market.MY]
+     * [Latvian][Language.LV], [Latvia][Market.LV]
      */
-    ms_MY(Language.ms, Market.MY),
+    LV_LV(Language.LV, Market.LV),
     /**
-     * [Maltese][Language.mt]
+     * [Macedonian][Language.MK]
      */
 
     /**
-     * [Maltese][Language.mt], [Malta][Market.MT]
+     * [Macedonian][Language.MK], [Macedonia, the former Yugoslav Republic of][Market.MK]
      */
-    mt_MT(Language.mt, Market.MT),
+    MK_MK(Language.MK, Market.MK),
     /**
-     * [Norwegian Bokm&amp;aring;l][Language.nb]
+     * [Malay][Language.MS]
+     */
+
+    /**
+     * [Malay][Language.MS], [Malaysia][Market.MY]
+     */
+    MS_MY(Language.MS, Market.MY),
+    /**
+     * [Maltese][Language.MT]
+     */
+
+    /**
+     * [Maltese][Language.MT], [Malta][Market.MT]
+     */
+    MT_MT(Language.MT, Market.MT),
+    /**
+     * [Norwegian Bokm&amp;aring;l][Language.NB]
      *
      * @since 1.8
      */
 
     /**
-     * [Norwegian Bokm&amp;aring;l][Language.nb], [Norway][Market.NO]
+     * [Norwegian Bokm&amp;aring;l][Language.NB], [Norway][Market.NO]
      *
      * @since 1.8
      */
-    nb_NO(Language.nb, Market.NO),
+    NB_NO(Language.NB, Market.NO),
     /**
-     * [Dutch][Language.nl]
+     * [Dutch][Language.NL]
      */
 
     /**
-     * [Dutch][Language.nl], [Belgium][Market.BE]
+     * [Dutch][Language.NL], [Belgium][Market.BE]
      */
-    nl_BE(Language.nl, Market.BE),
+    NL_BE(Language.NL, Market.BE),
+
     /**
-     * [Dutch][Language.nl], [Netherlands][Market.NL]
+     * [Dutch][Language.NL], [Netherlands][Market.NL]
      */
-    nl_NL(Language.nl, Market.NL),
+    NL_NL(Language.NL, Market.NL),
+
     /**
-     * [Norwegian Nynorsk][Language.nn], [Norway][Market.NO]
+     * [Norwegian Nynorsk][Language.NN], [Norway][Market.NO]
      */
-    nn_NO(Language.nn, Market.NO),
+    NN_NO(Language.NN, Market.NO),
     /**
-     * [Norwegian][Language.no]
+     * [Norwegian][Language.NO]
      *
      * @see [Sprkkoder for POSIX locale i Norge](http://i18n.skolelinux.no/localekoder.txt)
      *
      * @see [Red Hat Bugzilla – Bug 532487 Legacy Norwegian locale
-    ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
+     ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
 
     /**
-     * [Norwegian][Language.no], [Norway][Market.NO]
+     * [Norwegian][Language.NO], [Norway][Market.NO]
      *
      * @see [Sprkkoder for POSIX locale i Norge](http://i18n.skolelinux.no/localekoder.txt)
      *
      * @see [Red Hat Bugzilla – Bug 532487 Legacy Norwegian locale
-    ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
-    no_NO(Language.no, Market.NO),
+     ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
+    NO_NO(Language.NO, Market.NO),
     /**
-     * [Polish][Language.pl]
+     * [Polish][Language.PL]
      */
 
     /**
-     * [Polish][Language.pl], [Poland][Market.PL]
+     * [Polish][Language.PL], [Poland][Market.PL]
      */
-    pl_PL(Language.pl, Market.PL),
+    PL_PL(Language.PL, Market.PL),
     /**
-     * [Portuguese][Language.pt]
-     */
-
-    /**
-     * [Portuguese][Language.pt], [Brazil][Market.BR]
-     */
-    pt_BR(Language.pt, Market.BR),
-    /**
-     * [Portuguese][Language.pt], [Portugal][Market.PT]
-     */
-    pt_PT(Language.pt, Market.PT),
-    /**
-     * [Romanian][Language.ro]
+     * [Portuguese][Language.PT]
      */
 
     /**
-     * [Romanian][Language.ro], [Moldova, Republic of][Market.MD]
+     * [Portuguese][Language.PT], [Brazil][Market.BR]
      */
-    ro_MD(Language.ro, Market.MD),
+    PT_BR(Language.PT, Market.BR),
+
     /**
-     * [Romanian][Language.ro], [Romania][Market.RO]
+     * [Portuguese][Language.PT], [Portugal][Market.PT]
      */
-    ro_RO(Language.ro, Market.RO),
+    PT_PT(Language.PT, Market.PT),
     /**
-     * [Russian][Language.ru]
+     * [Romanian][Language.RO]
      */
 
     /**
-     * [Russian][Language.ru], [Kazakhstan][Market.KZ]
+     * [Romanian][Language.RO], [Moldova, Republic of][Market.MD]
+     */
+    RO_MD(Language.RO, Market.MD),
+
+    /**
+     * [Romanian][Language.RO], [Romania][Market.RO]
+     */
+    RO_RO(Language.RO, Market.RO),
+    /**
+     * [Russian][Language.RU]
+     */
+
+    /**
+     * [Russian][Language.RU], [Kazakhstan][Market.KZ]
      *
      * @since 1.22
      */
-    ru_KZ(Language.ru, Market.KZ),
+    RU_KZ(Language.RU, Market.KZ),
+
     /**
-     * [Russian][Language.ru], [Russian Federation][Market.RU]
+     * [Russian][Language.RU], [Russian Federation][Market.RU]
      */
-    ru_RU(Language.ru, Market.RU),
+    RU_RU(Language.RU, Market.RU),
     /**
-     * [Northern Sami][Language.se]
+     * [Northern Sami][Language.SE]
      *
      * @since 1.8
      */
 
     /**
-     * [Northern Sami][Language.se], [Norway][Market.NO]
+     * [Northern Sami][Language.SE], [Norway][Market.NO]
      *
      * @since 1.8
      */
-    se_NO(Language.se, Market.NO),
+    SE_NO(Language.SE, Market.NO),
     /**
-     * [Slovak][Language.sk]
+     * [Slovak][Language.SK]
      */
 
     /**
-     * [Slovak][Language.sk], [Slovakia][Market.SK]
+     * [Slovak][Language.SK], [Slovakia][Market.SK]
      */
-    sk_SK(Language.sk, Market.SK),
+    SK_SK(Language.SK, Market.SK),
     /**
-     * [Slovene][Language.sl]
+     * [Slovene][Language.SL]
      */
 
     /**
-     * [Slovene][Language.sl], [Slovenia][Market.SI]
+     * [Slovene][Language.SL], [Slovenia][Market.SI]
      */
-    sl_SI(Language.sl, Market.SI),
+    SL_SI(Language.SL, Market.SI),
     /**
-     * [Albanian][Language.sq]
+     * [Albanian][Language.SQ]
      */
 
     /**
-     * [Albanian][Language.sq], [Albania][Market.AL]
+     * [Albanian][Language.SQ], [Albania][Market.AL]
      */
-    sq_AL(Language.sq, Market.AL),
+    SQ_AL(Language.SQ, Market.AL),
     /**
-     * [Serbian][Language.sr]
+     * [Serbian][Language.SR]
      */
 
     /**
-     * [Serbian][Language.sr], [Bosnia and Herzegovina][Market.BA]
+     * [Serbian][Language.SR], [Bosnia and Herzegovina][Market.BA]
      */
-    sr_BA(Language.sr, Market.BA),
+    SR_BA(Language.SR, Market.BA),
+
     /**
-     * [Serbian][Language.sr], [Serbia and Montenegro][Market.CS]
+     * [Serbian][Language.SR], [Serbia and Montenegro][Market.CS]
      */
-    sr_CS(Language.sr, Market.CS),
+    SR_CS(Language.SR, Market.CS),
+
     /**
-     * [Serbian][Language.sr], [Montenegro][Market.ME]
+     * [Serbian][Language.SR], [Montenegro][Market.ME]
      */
-    sr_ME(Language.sr, Market.ME),
+    SR_ME(Language.SR, Market.ME),
+
     /**
-     * [Serbian][Language.sr], [Serbia][Market.RS]
+     * [Serbian][Language.SR], [Serbia][Market.RS]
      */
-    sr_RS(Language.sr, Market.RS),
+    SR_RS(Language.SR, Market.RS),
     /**
-     * [Swedish][Language.sv]
+     * [Swedish][Language.SV]
      */
 
     /**
-     * [Swedish][Language.sv], [Sweden][Market.SE]
+     * [Swedish][Language.SV], [Sweden][Market.SE]
      */
-    sv_SE(Language.sv, Market.SE),
+    SV_SE(Language.SV, Market.SE),
     /**
-     * [Thai][Language.th]
+     * [Thai][Language.TH]
      */
 
     /**
-     * [Thai][Language.th], [Thailand][Market.TH]
+     * [Thai][Language.TH], [Thailand][Market.TH]
      */
-    th_TH(Language.th, Market.TH),
+    TH_TH(Language.TH, Market.TH),
     /**
-     * [Turkish][Language.tr]
+     * [Turkish][Language.TR]
      */
 
     /**
-     * [Turkish][Language.tr], [Turkey][Market.TR]
+     * [Turkish][Language.TR], [Turkey][Market.TR]
      */
-    tr_TR(Language.tr, Market.TR),
+    TR_TR(Language.TR, Market.TR),
     /**
-     * [Ukrainian][Language.uk]
+     * [Ukrainian][Language.UK]
      */
 
     /**
-     * [Ukrainian][Language.uk], [Ukraine][Market.UA]
+     * [Ukrainian][Language.UK], [Ukraine][Market.UA]
      */
-    uk_UA(Language.uk, Market.UA),
+    UK_UA(Language.UK, Market.UA),
     /**
-     * [Vietnamese][Language.vi]
+     * [Vietnamese][Language.VI]
      */
     /**
-     * [Vietnamese][Language.vi], [Viet Nam][Market.VN]
+     * [Vietnamese][Language.VI], [Viet Nam][Market.VN]
      */
-    vi_VN(Language.vi, Market.VN),
+    VI_VN(Language.VI, Market.VN),
 
     /**
-     * [Chinese][Language.zh], [China][Market.CN]
+     * [Chinese][Language.ZH], [China][Market.CN]
      */
-    zh_CN(Language.zh, Market.CN),
+    ZH_CN(Language.ZH, Market.CN),
+
     /**
-     * [Chinese][Language.zh], [Hong Kong][Market.HK]
+     * [Chinese][Language.ZH], [Hong Kong][Market.HK]
      */
-    zh_HK(Language.zh, Market.HK),
+    ZH_HK(Language.ZH, Market.HK),
+
     /**
-     * [Chinese][Language.zh], [Singapore][Market.SG]
+     * [Chinese][Language.ZH], [Singapore][Market.SG]
      */
-    zh_SG(Language.zh, Market.SG),
+    ZH_SG(Language.ZH, Market.SG),
+
     /**
-     * [Chinese][Language.zh], [Taiwan, Province of China][Market.TW]
+     * [Chinese][Language.ZH], [Taiwan, Province of China][Market.TW]
      */
-    zh_TW(Language.zh, Market.TW);
+    ZH_TW(Language.ZH, Market.TW);
 
     /**
      * Get the string representation of this locale code. Its format is

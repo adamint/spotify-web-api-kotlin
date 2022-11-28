@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.priv
@@ -6,14 +6,14 @@ package com.adamratzman.spotify.priv
 import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Market
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import kotlinx.coroutines.test.TestResult
 
 class ClientShowApiTest : AbstractTest<SpotifyClientApi>() {
     @Test
@@ -45,7 +45,8 @@ class ClientShowApiTest : AbstractTest<SpotifyClientApi>() {
         assertFailsWith<BadRequestException> { api.shows.getShowEpisodes("hi") }
         val show = api.shows.getShow("6z4NLXyHPga1UmSJsPK7G1")!!
         assertEquals(
-            show.id, api.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id
+            show.id,
+            api.shows.getShowEpisodes(show.id).first()?.toFullEpisode(market = Market.US)?.show?.id
         )
     }
 }

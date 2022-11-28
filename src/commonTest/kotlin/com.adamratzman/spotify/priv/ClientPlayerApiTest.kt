@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalTime::class)
 
 package com.adamratzman.spotify.priv
@@ -11,24 +11,22 @@ import com.adamratzman.spotify.models.Episode
 import com.adamratzman.spotify.models.PlayableUri
 import com.adamratzman.spotify.models.SpotifyContextType
 import com.adamratzman.spotify.models.SpotifyTrackUri
-import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.toAlbumUri
 import com.adamratzman.spotify.models.toArtistUri
 import com.adamratzman.spotify.models.toPlaylistUri
 import com.adamratzman.spotify.models.toShowUri
 import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.TestResult
 
 // we need to give a decent tolerance to ensure the action has actually been performed for these endpoints
 private const val playbackRelatedDelayMs: Long = 2000

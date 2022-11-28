@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.models.AlbumUri
@@ -11,12 +11,12 @@ import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
 import com.adamratzman.spotify.models.UserCollectionUri
 import com.adamratzman.spotify.models.UserUri
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.serialization.json.Json
 
 class UrisTests {
     @Test

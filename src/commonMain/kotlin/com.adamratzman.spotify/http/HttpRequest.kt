@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -76,7 +76,9 @@ public class HttpRequest constructor(
                 HttpRequestMethod.PUT, HttpRequestMethod.POST -> {
                     val contentString = if (contentType == ContentType.Application.FormUrlEncoded) {
                         bodyMap?.map { "${it.key}=${it.value}" }?.joinToString("&") ?: bodyString
-                    } else bodyString
+                    } else {
+                        bodyString
+                    }
 
                     contentString.toByteArrayContent() ?: ByteArrayContent("".toByteArray(), contentType)
                 }
@@ -86,8 +88,11 @@ public class HttpRequest constructor(
         )
 
         // let additionalHeaders overwrite headers
-        val allHeaders = if (additionalHeaders == null) this@HttpRequest.headers
-        else this@HttpRequest.headers.filter { oldHeaders -> oldHeaders.key !in additionalHeaders.map { it.key } } + additionalHeaders
+        val allHeaders = if (additionalHeaders == null) {
+            this@HttpRequest.headers
+        } else {
+            this@HttpRequest.headers.filter { oldHeaders -> oldHeaders.key !in additionalHeaders.map { it.key } } + additionalHeaders
+        }
 
         allHeaders.forEach { (key, value) ->
             header(key, value)
@@ -105,12 +110,15 @@ public class HttpRequest constructor(
                 val respCode = response.status.value
 
                 if (respCode in 500..599 && (retryIfInternalServerErrorLeft == null || retryIfInternalServerErrorLeft == -1 || retryIfInternalServerErrorLeft > 0)) {
-                    if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Received internal server error ${respCode}, attempting to retry (${retryIfInternalServerErrorLeft} tries left)")
+                    if (api?.spotifyApiOptions?.enableDebugMode == true) Console.debug("Received internal server error $respCode, attempting to retry ($retryIfInternalServerErrorLeft tries left)")
                     return@let execute(
                         additionalHeaders,
                         retryIfInternalServerErrorLeft =
-                        if (retryIfInternalServerErrorLeft != null && retryIfInternalServerErrorLeft != -1) retryIfInternalServerErrorLeft - 1
-                        else retryIfInternalServerErrorLeft
+                        if (retryIfInternalServerErrorLeft != null && retryIfInternalServerErrorLeft != -1) {
+                            retryIfInternalServerErrorLeft - 1
+                        } else {
+                            retryIfInternalServerErrorLeft
+                        }
                     )
                 }
                 // otherwise, if it's 5xx and retryIfInternalServerErrorLeft == 0 we just continue and fail
@@ -124,7 +132,9 @@ public class HttpRequest constructor(
                             additionalHeaders,
                             retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft
                         )
-                    } else throw SpotifyRatelimitedException(ratelimit)
+                    } else {
+                        throw SpotifyRatelimitedException(ratelimit)
+                    }
                 }
 
                 val body: String = response.bodyAsText()
@@ -175,8 +185,11 @@ public class HttpRequest constructor(
                     return execute(
                         additionalHeaders,
                         retryIfInternalServerErrorLeft =
-                        if (retryIfInternalServerErrorLeft != null && retryIfInternalServerErrorLeft != -1) retryIfInternalServerErrorLeft - 1
-                        else retryIfInternalServerErrorLeft
+                        if (retryIfInternalServerErrorLeft != null && retryIfInternalServerErrorLeft != -1) {
+                            retryIfInternalServerErrorLeft - 1
+                        } else {
+                            retryIfInternalServerErrorLeft
+                        }
                     )
                 }
 
@@ -189,7 +202,9 @@ public class HttpRequest constructor(
                             additionalHeaders,
                             retryIfInternalServerErrorLeft = retryIfInternalServerErrorLeft
                         )
-                    } else throw SpotifyRatelimitedException(ratelimit)
+                    } else {
+                        throw SpotifyRatelimitedException(ratelimit)
+                    }
                 }
 
                 if (e.response.status.value == 401 && errorBody.contains("access token") &&
@@ -234,7 +249,8 @@ public class HttpRequest constructor(
             |body=${bodyString ?: bodyMap},
             |contentType=$contentType,
             |headers=${headers.toList()}
-            |  )""".trimMargin()
+            |  )
+        """.trimMargin()
     }
 
     internal companion object {

@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:Suppress("LeakingThis")
 
 package com.adamratzman.spotify
@@ -24,8 +24,8 @@ import com.adamratzman.spotify.endpoints.pub.ShowApi
 import com.adamratzman.spotify.endpoints.pub.TrackApi
 import com.adamratzman.spotify.endpoints.pub.UserApi
 import com.adamratzman.spotify.http.CacheState
-import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpHeader
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpRequestMethod
 import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -37,8 +37,8 @@ import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.asList
 import com.adamratzman.spotify.utils.base64ByteEncode
-import kotlin.jvm.JvmOverloads
 import kotlinx.serialization.json.Json
+import kotlin.jvm.JvmOverloads
 
 /**
  * Represents an instance of the Spotify API client, with common
@@ -200,10 +200,12 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
     public suspend fun isTokenValid(
         makeTestRequest: Boolean = true
     ): TokenValidityResponse {
-        if (token.shouldRefresh()) return TokenValidityResponse(
-            false,
-            SpotifyException.AuthenticationException("Token needs to be refreshed (is it expired?)")
-        )
+        if (token.shouldRefresh()) {
+            return TokenValidityResponse(
+                false,
+                SpotifyException.AuthenticationException("Token needs to be refreshed (is it expired?)")
+            )
+        }
         if (!makeTestRequest) return TokenValidityResponse(true, null)
 
         return try {
@@ -289,11 +291,15 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
             state: String? = null
         ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                    "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
-                    "&redirect_uri=$redirectUri" +
-                    (state?.let { "&state=$it" } ?: "") +
-                    if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}" +
-                            if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
+                "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
+                "&redirect_uri=$redirectUri" +
+                (state?.let { "&state=$it" } ?: "") +
+                if (scopes.isEmpty()) {
+                    ""
+                } else {
+                    "&scope=${scopes.joinToString("%20") { it.uri }}" +
+                        if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
+                }
         }
 
         /**
@@ -315,12 +321,12 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
             state: String? = null
         ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                    "&response_type=code" +
-                    "&redirect_uri=$redirectUri" +
-                    "&code_challenge_method=S256" +
-                    "&code_challenge=$codeChallenge" +
-                    (state?.let { "&state=$it" } ?: "") +
-                    if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
+                "&response_type=code" +
+                "&redirect_uri=$redirectUri" +
+                "&code_challenge_method=S256" +
+                "&code_challenge=$codeChallenge" +
+                (state?.let { "&state=$it" } ?: "") +
+                if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
         }
 
         /**
@@ -347,7 +353,9 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
                     "application/x-www-form-urlencoded",
                     listOf(),
                     api
-                ), clientId, clientSecret
+                ),
+                clientId,
+                clientSecret
             )
 
             if (response.responseCode / 200 == 1) return response.body.toObject(Token.serializer(), null, json)
@@ -633,10 +641,13 @@ public open class SpotifyClientApi(
      * Whether the current access token allows access to all of the provided scopes
      */
     public suspend fun hasScopes(scope: SpotifyScope, vararg scopes: SpotifyScope): Boolean? =
-        if (token.scopes == null) null
-        else !isTokenValid(false).isValid &&
+        if (token.scopes == null) {
+            null
+        } else {
+            !isTokenValid(false).isValid &&
                 token.scopes?.contains(scope) == true &&
                 scopes.all { token.scopes?.contains(it) == true }
+        }
 
     /**
      * Whether the current access token allows access to all of the provided scopes
@@ -746,7 +757,9 @@ public suspend fun refreshSpotifyClientToken(
                 "application/x-www-form-urlencoded",
                 listOf(),
                 null
-            ), clientId, clientSecret
+            ),
+            clientId,
+            clientSecret
         )
     } else {
         HttpRequest(
@@ -762,13 +775,15 @@ public suspend fun refreshSpotifyClientToken(
 
     return if (response.responseCode in 200..399) {
         response.body.toObject(Token.serializer(), null, nonstrictJson)
-    } else throw BadRequestException(
-        response.body.toObject(
-            AuthenticationError.serializer(),
-            null,
-            nonstrictJson
+    } else {
+        throw BadRequestException(
+            response.body.toObject(
+                AuthenticationError.serializer(),
+                null,
+                nonstrictJson
+            )
         )
-    )
+    }
 }
 
 /**

@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -195,7 +195,6 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         )
     }
 
-
     /**
      * Set the repeat mode for the user’s playback. Options are [PlayerRepeatState.TRACK], [PlayerRepeatState.CONTEXT], and [PlayerRepeatState.OFF].
      *
@@ -334,7 +333,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             offsetLocalTrackId?.toLocalTrackUri() ?: offsetTrackId?.toTrackUri() ?: offsetEpisodeId?.toEpisodeUri()
         val playableUrisToPlay =
             localTrackIdsToPlay?.map { it.toLocalTrackUri() } ?: trackIdsToPlay?.map { it.toTrackUri() }
-            ?: episodeIdsToPlay?.map { it.toEpisodeUri() }
+                ?: episodeIdsToPlay?.map { it.toEpisodeUri() }
 
         startPlayback(
             contextUri,
@@ -379,23 +378,30 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             contextUri != null -> body += buildJsonObject { put("context_uri", contextUri.uri) }
             playableUrisToPlay?.isNotEmpty() == true -> body += buildJsonObject {
                 put(
-                    "uris", JsonArray(
+                    "uris",
+                    JsonArray(
                         playableUrisToPlay.map { it.uri }.map(::JsonPrimitive)
                     )
                 )
             }
         }
         if (body.keys.isNotEmpty()) {
-            if (offsetIndex != null) body += buildJsonObject {
-                put(
-                    "offset",
-                    buildJsonObject { put("position", offsetIndex) })
-            }
-            else if (offsetPlayableUri != null) body += buildJsonObject {
-                put("offset", buildJsonObject { put("uri", offsetPlayableUri.uri) })
+            if (offsetIndex != null) {
+                body += buildJsonObject {
+                    put(
+                        "offset",
+                        buildJsonObject { put("position", offsetIndex) }
+                    )
+                }
+            } else if (offsetPlayableUri != null) {
+                body += buildJsonObject {
+                    put("offset", buildJsonObject { put("uri", offsetPlayableUri.uri) })
+                }
             }
             put(url, body.mapToJsonString())
-        } else put(url)
+        } else {
+            put(url)
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.pub
@@ -8,13 +8,13 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.endpoints.pub.SearchApi
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Market
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import kotlinx.coroutines.test.TestResult
 
 class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
@@ -24,12 +24,12 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
         val query = api.search.search("lo", *SearchApi.SearchType.values(), market = Market.US)
         assertTrue(
             query.albums?.items?.isNotEmpty() == true && query.tracks?.items?.isNotEmpty() == true && query.artists?.items?.isNotEmpty() == true &&
-                    query.playlists?.items?.isNotEmpty() == true && query.shows?.items?.isNotEmpty() == true && query.episodes?.items?.isNotEmpty() == true
+                query.playlists?.items?.isNotEmpty() == true && query.shows?.items?.isNotEmpty() == true && query.episodes?.items?.isNotEmpty() == true
         )
         val query2 = api.search.search("lo", SearchApi.SearchType.ARTIST, SearchApi.SearchType.PLAYLIST)
         assertTrue(
             query2.albums == null && query2.tracks == null && query2.shows == null && query2.episodes == null &&
-                    query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true
+                query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true
         )
         val query3 =
             api.search.search("lo", SearchApi.SearchType.SHOW, SearchApi.SearchType.EPISODE, market = Market.US)

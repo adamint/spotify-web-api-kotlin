@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -58,7 +58,8 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             get(
                 endpointBuilder("/artists").with(
                     "ids",
-                    chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }).toString()
+                    chunk.joinToString(",") { ArtistUri(it).id.encodeUrl() }
+                ).toString()
             ).toObject(ArtistList.serializer(), api, json).artists
         }.flatten()
     }

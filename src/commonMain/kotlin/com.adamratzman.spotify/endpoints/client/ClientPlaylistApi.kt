@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -65,9 +65,11 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         collaborative: Boolean? = null,
         user: String? = null
     ): Playlist {
-        if (public == null || public) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC)
-        else if (collaborative == null || !collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
-        else if (collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
+        if (public == null || public) {
+            requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC)
+        } else if (collaborative == null || !collaborative) {
+            requireScopes(SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
+        } else if (collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
 
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         val body = jsonMap()
@@ -379,7 +381,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         }
         put(
             endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/images").toString(),
-            data, contentType = "image/jpeg"
+            data,
+            contentType = "image/jpeg"
         )
     }
 
@@ -471,19 +474,24 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
             if (snapshotId != null) body += buildJsonObject { put("snapshot_id", snapshotId) }
             body += buildJsonObject {
                 put(
-                    "tracks", JsonArray(
+                    "tracks",
+                    JsonArray(
                         chunk.map { (playable, positions) ->
                             val json = jsonMap()
                             json += buildJsonObject { put("uri", playable.uri) }
-                            if (positions?.positions?.isNotEmpty() == true) json += buildJsonObject {
-                                put(
-                                    "positions", JsonArray(
-                                        positions.positions.map(::JsonPrimitive)
+                            if (positions?.positions?.isNotEmpty() == true) {
+                                json += buildJsonObject {
+                                    put(
+                                        "positions",
+                                        JsonArray(
+                                            positions.positions.map(::JsonPrimitive)
+                                        )
                                     )
-                                )
+                                }
                             }
                             JsonObject(json)
-                        })
+                        }
+                    )
                 )
             }
             delete(

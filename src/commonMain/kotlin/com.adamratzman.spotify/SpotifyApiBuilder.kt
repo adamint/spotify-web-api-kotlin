@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyApi.Companion.getCredentialedToken
@@ -686,8 +686,11 @@ public class SpotifyApiBuilder(
      * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
      */
     public suspend fun build(type: AuthorizationType): GenericSpotifyApi {
-        return if (type == AuthorizationType.CLIENT) buildClient()
-        else buildCredentialed()
+        return if (type == AuthorizationType.CLIENT) {
+            buildClient()
+        } else {
+            buildCredentialed()
+        }
     }
 
     /**
@@ -704,8 +707,8 @@ public class SpotifyApiBuilder(
     public suspend fun buildPublic(): SpotifyAppApi = buildCredentialed()
 
     /**
-    * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
-    */
+     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
+     */
     public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildPublic() }
 
     /**
@@ -904,7 +907,9 @@ public class SpotifyClientApiBuilder(
                         "application/x-www-form-urlencoded",
                         listOf(),
                         null
-                    ), clientId, clientSecret
+                    ),
+                    clientId,
+                    clientSecret
                 )
 
                 SpotifyClientApi(
@@ -922,10 +927,12 @@ public class SpotifyClientApiBuilder(
                 // BadRequestException -> ServerResponseException
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
+                        e
+                    )
+                }
             }
             authorization.authorizationCode != null && authorization.pkceCodeVerifier != null -> try {
                 require(clientId != null && redirectUri != null) { "You need to specify a valid clientId and redirectUri in the credentials block!" }
@@ -960,10 +967,12 @@ public class SpotifyClientApiBuilder(
             } catch (e: Exception) {
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
+                        e
+                    )
+                }
             }
             authorization.token != null -> SpotifyClientApi(
                 clientId = clientId,
@@ -991,7 +1000,7 @@ public class SpotifyClientApiBuilder(
             )
             else -> throw IllegalArgumentException(
                 "At least one of: authorizationCode, tokenString, or token must be provided " +
-                        "to build a SpotifyClientApi object"
+                    "to build a SpotifyClientApi object"
             )
         }
 
@@ -1070,10 +1079,12 @@ public class SpotifyAppApiBuilder(
             } catch (e: Exception) {
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)",
+                        e
+                    )
+                }
             }
         }
 

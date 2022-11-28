@@ -1,9 +1,8 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpResponse
-import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,6 +10,7 @@ import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
+import kotlin.test.assertTrue
 
 expect fun areLivePkceTestsEnabled(): Boolean
 expect fun arePlayerTestsEnabled(): Boolean
@@ -50,7 +50,9 @@ fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestR
 
 @Serializable
 data class CachedResponse(val request: Request, val response: Response)
+
 @Serializable
 data class Request(val url: String, val method: String, val body: String? = null)
+
 @Serializable
 data class Response(val responseCode: Int, val headers: Map<String, String>, val body: String)

@@ -1,17 +1,17 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyException.AuthenticationException
-import kotlin.random.Random
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import spark.Spark.exception
 import spark.Spark.get
 import spark.Spark.port
+import kotlin.random.Random
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class PkceTest {
 
@@ -76,7 +76,9 @@ class PkceTest {
 
                         stop = true
                         "Successfully authenticated $username with PKCE and refreshed the token."
-                    } else "err."
+                    } else {
+                        "err."
+                    }
                 }
             }
 

@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -22,10 +22,10 @@ import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.formatDate
-import kotlin.reflect.KClass
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlin.reflect.KClass
 
 /**
  * Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
@@ -76,11 +76,11 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
-     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: ES_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
      * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
-     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * For example country=SE&locale=DE_DE will return a list of categories relevant to Sweden but as German language strings.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      * @param timestamp Use this parameter (time in milliseconds) to specify the user’s local time to get results tailored for that specific
@@ -109,11 +109,11 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
-     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: ES_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
      * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
-     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * For example country=SE&locale=DE_DE will return a list of categories relevant to Sweden but as German language strings.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      *
@@ -136,11 +136,11 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/browse/get-category/)**
      *
-     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning “Spanish (Mexico)”.
+     * @param locale The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore. For example: ES_MX, meaning “Spanish (Mexico)”.
      * Provide this parameter if you want the results returned in a particular language (where available).
      * Note that, if locale is not supplied, or if the specified language is not available,
      * all strings will be returned in the Spotify default language (American English. The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
-     * For example country=SE&locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+     * For example country=SE&locale=DE_DE will return a list of categories relevant to Sweden but as German language strings.
      * @param market Provide this parameter if you want the list of returned items to be relevant to a particular country.
      * If omitted, the returned items will be relevant to all countries.
      *
@@ -425,7 +425,8 @@ public sealed class TuneableTrackAttribute<T : Number>(
 
         @Suppress("UNCHECKED_CAST")
         return TrackAttribute(
-            this, when (typeClass) {
+            this,
+            when (typeClass) {
                 Int::class -> value.toInt() as T
                 Float::class -> value.toFloat() as T
                 Double::class -> value.toDouble() as T

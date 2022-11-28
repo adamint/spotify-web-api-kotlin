@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.pub
@@ -7,16 +7,16 @@ import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.endpoints.pub.ArtistApi
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Market
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import kotlinx.coroutines.test.TestResult
 
 class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
@@ -45,7 +45,8 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getArtistAlbums("asfasdf") }
         assertTrue(
             api.artists.getArtistAlbums(
-                "7wjeXCtRND2ZdKfMJFu6JC", 10,
+                "7wjeXCtRND2ZdKfMJFu6JC",
+                10,
                 include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
             )
                 .items.asSequence().map { it.name }.contains("Louane")

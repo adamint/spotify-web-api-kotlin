@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.utilities
@@ -11,15 +11,15 @@ import com.adamratzman.spotify.models.ArtistUri
 import com.adamratzman.spotify.models.CursorBasedPagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Track
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class JsonTests {
     var api: GenericSpotifyApi? = null
@@ -32,7 +32,8 @@ class JsonTests {
 
         assertTrue(
             Json.encodeToString(
-                Artist.serializer().nullable, api!!.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN")
+                Artist.serializer().nullable,
+                api!!.artists.getArtist("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN")
             ).isNotEmpty()
         )
     }
@@ -43,7 +44,8 @@ class JsonTests {
 
         assertTrue(
             Json.encodeToString(
-                Track.serializer().nullable, api!!.tracks.getTrack("spotify:track:6kcHg7XL6SKyPNd78daRBL")
+                Track.serializer().nullable,
+                api!!.tracks.getTrack("spotify:track:6kcHg7XL6SKyPNd78daRBL")
             ).isNotEmpty()
         )
     }
@@ -54,7 +56,8 @@ class JsonTests {
 
         assertTrue(
             Json.encodeToString(
-                Album.serializer().nullable, api!!.albums.getAlbum("spotify:album:6ggQNps98xaXMY0OZWevEH")
+                Album.serializer().nullable,
+                api!!.albums.getAlbum("spotify:album:6ggQNps98xaXMY0OZWevEH")
             ).isNotEmpty()
         )
     }

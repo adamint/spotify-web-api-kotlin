@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.pub
@@ -11,7 +11,8 @@ import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Locale
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.getCurrentTimeMs
-import com.soywiz.korio.file.std.resourcesVfs
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -19,8 +20,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNotSame
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestResult
 
 class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
     @Test
@@ -34,11 +33,11 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
         buildApi(::testGetCategoryList.name)
 
         assertNotSame(
-            api.browse.getCategoryList(locale = Locale.ar_AE).items[0],
+            api.browse.getCategoryList(locale = Locale.AR_AE).items[0],
             api.browse.getCategoryList().items[0]
         )
         assertTrue(api.browse.getCategoryList(4, 3, market = Market.CA).items.isNotEmpty())
-        assertTrue(api.browse.getCategoryList(4, 3, locale = Locale.fr_FR, market = Market.CA).items.isNotEmpty())
+        assertTrue(api.browse.getCategoryList(4, 3, locale = Locale.FR_FR, market = Market.CA).items.isNotEmpty())
     }
 
     @Test
@@ -48,8 +47,8 @@ class BrowseApiTest : AbstractTest<GenericSpotifyApi>() {
         val firstCategoryId = api.browse.getCategoryList(limit = 1, market = Market.FR).first()!!.id
         assertNotNull(api.browse.getCategory(firstCategoryId))
         assertNotNull(api.browse.getCategory(firstCategoryId, Market.FR))
-        assertNotNull(api.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.en_US))
-        assertNotNull(api.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.sr_ME))
+        assertNotNull(api.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.EN_US))
+        assertNotNull(api.browse.getCategory(firstCategoryId, Market.FR, locale = Locale.SR_ME))
         assertFailsWith<SpotifyException.BadRequestException> { api.browse.getCategory("no u", Market.US) }
     }
 

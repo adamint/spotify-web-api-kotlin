@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.priv
@@ -7,13 +7,13 @@ import com.adamratzman.spotify.AbstractTest
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.endpoints.client.LibraryType
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import kotlinx.coroutines.test.TestResult
 
 class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
     @Test

@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import kotlinx.serialization.KSerializer
@@ -46,12 +46,17 @@ public interface Playable {
 public object PlayableSerializer :
     KSerializer<Playable> by object : JsonContentPolymorphicSerializer<Playable>(Playable::class) {
         override fun selectDeserializer(element: JsonElement): KSerializer<out Playable> {
-            return when (val uri: PlayableUri? =
-                (element as? JsonObject)?.get("uri")?.jsonPrimitive?.contentOrNull?.let { PlayableUri(it) }) {
+            return when (
+                val uri: PlayableUri? =
+                    (element as? JsonObject)?.get("uri")?.jsonPrimitive?.contentOrNull?.let { PlayableUri(it) }
+            ) {
                 is LocalTrackUri -> LocalTrack.serializer()
                 is EpisodeUri -> {
-                    if ((element as? JsonObject)?.get("show") != null) Episode.serializer()
-                    else PodcastEpisodeTrack.serializer()
+                    if ((element as? JsonObject)?.get("show") != null) {
+                        Episode.serializer()
+                    } else {
+                        PodcastEpisodeTrack.serializer()
+                    }
                 }
                 is SpotifyTrackUri -> Track.serializer()
                 null -> throw IllegalStateException("Couldn't find a serializer for uri $uri")

@@ -1,12 +1,11 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpResponse
-import java.io.File
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
 
 val cacheLocation: String? = System.getenv("RESPONSE_CACHE_DIR")
 val shouldRecacheRequests: Boolean = System.getenv("SHOULD_RECACHE_RESPONSES")?.toBoolean() == true
@@ -24,7 +23,6 @@ actual suspend fun buildSpotifyApi(testClassQualifiedName: String, testName: Str
     val clientSecret = getTestClientSecret()
     val tokenString = getTestTokenString()
     val logHttp = isHttpLoggingEnabled()
-
 
     val optionsCreator: (SpotifyApiOptions.() -> Unit) = {
         this.enableDebugMode = logHttp
@@ -59,7 +57,6 @@ actual suspend fun buildSpotifyApi(testClassQualifiedName: String, testName: Str
         else -> null
     }
 }
-
 
 object JvmResponseCacher : ResponseCacher {
     override val cachedResponsesDirectoryPath: String = cacheLocation ?: ""
@@ -100,7 +97,6 @@ object JvmResponseCacher : ResponseCacher {
 
         responseFile.appendText(json.encodeToString(objToWrite))
     }
-
 }
 
 actual fun getResponseCacher(): ResponseCacher? {

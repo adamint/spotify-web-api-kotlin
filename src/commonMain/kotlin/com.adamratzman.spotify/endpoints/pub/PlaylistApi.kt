@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -55,7 +55,8 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null
     ): PagingObject<SimplePlaylist> = get(
         endpointBuilder("/users/${UserUri(user).id.encodeUrl()}/playlists").with("limit", limit).with(
-            "offset", offset
+            "offset",
+            offset
         ).toString()
     ).toNonNullablePagingObject(SimplePlaylist.serializer(), api = api, json = json)
 

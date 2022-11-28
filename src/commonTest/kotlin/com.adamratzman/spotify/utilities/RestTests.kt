@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.utilities
@@ -8,13 +8,13 @@ import com.adamratzman.spotify.SpotifyException.TimeoutException
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.annotations.SpotifyExperimentalHttpApi
 import com.adamratzman.spotify.buildSpotifyApi
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.spotifyAppApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import kotlinx.coroutines.test.TestResult
 
 @ExperimentalTime
 @SpotifyExperimentalHttpApi

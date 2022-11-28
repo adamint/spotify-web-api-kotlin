@@ -1,12 +1,12 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
 import io.ktor.http.encodeURLQueryComponent
-import kotlin.js.Date
-import kotlin.js.Promise
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import kotlin.js.Date
+import kotlin.js.Promise
 
 internal actual fun String.encodeUrl() = encodeURLQueryComponent()
 

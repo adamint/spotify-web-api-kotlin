@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -67,10 +67,10 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Note: Operators must be specified in uppercase. Otherwise, they are handled as normal keywords to be matched.
      *
      * Wildcards: The asterisk (*) character can, with some limitations, be used as a wildcard (maximum: 2 per query). It matches a variable number of non-white-space characters. It cannot be used:
-    - in a quoted phrase
-    - in a field filter
-    - when there is a dash (“-“) in the query
-    - or as the first character of the keyword string Field filters: By default, results are returned when a match is found in any field of the target object type. Searches can be made more specific by specifying an album, artist or track field filter.
+     - in a quoted phrase
+     - in a field filter
+     - when there is a dash (“-“) in the query
+     - or as the first character of the keyword string Field filters: By default, results are returned when a match is found in any field of the target object type. Searches can be made more specific by specifying an album, artist or track field filter.
      *
      * For example: The query q=album:gold%20artist:abba&type=album returns only albums with the text “gold” in the album name and the text “abba” in the artist name.
      *
@@ -88,31 +88,31 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param query Search query keywords and optional field filters and operators. You can narrow down your search using field filters. The available filters are album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre. Each field filter only applies to certain result types.
 
-    The artist filter can be used while searching albums, artists or tracks.
-    The album and year filters can be used while searching albums or tracks. You can filter on a single year or a range (e.g. 1955-1960).
-    The genre filter can be use while searching tracks and artists.
-    The isrc and track filters can be used while searching tracks.
-    The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.
+     The artist filter can be used while searching albums, artists or tracks.
+     The album and year filters can be used while searching albums or tracks. You can filter on a single year or a range (e.g. 1955-1960).
+     The genre filter can be use while searching tracks and artists.
+     The isrc and track filters can be used while searching tracks.
+     The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.
 
-    You can also use the NOT operator to exclude keywords from your search.
+     You can also use the NOT operator to exclude keywords from your search.
 
-    Example value:
-    "remaster%20track:Doxy+artist:Miles%20Davis"
+     Example value:
+     "remaster%20track:Doxy+artist:Miles%20Davis"
      * @param searchTypes A list of item types to search across. Search results include hits from all the specified item types.
      * @param limit Maximum number of results to return.
-    Default: 20
-    Minimum: 1
-    Maximum: 50
-    Note: The limit is applied within each type, not on the total response.
-    For example, if the limit value is 3 and the type is artist,album, the response contains 3 artists and 3 albums.
+     Default: 20
+     Minimum: 1
+     Maximum: 50
+     Note: The limit is applied within each type, not on the total response.
+     For example, if the limit value is 3 and the type is artist,album, the response contains 3 artists and 3 albums.
      * @param offset The index of the first result to return.
-    Default: 0 (the first result).
-    Maximum offset (including limit): 10,000.
-    Use with limit to get the next page of search results.
+     Default: 0 (the first result).
+     Maximum offset (including limit): 10,000.
+     Use with limit to get the next page of search results.
      * @param market If a country code is specified, only artists, albums, and tracks with content that is playable in that market is returned. Note:
-    - Playlist results are not affected by the market parameter.
-    - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
-    - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
+     - Playlist results are not affected by the market parameter.
+     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
+     - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
      **Note**: episodes will not be returned if this is NOT specified
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      *

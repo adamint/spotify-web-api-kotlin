@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
@@ -110,7 +110,9 @@ public data class CurrentlyPlayingContext(
     val device: Device,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
+    @Serializable(with = PlayableSerializer::class)
+    @SerialName("item")
+    val item: Playable? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
     val context: SpotifyContext? = null
@@ -137,7 +139,9 @@ public data class CurrentlyPlayingObject(
     val timestamp: Long,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
+    @Serializable(with = PlayableSerializer::class)
+    @SerialName("item")
+    val item: Playable? = null,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {

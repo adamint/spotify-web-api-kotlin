@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.utilities
@@ -15,12 +15,12 @@ import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
 import io.ktor.util.PlatformUtils
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestResult
 
 class UtilityTests {
     var api: GenericSpotifyApi? = null
@@ -53,7 +53,6 @@ class UtilityTests {
         assertEquals(24, api!!.browse.getNewReleases(limit = 12).take(24).size)
     }
 
-
     @Test
     fun testInvalidApiBuilderParameters() = runTestOnDefaultDispatcher {
         assertFailsWith<IllegalArgumentException> {
@@ -73,7 +72,6 @@ class UtilityTests {
                 }
             }.build()
         }
-
 
         if (api is SpotifyClientApi) {
             assertFailsWith<IllegalArgumentException> {

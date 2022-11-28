@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -162,10 +162,12 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun contains(type: LibraryType, vararg ids: String): List<Boolean> {
         requireScopes(SpotifyScope.USER_LIBRARY_READ)
 
-        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
-            "Too many ids (${ids.size}) provided, only 50 allowed",
-            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
-        )
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
+            throw BadRequestException(
+                "Too many ids (${ids.size}) provided, only 50 allowed",
+                IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+            )
+        }
         return ids.toList().chunked(50).map { list ->
             get(
                 endpointBuilder("/me/$type/contains").with("ids", list.joinToString(",") { type.id(it).encodeUrl() })
@@ -203,10 +205,12 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun add(type: LibraryType, vararg ids: String) {
         requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
 
-        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
-            "Too many ids (${ids.size}) provided, only 50 allowed",
-            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
-        )
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
+            throw BadRequestException(
+                "Too many ids (${ids.size}) provided, only 50 allowed",
+                IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+            )
+        }
         ids.toList().chunked(50).forEach { list ->
             put(endpointBuilder("/me/$type").with("ids", list.joinToString(",") { type.id(it).encodeUrl() }).toString())
         }
@@ -245,15 +249,18 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun remove(type: LibraryType, vararg ids: String) {
         requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
 
-        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) throw BadRequestException(
-            "Too many ids (${ids.size}) provided, only 50 allowed",
-            IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
-        )
+        if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
+            throw BadRequestException(
+                "Too many ids (${ids.size}) provided, only 50 allowed",
+                IllegalArgumentException("Bulk requests are not turned on, and too many ids were provided")
+            )
+        }
         ids.toList().chunked(50).forEach { list ->
             delete(
                 endpointBuilder("/me/$type").with(
                     "ids",
-                    list.joinToString(",") { type.id(it).encodeUrl() }).toString()
+                    list.joinToString(",") { type.id(it).encodeUrl() }
+                ).toString()
             )
         }
     }

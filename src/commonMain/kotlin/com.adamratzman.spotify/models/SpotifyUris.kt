@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
 package com.adamratzman.spotify.models
@@ -27,18 +27,24 @@ private fun String.matchType(type: String, allowColon: Boolean): String? {
 private fun String.matchesUserCollectionUri() = this.matches("^spotify:user:([^:]+):collection".toRegex())
 
 private fun String.add(type: String, allowColon: Boolean): String {
-    if (type == UserCollectionUriType && matchesUserCollectionUri()) return this
-    else this.matchType(type, allowColon)?.let {
-        return "spotify:$type:${it.trim()}"
+    if (type == UserCollectionUriType && matchesUserCollectionUri()) {
+        return this
+    } else {
+        this.matchType(type, allowColon)?.let {
+            return "spotify:$type:${it.trim()}"
+        }
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' uri")
 }
 
 private fun String.remove(type: String, allowColon: Boolean): String {
     println(type)
-    if (type == UserCollectionUriType && matchesUserCollectionUri()) return "collection"
-    else this.matchType(type, allowColon)?.let {
-        return it.trim()
+    if (type == UserCollectionUriType && matchesUserCollectionUri()) {
+        return "collection"
+    } else {
+        this.matchType(type, allowColon)?.let {
+            return it.trim()
+        }
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' id")
 }

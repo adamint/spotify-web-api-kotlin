@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package com.adamratzman.spotify.priv
@@ -10,16 +10,16 @@ import com.adamratzman.spotify.endpoints.client.SpotifyPlayablePositions
 import com.adamratzman.spotify.models.Playlist
 import com.adamratzman.spotify.models.SimplePlaylist
 import com.adamratzman.spotify.models.toTrackUri
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import kotlinx.coroutines.test.TestResult
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     var createdPlaylist: Playlist? = null
@@ -108,8 +108,11 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
         init()
 
         api.playlists.changeClientPlaylistDetails(
-            createdPlaylist!!.id, "test playlist", public = false,
-            collaborative = true, description = "description 2"
+            createdPlaylist!!.id,
+            "test playlist",
+            public = false,
+            collaborative = true,
+            description = "description 2"
         )
 
         api.playlists.addPlayablesToClientPlaylist(
@@ -128,7 +131,7 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
 
         assertTrue(
             updatedPlaylist.collaborative && updatedPlaylist.public == false &&
-                    updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2"
+                updatedPlaylist.name == "test playlist" && fullPlaylist.description == "description 2"
         )
 
         assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images.isNotEmpty())
@@ -171,7 +174,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
 
         assertEquals(
             listOf(playableUriTwo, playableUriTwo),
-            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
+            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri }
+        )
 
         api.playlists.addPlayableToClientPlaylist(createdPlaylist!!.id, playableUriOne)
 
@@ -183,7 +187,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
 
         assertEquals(
             listOf(playableUriTwo, playableUriOne),
-            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
+            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri }
+        )
 
         api.playlists.setClientPlaylistPlayables(
             createdPlaylist!!.id,
@@ -207,13 +212,15 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
         )
 
         api.playlists.removePlayablesFromClientPlaylist(
-            createdPlaylist!!.id, Pair(playableUriOne, SpotifyPlayablePositions(4)),
+            createdPlaylist!!.id,
+            Pair(playableUriOne, SpotifyPlayablePositions(4)),
             Pair(playableUriTwo, SpotifyPlayablePositions(0))
         )
 
         assertEquals(
             listOf(playableUriOne, playableUriTwo, playableUriTwo),
-            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri })
+            api.playlists.getPlaylistTracks(createdPlaylist!!.id).items.map { it.track?.uri }
+        )
 
         assertFailsWith<SpotifyException.BadRequestException> {
             api.playlists.removePlayablesFromClientPlaylist(
