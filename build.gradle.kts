@@ -73,6 +73,7 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "spotify-web-api-kotlin generated documentation"
     from(tasks.dokkaHtml)
+    archiveClassifier.set("javadoc")
 }
 
 kotlin {
@@ -150,10 +151,6 @@ kotlin {
 
         mavenPublication { setupPom(artifactId) }
     }*/
-
-    publishing {
-        registerPublishing()
-    }
 
     targets {
         sourceSets {
@@ -298,6 +295,10 @@ kotlin {
     }
 }
 
+publishing {
+    registerPublishing()
+}
+
 tasks {
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
@@ -354,7 +355,7 @@ tasks {
 
 fun MavenPublication.setupPom(publicationName: String) {
     artifactId = artifactId.replace("-web", "")
-    artifact(dokkaJar.get())
+    artifact(dokkaJar.get()) // add javadocs to publication
 
     pom {
         name.set(publicationName)

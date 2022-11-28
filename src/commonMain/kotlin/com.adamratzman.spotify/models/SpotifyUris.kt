@@ -24,15 +24,20 @@ private fun String.matchType(type: String, allowColon: Boolean): String? {
     return match[1].takeIf { it.isNotBlank() || match[2].isEmpty() } ?: match[2].takeIf { it.isNotEmpty() }
 }
 
+private fun String.matchesUserCollectionUri() = this.matches("^spotify:user:([^:]+):collection".toRegex())
+
 private fun String.add(type: String, allowColon: Boolean): String {
-    this.matchType(type, allowColon)?.let {
+    if (type == UserCollectionUriType && matchesUserCollectionUri()) return this
+    else this.matchType(type, allowColon)?.let {
         return "spotify:$type:${it.trim()}"
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' uri")
 }
 
 private fun String.remove(type: String, allowColon: Boolean): String {
-    this.matchType(type, allowColon)?.let {
+    println(type)
+    if (type == UserCollectionUriType && matchesUserCollectionUri()) return "collection"
+    else this.matchType(type, allowColon)?.let {
         return it.trim()
     }
     throw SpotifyUriException("Illegal Spotify ID/URI: '$this' isn't convertible to '$type' id")
@@ -112,7 +117,7 @@ public sealed class SpotifyUri(input: String, public val type: String, allowColo
             val constructors = listOf(
                 ::ArtistUri,
                 PlayableUri.Companion::invoke,
-                ImmutableCollectionUri.Companion::invoke,
+                CollectionUri.Companion::invoke,
                 ::UserUri,
                 ::PlaylistUri
             )
@@ -178,7 +183,7 @@ public sealed class CollectionUri(input: String, type: String, allowColon: Boole
          * Creates an abstract [CollectionUri] of given input. Prefers [PlaylistUri] if the input is ambiguous.
          */
         public operator fun invoke(input: String): CollectionUri {
-            val constructors = listOf(::PlaylistUri, ImmutableCollectionUri.Companion::invoke)
+            val constructors = listOf(::PlaylistUri, ::UserCollectionUri, ImmutableCollectionUri.Companion::invoke)
             for (ctor in constructors) {
                 safeInitiate(input, ctor)?.also { return it }
             }
@@ -372,9 +377,24 @@ public object ShowUriSerializer : KSerializer<ShowUri> by SimpleUriSerializer(::
  */
 public fun String.toShowUri(): ShowUri = ShowUri(this)
 
+private const val UserCollectionUriType = "UserCollectionUri"
+
 /**
- * Represents a Spotify **Context** URI (one of [AlbumUri], [ArtistUri], [PlaylistUri], or [ShowUri]),
-*/
+ * Represents a Spotify **User Collection URI** URI (spotify:user:XXXX:collection), parsed from either a Spotify ID or taken from an endpoint.
+ * It appears that this URI corresponds to the user's saved tracks collection in their library.
+ */
+@Serializable(with = UserCollectionUriSerializer::class)
+public class UserCollectionUri(input: String) : CollectionUri(input, UserCollectionUriType), ContextUri
+public object UserCollectionUriSerializer : KSerializer<UserCollectionUri> by SimpleUriSerializer(::UserCollectionUri)
+
+/**
+ * Convert a show id or uri string to a [ShowUri] object
+ */
+public fun String.toUserCollectionUri(): UserCollectionUri = UserCollectionUri(this)
+
+/**
+ * Represents a Spotify **Context** URI (one of [AlbumUri], [ArtistUri], [PlaylistUri], [UserCollectionUri], or [ShowUri]),
+ */
 @Serializable(with = ContextUriSerializer::class)
 public interface ContextUri : ISpotifyUri {
     public companion object {

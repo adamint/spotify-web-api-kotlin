@@ -9,6 +9,7 @@ import com.adamratzman.spotify.models.PlaylistUri
 import com.adamratzman.spotify.models.SpotifyTrackUri
 import com.adamratzman.spotify.models.SpotifyUri
 import com.adamratzman.spotify.models.SpotifyUriException
+import com.adamratzman.spotify.models.UserCollectionUri
 import com.adamratzman.spotify.models.UserUri
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -182,6 +183,45 @@ class UrisTests {
         assertEquals(
             "",
             UserUri("spotify:user:").id
+        )
+    }
+
+    @Test
+    fun testUserCollectionUri() {
+        assertFailsWith<SpotifyUriException> {
+            UserCollectionUri("a:invalid")
+        }
+
+        assertFailsWith<SpotifyUriException> {
+            UserCollectionUri("a:invalid").uri
+        }
+
+        assertFailsWith<SpotifyUriException> {
+            UserCollectionUri("a:invalid").id
+        }
+
+        assertFailsWith<SpotifyUriException> {
+            UserCollectionUri("spotify:user:testuser").uri
+        }
+
+        assertEquals(
+            "spotify:user:adamratzman1:collection",
+            UserCollectionUri("spotify:user:adamratzman1:collection").uri
+        )
+
+        assertEquals(
+            "spotify:user:adamratzman1:collection",
+            UserCollectionUri("spotify:user:adamratzman1:collection").uri
+        )
+
+        assertEquals(
+            UserCollectionUri::class,
+            SpotifyUri("spotify:user:adamratzman1:collection")::class
+        )
+
+        assertEquals(
+            "collection",
+            UserCollectionUri("spotify:user:adamratzman1:collection").id
         )
     }
 
