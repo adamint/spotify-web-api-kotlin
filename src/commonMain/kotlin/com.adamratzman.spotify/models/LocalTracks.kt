@@ -84,7 +84,7 @@ public data class LocalTrack(
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Track> = api.search.searchTrack(name, limit, offset, market)
+    ): PagingObject<Track> = api.search.searchTrack(name, limit = limit, offset = offset, market = market)
 
     /**
      * Search for this local track by name in Spotify's track catalog.

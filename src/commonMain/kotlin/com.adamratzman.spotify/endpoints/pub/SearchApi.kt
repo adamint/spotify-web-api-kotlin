@@ -8,6 +8,7 @@ import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.Artist
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.Playlist
+import com.adamratzman.spotify.models.SearchFilter
 import com.adamratzman.spotify.models.SimpleAlbum
 import com.adamratzman.spotify.models.SimpleEpisode
 import com.adamratzman.spotify.models.SimplePlaylist
@@ -43,7 +44,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         ARTIST("artist"),
         PLAYLIST("playlist"),
         SHOW("show"),
-        EPISODE("episode");
+        EPISODE("episode"),
+        AUDIOBOOK("audiobook");
     }
 
     /**
@@ -67,10 +69,10 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Note: Operators must be specified in uppercase. Otherwise, they are handled as normal keywords to be matched.
      *
      * Wildcards: The asterisk (*) character can, with some limitations, be used as a wildcard (maximum: 2 per query). It matches a variable number of non-white-space characters. It cannot be used:
-     - in a quoted phrase
-     - in a field filter
-     - when there is a dash (“-“) in the query
-     - or as the first character of the keyword string Field filters: By default, results are returned when a match is found in any field of the target object type. Searches can be made more specific by specifying an album, artist or track field filter.
+    - in a quoted phrase
+    - in a field filter
+    - when there is a dash (“-“) in the query
+    - or as the first character of the keyword string Field filters: By default, results are returned when a match is found in any field of the target object type. Searches can be made more specific by specifying an album, artist or track field filter.
      *
      * For example: The query q=album:gold%20artist:abba&type=album returns only albums with the text “gold” in the album name and the text “abba” in the artist name.
      *
@@ -86,33 +88,34 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators. You can narrow down your search using field filters. The available filters are album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre. Each field filter only applies to certain result types.
+     * @param query Search query keywords and optional field filters and operators (filters and operators can be provided in [filters]). You can narrow down your search using field filters. The available filters are album, artist, track, year, upc, tag:hipster, tag:new, isrc, and genre. Each field filter only applies to certain result types.
 
-     The artist filter can be used while searching albums, artists or tracks.
-     The album and year filters can be used while searching albums or tracks. You can filter on a single year or a range (e.g. 1955-1960).
-     The genre filter can be use while searching tracks and artists.
-     The isrc and track filters can be used while searching tracks.
-     The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.
+    The artist filter can be used while searching albums, artists or tracks.
+    The album and year filters can be used while searching albums or tracks. You can filter on a single year or a range (e.g. 1955-1960).
+    The genre filter can be use while searching tracks and artists.
+    The isrc and track filters can be used while searching tracks.
+    The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.
 
-     You can also use the NOT operator to exclude keywords from your search.
+    You can also use the NOT operator to exclude keywords from your search.
 
-     Example value:
-     "remaster%20track:Doxy+artist:Miles%20Davis"
+    Example value:
+    "remaster%20track:Doxy+artist:Miles%20Davis"
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param searchTypes A list of item types to search across. Search results include hits from all the specified item types.
      * @param limit Maximum number of results to return.
-     Default: 20
-     Minimum: 1
-     Maximum: 50
-     Note: The limit is applied within each type, not on the total response.
-     For example, if the limit value is 3 and the type is artist,album, the response contains 3 artists and 3 albums.
+    Default: 20
+    Minimum: 1
+    Maximum: 50
+    Note: The limit is applied within each type, not on the total response.
+    For example, if the limit value is 3 and the type is artist,album, the response contains 3 artists and 3 albums.
      * @param offset The index of the first result to return.
-     Default: 0 (the first result).
-     Maximum offset (including limit): 10,000.
-     Use with limit to get the next page of search results.
+    Default: 0 (the first result).
+    Maximum offset (including limit): 10,00.
+    Use with limit to get the next page of search results.
      * @param market If a country code is specified, only artists, albums, and tracks with content that is playable in that market is returned. Note:
-     - Playlist results are not affected by the market parameter.
-     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
-     - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
+    - Playlist results are not affected by the market parameter.
+    - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
+    - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
      **Note**: episodes will not be returned if this is NOT specified
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      *
@@ -121,6 +124,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun search(
         query: String,
         vararg searchTypes: SearchType,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
@@ -131,7 +135,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             requireNotNull(market) { "Market must be provided when SearchType.EPISODE is requested" }
         }
 
-        val jsonString = get(build(query, market, limit, offset, *searchTypes, includeExternal = includeExternal))
+        val jsonString =
+            get(build(query, market, limit, offset, filters, *searchTypes, includeExternal = includeExternal))
         val map = json.decodeFromString(MapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
         return SpotifySearchResult(
@@ -151,7 +156,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -163,10 +169,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchPlaylist(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, SearchType.PLAYLIST))
+    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, filters, SearchType.PLAYLIST))
         .toNonNullablePagingObject(SimplePlaylist.serializer(), "playlists", api, json)
 
     /**
@@ -174,7 +181,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -187,10 +195,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchArtist(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Artist> = get(build(query, market, limit, offset, SearchType.ARTIST))
+    ): PagingObject<Artist> = get(build(query, market, limit, offset, filters, SearchType.ARTIST))
         .toNonNullablePagingObject(Artist.serializer(), "artists", api, json)
 
     /**
@@ -198,7 +207,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -211,10 +221,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchAlbum(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, SearchType.ALBUM))
+    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, filters, SearchType.ALBUM))
         .toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api, json)
 
     /**
@@ -222,7 +233,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -235,10 +247,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchTrack(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Track> = get(build(query, market, limit, offset, SearchType.TRACK))
+    ): PagingObject<Track> = get(build(query, market, limit, offset, filters, SearchType.TRACK))
         .toNonNullablePagingObject(Track.serializer(), "tracks", api, json)
 
     /**
@@ -246,7 +259,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -259,10 +273,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchShow(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market
-    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, SearchType.SHOW))
+    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, filters, SearchType.SHOW))
         .toNonNullablePagingObject(SimpleShow.serializer(), "shows", api, json)
 
     /**
@@ -270,7 +285,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -283,10 +299,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchEpisode(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market
-    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, SearchType.EPISODE))
+    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, filters, SearchType.EPISODE))
         .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", api, json)
 
     /**
@@ -294,7 +311,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/search/search/)**
      *
-     * @param query Search query keywords and optional field filters and operators.
+     * @param query Search query keywords *without filters*.
+     * @param filters Optional list of [SearchFilter] to apply to this search.
      * @param market Provide this parameter if you want to apply [Track Relinking](https://github.com/adamint/spotify-web-api-kotlin#track-relinking)
      * @param limit The number of objects to return. Default: 50 (or api limit). Minimum: 1. Maximum: 50.
      * @param offset The index of the first item to return. Default: 0. Use with limit to get the next set of items
@@ -305,20 +323,28 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun searchAllTypes(
         query: String,
+        filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market
-    ): SpotifySearchResult = search(query, *SearchType.values(), limit = limit, offset = offset, market = market)
+    ): SpotifySearchResult =
+        search(query, filters = filters, searchTypes = SearchType.values(), limit = limit, offset = offset, market = market)
 
     protected fun build(
         query: String,
         market: Market?,
         limit: Int?,
         offset: Int?,
+        filters: List<SearchFilter> = listOf(),
         vararg types: SearchType,
         includeExternal: Boolean? = null
     ): String {
-        return endpointBuilder("/search").with("q", query.encodeUrl()).with("type", types.joinToString(",") { it.id })
+        val queryString = if (filters.isEmpty()) query
+        else "$query ${filters.joinToString(" ") { "${it.filterType.id}:${it.filterValue}" }}"
+
+        return endpointBuilder("/search")
+            .with("q", queryString.encodeUrl())
+            .with("type", types.joinToString(",") { it.id })
             .with("market", market?.name).with("limit", limit).with("offset", offset)
             .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }

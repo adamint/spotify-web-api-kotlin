@@ -8,6 +8,8 @@ import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.assertFailsWithSuspend
 import com.adamratzman.spotify.endpoints.pub.SearchApi
+import com.adamratzman.spotify.models.SearchFilter
+import com.adamratzman.spotify.models.SearchFilterType.Artist
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Market
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +42,7 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     fun testSearchTrack(): TestResult = runTestOnDefaultDispatcher {
         buildApi(::testSearchTrack.name)
 
-        assertTrue(api.search.searchTrack("hello", 1, 1, Market.US).items.isNotEmpty())
+        assertTrue(api.search.searchTrack("hello", listOf(SearchFilter(Artist, "Lionel Ritchie")), 1, 1, Market.US).items.isNotEmpty())
         assertFailsWith<SpotifyException.BadRequestException> { api.search.searchTrack("").items.size }
     }
 
