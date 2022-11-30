@@ -47,12 +47,12 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get information about a user’s available devices.
      *
-     * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserReadPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/)**
      */
     public suspend fun getDevices(): List<Device> {
-        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserReadPlaybackState)
 
         return get(endpointBuilder("/me/player/devices").toString()).toInnerObject(
             ListSerializer(Device.serializer()),
@@ -64,11 +64,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get information about the user’s current playback state, including track, track progress, and active device.
      *
-     * **Requires** the [SpotifyScope.USER_READ_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserReadPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/)**
      *
-     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.Track]. Ad type not allowed.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
@@ -76,12 +76,12 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getCurrentContext(
         additionalTypes: List<CurrentlyPlayingType> = listOf(
-            CurrentlyPlayingType.TRACK,
-            CurrentlyPlayingType.EPISODE
+            CurrentlyPlayingType.Track,
+            CurrentlyPlayingType.Episode
         ),
         market: Market? = null
     ): CurrentlyPlayingContext? {
-        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserReadPlaybackState)
 
         val obj = catch {
             getNullable(
@@ -97,7 +97,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get the list of objects that make up the user's queue.
      *
-     * **Requires** the [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scope
+     * **Requires** the [SpotifyScope.UserReadCurrentlyPlaying] scope
      *
      * Note that queue length may, in some cases, contain tracks that will play after the user-specified queue.
      *
@@ -112,7 +112,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get tracks from the current user’s recently played tracks. Note: Currently doesn't support podcast episodes.
      *
-     * **Requires** the [SpotifyScope.USER_READ_RECENTLY_PLAYED] scope
+     * **Requires** the [SpotifyScope.UserReadRecentlyPlayed] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/)**
      *
@@ -126,7 +126,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         before: String? = null,
         after: String? = null
     ): CursorBasedPagingObject<PlayHistory> {
-        requireScopes(SpotifyScope.USER_READ_RECENTLY_PLAYED)
+        requireScopes(SpotifyScope.UserReadRecentlyPlayed)
 
         return get(
             endpointBuilder("/me/player/recently-played")
@@ -137,11 +137,11 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get the object currently being played on the user’s Spotify account.
      *
-     * **Requires** *either* the [SpotifyScope.USER_READ_PLAYBACK_STATE] or [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scopes
+     * **Requires** *either* the [SpotifyScope.UserReadPlaybackState] or [SpotifyScope.UserReadCurrentlyPlaying] scopes
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/)**
      *
-     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.TRACK]. Ad type not allowed.
+     * @param additionalTypes A list of types to return in addition to [CurrentlyPlayingType.Track]. Ad type not allowed.
      * @param market If a country code is specified, only shows and episodes that are available in that market will be returned.
      * If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
@@ -149,12 +149,12 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      */
     public suspend fun getCurrentlyPlaying(
         additionalTypes: List<CurrentlyPlayingType> = listOf(
-            CurrentlyPlayingType.TRACK,
-            CurrentlyPlayingType.EPISODE
+            CurrentlyPlayingType.Track,
+            CurrentlyPlayingType.Episode
         ),
         market: Market? = null
     ): CurrentlyPlayingObject? {
-        requireScopes(SpotifyScope.USER_READ_PLAYBACK_STATE, SpotifyScope.USER_READ_CURRENTLY_PLAYING, anyOf = true)
+        requireScopes(SpotifyScope.UserReadPlaybackState, SpotifyScope.UserReadCurrentlyPlaying, anyOf = true)
 
         return try {
             val obj =
@@ -177,14 +177,14 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Pause playback on the user’s account.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/pause-a-users-playback/)**
      *
      * @param deviceId The device to play on
      */
     public suspend fun pause(deviceId: String? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         put(endpointBuilder("/me/player/pause").with("device_id", deviceId).toString())
     }
@@ -192,7 +192,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Seeks to the given position in the user’s currently playing track.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/seek-to-position-in-currently-playing-track/)**
      *
@@ -201,7 +201,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun seek(positionMs: Long, deviceId: String? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
         require(positionMs >= 0) { "Position must not be negative!" }
         put(
             endpointBuilder("/me/player/seek").with("position_ms", positionMs).with(
@@ -212,9 +212,9 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     }
 
     /**
-     * Set the repeat mode for the user’s playback. Options are [PlayerRepeatState.TRACK], [PlayerRepeatState.CONTEXT], and [PlayerRepeatState.OFF].
+     * Set the repeat mode for the user’s playback. Options are [PlayerRepeatState.Track], [PlayerRepeatState.Context], and [PlayerRepeatState.Off].
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/)**
      *
@@ -222,7 +222,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun setRepeatMode(state: PlayerRepeatState, deviceId: String? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
         put(
             endpointBuilder("/me/player/repeat").with("state", state.toString().lowercase()).with(
                 "device_id",
@@ -234,7 +234,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Set the volume for the user’s current playback device.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/set-volume-for-users-playback/)**
      *
@@ -242,7 +242,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on
      */
     public suspend fun setVolume(volumePercent: Int, deviceId: String? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
         require(volumePercent in 0..100) { "Volume must be within 0 to 100 inclusive. Provided: $volumePercent" }
         put(
             endpointBuilder("/me/player/volume").with("volume_percent", volumePercent).with(
@@ -255,14 +255,14 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Skips to the next track in the user’s queue.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-next-track/)**
      *
      * @param deviceId The device to play on
      */
     public suspend fun skipForward(deviceId: String? = null): String {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         return post(endpointBuilder("/me/player/next").with("device_id", deviceId).toString())
     }
@@ -273,14 +273,14 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Note that this will ALWAYS skip to the previous track, regardless of the current track’s progress.
      * Returning to the start of the current track should be performed using [seek]
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-previous-track/)**
      *
      * @param deviceId The device to play on
      */
     public suspend fun skipBehind(deviceId: String? = null): String {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         return post(endpointBuilder("/me/player/previous").with("device_id", deviceId).toString())
     }
@@ -292,7 +292,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Specify nothing to play to simply resume playback**
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
@@ -333,7 +333,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         episodeIdsToPlay: List<String>? = null,
         deviceId: String? = null
     ) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         if (listOfNotNull(artistId, playlistId, albumId, showId).size > 1) {
             throw IllegalArgumentException("Only one of: artistId, playlistId, albumId, showId can be specified.")
@@ -367,7 +367,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Specify nothing to play to simply resume playback**
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
@@ -386,7 +386,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         playableUrisToPlay: List<PlayableUri>? = null,
         deviceId: String? = null
     ) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         val url = endpointBuilder("/me/player/play").with("device_id", deviceId).toString()
         val body = jsonMap()
@@ -423,7 +423,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Resumes playback on the current device, if [deviceId] is not specified.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/)**
      *
@@ -434,7 +434,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Toggle shuffle on or off for user’s playback.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/toggle-shuffle-for-users-playback/)**
      *
@@ -442,7 +442,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param shuffle Whether to enable shuffling of playback
      */
     public suspend fun toggleShuffle(shuffle: Boolean, deviceId: String? = null): String {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         return put(endpointBuilder("/me/player/shuffle").with("state", shuffle).with("device_id", deviceId).toString())
     }
@@ -450,7 +450,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Transfer playback to a new device and determine if it should start playing.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/)**
      *
@@ -458,7 +458,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param play Whether to immediately start playback on the transferred device
      */
     public suspend fun transferPlayback(deviceId: String, play: Boolean? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
         //    require(deviceId.size <= 1) { "Although an array is accepted, only a single device_id is currently supported. Supplying more than one will  400 Bad Request" }
         val json = jsonMap()
         play?.let { json += buildJsonObject { put("play", it) } }
@@ -473,7 +473,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * This method is provided **AS-IS** until Spotify
      * exposes device queue. Please consider managing the player queue within your application.
      *
-     * **Requires** the [SpotifyScope.USER_MODIFY_PLAYBACK_STATE] scope
+     * **Requires** the [SpotifyScope.UserModifyPlaybackState] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#endpoint-add-to-queue)**
      *
@@ -481,7 +481,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param deviceId The device to play on.
      */
     public suspend fun addItemToEndOfQueue(uri: PlayableUri, deviceId: String? = null) {
-        requireScopes(SpotifyScope.USER_MODIFY_PLAYBACK_STATE)
+        requireScopes(SpotifyScope.UserModifyPlaybackState)
 
         post(endpointBuilder("/me/player/queue").with("uri", uri.uri).with("device_id", deviceId).toString())
     }
@@ -495,17 +495,17 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         /**
          * Repeat the current track
          */
-        TRACK("track"),
+        Track("track"),
 
         /**
          * Repeat the current context
          */
-        CONTEXT("context"),
+        Context("context"),
 
         /**
          * Will turn repeat off
          */
-        OFF("off");
+        Off("off");
 
         override fun retrieveIdentifier(): String = identifier
     }

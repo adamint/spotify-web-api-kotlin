@@ -23,7 +23,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get Spotify catalog information for a single episode identified by its unique Spotify ID.
      *
-     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
+     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.UserReadPlaybackPosition] scope**
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/get-an-episode/)**
      *
@@ -48,7 +48,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * **Invalid episode ids will result in a [BadRequestException]
      *
-     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
+     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.UserReadPlaybackPosition] scope**
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/get-several-episodes/)**
      *

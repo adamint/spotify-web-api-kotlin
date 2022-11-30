@@ -22,27 +22,27 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testTrack = "3yi3SEVFj0mSiYVu8xT9sF"
-        if (api.library.contains(LibraryType.TRACK, testTrack)) {
-            api.library.remove(LibraryType.TRACK, testTrack)
+        if (api.library.contains(LibraryType.Track, testTrack)) {
+            api.library.remove(LibraryType.Track, testTrack)
         }
 
-        assertFalse(api.library.contains(LibraryType.TRACK, testTrack))
+        assertFalse(api.library.contains(LibraryType.Track, testTrack))
         assertFalse(
             api.library.getSavedTracks().getAllItemsNotNull()
                 .map { it.track.id }.contains(testTrack)
         )
 
-        api.library.add(LibraryType.TRACK, testTrack)
+        api.library.add(LibraryType.Track, testTrack)
 
-        assertTrue(api.library.contains(LibraryType.TRACK, testTrack))
+        assertTrue(api.library.contains(LibraryType.Track, testTrack))
         assertTrue(
             api.library.getSavedTracks().getAllItemsNotNull()
                 .map { it.track.id }.contains(testTrack)
         )
 
-        api.library.remove(LibraryType.TRACK, testTrack)
+        api.library.remove(LibraryType.Track, testTrack)
 
-        assertFalse(api.library.contains(LibraryType.TRACK, testTrack))
+        assertFalse(api.library.contains(LibraryType.Track, testTrack))
         assertFalse(
             api.library.getSavedTracks().getAllItemsNotNull()
                 .map { it.track.id }.contains(testTrack)
@@ -55,27 +55,27 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testAlbum = "1UAt4G020TgW3lb2CkXr2N"
-        if (api.library.contains(LibraryType.ALBUM, testAlbum)) {
-            api.library.remove(LibraryType.ALBUM, testAlbum)
+        if (api.library.contains(LibraryType.Album, testAlbum)) {
+            api.library.remove(LibraryType.Album, testAlbum)
         }
 
-        assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum))
+        assertFalse(api.library.contains(LibraryType.Album, testAlbum))
         assertFalse(
             api.library.getSavedAlbums().getAllItemsNotNull()
                 .map { it.album.id }.contains(testAlbum)
         )
 
-        api.library.add(LibraryType.ALBUM, testAlbum)
+        api.library.add(LibraryType.Album, testAlbum)
 
-        assertTrue(api.library.contains(LibraryType.ALBUM, testAlbum))
+        assertTrue(api.library.contains(LibraryType.Album, testAlbum))
         assertTrue(
             api.library.getSavedAlbums().getAllItemsNotNull()
                 .map { it.album.id }.contains(testAlbum)
         )
 
-        api.library.remove(LibraryType.ALBUM, testAlbum)
+        api.library.remove(LibraryType.Album, testAlbum)
 
-        assertFalse(api.library.contains(LibraryType.ALBUM, testAlbum))
+        assertFalse(api.library.contains(LibraryType.Album, testAlbum))
         assertFalse(
             api.library.getSavedAlbums().getAllItemsNotNull()
                 .map { it.album.id }.contains(testAlbum)
@@ -88,25 +88,25 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testEpisode = "5outVI1srKZtqwPrthvkKb"
-        if (api.library.contains(LibraryType.EPISODE, testEpisode)) {
-            api.library.remove(LibraryType.EPISODE, testEpisode)
+        if (api.library.contains(LibraryType.Episode, testEpisode)) {
+            api.library.remove(LibraryType.Episode, testEpisode)
         }
 
-        assertFalse(api.library.contains(LibraryType.EPISODE, testEpisode))
+        assertFalse(api.library.contains(LibraryType.Episode, testEpisode))
         assertFalse(
             api.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
         )
 
-        api.library.add(LibraryType.EPISODE, testEpisode)
+        api.library.add(LibraryType.Episode, testEpisode)
 
-        assertTrue(api.library.contains(LibraryType.EPISODE, testEpisode))
+        assertTrue(api.library.contains(LibraryType.Episode, testEpisode))
         assertTrue(
             api.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
         )
 
-        api.library.remove(LibraryType.EPISODE, testEpisode)
+        api.library.remove(LibraryType.Episode, testEpisode)
 
-        assertFalse(api.library.contains(LibraryType.EPISODE, testEpisode))
+        assertFalse(api.library.contains(LibraryType.Episode, testEpisode))
         assertFalse(
             api.library.getSavedEpisodes().getAllItemsNotNull().map { it.episode.id }.contains(testEpisode)
         )
@@ -118,25 +118,25 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
         val testShow = "6z4NLXyHPga1UmSJsPK7G1"
-        if (api.library.contains(LibraryType.SHOW, testShow)) {
-            api.library.remove(LibraryType.SHOW, testShow)
+        if (api.library.contains(LibraryType.Show, testShow)) {
+            api.library.remove(LibraryType.Show, testShow)
         }
 
-        assertFalse(api.library.contains(LibraryType.SHOW, testShow))
+        assertFalse(api.library.contains(LibraryType.Show, testShow))
         assertFalse(
             api.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
         )
 
-        api.library.add(LibraryType.SHOW, testShow)
+        api.library.add(LibraryType.Show, testShow)
 
-        assertTrue(api.library.contains(LibraryType.SHOW, testShow))
+        assertTrue(api.library.contains(LibraryType.Show, testShow))
         assertTrue(
             api.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
         )
 
-        api.library.remove(LibraryType.SHOW, testShow)
+        api.library.remove(LibraryType.Show, testShow)
 
-        assertFalse(api.library.contains(LibraryType.SHOW, testShow))
+        assertFalse(api.library.contains(LibraryType.Show, testShow))
         assertFalse(
             api.library.getSavedShows().getAllItemsNotNull().map { it.show.id }.contains(testShow)
         )
@@ -150,34 +150,34 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         // tracks
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.remove(
-                LibraryType.TRACK,
+                LibraryType.Track,
                 "ajksdfkjasjfd"
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.contains(
-                LibraryType.TRACK,
+                LibraryType.Track,
                 "adsfjk"
             )
         }
-        assertFailsWith<SpotifyException.BadRequestException> { api.library.add(LibraryType.TRACK, "wer") }
+        assertFailsWith<SpotifyException.BadRequestException> { api.library.add(LibraryType.Track, "wer") }
 
         // album
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.remove(
-                LibraryType.ALBUM,
+                LibraryType.Album,
                 "elkars"
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.contains(
-                LibraryType.ALBUM,
+                LibraryType.Album,
                 ""
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.add(
-                LibraryType.ALBUM,
+                LibraryType.Album,
                 "oieriwkjrjkawer"
             )
         }
@@ -185,19 +185,19 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         // shows
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.remove(
-                LibraryType.SHOW,
+                LibraryType.Show,
                 "elkars"
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.contains(
-                LibraryType.SHOW,
+                LibraryType.Show,
                 ""
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.add(
-                LibraryType.SHOW,
+                LibraryType.Show,
                 "oieriwkjrjkawer"
             )
         }
@@ -205,19 +205,19 @@ class ClientLibraryApiTest : AbstractTest<SpotifyClientApi>() {
         // episodes
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.remove(
-                LibraryType.EPISODE,
+                LibraryType.Episode,
                 "elkars"
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.contains(
-                LibraryType.EPISODE,
+                LibraryType.Episode,
                 ""
             )
         }
         assertFailsWith<SpotifyException.BadRequestException> {
             api.library.add(
-                LibraryType.EPISODE,
+                LibraryType.Episode,
                 "oieriwkjrjkawer"
             )
         }

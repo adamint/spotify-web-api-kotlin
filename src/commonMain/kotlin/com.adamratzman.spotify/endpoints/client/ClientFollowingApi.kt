@@ -26,7 +26,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Check to see if the current user is following another Spotify user.
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     * **Requires** the [SpotifyScope.UserFollowRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
@@ -36,7 +36,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return Whether the current user is following [user]
      */
     public suspend fun isFollowingUser(user: String): Boolean {
-        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        requireScopes(SpotifyScope.UserFollowRead)
         return isFollowingUsers(user)[0]
     }
 
@@ -44,7 +44,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * Check to see if the current Spotify user is following the specified playlist.
      *
      * Checking if the user is privately following a playlist is only possible for the current user when
-     * that user has granted access to the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope.
+     * that user has granted access to the [SpotifyScope.PlaylistReadPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/)**
      *
@@ -65,7 +65,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Check to see if the current user is following one or more other Spotify users.
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     * **Requires** the [SpotifyScope.UserFollowRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
@@ -75,7 +75,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return A list of booleans corresponding to [users] of whether the current user is following that user
      */
     public suspend fun isFollowingUsers(vararg users: String): List<Boolean> {
-        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        requireScopes(SpotifyScope.UserFollowRead)
         checkBulkRequesting(50, users.size)
         return bulkStatelessRequest(50, users.toList()) { chunk ->
             get(
@@ -88,7 +88,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Check to see if the current user is following a Spotify artist.
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     * **Requires** the [SpotifyScope.UserFollowRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
@@ -102,7 +102,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Check to see if the current user is following one or more artists.
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     * **Requires** the [SpotifyScope.UserFollowRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/)**
      *
@@ -112,7 +112,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @return A list of booleans corresponding to [artists] of whether the current user is following that artist
      */
     public suspend fun isFollowingArtists(vararg artists: String): List<Boolean> {
-        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        requireScopes(SpotifyScope.UserFollowRead)
         checkBulkRequesting(50, artists.size)
         return bulkStatelessRequest(50, artists.toList()) { chunk ->
             get(
@@ -125,7 +125,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Get the current user’s followed artists.
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_READ] scope
+     * **Requires** the [SpotifyScope.UserFollowRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/)**
      *
@@ -139,7 +139,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         after: String? = null
     ): CursorBasedPagingObject<Artist> {
-        requireScopes(SpotifyScope.USER_FOLLOW_READ)
+        requireScopes(SpotifyScope.UserFollowRead)
         return get(
             endpointBuilder("/me/following").with("type", "artist").with("limit", limit).with(
                 "after",
@@ -151,7 +151,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Add the current user as a follower of another user
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
@@ -162,7 +162,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Add the current user as a follower of other users
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
@@ -171,7 +171,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun followUsers(vararg users: String) {
-        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
+        requireScopes(SpotifyScope.UserFollowModify)
         checkBulkRequesting(50, users.size)
         bulkStatelessRequest(50, users.toList()) { chunk ->
             put(
@@ -184,7 +184,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Add the current user as a follower of an artist
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
@@ -195,7 +195,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Add the current user as a follower of other artists
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/)**
      *
@@ -204,7 +204,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun followArtists(vararg artists: String) {
-        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
+        requireScopes(SpotifyScope.UserFollowModify)
         checkBulkRequesting(50, artists.size)
         bulkStatelessRequest(50, artists.toList()) { chunk ->
             put(
@@ -217,8 +217,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Add the current user as a follower of a playlist.
      *
-     * Following a playlist publicly requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * following it privately requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Following a playlist publicly requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * following it privately requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * Note that the scopes you provide determine only whether the current user can themselves follow the playlist
      * publicly or privately (i.e. show others what they are following), not whether the playlist itself is
@@ -234,7 +234,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if the playlist is not found
      */
     public suspend fun followPlaylist(playlist: String, followPublicly: Boolean = true): String {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         return put(
             endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString(),
@@ -245,7 +245,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Remove the current user as a follower of another user
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
@@ -258,7 +258,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Remove the current user as a follower of other users
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
@@ -267,7 +267,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun unfollowUsers(vararg users: String) {
-        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
+        requireScopes(SpotifyScope.UserFollowModify)
         checkBulkRequesting(50, users.size)
         bulkStatelessRequest(50, users.toList()) { list ->
             delete(
@@ -280,7 +280,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Remove the current user as a follower of an artist
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
@@ -293,7 +293,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Remove the current user as a follower of artists
      *
-     * **Requires** the [SpotifyScope.USER_FOLLOW_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserFollowModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/)**
      *
@@ -303,7 +303,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if an invalid id is provided
      */
     public suspend fun unfollowArtists(vararg artists: String) {
-        requireScopes(SpotifyScope.USER_FOLLOW_MODIFY)
+        requireScopes(SpotifyScope.UserFollowModify)
         checkBulkRequesting(50, artists.size)
         bulkStatelessRequest(50, artists.toList()) { list ->
             delete(
@@ -316,8 +316,8 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
     /**
      * Remove the current user as a follower of a playlist.
      *
-     * Unfollowing a publicly followed playlist for a user requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * unfollowing a privately followed playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Unfollowing a publicly followed playlist for a user requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * unfollowing a privately followed playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * Note that the scopes you provide relate only to whether the current user is following the playlist publicly or
      * privately (i.e. showing others what they are following), not whether the playlist itself is public or private.
@@ -329,7 +329,7 @@ public class ClientFollowingApi(api: GenericSpotifyApi) : FollowingApi(api) {
      * @throws BadRequestException if the playlist is not found
      */
     public suspend fun unfollowPlaylist(playlist: String): String {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         return delete(endpointBuilder("/playlists/${PlaylistUri(playlist).id}/followers").toString())
     }

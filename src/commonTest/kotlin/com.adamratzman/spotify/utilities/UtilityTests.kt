@@ -137,7 +137,7 @@ class UtilityTests {
                 api!!.clientSecret,
                 (api as SpotifyClientApi).redirectUri,
                 SpotifyUserAuthorization(token = api!!.token.copy(scopeString = null))
-            ) { requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE) }.build()
+            ) { requiredScopes = listOf(SpotifyScope.PlaylistReadPrivate) }.build()
         }
     }
 }

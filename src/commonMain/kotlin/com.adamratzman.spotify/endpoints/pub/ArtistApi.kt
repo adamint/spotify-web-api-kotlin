@@ -100,10 +100,10 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param keyword The id of the strategy
      */
     public enum class AlbumInclusionStrategy(public val keyword: String) {
-        ALBUM("album"),
-        SINGLE("single"),
-        APPEARS_ON("appears_on"),
-        COMPILATION("compilation");
+        Album("album"),
+        Single("single"),
+        AppearsOn("appears_on"),
+        Compilation("compilation");
     }
 
     /**

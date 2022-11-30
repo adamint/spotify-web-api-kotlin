@@ -683,10 +683,10 @@ public class SpotifyApiBuilder(
 
     /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
-     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     * [AuthorizationType.Client] for client authentication, or otherwise [AuthorizationType.Application]
      */
     public suspend fun build(type: AuthorizationType): GenericSpotifyApi {
-        return if (type == AuthorizationType.CLIENT) {
+        return if (type == AuthorizationType.Client) {
             buildClient()
         } else {
             buildCredentialed()
@@ -695,7 +695,7 @@ public class SpotifyApiBuilder(
 
     /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
-     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     * [AuthorizationType.Client] for client authentication, or otherwise [AuthorizationType.Application]
      */
     public fun buildRestAction(type: AuthorizationType): SpotifyRestAction<GenericSpotifyApi> = SpotifyRestAction {
         build(type)
@@ -758,14 +758,14 @@ public enum class AuthorizationType {
      *
      * [Spotify application settings page](https://developer.spotify.com/documentation/general/guides/app-settings/)
      */
-    CLIENT,
+    Client,
 
     /**
      * Authorization through application client id and secret, allowing access only to public endpoints and data
      *
      * [Spotify application settings page](https://developer.spotify.com/documentation/general/guides/app-settings/)
      */
-    APPLICATION;
+    Application;
 }
 
 /**

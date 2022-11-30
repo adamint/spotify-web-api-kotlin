@@ -10,7 +10,7 @@ internal actual fun String.encodeUrl() = encodeURLQueryComponent()
 /**
  * Actual platform that this program is run on.
  */
-public actual val currentApiPlatform: Platform = Platform.NATIVE
+public actual val currentApiPlatform: Platform = Platform.Native
 
 public actual typealias ConcurrentHashMap<K, V> = HashMap<K, V>
 

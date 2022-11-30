@@ -41,8 +41,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Create a playlist for a Spotify user. (The playlist will be empty until you add playables.)
      *
-     * Creating a public playlist for a user requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * creating a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Creating a public playlist for a user requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * creating a private playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/)**
      *
@@ -54,7 +54,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * To be able to create private playlists, the user must have granted the playlist-modify-private scope.
      * @param collaborative Defaults to false . If true the playlist will be collaborative. Note that to create a
      * collaborative playlist you must also set public to false . To create collaborative playlists you must have
-     * granted [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] and [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scopes.
+     * granted [SpotifyScope.PlaylistModifyPrivate] and [SpotifyScope.PlaylistModifyPublic] scopes.
      *
      * @return The created [Playlist] object with no playables
      */
@@ -66,10 +66,10 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         user: String? = null
     ): Playlist {
         if (public == null || public) {
-            requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC)
+            requireScopes(SpotifyScope.PlaylistModifyPublic)
         } else if (collaborative == null || !collaborative) {
-            requireScopes(SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
-        } else if (collaborative) requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE)
+            requireScopes(SpotifyScope.PlaylistModifyPrivate)
+        } else if (collaborative) requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate)
 
         if (name.isEmpty()) throw BadRequestException(ErrorObject(400, "Name cannot be empty"))
         val body = jsonMap()
@@ -87,8 +87,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Add a [Playable] to a user’s playlist.
      *
-     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
@@ -110,8 +110,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Add a [Playable] to a user’s playlist.
      *
-     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Adding playables to the current user’s public playlists requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * adding playables to the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/)**
      *
@@ -128,7 +128,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         vararg playables: PlayableUri,
         position: Int? = null
     ) {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
         checkBulkRequesting(100, playables.size)
 
         bulkStatefulRequest(100, playables.toList()) { chunk ->
@@ -150,8 +150,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
      *
-     * Modifying a public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * modifying a private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Modifying a public playlist requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * modifying a private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/change-playlist-details/)**
      *
@@ -170,7 +170,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         collaborative: Boolean? = null,
         description: String? = null
     ) {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         val body = jsonMap()
         if (name != null) body += buildJsonObject { put("name", name) }
@@ -184,10 +184,10 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Get a list of the playlists owned or followed by a Spotify user.
      *
-     * Private playlists are only retrievable for the current user and requires the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope
+     * Private playlists are only retrievable for the current user and requires the [SpotifyScope.PlaylistReadPrivate] scope
      * to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even
      * though they are always private.
-     * Collaborative playlists are only retrievable for the current user and requires the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
+     * Collaborative playlists are only retrievable for the current user and requires the [SpotifyScope.PlaylistReadCollaborative]
      * scope to have been authorized by the user.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
@@ -210,10 +210,10 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Find a client playlist by its id. If you want to find multiple playlists, consider using [getClientPlaylists]
      *
-     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope
+     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PlaylistReadPrivate] scope
      * to have been authorized by the user. Note that this scope alone will not return a collaborative playlist, even
      * though they are always private.
-     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
+     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PlaylistReadCollaborative]
      * scope to have been authorized by the user.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)**
@@ -244,8 +244,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * untouched. In addition, the users following the playlists won’t be notified about changes in the playlists
      * when the playables are reordered.
      *
-     * Reordering playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * reordering playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Reordering playables in the current user’s public playlists requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * reordering playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/)**
      *
@@ -266,7 +266,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         insertionPoint: Int,
         snapshotId: String? = null
     ): PlaylistSnapshot {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         val body = jsonMap()
         body += buildJsonObject { put("range_start", reorderRangeStart) }
@@ -284,8 +284,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
      * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
@@ -295,7 +295,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * @throws BadRequestException if playlist is not found or illegal playables are provided
      */
     public suspend fun setClientPlaylistPlayables(playlist: String, vararg playables: PlayableUri) {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         val body = jsonMap()
         body += buildJsonObject {
@@ -314,8 +314,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * Replace all the playables in a playlist, overwriting its existing playables. This powerful request can be useful
      * for replacing playables, re-ordering existing playables, or clearing the playlist.
      *
-     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Setting playables in the current user’s public playlists requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * setting playables in the current user’s private playlist (including collaborative playlists) requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/replace-playlists-tracks/)**
      *
@@ -344,9 +344,9 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
      * You must specify a JPEG image path or image data, maximum payload size is 256 KB
      *
      * **Required conditions**: This access token must be tied to the user who owns the playlist, and must have the
-     * scope [ugc-image-upload][SpotifyScope.UGC_IMAGE_UPLOAD] granted. In addition, the token must also
-     * contain [playlist-modify-public][SpotifyScope.PLAYLIST_MODIFY_PUBLIC] and/or
-     * [playlist-modify-private][SpotifyScope.PLAYLIST_MODIFY_PRIVATE], depending on the
+     * scope [ugc-image-upload][SpotifyScope.UgcImageUpload] granted. In addition, the token must also
+     * contain [playlist-modify-public][SpotifyScope.PlaylistModifyPublic] and/or
+     * [playlist-modify-private][SpotifyScope.PlaylistModifyPrivate], depending on the
      * public status of the playlist you want to update.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/upload-custom-playlist-cover/)**
@@ -369,8 +369,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         imageData: String? = null,
         imageUrl: String? = null
     ) {
-        requireScopes(SpotifyScope.UGC_IMAGE_UPLOAD)
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.UgcImageUpload)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
 
         val data = imageData ?: when {
             image != null -> convertBufferedImageToBase64JpegString(image)
@@ -389,8 +389,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Remove a playable in the specified positions (zero-based) from the specified playlist.
      *
-     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
@@ -409,8 +409,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Remove all occurrences of a playable from the specified playlist.
      *
-     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
@@ -427,8 +427,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Remove all occurrences of the specified playables from the given playlist.
      *
-     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
@@ -445,8 +445,8 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
     /**
      * Remove playables (each with their own positions) from the given playlist. **Bulk requesting is only available when [snapshotId] is null.**
      *
-     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PLAYLIST_MODIFY_PUBLIC] scope;
-     * removing playables from a private playlist requires the [SpotifyScope.PLAYLIST_MODIFY_PRIVATE] scope.
+     * Removing playables from a user’s public playlist requires authorization of the [SpotifyScope.PlaylistModifyPublic] scope;
+     * removing playables from a private playlist requires the [SpotifyScope.PlaylistModifyPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/)**
      *
@@ -465,7 +465,7 @@ public class ClientPlaylistApi(api: GenericSpotifyApi) : PlaylistApi(api) {
         playables: Array<Pair<PlayableUri, SpotifyPlayablePositions?>>,
         snapshotId: String?
     ): PlaylistSnapshot {
-        requireScopes(SpotifyScope.PLAYLIST_MODIFY_PUBLIC, SpotifyScope.PLAYLIST_MODIFY_PRIVATE, anyOf = true)
+        requireScopes(SpotifyScope.PlaylistModifyPublic, SpotifyScope.PlaylistModifyPrivate, anyOf = true)
         checkBulkRequesting(100, playables.size)
         if (snapshotId != null && playables.size > 100) throw BadRequestException("You cannot provide both the snapshot id and attempt bulk requesting")
 

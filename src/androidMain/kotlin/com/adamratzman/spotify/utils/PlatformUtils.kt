@@ -13,7 +13,7 @@ internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 /**
  * Actual platform that this program is run on.
  */
-public actual val currentApiPlatform: Platform = Platform.ANDROID
+public actual val currentApiPlatform: Platform = Platform.Android
 
 public actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.ConcurrentHashMap<K, V>
 

@@ -5,10 +5,10 @@ package com.adamratzman.spotify.utils
  * Actual platforms that this program can be run on.
  */
 public enum class Platform {
-    JVM,
-    ANDROID,
-    JS,
-    NATIVE
+    Jvm,
+    Android,
+    Js,
+    Native
 }
 
 public expect val currentApiPlatform: Platform

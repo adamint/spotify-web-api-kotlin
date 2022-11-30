@@ -210,7 +210,7 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         delay(playbackRelatedDelayMs)
 
         assertEquals(
-            CurrentlyPlayingType.EPISODE,
+            CurrentlyPlayingType.Episode,
             api.player.getCurrentlyPlaying()!!.currentlyPlayingType
         )
         assertEquals(

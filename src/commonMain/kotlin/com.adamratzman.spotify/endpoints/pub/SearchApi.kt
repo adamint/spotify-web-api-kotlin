@@ -39,13 +39,13 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param id The internal id
      */
     public enum class SearchType(public val id: String) {
-        ALBUM("album"),
-        TRACK("track"),
-        ARTIST("artist"),
-        PLAYLIST("playlist"),
-        SHOW("show"),
-        EPISODE("episode"),
-        AUDIOBOOK("audiobook");
+        Album("album"),
+        Track("track"),
+        Artist("artist"),
+        Playlist("playlist"),
+        Show("show"),
+        Episode("episode"),
+        Audiobook("audiobook");
     }
 
     /**
@@ -115,11 +115,11 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @param market If a country code is specified, only artists, albums, and tracks with content that is playable in that market is returned. Note:
     - Playlist results are not affected by the market parameter.
     - If market is set to from_token, and a valid access token is specified in the request header, only content playable in the country associated with the user account, is returned.
-    - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.USER_READ_PRIVATE] scope prior to when the access token is issued.
+    - Users can view the country that is associated with their account in the account settings. A user must grant access to the [SpotifyScope.UserReadPrivate] scope prior to when the access token is issued.
      **Note**: episodes will not be returned if this is NOT specified
      * @param includeExternal If true, the response will include any relevant audio content that is hosted externally. By default external content is filtered out from responses.
      *
-     * @throws IllegalArgumentException if no search types are provided, or if [SearchType.EPISODE] is provided but [market] is not
+     * @throws IllegalArgumentException if no search types are provided, or if [SearchType.Episode] is provided but [market] is not
      */
     public suspend fun search(
         query: String,
@@ -131,7 +131,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         includeExternal: Boolean? = null
     ): SpotifySearchResult {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
-        if (SearchType.EPISODE in searchTypes) {
+        if (SearchType.Episode in searchTypes) {
             requireNotNull(market) { "Market must be provided when SearchType.EPISODE is requested" }
         }
 
@@ -173,7 +173,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, filters, SearchType.PLAYLIST))
+    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, filters, SearchType.Playlist))
         .toNonNullablePagingObject(SimplePlaylist.serializer(), "playlists", api, json)
 
     /**
@@ -199,7 +199,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Artist> = get(build(query, market, limit, offset, filters, SearchType.ARTIST))
+    ): PagingObject<Artist> = get(build(query, market, limit, offset, filters, SearchType.Artist))
         .toNonNullablePagingObject(Artist.serializer(), "artists", api, json)
 
     /**
@@ -225,7 +225,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, filters, SearchType.ALBUM))
+    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, filters, SearchType.Album))
         .toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api, json)
 
     /**
@@ -251,7 +251,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Track> = get(build(query, market, limit, offset, filters, SearchType.TRACK))
+    ): PagingObject<Track> = get(build(query, market, limit, offset, filters, SearchType.Track))
         .toNonNullablePagingObject(Track.serializer(), "tracks", api, json)
 
     /**
@@ -277,7 +277,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market
-    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, filters, SearchType.SHOW))
+    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, filters, SearchType.Show))
         .toNonNullablePagingObject(SimpleShow.serializer(), "shows", api, json)
 
     /**
@@ -303,7 +303,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market
-    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, filters, SearchType.EPISODE))
+    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, filters, SearchType.Episode))
         .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", api, json)
 
     /**

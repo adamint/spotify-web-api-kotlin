@@ -28,13 +28,13 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
             query.albums?.items?.isNotEmpty() == true && query.tracks?.items?.isNotEmpty() == true && query.artists?.items?.isNotEmpty() == true &&
                 query.playlists?.items?.isNotEmpty() == true && query.shows?.items?.isNotEmpty() == true && query.episodes?.items?.isNotEmpty() == true
         )
-        val query2 = api.search.search("lo", SearchApi.SearchType.ARTIST, SearchApi.SearchType.PLAYLIST)
+        val query2 = api.search.search("lo", SearchApi.SearchType.Artist, SearchApi.SearchType.Playlist)
         assertTrue(
             query2.albums == null && query2.tracks == null && query2.shows == null && query2.episodes == null &&
                 query2.artists?.items?.isNotEmpty() == true && query2.playlists?.items?.isNotEmpty() == true
         )
         val query3 =
-            api.search.search("lo", SearchApi.SearchType.SHOW, SearchApi.SearchType.EPISODE, market = Market.US)
+            api.search.search("lo", SearchApi.SearchType.Show, SearchApi.SearchType.Episode, market = Market.US)
         assertTrue(query3.episodes?.items?.isNotEmpty() == true && query3.shows?.items?.isNotEmpty() == true)
     }
 

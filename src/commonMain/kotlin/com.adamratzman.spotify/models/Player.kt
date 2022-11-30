@@ -75,19 +75,19 @@ public data class Device(
  * @param identifier readable name
  */
 public enum class DeviceType(public val identifier: String) {
-    COMPUTER("Computer"),
-    TABLET("Tablet"),
-    SMARTPHONE("Smartphone"),
-    SPEAKER("Speaker"),
-    TV("TV"),
-    AVR("AVR"),
-    STB("STB"),
-    AUDIO_DONGLE("AudioDongle"),
-    GAME_CONSOLE("GameConsole"),
-    CAST_VIDEO("CastVideo"),
-    CAST_AUDIO("CastAudio"),
-    AUTOMOBILE("Automobile"),
-    UNKNOWN("Unknown");
+    Computer("Computer"),
+    Tablet("Tablet"),
+    Smartphone("Smartphone"),
+    Speaker("Speaker"),
+    Tv("TV"),
+    Avr("AVR"),
+    Stb("STB"),
+    AudioDongle("AudioDongle"),
+    GameConsole("GameConsole"),
+    CastVideo("CastVideo"),
+    CastAudio("CastAudio"),
+    Automobile("Automobile"),
+    Unknown("Unknown");
 }
 
 /**
@@ -187,18 +187,18 @@ public data class DisallowablePlaybackAction(val action: PlaybackAction, val dis
  * Action a user takes that will affect current playback
  */
 public enum class PlaybackAction(private val identifier: String) : ResultEnum {
-    INTERRUPTING_PLAYBACK("interrupting_playback"),
-    PAUSING("pausing"),
-    PLAYING("playing"),
-    RESUMING("resuming"),
-    SEEKING("seeking"),
-    SKIPPING_NEXT("skipping_next"),
-    SKIPPING_PREV("skipping_prev"),
-    STOPPING("stopping"),
-    TOGGLING_REPEAT_CONTEXT("toggling_repeat_context"),
-    TOGGLING_SHUFFLE("toggling_shuffle"),
-    TOGGLING_REPEAT_TRACK("toggling_repeat_track"),
-    TRANSFERRING_PLAYBACK("transferring_playback");
+    InterruptingPlayback("interrupting_playback"),
+    Pausing("pausing"),
+    Playing("playing"),
+    Resuming("resuming"),
+    Seeking("seeking"),
+    SkippingNext("skipping_next"),
+    SkippingPrev("skipping_prev"),
+    Stopping("stopping"),
+    TogglingRepeatContext("toggling_repeat_context"),
+    TogglingShuffle("toggling_shuffle"),
+    TogglingRepeatTrack("toggling_repeat_track"),
+    TransferringPlayback("transferring_playback");
 
     override fun retrieveIdentifier(): String = identifier
 }
@@ -207,10 +207,10 @@ public enum class PlaybackAction(private val identifier: String) : ResultEnum {
  * The object type of the currently playing item
  */
 public enum class CurrentlyPlayingType(public val identifier: String) : ResultEnum {
-    TRACK("track"),
-    EPISODE("episode"),
-    AD("ad"),
-    UNKNOWN("unknown");
+    Track("track"),
+    Episode("episode"),
+    Ad("ad"),
+    Unknown("unknown");
 
     override fun retrieveIdentifier(): String = identifier
 }

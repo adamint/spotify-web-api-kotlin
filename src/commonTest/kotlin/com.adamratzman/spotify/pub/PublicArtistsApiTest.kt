@@ -47,7 +47,7 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
             api.artists.getArtistAlbums(
                 "7wjeXCtRND2ZdKfMJFu6JC",
                 10,
-                include = arrayOf(ArtistApi.AlbumInclusionStrategy.ALBUM)
+                include = arrayOf(ArtistApi.AlbumInclusionStrategy.Album)
             )
                 .items.asSequence().map { it.name }.contains("Louane")
         )

@@ -4,8 +4,10 @@ package com.adamratzman.spotify.utils
 /**
  * Represents a unit of time
  */
-public enum class TimeUnit(public val multiplier: Long) {
-    MILLISECONDS(1), SECONDS(1000), MINUTES(60000);
+public enum class TimeUnit(private val multiplier: Long) {
+    Milliseconds(1),
+    Seconds(1000),
+    Minutes(60000);
 
     public fun toMillis(duration: Long): Long = duration * multiplier
 }

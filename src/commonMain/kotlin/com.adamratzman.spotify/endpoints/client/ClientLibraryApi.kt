@@ -30,7 +30,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/)**
      *
@@ -46,7 +46,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SavedTrack> {
-        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+        requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
             endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
@@ -57,7 +57,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
@@ -73,7 +73,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SavedAlbum> {
-        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+        requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
             endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
@@ -85,7 +85,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Get a list of shows saved in the current Spotify user’s library.
      * Optional parameters can be used to limit the number of shows returned.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
@@ -98,7 +98,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null
     ): PagingObject<SavedShow> {
-        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+        requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
             endpointBuilder("/me/shows").with("limit", limit).with("offset", offset).toString()
@@ -109,7 +109,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Get a list of the episodes saved in the current Spotify user’s library.
      * This API endpoint is in beta and could change without warning.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/)**
      *
@@ -125,7 +125,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int? = null,
         market: Market? = null
     ): PagingObject<SavedEpisode> {
-        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+        requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
             endpointBuilder("/me/episodes").with("limit", limit).with("offset", offset).with("market", market)
@@ -136,7 +136,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check if the [LibraryType] with id [id] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -150,7 +150,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Check if one or more of [LibraryType] is already saved in the current Spotify user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_READ] scope
+     * **Requires** the [SpotifyScope.UserLibraryRead] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -160,7 +160,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun contains(type: LibraryType, vararg ids: String): List<Boolean> {
-        requireScopes(SpotifyScope.USER_LIBRARY_READ)
+        requireScopes(SpotifyScope.UserLibraryRead)
 
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
             throw BadRequestException(
@@ -179,7 +179,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Save one of [LibraryType] to the current user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserLibraryModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -193,7 +193,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     /**
      * Save one or more of [LibraryType] to the current user’s ‘Your Music’ library.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserLibraryModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -203,7 +203,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun add(type: LibraryType, vararg ids: String) {
-        requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
+        requireScopes(SpotifyScope.UserLibraryModify)
 
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
             throw BadRequestException(
@@ -221,7 +221,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
      *
-     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserLibraryModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -237,7 +237,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * Changes to a user’s saved items may not be visible in other Spotify applications immediately.
 
-     * **Requires** the [SpotifyScope.USER_LIBRARY_MODIFY] scope
+     * **Requires** the [SpotifyScope.UserLibraryModify] scope
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/library/)**
      *
@@ -247,7 +247,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * @throws BadRequestException if any of the provided ids is invalid
      */
     public suspend fun remove(type: LibraryType, vararg ids: String) {
-        requireScopes(SpotifyScope.USER_LIBRARY_MODIFY)
+        requireScopes(SpotifyScope.UserLibraryModify)
 
         if (ids.size > 50 && !api.spotifyApiOptions.allowBulkRequests) {
             throw BadRequestException(
@@ -273,10 +273,10 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
  * @param id How to transform an id (or uri) input into its Spotify id
  */
 public enum class LibraryType(private val value: String, internal val id: (String) -> String) {
-    TRACK("tracks", { PlayableUri(it).id }),
-    ALBUM("albums", { AlbumUri(it).id }),
-    EPISODE("episodes", { EpisodeUri(it).id }),
-    SHOW("shows", { ShowUri(it).id });
+    Track("tracks", { PlayableUri(it).id }),
+    Album("albums", { AlbumUri(it).id }),
+    Episode("episodes", { EpisodeUri(it).id }),
+    Show("shows", { ShowUri(it).id });
 
     override fun toString(): String = value
 }

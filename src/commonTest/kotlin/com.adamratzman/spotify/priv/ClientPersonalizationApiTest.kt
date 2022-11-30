@@ -21,7 +21,7 @@ class ClientPersonalizationApiTest : AbstractTest<SpotifyClientApi>() {
         assertTrue(
             api.personalization.getTopArtists(
                 5,
-                timeRange = ClientPersonalizationApi.TimeRange.MEDIUM_TERM
+                timeRange = ClientPersonalizationApi.TimeRange.MediumTerm
             ).items.isNotEmpty()
         )
     }

@@ -91,10 +91,10 @@ public data class ReleaseDate(val year: Int, val month: Int?, val day: Int?)
  * Album search type
  */
 public enum class AlbumResultType(public val id: String) {
-    ALBUM("album"),
-    SINGLE("single"),
-    COMPILATION("compilation"),
-    APPEARS_ON("appears_on");
+    Album("album"),
+    Single("single"),
+    Compilation("compilation"),
+    AppearsOn("appears_on");
 }
 
 /**
@@ -191,8 +191,8 @@ internal data class AlbumsResponse(val albums: List<Album?>)
  * Copyright statement type of an Album
  */
 public enum class CopyrightType(public val identifier: String) : ResultEnum {
-    COPYRIGHT("C"),
-    SOUND_PERFORMANCE_COPYRIGHT("P");
+    Copyright("C"),
+    SoundPerformanceCopyright("P");
 
     override fun retrieveIdentifier(): String = identifier
 }

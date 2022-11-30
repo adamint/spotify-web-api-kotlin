@@ -106,7 +106,7 @@ public open class SpotifyRestAction<T> internal constructor(public val supplier:
     @JvmOverloads
     public fun queueAfter(
         quantity: Int,
-        timeUnit: TimeUnit = TimeUnit.SECONDS,
+        timeUnit: TimeUnit = TimeUnit.Seconds,
         scope: CoroutineScope = GlobalScope,
         failure: (Throwable) -> Unit = { throw it },
         consumer: (T) -> Unit

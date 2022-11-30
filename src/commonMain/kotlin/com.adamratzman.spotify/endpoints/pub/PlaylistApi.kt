@@ -31,10 +31,10 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Get a list of the playlists owned or followed by a Spotify user. Lookups for non-existant users return an empty
      * [PagingObject] (blame Spotify)
      *
-     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_PRIVATE] scope
+     * **Note that** private playlists are only retrievable for the current user and require the [SpotifyScope.PlaylistReadPrivate] scope
      * to have been authorized by the user. Note that this scope alone will not return a collaborative playlist, even
      * though they are always private.
-     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PLAYLIST_READ_COLLABORATIVE]
+     * Collaborative playlists are only retrievable for the current user and require the [SpotifyScope.PlaylistReadCollaborative]
      * scope to have been authorized by the user.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/get-list-users-playlists/)**

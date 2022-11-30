@@ -17,8 +17,8 @@ public class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      * Get detailed profile information about the current user (including the current user’s username).
      *
      * The access token must have been issued on behalf of the current user.
-     * Reading the user’s email address requires the [SpotifyScope.USER_READ_EMAIL] scope;
-     * reading country and product subscription level requires the [SpotifyScope.USER_READ_PRIVATE] scope.
+     * Reading the user’s email address requires the [SpotifyScope.UserReadEmail] scope;
+     * reading country and product subscription level requires the [SpotifyScope.UserReadPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
      *

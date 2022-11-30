@@ -23,7 +23,7 @@ public class ClientEpisodeApi(api: GenericSpotifyApi) : EpisodeApi(api) {
      * Get Spotify catalog information for a single episode identified by its unique Spotify ID. The [Market] associated with
      * the user account will be used.
      *
-     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
+     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.UserReadPlaybackPosition] scope**
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/get-an-episode/)**
      *
@@ -45,7 +45,7 @@ public class ClientEpisodeApi(api: GenericSpotifyApi) : EpisodeApi(api) {
      *
      * **Invalid episode ids will result in a [BadRequestException]
      *
-     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.USER_READ_PLAYBACK_POSITION] scope**
+     * **Reading the user’s resume points on episode objects requires the [SpotifyScope.UserReadPlaybackPosition] scope**
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/episodes/get-several-episodes/)**
      *
@@ -55,7 +55,7 @@ public class ClientEpisodeApi(api: GenericSpotifyApi) : EpisodeApi(api) {
      * @throws BadRequestException If any invalid show id is provided
      */
     public suspend fun getEpisodes(vararg ids: String): List<Episode?> {
-        requireScopes(SpotifyScope.USER_READ_PLAYBACK_POSITION)
+        requireScopes(SpotifyScope.UserReadPlaybackPosition)
         checkBulkRequesting(50, ids.size)
 
         return bulkStatelessRequest(50, ids.toList()) { chunk ->
