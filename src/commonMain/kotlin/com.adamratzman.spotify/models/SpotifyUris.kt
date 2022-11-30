@@ -38,7 +38,6 @@ private fun String.add(type: String, allowColon: Boolean): String {
 }
 
 private fun String.remove(type: String, allowColon: Boolean): String {
-    println(type)
     if (type == UserCollectionUriType && matchesUserCollectionUri()) {
         return "collection"
     } else {

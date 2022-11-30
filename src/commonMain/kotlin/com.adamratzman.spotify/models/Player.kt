@@ -168,6 +168,12 @@ public data class PlaybackActions(
         }
 }
 
+@Serializable
+public data class CurrentUserQueue(
+    @SerialName("currently_playing") val currentlyPlaying: Playable? = null,
+    @SerialName("queue") val queue: List<Playable>
+)
+
 /**
  * Maps a playback action to whether the user is disallowed from doing it
  *

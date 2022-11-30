@@ -13,6 +13,7 @@ import com.adamratzman.spotify.models.SpotifyContextType
 import com.adamratzman.spotify.models.SpotifyTrackUri
 import com.adamratzman.spotify.models.toAlbumUri
 import com.adamratzman.spotify.models.toArtistUri
+import com.adamratzman.spotify.models.toEpisodeUri
 import com.adamratzman.spotify.models.toPlaylistUri
 import com.adamratzman.spotify.models.toShowUri
 import com.adamratzman.spotify.models.toTrackUri
@@ -270,5 +271,41 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         delay(playbackRelatedDelayMs)
 
         assertEquals(toDevice.id, api.player.getCurrentContext()!!.device.id)
+    }
+
+    @Test
+    fun testGetCurrentQueue(): TestResult = runTestOnDefaultDispatcher {
+        buildApi<SpotifyClientApi>(::testGetCurrentQueue.name)
+        if (!arePlayerTestsEnabled()) return@runTestOnDefaultDispatcher
+        if (!isApiInitialized()) return@runTestOnDefaultDispatcher
+
+        val device = api.player.getDevices().first()
+
+        val trackId = "1VsVY1ySdH3nVSWnLT5vCf"
+        api.player.startPlayback(
+            playableUrisToPlay = listOf(PlayableUri("spotify:track:$trackId")),
+            deviceId = device.id
+        )
+        delay(playbackRelatedDelayMs)
+
+        api.player.getUserQueue().let { playedSingleTrackNoQueueQueueResponse ->
+            assertEquals(trackId, playedSingleTrackNoQueueQueueResponse.currentlyPlaying?.asTrack?.id)
+        }
+
+        api.player.skipForward(deviceId = device.id)
+        delay(playbackRelatedDelayMs)
+
+        val episodeId = "4gQNhlqd3jg5QTh7umdRXT"
+        api.player.startPlayback(
+            playableUrisToPlay = listOf(episodeId.toEpisodeUri(), trackId.toTrackUri()),
+            deviceId = device.id
+        )
+        delay(playbackRelatedDelayMs)
+
+        api.player.getUserQueue().let { playingWithQueueResponse ->
+            assertEquals(episodeId, playingWithQueueResponse.currentlyPlaying?.id)
+            assertEquals(trackId, playingWithQueueResponse.queue[0].id)
+        }
+
     }
 }

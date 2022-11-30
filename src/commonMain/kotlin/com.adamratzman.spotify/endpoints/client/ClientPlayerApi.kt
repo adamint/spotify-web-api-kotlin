@@ -8,6 +8,7 @@ import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.ContextUri
+import com.adamratzman.spotify.models.CurrentUserQueue
 import com.adamratzman.spotify.models.CurrentlyPlayingContext
 import com.adamratzman.spotify.models.CurrentlyPlayingObject
 import com.adamratzman.spotify.models.CurrentlyPlayingType
@@ -91,6 +92,21 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             )?.toObject(CurrentlyPlayingContext.serializer(), api, json)
         }
         return if (obj?.timestamp == null) null else obj
+    }
+
+    /**
+     * Get the list of objects that make up the user's queue.
+     *
+     * **Requires** the [SpotifyScope.USER_READ_CURRENTLY_PLAYING] scope
+     *
+     * Note that queue length may, in some cases, contain tracks that will play after the user-specified queue.
+     *
+     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-queue)**
+     */
+    public suspend fun getUserQueue(): CurrentUserQueue {
+        return get(
+            endpointBuilder("/me/player/queue").toString()
+        ).toObject(CurrentUserQueue.serializer(), api = api, json = json)
     }
 
     /**
