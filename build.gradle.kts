@@ -36,6 +36,10 @@ buildscript {
 // --- spotify-web-api-kotlin info ---
 val libraryVersion: String = System.getenv("SPOTIFY_API_PUBLISH_VERSION") ?: "0.0.0.SNAPSHOT"
 
+// Publishing credentials (environment variable)
+val nexusUsername: String? = System.getenv("NEXUS_USERNAME")
+val nexusPassword: String? = System.getenv("NEXUS_PASSWORD")
+
 group = "com.adamratzman"
 version = libraryVersion
 
@@ -293,6 +297,10 @@ kotlin {
             all { languageSettings.optIn("kotlin.RequiresOptIn") }
         }
     }
+
+    publishing {
+        registerPublishing()
+    }
 }
 
 publishing {
@@ -389,11 +397,6 @@ fun MavenPublication.setupPom(publicationName: String) {
 
 // --- Publishing ---
 
-// Publishing credentials (environment variable)
-val nexusUsername: String? = System.getenv("NEXUS_USERNAME")
-val nexusPassword: String? = System.getenv("NEXUS_PASSWORD")
-
-
 fun PublishingExtension.registerPublishing() {
     publications {
         val kotlinMultiplatform by getting(MavenPublication::class) {
@@ -413,6 +416,7 @@ fun PublishingExtension.registerPublishing() {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
+                println("username ${nexusUsername}")
                 username = nexusUsername
                 password = nexusPassword
             }
