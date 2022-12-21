@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.soywiz.korim.format.jpg
 
 import com.soywiz.korim.format.ImageData
@@ -24,6 +24,7 @@ public object JPEG : ImageFormat("jpg", "jpeg") {
     }
 
     override fun readImage(s: SyncStream, props: ImageDecodingProps): ImageData {
+        @Suppress("DEPRECATION")
         return ImageData(listOf(ImageFrame(JPEGDecoder.decode(s.readAll()))))
     }
 

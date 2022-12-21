@@ -1,4 +1,6 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.adamratzman.spotify.utilities
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -6,11 +8,15 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.SpotifyUserAuthorization
 import com.adamratzman.spotify.buildSpotifyApi
-import com.adamratzman.spotify.getEnvironmentVariable
 import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
-import com.adamratzman.spotify.runBlockingTest
+import com.adamratzman.spotify.getTestClientId
+import com.adamratzman.spotify.getTestClientSecret
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.spotifyAppApi
 import com.adamratzman.spotify.spotifyClientApi
+import io.ktor.util.PlatformUtils
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -19,24 +25,14 @@ import kotlin.test.assertTrue
 class UtilityTests {
     var api: GenericSpotifyApi? = null
 
-    init {
-        runBlockingTest {
-            buildSpotifyApi()?.let { api = it }
-        }
-    }
-
-    fun testPrereq() = api != null
-
     @Test
-    fun testPagingObjectGetAllItems() {
-        if (!testPrereq()) return
+    fun testPagingObjectGetAllItems(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testPagingObjectGetAllItems.name)?.let { api = it }
 
-        runBlockingTest {
-            val spotifyWfhPlaylist = api!!.playlists.getPlaylist("37i9dQZF1DWTLSN7iG21yC")!!
-            val totalTracks = spotifyWfhPlaylist.tracks.total
-            val allTracks = spotifyWfhPlaylist.tracks.getAllItemsNotNull()
-            assertEquals(totalTracks, allTracks.size)
-        }
+        val spotifyWfhPlaylist = api!!.playlists.getPlaylist("37i9dQZF1DWTLSN7iG21yC")!!
+        val totalTracks = spotifyWfhPlaylist.tracks.total
+        val allTracks = spotifyWfhPlaylist.tracks.getAllItemsNotNull()
+        assertEquals(totalTracks, allTracks.size)
     }
 
     @Test
@@ -52,103 +48,96 @@ class UtilityTests {
     }
 
     @Test
-    fun testPagingObjectTakeItemsSize() {
-        runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest else api!!
-
-            assertEquals(60, api!!.browse.getNewReleases(limit = 12).take(60).size)
-        }
+    fun testPagingObjectTakeItemsSize(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testPagingObjectTakeItemsSize.name)?.let { api = it }
+        assertEquals(24, api!!.browse.getNewReleases(limit = 12).take(24).size)
     }
 
     @Test
-    fun testInvalidApiBuilderParameters() {
-        runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest else api!!
+    fun testInvalidApiBuilderParameters() = runTestOnDefaultDispatcher {
+        assertFailsWith<IllegalArgumentException> {
+            spotifyAppApi { }.build()
+        }
 
-            assertFailsWith<IllegalArgumentException> {
-                spotifyAppApi { }.build()
-            }
+        assertFailsWith<IllegalArgumentException> {
+            spotifyClientApi { }.build()
+        }
 
+        if (!PlatformUtils.IS_JVM) return@runTestOnDefaultDispatcher
+
+        assertFailsWith<IllegalArgumentException> {
+            spotifyClientApi {
+                credentials {
+                    clientId = getTestClientId()
+                }
+            }.build()
+        }
+
+        if (api is SpotifyClientApi) {
             assertFailsWith<IllegalArgumentException> {
                 spotifyClientApi {
                     credentials {
-                        clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
+                        clientId = getTestClientId()
+                        clientSecret = getTestClientSecret()
                     }
                 }.build()
             }
-            assertFailsWith<IllegalArgumentException> {
-                spotifyClientApi { }.build()
-            }
-
-            if (api is SpotifyClientApi) {
-                assertFailsWith<IllegalArgumentException> {
-                    spotifyClientApi {
-                        credentials {
-                            clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
-                            clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
-                        }
-                    }.build()
-                }
-            }
         }
     }
 
     @Test
-    fun testValidAppApiBuilderParameters() {
-        runBlockingTest {
-            if (com.adamratzman.spotify.clientId != null && com.adamratzman.spotify.clientSecret != null) {
-                val testApi = spotifyAppApi {
-                    credentials {
-                        clientId = com.adamratzman.spotify.clientId
-                        clientSecret = com.adamratzman.spotify.clientSecret
-                    }
-                }
+    fun testValidAppApiBuilderParameters() = runTestOnDefaultDispatcher {
+        if (!PlatformUtils.IS_JVM) return@runTestOnDefaultDispatcher
 
-                testApi.build()
-            }
-        }
-    }
-
-    @Test
-    fun testAutomaticRefresh() {
-        runBlockingTest {
-            if (!testPrereq()) return@runBlockingTest else api!!
-
-            var test = false
-            val api = spotifyAppApi {
+        if (getTestClientId() != null && getTestClientSecret() != null) {
+            val testApi = spotifyAppApi {
                 credentials {
-                    clientId = com.adamratzman.spotify.clientId
-                    clientSecret = com.adamratzman.spotify.clientSecret
+                    clientId = getTestClientId()
+                    clientSecret = getTestClientSecret()
                 }
+            }
 
-                options {
-                    onTokenRefresh = { test = true }
-                }
-            }.build()
-
-            api.token = api.token.copy(expiresIn = -1)
-            val currentToken = api.token
-
-            api.browse.getAvailableGenreSeeds()
-
-            assertTrue(test)
-            assertTrue(api.token.accessToken != currentToken.accessToken)
+            testApi.build()
         }
     }
 
     @Test
-    fun testRequiredScopes() {
-        runBlockingTest {
-            if (!testPrereq() || api !is SpotifyClientApi) return@runBlockingTest
+    fun testAutomaticRefresh() = runTestOnDefaultDispatcher {
+        if (!PlatformUtils.IS_JVM) return@runTestOnDefaultDispatcher
 
-            assertFailsWith<IllegalStateException> {
-                spotifyClientApi(
-                    api!!.clientId,
-                    api!!.clientSecret,
-                    (api as SpotifyClientApi).redirectUri,
-                    SpotifyUserAuthorization(token = api!!.token.copy(scopeString = null))
-                ) { requiredScopes = listOf(SpotifyScope.PLAYLIST_READ_PRIVATE) }.build()
+        var test = false
+        val api = spotifyAppApi {
+            credentials {
+                clientId = getTestClientId()
+                clientSecret = getTestClientSecret()
             }
+
+            options {
+                onTokenRefresh = { test = true }
+            }
+        }.build()
+
+        api.token = api.token.copy(expiresIn = -1)
+        val currentToken = api.token
+
+        api.browse.getAvailableGenreSeeds()
+
+        assertTrue(test)
+        assertTrue(api.token.accessToken != currentToken.accessToken)
+    }
+
+    @Test
+    fun testRequiredScopes(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testRequiredScopes.name)?.let { api = it }
+        if (api !is SpotifyClientApi) return@runTestOnDefaultDispatcher
+
+        assertFailsWith<IllegalStateException> {
+            spotifyClientApi(
+                api!!.clientId,
+                api!!.clientSecret,
+                (api as SpotifyClientApi).redirectUri,
+                SpotifyUserAuthorization(token = api!!.token.copy(scopeString = null))
+            ) { requiredScopes = listOf(SpotifyScope.PlaylistReadPrivate) }.build()
         }
     }
 }

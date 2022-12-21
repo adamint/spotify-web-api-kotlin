@@ -1,89 +1,86 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpRequestMethod
-import com.adamratzman.spotify.runBlockingTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import com.adamratzman.spotify.runTestOnDefaultDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class HttpConnectionTests {
     @Test
-    fun testGetRequest() {
-        runBlockingTest {
-            val (response, body) = HttpConnection(
-                    "https://httpbin.org/get?query=string",
-                    HttpRequestMethod.GET,
-                    null,
-                    null,
-                    "text/html"
-            ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
+    fun testGetRequest() = runTestOnDefaultDispatcher {
+        val (response, body) = HttpRequest(
+            "https://httpbin.org/get?query=string",
+            HttpRequestMethod.GET,
+            null,
+            null,
+            "text/html"
+        ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
-            assertEquals(200, response.responseCode)
-            val requestHeader = body["headers"]
+        assertEquals(200, response.responseCode)
+        val requestHeader = body["headers"]
 
-            assertTrue {
-                // ignore the user-agent because of the version in it
-                requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
-                        mapOf(
-                                "Accept" to "*/*",
-                                "Host" to "httpbin.org"
-                        ).toList()
-                )
-            }
-
-            assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
+        assertTrue {
+            // ignore the user-agent because of the version in it
+            requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
+                mapOf(
+                    "Accept" to "*/*",
+                    "Host" to "httpbin.org"
+                ).toList()
+            )
         }
+
+        assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
     }
 
     @Test
-    fun testPostRequest() {
-        runBlockingTest {
-            val (response, body) = HttpConnection(
-                    "https://httpbin.org/post?query=string",
-                    HttpRequestMethod.POST,
-                    null,
-                    "body",
-                    "text/html"
-            ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
+    fun testPostRequest() = runTestOnDefaultDispatcher {
+        val (response, body) = HttpRequest(
+            "https://httpbin.org/post?query=string",
+            HttpRequestMethod.POST,
+            null,
+            "body",
+            "text/html"
+        ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
-            assertEquals(200, response.responseCode)
+        assertEquals(200, response.responseCode)
 
-            val requestHeader = body["headers"]
-            assertTrue {
-                requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
-                        mapOf(
-                                "Accept" to "*/*",
-                                "Host" to "httpbin.org",
-                                "Content-Type" to "text/html",
-                                "Content-Length" to "4"
-                        ).toList()
-                )
-            }
-
-            assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
-            assertEquals("body", body.jsonObject.getValue("data").jsonPrimitive.content)
+        val requestHeader = body["headers"]
+        assertTrue {
+            requestHeader!!.jsonObject.map { it.key to it.value.jsonPrimitive.content }.containsAll(
+                mapOf(
+                    "Accept" to "*/*",
+                    "Host" to "httpbin.org",
+                    "Content-Type" to "text/html",
+                    "Content-Length" to "4"
+                ).toList()
+            )
         }
+
+        assertEquals("string", body["args"]!!.jsonObject.getValue("query").jsonPrimitive.content)
+        assertEquals("body", body.jsonObject.getValue("data").jsonPrimitive.content)
     }
 
     @Test
-    fun testDeleteRequest() {
-        runBlockingTest {
-            val (response, _) = HttpConnection(
-                    "https://httpbin.org/delete?query=string",
-                    HttpRequestMethod.DELETE,
-                    null,
-                    null,
-                    "text/html"
-            ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
+    fun testDeleteRequest() = runTestOnDefaultDispatcher {
+        val (response, _) = HttpRequest(
+            "https://httpbin.org/delete?query=string",
+            HttpRequestMethod.DELETE,
+            null,
+            null,
+            "text/html"
+        ).execute().let { it to Json.decodeFromString(JsonObject.serializer(), it.body) }
 
-            assertEquals(200, response.responseCode)
-        }
+        assertEquals(200, response.responseCode)
     }
 
     /*

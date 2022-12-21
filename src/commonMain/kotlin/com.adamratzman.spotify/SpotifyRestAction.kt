@@ -1,14 +1,9 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.utils.TimeUnit
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import com.adamratzman.spotify.utils.runBlockingOnJvmAndNative
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.JvmOverloads
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -17,6 +12,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.JvmOverloads
 
 /**
  * Provides a uniform interface to retrieve, whether synchronously or asynchronously, [T] from Spotify
@@ -106,7 +106,7 @@ public open class SpotifyRestAction<T> internal constructor(public val supplier:
     @JvmOverloads
     public fun queueAfter(
         quantity: Int,
-        timeUnit: TimeUnit = TimeUnit.SECONDS,
+        timeUnit: TimeUnit = TimeUnit.Seconds,
         scope: CoroutineScope = GlobalScope,
         failure: (Throwable) -> Unit = { throw it },
         consumer: (T) -> Unit

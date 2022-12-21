@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.soywiz.korim.format.jpg
 
 import com.soywiz.kmem.UByteArrayInt
@@ -305,32 +305,34 @@ public class JPEGDecoder {
                         continue@loop
                     }
                     1, 2 -> { // skipping r zero items
-                        if (zz[z] != 0)
+                        if (zz[z] != 0) {
                             zz[z] += (readBit() shl successive) * direction
-                        else {
+                        } else {
                             r--
                             if (r == 0) successiveACState = if (successiveACState == 2) 3 else 0
                         }
                     }
                     3 -> { // set value for a zero item
-                        if (zz[z] != 0)
+                        if (zz[z] != 0) {
                             zz[z] += (readBit() shl successive) * direction
-                        else {
+                        } else {
                             zz[z] = successiveACNextValue shl successive
                             successiveACState = 0
                         }
                     }
                     4 -> { // eob
-                        if (zz[z] != 0)
+                        if (zz[z] != 0) {
                             zz[z] += (readBit() shl successive) * direction
+                        }
                     }
                 }
                 k++
             }
             if (successiveACState == 4) {
                 eobrun--
-                if (eobrun == 0)
+                if (eobrun == 0) {
                     successiveACState = 0
+                }
             }
         }
 
@@ -357,9 +359,9 @@ public class JPEGDecoder {
         val componentsLength = components.size
         var component: FrameComponent
         val decodeFn = if (progressive) {
-            if (spectralStart == 0)
+            if (spectralStart == 0) {
                 if (successivePrev == 0) ::decodeDCFirst else ::decodeDCSuccessive
-            else if (successivePrev == 0) ::decodeACFirst else ::decodeACSuccessive
+            } else if (successivePrev == 0) ::decodeACFirst else ::decodeACSuccessive
         } else {
             ::decodeBaseline
         }

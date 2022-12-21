@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.http
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -12,7 +12,6 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import io.ktor.http.HttpStatusCode
-import kotlin.math.ceil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -20,6 +19,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.math.ceil
 
 public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
     public val cache: SpotifyCache = SpotifyCache()
@@ -75,20 +75,20 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         }
     }
 
-    internal suspend fun get(url: String): String {
+    internal open suspend fun get(url: String): String {
         return execute<String>(url)
     }
 
     internal suspend fun getNullable(url: String): String? {
-        return execute<String?>(url, retryOnNull = false)
+        return execute(url, retryOnNull = false)
     }
 
-    internal suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
-        return execute<String>(url, body, HttpRequestMethod.POST, contentType = contentType)
+    internal open suspend fun post(url: String, body: String? = null, contentType: String? = null): String {
+        return execute(url, body, HttpRequestMethod.POST, contentType = contentType, retryOnNull = false)
     }
 
-    internal suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
-        return execute<String>(url, body, HttpRequestMethod.PUT, contentType = contentType)
+    internal open suspend fun put(url: String, body: String? = null, contentType: String? = null): String {
+        return execute(url, body, HttpRequestMethod.PUT, contentType = contentType, retryOnNull = false)
     }
 
     internal suspend fun delete(
@@ -96,11 +96,11 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         body: String? = null,
         contentType: String? = null
     ): String {
-        return execute<String>(url, body, HttpRequestMethod.DELETE, contentType = contentType)
+        return execute(url, body, HttpRequestMethod.DELETE, contentType = contentType, retryOnNull = false)
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <ReturnType: String?> execute(
+    internal open suspend fun <ReturnType : String?> execute(
         url: String,
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
@@ -110,15 +110,19 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         retryOnNull: Boolean = true
     ): ReturnType {
         if (api.token.shouldRefresh()) {
-            if (!api.spotifyApiOptions.automaticRefresh) throw SpotifyException.ReAuthenticationNeededException(message = "The access token has expired.")
-            else api.refreshToken()
+            if (!api.spotifyApiOptions.automaticRefresh) {
+                throw SpotifyException.ReAuthenticationNeededException(message = "The access token has expired.")
+            } else {
+                api.refreshToken()
+            }
         }
 
         val spotifyRequest = SpotifyRequest(url, method, body, api)
         val cacheState = if (api.useCache) cache[spotifyRequest] else null
 
-        if (cacheState?.isStillValid() == true) return cacheState.data as ReturnType
-        else if (cacheState?.let { it.eTag == null } == true) {
+        if (cacheState?.isStillValid() == true) {
+            return cacheState.data as ReturnType
+        } else if (cacheState?.let { it.eTag == null } == true) {
             cache -= spotifyRequest
         }
 
@@ -134,7 +138,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
 
                     handleResponse(document, cacheState, spotifyRequest, retry202) ?: run {
                         if (retryOnNull) {
-                            execute<ReturnType>(url, body, method, false, contentType)
+                            execute<ReturnType>(url, body, method, false, contentType, retryOnNull)
                         } else {
                             null
                         }
@@ -149,9 +153,12 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
                             method,
                             retry202,
                             contentType,
-                            true
+                            true,
+                            retryOnNull
                         )
-                    } else throw e
+                    } else {
+                        throw e
+                    }
                 }
             } as ReturnType
         } catch (e: CancellationException) {
@@ -174,8 +181,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         if (statusCode == HttpStatusCode.NotModified.value) {
             requireNotNull(cacheState?.eTag) { "304 status only allowed on Etag-able endpoints" }
             return cacheState?.data
-        }
-        else if (statusCode == HttpStatusCode.NoContent.value) {
+        } else if (statusCode == HttpStatusCode.NoContent.value) {
             return null
         }
 
@@ -183,10 +189,13 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
 
         document.headers.find { it.key.equals("Cache-Control", true) }?.also { cacheControlHeader ->
             if (api.useCache) {
-                cache[spotifyRequest] = (cacheState ?: CacheState(
-                    responseBody, document.headers
-                        .find { it.key.equals("ETag", true) }?.value
-                )).update(cacheControlHeader.value)
+                cache[spotifyRequest] = (
+                    cacheState ?: CacheState(
+                        responseBody,
+                        document.headers
+                            .find { it.key.equals("ETag", true) }?.value
+                    )
+                    ).update(cacheControlHeader.value)
             }
         }
 
@@ -206,7 +215,7 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         body: String? = null,
         method: HttpRequestMethod = HttpRequestMethod.GET,
         contentType: String? = null
-    ) = HttpConnection(
+    ) = HttpRequest(
         url,
         method,
         null,
@@ -223,8 +232,11 @@ internal class EndpointBuilder(private val path: String, api: GenericSpotifyApi)
 
     fun with(key: String, value: Any?): EndpointBuilder {
         if (value != null && (value !is String || value.isNotEmpty())) {
-            if (builder.toString() == base + path) builder.append("?")
-            else builder.append("&")
+            if (builder.toString() == base + path) {
+                builder.append("?")
+            } else {
+                builder.append("&")
+            }
             builder.append(key).append("=").append(value.toString())
         }
         return this
@@ -255,8 +267,9 @@ public class SpotifyCache {
     public fun clear(): Unit = cachedRequests.clear()
 
     private fun checkCache(request: SpotifyRequest) {
-        if (!request.api.useCache) clear()
-        else {
+        if (!request.api.useCache) {
+            clear()
+        } else {
             cachedRequests.entries.removeAll { !it.value.isStillValid() }
 
             val cacheLimit = request.api.spotifyApiOptions.cacheLimit

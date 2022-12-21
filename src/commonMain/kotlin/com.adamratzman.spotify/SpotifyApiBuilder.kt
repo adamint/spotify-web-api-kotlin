@@ -1,9 +1,10 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyApi.Companion.getCredentialedToken
-import com.adamratzman.spotify.http.HttpConnection
+import com.adamratzman.spotify.http.HttpRequest
 import com.adamratzman.spotify.http.HttpRequestMethod
+import com.adamratzman.spotify.http.HttpResponse
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.serialization.nonstrictJson
 import com.adamratzman.spotify.models.serialization.toObject
@@ -682,16 +683,19 @@ public class SpotifyApiBuilder(
 
     /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
-     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     * [AuthorizationType.Client] for client authentication, or otherwise [AuthorizationType.Application]
      */
     public suspend fun build(type: AuthorizationType): GenericSpotifyApi {
-        return if (type == AuthorizationType.CLIENT) buildClient()
-        else buildCredentialed()
+        return if (type == AuthorizationType.Client) {
+            buildClient()
+        } else {
+            buildCredentialed()
+        }
     }
 
     /**
      * Create a [SpotifyApi] instance with the given [SpotifyApiBuilder] parameters and the type -
-     * [AuthorizationType.CLIENT] for client authentication, or otherwise [AuthorizationType.APPLICATION]
+     * [AuthorizationType.Client] for client authentication, or otherwise [AuthorizationType.Application]
      */
     public fun buildRestAction(type: AuthorizationType): SpotifyRestAction<GenericSpotifyApi> = SpotifyRestAction {
         build(type)
@@ -703,8 +707,8 @@ public class SpotifyApiBuilder(
     public suspend fun buildPublic(): SpotifyAppApi = buildCredentialed()
 
     /**
-    * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
-    */
+     * Create a new [SpotifyAppApi] that only has access to *public* endpoints and data
+     */
     public fun buildPublicRestAction(): SpotifyRestAction<SpotifyAppApi> = SpotifyRestAction { buildPublic() }
 
     /**
@@ -754,14 +758,14 @@ public enum class AuthorizationType {
      *
      * [Spotify application settings page](https://developer.spotify.com/documentation/general/guides/app-settings/)
      */
-    CLIENT,
+    Client,
 
     /**
      * Authorization through application client id and secret, allowing access only to public endpoints and data
      *
      * [Spotify application settings page](https://developer.spotify.com/documentation/general/guides/app-settings/)
      */
-    APPLICATION;
+    Application;
 }
 
 /**
@@ -891,7 +895,7 @@ public class SpotifyClientApiBuilder(
                 require(clientId != null && clientSecret != null && redirectUri != null) { "You need to specify a valid clientId, clientSecret, and redirectUri in the credentials block!" }
 
                 val response = executeTokenRequest(
-                    HttpConnection(
+                    HttpRequest(
                         "https://accounts.spotify.com/api/token",
                         HttpRequestMethod.POST,
                         mapOf(
@@ -903,7 +907,9 @@ public class SpotifyClientApiBuilder(
                         "application/x-www-form-urlencoded",
                         listOf(),
                         null
-                    ), clientId, clientSecret
+                    ),
+                    clientId,
+                    clientSecret
                 )
 
                 SpotifyClientApi(
@@ -921,15 +927,17 @@ public class SpotifyClientApiBuilder(
                 // BadRequestException -> ServerResponseException
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
+                        e
+                    )
+                }
             }
             authorization.authorizationCode != null && authorization.pkceCodeVerifier != null -> try {
                 require(clientId != null && redirectUri != null) { "You need to specify a valid clientId and redirectUri in the credentials block!" }
 
-                val response = HttpConnection(
+                val response = HttpRequest(
                     "https://accounts.spotify.com/api/token",
                     HttpRequestMethod.POST,
                     mapOf(
@@ -959,10 +967,12 @@ public class SpotifyClientApiBuilder(
             } catch (e: Exception) {
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret, authCode=${authorization.authorizationCode})",
+                        e
+                    )
+                }
             }
             authorization.token != null -> SpotifyClientApi(
                 clientId = clientId,
@@ -990,7 +1000,7 @@ public class SpotifyClientApiBuilder(
             )
             else -> throw IllegalArgumentException(
                 "At least one of: authorizationCode, tokenString, or token must be provided " +
-                        "to build a SpotifyClientApi object"
+                    "to build a SpotifyClientApi object"
             )
         }
 
@@ -1069,10 +1079,12 @@ public class SpotifyAppApiBuilder(
             } catch (e: Exception) {
                 if ((e.cause as? ServerResponseException)?.response?.status?.value in 500..599) {
                     throw SpotifyException.BadRequestException("Spotify internal server error", e)
-                } else throw SpotifyException.AuthenticationException(
-                    "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)",
-                    e
-                )
+                } else {
+                    throw SpotifyException.AuthenticationException(
+                        "Invalid credentials provided in the login process (clientId=$clientId, clientSecret=$clientSecret)",
+                        e
+                    )
+                }
             }
         }
 
@@ -1136,6 +1148,7 @@ public class SpotifyUserAuthorization(
  * to avoid retrying at all, or set to null to keep retrying until success.
  * @param enableDebugMode Whether to enable debug mode (false by default). With debug mode, all response JSON will be outputted to console.
  * @param afterTokenRefresh An optional block to execute after token refresh has been completed.
+ * @param httpResponseSubscriber An optional suspending method to subscribe to successful http responses.
  */
 public data class SpotifyApiOptions(
     public var useCache: Boolean = true,
@@ -1154,5 +1167,6 @@ public data class SpotifyApiOptions(
     public var proxyBaseUrl: String? = null,
     public var retryOnInternalServerErrorTimes: Int? = 5,
     public var enableDebugMode: Boolean = false,
+    public var httpResponseSubscriber: (suspend (request: HttpRequest, response: HttpResponse) -> Unit)? = null,
     public var afterTokenRefresh: (suspend (GenericSpotifyApi) -> Unit)? = null
 )

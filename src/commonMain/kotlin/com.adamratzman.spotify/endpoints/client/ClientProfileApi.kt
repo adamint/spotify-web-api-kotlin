@@ -1,8 +1,7 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.client
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.endpoints.pub.UserApi
 import com.adamratzman.spotify.models.SpotifyUserInformation
@@ -18,8 +17,8 @@ public class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      * Get detailed profile information about the current user (including the current user’s username).
      *
      * The access token must have been issued on behalf of the current user.
-     * Reading the user’s email address requires the [SpotifyScope.USER_READ_EMAIL] scope;
-     * reading country and product subscription level requires the [SpotifyScope.USER_READ_PRIVATE] scope.
+     * Reading the user’s email address requires the [SpotifyScope.UserReadEmail] scope;
+     * reading country and product subscription level requires the [SpotifyScope.UserReadPrivate] scope.
      *
      * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
      *
@@ -27,17 +26,4 @@ public class ClientProfileApi(api: GenericSpotifyApi) : UserApi(api) {
      */
     public suspend fun getClientProfile(): SpotifyUserInformation =
         get(endpointBuilder("/me").toString()).toObject(SpotifyUserInformation.serializer(), api, json)
-
-    /**
-     * Get detailed profile information about the current user (including the current user’s username).
-     *
-     * The access token must have been issued on behalf of the current user.
-     * Reading the user’s email address requires the [SpotifyScope.USER_READ_EMAIL] scope;
-     * reading country and product subscription level requires the [SpotifyScope.USER_READ_PRIVATE] scope.
-     *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/)**
-     *
-     * @return Never-null [SpotifyUserInformation] object with possibly-null country, email, subscription and birthday fields
-     */
-    public fun getClientProfileRestAction(): SpotifyRestAction<SpotifyUserInformation> = SpotifyRestAction { getClientProfile() }
 }

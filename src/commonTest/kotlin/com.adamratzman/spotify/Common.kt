@@ -1,80 +1,31 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import kotlin.native.concurrent.ThreadLocal
-import kotlin.test.assertTrue
+import com.adamratzman.spotify.http.HttpRequest
+import com.adamratzman.spotify.http.HttpResponse
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlin.test.assertTrue
 
-val clientId = getEnvironmentVariable("SPOTIFY_CLIENT_ID")
-val clientSecret = getEnvironmentVariable("SPOTIFY_CLIENT_SECRET")
-val redirectUri = getEnvironmentVariable("SPOTIFY_REDIRECT_URI")
-val tokenString = getEnvironmentVariable("SPOTIFY_TOKEN_STRING")
+expect fun areLivePkceTestsEnabled(): Boolean
+expect fun arePlayerTestsEnabled(): Boolean
+expect fun getTestClientId(): String?
+expect fun getTestClientSecret(): String?
+expect fun getTestRedirectUri(): String?
+expect fun getTestTokenString(): String?
+expect fun isHttpLoggingEnabled(): Boolean
+expect suspend fun buildSpotifyApi(testClassQualifiedName: String, testName: String): GenericSpotifyApi?
+expect fun getResponseCacher(): ResponseCacher?
 
-// https://github.com/Kotlin/kotlinx.coroutines/issues/1996#issuecomment-728562784
-expect fun runBlockingTest(block: suspend CoroutineScope.() -> Unit)
-
-@ThreadLocal
-var instantiationCompleted: Boolean = false
-
-@ThreadLocal
-private lateinit var apiBacking: GenericSpotifyApi
-
-// https://github.com/Kotlin/kotlinx.coroutines/issues/706#issuecomment-429922811
-suspend fun buildSpotifyApi() = when {
-    tokenString?.isNotBlank() == true -> {
-        spotifyClientApi {
-            credentials {
-                clientId = com.adamratzman.spotify.clientId
-                clientSecret = com.adamratzman.spotify.clientSecret
-                redirectUri = com.adamratzman.spotify.redirectUri
-            }
-            authorization {
-                tokenString = com.adamratzman.spotify.tokenString
-            }
-        }.build().also { instantiationCompleted = true; apiBacking = it }
-    }
-    clientId?.isNotBlank() == true -> {
-        spotifyAppApi {
-            credentials {
-                clientId = com.adamratzman.spotify.clientId
-                clientSecret = com.adamratzman.spotify.clientSecret
-            }
-        }.build().also {
-            instantiationCompleted = true; apiBacking = it
-        }
-    }
-    else -> null.also { instantiationCompleted = true }
-}?.also { if (getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true") it.spotifyApiOptions.enableDebugMode = true }
-
-fun buildSpotifyApiSync() = when {
-    tokenString?.isNotBlank() == true -> {
-        spotifyClientApi {
-            credentials {
-                clientId = com.adamratzman.spotify.clientId
-                clientSecret = com.adamratzman.spotify.clientSecret
-                redirectUri = com.adamratzman.spotify.redirectUri
-            }
-            authorization {
-                tokenString = com.adamratzman.spotify.tokenString
-            }
-        }.buildRestAction().complete().also { instantiationCompleted = true; apiBacking = it }
-    }
-    clientId?.isNotBlank() == true -> {
-        spotifyAppApi {
-            credentials {
-                clientId = com.adamratzman.spotify.clientId
-                clientSecret = com.adamratzman.spotify.clientSecret
-            }
-        }.buildRestAction().complete().also {
-            instantiationCompleted = true; apiBacking = it
-        }
-    }
-    else -> null.also { instantiationCompleted = true }
-}?.also { if (getEnvironmentVariable("SPOTIFY_LOG_HTTP") == "true") it.spotifyApiOptions.enableDebugMode = true }
-
-expect fun getEnvironmentVariable(name: String): String?
-
-expect fun Exception.stackTrace()
+interface ResponseCacher {
+    val cachedResponsesDirectoryPath: String
+    fun cacheResponse(className: String, testName: String, responseNumber: Int, request: HttpRequest, response: HttpResponse)
+}
 
 suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline block: suspend () -> Unit) {
     val noExceptionMessage = "Expected ${T::class.simpleName} exception to be thrown, but no exception was thrown."
@@ -89,3 +40,19 @@ suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline bl
         )
     }
 }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestResult = runTest {
+    withContext(Dispatchers.Default) {
+        block()
+    }
+}
+
+@Serializable
+data class CachedResponse(val request: Request, val response: Response)
+
+@Serializable
+data class Request(val url: String, val method: String, val body: String? = null)
+
+@Serializable
+data class Response(val responseCode: Int, val headers: Map<String, String>, val body: String)

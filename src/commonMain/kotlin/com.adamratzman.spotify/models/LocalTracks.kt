@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
@@ -84,7 +84,7 @@ public data class LocalTrack(
         limit: Int? = null,
         offset: Int? = null,
         market: Market? = null
-    ): PagingObject<Track> = api.search.searchTrack(name, limit, offset, market)
+    ): PagingObject<Track> = api.search.searchTrack(name, limit = limit, offset = offset, market = market)
 
     /**
      * Search for this local track by name in Spotify's track catalog.

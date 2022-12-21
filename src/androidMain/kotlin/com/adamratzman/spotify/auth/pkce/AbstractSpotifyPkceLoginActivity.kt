@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.pkce
 
 import android.content.Intent
@@ -21,8 +21,8 @@ import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.utils.logToConsole
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
+import kotlin.random.Random
 
 /**
  * This class hooks into spotify-web-api-kotlin to provide PKCE authorization for Android application. Paired with [SpotifyDefaultCredentialStore] to easily store credentials.
@@ -142,7 +142,6 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                     IllegalStateException("Authorization code was null or blank.")
                 )
             } else {
-
                 try {
                     logToConsole("Building client PKCE api...")
                     setProgressBarVisible()

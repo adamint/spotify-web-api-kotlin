@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.models.AuthenticationError
@@ -23,26 +23,28 @@ public sealed class SpotifyException(message: String, cause: Throwable? = null) 
         SpotifyException(message, cause) {
         public constructor(message: String, cause: Throwable? = null) : this(message, null, null, cause)
         public constructor(error: ErrorObject?, cause: Throwable? = null) : this(
-            "Received Status Code ${error?.status}. Error cause: ${error?.message}" + (error?.reason?.let { ". Reason: ${error.reason}" }
-                ?: ""),
+            "Received Status Code ${error?.status}. Error cause: ${error?.message}" + (
+                error?.reason?.let { ". Reason: ${error.reason}" }
+                    ?: ""
+                ),
             error?.status,
             error?.reason,
             cause
         )
 
         public constructor(authenticationError: AuthenticationError) :
-                this(
-                    "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
-                    401
-                )
+            this(
+                "Authentication error: ${authenticationError.error}. Description: ${authenticationError.description}",
+                401
+            )
 
         public constructor(responseException: ResponseException) :
-                this(
-                    responseException.message ?: "Bad Request",
-                    responseException.response.status.value,
-                    null,
-                    responseException
-                )
+            this(
+                responseException.message ?: "Bad Request",
+                responseException.response.status.value,
+                null,
+                responseException
+            )
     }
 
     /**
@@ -56,7 +58,7 @@ public sealed class SpotifyException(message: String, cause: Throwable? = null) 
      */
     public class AuthenticationException(message: String, cause: Throwable? = null) : SpotifyException(message, cause) {
         public constructor(authenticationError: AuthenticationError?) :
-                this("Authentication error: ${authenticationError?.error}. Description: ${authenticationError?.description}")
+            this("Authentication error: ${authenticationError?.error}. Description: ${authenticationError?.description}")
     }
 
     /**
