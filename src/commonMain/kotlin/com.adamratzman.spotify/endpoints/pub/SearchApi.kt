@@ -44,8 +44,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         Artist("artist"),
         Playlist("playlist"),
         Show("show"),
-        Episode("episode"),
-        Audiobook("audiobook");
+        Episode("episode");
+        //Audiobook("audiobook"); // TODO Spotify API returns 502 when including this in a search
     }
 
     /**

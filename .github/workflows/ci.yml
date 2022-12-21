@@ -14,6 +14,7 @@ on:
 jobs:
   test_android_jvm_linux_trusted:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     environment: testing
     env:
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
@@ -39,9 +40,13 @@ jobs:
       with:
         name: code-coverage-report
         path: build/reports
-      if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
   test_android_jvm_linux_untrusted:
     runs-on: ubuntu-latest
+    if:
+      github.event_name == 'repository_dispatch' &&
+      github.event.client_payload.slash_command.sha != '' &&
+      contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.sha) &&
+      github.event.pull_request.head.repo.full_name != github.repository
     environment: testing
     env:
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
@@ -69,8 +74,3 @@ jobs:
         with:
           name: code-coverage-report
           path: build/reports
-        if:
-          github.event_name == 'repository_dispatch' &&
-          github.event.client_payload.slash_command.sha != '' &&
-          contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.sha) && 
-          github.event.pull_request.head.repo.full_name != github.repository
