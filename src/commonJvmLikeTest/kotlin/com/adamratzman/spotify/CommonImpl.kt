@@ -18,7 +18,19 @@ actual fun isHttpLoggingEnabled(): Boolean = System.getenv("SPOTIFY_LOG_HTTP") =
 actual fun arePlayerTestsEnabled(): Boolean = System.getenv("SPOTIFY_ENABLE_PLAYER_TESTS")?.toBoolean() == true
 actual fun areLivePkceTestsEnabled(): Boolean = System.getenv("VERBOSE_TEST_ENABLED")?.toBoolean() ?: false
 
+var hasInstantiatedApi: Boolean = false
+var backingApi: GenericSpotifyApi? = null
+
 actual suspend fun buildSpotifyApi(testClassQualifiedName: String, testName: String): GenericSpotifyApi? {
+    if (!hasInstantiatedApi) {
+        backingApi = buildSpotifyApiInternal()
+        hasInstantiatedApi = true
+    }
+
+    return backingApi;
+}
+
+private suspend fun buildSpotifyApiInternal(): GenericSpotifyApi? {
     val clientId = getTestClientId()
     val clientSecret = getTestClientSecret()
     val tokenString = getTestTokenString()
