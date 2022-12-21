@@ -389,9 +389,9 @@ fun MavenPublication.setupPom(publicationName: String) {
 
 // --- Publishing ---
 
-// Publishing credentials (user gradle.properties)
-val nexusUsername: String? = project.findProperty("NEXUS_USERNAME") as? String
-val nexusPassword: String? = project.findProperty("NEXUS_PASSWORD") as? String
+// Publishing credentials (environment variable)
+val nexusUsername: String? = System.getenv("NEXUS_USERNAME")
+val nexusPassword: String? = System.getenv("NEXUS_PASSWORD")
 
 
 fun PublishingExtension.registerPublishing() {
