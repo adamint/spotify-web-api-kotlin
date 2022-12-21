@@ -416,7 +416,6 @@ fun PublishingExtension.registerPublishing() {
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
-                println("username ${nexusUsername}")
                 username = nexusUsername
                 password = nexusPassword
             }
