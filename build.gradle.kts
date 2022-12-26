@@ -303,10 +303,6 @@ kotlin {
     }
 }
 
-publishing {
-    registerPublishing()
-}
-
 tasks {
     val dokkaHtml by getting(DokkaTask::class) {
         outputDirectory.set(projectDir.resolve("docs"))
