@@ -356,6 +356,11 @@ tasks {
     getByName("build").dependsOn(packForXcode)
 }
 
+val signingTasks = tasks.withType<Sign>()
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    dependsOn(signingTasks)
+}
+
 
 fun MavenPublication.setupPom(publicationName: String) {
     artifactId = artifactId.replace("-web", "")
