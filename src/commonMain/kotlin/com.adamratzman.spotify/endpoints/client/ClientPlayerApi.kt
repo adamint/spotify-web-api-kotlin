@@ -159,7 +159,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return try {
             val obj =
                 catch {
-                    get(
+                    getNullable(
                         endpointBuilder("/me/player/currently-playing")
                             .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
                             .with("market", market?.name)
