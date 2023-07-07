@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 import kotlinx.serialization.builtins.ListSerializer
 
 /**
@@ -123,7 +124,7 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getArtistTopTracks(artist: String, market: Market = Market.US): List<Track> = get(
         endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/top-tracks").with(
             "country",
-            market.name
+            market.getSpotifyId()
         ).toString()
     ).toInnerArray(ListSerializer(Track.serializer()), "tracks", json)
 

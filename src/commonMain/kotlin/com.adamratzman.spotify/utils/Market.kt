@@ -1829,3 +1829,7 @@ public enum class Market(
         NOT_USED
     }
 }
+
+internal fun Market.getSpotifyId(): String {
+    return if (this == Market.FROM_TOKEN) this.marketName else this.name
+}

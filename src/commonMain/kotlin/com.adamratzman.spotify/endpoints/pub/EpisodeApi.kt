@@ -13,6 +13,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 
 /**
  * Endpoints for retrieving information about one or more episodes from the Spotify catalog.
@@ -38,7 +39,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getEpisode(id: String, market: Market): Episode? {
         return catch {
             get(
-                endpointBuilder("/episodes/${EpisodeUri(id).id.encodeUrl()}").with("market", market.name).toString()
+                endpointBuilder("/episodes/${EpisodeUri(id).id.encodeUrl()}").with("market", market.getSpotifyId()).toString()
             ).toObject(Episode.serializer(), api, json)
         }
     }
@@ -67,7 +68,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return bulkStatelessRequest(50, ids.toList()) { chunk ->
             get(
                 endpointBuilder("/episodes").with("ids", chunk.joinToString(",") { EpisodeUri(it).id.encodeUrl() })
-                    .with("market", market.name).toString()
+                    .with("market", market.getSpotifyId()).toString()
             ).toObject(EpisodeList.serializer(), api, json).episodes
         }.flatten()
     }
