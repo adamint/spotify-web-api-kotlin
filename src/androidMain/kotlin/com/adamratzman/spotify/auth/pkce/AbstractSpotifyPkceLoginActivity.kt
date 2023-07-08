@@ -49,6 +49,12 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     public open val state: String = Random.nextLong().toString()
     public open val options: ((SpotifyApiOptions).() -> Unit)? = null
 
+    /**
+     * Custom logic to invoke when loading begins ([isLoading] is true) or ends ([isLoading] is false).
+     * You can update the view here.
+     */
+    public open fun setLoadingContent(isLoading: Boolean) = {}
+
     private lateinit var authorizationIntent: Intent
     private lateinit var credentialStore: SpotifyDefaultCredentialStore
 
@@ -144,7 +150,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
             } else {
                 try {
                     logToConsole("Building client PKCE api...")
-                    setProgressBarVisible()
+                    setLoadingContent(true)
                     val api = spotifyClientPkceApi(
                         clientId = clientId,
                         redirectUri = redirectUri,
@@ -158,33 +164,25 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                     logToConsole("Successfully built client PKCE api")
                     if (api.token.accessToken.isNotBlank()) {
                         credentialStore.spotifyToken = api.token
-                        setProgressBarInvisible()
+                        setLoadingContent(false)
                         logToConsole("Successful PKCE auth. Executing success handler..")
                         onSuccess(api)
                     } else {
-                        setProgressBarInvisible()
+                        setLoadingContent(false)
                         logToConsole("Failed PKCE auth - API token was blank. Executing success handler..")
                         onFailure(
                             IllegalArgumentException("API token was blank")
                         )
                     }
                 } catch (exception: Exception) {
-                    setProgressBarInvisible()
+                    setLoadingContent(false)
                     logToConsole("Got error in authorization... executing error handler")
                     onFailure(exception)
                 }
             }
 
-            setProgressBarInvisible()
+            setLoadingContent(false)
             finish()
         }
-    }
-
-    private fun setProgressBarInvisible() {
-        findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.INVISIBLE
-    }
-
-    private fun setProgressBarVisible() {
-        findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.VISIBLE
     }
 }
