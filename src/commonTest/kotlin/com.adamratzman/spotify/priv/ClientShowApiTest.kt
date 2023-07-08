@@ -38,7 +38,8 @@ class ClientShowApiTest : AbstractTest<SpotifyClientApi>() {
         assertEquals(listOf("Freakonomics Radio"), api.shows.getShows("6z4NLXyHPga1UmSJsPK7G1").map { it?.name })
     }
 
-    @Test
+    //@Test
+    //todo re-enable. Flaky test disabled due to infrequent spotify 500s
     fun testGetShowEpisodes(): TestResult = runTestOnDefaultDispatcher {
         buildApi<SpotifyClientApi>(::testGetShowEpisodes.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher

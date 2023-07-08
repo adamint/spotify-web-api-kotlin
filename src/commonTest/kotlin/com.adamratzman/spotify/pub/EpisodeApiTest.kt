@@ -26,7 +26,8 @@ class EpisodeApiTest : AbstractTest<GenericSpotifyApi>() {
         )
     }
 
-    @Test
+    //@Test
+    //todo re-enable. Flaky test disabled due to infrequent spotify 500s
     fun testGetEpisodes(): TestResult = runTestOnDefaultDispatcher {
         buildApi(::testGetEpisodes.name)
 
