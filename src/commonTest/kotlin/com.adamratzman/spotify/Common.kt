@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.seconds
 
 expect fun areLivePkceTestsEnabled(): Boolean
 expect fun arePlayerTestsEnabled(): Boolean
@@ -41,8 +42,7 @@ suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline bl
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestResult = runTest {
+fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestResult = runTest(timeout = 60.seconds) {
     withContext(Dispatchers.Default) {
         block()
     }

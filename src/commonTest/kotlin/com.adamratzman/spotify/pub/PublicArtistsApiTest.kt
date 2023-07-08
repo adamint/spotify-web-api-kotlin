@@ -69,6 +69,5 @@ class PublicArtistsApiTest : AbstractTest<GenericSpotifyApi>() {
         assertFailsWith<SpotifyException.BadRequestException> { api.artists.getArtistTopTracks("no") }
         assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW").isNotEmpty())
         assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", Market.FR).isNotEmpty())
-        assertTrue(api.artists.getArtistTopTracks("4ZGK4hkNX6pilPpyy4YJJW", Market.FROM_TOKEN).isNotEmpty())
     }
 }

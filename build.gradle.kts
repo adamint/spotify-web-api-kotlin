@@ -83,7 +83,7 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 kotlin {
     explicitApiWarning()
 
-    android {
+    androidTarget {
         compilations.all { kotlinOptions.jvmTarget = "1.8" }
 
         mavenPublication { setupPom(artifactId) }

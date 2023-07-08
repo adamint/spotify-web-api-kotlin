@@ -23,6 +23,7 @@ class ClientShowApiTest : AbstractTest<SpotifyClientApi>() {
 
         assertNull(api.shows.getShow("invalid-show"))
         assertEquals("Freakonomics Radio", api.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1")?.name)
+        assertEquals("Freakonomics Radio", api.shows.getShow("spotify:show:6z4NLXyHPga1UmSJsPK7G1", Market.FROM_TOKEN)?.name)
     }
 
     @Test

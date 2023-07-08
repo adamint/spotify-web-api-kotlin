@@ -24,7 +24,7 @@ public open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return All publicly-available information about the user
      */
-    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch {
+    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch(/* some incorrect user ids will return 500 */ catchInternalServerError = true) {
         get(endpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
             .toObject(SpotifyPublicUser.serializer(), api, json)
     }
