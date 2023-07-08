@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth
 
 import android.annotation.SuppressLint
@@ -93,8 +93,11 @@ public class SpotifyDefaultCredentialStore(
             return if (expiry == -1L) null else expiry
         }
         set(value) {
-            if (value == null) encryptedPreferences.edit().remove(SpotifyTokenExpiryKey).apply()
-            else encryptedPreferences.edit().putLong(SpotifyTokenExpiryKey, value).apply()
+            if (value == null) {
+                encryptedPreferences.edit().remove(SpotifyTokenExpiryKey).apply()
+            } else {
+                encryptedPreferences.edit().putLong(SpotifyTokenExpiryKey, value).apply()
+            }
         }
 
     /**
@@ -138,10 +141,10 @@ public class SpotifyDefaultCredentialStore(
 
             val refreshToken = spotifyRefreshToken
             return Token(
-                accessToken = accessToken,
-                tokenType = "Bearer",
-                expiresIn = (tokenExpiresAt - System.currentTimeMillis()).toInt() / 1000,
-                refreshToken = refreshToken,
+                accessToken,
+                "Bearer",
+                (tokenExpiresAt - System.currentTimeMillis()).toInt() / 1000,
+                refreshToken,
                 scopeString = spotifyScopeString
             )
         }
@@ -187,7 +190,9 @@ public class SpotifyDefaultCredentialStore(
                     spotifyToken = newToken
                     newToken
                 }
-            } else return null
+            } else {
+                return null
+            }
 
         return runBlocking {
             spotifyClientPkceApi(

@@ -16,8 +16,8 @@ env:
   SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
   SPOTIFY_TOKEN_STRING: ${{ github.event.inputs.spotify_test_client_token }}
   SPOTIFY_REDIRECT_URI: ${{ github.event.inputs.spotify_test_redirect_uri }}
-  ORG_GRADLE_PROJECT_NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-  ORG_GRADLE_PROJECT_NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+  NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+  NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
   ORG_GRADLE_PROJECT_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
   ORG_GRADLE_PROJECT_SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
   SPOTIFY_API_PUBLISH_VERSION: ${{ github.event.inputs.release_version }}
@@ -36,11 +36,11 @@ jobs:
       - name: Install curl
         run: sudo apt-get install -y curl libcurl4-openssl-dev
       - name: Verify Android
-        run: gradle testDebugUnitTest
+        run: ./gradlew testDebugUnitTest
       - name: Verify JVM/JS
-        run: gradle jvmTest jsTest
+        run: ./gradlew jvmTest
       - name: Publish JVM/Linux/Android
-        run: gradle publishKotlinMultiplatformPublicationToNexusRepository publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository publishJsPublicationToNexusRepository
+        run: ./gradlew publishKotlinMultiplatformPublicationToNexusRepository publishJvmPublicationToNexusRepository publishAndroidPublicationToNexusRepository publishLinuxX64PublicationToNexusRepository publishJsPublicationToNexusRepository
       - name: Archive test results
         uses: actions/upload-artifact@v2
         with:
@@ -59,8 +59,8 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: Publish macOS/tvOS/iOS
-        run: gradle publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishTvosX64PublicationToNexusRepository
+      - name: Publish macOS/iOS
+        run: ./gradlew publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishIosArm64PublicationToNexusRepository
   release_windows:
     runs-on: windows-latest
     environment: release
@@ -75,7 +75,7 @@ jobs:
           java-version: '11'
       - run: choco install curl
       - name: Publish windows
-        run: gradle publishMingwX64PublicationToNexusRepository
+        run: ./gradlew publishMingwX64PublicationToNexusRepository
   release_docs:
     runs-on: ubuntu-latest
     environment: release
@@ -88,7 +88,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Build docs
-        run: gradle dokkaHtml
+        run: ./gradlew dokkaHtml
       - name: Push docs to docs repo
         uses: cpina/github-action-push-to-another-repository@main
         env:

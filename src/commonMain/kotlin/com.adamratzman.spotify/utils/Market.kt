@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyAppApi
@@ -1828,4 +1828,8 @@ public enum class Market(
          */
         NOT_USED
     }
+}
+
+internal fun Market.getSpotifyId(): String {
+    return if (this == Market.FROM_TOKEN) this.marketName else this.name
 }

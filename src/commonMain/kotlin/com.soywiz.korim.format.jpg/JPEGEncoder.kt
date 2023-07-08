@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.soywiz.korim.format.jpg
 
 import com.soywiz.kmem.ByteArrayBuilder
@@ -493,7 +493,8 @@ public class JPEGEncoder(quality: Int = 50) {
             bmp.extractBytes(),
             bmp.width,
             bmp.height
-        ), quality
+        ),
+        quality
     )
 
     private fun encode(image: ImageData, quality: Int? = null): ByteArray {
@@ -710,8 +711,14 @@ public class JPEGEncoder(quality: Int = 50) {
         )
 
         private val AASF_TABLE = floatArrayOf(
-            1.0f, 1.387039845f, 1.306562965f, 1.175875602f,
-            1.0f, 0.785694958f, 0.541196100f, 0.275899379f
+            1.0f,
+            1.387039845f,
+            1.306562965f,
+            1.175875602f,
+            1.0f,
+            0.785694958f,
+            0.541196100f,
+            0.275899379f
         )
 
         public fun encode(bmp: Bitmap32, quality: Int = 50): ByteArray {

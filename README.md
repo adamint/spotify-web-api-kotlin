@@ -388,33 +388,8 @@ APIs available only in `SpotifyClientApi` and `SpotifyImplicitGrantApi` instance
 
 ### Java
 This library has first-class support for Java! You have two choices when using this library: async-only with Kotlin
-suspend functions (using SpotifyContinuation), or by using the `SpotifyRestAction` class. Using `SpotifyRestAction`s are 
-recommended.
+suspend functions (using SpotifyContinuation).
 
-#### What is the SpotifyRestAction class and how do I use it?
-Abstracting requests into a `SpotifyRestAction` class allows for a lot of flexibility in sending and receiving requests.
-This class includes options for asynchronous and blocking execution in all endpoints. However,
-due to this, you **must** call one of the provided methods in order for the call
-to execute! The `SpotifyRestAction` provides many methods and fields for use, including blocking and asynchronous ones. For example,
-- `hasRun()` tells you whether the rest action has been *started*
-- `hasCompleted()` tells you whether this rest action has been fully executed and *completed*
-- `complete()` blocks the current thread and returns the result
-- `suspendComplete(context: CoroutineContext = Dispatchers.Default)` switches to given context, invokes the supplier, and synchronously retrieves the result.
-- `suspendQueue()` suspends the coroutine, invokes the supplier asynchronously, and resumes with the result
-- `queue()` executes and immediately returns
-- `queue(consumer: (T) -> Unit)` executes the provided callback as soon as the request
-  is asynchronously evaluated
-- `queueAfter(quantity: Int, timeUnit: TimeUnit, consumer: (T) -> Unit)` executes the
-  provided callback after the provided time. As long as supplier execution is less than the provided
-  time, this will likely be accurate within a few milliseconds.
-- `asFuture()` transforms the supplier into a `CompletableFuture` (only JVM)
-
-Here's an example of how easy it is to use `spotify-web-api-kotlin` with a `SpotifyRestAction`:
-```java
-var api = SpotifyApiBuilderKt.spotifyAppApi(Const.clientId, Const.clientSecret).buildRestAction(true).complete();
-var album = api.getAlbums().getAlbumRestAction("spotify:album:0b23AHutIA1BOW0u1dZ6wM", null).complete();
-System.out.println("Album name is: " + album.getName());
-```
 
 #### Integrating with Kotlin suspend functions via Java `Continuation`s
 Unfortunately, coroutines don't play very nicely with Java code. Fortunately, however, we provide a wrapper around Kotlin's 

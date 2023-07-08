@@ -1,8 +1,7 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyRestAction
 import com.adamratzman.spotify.http.SpotifyEndpoint
 import com.adamratzman.spotify.models.SpotifyPublicUser
 import com.adamratzman.spotify.models.UserUri
@@ -25,20 +24,8 @@ public open class UserApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @return All publicly-available information about the user
      */
-    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch {
+    public suspend fun getProfile(user: String): SpotifyPublicUser? = catch(/* some incorrect user ids will return 500 */ catchInternalServerError = true) {
         get(endpointBuilder("/users/${UserUri(user).id.encodeUrl()}").toString())
             .toObject(SpotifyPublicUser.serializer(), api, json)
     }
-
-    /**
-     * Get public profile information about a Spotify user.
-     *
-     * **[Api Reference](https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/)**
-     *
-     * @param user The user’s Spotify user ID.
-     *
-     * @return All publicly-available information about the user
-     */
-    public fun getProfileRestAction(user: String): SpotifyRestAction<SpotifyPublicUser?> =
-        SpotifyRestAction { getProfile(user) }
 }

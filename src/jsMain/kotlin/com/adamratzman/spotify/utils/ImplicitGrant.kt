@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 @file:Suppress("unused")
 
 package com.adamratzman.spotify.utils
@@ -22,8 +22,8 @@ public fun parseSpotifyCallbackHashToToken(hashString: String): Token {
     val hash = URLSearchParams(hashString)
 
     return Token(
-            hash.get("access_token") ?: throw IllegalStateException("access_token is not part of the hash!"),
-            hash.get("token_type") ?: throw IllegalStateException("token_type is not part of the hash!"),
-            hash.get("expires_in")?.toIntOrNull() ?: throw IllegalStateException("expires_in is not part of the hash!")
+        hash.get("access_token") ?: throw IllegalStateException("access_token is not part of the hash!"),
+        hash.get("token_type") ?: throw IllegalStateException("token_type is not part of the hash!"),
+        hash.get("expires_in")?.toIntOrNull() ?: throw IllegalStateException("expires_in is not part of the hash!")
     )
 }

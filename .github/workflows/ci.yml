@@ -1,17 +1,15 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: CI Test Workflow
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ main, dev, dev/** ]
   pull_request:
-    branches: [ master, dev ]
+    branches: [ main, dev, dev/** ]
 
 jobs:
-  test_android_jvm_linux:
+  test_android_jvm_linux_trusted:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     environment: testing
     env:
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
@@ -26,39 +24,13 @@ jobs:
         java-version: '11'
     - name: Install curl
       run: sudo apt-get install -y curl libcurl4-openssl-dev
-    - name: Test secret
-      run: echo "client id secret is $SPOTIFY_CLIENT_ID"
     - name: Test android
       run: ./gradlew testDebugUnitTest
     - name: Test jvm
       run: ./gradlew jvmTest
-    - name: Test linux
-      run: ./gradlew linuxX64Test
     - name: Archive test results
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: code-coverage-report
         path: build/reports
-      if: always()
-  test_mac:
-    runs-on: macos-latest
-    environment: testing
-    env:
-      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@v2
-    - name: Install java 11
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
-    - name: Test mac
-      run: gradle macosX64Test
-    - name: Archive test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: code-coverage-report
-        path: build/reports
-      if: always()

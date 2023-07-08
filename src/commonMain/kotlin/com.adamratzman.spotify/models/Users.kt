@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyScope
@@ -9,18 +9,18 @@ import kotlinx.serialization.Serializable
  * Private information about a Spotify user. Each field may require a specific scope.
  *
  * @param country The country of the user, as set in the user’s account profile. An ISO 3166-1 alpha-2
- * country code. This field is only available when the current user has granted access to the [SpotifyScope.USER_READ_PRIVATE] scope.
+ * country code. This field is only available when the current user has granted access to the [SpotifyScope.UserReadPrivate] scope.
  * @param displayName The name displayed on the user’s profile. null if not available.
  * @param email The user’s email address, as entered by the user when creating their account. Important! This email
  * address is unverified; there is no proof that it actually belongs to the user. This field is only
- * available when the current user has granted access to the [SpotifyScope.USER_READ_EMAIL] scope.
+ * available when the current user has granted access to the [SpotifyScope.UserReadEmail] scope.
  * @param followers Information about the followers of the user.
  * @param href A link to the Web API endpoint for this user.
  * @param id The Spotify user ID for the user
  * @param images The user’s profile image.
  * @param product The user’s Spotify subscription level: “premium”, “free”, etc.
  * (The subscription level “open” can be considered the same as “free”.) This field is only available when the
- * current user has granted access to the [SpotifyScope.USER_READ_PRIVATE] scope.
+ * current user has granted access to the [SpotifyScope.UserReadPrivate] scope.
  * @param type The object type: “user”
  */
 @Serializable

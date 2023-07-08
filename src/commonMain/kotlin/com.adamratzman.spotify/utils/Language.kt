@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import kotlinx.serialization.Serializable
@@ -18,8 +18,8 @@ import kotlinx.serialization.Serializable
  * <span style="color: darkgreen;">// List all the language codes.</span>
  * for (LanguageCode code : LanguageCode.values())
  * {
- * <span style="color: darkgreen;">// For example, "[ar] Arabic" is printed.</span>
- * System.out.format(<span style="color: darkred;">"[%s] %s\n"</span>, code, code.[.getName]);
+ * <span style="color: darkgreen;">// For examp LE, "[ar] Arabic" is printed.</span>
+ * System.out.format(<span style="color: darkred;">"[%s] %s\n"</spa N>, co DE, code.[.getName]);
  * }
  *
  * <span style="color: darkgreen;">// Get a LanguageCode instance by ISO 639-1 code.</span>
@@ -52,587 +52,704 @@ public enum class Language {
      * [Afar](http://en.wikipedia.org/wiki/Afar_language)
      * ([aar][LanguageAlpha3Code.aar]).
      */
-    aa,
+    AA,
+
     /**
      * [Abkhaz](http://en.wikipedia.org/wiki/Abkhaz_language)
      * ([abk][LanguageAlpha3Code.abk]).
      */
-    ab,
+    AB,
+
     /**
      * [Avestan](http://en.wikipedia.org/wiki/Avestan_language)
      * ([ave][LanguageAlpha3Code.ave]).
      */
-    ae,
+    AE,
+
     /**
      * [Afrikaans](http://en.wikipedia.org/wiki/Afrikaans_language)
      * ([afr][LanguageAlpha3Code.afr]).
      */
-    af,
+    AF,
+
     /**
      * [Akan](http://en.wikipedia.org/wiki/Akan_language)
      * ([aka][LanguageAlpha3Code.aka]).
      */
-    ak,
+    AK,
+
     /**
      * [Amharic](http://en.wikipedia.org/wiki/Amharic_language)
      * ([amh][LanguageAlpha3Code.amh]).
      */
-    am,
+    AM,
+
     /**
      * [Aragonese](http://en.wikipedia.org/wiki/Aragonese_language)
      * ([arg][LanguageAlpha3Code.arg]).
      */
-    an,
+    AN,
+
     /**
      * [Arabic](http://en.wikipedia.org/wiki/Arabic_language)
      * ([ara][LanguageAlpha3Code.ara]).
      */
-    ar,
+    AR,
+
     /**
      * [Assamese](http://en.wikipedia.org/wiki/Assamese_language)
      * ([asm][LanguageAlpha3Code.asm]).
      */
-    `as`,
+    AS,
+
     /**
      * [Avaric](http://en.wikipedia.org/wiki/Avar_language)
      * ([ava][LanguageAlpha3Code.ava]).
      */
-    av,
+    AV,
+
     /**
      * [Aymara](http://en.wikipedia.org/wiki/Aymara_language)
      * ([aym][LanguageAlpha3Code.aym]).
      */
-    ay,
+    AY,
+
     /**
      * [Azerbaijani](http://en.wikipedia.org/wiki/Azerbaijani_language)
      * ([aze][LanguageAlpha3Code.aze]).
      */
-    az,
+    AZ,
+
     /**
      * [Bashkir](http://en.wikipedia.org/wiki/Bashkir_language)
      * ([bak][LanguageAlpha3Code.bak]).
      */
-    ba,
+    BA,
+
     /**
      * [Belarusian](http://en.wikipedia.org/wiki/Belarusian_language)
      * ([bel][LanguageAlpha3Code.bel]).
      */
-    be,
+    BE,
+
     /**
      * [Bulgarian](http://en.wikipedia.org/wiki/Bulgarian_language)
      * ([bul][LanguageAlpha3Code.bul]).
      */
-    bg,
+    BG,
+
     /**
      * [Bihari](http://en.wikipedia.org/wiki/Bihari_languages)
      * ([bih][LanguageAlpha3Code.bih]).
      */
-    bh,
+    BH,
+
     /**
      * [Bislama](http://en.wikipedia.org/wiki/Bislama_language)
      * ([bis][LanguageAlpha3Code.bis]).
      */
-    bi,
+    BI,
+
     /**
      * [Bambara](http://en.wikipedia.org/wiki/Bambara_language)
      * ([bam][LanguageAlpha3Code.bam]).
      */
-    bm,
+    BM,
+
     /**
      * [Bengali](http://en.wikipedia.org/wiki/Bengali_language)
      * ([ben][LanguageAlpha3Code.ben]).
      */
-    bn,
+    BN,
+
     /**
      * [Tibetan](http://en.wikipedia.org/wiki/Standard_Tibetan)
-     * ([bod][LanguageAlpha3Code.bod], [tib][LanguageAlpha3Code.tib]).
+     * ([bod][LanguageAlpha3Code.bo D], [tib][LanguageAlpha3Code.tib]).
      */
-    bo,
+    BO,
+
     /**
      * [Breton](http://en.wikipedia.org/wiki/Breton_language)
      * ([bre][LanguageAlpha3Code.bre]).
      */
-    br,
+    BR,
+
     /**
      * [Bosnian](http://en.wikipedia.org/wiki/Bosnian_language)
      * ([bos][LanguageAlpha3Code.bos]).
      */
-    bs,
+    BS,
+
     /**
      * [Catalan](http://en.wikipedia.org/wiki/Catalan_language)
      * ([cat][LanguageAlpha3Code.cat]).
      */
-    ca,
+    CA,
+
     /**
      * [Chechen](http://en.wikipedia.org/wiki/Chechen_language)
      * ([che][LanguageAlpha3Code.che]).
      */
-    ce,
+    CE,
+
     /**
      * [Chamorro](http://en.wikipedia.org/wiki/Chamorro_language)
      * ([cha][LanguageAlpha3Code.cha]).
      */
-    ch,
+    CH,
+
     /**
      * [Corsican](http://en.wikipedia.org/wiki/Corsican_language)
      * ([cos][LanguageAlpha3Code.cos]).
      */
-    co,
+    CO,
+
     /**
      * [Cree](http://en.wikipedia.org/wiki/Cree_language)
      * ([cre][LanguageAlpha3Code.cre]).
      */
-    cr,
+    CR,
+
     /**
      * [Czech](http://en.wikipedia.org/wiki/Czech_language)
-     * ([ces][LanguageAlpha3Code.ces], [cze][LanguageAlpha3Code.cze]).
+     * ([ces][LanguageAlpha3Code.ce S], [cze][LanguageAlpha3Code.cze]).
      */
-    cs,
+    CS,
+
     /**
      * [Church Slavonic](http://en.wikipedia.org/wiki/Old_Church_Slavonic)
      * ([chu][LanguageAlpha3Code.chu]).
      */
-    cu,
+    CU,
+
     /**
      * [Chuvash](http://en.wikipedia.org/wiki/Chuvash_language)
      * ([chv][LanguageAlpha3Code.chv]).
      */
-    cv,
+    CV,
+
     /**
      * [Welsh](http://en.wikipedia.org/wiki/Welsh_language)
-     * ([cym][LanguageAlpha3Code.cym], [wel][LanguageAlpha3Code.wel]).
+     * ([cym][LanguageAlpha3Code.cy M], [wel][LanguageAlpha3Code.wel]).
      */
-    cy,
+    CY,
+
     /**
      * [Danish](http://en.wikipedia.org/wiki/Danish_language)
      * ([dan][LanguageAlpha3Code.dan]).
      */
-    da,
+    DA,
+
     /**
      * [German](http://en.wikipedia.org/wiki/German_language)
-     * ([deu][LanguageAlpha3Code.deu], [ger][LanguageAlpha3Code.ger]).
+     * ([deu][LanguageAlpha3Code.de U], [ger][LanguageAlpha3Code.ger]).
      */
-    de,
+    DE,
+
     /**
      * [Dhivehi](http://en.wikipedia.org/wiki/Dhivehi_language)
      * ([div][LanguageAlpha3Code.div]).
      */
-    dv,
+    DV,
+
     /**
      * [Dzongkha](http://en.wikipedia.org/wiki/Dzongkha_language)
      * ([dzo][LanguageAlpha3Code.dzo]).
      */
-    dz,
+    DZ,
+
     /**
      * [Ewe](http://en.wikipedia.org/wiki/Ewe_language)
      * ([ewe][LanguageAlpha3Code.ewe]).
      */
-    ee,
+    EE,
+
     /**
      * [Greek](http://en.wikipedia.org/wiki/Greek_language)
-     * ([ell][LanguageAlpha3Code.ell], [gre][LanguageAlpha3Code.gre]).
+     * ([ell][LanguageAlpha3Code.el L], [gre][LanguageAlpha3Code.gre]).
      */
-    el,
+    EL,
+
     /**
      * [English](http://en.wikipedia.org/wiki/English_language)
      * ([eng][LanguageAlpha3Code.eng]).
      */
-    en,
+    EN,
+
     /**
      * [Esperanto](http://en.wikipedia.org/wiki/Esperanto)
      * ([epo][LanguageAlpha3Code.epo]).
      */
-    eo,
+    EO,
+
     /**
      * [Spanish](http://en.wikipedia.org/wiki/Spanish_language)
      * ([spa][LanguageAlpha3Code.spa]).
      */
-    es,
+    ES,
+
     /**
      * [Estonian](http://en.wikipedia.org/wiki/Estonian_language)
      * ([est][LanguageAlpha3Code.est]).
      */
-    et,
+    ET,
+
     /**
      * [Basque](http://en.wikipedia.org/wiki/Basque_language)
-     * ([eus][LanguageAlpha3Code.eus], [baq][LanguageAlpha3Code.baq]).
+     * ([eus][LanguageAlpha3Code.eu S], [baq][LanguageAlpha3Code.baq]).
      */
-    eu,
+    EU,
+
     /**
      * [Persian](http://en.wikipedia.org/wiki/Persian_language)
-     * ([fas][LanguageAlpha3Code.fas], [per][LanguageAlpha3Code.per]).
+     * ([fas][LanguageAlpha3Code.fa S], [per][LanguageAlpha3Code.per]).
      */
-    fa,
+    FA,
+
     /**
      * [Fula](http://en.wikipedia.org/wiki/Fula_language)
      * ([ful][LanguageAlpha3Code.ful]).
      */
-    ff,
+    FF,
+
     /**
      * [Finnish](http://en.wikipedia.org/wiki/Finnish_language)
      * ([fin][LanguageAlpha3Code.fin]).
      */
-    fi,
+    FI,
+
     /**
      * [Fijian](http://en.wikipedia.org/wiki/Fijian_language)
      * ([fij][LanguageAlpha3Code.fij]).
      */
-    fj,
+    FJ,
+
     /**
      * [Faroese](http://en.wikipedia.org/wiki/Faroese_language)
      * ([fao][LanguageAlpha3Code.fao]).
      */
-    fo,
+    FO,
+
     /**
      * [French](http://en.wikipedia.org/wiki/French_language)
-     * ([fra][LanguageAlpha3Code.fra], [fre][LanguageAlpha3Code.fre]).
+     * ([fra][LanguageAlpha3Code.fr A], [fre][LanguageAlpha3Code.fre]).
      */
-    fr,
+    FR,
+
     /**
      * [West Frisian](http://en.wikipedia.org/wiki/West_Frisian_language)
      * ([fry][LanguageAlpha3Code.fry]).
      */
-    fy,
+    FY,
+
     /**
      * [Irish](http://en.wikipedia.org/wiki/Irish_language)
      * ([gle][LanguageAlpha3Code.gle]).
      */
-    ga,
+    GA,
+
     /**
      * [Scottish Gaelic](http://en.wikipedia.org/wiki/Scottish_Gaelic_language)
      * ([gla][LanguageAlpha3Code.gla]).
      */
-    gd,
+    GD,
+
     /**
      * [Galician](http://en.wikipedia.org/wiki/Galician_language)
      * ([glg][LanguageAlpha3Code.glg]).
      */
-    gl,
+    GL,
+
     /**
      * [Guaran](http://en.wikipedia.org/wiki/Guaran%C3%AD_language)
      * ([grn][LanguageAlpha3Code.grn]).
      */
-    gn,
+    GN,
+
     /**
      * [Gujarati](http://en.wikipedia.org/wiki/Gujarati_language)
      * ([guj][LanguageAlpha3Code.guj]).
      */
-    gu,
+    GU,
+
     /**
      * [Manx](http://en.wikipedia.org/wiki/Manx_language)
      * ([glv][LanguageAlpha3Code.glv]).
      */
-    gv,
+    GV,
+
     /**
      * [Hausa](http://en.wikipedia.org/wiki/Hausa_language)
      * ([hau][LanguageAlpha3Code.hau]).
      */
-    ha,
+    HA,
+
     /**
      * [Hebrew](http://en.wikipedia.org/wiki/Hebrew_language)
      * ([heb][LanguageAlpha3Code.heb]).
      */
-    he,
+    HE,
+
     /**
      * [Hindi](http://en.wikipedia.org/wiki/Hindi)
      * ([hin][LanguageAlpha3Code.hin]).
      */
-    hi,
+    HI,
+
     /**
      * [Hiri Motu](http://en.wikipedia.org/wiki/Hiri_Motu_language)
      * ([hmo][LanguageAlpha3Code.hmo]).
      */
-    ho,
+    HO,
+
     /**
      * [Croatian](http://en.wikipedia.org/wiki/Croatian_language)
      * ([hrv][LanguageAlpha3Code.hrv]).
      */
-    hr,
+    HR,
+
     /**
      * [Haitian](http://en.wikipedia.org/wiki/Haitian_Creole_language)
      * ([hat][LanguageAlpha3Code.hat]).
      */
-    ht,
+    HT,
+
     /**
      * [Hungarian](http://en.wikipedia.org/wiki/Hungarian_language)
      * ([hun][LanguageAlpha3Code.hun]).
      */
-    hu,
+    HU,
+
     /**
      * [Armenian](http://en.wikipedia.org/wiki/Armenian_language)
-     * ([hye][LanguageAlpha3Code.hye], [arm][LanguageAlpha3Code.arm]).
+     * ([hye][LanguageAlpha3Code.hy E], [arm][LanguageAlpha3Code.arm]).
      */
-    hy,
+    HY,
+
     /**
      * [Herero](http://en.wikipedia.org/wiki/Herero_language)
      * ([her][LanguageAlpha3Code.her]).
      */
-    hz,
+    HZ,
+
     /**
      * [Interlingua](http://en.wikipedia.org/wiki/Interlingua)
      * ([ina][LanguageAlpha3Code.ina]).
      */
-    ia,
+    IA,
+
     /**
      * [Indonesian](http://en.wikipedia.org/wiki/Indonesian_language)
      * ([ind][LanguageAlpha3Code.ind]).
      */
-    id,
+    ID,
+
     /**
      * [Interlingue](http://en.wikipedia.org/wiki/Interlingue_language)
      * ([ile][LanguageAlpha3Code.ile]).
      */
-    ie,
+    IE,
+
     /**
      * [Igbo](http://en.wikipedia.org/wiki/Igbo_language)
      * ([ibo][LanguageAlpha3Code.ibo]).
      */
-    ig,
+    IG,
+
     /**
      * [Nuosu](http://en.wikipedia.org/wiki/Nuosu_language)
      * ([iii][LanguageAlpha3Code.iii]).
      */
-    ii,
+    II,
+
     /**
      * [Inupiaq](http://en.wikipedia.org/wiki/Inupiaq_language)
      * ([ipk][LanguageAlpha3Code.ipk]).
      */
-    ik,
+    IK,
+
     /**
      * [Ido](http://en.wikipedia.org/wiki/Ido)
      * ([ido][LanguageAlpha3Code.ido]).
      */
-    io,
+    IO,
+
     /**
      * [Icelandic](http://en.wikipedia.org/wiki/Icelandic_language)
-     * ([isl][LanguageAlpha3Code.isl], [ice][LanguageAlpha3Code.ice]).
+     * ([isl][LanguageAlpha3Code.is L], [ice][LanguageAlpha3Code.ice]).
      */
-    `is`,
+    IS,
+
     /**
      * [Italian](http://en.wikipedia.org/wiki/Italian_language)
      * ([ita][LanguageAlpha3Code.ita]).
      */
-    it,
+    IT,
+
     /**
      * [Inuktitut](http://en.wikipedia.org/wiki/Inuktitut)
      * ([iku][LanguageAlpha3Code.iku]).
      */
-    iu,
+    IU,
+
     /**
      * [Japanese](http://en.wikipedia.org/wiki/Japanese_language)
      * ([jpn][LanguageAlpha3Code.jpn]).
      */
-    ja,
+    JA,
+
     /**
      * [Javanese](http://en.wikipedia.org/wiki/Javanese_language)
      * ([jav][LanguageAlpha3Code.jav]).
      */
-    jv,
+    JV,
+
     /**
      * [Georgian](http://en.wikipedia.org/wiki/Georgian_language)
-     * ([kat][LanguageAlpha3Code.kat], [geo][LanguageAlpha3Code.geo]).
+     * ([kat][LanguageAlpha3Code.ka T], [geo][LanguageAlpha3Code.geo]).
      */
-    ka,
+    KA,
+
     /**
      * [Kongo](http://en.wikipedia.org/wiki/Kongo_language)
      * ([kon][LanguageAlpha3Code.kon]).
      */
-    kg,
+    KG,
+
     /**
      * [Kikuyu](http://en.wikipedia.org/wiki/Gikuyu_language)
      * ([kik][LanguageAlpha3Code.kik]).
      */
-    ki,
+    KI,
+
     /**
      * [Kwanyama](http://en.wikipedia.org/wiki/Kwanyama)
      * ([kua][LanguageAlpha3Code.kua]).
      */
-    kj,
+    KJ,
+
     /**
      * [Kazakh](http://en.wikipedia.org/wiki/Kazakh_language)
      * ([kaz][LanguageAlpha3Code.kaz]).
      */
-    kk,
+    KK,
+
     /**
      * [Kalaallisut](http://en.wikipedia.org/wiki/Kalaallisut_language)
      * ([kal][LanguageAlpha3Code.kal]).
      */
-    kl,
+    KL,
+
     /**
      * [Khmer](http://en.wikipedia.org/wiki/Khmer_language)
      * ([khm][LanguageAlpha3Code.khm]).
      */
-    km,
+    KM,
+
     /**
      * [Kannada](http://en.wikipedia.org/wiki/Kannada_language)
      * ([kan][LanguageAlpha3Code.kan]).
      */
-    kn,
+    KN,
+
     /**
      * [Korean](http://en.wikipedia.org/wiki/Korean_language)
      * ([kor][LanguageAlpha3Code.kor]).
      */
-    ko,
+    KO,
+
     /**
      * [Kanuri](http://en.wikipedia.org/wiki/Kanuri_language)
      * ([kau][LanguageAlpha3Code.kau]).
      */
-    kr,
+    KR,
+
     /**
      * [Kashmiri](http://en.wikipedia.org/wiki/Kashmiri_language)
      * ([kas][LanguageAlpha3Code.kas]).
      */
-    ks,
+    KS,
+
     /**
      * [Kurdish](http://en.wikipedia.org/wiki/Kurdish_language)
      * ([kur][LanguageAlpha3Code.kur]).
      */
-    ku,
+    KU,
+
     /**
      * [Komi](http://en.wikipedia.org/wiki/Komi_language)
      * ([kom][LanguageAlpha3Code.kom]).
      */
-    kv,
+    KV,
+
     /**
      * [Cornish](http://en.wikipedia.org/wiki/Cornish_language)
      * ([cor][LanguageAlpha3Code.cor]).
      */
-    kw,
+    KW,
+
     /**
      * [Kyrgyz](http://en.wikipedia.org/wiki/Kyrgyz_language)
      * ([kir][LanguageAlpha3Code.kir]).
      */
-    ky,
+    KY,
+
     /**
      * [Latin](http://en.wikipedia.org/wiki/Latin)
      * ([lat][LanguageAlpha3Code.lat]).
      */
-    la,
+    LA,
+
     /**
      * [Luxembourgish](http://en.wikipedia.org/wiki/Luxembourgish_language)
      * ([ltz][LanguageAlpha3Code.ltz]).
      */
-    lb,
+    LB,
+
     /**
      * [Ganda](http://en.wikipedia.org/wiki/Luganda)
      * ([lug][LanguageAlpha3Code.lug]).
      */
-    lg,
+    LG,
+
     /**
      * [Limburgish](http://en.wikipedia.org/wiki/Limburgish_language)
      * ([lim][LanguageAlpha3Code.lim]).
      */
-    li,
+    LI,
+
     /**
      * [Lingala](http://en.wikipedia.org/wiki/Lingala_language)
      * ([lin][LanguageAlpha3Code.lin]).
      */
-    ln,
+    LN,
+
     /**
      * [Lao](http://en.wikipedia.org/wiki/Lao_language)
      * ([lao][LanguageAlpha3Code.lao]).
      */
-    lo,
+    LO,
+
     /**
      * [Lithuanian](http://en.wikipedia.org/wiki/Lithuanian_language)
      * ([lit][LanguageAlpha3Code.lit]).
      */
-    lt,
+    LT,
+
     /**
      * [Luba-Katanga](http://en.wikipedia.org/wiki/Tshiluba_language)
      * ([lub][LanguageAlpha3Code.lub]).
      */
-    lu,
+    LU,
+
     /**
      * [Latvian](http://en.wikipedia.org/wiki/Latvian_language)
      * ([lav][LanguageAlpha3Code.lav]).
      */
-    lv,
+    LV,
+
     /**
      * [Malagasy](http://en.wikipedia.org/wiki/Malagasy_language)
      * ([mlg][LanguageAlpha3Code.mlg]).
      */
-    mg,
+    MG,
+
     /**
      * [Marshallese](http://en.wikipedia.org/wiki/Marshallese_language)
      * ([mah][LanguageAlpha3Code.mah]).
      */
-    mh,
+    MH,
+
     /**
      * [M&#257;ori](http://en.wikipedia.org/wiki/M%C4%81ori_language)
-     * ([mir][LanguageAlpha3Code.mri], [mao][LanguageAlpha3Code.mao]).
+     * ([mir][LanguageAlpha3Code.mr I], [mao][LanguageAlpha3Code.mao]).
      */
-    mi,
+    MI,
+
     /**
      * [Macedonian](http://en.wikipedia.org/wiki/Macedonian_language)
-     * ([mkd][LanguageAlpha3Code.mkd], [mac][LanguageAlpha3Code.mac])).
+     * ([mkd][LanguageAlpha3Code.mk D], [mac][LanguageAlpha3Code.mac])).
      */
-    mk,
+    MK,
+
     /**
      * [Malayalam](http://en.wikipedia.org/wiki/Malayalam_language)
      * ([mal][LanguageAlpha3Code.mal]).
      */
-    ml,
+    ML,
+
     /**
      * [Mongolian](http://en.wikipedia.org/wiki/Mongolian_language)
      * ([mon][LanguageAlpha3Code.mon]).
      */
-    mn,
+    MN,
+
     /**
      * [Marathi](http://en.wikipedia.org/wiki/Marathi_language)
      * ([mar][LanguageAlpha3Code.mar]).
      */
-    mr,
+    MR,
+
     /**
      * [Malay](http://en.wikipedia.org/wiki/Malay_language)
-     * ([msa][LanguageAlpha3Code.msa], [may][LanguageAlpha3Code.may]).
+     * ([msa][LanguageAlpha3Code.ms A], [may][LanguageAlpha3Code.may]).
      */
-    ms,
+    MS,
+
     /**
      * [Maltese](http://en.wikipedia.org/wiki/Maltese_language)
      * ([mlt][LanguageAlpha3Code.mlt]).
      */
-    mt,
+    MT,
+
     /**
      * [Burmese](http://en.wikipedia.org/wiki/Burmese_language)
-     * ([may][LanguageAlpha3Code.mya], [bur][LanguageAlpha3Code.bur]).
+     * ([may][LanguageAlpha3Code.my A], [bur][LanguageAlpha3Code.bur]).
      */
-    my,
+    MY,
+
     /**
      * [Nauru](http://en.wikipedia.org/wiki/Nauruan_language)
      * ([nau][LanguageAlpha3Code.nau]).
      */
-    na,
+    NA,
+
     /**
      * [Norwegian Bokml](http://en.wikipedia.org/wiki/Bokm%C3%A5l)
      * ([nob][LanguageAlpha3Code.nob]).
      */
-    nb,
+    NB,
+
     /**
      * [Northern Ndebele](http://en.wikipedia.org/wiki/Northern_Ndebele_language)
      * ([nde][LanguageAlpha3Code.nde]).
      */
-    nd,
+    ND,
+
     /**
      * [Nepali](http://en.wikipedia.org/wiki/Nepali_language)
      * ([nep][LanguageAlpha3Code.nep]).
      */
-    ne,
+    NE,
+
     /**
      * [Ndonga](http://en.wikipedia.org/wiki/Ndonga)
      * ([ndo][LanguageAlpha3Code.ndo]).
      */
-    ng,
+    NG,
+
     /**
      * [Dutch](http://en.wikipedia.org/wiki/Dutch_language)
-     * ([nld][LanguageAlpha3Code.nld], [dut][LanguageAlpha3Code.dut]).
+     * ([nld][LanguageAlpha3Code.nl D], [dut][LanguageAlpha3Code.dut]).
      */
-    nl,
+    NL,
+
     /**
      * [Norwegian Nynorsk](http://en.wikipedia.org/wiki/Nynorsk)
      * ([nno][LanguageAlpha3Code.nno]).
      */
-    nn,
+    NN,
+
     /**
      * [Norwegian](http://en.wikipedia.org/wiki/Norwegian_language)
      * ([nor][LanguageAlpha3Code.nor]).
@@ -640,331 +757,396 @@ public enum class Language {
      * @see [Sprkkoder for POSIX locale i Norge](http://i18n.skolelinux.no/localekoder.txt)
      *
      * @see [Red Hat Bugzilla – Bug 532487 Legacy Norwegian locale
-    ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
-    no,
+     ](https://bugzilla.redhat.com/show_bug.cgi?id=532487) */
+    NO,
+
     /**
      * [Southern Ndebele](http://en.wikipedia.org/wiki/Southern_Ndebele_language)
      * ([nbl][LanguageAlpha3Code.nbl]).
      */
-    nr,
+    NR,
+
     /**
      * [Navajo](http://en.wikipedia.org/wiki/Navajo_language)
      * ([nav][LanguageAlpha3Code.nav]).
      */
-    nv,
+    NV,
+
     /**
      * [Chichewa](http://en.wikipedia.org/wiki/Chichewa_language)
      * ([nya][LanguageAlpha3Code.nya]).
      */
-    ny,
+    NY,
+
     /**
      * [Occitan](http://en.wikipedia.org/wiki/Occitan_language)
      * ([oci][LanguageAlpha3Code.oci]).
      */
-    oc,
+    OC,
+
     /**
      * [Ojibwe](http://en.wikipedia.org/wiki/Ojibwe_language)
      * ([oji][LanguageAlpha3Code.oji]).
      */
-    oj,
+    OJ,
+
     /**
      * [Oromo](http://en.wikipedia.org/wiki/Oromo_language)
      * ([orm][LanguageAlpha3Code.orm]).
      */
-    om,
+    OM,
+
     /**
      * [Oriya](http://en.wikipedia.org/wiki/Oriya_language)
      * ([ori][LanguageAlpha3Code.ori]).
      */
-    or,
+    OR,
+
     /**
      * [Ossetian](http://en.wikipedia.org/wiki/Ossetic_language)
      * ([oss][LanguageAlpha3Code.oss]).
      */
-    os,
+    OS,
+
     /**
      * [Punjabi](http://en.wikipedia.org/wiki/Punjabi_language)
      * ([pan][LanguageAlpha3Code.pan]).
      */
-    pa,
+    PA,
+
     /**
      * [P&#257;li](http://en.wikipedia.org/wiki/P%C4%81li_language)
      * ([pli][LanguageAlpha3Code.pli]).
      */
-    pi,
+    PI,
+
     /**
      * [Polish](http://en.wikipedia.org/wiki/Polish_language)
      * ([pol][LanguageAlpha3Code.pol]).
      */
-    pl,
+    PL,
+
     /**
      * [Pashto](http://en.wikipedia.org/wiki/Pashto_language)
      * ([pus][LanguageAlpha3Code.pus]).
      */
-    ps,
+    PS,
+
     /**
      * [Portuguese](http://en.wikipedia.org/wiki/Portuguese_language)
      * ([por][LanguageAlpha3Code.por]).
      */
-    pt,
+    PT,
+
     /**
      * [Quechua](http://en.wikipedia.org/wiki/Quechua_language)
      * ([que][LanguageAlpha3Code.que]).
      */
-    qu,
+    QU,
+
     /**
      * [Romansh](http://en.wikipedia.org/wiki/Romansh_language)
      * ([roh][LanguageAlpha3Code.roh]).
      */
-    rm,
+    RM,
+
     /**
      * [Kirundi](http://en.wikipedia.org/wiki/Kirundi)
      * ([run][LanguageAlpha3Code.run]).
      */
-    rn,
+    RN,
+
     /**
      * [Romanian](http://en.wikipedia.org/wiki/Romanian_language)
-     * ([ron][LanguageAlpha3Code.ron], [rum][LanguageAlpha3Code.rum]).
+     * ([ron][LanguageAlpha3Code.ro N], [rum][LanguageAlpha3Code.rum]).
      */
-    ro,
+    RO,
+
     /**
      * [Russian](http://en.wikipedia.org/wiki/Russian_language)
      * ([run][LanguageAlpha3Code.run]).
      */
-    ru,
+    RU,
+
     /**
      * [Kinyarwanda](http://en.wikipedia.org/wiki/Kinyarwanda)
      * ([kin][LanguageAlpha3Code.kin]).
      */
-    rw,
+    RW,
+
     /**
      * [Sanskrit](http://en.wikipedia.org/wiki/Sanskrit)
      * ([san][LanguageAlpha3Code.san]).
      */
-    sa,
+    SA,
+
     /**
      * [Sardinian](http://en.wikipedia.org/wiki/Sardinian_language)
      * ([srd][LanguageAlpha3Code.srd]).
      */
-    sc,
+    SC,
+
     /**
      * [Sindhi](http://en.wikipedia.org/wiki/Sindhi_language)
      * ([snd][LanguageAlpha3Code.snd]).
      */
-    sd,
+    SD,
+
     /**
      * [Northern Sami](http://en.wikipedia.org/wiki/Northern_Sami)
      * ([sme][LanguageAlpha3Code.sme]).
      */
-    se,
+    SE,
+
     /**
      * [Sango](http://en.wikipedia.org/wiki/Sango_language)
      * ([sag][LanguageAlpha3Code.sag]).
      */
-    sg,
+    SG,
+
     /**
      * [Sinhala](http://en.wikipedia.org/wiki/Sinhala_language)
      * ([sin][LanguageAlpha3Code.sin]).
      */
-    si,
+    SI,
+
     /**
      * [Slovak](http://en.wikipedia.org/wiki/Slovak_language)
-     * ([slk][LanguageAlpha3Code.slk], [slo][LanguageAlpha3Code.slo]).
+     * ([slk][LanguageAlpha3Code.sl K], [slo][LanguageAlpha3Code.slo]).
      */
-    sk,
+    SK,
+
     /**
      * [Slovene](http://en.wikipedia.org/wiki/Slovene_language)
      * ([slv][LanguageAlpha3Code.slv]).
      */
-    sl,
+    SL,
+
     /**
      * [Samoan](http://en.wikipedia.org/wiki/Samoan_language)
      * ([smo][LanguageAlpha3Code.smo]).
      */
-    sm,
+    SM,
+
     /**
      * [Shona](http://en.wikipedia.org/wiki/Shona_language)
      * ([sna][LanguageAlpha3Code.sna]).
      */
-    sn,
+    SN,
+
     /**
      * [Somali](http://en.wikipedia.org/wiki/Somali_language)
      * ([som][LanguageAlpha3Code.som]).
      */
-    so,
+    SO,
+
     /**
      * [Albanian](http://en.wikipedia.org/wiki/Albanian_language)
-     * ([sqi][LanguageAlpha3Code.sqi], [alb][LanguageAlpha3Code.alb]).
+     * ([sqi][LanguageAlpha3Code.sq I], [alb][LanguageAlpha3Code.alb]).
      */
-    sq,
+    SQ,
+
     /**
      * [Serbian](http://en.wikipedia.org/wiki/Serbian_language)
      * ([srp][LanguageAlpha3Code.srp]).
      */
-    sr,
+    SR,
+
     /**
      * [Swati](http://en.wikipedia.org/wiki/Swati_language)
      * ([ssw][LanguageAlpha3Code.ssw]).
      */
-    ss,
+    SS,
+
     /**
      * [Southern Sotho](http://en.wikipedia.org/wiki/Sotho_language)
      * ([sot][LanguageAlpha3Code.sot]).
      */
-    st,
+    ST,
+
     /**
      * [Sundanese](http://en.wikipedia.org/wiki/Sundanese_language)
      * ([sun][LanguageAlpha3Code.sun]).
      */
-    su,
+    SU,
+
     /**
      * [Swedish](http://en.wikipedia.org/wiki/Swedish_language)
      * ([swe][LanguageAlpha3Code.swe]).
      */
-    sv,
+    SV,
+
     /**
      * [Swahili](http://en.wikipedia.org/wiki/Swahili_language)
      * ([swa][LanguageAlpha3Code.swa]).
      */
-    sw,
+    SW,
+
     /**
      * [Tamil](http://en.wikipedia.org/wiki/Tamil_language)
      * ([tam][LanguageAlpha3Code.tam]).
      */
-    ta,
+    TA,
+
     /**
      * [Telugu](http://en.wikipedia.org/wiki/Telugu_language)
      * ([tel][LanguageAlpha3Code.tel]).
      */
-    te,
+    TE,
+
     /**
      * [Tajik](http://en.wikipedia.org/wiki/Tajik_language)
      * ([tgk][LanguageAlpha3Code.tgk]).
      */
-    tg,
+    TG,
+
     /**
      * [Thai](http://en.wikipedia.org/wiki/Thai_language)
      * ([tha][LanguageAlpha3Code.tha]).
      */
-    th,
+    TH,
+
     /**
      * [Tigrinya](http://en.wikipedia.org/wiki/Tigrinya_language)
      * ([tir][LanguageAlpha3Code.tir]).
      */
-    ti,
+    TI,
+
     /**
      * [Turkmen](http://en.wikipedia.org/wiki/Turkmen_language)
      * ([tuk][LanguageAlpha3Code.tuk]).
      */
-    tk,
+    TK,
+
     /**
      * [Tagalog](http://en.wikipedia.org/wiki/Tagalog_language)
      * ([tgl][LanguageAlpha3Code.tgl]).
      */
-    tl,
+    TL,
+
     /**
      * [Tswana](http://en.wikipedia.org/wiki/Tswana_language)
      * ([tsn][LanguageAlpha3Code.tsn]).
      */
-    tn,
+    TN,
+
     /**
      * [Tongan](http://en.wikipedia.org/wiki/Tongan_language)
      * ([ton][LanguageAlpha3Code.ton]).
      */
-    to,
+    TO,
+
     /**
      * [Turkish](http://en.wikipedia.org/wiki/Turkish_language)
      * ([tur][LanguageAlpha3Code.tur]).
      */
-    tr,
+    TR,
+
     /**
      * [Tsonga](http://en.wikipedia.org/wiki/Tsonga_language)
      * ([tso][LanguageAlpha3Code.tso]).
      */
-    ts,
+    TS,
+
     /**
      * [Tatar](http://en.wikipedia.org/wiki/Tatar_language)
      * ([tat][LanguageAlpha3Code.tat]).
      */
-    tt,
+    TT,
+
     /**
      * [Twi](http://en.wikipedia.org/wiki/Twi)
      * ([twi][LanguageAlpha3Code.twi]).
      */
-    tw,
+    TW,
+
     /**
      * [Tahitian](http://en.wikipedia.org/wiki/Tahitian_language)
      * ([tah][LanguageAlpha3Code.tah]).
      */
-    ty,
+    TY,
+
     /**
      * [Uighur](http://en.wikipedia.org/wiki/Uyghur_language)
      * ([uig][LanguageAlpha3Code.uig]).
      */
-    ug,
+    UG,
+
     /**
      * [Ukrainian](http://en.wikipedia.org/wiki/Ukrainian_language)
      * ([ukr][LanguageAlpha3Code.ukr]).
      */
-    uk,
+    UK,
+
     /**
      * [Urdu](http://en.wikipedia.org/wiki/Urdu)
      * ([urd][LanguageAlpha3Code.urd]).
      */
-    ur,
+    UR,
+
     /**
      * [Uzbek](http://en.wikipedia.org/wiki/Uzbek_language)
      * ([uzb][LanguageAlpha3Code.uzb]).
      */
-    uz,
+    UZ,
+
     /**
      * [Venda](http://en.wikipedia.org/wiki/Venda_language)
      * ([ven][LanguageAlpha3Code.ven]).
      */
-    ve,
+    VE,
+
     /**
      * [Vietnamese](http://en.wikipedia.org/wiki/Vietnamese_language)
      * ([vie][LanguageAlpha3Code.vie]).
      */
-    vi,
+    VI,
+
     /**
      * [Volapk](http://en.wikipedia.org/wiki/Volap%C3%BCk)
      * ([vol][LanguageAlpha3Code.vol]).
      */
-    vo,
+    VO,
+
     /**
      * [Walloon](http://en.wikipedia.org/wiki/Walloon_language)
      * ([wln][LanguageAlpha3Code.wln]).
      */
-    wa,
+    WA,
+
     /**
      * [Wolof](http://en.wikipedia.org/wiki/Wolof_language)
      * ([wol][LanguageAlpha3Code.wol]).
      */
-    wo,
+    WO,
+
     /**
      * [Xhosa](http://en.wikipedia.org/wiki/Xhosa_language)
      * ([xho][LanguageAlpha3Code.xho]).
      */
-    xh,
+    XH,
+
     /**
      * [Yiddish](http://en.wikipedia.org/wiki/Yiddish_language)
      * ([yid][LanguageAlpha3Code.yid]).
      */
-    yi,
+    YI,
+
     /**
      * [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)
      * ([yor][LanguageAlpha3Code.yor]).
      */
-    yo,
+    YO,
+
     /**
      * [Zhuang](http://en.wikipedia.org/wiki/Zhuang_languages)
      * ([zha][LanguageAlpha3Code.zha]).
      */
-    za,
+    ZA,
+
     /**
      * [Chinese](http://en.wikipedia.org/wiki/Chinese_language)
-     * ([zho][LanguageAlpha3Code.zho], [chi][LanguageAlpha3Code.chi]).
+     * ([zho][LanguageAlpha3Code.zh O], [chi][LanguageAlpha3Code.chi]).
      */
-    zh,
+    ZH
 }

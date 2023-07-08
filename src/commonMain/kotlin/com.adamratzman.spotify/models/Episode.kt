@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyRestAction
@@ -80,7 +80,7 @@ public data class PodcastEpisodeTrack(
  * @param isPlayable True if the episode is playable in the given market. Otherwise false.
  * @param name The name of the episode.
  * @param releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
- * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
+ * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.UserReadPlaybackPosition].
  * @param type The object type: "episode".
  * @param show The show on which the episode belongs.
  *
@@ -133,7 +133,7 @@ public data class Episode(
  * @param isPlayable True if the episode is playable in the given market. Otherwise false.
  * @param name The name of the episode.
  * @param releaseDatePrecisionString The precision with which release_date value is known: "year", "month", or "day".
- * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
+ * @param resumePoint The user’s most recent position in the episode. Set if the supplied access token is a user token and has the scope [SpotifyScope.UserReadPlaybackPosition].
  * @param type The object type: "episode".
  *
  * @property languages A list of the languages used in the episode, identified by their ISO 639 code.
@@ -188,7 +188,7 @@ public data class SimpleEpisode(
 
 /**
  * Represents the user’s most recent position in the episode. Set if the supplied access token is a user token and has
- * the scope [SpotifyScope.USER_READ_PLAYBACK_POSITION].
+ * the scope [SpotifyScope.UserReadPlaybackPosition].
  *
  * @param fullyPlayed Whether or not the episode has been fully played by the user.
  * @param resumePositionMs The user’s most recent position in the episode in milliseconds.

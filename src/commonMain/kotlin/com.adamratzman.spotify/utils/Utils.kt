@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyException
@@ -17,7 +17,7 @@ internal expect fun formatDate(date: Long): String
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
-internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T? {
+internal suspend inline fun <T> catch(catchInternalServerError: Boolean = false, crossinline function: suspend () -> T): T? {
     return try {
         function()
     } catch (e: SpotifyException.BadRequestException) {

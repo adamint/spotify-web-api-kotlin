@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
@@ -75,19 +75,19 @@ public data class Device(
  * @param identifier readable name
  */
 public enum class DeviceType(public val identifier: String) {
-    COMPUTER("Computer"),
-    TABLET("Tablet"),
-    SMARTPHONE("Smartphone"),
-    SPEAKER("Speaker"),
-    TV("TV"),
-    AVR("AVR"),
-    STB("STB"),
-    AUDIO_DONGLE("AudioDongle"),
-    GAME_CONSOLE("GameConsole"),
-    CAST_VIDEO("CastVideo"),
-    CAST_AUDIO("CastAudio"),
-    AUTOMOBILE("Automobile"),
-    UNKNOWN("Unknown");
+    Computer("Computer"),
+    Tablet("Tablet"),
+    Smartphone("Smartphone"),
+    Speaker("Speaker"),
+    Tv("TV"),
+    Avr("AVR"),
+    Stb("STB"),
+    AudioDongle("AudioDongle"),
+    GameConsole("GameConsole"),
+    CastVideo("CastVideo"),
+    CastAudio("CastAudio"),
+    Automobile("Automobile"),
+    Unknown("Unknown");
 }
 
 /**
@@ -110,7 +110,9 @@ public data class CurrentlyPlayingContext(
     val device: Device,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
+    @Serializable(with = PlayableSerializer::class)
+    @SerialName("item")
+    val item: Playable? = null,
     @SerialName("shuffle_state") val shuffleState: Boolean,
     @SerialName("repeat_state") val repeatStateString: String,
     val context: SpotifyContext? = null
@@ -137,7 +139,9 @@ public data class CurrentlyPlayingObject(
     val timestamp: Long,
     @SerialName("progress_ms") val progressMs: Int? = null,
     @SerialName("is_playing") val isPlaying: Boolean,
-    @Serializable(with = PlayableSerializer::class) @SerialName("item") val item: Playable? = null,
+    @Serializable(with = PlayableSerializer::class)
+    @SerialName("item")
+    val item: Playable? = null,
     @SerialName("currently_playing_type") private val currentlyPlayingTypeString: String,
     val actions: PlaybackActions
 ) {
@@ -164,6 +168,12 @@ public data class PlaybackActions(
         }
 }
 
+@Serializable
+public data class CurrentUserQueue(
+    @SerialName("currently_playing") val currentlyPlaying: Playable? = null,
+    @SerialName("queue") val queue: List<Playable>
+)
+
 /**
  * Maps a playback action to whether the user is disallowed from doing it
  *
@@ -177,18 +187,18 @@ public data class DisallowablePlaybackAction(val action: PlaybackAction, val dis
  * Action a user takes that will affect current playback
  */
 public enum class PlaybackAction(private val identifier: String) : ResultEnum {
-    INTERRUPTING_PLAYBACK("interrupting_playback"),
-    PAUSING("pausing"),
-    PLAYING("playing"),
-    RESUMING("resuming"),
-    SEEKING("seeking"),
-    SKIPPING_NEXT("skipping_next"),
-    SKIPPING_PREV("skipping_prev"),
-    STOPPING("stopping"),
-    TOGGLING_REPEAT_CONTEXT("toggling_repeat_context"),
-    TOGGLING_SHUFFLE("toggling_shuffle"),
-    TOGGLING_REPEAT_TRACK("toggling_repeat_track"),
-    TRANSFERRING_PLAYBACK("transferring_playback");
+    InterruptingPlayback("interrupting_playback"),
+    Pausing("pausing"),
+    Playing("playing"),
+    Resuming("resuming"),
+    Seeking("seeking"),
+    SkippingNext("skipping_next"),
+    SkippingPrev("skipping_prev"),
+    Stopping("stopping"),
+    TogglingRepeatContext("toggling_repeat_context"),
+    TogglingShuffle("toggling_shuffle"),
+    TogglingRepeatTrack("toggling_repeat_track"),
+    TransferringPlayback("transferring_playback");
 
     override fun retrieveIdentifier(): String = identifier
 }
@@ -197,10 +207,10 @@ public enum class PlaybackAction(private val identifier: String) : ResultEnum {
  * The object type of the currently playing item
  */
 public enum class CurrentlyPlayingType(public val identifier: String) : ResultEnum {
-    TRACK("track"),
-    EPISODE("episode"),
-    AD("ad"),
-    UNKNOWN("unknown");
+    Track("track"),
+    Episode("episode"),
+    Ad("ad"),
+    Unknown("unknown");
 
     override fun retrieveIdentifier(): String = identifier
 }

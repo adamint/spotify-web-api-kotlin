@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models.serialization
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -9,13 +9,13 @@ import com.adamratzman.spotify.models.NullablePagingObject
 import com.adamratzman.spotify.models.PagingObject
 import com.adamratzman.spotify.models.PagingObjectBase
 import com.adamratzman.spotify.models.instantiateLateinitsIfPagingObjects
-import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlin.reflect.KClass
 
 internal val nonstrictJson =
     Json {
@@ -92,7 +92,7 @@ internal fun <T : Any> String.toCursorBasedPagingObject(
         val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
         val jsonElement =
             innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
-            ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
+                ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
 
         val objectString = jsonElement.toString()
         val pagingObject = objectString.parseJson {
@@ -118,7 +118,9 @@ internal fun <T : Any> String.toCursorBasedPagingObject(
                 arbitraryInnerNameAllowed = true,
                 skipInnerNameFirstIfPossible = false
             )
-        } else throw jde
+        } else {
+            throw jde
+        }
     }
 }
 
@@ -135,7 +137,7 @@ internal fun <T : Any> String.toNonNullablePagingObject(
         val jsonObjectRoot = (json.parseToJsonElement(this) as JsonObject)
         val jsonElement =
             innerObjectName?.let { jsonObjectRoot[it] } ?: jsonObjectRoot.keys.firstOrNull()?.let { jsonObjectRoot[it] }
-            ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
+                ?: throw SpotifyException.ParseException("Json element was null for class $tClazz (json $this)")
 
         val objectString = jsonElement.toString()
         val pagingObject = objectString.parseJson {
@@ -161,7 +163,9 @@ internal fun <T : Any> String.toNonNullablePagingObject(
                 arbitraryInnerNameAllowed = true,
                 skipInnerNameFirstIfPossible = false
             )
-        } else throw jde
+        } else {
+            throw jde
+        }
     }
 }
 

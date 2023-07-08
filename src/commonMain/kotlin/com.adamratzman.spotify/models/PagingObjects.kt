@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.GenericSpotifyApi
@@ -9,8 +9,6 @@ import com.adamratzman.spotify.models.serialization.instantiateAllNeedsApiObject
 import com.adamratzman.spotify.models.serialization.instantiateLateinitsForPagingObject
 import com.adamratzman.spotify.models.serialization.toCursorBasedPagingObject
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
-import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -24,6 +22,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 
 /*
     Types used in PagingObjects and CursorBasedPagingObjects:
@@ -67,7 +67,13 @@ public class NullablePagingObject<T : Any>(
 ) : AbstractPagingObject<T, NullablePagingObject<T>>() {
     public fun toPagingObject(): PagingObject<T> {
         val pagingObject = PagingObject(
-            href, items.filterNotNull(), limit, next, offset, previous, total
+            href,
+            items.filterNotNull(),
+            limit,
+            next,
+            offset,
+            previous,
+            total
         )
         pagingObject.instantiateLateinitsForPagingObject(itemClass, api)
 
@@ -121,7 +127,8 @@ public data class PagingObject<T : Any>(
  * @property offset The offset of the items returned (as set in the query or by default).
  */
 @Serializable
-public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, Z>> : PagingObjectBase<T, Z>(),
+public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, Z>> :
+    PagingObjectBase<T, Z>(),
     List<T?> {
     @Suppress("UNCHECKED_CAST")
     override suspend fun get(type: PagingTraversalType): Z? {
@@ -196,7 +203,8 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
     }
 
     override suspend fun getWithNextTotalPagingObjects(total: Int): List<Z> {
-        @Suppress("UNCHECKED_CAST") val pagingObjects = mutableListOf(this as Z)
+        @Suppress("UNCHECKED_CAST")
+        val pagingObjects = mutableListOf(this as Z)
 
         var nxt = next?.let { getNext() }
         while (pagingObjects.size < total && nxt != null) {
@@ -211,7 +219,6 @@ public abstract class AbstractPagingObject<T : Any, Z : AbstractPagingObject<T, 
         val pagingObjects = mutableListOf<Z>()
         var prev = previous?.let { getPrevious() }
         while (prev != null) {
-
             pagingObjects.add(prev)
             prev = prev.previous?.let { prev?.getPrevious() }
         }
@@ -372,8 +379,11 @@ public abstract class PagingObjectBase<T : Any, Z : PagingObjectBase<T, Z>> : Li
 
     @Suppress("UNCHECKED_CAST")
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> {
-        return if (items.getOrNull(0) !is NeedsApi) listOf(this)
-        else (items as List<NeedsApi>) + listOf(this)
+        return if (items.getOrNull(0) !is NeedsApi) {
+            listOf(this)
+        } else {
+            (items as List<NeedsApi>) + listOf(this)
+        }
     }
 
     @Transient

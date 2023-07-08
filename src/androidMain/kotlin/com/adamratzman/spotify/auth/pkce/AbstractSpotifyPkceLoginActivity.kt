@@ -1,4 +1,4 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.auth.pkce
 
 import android.content.Intent
@@ -21,8 +21,8 @@ import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.utils.logToConsole
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
+import kotlin.random.Random
 
 /**
  * This class hooks into spotify-web-api-kotlin to provide PKCE authorization for Android application. Paired with [SpotifyDefaultCredentialStore] to easily store credentials.
@@ -48,6 +48,12 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
     }
     public open val state: String = Random.nextLong().toString()
     public open val options: ((SpotifyApiOptions).() -> Unit)? = null
+
+    /**
+     * Custom logic to invoke when loading begins ([isLoading] is true) or ends ([isLoading] is false).
+     * You can update the view here.
+     */
+    public open fun setLoadingContent(isLoading: Boolean) = {}
 
     private lateinit var authorizationIntent: Intent
     private lateinit var credentialStore: SpotifyDefaultCredentialStore
@@ -142,10 +148,9 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                     IllegalStateException("Authorization code was null or blank.")
                 )
             } else {
-
                 try {
                     logToConsole("Building client PKCE api...")
-                    setProgressBarVisible()
+                    setLoadingContent(true)
                     val api = spotifyClientPkceApi(
                         clientId = clientId,
                         redirectUri = redirectUri,
@@ -159,33 +164,25 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
                     logToConsole("Successfully built client PKCE api")
                     if (api.token.accessToken.isNotBlank()) {
                         credentialStore.spotifyToken = api.token
-                        setProgressBarInvisible()
+                        setLoadingContent(false)
                         logToConsole("Successful PKCE auth. Executing success handler..")
                         onSuccess(api)
                     } else {
-                        setProgressBarInvisible()
+                        setLoadingContent(false)
                         logToConsole("Failed PKCE auth - API token was blank. Executing success handler..")
                         onFailure(
                             IllegalArgumentException("API token was blank")
                         )
                     }
                 } catch (exception: Exception) {
-                    setProgressBarInvisible()
+                    setLoadingContent(false)
                     logToConsole("Got error in authorization... executing error handler")
                     onFailure(exception)
                 }
             }
 
-            setProgressBarInvisible()
+            setLoadingContent(false)
             finish()
         }
-    }
-
-    private fun setProgressBarInvisible() {
-        findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.INVISIBLE
-    }
-
-    private fun setProgressBarVisible() {
-        findViewById<FrameLayout>(R.id.progress_overlay).visibility = View.VISIBLE
     }
 }

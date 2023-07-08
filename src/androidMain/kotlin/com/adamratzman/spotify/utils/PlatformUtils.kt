@@ -1,19 +1,19 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2021; Original author: Adam Ratzman */
+/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */
 package com.adamratzman.spotify.utils
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import java.net.URLEncoder
 import kotlinx.coroutines.runBlocking
+import java.net.URLEncoder
 
 internal actual fun String.encodeUrl() = URLEncoder.encode(this, "UTF-8")!!
 
 /**
  * Actual platform that this program is run on.
  */
-public actual val currentApiPlatform: Platform = Platform.ANDROID
+public actual val currentApiPlatform: Platform = Platform.Android
 
 public actual typealias ConcurrentHashMap<K, V> = java.util.concurrent.ConcurrentHashMap<K, V>
 

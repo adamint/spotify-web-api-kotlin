@@ -1,0 +1,39 @@
+name: CI Client Test Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      spotify_test_client_token:
+        description: 'Spotify client redirect token (for client tests before release)'
+        required: true
+      spotify_test_redirect_uri:
+        description: 'Spotify redirect uri'
+        required: true
+env:
+  SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+  SPOTIFY_TOKEN_STRING: ${{ github.event.inputs.spotify_test_client_token }}
+  SPOTIFY_REDIRECT_URI: ${{ github.event.inputs.spotify_test_redirect_uri }}
+jobs:
+  verify_client_android_jvm_linux_js:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Install java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Install curl
+        run: sudo apt-get install -y curl libcurl4-openssl-dev
+      - name: Verify Android
+        run: ./gradlew testDebugUnitTest
+      - name: Verify JVM/JS
+        run: ./gradlew jvmTest
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: build/reports
+        if: always()
