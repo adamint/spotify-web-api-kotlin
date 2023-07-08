@@ -173,6 +173,7 @@ kotlin {
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
                 }
             }
 
