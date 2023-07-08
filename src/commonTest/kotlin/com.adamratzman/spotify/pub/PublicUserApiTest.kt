@@ -19,6 +19,6 @@ class PublicUserApiTest : AbstractTest<GenericSpotifyApi>() {
         buildApi(::testPublicUser.name)
 
         assertTrue(catch { api.users.getProfile("adamratzman1")!!.followers.total } != null)
-        assertNull(api.users.getProfile("non-existant-user"))
+        assertNull(api.users.getProfile("ejwkfjwkerfjkwerjkfjkwerfjkjksdfjkasdf"))
     }
 }

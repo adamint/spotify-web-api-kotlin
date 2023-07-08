@@ -17,6 +17,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 
 /**
  * Endpoints for retrieving information about one or more shows and their episodes from the Spotify catalog.
@@ -42,7 +43,7 @@ public open class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getShow(id: String, market: Market): Show? {
         return catch {
             get(
-                endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market.name).toString()
+                endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}").with("market", market.getSpotifyId()).toString()
             ).toObject(Show.serializer(), api, json)
         }
     }
@@ -70,7 +71,7 @@ public open class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return bulkStatelessRequest(50, ids.toList()) { chunk ->
             get(
                 endpointBuilder("/shows").with("ids", chunk.joinToString(",") { ShowUri(it).id.encodeUrl() })
-                    .with("market", market.name).toString()
+                    .with("market", market.getSpotifyId()).toString()
             ).toObject(ShowList.serializer(), api, json).shows
         }.flatten()
     }
@@ -99,6 +100,6 @@ public open class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market
     ): PagingObject<SimpleEpisode> = get(
         endpointBuilder("/shows/${ShowUri(id).id.encodeUrl()}/episodes").with("limit", limit)
-            .with("offset", offset).with("market", market.name).toString()
+            .with("offset", offset).with("market", market.getSpotifyId()).toString()
     ).toNonNullablePagingObject(SimpleEpisode.serializer(), null, api, json)
 }

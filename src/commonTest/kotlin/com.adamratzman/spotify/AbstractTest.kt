@@ -16,6 +16,7 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
 
         val api = buildSpotifyApi(testClassQualifiedName, testName)
         if (api != null && api is Z) {
+            api.spotifyApiOptions.retryOnInternalServerErrorTimes = 10
             api.spotifyApiOptions.httpResponseSubscriber = { request, response ->
                 getResponseCacher()?.cacheResponse(
                     testClassQualifiedName,

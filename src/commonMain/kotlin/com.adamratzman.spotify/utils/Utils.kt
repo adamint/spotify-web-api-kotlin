@@ -17,7 +17,7 @@ internal expect fun formatDate(date: Long): String
 
 internal fun jsonMap(vararg pairs: Pair<String, JsonElement>) = pairs.toMap().toMutableMap()
 
-internal suspend inline fun <T> catch(crossinline function: suspend () -> T): T? {
+internal suspend inline fun <T> catch(catchInternalServerError: Boolean = false, crossinline function: suspend () -> T): T? {
     return try {
         function()
     } catch (e: SpotifyException.BadRequestException) {

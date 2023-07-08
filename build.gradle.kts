@@ -14,7 +14,7 @@ plugins {
     kotlin("plugin.serialization")
     id("com.diffplug.spotless") version "6.11.0"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "1.7.20"
+    id("org.jetbrains.dokka") version "1.8.20"
 }
 
 repositories {
@@ -69,7 +69,7 @@ android {
         this.unitTests.isReturnDefaultValues = true
     }
     sourceSets["main"].setRoot("src/androidMain")
-    sourceSets["test"].setRoot("src/androidTest")
+    sourceSets["test"].setRoot("src/androidUnitTest")
 }
 
 // invoked in kotlin closure, needs to be registered before
@@ -83,7 +83,7 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 kotlin {
     explicitApiWarning()
 
-    android {
+    androidTarget {
         compilations.all { kotlinOptions.jvmTarget = "1.8" }
 
         mavenPublication { setupPom(artifactId) }
@@ -116,7 +116,7 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
+                    webpackConfig.cssSupport { isEnabled = true }
                 }
             }
         }
@@ -173,6 +173,7 @@ kotlin {
                     implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                     implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
                     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
                 }
             }
 
@@ -253,7 +254,7 @@ kotlin {
                 }
             }
 
-            val androidTest by getting {
+            val androidUnitTest by getting {
                 dependsOn(commonJvmLikeTest)
             }
 
