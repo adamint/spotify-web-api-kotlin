@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:wheel="http://schemas.android.com/apk/res-auto"
              android:id="@+id/progress_overlay"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
@@ -10,15 +9,4 @@
              android:clickable="true"
              android:focusable="true"
              android:visibility="gone">
-
-    <com.pnikosis.materialishprogress.ProgressWheel
-            android:id="@+id/progress_wheel"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:indeterminateTint="#5588FF"
-            wheel:matProg_barColor="#5588FF"
-            wheel:matProg_progressIndeterminate="true" />
-
 </FrameLayout>
