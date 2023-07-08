@@ -165,8 +165,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                             .with("market", market?.name)
                             .toString()
                     )
-                        .toObject(CurrentlyPlayingObject.serializer(), api, json)
-                }
+                }?.toObject(CurrentlyPlayingObject.serializer(), api, json)
             if (obj?.timestamp == null) null else obj
         } catch (pe: SpotifyException.ParseException) {
             pe.printStackTrace()
