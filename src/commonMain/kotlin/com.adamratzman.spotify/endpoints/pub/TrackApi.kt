@@ -14,6 +14,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 
 /**
  * Endpoints for retrieving information about one or more tracks from the Spotify catalog.
@@ -35,7 +36,7 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         get(
             endpointBuilder("/tracks/${PlayableUri(track).id.encodeUrl()}").with(
                 "market",
-                market?.name
+                market?.getSpotifyId()
             ).toString()
         ).toObject(Track.serializer(), api, json)
     }
@@ -55,7 +56,7 @@ public class TrackApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return bulkStatelessRequest(50, tracks.toList()) { chunk ->
             get(
                 endpointBuilder("/tracks").with("ids", chunk.joinToString(",") { PlayableUri(it).id.encodeUrl() })
-                    .with("market", market?.name).toString()
+                    .with("market", market?.getSpotifyId()).toString()
             ).toObject(TrackList.serializer(), api, json).tracks
         }.flatten()
     }

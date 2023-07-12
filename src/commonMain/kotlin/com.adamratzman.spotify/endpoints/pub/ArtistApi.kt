@@ -89,7 +89,7 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/artists/${ArtistUri(artist).id.encodeUrl()}/albums").with("limit", limit).with(
             "offset",
             offset
-        ).with("market", market?.name)
+        ).with("market", market?.getSpotifyId())
             .with("include_groups", include.joinToString(",") { it.keyword }).toString()
     ).toNonNullablePagingObject(SimpleAlbum.serializer(), null, api, json)
 

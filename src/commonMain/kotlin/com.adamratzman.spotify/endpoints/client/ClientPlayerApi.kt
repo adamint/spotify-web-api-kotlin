@@ -30,6 +30,7 @@ import com.adamratzman.spotify.models.toShowUri
 import com.adamratzman.spotify.models.toTrackUri
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
+import com.adamratzman.spotify.utils.getSpotifyId
 import com.adamratzman.spotify.utils.jsonMap
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonArray
@@ -87,7 +88,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             getNullable(
                 endpointBuilder("/me/player")
                     .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
-                    .with("market", market?.name)
+                    .with("market", market?.getSpotifyId())
                     .toString()
             )?.toObject(CurrentlyPlayingContext.serializer(), api, json)
         }
@@ -162,7 +163,7 @@ public class ClientPlayerApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
                     getNullable(
                         endpointBuilder("/me/player/currently-playing")
                             .with("additional_types", additionalTypes.joinToString(",") { it.identifier })
-                            .with("market", market?.name)
+                            .with("market", market?.getSpotifyId())
                             .toString()
                     )
                 }?.toObject(CurrentlyPlayingObject.serializer(), api, json)

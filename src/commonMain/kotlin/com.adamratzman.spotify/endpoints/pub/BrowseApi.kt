@@ -18,8 +18,7 @@ import com.adamratzman.spotify.models.SpotifyCategory
 import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toObject
-import com.adamratzman.spotify.utils.Locale
-import com.adamratzman.spotify.utils.Market
+import com.adamratzman.spotify.utils.*
 import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.formatDate
 import kotlinx.serialization.Serializable
@@ -66,7 +65,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market? = null
     ): PagingObject<SimpleAlbum> = get(
         endpointBuilder("/browse/new-releases").with("limit", limit)
-            .with("offset", offset).with("country", market?.name).toString()
+            .with("offset", offset).with("country", market?.getSpotifyId()).toString()
     ).toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api = api, json = json)
 
     /**
@@ -98,7 +97,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): FeaturedPlaylists = get(
         endpointBuilder("/browse/featured-playlists").with("limit", limit).with("offset", offset).with(
             "market",
-            market?.name
+            market?.getSpotifyId()
         ).with("locale", locale).with("timestamp", timestamp?.let { formatDate(it) }).toString()
     ).toObject(FeaturedPlaylists.serializer(), api, json)
 
@@ -127,7 +126,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     ): PagingObject<SpotifyCategory> = get(
         endpointBuilder("/browse/categories").with("limit", limit).with("offset", offset).with(
             "market",
-            market?.name
+            market?.getSpotifyId()
         ).with("locale", locale).toString()
     ).toNonNullablePagingObject(SpotifyCategory.serializer(), "categories", api = api, json = json)
 
@@ -151,7 +150,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market? = null,
         locale: Locale? = null
     ): SpotifyCategory = get(
-        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.name)
+        endpointBuilder("/browse/categories/${categoryId.encodeUrl()}").with("market", market?.getSpotifyId())
             .with("locale", locale).toString()
     ).toObject(SpotifyCategory.serializer(), api, json)
 
@@ -177,7 +176,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/browse/categories/${categoryId.encodeUrl()}/playlists")
             .with("limit", limit)
             .with("offset", offset)
-            .with("country", market?.name).toString()
+            .with("country", market?.getSpotifyId()).toString()
     ).toNonNullablePagingObject((SimplePlaylist.serializer()), "playlists", api = api, json = json)
 
     /**
@@ -285,7 +284,7 @@ public class BrowseApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             )
         }
 
-        val builder = endpointBuilder("/recommendations").with("limit", limit).with("market", market?.name)
+        val builder = endpointBuilder("/recommendations").with("limit", limit).with("market", market?.getSpotifyId())
             .with("seed_artists", seedArtists?.joinToString(",") { ArtistUri(it).id.encodeUrl() })
             .with("seed_genres", seedGenres?.joinToString(",") { it.encodeUrl() })
             .with("seed_tracks", seedTracks?.joinToString(",") { PlayableUri(it).id.encodeUrl() })
