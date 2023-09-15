@@ -45,12 +45,13 @@ version = libraryVersion
 
 
 android {
+    namespace = "com.adamratzman.spotify"
     compileSdk = 30
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/*.md") // needed to prevent android compilation errors
     }
     defaultConfig {
@@ -82,9 +83,10 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 
 kotlin {
     explicitApiWarning()
+    jvmToolchain(17)
 
     androidTarget {
-        compilations.all { kotlinOptions.jvmTarget = "1.8" }
+        compilations.all { kotlinOptions.jvmTarget = "17" }
 
         mavenPublication { setupPom(artifactId) }
 
