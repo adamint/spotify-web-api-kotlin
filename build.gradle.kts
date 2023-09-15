@@ -48,15 +48,15 @@ android {
     namespace = "com.adamratzman.spotify"
     compileSdk = 30
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     packaging {
         resources.excludes.add("META-INF/*.md") // needed to prevent android compilation errors
     }
     defaultConfig {
         minSdk = 23
-        targetSdk = 30
+        targetSdk = 31
         setCompileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
