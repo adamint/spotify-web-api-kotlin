@@ -42,17 +42,23 @@ suspend inline fun <reified T : Throwable> assertFailsWithSuspend(crossinline bl
     }
 }
 
-fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestResult = runTest(timeout = 60.seconds) {
+fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T): TestResult = runTestOnDefaultDispatcher(block, shouldRetry = true)
+
+fun <T> runTestOnDefaultDispatcher(block: suspend CoroutineScope.() -> T, shouldRetry: Boolean): TestResult = runTest(timeout = 60.seconds) {
     withContext(Dispatchers.Default) {
         try {
             block()
         } catch (e: SpotifyException.BadRequestException) {
             // we shouldn't fail just because we received a 5xx from spotify
-            if (e.statusCode !in 500..599) {
-                throw e;
+            if (e.statusCode in 500..599) {
+                println("Received 5xx for block.")
             }
 
-            println("Received 5xx for block.")
+            if (shouldRetry) runTestOnDefaultDispatcher(block, shouldRetry = false)
+            else throw e;
+        } catch (e: Exception) {
+            if (shouldRetry) runTestOnDefaultDispatcher(block, shouldRetry = false)
+            else throw e;
         }
     }
 }
