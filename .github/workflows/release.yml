@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
       - name: Install curl
         run: sudo apt-get install -y curl libcurl4-openssl-dev
       - name: Verify Android
@@ -58,7 +58,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
       - name: Publish macOS/iOS
         run: ./gradlew publishMacosX64PublicationToNexusRepository publishIosX64PublicationToNexusRepository publishIosArm64PublicationToNexusRepository
   release_windows:
@@ -72,7 +72,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
       - run: choco install curl
       - name: Publish windows
         run: ./gradlew publishMingwX64PublicationToNexusRepository
@@ -86,7 +86,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
       - name: Build docs
         run: ./gradlew dokkaHtml
       - name: Push docs to docs repo
