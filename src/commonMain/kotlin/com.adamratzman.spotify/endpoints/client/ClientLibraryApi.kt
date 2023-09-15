@@ -18,6 +18,7 @@ import com.adamratzman.spotify.models.serialization.toList
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
@@ -49,7 +50,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
-            endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.name)
+            endpointBuilder("/me/tracks").with("limit", limit).with("offset", offset).with("market", market?.getSpotifyId())
                 .toString()
         ).toNonNullablePagingObject(SavedTrack.serializer(), api = api, json = json)
     }
@@ -76,7 +77,7 @@ public class ClientLibraryApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         requireScopes(SpotifyScope.UserLibraryRead)
 
         return get(
-            endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.name)
+            endpointBuilder("/me/albums").with("limit", limit).with("offset", offset).with("market", market?.getSpotifyId())
                 .toString()
         ).toNonNullablePagingObject(SavedAlbum.serializer(), api = api, json = json)
     }

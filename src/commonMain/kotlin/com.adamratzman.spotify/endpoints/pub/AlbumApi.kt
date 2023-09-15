@@ -14,6 +14,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 
 /**
  * Endpoints for retrieving information about one or more albums from the Spotify catalog.
@@ -35,7 +36,7 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         get(
             endpointBuilder("/albums/${AlbumUri(album).id}").with(
                 "market",
-                market?.name
+                market?.getSpotifyId()
             ).toString()
         ).toObject(Album.serializer(), api, json)
     }
@@ -56,7 +57,7 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return bulkStatelessRequest(20, albums.toList()) { chunk ->
             get(
                 endpointBuilder("/albums").with("ids", chunk.joinToString(",") { AlbumUri(it).id.encodeUrl() })
-                    .with("market", market?.name).toString()
+                    .with("market", market?.getSpotifyId()).toString()
             ).toObject(AlbumsResponse.serializer(), api, json).albums
         }.flatten()
     }
@@ -83,7 +84,7 @@ public class AlbumApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         endpointBuilder("/albums/${AlbumUri(album).id.encodeUrl()}/tracks").with("limit", limit).with(
             "offset",
             offset
-        ).with("market", market?.name)
+        ).with("market", market?.getSpotifyId())
             .toString()
     ).toNonNullablePagingObject(SimpleTrack.serializer(), api = api, json = json)
 }

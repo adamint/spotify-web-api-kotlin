@@ -19,6 +19,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.catch
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 import kotlinx.serialization.builtins.ListSerializer
 
 /**
@@ -75,7 +76,7 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
     public suspend fun getPlaylist(playlist: String, market: Market? = null): Playlist? = catch {
         get(
             endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}")
-                .with("market", market?.name).toString()
+                .with("market", market?.getSpotifyId()).toString()
         ).toObject(Playlist.serializer(), api, json)
     }
 
@@ -102,7 +103,7 @@ public open class PlaylistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market? = null
     ): PagingObject<PlaylistTrack> = get(
         endpointBuilder("/playlists/${PlaylistUri(playlist).id.encodeUrl()}/tracks").with("limit", limit)
-            .with("offset", offset).with("market", market?.name).toString()
+            .with("offset", offset).with("market", market?.getSpotifyId()).toString()
     )
         .toNonNullablePagingObject(PlaylistTrack.serializer(), null, api, json)
 

@@ -20,6 +20,7 @@ import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toNullablePagingObject
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
+import com.adamratzman.spotify.utils.getSpotifyId
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
@@ -345,7 +346,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         return endpointBuilder("/search")
             .with("q", queryString.encodeUrl())
             .with("type", types.joinToString(",") { it.id })
-            .with("market", market?.name).with("limit", limit).with("offset", offset)
+            .with("market", market?.getSpotifyId()).with("limit", limit).with("offset", offset)
             .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }
