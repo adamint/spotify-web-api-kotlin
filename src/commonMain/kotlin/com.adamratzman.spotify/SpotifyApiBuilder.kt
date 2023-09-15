@@ -664,12 +664,6 @@ public class SpotifyApiBuilder(
         apply { this.options.retryWhenRateLimited = retryWhenRateLimited }
 
     /**
-     * Set whether to enable to the exception logger
-     */
-    public fun enableLogger(enableLogger: Boolean): SpotifyApiBuilder =
-        apply { this.options.enableLogger = enableLogger }
-
-    /**
      * Set the maximum time, in milliseconds, before terminating an http request
      */
     public fun requestTimeoutMillis(requestTimeoutMillis: Long?): SpotifyApiBuilder =
@@ -1133,7 +1127,6 @@ public class SpotifyUserAuthorization(
  * @param cacheLimit The maximum amount of cached requests allowed at one time. Null means no limit
  * @param automaticRefresh Enable or disable automatic refresh of the Spotify access token
  * @param retryWhenRateLimited Set whether to block the current thread and wait until the API can retry the request
- * @param enableLogger Set whether to enable to the exception logger
  * @param testTokenValidity After API creation, test whether the token is valid by performing a lightweight request
  * @param defaultLimit The default amount of objects to retrieve in one request
  * @param json The Json serializer/deserializer instance
@@ -1155,7 +1148,6 @@ public data class SpotifyApiOptions(
     public var cacheLimit: Int? = 200,
     public var automaticRefresh: Boolean = true,
     public var retryWhenRateLimited: Boolean = true,
-    public var enableLogger: Boolean = true,
     public var testTokenValidity: Boolean = false,
     public var defaultLimit: Int = 50,
     public var allowBulkRequests: Boolean = true,

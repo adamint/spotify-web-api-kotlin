@@ -53,7 +53,7 @@ public abstract class AbstractSpotifyPkceLoginActivity : AppCompatActivity() {
      * Custom logic to invoke when loading begins ([isLoading] is true) or ends ([isLoading] is false).
      * You can update the view here.
      */
-    public open fun setLoadingContent(isLoading: Boolean) = {}
+    public open fun setLoadingContent(isLoading: Boolean): () -> Unit = {}
 
     private lateinit var authorizationIntent: Intent
     private lateinit var credentialStore: SpotifyDefaultCredentialStore

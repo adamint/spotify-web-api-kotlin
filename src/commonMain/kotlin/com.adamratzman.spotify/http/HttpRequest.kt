@@ -243,13 +243,16 @@ public class HttpRequest constructor(
     }
 
     override fun toString(): String {
-        return """HttpConnection  (
+        // we don't want to print this sensitive information
+        val headersWithoutAuthorization = headers.filter { it.key != "Authorization" }
+        val hasAuthorizationHeader = headersWithoutAuthorization.size != headers.size
+        return """HttpConnection(
             |url=$url,
             |method=$method,
             |body=${bodyString ?: bodyMap},
             |contentType=$contentType,
-            |headers=${headers.toList()}
-            |  )
+            |headers=${headersWithoutAuthorization.toList()}
+            |${if (hasAuthorizationHeader) "The authorization header was hidden." else "There was no authorization header."})
         """.trimMargin()
     }
 

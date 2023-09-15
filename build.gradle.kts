@@ -12,9 +12,9 @@ plugins {
     signing
     id("com.android.library")
     kotlin("plugin.serialization")
-    id("com.diffplug.spotless") version "6.11.0"
+    id("com.diffplug.spotless") version "6.21.0"
     id("com.moowork.node") version "1.3.1"
-    id("org.jetbrains.dokka") version "1.8.20"
+    id("org.jetbrains.dokka") version "1.9.0"
 }
 
 repositories {
@@ -45,17 +45,18 @@ version = libraryVersion
 
 
 android {
+    namespace = "com.adamratzman.spotify"
     compileSdk = 30
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/*.md") // needed to prevent android compilation errors
     }
     defaultConfig {
         minSdk = 23
-        targetSdk = 30
+        targetSdk = 31
         setCompileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -82,9 +83,10 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 
 kotlin {
     explicitApiWarning()
+    jvmToolchain(17)
 
     androidTarget {
-        compilations.all { kotlinOptions.jvmTarget = "1.8" }
+        compilations.all { kotlinOptions.jvmTarget = "17" }
 
         mavenPublication { setupPom(artifactId) }
 
