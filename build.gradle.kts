@@ -326,7 +326,7 @@ tasks {
     spotless {
         kotlin {
             target("**/*.kt")
-            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2022; Original author: Adam Ratzman */")
+            licenseHeader("/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2023; Original author: Adam Ratzman */")
             ktlint()
         }
     }

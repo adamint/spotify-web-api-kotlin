@@ -9,7 +9,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKey
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyApi
 import com.adamratzman.spotify.SpotifyApiOptions
@@ -21,7 +21,6 @@ import com.adamratzman.spotify.refreshSpotifyClientToken
 import com.adamratzman.spotify.spotifyClientPkceApi
 import com.adamratzman.spotify.spotifyImplicitGrantApi
 import com.adamratzman.spotify.utils.logToConsole
-import kotlinx.coroutines.runBlocking
 
 /**
  * Provided credential store for holding current Spotify token credentials, allowing you to easily store and retrieve
@@ -61,7 +60,8 @@ public class SpotifyDefaultCredentialStore(
         /**
          * The PKCE code verifier key currently being used in [EncryptedSharedPreferences]
          */
-        public const val SpotifyCurrentPkceCodeVerifierKey: String = "spotifyCurrentPkceCodeVerifier"
+        public const val SpotifyCurrentPkceCodeVerifierKey: String =
+            "spotifyCurrentPkceCodeVerifier"
 
         /**
          * The activity to return to if re-authentication is necessary on implicit authentication. Null except during authentication when using [guardValidImplicitSpotifyApi]
@@ -71,18 +71,20 @@ public class SpotifyDefaultCredentialStore(
 
     public var credentialTypeStored: CredentialType? = null
 
+    private val masterKeyForEncryption =
+        MasterKey.Builder(applicationContext).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
+
     /**
      * The [EncryptedSharedPreferences] that this API saves to/retrieves from.
      */
-    @Suppress("DEPRECATION")
-    public val encryptedPreferences: SharedPreferences = EncryptedSharedPreferences
-        .create(
-            "spotify-api-encrypted-preferences",
-            MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-            applicationContext,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
+    public val encryptedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
+        applicationContext,
+        "spotify-api-encrypted-preferences",
+        masterKeyForEncryption,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
 
     /**
      * Get/set when the Spotify access token will expire, in milliseconds from UNIX epoch. This will be one hour from authentication.
@@ -126,7 +128,8 @@ public class SpotifyDefaultCredentialStore(
      */
     public var currentSpotifyPkceCodeVerifier: String?
         get() = encryptedPreferences.getString(SpotifyCurrentPkceCodeVerifierKey, null)
-        set(value) = encryptedPreferences.edit().putString(SpotifyCurrentPkceCodeVerifierKey, value).apply()
+        set(value) = encryptedPreferences.edit().putString(SpotifyCurrentPkceCodeVerifierKey, value)
+            .apply()
 
     /**
      * Get/set the Spotify [Token] obtained from [spotifyToken].
@@ -181,31 +184,27 @@ public class SpotifyDefaultCredentialStore(
      *
      * @param block Applied configuration to the [SpotifyClientApi]
      */
-    public fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
+    public suspend fun getSpotifyClientPkceApi(block: ((SpotifyApiOptions).() -> Unit)? = null): SpotifyClientApi? {
         val token = spotifyToken
             ?: if (spotifyRefreshToken != null) {
-                runBlocking {
-                    val newToken = refreshSpotifyClientToken(clientId, null, spotifyRefreshToken, true)
-                    spotifyToken = newToken
-                    newToken
-                }
+                val newToken = refreshSpotifyClientToken(clientId, null, spotifyRefreshToken, true)
+                spotifyToken = newToken
+                newToken
             } else {
                 return null
             }
 
-        return runBlocking {
-            spotifyClientPkceApi(
-                clientId,
-                redirectUri,
-                SpotifyUserAuthorization(token = token),
-                block ?: {}
-            ).build().apply {
-                val previousAfterTokenRefresh = spotifyApiOptions.afterTokenRefresh
-                spotifyApiOptions.afterTokenRefresh = {
-                    spotifyToken = this.token
-                    logToConsole("Refreshed Spotify PKCE token in credential store... $token")
-                    previousAfterTokenRefresh?.invoke(this)
-                }
+        return spotifyClientPkceApi(
+            clientId,
+            redirectUri,
+            SpotifyUserAuthorization(token = token),
+            block ?: {}
+        ).build().apply {
+            val previousAfterTokenRefresh = spotifyApiOptions.afterTokenRefresh
+            spotifyApiOptions.afterTokenRefresh = {
+                spotifyToken = this.token
+                logToConsole("Refreshed Spotify PKCE token in credential store... $token")
+                previousAfterTokenRefresh?.invoke(this)
             }
         }
     }
@@ -245,6 +244,9 @@ public enum class CredentialType {
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-public fun Application.getDefaultCredentialStore(clientId: String, redirectUri: String): SpotifyDefaultCredentialStore {
+public fun Application.getDefaultCredentialStore(
+    clientId: String,
+    redirectUri: String
+): SpotifyDefaultCredentialStore {
     return SpotifyDefaultCredentialStore(clientId, redirectUri, applicationContext)
 }
