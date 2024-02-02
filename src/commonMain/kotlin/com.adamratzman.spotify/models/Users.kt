@@ -2,8 +2,14 @@
 package com.adamratzman.spotify.models
 
 import com.adamratzman.spotify.SpotifyScope
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.encoding.*
 
 /**
  * Private information about a Spotify user. Each field may require a specific scope.
@@ -75,11 +81,44 @@ public data class SpotifyPublicUser(
  *
  * @param total Null or -1 if the user object does not contain followers, otherwise the amount of followers the user has
  */
-@Serializable
+@Serializable(with = FollowersSerializer::class)
 public data class Followers(
     val href: String? = null,
     @SerialName("total") val total: Int? = null
 )
+
+// custom serializer to convert total (which now is a double from spotify's response) to int, because it should be an int
+private object FollowersSerializer : KSerializer<Followers> {
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Followers") {
+        element<String?>("href")
+        element<Int?>("total")
+    }
+
+    override fun serialize(encoder: Encoder, value: Followers) {
+        encoder.encodeStructure(descriptor) {
+            encodeNullableSerializableElement(descriptor, 0, String.serializer(), value.href)
+            encodeNullableSerializableElement(descriptor, 1, Int.serializer(), value.total)
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): Followers {
+        return decoder.decodeStructure(descriptor) {
+            var href: String? = null
+            var total: Int? = null
+
+            while (true) {
+                when (val index = decodeElementIndex(descriptor)) {
+                    0 -> href = decoder.decodeNullableSerializableValue(String.serializer())
+                    1 -> total = decoder.decodeNullableSerializableValue(Double.serializer())?.toInt()
+                    CompositeDecoder.DECODE_DONE -> break
+                    else -> error("Unexpected index: $index")
+                }
+            }
+
+            Followers(href, total)
+        }
+    }
+}
 
 @Serializable
 public data class ExplicitContentSettings(

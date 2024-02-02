@@ -4,13 +4,7 @@ package com.adamratzman.spotify.endpoints.pub
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.models.Artist
-import com.adamratzman.spotify.models.ArtistList
-import com.adamratzman.spotify.models.ArtistUri
-import com.adamratzman.spotify.models.CursorBasedPagingObject
-import com.adamratzman.spotify.models.PagingObject
-import com.adamratzman.spotify.models.SimpleAlbum
-import com.adamratzman.spotify.models.Track
+import com.adamratzman.spotify.models.*
 import com.adamratzman.spotify.models.serialization.toInnerArray
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toObject
@@ -50,7 +44,8 @@ public class ArtistApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      *
      * @param artists The ids or uris representing the artists. Maximum **50**.
      *
-     * @return List of [Artist] objects or null if the artist could not be found, in the order requested
+     * @return List of [Artist] objects or null if the artist could not be found, in the order requested.
+     * @throws BadRequestException if any of the [artists] are not found, *if using client api*
      */
     public suspend fun getArtists(vararg artists: String): List<Artist?> {
         checkBulkRequesting(50, artists.size)

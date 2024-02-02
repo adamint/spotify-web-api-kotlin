@@ -72,7 +72,7 @@ class JsonTests {
         assertEquals(ArtistUri("spotify:artist:5WUlDfRSoLAfcVSX1WnrxN"), artist.uri)
         assertEquals("5WUlDfRSoLAfcVSX1WnrxN", artist.id)
         assertEquals("Sia", artist.name)
-        assertEquals(88, artist.popularity)
+        assertEquals(88.0, artist.popularity)
         assertEquals("artist", artist.type)
     }
 

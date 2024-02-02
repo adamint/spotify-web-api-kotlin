@@ -145,7 +145,7 @@ public data class Album(
     val images: List<SpotifyImage>,
     val label: String,
     val name: String,
-    val popularity: Int,
+    val popularity: Double,
     @SerialName("release_date") private val releaseDateString: String,
     @SerialName("release_date_precision") val releaseDatePrecision: String,
     val tracks: PagingObject<SimpleTrack>,

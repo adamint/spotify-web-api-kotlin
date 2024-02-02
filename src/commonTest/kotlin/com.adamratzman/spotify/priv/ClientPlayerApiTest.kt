@@ -193,7 +193,6 @@ class ClientPlayerApiTest : AbstractTest<SpotifyClientApi>() {
         val artistUri = "spotify:artist:0MlOPi3zIDMVrfA9R04Fe3".toArtistUri()
         val showUri = "spotify:show:6z4NLXyHPga1UmSJsPK7G1".toShowUri()
         val albumUri = "spotify:album:7qmzJKB20IS9non9kBkPgF".toAlbumUri()
-        val trackId = "4DlkGrHnPtcgOu0z9aDprZ"
 
         // play from a context
         api.player.startPlayback(contextUri = playlistUri, deviceId = device.id)

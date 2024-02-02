@@ -10,10 +10,7 @@ import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import com.adamratzman.spotify.utils.Market
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
+import kotlin.test.*
 
 class ShowApiTest : AbstractTest<GenericSpotifyApi>() {
     private val market = Market.US
@@ -33,11 +30,12 @@ class ShowApiTest : AbstractTest<GenericSpotifyApi>() {
     fun testGetShows(): TestResult = runTestOnDefaultDispatcher {
         buildApi(::testGetShows.name)
 
-        assertFailsWith<BadRequestException> { api.shows.getShows("hi", "dad", market = market) }
-        assertFailsWith<BadRequestException> {
-            api.shows.getShows("78nWZk9ikQrOJX7OTRE2h7", "j", market = market).map { it?.name }
-        }
-        assertEquals(
+        assertContentEquals(listOf(null, null), api.shows.getShows("hi", "dad", market = market))
+        assertContentEquals(
+            listOf(null, null),
+            api.shows.getShows("78sdfjsdjfsjdf", "j", market = market).map { it?.id }
+        )
+        assertContentEquals(
             listOf("Freakonomics Radio"),
             api.shows.getShows("6z4NLXyHPga1UmSJsPK7G1", market = market).map { it?.name }
         )

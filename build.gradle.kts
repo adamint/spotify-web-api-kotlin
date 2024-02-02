@@ -56,7 +56,6 @@ android {
     }
     defaultConfig {
         minSdk = 23
-        targetSdk = 31
         setCompileSdkVersion(30)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -138,9 +137,18 @@ kotlin {
         mavenPublication { setupPom(artifactId) }
     }
 
-    ios {
+    iosX64 {
         binaries { framework { baseName = "spotify" } }
+        mavenPublication { setupPom(artifactId) }
+    }
 
+    iosArm64 {
+        binaries { framework { baseName = "spotify" } }
+        mavenPublication { setupPom(artifactId) }
+    }
+
+    iosSimulatorArm64 {
+        binaries { framework { baseName = "spotify" } }
         mavenPublication { setupPom(artifactId) }
     }
 
@@ -158,146 +166,145 @@ kotlin {
         mavenPublication { setupPom(artifactId) }
     }*/
 
-    targets {
-        sourceSets {
-            val kotlinxDatetimeVersion: String by project
-            val kotlinxSerializationVersion: String by project
-            val kotlinxCoroutinesVersion: String by project
-            val ktorVersion: String by project
+    applyDefaultHierarchyTemplate()
 
-            val sparkVersion: String by project
-            val korlibsVersion: String by project
+    sourceSets {
+        val kotlinxDatetimeVersion: String by project
+        val kotlinxSerializationVersion: String by project
+        val kotlinxCoroutinesVersion: String by project
+        val ktorVersion: String by project
 
-            val commonMain by getting {
-                dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
-                    implementation("io.ktor:ktor-client-core:$ktorVersion")
-                    implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
-                    implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
-                }
+        val sparkVersion: String by project
+        val korlibsVersion: String by project
+
+        commonMain {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
+                implementation("com.soywiz.korlibs.korim:korim:$korlibsVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+
+        val commonJvmLikeMain by creating {
+            dependsOn(commonMain.get())
+
+            dependencies {
+                implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.3")
+            }
+        }
+
+        val commonJvmLikeTest by creating {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                implementation("com.sparkjava:spark-core:$sparkVersion")
+                runtimeOnly(kotlin("reflect"))
+            }
+        }
+
+        val commonNonJvmTargetsTest by creating {
+            dependsOn(commonTest.get())
+        }
+
+        jvmMain {
+            dependsOn(commonJvmLikeMain)
+
+            repositories {
+                mavenCentral()
             }
 
-            val commonTest by getting {
-                dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
-                    implementation(kotlin("test-common"))
-                    implementation(kotlin("test-annotations-common"))
-                }
+            dependencies {
+                implementation("io.ktor:ktor-client-cio:$ktorVersion")
+            }
+        }
+
+        jvmTest.get().dependsOn(commonJvmLikeTest)
+
+        jsMain {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+                implementation(kotlin("stdlib-js"))
+            }
+        }
+
+        jsTest {
+            dependsOn(commonNonJvmTargetsTest)
+
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+
+        androidMain {
+            dependsOn(commonJvmLikeMain)
+
+            repositories {
+                mavenCentral()
             }
 
-            val commonJvmLikeMain by creating {
-                dependsOn(commonMain)
+            dependencies {
+                val androidSpotifyAuthVersion: String by project
+                val androidCryptoVersion: String by project
+                val androidxCompatVersion: String by project
 
-                dependencies {
-                    implementation("net.sourceforge.streamsupport:android-retrofuture:1.7.3")
-                }
+                api("com.spotify.android:auth:$androidSpotifyAuthVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("androidx.security:security-crypto:$androidCryptoVersion")
+                implementation("androidx.appcompat:appcompat:$androidxCompatVersion")
             }
+        }
 
-            val commonJvmLikeTest by creating {
-                dependencies {
-                    implementation(kotlin("test-junit"))
-                    implementation("com.sparkjava:spark-core:$sparkVersion")
-                    runtimeOnly(kotlin("reflect"))
-                }
+        val androidUnitTest by getting {
+            dependsOn(commonJvmLikeTest)
+        }
+
+        // desktop targets
+        // as kotlin/native, they require special ktor versions
+        val desktopMain by creating {
+            dependsOn(commonMain.get())
+
+            dependencies {
+                implementation("io.ktor:ktor-client-curl:$ktorVersion")
             }
+        }
 
-            val commonNonJvmTargetsTest by creating {
-                dependsOn(commonTest)
+        linuxMain.get().dependsOn(desktopMain)
+        mingwMain.get().dependsOn(desktopMain)
+        macosMain.get().dependsOn(desktopMain)
+
+        val desktopTest by creating { dependsOn(commonNonJvmTargetsTest) }
+        linuxTest.get().dependsOn(desktopTest)
+        mingwTest.get().dependsOn(desktopTest)
+        macosTest.get().dependsOn(desktopTest)
+
+        // darwin targets
+
+        val nativeDarwinMain by creating {
+            dependsOn(commonMain.get())
+
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
+        }
 
-            val jvmMain by getting {
-                dependsOn(commonJvmLikeMain)
-                repositories {
-                    mavenCentral()
-                }
+        val nativeDarwinTest by creating { dependsOn(commonNonJvmTargetsTest) }
 
-                dependencies {
-                    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                }
-            }
+        iosMain.get().dependsOn(nativeDarwinMain)
+        iosTest.get().dependsOn(nativeDarwinTest)
 
-            val jvmTest by getting {
-                dependsOn(commonJvmLikeTest)
-            }
-
-            val jsMain by getting {
-                dependencies {
-                    implementation("io.ktor:ktor-client-js:$ktorVersion")
-                    implementation(kotlin("stdlib-js"))
-                }
-            }
-
-            val jsTest by getting {
-                dependsOn(commonNonJvmTargetsTest)
-
-                dependencies {
-                    implementation(kotlin("test-js"))
-                }
-            }
-
-            val androidMain by getting {
-                dependsOn(commonJvmLikeMain)
-
-                repositories {
-                    mavenCentral()
-                }
-
-                dependencies {
-                    val androidSpotifyAuthVersion: String by project
-                    val androidCryptoVersion: String by project
-                    val androidxCompatVersion: String by project
-
-                    api("com.spotify.android:auth:$androidSpotifyAuthVersion")
-                    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-                    implementation("androidx.security:security-crypto:$androidCryptoVersion")
-                    implementation("androidx.appcompat:appcompat:$androidxCompatVersion")
-                }
-            }
-
-            val androidUnitTest by getting {
-                dependsOn(commonJvmLikeTest)
-            }
-
-            // as kotlin/native, they require special ktor versions
-            val desktopMain by creating {
-                dependsOn(commonMain)
-
-                dependencies {
-                    implementation("io.ktor:ktor-client-curl:$ktorVersion")
-                }
-            }
-
-            val nativeDarwinMain by creating {
-                dependsOn(commonMain)
-
-                dependencies {
-                    implementation("io.ktor:ktor-client-ios:$ktorVersion")
-                }
-            }
-
-            // desktop targets
-            val desktopTest by creating { dependsOn(commonNonJvmTargetsTest) }
-            val linuxX64Main by getting { dependsOn(desktopMain) }
-            val linuxX64Test by getting { dependsOn(desktopTest) }
-            val mingwX64Main by getting { dependsOn(desktopMain) }
-            val mingwX64Test by getting { dependsOn(desktopTest) }
-            val macosX64Main by getting { dependsOn(desktopMain) }
-            val macosX64Test by getting { dependsOn(desktopTest) }
-
-            // darwin targets
-            val nativeDarwinTest by creating { dependsOn(commonNonJvmTargetsTest) }
-            val iosMain by getting { dependsOn(nativeDarwinMain) }
-            val iosTest by getting { dependsOn(nativeDarwinTest) }
-
-            // !! unable to include currently due to korlibs not being available !!
-            //val tvosMain by getting { dependsOn(nativeDarwinMain) }
-            //val tvosTest by getting { dependsOn(nativeDarwinTest) }
-            //val watchosMain by getting { dependsOn(nativeDarwinMain) }
-            //val watchosTest by getting { dependsOn(nativeDarwinTest) }
-
-            all { languageSettings.optIn("kotlin.RequiresOptIn") }
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
         }
     }
 
@@ -307,7 +314,7 @@ kotlin {
 }
 
 tasks {
-    val dokkaHtml by getting(DokkaTask::class) {
+    dokkaHtml {
         outputDirectory.set(projectDir.resolve("docs"))
 
         dokkaSourceSets {
@@ -352,7 +359,7 @@ tasks {
         val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
         inputs.property("mode", mode)
         dependsOn(framework.linkTask)
-        val targetDir = File(buildDir, "xcode-frameworks")
+        val targetDir = File(layout.buildDirectory.asFile.get(), "xcode-frameworks")
         from({ framework.outputDirectory })
         into(targetDir)
     }
