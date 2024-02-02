@@ -63,8 +63,7 @@ public open class ShowApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Note: If neither market or user country are provided, the content is considered unavailable for the client.
      * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
-     * @return List of possibly-null [SimpleShow] objects.
-     * @throws BadRequestException If any invalid show id is provided
+     * @return List of possibly-null [SimpleShow] objects, if the show was not found or invalid ids were provided.
      */
     public suspend fun getShows(vararg ids: String, market: Market): List<SimpleShow?> {
         checkBulkRequesting(50, ids.size)
