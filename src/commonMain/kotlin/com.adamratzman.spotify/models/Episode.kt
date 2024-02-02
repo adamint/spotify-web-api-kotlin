@@ -53,7 +53,7 @@ public data class PodcastEpisodeTrack(
     @SerialName("is_local") val isLocal: Boolean? = null,
     @SerialName("is_playable") val isPlayable: Boolean = true,
     val name: String,
-    val popularity: Int,
+    val popularity: Double,
     @SerialName("preview_url") val previewUrl: String? = null,
     val track: Boolean? = null,
     @SerialName("track_number") val trackNumber: Int,

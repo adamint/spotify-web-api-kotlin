@@ -302,7 +302,10 @@ kotlin {
         iosMain.get().dependsOn(nativeDarwinMain)
         iosTest.get().dependsOn(nativeDarwinTest)
 
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
+        }
     }
 
     publishing {

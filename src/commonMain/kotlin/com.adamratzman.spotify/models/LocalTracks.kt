@@ -66,7 +66,7 @@ public data class LocalTrack(
     @SerialName("explicit") val explicit: Boolean? = null,
     @SerialName("is_local") val isLocal: Boolean = true,
     val name: String,
-    val popularity: Int? = null,
+    val popularity: Double? = null,
     @SerialName("track_number") val trackNumber: Int? = null,
     override val type: String,
     override val uri: LocalTrackUri

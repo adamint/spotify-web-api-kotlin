@@ -55,7 +55,7 @@ public data class SimpleTrack(
     @SerialName("track_number") val trackNumber: Int,
     val type: String,
     @SerialName("is_local") val isLocal: Boolean? = null,
-    val popularity: Int? = null,
+    val popularity: Double? = null,
     val restrictions: Restrictions? = null
 ) : RelinkingAvailableResponse() {
     val availableMarkets: List<Market> get() = availableMarketsString.map { Market.valueOf(it) }
@@ -139,7 +139,7 @@ public data class Track(
     val explicit: Boolean,
     @SerialName("linked_from") override val linkedTrack: LinkedTrack? = null,
     val name: String,
-    val popularity: Int,
+    val popularity: Double,
     @SerialName("preview_url") val previewUrl: String? = null,
     @SerialName("track_number") val trackNumber: Int,
     override val type: String,

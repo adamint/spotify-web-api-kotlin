@@ -10,12 +10,13 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
 /**
- * A local track, episode, or track.
+ * A local track, episode, or track. Serialized with [PlayableSerializer]
  *
  * @property href A link to the Web API endpoint providing full details of the playable.
  * @property id The Spotify ID for the playable.
  * @property uri The URI associated with the object.
  * @property type The type of the playable.
+ *
  */
 @Serializable(with = PlayableSerializer::class)
 public interface Playable {

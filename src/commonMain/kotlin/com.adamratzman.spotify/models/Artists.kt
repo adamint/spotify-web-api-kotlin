@@ -20,7 +20,7 @@ public data class SimpleArtist(
     override val id: String,
     override val uri: SpotifyUri,
 
-    val name: String,
+    val name: String? = null,
     val type: String
 ) : CoreObject() {
     /**
@@ -60,8 +60,8 @@ public data class Artist(
     val followers: Followers,
     val genres: List<String>,
     val images: List<SpotifyImage>,
-    val name: String,
-    val popularity: Int,
+    val name: String? = null,
+    val popularity: Double,
     val type: String
 ) : CoreObject() {
     override fun getMembersThatNeedApiInstantiation(): List<NeedsApi?> = listOf(this)
