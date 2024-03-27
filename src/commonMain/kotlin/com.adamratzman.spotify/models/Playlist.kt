@@ -39,7 +39,7 @@ public data class SimplePlaylist(
     override val uri: SpotifyUri,
 
     val collaborative: Boolean,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val name: String,
     val description: String? = null,
     val owner: SpotifyPublicUser,
@@ -126,7 +126,7 @@ public data class Playlist(
     val description: String? = null,
     val followers: Followers,
     @SerialName("primary_color") val primaryColor: String? = null,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val name: String,
     val owner: SpotifyPublicUser,
     val public: Boolean? = null,

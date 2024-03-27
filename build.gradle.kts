@@ -2,6 +2,7 @@
 
 import com.fasterxml.jackson.databind.json.JsonMapper
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
@@ -46,7 +47,7 @@ version = libraryVersion
 
 android {
     namespace = "com.adamratzman.spotify"
-    compileSdk = 30
+    compileSdk = 31
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -56,7 +57,7 @@ android {
     }
     defaultConfig {
         minSdk = 23
-        setCompileSdkVersion(30)
+        setCompileSdkVersion(31)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -81,6 +82,10 @@ val dokkaJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions { 
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
     explicitApiWarning()
     jvmToolchain(17)
 

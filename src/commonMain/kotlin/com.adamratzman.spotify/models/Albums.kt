@@ -41,7 +41,7 @@ public data class SimpleAlbum(
     override val uri: SpotifyUri,
 
     val artists: List<SimpleArtist>,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val name: String,
     val type: String,
     val restrictions: Restrictions? = null,
@@ -142,7 +142,7 @@ public data class Album(
     val artists: List<SimpleArtist>,
     val copyrights: List<SpotifyCopyright>,
     val genres: List<String>,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val label: String,
     val name: String,
     val popularity: Double,

@@ -130,7 +130,7 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
         assertTrue(updatedPlaylist.public == false)
         assertEquals("test playlist", updatedPlaylist.name)
         //assertEquals("description 2", fullPlaylist.description)  <-- spotify is flaky about actually having description set
-        assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images.isNotEmpty())
+        assertTrue(updatedPlaylist.tracks.total == 2 && updatedPlaylist.images?.isNotEmpty() == true)
 
         api.playlists.reorderClientPlaylistPlayables(updatedPlaylist.id, 1, insertionPoint = 0)
 
