@@ -3,6 +3,7 @@ package com.adamratzman.spotify.endpoints.pub
 
 import com.adamratzman.spotify.GenericSpotifyApi
 import com.adamratzman.spotify.SpotifyAppApi
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException.BadRequestException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.http.SpotifyEndpoint
@@ -60,7 +61,7 @@ public open class EpisodeApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
      * Users can view the country that is associated with their account in the account settings. Required for [SpotifyAppApi], but **you may use [Market.FROM_TOKEN] to get the user market**
      *
      * @return List of possibly-null [Episode] objects.
-     * @throws BadRequestException If any invalid show id is provided
+     * @throws BadRequestException If any invalid show id is provided, if this is a [SpotifyClientApi]
      */
     public suspend fun getEpisodes(vararg ids: String, market: Market): List<Episode?> {
         checkBulkRequesting(50, ids.size)

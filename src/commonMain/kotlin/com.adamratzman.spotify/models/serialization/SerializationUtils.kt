@@ -23,6 +23,7 @@ internal val nonstrictJson =
         ignoreUnknownKeys = true
         allowSpecialFloatingPointValues = true
         useArrayPolymorphism = true
+        coerceInputValues = true
     }
 
 // Parse function that catches on parse exception

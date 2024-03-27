@@ -21,7 +21,9 @@ internal suspend inline fun <T> catch(catchInternalServerError: Boolean = false,
     return try {
         function()
     } catch (e: SpotifyException.BadRequestException) {
-        if (e.statusCode !in listOf(400, 404) && (e.statusCode !in 500..599) || catchInternalServerError) throw e
+        if (e.statusCode !in listOf(400, 404)) throw e
+        else if (e.statusCode in 500..599 && catchInternalServerError) throw e
+        
         // we should only ignore the exception if it's 400 or 404. Otherwise, it's a larger issue
         null
     }

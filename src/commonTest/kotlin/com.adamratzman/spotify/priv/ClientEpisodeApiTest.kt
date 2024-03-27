@@ -30,8 +30,9 @@ class ClientEpisodeApiTest : AbstractTest<SpotifyClientApi>() {
         buildApi<SpotifyClientApi>(::testGetEpisodes.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher
 
-        assertEquals(listOf(null, null), api.episodes.getEpisodes("hi", "dad"))
-        assertEquals(null, api.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j")[1])
+        assertFailsWith<BadRequestException> { api.episodes.getEpisodes("hi", "dad") }
+        assertFailsWith<BadRequestException> { api.episodes.getEpisodes("1cfOhXP4GQCd5ZFHoSF8gg", "j")[1] }
+
         assertEquals(
             listOf("The Great Inflation (Classic)"),
             api.episodes.getEpisodes("3lMZTE81Pbrp0U12WZe27l").map { it?.name }

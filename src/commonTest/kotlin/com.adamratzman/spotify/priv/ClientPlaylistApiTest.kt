@@ -85,8 +85,8 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
 
         api.spotifyApiOptions.allowBulkRequests = true
 
-        suspend fun calculatePlaylistSize() = api.playlists.getClientPlaylist(createdPlaylist!!.id)!!.tracks.total
-        val sizeBefore = calculatePlaylistSize()
+        suspend fun calculatePlaylistSize(): Int? = api.playlists.getClientPlaylist(createdPlaylist!!.id)!!.tracks.total
+        val sizeBefore = calculatePlaylistSize() ?: 0
         api.playlists.addPlayablesToClientPlaylist(createdPlaylist!!.id, playables = tracks.toTypedArray())
         assertEquals(sizeBefore + tracks.size, calculatePlaylistSize())
         api.playlists.removePlayablesFromClientPlaylist(createdPlaylist!!.id, playables = tracks.toTypedArray())
@@ -98,6 +98,7 @@ class ClientPlaylistApiTest : AbstractTest<SpotifyClientApi>() {
     }
 
     @Test
+    @Ignore // ignored because Spotify currently broke the ability to change `public` field
     fun testEditPlaylists(): TestResult = runTestOnDefaultDispatcher {
         buildApi<SpotifyClientApi>(::testEditPlaylists.name)
         if (!isApiInitialized()) return@runTestOnDefaultDispatcher

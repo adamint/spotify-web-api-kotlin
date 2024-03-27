@@ -150,7 +150,7 @@ public data class Playlist(
 @Serializable
 public data class PlaylistTrackInfo(
     val href: String,
-    val total: Int
+    val total: Int? = null
 )
 
 @Serializable

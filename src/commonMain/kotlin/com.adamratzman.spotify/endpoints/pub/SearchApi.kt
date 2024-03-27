@@ -338,7 +338,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         market: Market,
         language: Language? = null
     ): SpotifySearchResult =
-        search(query, filters = filters, searchTypes = SearchType.values(), limit = limit, offset = offset, market = market)
+        search(query, filters = filters, searchTypes = SearchType.entries.toTypedArray(), limit = limit, offset = offset, market = market, language = language)
 
     protected fun build(
         query: String,

@@ -54,14 +54,14 @@ public data class SimpleAlbum(
 
     val albumType: AlbumResultType
         get() = albumTypeString.let { _ ->
-            AlbumResultType.values().first { it.id.equals(albumTypeString, true) }
+            AlbumResultType.entries.first { it.id.equals(albumTypeString, true) }
         }
 
     val releaseDate: ReleaseDate? get() = releaseDateString?.let { getReleaseDate(releaseDateString) }
 
     val albumGroup: AlbumResultType?
         get() = albumGroupString?.let { _ ->
-            AlbumResultType.values().find { it.id == albumGroupString }
+            AlbumResultType.entries.find { it.id == albumGroupString }
         }
 
     /**
@@ -157,7 +157,7 @@ public data class Album(
 
     val externalIds: List<ExternalId> get() = externalIdsString.map { ExternalId(it.key, it.value) }
 
-    val albumType: AlbumResultType get() = AlbumResultType.values().first { it.id == albumTypeString }
+    val albumType: AlbumResultType get() = AlbumResultType.entries.first { it.id == albumTypeString }
 
     val releaseDate: ReleaseDate get() = getReleaseDate(releaseDateString)
 
@@ -181,7 +181,7 @@ public data class SpotifyCopyright(
             .removePrefix("(C)")
             .trim()
 
-    val type: CopyrightType get() = CopyrightType.values().match(typeString)!!
+    val type: CopyrightType get() = CopyrightType.entries.toTypedArray().match(typeString)!!
 }
 
 @Serializable

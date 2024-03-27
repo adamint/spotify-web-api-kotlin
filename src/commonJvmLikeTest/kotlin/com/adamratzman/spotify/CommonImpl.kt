@@ -38,6 +38,7 @@ private suspend fun buildSpotifyApiInternal(): GenericSpotifyApi? {
 
     val optionsCreator: (SpotifyApiOptions.() -> Unit) = {
         this.enableDebugMode = logHttp
+        retryOnInternalServerErrorTimes = 0
     }
 
     return when {
