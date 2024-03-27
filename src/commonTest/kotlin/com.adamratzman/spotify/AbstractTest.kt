@@ -37,7 +37,7 @@ abstract class AbstractTest<T : GenericSpotifyApi> {
         return if (apiInitialized) {
             true
         } else {
-            println("Api is not initialized. buildSpotifyApi returns ${buildSpotifyApi(testClassQualifiedName, "n/a")}")
+            println("Api is not initialized or does not match the expected type. buildSpotifyApi returns ${buildSpotifyApi(testClassQualifiedName, "n/a")}")
             false
         }
     }

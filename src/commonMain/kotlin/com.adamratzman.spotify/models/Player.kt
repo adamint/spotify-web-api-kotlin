@@ -24,7 +24,7 @@ public data class SpotifyContext(
     val uri: ContextUri,
     @SerialName("type") val typeString: String
 ) {
-    val type: SpotifyContextType get() = SpotifyContextType.values().match(typeString)!!
+    val type: SpotifyContextType get() = SpotifyContextType.entries.toTypedArray().match(typeString)!!
     val externalUrls: List<ExternalUrl> get() = getExternalUrls(externalUrlsString)
 }
 
@@ -64,7 +64,7 @@ public data class Device(
     @SerialName("type") val typeString: String,
     @SerialName("volume_percent") val volumePercent: Int
 ) : IdentifiableNullable() {
-    val type: DeviceType get() = DeviceType.values().first { it.identifier.equals(typeString, true) }
+    val type: DeviceType get() = DeviceType.entries.first { it.identifier.equals(typeString, true) }
 
     override val href: String? = null
 }
@@ -118,7 +118,7 @@ public data class CurrentlyPlayingContext(
     val context: SpotifyContext? = null
 ) {
     val repeatState: ClientPlayerApi.PlayerRepeatState
-        get() = ClientPlayerApi.PlayerRepeatState.values().match(repeatStateString)!!
+        get() = ClientPlayerApi.PlayerRepeatState.entries.toTypedArray().match(repeatStateString)!!
 }
 
 /**
@@ -146,7 +146,7 @@ public data class CurrentlyPlayingObject(
     val actions: PlaybackActions
 ) {
     val currentlyPlayingType: CurrentlyPlayingType
-        get() = CurrentlyPlayingType.values().match(currentlyPlayingTypeString)!!
+        get() = CurrentlyPlayingType.entries.toTypedArray().match(currentlyPlayingTypeString)!!
 }
 
 /**
@@ -162,7 +162,7 @@ public data class PlaybackActions(
     val disallows: List<DisallowablePlaybackAction>
         get() = disallowsString.map {
             DisallowablePlaybackAction(
-                PlaybackAction.values().match(it.key)!!,
+                PlaybackAction.entries.toTypedArray().match(it.key)!!,
                 it.value ?: false
             )
         }

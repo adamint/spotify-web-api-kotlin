@@ -13,7 +13,7 @@ import kotlin.js.Promise
 public external interface Album {
     public var uri: String
     public var name: String
-    public var images: Array<Image>
+    public var images: Array<Image>?
 }
 
 public external interface Artist {

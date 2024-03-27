@@ -806,7 +806,7 @@ public enum class Locale(public val language: Language, public val country: Mark
 
     public companion object {
         public fun from(language: Language, country: Market): Locale? {
-            return values().find { locale -> locale.language == language && locale.country == country }
+            return entries.find { locale -> locale.language == language && locale.country == country }
         }
     }
 }

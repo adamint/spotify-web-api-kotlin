@@ -96,7 +96,7 @@ public data class Episode(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     @SerialName("is_externally_hosted") val isExternallyHosted: Boolean,
     @SerialName("is_playable") val isPlayable: Boolean,
     @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")
@@ -148,7 +148,7 @@ public data class SimpleEpisode(
     @SerialName("external_urls") override val externalUrlsString: Map<String, String>,
     override val href: String,
     override val id: String,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     @SerialName("is_externally_hosted") val isExternallyHosted: Boolean,
     @SerialName("is_playable") val isPlayable: Boolean,
     @Deprecated("This field is deprecated and might be removed in the future. Please use the languages field instead")

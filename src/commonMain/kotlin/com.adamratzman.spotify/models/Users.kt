@@ -40,7 +40,7 @@ public data class SpotifyUserInformation(
     @SerialName("display_name") val displayName: String? = null,
     val email: String? = null,
     val followers: Followers,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val product: String? = null,
     @SerialName("explicit_content") val explicitContentSettings: ExplicitContentSettings? = null,
     val type: String

@@ -23,7 +23,7 @@ class SearchApiTest : AbstractTest<GenericSpotifyApi>() {
     fun testSearchMultiple(): TestResult = runTestOnDefaultDispatcher {
         buildApi(::testSearchMultiple.name)
 
-        val query = api.search.search("lo", *SearchApi.SearchType.values(), market = Market.US)
+        val query = api.search.search("lo", *SearchApi.SearchType.entries.toTypedArray(), market = Market.US)
         assertTrue(
             query.albums?.items?.isNotEmpty() == true && query.tracks?.items?.isNotEmpty() == true && query.artists?.items?.isNotEmpty() == true &&
                 query.playlists?.items?.isNotEmpty() == true && query.shows?.items?.isNotEmpty() == true && query.episodes?.items?.isNotEmpty() == true

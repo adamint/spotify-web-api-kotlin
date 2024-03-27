@@ -27,7 +27,7 @@ class PkceTest {
 
             println(
                 getSpotifyPkceAuthorizationUrl(
-                    *SpotifyScope.values(),
+                    *SpotifyScope.entries.toTypedArray(),
                     clientId = clientId,
                     redirectUri = serverRedirectUri,
                     codeChallenge = getSpotifyPkceCodeChallenge(pkceCodeVerifier),

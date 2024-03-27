@@ -76,8 +76,8 @@ public interface ISpotifyUri {
  */
 @Serializable(with = SpotifyUriSerializer::class)
 public sealed class SpotifyUri(input: String, public val type: String, allowColon: Boolean = false) : ISpotifyUri {
-    public override val uri: String
-    public override val id: String
+    public final override val uri: String
+    public final override val id: String
 
     init {
         input.replace(" ", "").also {

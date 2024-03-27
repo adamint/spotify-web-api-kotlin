@@ -59,7 +59,7 @@ public data class Artist(
 
     val followers: Followers,
     val genres: List<String>,
-    val images: List<SpotifyImage>,
+    val images: List<SpotifyImage>? = null,
     val name: String? = null,
     val popularity: Double,
     val type: String
