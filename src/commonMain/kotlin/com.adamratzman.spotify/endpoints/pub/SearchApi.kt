@@ -18,6 +18,7 @@ import com.adamratzman.spotify.models.SpotifySearchResult
 import com.adamratzman.spotify.models.Track
 import com.adamratzman.spotify.models.serialization.toNonNullablePagingObject
 import com.adamratzman.spotify.models.serialization.toNullablePagingObject
+import com.adamratzman.spotify.utils.Language
 import com.adamratzman.spotify.utils.Market
 import com.adamratzman.spotify.utils.encodeUrl
 import com.adamratzman.spotify.utils.getSpotifyId
@@ -129,7 +130,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
         market: Market? = null,
-        includeExternal: Boolean? = null
+        includeExternal: Boolean? = null,
+        language: Language? = null
     ): SpotifySearchResult {
         require(searchTypes.isNotEmpty()) { "At least one search type must be provided" }
         if (SearchType.Episode in searchTypes) {
@@ -137,7 +139,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         }
 
         val jsonString =
-            get(build(query, market, limit, offset, filters, *searchTypes, includeExternal = includeExternal))
+            get(build(query, market, limit, offset, filters, *searchTypes, includeExternal = includeExternal, language = language))
         val map = json.decodeFromString(MapSerializer(String.serializer(), JsonObject.serializer()), jsonString)
 
         return SpotifySearchResult(
@@ -173,8 +175,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
-    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, filters, SearchType.Playlist))
+        market: Market? = null,
+        language: Language? = null
+    ): PagingObject<SimplePlaylist> = get(build(query, market, limit, offset, filters, SearchType.Playlist, language = language))
         .toNonNullablePagingObject(SimplePlaylist.serializer(), "playlists", api, json)
 
     /**
@@ -199,8 +202,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
-    ): PagingObject<Artist> = get(build(query, market, limit, offset, filters, SearchType.Artist))
+        market: Market? = null,
+        language: Language? = null
+    ): PagingObject<Artist> = get(build(query, market, limit, offset, filters, SearchType.Artist, language = language))
         .toNonNullablePagingObject(Artist.serializer(), "artists", api, json)
 
     /**
@@ -225,8 +229,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
-    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, filters, SearchType.Album))
+        market: Market? = null,
+        language: Language? = null
+    ): PagingObject<SimpleAlbum> = get(build(query, market, limit, offset, filters, SearchType.Album, language = language))
         .toNonNullablePagingObject(SimpleAlbum.serializer(), "albums", api, json)
 
     /**
@@ -251,8 +256,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market? = null
-    ): PagingObject<Track> = get(build(query, market, limit, offset, filters, SearchType.Track))
+        market: Market? = null,
+        language: Language? = null
+    ): PagingObject<Track> = get(build(query, market, limit, offset, filters, SearchType.Track, language = language))
         .toNonNullablePagingObject(Track.serializer(), "tracks", api, json)
 
     /**
@@ -277,8 +283,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market
-    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, filters, SearchType.Show))
+        market: Market,
+        language: Language? = null
+    ): PagingObject<SimpleShow> = get(build(query, market, limit, offset, filters, SearchType.Show, language = language))
         .toNonNullablePagingObject(SimpleShow.serializer(), "shows", api, json)
 
     /**
@@ -303,8 +310,9 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market
-    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, filters, SearchType.Episode))
+        market: Market,
+        language: Language? = null
+    ): PagingObject<SimpleEpisode> = get(build(query, market, limit, offset, filters, SearchType.Episode, language = language))
         .toNonNullablePagingObject(SimpleEpisode.serializer(), "episodes", api, json)
 
     /**
@@ -327,7 +335,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         filters: List<SearchFilter> = listOf(),
         limit: Int? = api.spotifyApiOptions.defaultLimit,
         offset: Int? = null,
-        market: Market
+        market: Market,
+        language: Language? = null
     ): SpotifySearchResult =
         search(query, filters = filters, searchTypes = SearchType.values(), limit = limit, offset = offset, market = market)
 
@@ -338,7 +347,8 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
         offset: Int?,
         filters: List<SearchFilter> = listOf(),
         vararg types: SearchType,
-        includeExternal: Boolean? = null
+        includeExternal: Boolean? = null,
+        language: Language? = null
     ): String {
         val queryString = if (filters.isEmpty()) query
         else "$query ${filters.joinToString(" ") { "${it.filterType.id}:${it.filterValue}" }}"
@@ -347,6 +357,7 @@ public open class SearchApi(api: GenericSpotifyApi) : SpotifyEndpoint(api) {
             .with("q", queryString.encodeUrl())
             .with("type", types.joinToString(",") { it.id })
             .with("market", market?.getSpotifyId()).with("limit", limit).with("offset", offset)
+            .with("locale", language?.name)
             .with("include_external", if (includeExternal == true) "audio" else null).toString()
     }
 }
