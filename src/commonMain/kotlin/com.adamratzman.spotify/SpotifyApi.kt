@@ -644,7 +644,7 @@ public open class SpotifyClientApi(
         if (token.scopes == null) {
             null
         } else {
-            !isTokenValid(false).isValid &&
+            isTokenValid(false).isValid &&
                 token.scopes?.contains(scope) == true &&
                 scopes.all { token.scopes?.contains(it) == true }
         }
