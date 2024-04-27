@@ -4,32 +4,9 @@
 package com.adamratzman.spotify
 
 import com.adamratzman.spotify.SpotifyException.BadRequestException
-import com.adamratzman.spotify.endpoints.client.ClientEpisodeApi
-import com.adamratzman.spotify.endpoints.client.ClientFollowingApi
-import com.adamratzman.spotify.endpoints.client.ClientLibraryApi
-import com.adamratzman.spotify.endpoints.client.ClientPersonalizationApi
-import com.adamratzman.spotify.endpoints.client.ClientPlayerApi
-import com.adamratzman.spotify.endpoints.client.ClientPlaylistApi
-import com.adamratzman.spotify.endpoints.client.ClientProfileApi
-import com.adamratzman.spotify.endpoints.client.ClientShowApi
-import com.adamratzman.spotify.endpoints.pub.AlbumApi
-import com.adamratzman.spotify.endpoints.pub.ArtistApi
-import com.adamratzman.spotify.endpoints.pub.BrowseApi
-import com.adamratzman.spotify.endpoints.pub.EpisodeApi
-import com.adamratzman.spotify.endpoints.pub.FollowingApi
-import com.adamratzman.spotify.endpoints.pub.MarketsApi
-import com.adamratzman.spotify.endpoints.pub.PlaylistApi
-import com.adamratzman.spotify.endpoints.pub.SearchApi
-import com.adamratzman.spotify.endpoints.pub.ShowApi
-import com.adamratzman.spotify.endpoints.pub.TrackApi
-import com.adamratzman.spotify.endpoints.pub.UserApi
-import com.adamratzman.spotify.http.CacheState
-import com.adamratzman.spotify.http.HttpHeader
-import com.adamratzman.spotify.http.HttpRequest
-import com.adamratzman.spotify.http.HttpRequestMethod
-import com.adamratzman.spotify.http.HttpResponse
-import com.adamratzman.spotify.http.SpotifyEndpoint
-import com.adamratzman.spotify.http.SpotifyRequest
+import com.adamratzman.spotify.endpoints.client.*
+import com.adamratzman.spotify.endpoints.pub.*
+import com.adamratzman.spotify.http.*
 import com.adamratzman.spotify.models.AuthenticationError
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.models.TokenValidityResponse
@@ -238,12 +215,20 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
      * @throws BadRequestException if refresh fails
      * @throws IllegalStateException if [SpotifyApiOptions.refreshTokenProducer] is null
      */
-    public suspend fun refreshToken(): Token = spotifyApiOptions.refreshTokenProducer?.invoke(this)?.apply {
-        this@SpotifyApi.token = this
+    public suspend fun refreshToken(): Token {
+        val oldToken = token
+        val refreshedToken = spotifyApiOptions.refreshTokenProducer?.invoke(this)
+            ?: throw SpotifyException.ReAuthenticationNeededException(IllegalStateException("The refreshTokenProducer is null."))
+
+        token = refreshedToken
+        // Spotify may not provide a new refresh token
+        if (token.refreshToken == null) token.refreshToken = oldToken.refreshToken
+        
         spotifyApiOptions.onTokenRefresh?.invoke(this@SpotifyApi)
         spotifyApiOptions.afterTokenRefresh?.invoke(this@SpotifyApi)
+        
+        return oldToken
     }
-        ?: throw SpotifyException.ReAuthenticationNeededException(IllegalStateException("The refreshTokenProducer is null."))
 
     /**
      * If the method used to create the [token] supports token refresh and
@@ -291,15 +276,15 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
             state: String? = null
         ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
-                "&redirect_uri=$redirectUri" +
-                (state?.let { "&state=$it" } ?: "") +
-                if (scopes.isEmpty()) {
-                    ""
-                } else {
-                    "&scope=${scopes.joinToString("%20") { it.uri }}" +
-                        if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
-                }
+                    "&response_type=${if (isImplicitGrantFlow) "token" else "code"}" +
+                    "&redirect_uri=$redirectUri" +
+                    (state?.let { "&state=$it" } ?: "") +
+                    if (scopes.isEmpty()) {
+                        ""
+                    } else {
+                        "&scope=${scopes.joinToString("%20") { it.uri }}" +
+                                if (shouldShowDialog) "&show_dialog=$shouldShowDialog" else ""
+                    }
         }
 
         /**
@@ -321,12 +306,12 @@ public sealed class SpotifyApi<T : SpotifyApi<T, B>, B : ISpotifyApiBuilder<T, B
             state: String? = null
         ): String {
             return "https://accounts.spotify.com/authorize/?client_id=$clientId" +
-                "&response_type=code" +
-                "&redirect_uri=$redirectUri" +
-                "&code_challenge_method=S256" +
-                "&code_challenge=$codeChallenge" +
-                (state?.let { "&state=$it" } ?: "") +
-                if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
+                    "&response_type=code" +
+                    "&redirect_uri=$redirectUri" +
+                    "&code_challenge_method=S256" +
+                    "&code_challenge=$codeChallenge" +
+                    (state?.let { "&state=$it" } ?: "") +
+                    if (scopes.isEmpty()) "" else "&scope=${scopes.joinToString("%20") { it.uri }}"
         }
 
         /**
@@ -645,8 +630,8 @@ public open class SpotifyClientApi(
             null
         } else {
             isTokenValid(false).isValid &&
-                token.scopes?.contains(scope) == true &&
-                scopes.all { token.scopes?.contains(it) == true }
+                    token.scopes?.contains(scope) == true &&
+                    scopes.all { token.scopes?.contains(it) == true }
         }
 
     /**
