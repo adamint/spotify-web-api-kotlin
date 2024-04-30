@@ -9,11 +9,13 @@ import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.runTestOnDefaultDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class PublicFollowingApiTest : AbstractTest<GenericSpotifyApi>() {
+    @Ignore // Spotify is currently failing areFollowingPlaylist requests for non-logged in user, contrary to docs
     @Test
     fun testUsersFollowingPlaylist(): TestResult = runTestOnDefaultDispatcher {
         buildApi(::testUsersFollowingPlaylist.name)
