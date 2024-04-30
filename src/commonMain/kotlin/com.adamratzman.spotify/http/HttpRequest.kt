@@ -165,12 +165,6 @@ public class HttpRequest constructor(
                     }
                 )
 
-                api?.spotifyApiOptions?.httpResponseSubscriber?.let { subscriber ->
-                    launch(currentCoroutineContext()) {
-                        subscriber(this, httpResponseToReturn)
-                    }
-                }
-
                 return httpResponseToReturn
             }
         } catch (e: CancellationException) {

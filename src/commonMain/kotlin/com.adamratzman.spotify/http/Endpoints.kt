@@ -12,11 +12,7 @@ import com.adamratzman.spotify.models.serialization.toObject
 import com.adamratzman.spotify.utils.ConcurrentHashMap
 import com.adamratzman.spotify.utils.getCurrentTimeMs
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlin.math.ceil
@@ -129,20 +125,29 @@ public abstract class SpotifyEndpoint(public val api: GenericSpotifyApi) {
         try {
             return withTimeout(api.spotifyApiOptions.requestTimeoutMillis ?: (100 * 1000L)) {
                 try {
-                    val document = createConnection(url, body, method, contentType).execute(
+                    val httpRequest = createConnection(url, body, method, contentType)
+                    val document = httpRequest.execute(
                         additionalHeaders = cacheState?.eTag?.let {
                             listOf(HttpHeader("If-None-Match", it))
                         },
                         retryIfInternalServerErrorLeft = api.spotifyApiOptions.retryOnInternalServerErrorTimes
                     )
 
-                    handleResponse(document, cacheState, spotifyRequest, retry202) ?: run {
+                    val response = handleResponse(document, cacheState, spotifyRequest, retry202) ?: run {
                         if (retryOnNull) {
                             execute<ReturnType>(url, body, method, false, contentType, retryOnNull)
                         } else {
                             null
                         }
                     }
+
+                    api.spotifyApiOptions.httpResponseSubscriber?.let { subscriber ->
+                        launch(currentCoroutineContext()) {
+                            subscriber(httpRequest, document)
+                        }
+                    }
+
+                    response
                 } catch (e: BadRequestException) {
                     if (e.statusCode == 401 && !attemptedRefresh) {
                         api.refreshToken()

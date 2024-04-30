@@ -3,24 +3,11 @@
 
 package com.adamratzman.spotify.utilities
 
-import com.adamratzman.spotify.GenericSpotifyApi
-import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyScope
-import com.adamratzman.spotify.SpotifyUserAuthorization
-import com.adamratzman.spotify.buildSpotifyApi
-import com.adamratzman.spotify.getSpotifyPkceCodeChallenge
-import com.adamratzman.spotify.getTestClientId
-import com.adamratzman.spotify.getTestClientSecret
-import com.adamratzman.spotify.runTestOnDefaultDispatcher
-import com.adamratzman.spotify.spotifyAppApi
-import com.adamratzman.spotify.spotifyClientApi
-import io.ktor.util.PlatformUtils
+import com.adamratzman.spotify.*
+import io.ktor.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class UtilityTests {
     var api: GenericSpotifyApi? = null
@@ -139,5 +126,21 @@ class UtilityTests {
                 SpotifyUserAuthorization(token = api!!.token.copy(scopeString = null))
             ) { requiredScopes = listOf(SpotifyScope.PlaylistReadPrivate) }.build()
         }
+    }
+
+    @Test
+    fun testResponseSubscriber(): TestResult = runTestOnDefaultDispatcher {
+        buildSpotifyApi(this::class.simpleName!!, ::testPagingObjectGetAllItems.name)?.let { api = it }
+        val options = api!!.spotifyApiOptions
+        val oldSubscriber = options.httpResponseSubscriber
+        options.httpResponseSubscriber = { request, response ->
+            assertNotNull(
+                api!!.getCache().entries.singleOrNull { it.key.url == request.url }
+            )
+            oldSubscriber?.invoke(request, response)
+        }
+        
+        api!!.tracks.getTrack("6DrcMKnfMByc3RhhIvEw0F")
+        options.httpResponseSubscriber = oldSubscriber
     }
 }
